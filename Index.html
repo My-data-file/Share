@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Form Pemesanan Makanan & Minuman</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #fdfbfb, #ebedee);
+      padding: 20px;
+      margin: 0;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 1.6em;
+    }
+
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    label {
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      font-size: 14px;
+      transition: border-color 0.2s ease;
+    }
+
+    input:focus {
+      border-color: #007BFF;
+      outline: none;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 70px 1fr 80px;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .menu-img {
+      width: 60px;
+      height: 45px;
+      object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+
+    .button-group {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    button {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.2s ease;
+      font-size: 14px;
+    }
+
+    #kirimBtn { background-color: #007BFF; color: white; }
+    #kirimBtn:hover { background-color: #0056b3; }
+    #resetForm { background-color: #ffc107; color: #333; }
+    #resetForm:hover { background-color: #e0a800; }
+    #downloadPdf { background-color: #28a745; color: white; }
+    #downloadPdf:hover { background-color: #1e7e34; }
+    #finishOrder { background-color: #dc3545; color: white; }
+    #finishOrder:hover { background-color: #a71d2a; }
+
+    #status {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+      color: green;
+    }
+
+    @media (max-width: 600px) {
+      form { padding: 15px; }
+      h2 { font-size: 1.3em; }
+      .menu-grid {
+        grid-template-columns: 50px 1fr 70px;
+      }
+      .menu-img {
+        width: 45px;
+        height: 35px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h2>📋 Form Pemesanan Makanan & Minuman</h2>
+  <form id="myForm">
+    <label>Nama Pemesan:</label>
+    <input type="text" name="nama" placeholder="Masukkan nama Anda" required autocomplete="off" />
+
+    <label>No Meja:</label>
+    <input type="text" name="meja" placeholder="Nomor meja" required autocomplete="off" />
+
+    <!-- Menu grid dengan gambar online -->
+    <div class="menu-grid">
+      <img class="menu-img" alt="Nasi Goreng" src="https://i.imgur.com/jQdPzMz.png" />
+      <label>Nasi Goreng:</label>
+      <input type="number" name="Nasi Goreng" min="0" value="0"/>
+    </div>
+
+    <div class="menu-grid">
+      <img class="menu-img" alt="Mie Ayam" src="https://i.imgur.com/7VvnXMb.png" />
+      <label>Mie Ayam:</label>
+      <input type="number" name="Mie Ayam" min="0" value="0"/>
+    </div>
+
+    <div class="menu-grid">
+      <img class="menu-img" alt="Sate Ayam" src="https://i.imgur.com/f1e0Ywq.png" />
+      <label>Sate Ayam:</label>
+      <input type="number" name="Sate Ayam" min="0" value="0"/>
+    </div>
+
+    <div class="menu-grid">
+      <img class="menu-img" alt="Es Teh" src="https://i.imgur.com/07k1Xva.png" />
+      <label>Es Teh:</label>
+      <input type="number" name="Es Teh" min="0" value="0"/>
+    </div>
+
+    <div class="menu-grid">
+      <img class="menu-img" alt="Jus Jeruk" src="https://i.imgur.com/1cKKdLq.png" />
+      <label>Jus Jeruk:</label>
+      <input type="number" name="Jus Jeruk" min="0" value="0"/>
+    </div>
+
+    <div class="menu-grid">
+      <img class="menu-img" alt="Kopi" src="https://i.imgur.com/NH7Q4Gr.png" />
+      <label>Kopi:</label>
+      <input type="number" name="Kopi" min="0" value="0"/>
+    </div>
+
+    <label>Total Bayar (Rp):</label>
+    <input type="text" id="totalBayar" readonly style="font-weight:bold; color:#007BFF; background:#f9f9f9;"/>
+
+    <div class="button-group">
+      <button type="submit" id="kirimBtn">Kirim Pemesanan</button>
+      <button type="button" id="resetForm" style="display:none;">Pesan Lagi</button>
+      <button type="button" id="downloadPdf" style="display:none;">💾 Simpan PDF</button>
+      <button type="button" id="finishOrder" style="display:none;">✅ Selesaikan Pesanan</button>
+    </div>
+
+    <div id="status"></div>
+  </form>
+
+  <script>
+    const harga = {
+      "Nasi Goreng": 15000,
+      "Mie Ayam": 12000,
+      "Sate Ayam": 20000,
+      "Es Teh": 5000,
+      "Jus Jeruk": 7000,
+      "Kopi": 8000
+    };
+
+    const form = document.getElementById("myForm");
+    const totalBayar = document.getElementById("totalBayar");
+    const kirimBtn = document.getElementById("kirimBtn");
+    const downloadBtn = document.getElementById("downloadPdf");
+    const resetBtn = document.getElementById("resetForm");
+    const finishBtn = document.getElementById("finishOrder");
+    const statusText = document.getElementById("status");
+
+    let semuaPesanan = [];
+
+    function formatRupiah(angka) {
+      return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    function setFormDisabled(status) {
+      const elements = form.querySelectorAll("input, select, button");
+      elements.forEach(el => {
+        if (el.id !== "resetForm" && el.id !== "downloadPdf" && el.id !== "finishOrder") {
+          el.disabled = status;
+        }
+      });
+    }
+
+    form.addEventListener("input", () => {
+      let total = 0;
+      for (let item in harga) {
+        const jumlah = parseInt(form[item].value) || 0;
+        total += jumlah * harga[item];
+      }
+      totalBayar.value = formatRupiah(total);
+    });
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      if (!form.nama.value.trim() || !form.meja.value.trim()) {
+        alert("Nama dan No Meja harus diisi!");
+        return;
+      }
+
+      let total = 0;
+      const pesanan = {};
+      for (let item in harga) {
+        const qty = parseInt(form[item].value) || 0;
+        if (qty > 0) {
+          pesanan[item] = qty;
+          total += qty * harga[item];
+        }
+      }
+
+      if (Object.keys(pesanan).length === 0) {
+        alert("Tidak ada menu yang dipesan!");
+        return;
+      }
+
+      // ==== MODIF: Tambah konfirmasi pesanan ====
+      let ringkasan = `Konfirmasi Pesanan:\nNama: ${form.nama.value}\nNo Meja: ${form.meja.value}\n\nPesanan:\n`;
+      for (let [menu, qty] of Object.entries(pesanan)) {
+        ringkasan += `- ${menu} x${qty} = Rp ${formatRupiah(qty * harga[menu])}\n`;
+      }
+      ringkasan += `\nTotal Bayar: Rp ${formatRupiah(total)}\n\nLanjutkan mengirim pesanan?`;
+
+      if (!confirm(ringkasan)) {
+        return; // batal submit
+      }
+      // ==== END MODIF ====
+
+      const data = {
+        nama: form.nama.value,
+        meja: form.meja.value,
+        pesanan,
+        total,
+        waktu: new Date().toLocaleString()
+      };
+
+      fetch("https://script.google.com/macros/s/AKfycbyJkBoKlbRdmoViyAQZSqBpK_jpI5S8pHiiG0E5t4nFLTmWYVKppE4IM6Pqqz--wvVt/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      semuaPesanan.push(data);
+
+      setFormDisabled(true);
+
+      statusText.innerText = "✅ Pemesanan berhasil dikirim!";
+      downloadBtn.style.display = "inline-block";
+      resetBtn.style.display = "inline-block";
+      finishBtn.style.display = "inline-block";
+      kirimBtn.style.display = "none";
+    });
+
+    resetBtn.addEventListener("click", () => {
+      const nama = form.nama.value;
+      const meja = form.meja.value;
+
+      form.reset();
+      form.nama.value = nama;
+      form.meja.value = meja;
+
+      totalBayar.value = "";
+
+      setFormDisabled(false);
+
+      kirimBtn.style.display = "inline-block";
+      resetBtn.style.display = "none";
+      downloadBtn.style.display = "none";
+      finishBtn.style.display = "none";
+      statusText.innerText = "";
+    });
+
+    finishBtn.addEventListener("click", () => {
+      if (semuaPesanan.length === 0) {
+        alert("Tidak ada pesanan yang harus diselesaikan.");
+        return;
+      }
+
+      semuaPesanan.forEach(order => {
+        const statusData = {
+          nama: order.nama,
+          meja: order.meja,
+          status: "Selesai",
+          waktuSelesai: new Date().toLocaleString()
+        };
+
+        fetch("https://script.google.com/macros/s/AKfycbyJkBoKlbRdmoViyAQZSqBpK_jpI5S8pHiiG0E5t4nFLTmWYVKppE4IM6Pqqz--wvVt/exec", {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(statusData)
+        });
+      });
+
+      alert("✅ Semua pesanan telah ditandai sebagai selesai dan dikirim ke Google Sheets.");
+
+      form.reset();
+      totalBayar.value = "";
+      kirimBtn.style.display = "inline-block";
+      resetBtn.style.display = "none";
+      downloadBtn.style.display = "none";
+      finishBtn.style.display = "none";
+      statusText.innerText = "";
+      semuaPesanan = [];
+
+      setFormDisabled(false);
+    });
+
+    downloadBtn.addEventListener("click", () => {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      let y = 20;
+      let totalKeseluruhan = 0;
+
+      doc.setFontSize(16);
+      doc.text("RINCIAN SEMUA PESANAN", 105, y, null, null, "center");
+      y += 8;
+      doc.setLineWidth(0.5);
+      doc.line(20, y, 190, y);
+      y += 10;
+
+      semuaPesanan.forEach((data, i) => {
+        if (y > 260) { doc.addPage(); y = 20; }
+
+        doc.setFontSize(13);
+        doc.text(`Pesanan #${i+1}`, 20, y); y += 6;
+        doc.setFontSize(11);
+        doc.text(`Nama : ${data.nama}`, 20, y); y += 6;
+        doc.text(`Meja : ${data.meja}`, 20, y); y += 6;
+        doc.text(`Waktu: ${data.waktu}`, 20, y); y += 6;
+        doc.text(`Pesanan:`, 20, y); y += 6;
+
+        for (let [item, qty] of Object.entries(data.pesanan)) {
+          doc.text(`- ${item} x${qty} = Rp ${formatRupiah(qty * harga[item])}`, 25, y);
+          y += 6;
+        }
+
+        doc.setFont(undefined, "bold");
+        doc.text(`Total: Rp ${formatRupiah(data.total)}`, 20, y); 
+        doc.setFont(undefined, "normal");
+        y += 8;
+
+        doc.setDrawColor(200, 200, 200);
+        doc.line(20, y, 190, y);
+        y += 8;
+
+        totalKeseluruhan += data.total;
+      });
+
+      if (y > 260) { doc.addPage(); y = 20; }
+      doc.setFontSize(14);
+      doc.setFont(undefined, "bold");
+      doc.text(`TOTAL SEMUA PESANAN: Rp ${formatRupiah(totalKeseluruhan)}`, 20, y);
+
+      doc.save("Semua_Pesanan.pdf");
+    });
+  </script>
+</body>
+</html>
