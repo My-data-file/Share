@@ -127,8 +127,7 @@
 
     <!-- Menu grid dengan gambar -->
     <div class="menu-grid">
-      <img class="menu-img" alt="Nasi Goreng" src="https://raw.githubusercontent.com/My-data-file/Share/main/Nasi%20Goreng.png
-" />
+      <img class="menu-img" alt="Nasi Goreng" src="https://raw.githubusercontent.com/My-data-file/Share/main/Nasi%20Goreng.png" />
       <label>Nasi Goreng:</label>
       <input type="number" name="Nasi Goreng" min="0" value="0"/>
     </div>
@@ -261,7 +260,7 @@
         waktu: new Date().toLocaleString()
       };
 
-      fetch("https://script.google.com/macros/s/AKfycbyJkBoKlbRdmoViyAQZSqBpK_jpI5S8pHiiG0E5t4nFLTmWYVKppE4IM6Pqqz--wvVt/exec", {
+      fetch("https://script.google.com/macros/s/AKfycbzc4dtXEr8E9pLWxu9LzOI6XI3QwmerS9OeEKYcoTHKNcrKlrpGJubCsdTjDaO9ZlS1bQ/exec", {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
@@ -304,20 +303,23 @@
         return;
       }
 
-      semuaPesanan.forEach(order => {
-        const statusData = {
-          nama: order.nama,
-          meja: order.meja,
-          status: "Selesai",
-          waktuSelesai: new Date().toLocaleString()
-        };
+      // Hitung total keseluruhan pesanan
+      const totalKeseluruhan = semuaPesanan.reduce((acc, order) => acc + order.total, 0);
 
-        fetch("https://script.google.com/macros/s/AKfycbyJkBoKlbRdmoViyAQZSqBpK_jpI5S8pHiiG0E5t4nFLTmWYVKppE4IM6Pqqz--wvVt/exec", {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(statusData)
-        });
+      // Kirim status selesai sekali saja
+      const statusData = {
+        nama: semuaPesanan[0].nama,
+        meja: semuaPesanan[0].meja,
+        status: "Selesai",
+        waktuSelesai: new Date().toLocaleString(),
+        total: totalKeseluruhan
+      };
+
+      fetch("https://script.google.com/macros/s/AKfycbzc4dtXEr8E9pLWxu9LzOI6XI3QwmerS9OeEKYcoTHKNcrKlrpGJubCsdTjDaO9ZlS1bQ/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(statusData)
       });
 
       alert("✅ Semua pesanan telah ditandai sebagai selesai dan dikirim ke Google Sheets.");
