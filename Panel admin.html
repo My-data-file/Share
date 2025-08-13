@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Panel Admin Pemesanan</title>
+  <style>
+    /* Reset dan font */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 20px;
+      max-width: 960px;
+      margin-left: auto;
+      margin-right: auto;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 24px;
+      font-weight: 700;
+      color: #007BFF;
+    }
+
+    #status {
+      margin-bottom: 15px;
+      font-weight: 600;
+      text-align: center;
+      min-height: 1.5em;
+      color: #28a745;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: background-color 0.25s ease;
+      user-select: none;
+    }
+
+    button:focus-visible {
+      outline: 3px solid #0056b3;
+      outline-offset: 2px;
+    }
+
+    .btn-refresh {
+      background-color: #17a2b8;
+      color: white;
+      margin-bottom: 20px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: 140px;
+    }
+
+    .btn-refresh:hover {
+      background-color: #138496;
+    }
+
+    .btn-selesai {
+      background-color: #28a745;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 5px;
+      font-size: 13px;
+      transition: background-color 0.3s ease;
+    }
+    .btn-selesai:hover {
+      background-color: #1e7e34;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      font-size: 14px;
+    }
+
+    thead {
+      background-color: #007BFF;
+      color: white;
+      font-weight: 700;
+    }
+
+    th, td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+      vertical-align: middle;
+      word-break: break-word;
+    }
+
+    tbody tr:hover:not(.selesai) {
+      background-color: #e9f5ff;
+      cursor: pointer;
+    }
+
+    tr.selesai td {
+      background-color: #d4edda !important;
+      color: #155724;
+      font-style: italic;
+    }
+
+    /* Responsive */
+    @media (max-width: 720px) {
+      body {
+        padding: 10px;
+      }
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      thead tr {
+        display: none;
+      }
+      tbody tr {
+        margin-bottom: 15px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+        padding: 12px 16px;
+      }
+      tbody tr.selesai td {
+        background-color: #d4edda !important;
+        color: #155724;
+        font-style: italic;
+      }
+      tbody td {
+        border: none;
+        padding: 6px 0;
+        position: relative;
+        padding-left: 120px;
+        text-align: left;
+      }
+      tbody td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        top: 6px;
+        font-weight: 600;
+        color: #555;
+        white-space: nowrap;
+      }
+      .btn-selesai {
+        width: 100%;
+        padding: 10px;
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Panel Admin Pemesanan</h1>
+  <div id="status" aria-live="polite"></div>
+  <button class="btn-refresh" onclick="fetchOrders()" aria-label="Segarkan data pesanan">🔄 Refresh Data</button>
+
+  <table aria-label="Daftar Pesanan">
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Nama</th>
+        <th>Meja</th>
+        <th>Menu</th>
+        <th>Jumlah</th>
+        <th>Catatan</th>
+        <th>Status</th>
+        <th>Waktu Selesai</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody id="orderList">
+      <!-- Data pesanan akan muncul di sini -->
+    </tbody>
+  </table>
+
+  <script>
+    const sheetUrl = "https://script.google.com/macros/s/AKfycbxE_AVpiJh7D413y494cX7i7ZwCroCeFqOtauq50nMTwUg5lImDop1Oi9j4YrmPG61B/exec"; // Ganti dengan URL Web App Google Apps Script-mu
+
+    async function fetchOrders() {
+      const statusEl = document.getElementById('status');
+      statusEl.textContent = "Memuat data...";
+      try {
+        const res = await fetch(sheetUrl);
+        if (!res.ok) throw new Error("Gagal mengambil data.");
+        const data = await res.json();
+
+        const tbody = document.getElementById('orderList');
+        tbody.innerHTML = '';
+
+        if (data.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:20px;">Tidak ada pesanan</td></tr>';
+          statusEl.textContent = "Data berhasil dimuat.";
+          return;
+        }
+
+        const shownPemesan = new Set();
+
+        data.forEach(row => {
+          const tr = document.createElement('tr');
+          if (row.Status === "Selesai") tr.classList.add('selesai');
+
+          // Aman panggil trim & lowercase untuk Nama dan Meja
+          const namaStr = typeof row.Nama === 'string' ? row.Nama.trim().toLowerCase() : String(row.Nama || '').toLowerCase();
+          const mejaStr = typeof row.Meja === 'string' ? row.Meja.trim().toLowerCase() : String(row.Meja || '').toLowerCase();
+          const keyPemesan = `${namaStr}__${mejaStr}`;
+
+          const showButton = row.Status !== "Selesai" && row.Menu && !shownPemesan.has(keyPemesan);
+
+          if (showButton) shownPemesan.add(keyPemesan);
+
+          tr.innerHTML = `
+            <td data-label="Timestamp">${row.Timestamp || ''}</td>
+            <td data-label="Nama">${row.Nama || ''}</td>
+            <td data-label="Meja">${row.Meja || ''}</td>
+            <td data-label="Menu">${row.Menu || ''}</td>
+            <td data-label="Jumlah">${row.Jumlah || ''}</td>
+            <td data-label="Catatan">${row.Catatan || ''}</td>
+            <td data-label="Status">${row.Status || 'Baru'}</td>
+            <td data-label="Waktu Selesai">${row['Waktu Selesai'] || ''}</td>
+            <td data-label="Aksi">
+              ${showButton ? `<button class="btn-selesai" aria-label="Tandai pesanan ${row.Nama} meja ${row.Meja} selesai" onclick="markDone('${row.Timestamp}', '${row.Nama}', '${row.Meja}', ${row.Total || 0}, this)">Selesai</button>` : ''}
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        statusEl.textContent = "Data berhasil dimuat.";
+      } catch (error) {
+        statusEl.textContent = "Error: " + error.message;
+      }
+    }
+
+    async function markDone(timestamp, nama, meja, total, btn) {
+      if (!confirm(`Tandai pesanan ${nama} meja ${meja} sebagai selesai?`)) return;
+
+      const data = {
+        nama,
+        meja,
+        status: 'Selesai',
+        waktuSelesai: new Date().toLocaleString(),
+        total
+      };
+
+      try {
+        await fetch(sheetUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        // Ganti tombol jadi ceklis dan disable tombol
+        btn.textContent = '✔️';
+        btn.disabled = true;
+        btn.classList.remove('btn-selesai');
+        btn.style.cursor = 'default';
+      } catch (error) {
+        alert('Gagal mengupdate status: ' + error.message);
+      }
+    }
+
+    // Load data saat halaman dibuka
+    fetchOrders();
+  </script>
+</body>
+</html>
