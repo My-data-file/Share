@@ -8,8 +8,13 @@
   body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f2f2f2; }
   header { background:#0077cc; color:white; padding:15px; text-align:center; font-size:1.5em; font-weight:bold; }
   nav { display:flex; background:#004d80; justify-content:space-around; flex-wrap:wrap; }
-  nav button { flex:1; padding:15px; background:#004d80; border:none; color:white; cursor:pointer; }
+  nav button { flex:1; padding:15px; background:#004d80; border:none; color:white; cursor:pointer; transition: all 0.2s ease-in-out; }
   nav button:hover { background:#006bb3; }
+  nav button.active-menu {
+    background: linear-gradient(135deg, #0077cc, #00aaff);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transform: scale(1.05);
+  }
   .content { padding:20px; }
   .section { display:none; }
   .active { display:block; }
@@ -182,10 +187,13 @@
 <script>
 const { jsPDF } = window.jspdf;
 
-// Show section
+// Show section & highlight menu aktif
 function showSection(id){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active-menu'));
+  const btnMap = { 'absen': 0, 'hasil': 1, 'komplain': 2 };
+  document.querySelectorAll('nav button')[btnMap[id]].classList.add('active-menu');
 }
 
 // Load table data
@@ -210,9 +218,7 @@ const bajuInput = document.getElementById('baju');
 const celanaInput = document.getElementById('celana');
 const jaketInput = document.getElementById('jaket');
 const totalInput = document.getElementById('total');
-function updateTotal(){
-  totalInput.value = (parseInt(bajuInput.value)||0)+(parseInt(celanaInput.value)||0)+(parseInt(jaketInput.value)||0);
-}
+function updateTotal(){ totalInput.value = (parseInt(bajuInput.value)||0)+(parseInt(celanaInput.value)||0)+(parseInt(jaketInput.value)||0); }
 bajuInput.addEventListener('input', updateTotal);
 celanaInput.addEventListener('input', updateTotal);
 jaketInput.addEventListener('input', updateTotal);
@@ -361,6 +367,8 @@ document.addEventListener('DOMContentLoaded', function(){
   updatePDFButton('hasilLaundry','simpanSemuaPDFHasil');
   updatePDFButton('komplain','simpanSemuaPDFKomplain');
   updateResetButtons();
+  // Set default menu aktif
+  showSection('absen');
 });
 </script>
 
