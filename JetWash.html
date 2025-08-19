@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JETWASH LAUNDRY</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f2f2f2;
+    }
+
+    header {
+      background-color: #0077cc;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    nav {
+      display: flex;
+      background: #004d80;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+
+    nav button {
+      flex: 1;
+      padding: 15px;
+      background: #004d80;
+      border: none;
+      color: white;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
+    nav button:hover {
+      background-color: #006bb3;
+    }
+
+    .content {
+      padding: 20px;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .active {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="time"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    button[type="submit"],
+    .form-group button {
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button[type="submit"]:hover,
+    .form-group button:hover {
+      background-color: #005fa3;
+    }
+
+    @media (max-width: 600px) {
+      nav button {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+    }
+  </style>
+
+  <!-- jsPDF library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</head>
+<body>
+
+  <header>JETWASH LAUNDRY</header>
+
+  <nav>
+    <button onclick="showSection('absen')">Absen</button>
+    <button onclick="showSection('hasil')">Hasil Laundry</button>
+    <button onclick="showSection('komplain')">Komplain</button>
+  </nav>
+
+  <div class="content">
+
+    <!-- Absen Section -->
+    <div id="absen" class="section active">
+      <h2>Form Absen Pegawai</h2>
+      <form id="absenForm">
+        <div class="form-group">
+          <label for="namaPegawai">Nama Pegawai:</label>
+          <input type="text" id="namaPegawai" name="namaPegawai" required>
+        </div>
+        <div class="form-group">
+          <label for="tanggalAbsen">Tanggal:</label>
+          <input type="date" id="tanggalAbsen" name="tanggalAbsen" required>
+        </div>
+        <div class="form-group">
+          <label for="jamAbsen">Jam:</label>
+          <input type="time" id="jamAbsen" name="jamAbsen" required>
+        </div>
+        <div class="form-group">
+          <label>Foto Absen (opsional):</label><br>
+          <button type="button" onclick="document.getElementById('fotoAbsen').click()">📷 Ambil Foto</button>
+          <input type="file" id="fotoAbsen" name="fotoAbsen" accept="image/*" capture="environment" style="display: none;">
+          <p id="fotoAbsenPreview" style="margin-top:10px; font-size:14px; color:#555;"></p>
+        </div>
+        <button type="submit">Kirim Absen</button>
+      </form>
+      <p id="absenMessage" style="margin-top:15px; color:green; font-weight:bold;"></p>
+    </div>
+
+    <!-- Hasil Laundry Section -->
+    <div id="hasil" class="section">
+      <h2>Hasil Laundry</h2>
+      <form id="hasilForm">
+        <div class="form-group">
+          <label for="namaPelangganHasil">Nama Pelanggan:</label>
+          <input type="text" id="namaPelangganHasil" name="namaPelangganHasil" required>
+        </div>
+        <div class="form-group">
+          <label for="beratLaundry">Berat Laundry (kg):</label>
+          <input type="text" id="beratLaundry" name="beratLaundry" required>
+        </div>
+        <div class="form-group">
+          <label>Jumlah Pakaian:</label>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <div style="flex:1; min-width:100px;">
+              <label for="baju">Baju (pcs)</label>
+              <input type="number" id="baju" name="baju" min="0" required>
+            </div>
+            <div style="flex:1; min-width:100px;">
+              <label for="celana">Celana (pcs)</label>
+              <input type="number" id="celana" name="celana" min="0" required>
+            </div>
+            <div style="flex:1; min-width:100px;">
+              <label for="jaket">Jaket (pcs)</label>
+              <input type="number" id="jaket" name="jaket" min="0" required>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="total">Total Pakaian (pcs)</label>
+          <input type="number" id="total" name="total" readonly>
+        </div>
+        <div class="form-group">
+          <label for="tanggalSelesai">Tanggal Selesai:</label>
+          <input type="date" id="tanggalSelesai" name="tanggalSelesai" required>
+        </div>
+        <div class="form-group">
+          <label for="jamMulai">Jam Mulai:</label>
+          <input type="time" id="jamMulai" name="jamMulai" required>
+        </div>
+        <div class="form-group">
+          <label for="jamSelesai">Jam Selesai:</label>
+          <input type="time" id="jamSelesai" name="jamSelesai" required>
+        </div>
+        <button type="submit">Simpan Hasil</button>
+      </form>
+      <p id="hasilMessage" style="margin-top:15px; color:green; font-weight:bold;"></p>
+    </div>
+
+    <!-- Komplain Section -->
+    <div id="komplain" class="section">
+      <h2>Form Komplain Pelanggan</h2>
+      <form id="komplainForm" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="namaPelanggan">Nama Pelanggan:</label>
+          <input type="text" id="namaPelanggan" name="namaPelanggan" required>
+        </div>
+        <div class="form-group">
+          <label for="tanggalKomplain">Tanggal:</label>
+          <input type="date" id="tanggalKomplain" name="tanggalKomplain" required>
+        </div>
+        <div class="form-group">
+          <label for="jamKomplain">Jam:</label>
+          <input type="time" id="jamKomplain" name="jamKomplain" required>
+        </div>
+        <div class="form-group">
+          <label for="komplainText">Isi Komplain:</label>
+          <textarea id="komplainText" name="komplainText" rows="4" required></textarea>
+        </div>
+        <div class="form-group">
+          <label>Foto Komplain (opsional):</label><br>
+          <button type="button" onclick="document.getElementById('fotoKomplain').click()">📷 Ambil Foto</button>
+          <input type="file" id="fotoKomplain" name="fotoKomplain" accept="image/*" capture="environment" style="display: none;">
+          <p id="fotoPreview" style="margin-top:10px; font-size:14px; color:#555;"></p>
+        </div>
+        <button type="submit">Kirim Komplain</button>
+      </form>
+      <p id="komplainMessage" style="margin-top:15px; color:green; font-weight:bold;"></p>
+    </div>
+
+  </div>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    const { jsPDF } = window.jspdf;
+
+    // Absen
+    document.getElementById('absenForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const doc = new jsPDF();
+      const nama = document.getElementById('namaPegawai').value;
+      const tanggal = document.getElementById('tanggalAbsen').value;
+      const jam = document.getElementById('jamAbsen').value;
+      const fotoFile = document.getElementById('fotoAbsen').files[0];
+
+      doc.setFontSize(16);
+      doc.text("Form Absen JETWASH LAUNDRY", 10, 20);
+      doc.setFontSize(12);
+      doc.text(`Nama Pegawai: ${nama}`, 10, 40);
+      doc.text(`Tanggal Absen: ${tanggal}`, 10, 50);
+      doc.text(`Jam Absen: ${jam}`, 10, 60);
+
+      if(fotoFile){
+        const reader = new FileReader();
+        reader.onload = function(event){
+          const imgData = event.target.result;
+          doc.addPage();
+          doc.text("Foto Absen:", 10, 20);
+          doc.addImage(imgData, 'JPEG', 10, 30, 180, 180);
+          doc.save(`Absen_${nama}.pdf`);
+        };
+        reader.readAsDataURL(fotoFile);
+      } else {
+        doc.save(`Absen_${nama}.pdf`);
+      }
+
+      document.getElementById('absenMessage').textContent = `PDF absen untuk ${nama} berhasil dibuat!`;
+      this.reset();
+      document.getElementById('fotoAbsenPreview').textContent = '';
+    });
+
+    document.getElementById('fotoAbsen').addEventListener('change', function(){
+      const file = this.files[0];
+      document.getElementById('fotoAbsenPreview').textContent = file ? `Foto dipilih: ${file.name}` : '';
+    });
+
+    // Hasil Laundry
+    const bajuInput = document.getElementById('baju');
+    const celanaInput = document.getElementById('celana');
+    const jaketInput = document.getElementById('jaket');
+    const totalInput = document.getElementById('total');
+
+    function updateTotal(){
+      const baju = parseInt(bajuInput.value) || 0;
+      const celana = parseInt(celanaInput.value) || 0;
+      const jaket = parseInt(jaketInput.value) || 0;
+      totalInput.value = baju + celana + jaket;
+    }
+
+    bajuInput.addEventListener('input', updateTotal);
+    celanaInput.addEventListener('input', updateTotal);
+    jaketInput.addEventListener('input', updateTotal);
+
+    document.getElementById('hasilForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const doc = new jsPDF();
+      const nama = document.getElementById('namaPelangganHasil').value;
+      const berat = document.getElementById('beratLaundry').value;
+      const baju = document.getElementById('baju').value;
+      const celana = document.getElementById('celana').value;
+      const jaket = document.getElementById('jaket').value;
+      const total = document.getElementById('total').value;
+      const tanggalSelesai = document.getElementById('tanggalSelesai').value;
+      const jamMulai = document.getElementById('jamMulai').value;
+      const jamSelesai = document.getElementById('jamSelesai').value;
+
+      doc.setFontSize(16);
+      doc.text("Form Hasil Laundry JETWASH LAUNDRY", 10, 20);
+      doc.setFontSize(12);
+      doc.text(`Nama Pelanggan: ${nama}`, 10, 40);
+      doc.text(`Berat Laundry: ${berat} kg`, 10, 50);
+      doc.text(`Baju: ${baju} pcs`, 10, 60);
+      doc.text(`Celana: ${celana} pcs`, 10, 70);
+      doc.text(`Jaket: ${jaket} pcs`, 10, 80);
+      doc.text(`Total Pakaian: ${total} pcs`, 10, 90);
+      doc.text(`Tanggal Selesai: ${tanggalSelesai}`, 10, 100);
+      doc.text(`Jam Mulai: ${jamMulai}`, 10, 110);
+      doc.text(`Jam Selesai: ${jamSelesai}`, 10, 120);
+
+      doc.save(`HasilLaundry_${nama}.pdf`);
+
+      document.getElementById('hasilMessage').textContent = `PDF hasil laundry untuk ${nama} berhasil dibuat!`;
+      this.reset();
+      totalInput.value = '';
+    });
+
+    // Komplain
+    document.getElementById('komplainForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const doc = new jsPDF();
+      const nama = document.getElementById('namaPelanggan').value;
+      const tanggal = document.getElementById('tanggalKomplain').value;
+      const jam = document.getElementById('jamKomplain').value;
+      const komplain = document.getElementById('komplainText').value;
+      const fotoFile = document.getElementById('fotoKomplain').files[0];
+
+      doc.setFontSize(16);
+      doc.text("Komplain Pelanggan JETWASH LAUNDRY", 10, 20);
+      doc.setFontSize(12);
+      doc.text(`Nama Pelanggan: ${nama}`, 10, 40);
+      doc.text(`Tanggal Komplain: ${tanggal}`, 10, 50);
+      doc.text(`Jam Komplain: ${jam}`, 10, 60);
+      doc.text("Isi Komplain:", 10, 70);
+      const splitText = doc.splitTextToSize(komplain, 180);
+      doc.text(splitText, 10, 80);
+
+      if(fotoFile){
+        const reader = new FileReader();
+        reader.onload = function(event){
+          const imgData = event.target.result;
+          doc.addPage();
+          doc.text("Foto Komplain:", 10, 20);
+          doc.addImage(imgData, 'JPEG', 10, 30, 180, 180);
+          doc.save(`Komplain_${nama}.pdf`);
+        };
+        reader.readAsDataURL(fotoFile);
+      } else {
+        doc.save(`Komplain_${nama}.pdf`);
+      }
+
+      document.getElementById('komplainMessage').textContent = `PDF komplain untuk ${nama} berhasil dibuat!`;
+      this.reset();
+      document.getElementById('fotoPreview').textContent = '';
+    });
+
+    document.getElementById('fotoKomplain').addEventListener('change', function(){
+      const file = this.files[0];
+      document.getElementById('fotoPreview').textContent = file ? `Foto dipilih: ${file.name}` : '';
+    });
+
+  </script>
+
+</body>
+</html>
