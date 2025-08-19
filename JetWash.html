@@ -1,371 +1,368 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>JETWASH LAUNDRY</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f2f2f2;
-    }
-
-    header {
-      background-color: #0077cc;
-      color: white;
-      padding: 15px;
-      text-align: center;
-      font-size: 1.5em;
-      font-weight: bold;
-    }
-
-    nav {
-      display: flex;
-      background: #004d80;
-      justify-content: space-around;
-      flex-wrap: wrap;
-    }
-
-    nav button {
-      flex: 1;
-      padding: 15px;
-      background: #004d80;
-      border: none;
-      color: white;
-      font-size: 1em;
-      cursor: pointer;
-    }
-
-    nav button:hover {
-      background-color: #006bb3;
-    }
-
-    .content {
-      padding: 20px;
-    }
-
-    .section {
-      display: none;
-    }
-
-    .active {
-      display: block;
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-
-    input[type="text"],
-    input[type="date"],
-    input[type="time"],
-    input[type="number"],
-    textarea {
-      width: 100%;
-      padding: 10px;
-      box-sizing: border-box;
-    }
-
-    button[type="submit"],
-    .form-group button {
-      background-color: #0077cc;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-
-    button[type="submit"]:hover,
-    .form-group button:hover {
-      background-color: #005fa3;
-    }
-
-    @media (max-width: 600px) {
-      nav button {
-        font-size: 0.9em;
-        padding: 12px;
-      }
-    }
-  </style>
-
-  <!-- jsPDF library -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JETWASH LAUNDRY</title>
+<style>
+  body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f2f2f2; }
+  header { background:#0077cc; color:white; padding:15px; text-align:center; font-size:1.5em; font-weight:bold; }
+  nav { display:flex; background:#004d80; justify-content:space-around; flex-wrap:wrap; }
+  nav button { flex:1; padding:15px; background:#004d80; border:none; color:white; cursor:pointer; }
+  nav button:hover { background:#006bb3; }
+  .content { padding:20px; }
+  .section { display:none; }
+  .active { display:block; }
+  .form-group { margin-bottom:15px; }
+  label { display:block; margin-bottom:5px; font-weight:bold; }
+  input[type="text"], input[type="date"], input[type="time"], input[type="number"], textarea { width:100%; padding:10px; box-sizing:border-box; }
+  .btnSimpan { background:#0077cc; color:white; border:none; padding:10px 20px; cursor:pointer; border-radius:5px; margin-top:10px; }
+  .btnSimpan:hover { background:#005fa3; }
+  table { border-collapse:collapse; width:100%; margin-top:10px; background:white; }
+  table, th, td { border:1px solid #ccc; }
+  th, td { padding:8px; text-align:center; }
+  #resetHasilLaundry, #resetAbsen, #resetKomplain { background:#cc0000; }
+  @media (max-width:600px){ nav button{ font-size:0.9em; padding:12px; } }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
-  <header>JETWASH LAUNDRY</header>
+<header>JETWASH LAUNDRY</header>
 
-  <nav>
-    <button onclick="showSection('absen')">Absen</button>
-    <button onclick="showSection('hasil')">Hasil Laundry</button>
-    <button onclick="showSection('komplain')">Komplain</button>
-  </nav>
+<nav>
+  <button onclick="showSection('absen')">Absen</button>
+  <button onclick="showSection('hasil')">Hasil Laundry</button>
+  <button onclick="showSection('komplain')">Komplain</button>
+</nav>
 
-  <div class="content">
+<div class="content">
 
-    <!-- Absen Section -->
-    <div id="absen" class="section active">
-      <h2>Form Absen Pegawai</h2>
-      <form id="absenForm">
-        <div class="form-group">
-          <label for="namaPegawai">Nama Pegawai:</label>
-          <input type="text" id="namaPegawai" name="namaPegawai" required>
-        </div>
-        <div class="form-group">
-          <label for="tanggalAbsen">Tanggal:</label>
-          <input type="date" id="tanggalAbsen" name="tanggalAbsen" required>
-        </div>
-        <div class="form-group">
-          <label for="jamAbsen">Jam:</label>
-          <input type="time" id="jamAbsen" name="jamAbsen" required>
-        </div>
-        <div class="form-group">
-          <label>Foto Absen (opsional):</label><br>
-          <button type="button" onclick="document.getElementById('fotoAbsen').click()">📷 Ambil Foto</button>
-          <input type="file" id="fotoAbsen" name="fotoAbsen" accept="image/*" capture="environment" style="display: none;">
-          <p id="fotoAbsenPreview" style="margin-top:10px; font-size:14px; color:#555;"></p>
-        </div>
-        <button type="submit">Kirim Absen</button>
-      </form>
-      <p id="absenMessage" style="margin-top:15px; color:green; font-weight:bold;"></p>
-    </div>
-
-    <!-- Hasil Laundry Section -->
-    <div id="hasil" class="section">
-      <h2>Hasil Laundry</h2>
-      <form id="hasilForm">
-        <div class="form-group">
-          <label for="namaPelangganHasil">Nama Pelanggan:</label>
-          <input type="text" id="namaPelangganHasil" name="namaPelangganHasil" required>
-        </div>
-        <div class="form-group">
-          <label for="beratLaundry">Berat Laundry (kg):</label>
-          <input type="text" id="beratLaundry" name="beratLaundry" required>
-        </div>
-        <div class="form-group">
-          <label>Jumlah Pakaian:</label>
-          <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <div style="flex:1; min-width:100px;">
-              <label for="baju">Baju (pcs)</label>
-              <input type="number" id="baju" name="baju" min="0" required>
-            </div>
-            <div style="flex:1; min-width:100px;">
-              <label for="celana">Celana (pcs)</label>
-              <input type="number" id="celana" name="celana" min="0" required>
-            </div>
-            <div style="flex:1; min-width:100px;">
-              <label for="jaket">Jaket (pcs)</label>
-              <input type="number" id="jaket" name="jaket" min="0" required>
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="total">Total Pakaian (pcs)</label>
-          <input type="number" id="total" name="total" readonly>
-        </div>
-        <div class="form-group">
-          <label for="tanggalSelesai">Tanggal Selesai:</label>
-          <input type="date" id="tanggalSelesai" name="tanggalSelesai" required>
-        </div>
-        <div class="form-group">
-          <label for="jamMulai">Jam Mulai:</label>
-          <input type="time" id="jamMulai" name="jamMulai" required>
-        </div>
-        <div class="form-group">
-          <label for="jamSelesai">Jam Selesai:</label>
-          <input type="time" id="jamSelesai" name="jamSelesai" required>
-        </div>
-        <button type="submit">Simpan Hasil</button>
-      </form>
-      <p id="hasilMessage" style="margin-top:15px; color:green; font-weight:bold;"></p>
-    </div>
-
-    <!-- Komplain Section -->
-    <div id="komplain" class="section">
-      <h2>Form Komplain Pelanggan</h2>
-      <form id="komplainForm" enctype="multipart/form-data">
-        <div class="form-group">
-          <label for="namaPelanggan">Nama Pelanggan:</label>
-          <input type="text" id="namaPelanggan" name="namaPelanggan" required>
-        </div>
-        <div class="form-group">
-          <label for="tanggalKomplain">Tanggal:</label>
-          <input type="date" id="tanggalKomplain" name="tanggalKomplain" required>
-        </div>
-        <div class="form-group">
-          <label for="jamKomplain">Jam:</label>
-          <input type="time" id="jamKomplain" name="jamKomplain" required>
-        </div>
-        <div class="form-group">
-          <label for="komplainText">Isi Komplain:</label>
-          <textarea id="komplainText" name="komplainText" rows="4" required></textarea>
-        </div>
-        <div class="form-group">
-          <label>Foto Komplain (opsional):</label><br>
-          <button type="button" onclick="document.getElementById('fotoKomplain').click()">📷 Ambil Foto</button>
-          <input type="file" id="fotoKomplain" name="fotoKomplain" accept="image/*" capture="environment" style="display: none;">
-          <p id="fotoPreview" style="margin-top:10px; font-size:14px; color:#555;"></p>
-        </div>
-        <button type="submit">Kirim Komplain</button>
-      </form>
-      <p id="komplainMessage" style="margin-top:15px; color:green; font-weight:bold;"></p>
-    </div>
-
+  <!-- Absen Section -->
+  <div id="absen" class="section active">
+    <h2>Form Absen Pegawai</h2>
+    <form id="absenForm">
+      <div class="form-group">
+        <label for="namaPegawai">Nama Pegawai:</label>
+        <input type="text" id="namaPegawai" required>
+      </div>
+      <div class="form-group">
+        <label for="tanggalAbsen">Tanggal:</label>
+        <input type="date" id="tanggalAbsen" required>
+      </div>
+      <div class="form-group">
+        <label for="jamAbsen">Jam:</label>
+        <input type="time" id="jamAbsen" required>
+      </div>
+      <div class="form-group">
+        <label>Foto Absen (opsional):</label><br>
+        <button type="button" class="btnSimpan" onclick="document.getElementById('fotoAbsen').click()">📷 Ambil Foto</button>
+        <input type="file" id="fotoAbsen" accept="image/*" capture="environment" style="display:none;">
+        <p id="fotoAbsenPreview" style="margin-top:10px; font-size:14px; color:#555;"></p>
+      </div>
+      <button type="submit" class="btnSimpan">Kirim Absen</button>
+    </form>
+    <h3>Data Absen</h3>
+    <table id="tabelAbsen">
+      <thead><tr><th>Nama</th><th>Tanggal</th><th>Jam</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <button id="simpanSemuaPDFAbsen" class="btnSimpan" style="display:none;">💾 Simpan Semua PDF Absen</button>
+    <button id="resetAbsen" class="btnSimpan" style="display:none;">⚠️ Reset Data Absen</button>
   </div>
 
-  <script>
-    function showSection(id) {
-      document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-    }
+  <!-- Hasil Laundry Section -->
+  <div id="hasil" class="section">
+    <h2>Hasil Laundry</h2>
+    <form id="hasilForm">
+      <div class="form-group">
+        <label for="namaPelangganHasil">Nama Pelanggan:</label>
+        <input type="text" id="namaPelangganHasil" required>
+      </div>
+      <div class="form-group">
+        <label for="beratLaundry">Berat Laundry (kg):</label>
+        <input type="text" id="beratLaundry" required>
+      </div>
+      <div class="form-group">
+        <label>Jumlah Pakaian:</label>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <div style="flex:1; min-width:100px;">
+            <label for="baju">Baju (pcs)</label>
+            <input type="number" id="baju" min="0" required>
+          </div>
+          <div style="flex:1; min-width:100px;">
+            <label for="celana">Celana (pcs)</label>
+            <input type="number" id="celana" min="0" required>
+          </div>
+          <div style="flex:1; min-width:100px;">
+            <label for="jaket">Jaket (pcs)</label>
+            <input type="number" id="jaket" min="0" required>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="total">Total Pakaian (pcs)</label>
+        <input type="number" id="total" readonly>
+      </div>
+      <div class="form-group">
+        <label for="tanggalSelesai">Tanggal Selesai:</label>
+        <input type="date" id="tanggalSelesai" required>
+      </div>
+      <div class="form-group">
+        <label for="jamMulai">Jam Mulai:</label>
+        <input type="time" id="jamMulai" required>
+      </div>
+      <div class="form-group">
+        <label for="jamSelesai">Jam Selesai:</label>
+        <input type="time" id="jamSelesai" required>
+      </div>
+      <button type="submit" class="btnSimpan">Simpan Hasil</button>
+    </form>
 
-    const { jsPDF } = window.jspdf;
+    <h3>Data Hasil Laundry</h3>
+    <table id="tabelHasilLaundry">
+      <thead>
+        <tr>
+          <th>Nama Pelanggan</th>
+          <th>Berat (kg)</th>
+          <th>Baju</th>
+          <th>Celana</th>
+          <th>Jaket</th>
+          <th>Total</th>
+          <th>Tanggal Selesai</th>
+          <th>Jam Mulai</th>
+          <th>Jam Selesai</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button id="simpanSemuaPDFHasil" class="btnSimpan" style="display:none;">💾 Simpan Semua PDF Hasil Laundry</button>
+    <button id="resetHasilLaundry" class="btnSimpan" style="display:none;">⚠️ Reset Data Hasil Laundry</button>
+  </div>
 
-    // Absen
-    document.getElementById('absenForm').addEventListener('submit', function(e){
-      e.preventDefault();
-      const doc = new jsPDF();
-      const nama = document.getElementById('namaPegawai').value;
-      const tanggal = document.getElementById('tanggalAbsen').value;
-      const jam = document.getElementById('jamAbsen').value;
-      const fotoFile = document.getElementById('fotoAbsen').files[0];
+  <!-- Komplain Section -->
+  <div id="komplain" class="section">
+    <h2>Form Komplain Pelanggan</h2>
+    <form id="komplainForm">
+      <div class="form-group">
+        <label for="namaPelanggan">Nama Pelanggan:</label>
+        <input type="text" id="namaPelanggan" required>
+      </div>
+      <div class="form-group">
+        <label for="tanggalKomplain">Tanggal:</label>
+        <input type="date" id="tanggalKomplain" required>
+      </div>
+      <div class="form-group">
+        <label for="jamKomplain">Jam:</label>
+        <input type="time" id="jamKomplain" required>
+      </div>
+      <div class="form-group">
+        <label for="komplainText">Isi Komplain:</label>
+        <textarea id="komplainText" rows="4" required></textarea>
+      </div>
+      <div class="form-group">
+        <label>Foto Komplain (opsional):</label><br>
+        <button type="button" class="btnSimpan" onclick="document.getElementById('fotoKomplain').click()">📷 Ambil Foto</button>
+        <input type="file" id="fotoKomplain" accept="image/*" capture="environment" style="display:none;">
+        <p id="fotoPreview" style="margin-top:10px; font-size:14px; color:#555;"></p>
+      </div>
+      <button type="submit" class="btnSimpan">Kirim Komplain</button>
+    </form>
+    <h3>Data Komplain</h3>
+    <table id="tabelKomplain">
+      <thead><tr><th>Nama Pelanggan</th><th>Tanggal</th><th>Jam</th><th>Isi Komplain</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <button id="simpanSemuaPDFKomplain" class="btnSimpan" style="display:none;">💾 Simpan Semua PDF Komplain</button>
+    <button id="resetKomplain" class="btnSimpan" style="display:none;">⚠️ Reset Data Komplain</button>
+  </div>
 
-      doc.setFontSize(16);
-      doc.text("Form Absen JETWASH LAUNDRY", 10, 20);
-      doc.setFontSize(12);
-      doc.text(`Nama Pegawai: ${nama}`, 10, 40);
-      doc.text(`Tanggal Absen: ${tanggal}`, 10, 50);
-      doc.text(`Jam Absen: ${jam}`, 10, 60);
+</div>
 
-      if(fotoFile){
-        const reader = new FileReader();
-        reader.onload = function(event){
-          const imgData = event.target.result;
-          doc.addPage();
-          doc.text("Foto Absen:", 10, 20);
-          doc.addImage(imgData, 'JPEG', 10, 30, 180, 180);
-          doc.save(`Absen_${nama}.pdf`);
-        };
-        reader.readAsDataURL(fotoFile);
-      } else {
-        doc.save(`Absen_${nama}.pdf`);
-      }
+<script>
+const { jsPDF } = window.jspdf;
 
-      document.getElementById('absenMessage').textContent = `PDF absen untuk ${nama} berhasil dibuat!`;
-      this.reset();
-      document.getElementById('fotoAbsenPreview').textContent = '';
-    });
+// Show section
+function showSection(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
 
-    document.getElementById('fotoAbsen').addEventListener('change', function(){
-      const file = this.files[0];
-      document.getElementById('fotoAbsenPreview').textContent = file ? `Foto dipilih: ${file.name}` : '';
-    });
+// Load table data
+function loadTable(key, tbodyId, columns){
+  const data = JSON.parse(localStorage.getItem(key)) || [];
+  const tbody = document.getElementById(tbodyId).querySelector('tbody');
+  tbody.innerHTML = '';
+  data.forEach(item => {
+    const row = tbody.insertRow();
+    columns.forEach(col => { row.insertCell().textContent = item[col]; });
+  });
+}
 
-    // Hasil Laundry
-    const bajuInput = document.getElementById('baju');
-    const celanaInput = document.getElementById('celana');
-    const jaketInput = document.getElementById('jaket');
-    const totalInput = document.getElementById('total');
+// Update PDF button visibility
+function updatePDFButton(key, buttonId){
+  const data = JSON.parse(localStorage.getItem(key)) || [];
+  document.getElementById(buttonId).style.display = data.length > 0 ? 'inline-block' : 'none';
+}
 
-    function updateTotal(){
-      const baju = parseInt(bajuInput.value) || 0;
-      const celana = parseInt(celanaInput.value) || 0;
-      const jaket = parseInt(jaketInput.value) || 0;
-      totalInput.value = baju + celana + jaket;
-    }
+// Total pakaian
+const bajuInput = document.getElementById('baju');
+const celanaInput = document.getElementById('celana');
+const jaketInput = document.getElementById('jaket');
+const totalInput = document.getElementById('total');
+function updateTotal(){
+  totalInput.value = (parseInt(bajuInput.value)||0)+(parseInt(celanaInput.value)||0)+(parseInt(jaketInput.value)||0);
+}
+bajuInput.addEventListener('input', updateTotal);
+celanaInput.addEventListener('input', updateTotal);
+jaketInput.addEventListener('input', updateTotal);
 
-    bajuInput.addEventListener('input', updateTotal);
-    celanaInput.addEventListener('input', updateTotal);
-    jaketInput.addEventListener('input', updateTotal);
+// Reset buttons
+const resetHasilBtn = document.getElementById('resetHasilLaundry');
+const resetAbsenBtn = document.getElementById('resetAbsen');
+const resetKomplainBtn = document.getElementById('resetKomplain');
+function updateResetButtons(){
+  const absenData = JSON.parse(localStorage.getItem('absen')) || [];
+  const komplainData = JSON.parse(localStorage.getItem('komplain')) || [];
+  const hasilData = JSON.parse(localStorage.getItem('hasilLaundry')) || [];
+  resetAbsenBtn.style.display = absenData.length > 0 ? 'inline-block' : 'none';
+  resetKomplainBtn.style.display = komplainData.length > 0 ? 'inline-block' : 'none';
+  resetHasilBtn.style.display = hasilData.length > 0 ? 'inline-block' : 'none';
+}
 
-    document.getElementById('hasilForm').addEventListener('submit', function(e){
-      e.preventDefault();
-      const doc = new jsPDF();
-      const nama = document.getElementById('namaPelangganHasil').value;
-      const berat = document.getElementById('beratLaundry').value;
-      const baju = document.getElementById('baju').value;
-      const celana = document.getElementById('celana').value;
-      const jaket = document.getElementById('jaket').value;
-      const total = document.getElementById('total').value;
-      const tanggalSelesai = document.getElementById('tanggalSelesai').value;
-      const jamMulai = document.getElementById('jamMulai').value;
-      const jamSelesai = document.getElementById('jamSelesai').value;
+// --- Absen ---
+document.getElementById('fotoAbsen').addEventListener('change', function(){
+  document.getElementById('fotoAbsenPreview').textContent = this.files[0]?`Foto dipilih: ${this.files[0].name}`:'';
+});
+document.getElementById('absenForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const nama = document.getElementById('namaPegawai').value;
+  const tanggal = document.getElementById('tanggalAbsen').value;
+  const jam = document.getElementById('jamAbsen').value;
+  let data = JSON.parse(localStorage.getItem('absen')) || [];
+  data.push({nama,tanggal,jam});
+  localStorage.setItem('absen', JSON.stringify(data));
+  loadTable('absen','tabelAbsen',['nama','tanggal','jam']);
+  updatePDFButton('absen','simpanSemuaPDFAbsen');
+  updateResetButtons();
+  this.reset(); document.getElementById('fotoAbsenPreview').textContent='';
+});
+document.getElementById('simpanSemuaPDFAbsen').addEventListener('click', function(){
+  const data = JSON.parse(localStorage.getItem('absen')) || [];
+  if(data.length===0)return;
+  const doc = new jsPDF();
+  let y=20; doc.setFontSize(16); doc.text("Semua Data Absen JETWASH LAUNDRY",10,y); y+=10;
+  doc.setFontSize(12);
+  data.forEach((item,index)=>{
+    if(y>270){ doc.addPage(); y=20; }
+    doc.text(`${index+1}. Nama: ${item.nama}, Tanggal: ${item.tanggal}, Jam: ${item.jam}`,10,y); y+=10;
+  });
+  doc.save('Semua_Absen.pdf');
+});
+resetAbsenBtn.addEventListener('click', function(){
+  if(confirm("⚠️ Apakah Anda yakin ingin menghapus semua data Absen?")){
+    localStorage.removeItem('absen');
+    loadTable('absen','tabelAbsen',['nama','tanggal','jam']);
+    updatePDFButton('absen','simpanSemuaPDFAbsen');
+    updateResetButtons();
+  }
+});
 
-      doc.setFontSize(16);
-      doc.text("Form Hasil Laundry JETWASH LAUNDRY", 10, 20);
-      doc.setFontSize(12);
-      doc.text(`Nama Pelanggan: ${nama}`, 10, 40);
-      doc.text(`Berat Laundry: ${berat} kg`, 10, 50);
-      doc.text(`Baju: ${baju} pcs`, 10, 60);
-      doc.text(`Celana: ${celana} pcs`, 10, 70);
-      doc.text(`Jaket: ${jaket} pcs`, 10, 80);
-      doc.text(`Total Pakaian: ${total} pcs`, 10, 90);
-      doc.text(`Tanggal Selesai: ${tanggalSelesai}`, 10, 100);
-      doc.text(`Jam Mulai: ${jamMulai}`, 10, 110);
-      doc.text(`Jam Selesai: ${jamSelesai}`, 10, 120);
+// --- Hasil Laundry ---
+document.getElementById('hasilForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const nama = document.getElementById('namaPelangganHasil').value;
+  const berat = document.getElementById('beratLaundry').value;
+  const baju = bajuInput.value;
+  const celana = celanaInput.value;
+  const jaket = jaketInput.value;
+  const total = totalInput.value;
+  const tanggalSelesai = document.getElementById('tanggalSelesai').value;
+  const jamMulai = document.getElementById('jamMulai').value;
+  const jamSelesai = document.getElementById('jamSelesai').value;
+  let data = JSON.parse(localStorage.getItem('hasilLaundry')) || [];
+  data.push({nama,berat,baju,celana,jaket,total,tanggalSelesai,jamMulai,jamSelesai});
+  localStorage.setItem('hasilLaundry', JSON.stringify(data));
+  loadTable('hasilLaundry','tabelHasilLaundry',['nama','berat','baju','celana','jaket','total','tanggalSelesai','jamMulai','jamSelesai']);
+  updatePDFButton('hasilLaundry','simpanSemuaPDFHasil');
+  updateResetButtons();
+  this.reset(); totalInput.value='';
+});
+document.getElementById('simpanSemuaPDFHasil').addEventListener('click', function(){
+  const data = JSON.parse(localStorage.getItem('hasilLaundry')) || [];
+  if(data.length===0)return;
+  const doc = new jsPDF();
+  let y=20; doc.setFontSize(16); doc.text("Semua Data Hasil Laundry JETWASH LAUNDRY",10,y); y+=10;
+  doc.setFontSize(12);
+  data.forEach((item,index)=>{
+    if(y>270){ doc.addPage(); y=20; }
+    doc.text(`${index+1}. Nama: ${item.nama}`,10,y); y+=7;
+    doc.text(`Berat: ${item.berat} kg, Baju: ${item.baju} pcs, Celana: ${item.celana} pcs, Jaket: ${item.jaket} pcs`,10,y); y+=7;
+    doc.text(`Total: ${item.total} pcs, Tanggal Selesai: ${item.tanggalSelesai}`,10,y); y+=7;
+    doc.text(`Jam Mulai: ${item.jamMulai}, Jam Selesai: ${item.jamSelesai}`,10,y); y+=10;
+  });
+  doc.save('Semua_Hasil_Laundry.pdf');
+});
+resetHasilBtn.addEventListener('click', function(){
+  if(confirm("⚠️ Apakah Anda yakin ingin menghapus semua data Hasil Laundry?")){
+    localStorage.removeItem('hasilLaundry');
+    loadTable('hasilLaundry','tabelHasilLaundry',['nama','berat','baju','celana','jaket','total','tanggalSelesai','jamMulai','jamSelesai']);
+    updatePDFButton('hasilLaundry','simpanSemuaPDFHasil');
+    updateResetButtons();
+  }
+});
 
-      doc.save(`HasilLaundry_${nama}.pdf`);
+// --- Komplain ---
+document.getElementById('fotoKomplain').addEventListener('change', function(){
+  document.getElementById('fotoPreview').textContent = this.files[0]?`Foto dipilih: ${this.files[0].name}`:'';
+});
+document.getElementById('komplainForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const nama = document.getElementById('namaPelanggan').value;
+  const tanggal = document.getElementById('tanggalKomplain').value;
+  const jam = document.getElementById('jamKomplain').value;
+  const isi = document.getElementById('komplainText').value;
+  let data = JSON.parse(localStorage.getItem('komplain')) || [];
+  data.push({nama,tanggal,jam,isi});
+  localStorage.setItem('komplain', JSON.stringify(data));
+  loadTable('komplain','tabelKomplain',['nama','tanggal','jam','isi']);
+  updatePDFButton('komplain','simpanSemuaPDFKomplain');
+  updateResetButtons();
+  this.reset(); document.getElementById('fotoPreview').textContent='';
+});
+document.getElementById('simpanSemuaPDFKomplain').addEventListener('click', function(){
+  const data = JSON.parse(localStorage.getItem('komplain')) || [];
+  if(data.length===0)return;
+  const doc = new jsPDF();
+  let y=20; doc.setFontSize(16); doc.text("Semua Data Komplain JETWASH LAUNDRY",10,y); y+=10;
+  doc.setFontSize(12);
+  data.forEach((item,index)=>{
+    if(y>270){ doc.addPage(); y=20; }
+    doc.text(`${index+1}. Nama: ${item.nama}, Tanggal: ${item.tanggal}, Jam: ${item.jam}`,10,y); y+=7;
+    doc.text(`Isi: ${item.isi}`,10,y); y+=10;
+  });
+  doc.save('Semua_Komplain.pdf');
+});
+resetKomplainBtn.addEventListener('click', function(){
+  if(confirm("⚠️ Apakah Anda yakin ingin menghapus semua data Komplain?")){
+    localStorage.removeItem('komplain');
+    loadTable('komplain','tabelKomplain',['nama','tanggal','jam','isi']);
+    updatePDFButton('komplain','simpanSemuaPDFKomplain');
+    updateResetButtons();
+  }
+});
 
-      document.getElementById('hasilMessage').textContent = `PDF hasil laundry untuk ${nama} berhasil dibuat!`;
-      this.reset();
-      totalInput.value = '';
-    });
-
-    // Komplain
-    document.getElementById('komplainForm').addEventListener('submit', function(e){
-      e.preventDefault();
-      const doc = new jsPDF();
-      const nama = document.getElementById('namaPelanggan').value;
-      const tanggal = document.getElementById('tanggalKomplain').value;
-      const jam = document.getElementById('jamKomplain').value;
-      const komplain = document.getElementById('komplainText').value;
-      const fotoFile = document.getElementById('fotoKomplain').files[0];
-
-      doc.setFontSize(16);
-      doc.text("Komplain Pelanggan JETWASH LAUNDRY", 10, 20);
-      doc.setFontSize(12);
-      doc.text(`Nama Pelanggan: ${nama}`, 10, 40);
-      doc.text(`Tanggal Komplain: ${tanggal}`, 10, 50);
-      doc.text(`Jam Komplain: ${jam}`, 10, 60);
-      doc.text("Isi Komplain:", 10, 70);
-      const splitText = doc.splitTextToSize(komplain, 180);
-      doc.text(splitText, 10, 80);
-
-      if(fotoFile){
-        const reader = new FileReader();
-        reader.onload = function(event){
-          const imgData = event.target.result;
-          doc.addPage();
-          doc.text("Foto Komplain:", 10, 20);
-          doc.addImage(imgData, 'JPEG', 10, 30, 180, 180);
-          doc.save(`Komplain_${nama}.pdf`);
-        };
-        reader.readAsDataURL(fotoFile);
-      } else {
-        doc.save(`Komplain_${nama}.pdf`);
-      }
-
-      document.getElementById('komplainMessage').textContent = `PDF komplain untuk ${nama} berhasil dibuat!`;
-      this.reset();
-      document.getElementById('fotoPreview').textContent = '';
-    });
-
-    document.getElementById('fotoKomplain').addEventListener('change', function(){
-      const file = this.files[0];
-      document.getElementById('fotoPreview').textContent = file ? `Foto dipilih: ${file.name}` : '';
-    });
-
-  </script>
+// Load all saved data on page load
+document.addEventListener('DOMContentLoaded', function(){
+  loadTable('absen','tabelAbsen',['nama','tanggal','jam']);
+  loadTable('hasilLaundry','tabelHasilLaundry',['nama','berat','baju','celana','jaket','total','tanggalSelesai','jamMulai','jamSelesai']);
+  loadTable('komplain','tabelKomplain',['nama','tanggal','jam','isi']);
+  updatePDFButton('absen','simpanSemuaPDFAbsen');
+  updatePDFButton('hasilLaundry','simpanSemuaPDFHasil');
+  updatePDFButton('komplain','simpanSemuaPDFKomplain');
+  updateResetButtons();
+});
+</script>
 
 </body>
 </html>
