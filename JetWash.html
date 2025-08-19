@@ -23,10 +23,10 @@
   input[type="text"], input[type="date"], input[type="time"], input[type="number"], textarea { width:100%; padding:10px; box-sizing:border-box; }
   .btnSimpan { background:#0077cc; color:white; border:none; padding:10px 20px; cursor:pointer; border-radius:5px; margin-top:10px; }
   .btnSimpan:hover { background:#005fa3; }
-  table { border-collapse:collapse; width:100%; margin-top:10px; background:white; }
-  table, th, td { border:1px solid #ccc; }
-  th, td { padding:8px; text-align:center; }
   #resetHasilLaundry, #resetAbsen, #resetKomplain { background:#cc0000; }
+  .cards { display:flex; flex-direction:column; gap:10px; margin-top:15px; }
+  .card { background:white; padding:10px 15px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.2); }
+  .card p { margin:5px 0; }
   @media (max-width:600px){ nav button{ font-size:0.9em; padding:12px; } }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -68,10 +68,7 @@
       <button type="submit" class="btnSimpan">Kirim Absen</button>
     </form>
     <h3>Data Absen</h3>
-    <table id="tabelAbsen">
-      <thead><tr><th>Nama</th><th>Tanggal</th><th>Jam</th></tr></thead>
-      <tbody></tbody>
-    </table>
+    <div id="cardsAbsen" class="cards"></div>
     <button id="simpanSemuaPDFAbsen" class="btnSimpan" style="display:none;">💾 Simpan Semua PDF Absen</button>
     <button id="resetAbsen" class="btnSimpan" style="display:none;">⚠️ Reset Data Absen</button>
   </div>
@@ -125,22 +122,7 @@
     </form>
 
     <h3>Data Hasil Laundry</h3>
-    <table id="tabelHasilLaundry">
-      <thead>
-        <tr>
-          <th>Nama Pelanggan</th>
-          <th>Berat (kg)</th>
-          <th>Baju</th>
-          <th>Celana</th>
-          <th>Jaket</th>
-          <th>Total</th>
-          <th>Tanggal Selesai</th>
-          <th>Jam Mulai</th>
-          <th>Jam Selesai</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <div id="cardsHasilLaundry" class="cards"></div>
     <button id="simpanSemuaPDFHasil" class="btnSimpan" style="display:none;">💾 Simpan Semua PDF Hasil Laundry</button>
     <button id="resetHasilLaundry" class="btnSimpan" style="display:none;">⚠️ Reset Data Hasil Laundry</button>
   </div>
@@ -174,10 +156,7 @@
       <button type="submit" class="btnSimpan">Kirim Komplain</button>
     </form>
     <h3>Data Komplain</h3>
-    <table id="tabelKomplain">
-      <thead><tr><th>Nama Pelanggan</th><th>Tanggal</th><th>Jam</th><th>Isi Komplain</th></tr></thead>
-      <tbody></tbody>
-    </table>
+    <div id="cardsKomplain" class="cards"></div>
     <button id="simpanSemuaPDFKomplain" class="btnSimpan" style="display:none;">💾 Simpan Semua PDF Komplain</button>
     <button id="resetKomplain" class="btnSimpan" style="display:none;">⚠️ Reset Data Komplain</button>
   </div>
@@ -196,14 +175,17 @@ function showSection(id){
   document.querySelectorAll('nav button')[btnMap[id]].classList.add('active-menu');
 }
 
-// Load table data
-function loadTable(key, tbodyId, columns){
+// Load card data
+function loadCards(key, containerId, columns){
   const data = JSON.parse(localStorage.getItem(key)) || [];
-  const tbody = document.getElementById(tbodyId).querySelector('tbody');
-  tbody.innerHTML = '';
-  data.forEach(item => {
-    const row = tbody.insertRow();
-    columns.forEach(col => { row.insertCell().textContent = item[col]; });
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  data.forEach((item,index)=>{
+    const card = document.createElement('div'); card.className='card';
+    columns.forEach(col=>{
+      card.innerHTML += `<p><strong>${col}:</strong> ${item[col]}</p>`;
+    });
+    container.appendChild(card);
   });
 }
 
@@ -248,7 +230,7 @@ document.getElementById('absenForm').addEventListener('submit', function(e){
   let data = JSON.parse(localStorage.getItem('absen')) || [];
   data.push({nama,tanggal,jam});
   localStorage.setItem('absen', JSON.stringify(data));
-  loadTable('absen','tabelAbsen',['nama','tanggal','jam']);
+  loadCards('absen','cardsAbsen',['nama','tanggal','jam']);
   updatePDFButton('absen','simpanSemuaPDFAbsen');
   updateResetButtons();
   this.reset(); document.getElementById('fotoAbsenPreview').textContent='';
@@ -268,7 +250,7 @@ document.getElementById('simpanSemuaPDFAbsen').addEventListener('click', functio
 resetAbsenBtn.addEventListener('click', function(){
   if(confirm("⚠️ Apakah Anda yakin ingin menghapus semua data Absen?")){
     localStorage.removeItem('absen');
-    loadTable('absen','tabelAbsen',['nama','tanggal','jam']);
+    loadCards('absen','cardsAbsen',['nama','tanggal','jam']);
     updatePDFButton('absen','simpanSemuaPDFAbsen');
     updateResetButtons();
   }
@@ -289,7 +271,7 @@ document.getElementById('hasilForm').addEventListener('submit', function(e){
   let data = JSON.parse(localStorage.getItem('hasilLaundry')) || [];
   data.push({nama,berat,baju,celana,jaket,total,tanggalSelesai,jamMulai,jamSelesai});
   localStorage.setItem('hasilLaundry', JSON.stringify(data));
-  loadTable('hasilLaundry','tabelHasilLaundry',['nama','berat','baju','celana','jaket','total','tanggalSelesai','jamMulai','jamSelesai']);
+  loadCards('hasilLaundry','cardsHasilLaundry',['nama','berat','baju','celana','jaket','total','tanggalSelesai','jamMulai','jamSelesai']);
   updatePDFButton('hasilLaundry','simpanSemuaPDFHasil');
   updateResetButtons();
   this.reset(); totalInput.value='';
@@ -312,7 +294,7 @@ document.getElementById('simpanSemuaPDFHasil').addEventListener('click', functio
 resetHasilBtn.addEventListener('click', function(){
   if(confirm("⚠️ Apakah Anda yakin ingin menghapus semua data Hasil Laundry?")){
     localStorage.removeItem('hasilLaundry');
-    loadTable('hasilLaundry','tabelHasilLaundry',['nama','berat','baju','celana','jaket','total','tanggalSelesai','jamMulai','jamSelesai']);
+    loadCards('hasilLaundry','cardsHasilLaundry',['nama','berat','baju','celana','jaket','total','tanggalSelesai','jamMulai','jamSelesai']);
     updatePDFButton('hasilLaundry','simpanSemuaPDFHasil');
     updateResetButtons();
   }
@@ -331,7 +313,7 @@ document.getElementById('komplainForm').addEventListener('submit', function(e){
   let data = JSON.parse(localStorage.getItem('komplain')) || [];
   data.push({nama,tanggal,jam,isi});
   localStorage.setItem('komplain', JSON.stringify(data));
-  loadTable('komplain','tabelKomplain',['nama','tanggal','jam','isi']);
+  loadCards('komplain','cardsKomplain',['nama','tanggal','jam','isi']);
   updatePDFButton('komplain','simpanSemuaPDFKomplain');
   updateResetButtons();
   this.reset(); document.getElementById('fotoPreview').textContent='';
@@ -352,7 +334,7 @@ document.getElementById('simpanSemuaPDFKomplain').addEventListener('click', func
 resetKomplainBtn.addEventListener('click', function(){
   if(confirm("⚠️ Apakah Anda yakin ingin menghapus semua data Komplain?")){
     localStorage.removeItem('komplain');
-    loadTable('komplain','tabelKomplain',['nama','tanggal','jam','isi']);
+    loadCards('komplain','cardsKomplain',['nama','tanggal','jam','isi']);
     updatePDFButton('komplain','simpanSemuaPDFKomplain');
     updateResetButtons();
   }
@@ -360,14 +342,13 @@ resetKomplainBtn.addEventListener('click', function(){
 
 // Load all saved data on page load
 document.addEventListener('DOMContentLoaded', function(){
-  loadTable('absen','tabelAbsen',['nama','tanggal','jam']);
-  loadTable('hasilLaundry','tabelHasilLaundry',['nama','berat','baju','celana','jaket','total','tanggalSelesai','jamMulai','jamSelesai']);
-  loadTable('komplain','tabelKomplain',['nama','tanggal','jam','isi']);
+  loadCards('absen','cardsAbsen',['nama','tanggal','jam']);
+  loadCards('hasilLaundry','cardsHasilLaundry',['nama','berat','baju','celana','jaket','total','tanggalSelesai','jamMulai','jamSelesai']);
+  loadCards('komplain','cardsKomplain',['nama','tanggal','jam','isi']);
   updatePDFButton('absen','simpanSemuaPDFAbsen');
   updatePDFButton('hasilLaundry','simpanSemuaPDFHasil');
   updatePDFButton('komplain','simpanSemuaPDFKomplain');
   updateResetButtons();
-  // Set default menu aktif
   showSection('absen');
 });
 </script>
