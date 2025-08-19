@@ -53,8 +53,11 @@
         <input type="date" id="tanggalAbsen" required>
       </div>
       <div class="form-group">
-        <label for="jamAbsen">Jam:</label>
-        <input type="time" id="jamAbsen" required>
+        <label for="tipeAbsen">Tipe Absen:</label>
+        <select id="tipeAbsen">
+          <option value="Datang">Datang</option>
+          <option value="Pulang">Pulang</option>
+        </select>
       </div>
       <div class="form-group">
         <label>Foto Absen (opsional):</label><br>
@@ -163,7 +166,7 @@
 <script>
 const { jsPDF } = window.jspdf;
 
-// Show section & highlight menu aktif
+// Show section & highlight menu
 function showSection(id){
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -238,12 +241,12 @@ document.getElementById('absenForm').addEventListener('submit', function(e){
   e.preventDefault();
   const nama = document.getElementById('namaPegawai').value;
   const tanggal = document.getElementById('tanggalAbsen').value;
-  const jam = document.getElementById('jamAbsen').value;
+  const tipe = document.getElementById('tipeAbsen').value;
   const foto = document.getElementById('fotoAbsenPreview').dataset.img || '';
   let data = JSON.parse(localStorage.getItem('absen')) || [];
-  data.push({nama,tanggal,jam,foto});
+  data.push({nama,tanggal,tipe,foto});
   localStorage.setItem('absen', JSON.stringify(data));
-  loadCards('absen','cardsAbsen',['nama','tanggal','jam','foto']);
+  loadCards('absen','cardsAbsen',['nama','tanggal','tipe','foto']);
   updatePDFButton('absen','simpanSemuaPDFAbsen');
   updateResetButtons();
   this.reset();
@@ -305,65 +308,46 @@ document.getElementById('hasilForm').addEventListener('submit', function(e){
   this.reset(); totalInput.value='';
 });
 
-// Reset semua tombol
-resetAbsenBtn.addEventListener('click', ()=>{if(confirm("⚠️ Hapus semua data Absen?")){localStorage.removeItem('absen'); loadCards('absen','cardsAbsen',['nama','tanggal','jam','foto']); updatePDFButton('absen','simpanSemuaPDFAbsen'); updateResetButtons();}});
+// --- Reset semua ---
+resetAbsenBtn.addEventListener('click', ()=>{if(confirm("⚠️ Hapus semua data Absen?")){localStorage.removeItem('absen'); loadCards('absen','cardsAbsen',['nama','tanggal','tipe','foto']); updatePDFButton('absen','simpanSemuaPDFAbsen'); updateResetButtons();}});
 resetHasilBtn.addEventListener('click', ()=>{if(confirm("⚠️ Hapus semua data Hasil Laundry?")){localStorage.removeItem('hasilLaundry'); loadCards('hasilLaundry','cardsHasilLaundry',['nama','berat','baju','celana','jaket','total','tanggalSelesai','jamMulai','jamSelesai']); updatePDFButton('hasilLaundry','simpanSemuaPDFHasil'); updateResetButtons();}});
 resetKomplainBtn.addEventListener('click', ()=>{if(confirm("⚠️ Hapus semua data Komplain?")){localStorage.removeItem('komplain'); loadCards('komplain','cardsKomplain',['nama','tanggal','jam','isi','foto']); updatePDFButton('komplain','simpanSemuaPDFKomplain'); updateResetButtons();}});
 
-// --- PDF Buttons ---
-document.getElementById('simpanSemuaPDFAbsen').addEventListener('click', function(){
-  const data = JSON.parse(localStorage.getItem('absen')) || [];
-  if(data.length===0)return;
-  const doc = new jsPDF();
-  let y=20; doc.setFontSize(16); doc.text("Semua Data Absen JETWASH LAUNDRY",10,y); y+=10;
-  doc.setFontSize(12);
-  data.forEach((item,index)=>{
-    if(y>270){ doc.addPage(); y=20; }
-    doc.text(`${index+1}. Nama: ${item.nama}, Tanggal: ${item.tanggal}, Jam: ${item.jam}`,10,y); y+=7;
-    if(item.foto){ doc.addImage(item.foto,'JPEG',10,y,50,50); y+=55; }
-  });
-  doc.save('Semua_Absen.pdf');
-});
-document.getElementById('simpanSemuaPDFHasil').addEventListener('click', function(){
-  const data = JSON.parse(localStorage.getItem('hasilLaundry')) || [];
-  if(data.length===0)return;
-  const doc = new jsPDF();
-  let y=20; doc.setFontSize(16); doc.text("Semua Hasil Laundry JETWASH LAUNDRY",10,y); y+=10;
-  doc.setFontSize(12);
-  data.forEach((item,index)=>{
-    if(y>270){ doc.addPage(); y=20; }
-    doc.text(`${index+1}. Nama: ${item.nama}, Berat: ${item.berat} kg, Baju:${item.baju}, Celana:${item.celana}, Jaket:${item.jaket}, Total:${item.total}, Tanggal Selesai:${item.tanggalSelesai}, Jam Mulai:${item.jamMulai}, Jam Selesai:${item.jamSelesai}`,10,y);
-    y+=10;
-  });
-  doc.save('Semua_Hasil_Laundry.pdf');
-});
-document.getElementById('simpanSemuaPDFKomplain').addEventListener('click', function(){
-  const data = JSON.parse(localStorage.getItem('komplain')) || [];
-  if(data.length===0)return;
-  const doc = new jsPDF();
-  let y=20; doc.setFontSize(16); doc.text("Semua Data Komplain JETWASH LAUNDRY",10,y); y+=10;
-  doc.setFontSize(12);
-  data.forEach((item,index)=>{
-    if(y>270){ doc.addPage(); y=20; }
-    doc.text(`${index+1}. Nama: ${item.nama}, Tanggal: ${item.tanggal}, Jam: ${item.jam}`,10,y); y+=7;
-    doc.text(`Isi: ${item.isi}`,10,y); y+=7;
-    if(item.foto){ doc.addImage(item.foto,'JPEG',10,y,50,50); y+=55; }
-  });
-  doc.save('Semua_Komplain.pdf');
-});
+// --- Load initial ---
+loadCards('absen','cardsAbsen',['nama','tanggal','tipe','foto']);
+loadCards('hasilLaundry','cardsHasilLaundry',['nama','berat','baju','celana','jaket','total','tanggalSelesai','jamMulai','jamSelesai']);
+loadCards('komplain','cardsKomplain',['nama','tanggal','jam','isi','foto']);
+updatePDFButton('absen','simpanSemuaPDFAbsen');
+updatePDFButton('hasilLaundry','simpanSemuaPDFHasil');
+updatePDFButton('komplain','simpanSemuaPDFKomplain');
+updateResetButtons();
 
-// Load all saved data on page load
-document.addEventListener('DOMContentLoaded', function(){
-  loadCards('absen','cardsAbsen',['nama','tanggal','jam','foto']);
-  loadCards('hasilLaundry','cardsHasilLaundry',['nama','berat','baju','celana','jaket','total','tanggalSelesai','jamMulai','jamSelesai']);
-  loadCards('komplain','cardsKomplain',['nama','tanggal','jam','isi','foto']);
-  updatePDFButton('absen','simpanSemuaPDFAbsen');
-  updatePDFButton('hasilLaundry','simpanSemuaPDFHasil');
-  updatePDFButton('komplain','simpanSemuaPDFKomplain');
-  updateResetButtons();
-  showSection('absen');
-});
+// --- PDF ---
+function savePDF(key,title){
+  const data = JSON.parse(localStorage.getItem(key)) || [];
+  if(data.length===0){ alert("Tidak ada data"); return; }
+  const doc = new jsPDF();
+  data.forEach((item,index)=>{
+    doc.text(`${title} #${index+1}`,10,10);
+    let y = 20;
+    Object.keys(item).forEach(k=>{
+      if(k==='foto' && item[k]){
+        doc.addImage(item[k],'JPEG',10,y,50,50);
+        y+=55;
+      } else {
+        doc.text(`${k}: ${item[k]}`,10,y);
+        y+=7;
+      }
+    });
+    if(index!==data.length-1) doc.addPage();
+  });
+  doc.save(`${title}.pdf`);
+}
+
+document.getElementById('simpanSemuaPDFAbsen').addEventListener('click', ()=>savePDF('absen','Absen'));
+document.getElementById('simpanSemuaPDFHasil').addEventListener('click', ()=>savePDF('hasilLaundry','Hasil_Laundry'));
+document.getElementById('simpanSemuaPDFKomplain').addEventListener('click', ()=>savePDF('komplain','Komplain'));
+
 </script>
-
 </body>
 </html>
