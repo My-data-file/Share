@@ -100,7 +100,7 @@ textarea{ resize:vertical; min-height:50px; }
   opacity: 0;
 }
 .card.expanded .card-details {
-  max-height: 500px; /* cukup besar untuk konten */
+  max-height: 500px;
   opacity: 1;
 }
 
@@ -210,7 +210,7 @@ textarea{ resize:vertical; min-height:50px; }
 </div>
 
 <script>
-// --- Tab Menu with smooth ---
+// --- Tab Menu ---
 document.querySelectorAll('.tab').forEach(tab=>{
   tab.addEventListener('click', ()=>{
     document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
@@ -225,21 +225,63 @@ document.querySelectorAll('.tab').forEach(tab=>{
   });
 });
 
-// --- Preview Foto ---
-function previewFoto(inputId, previewId){
-  document.getElementById(inputId).addEventListener('change', function(e){
-    const reader = new FileReader();
-    reader.onload = function(ev){
-      document.getElementById(previewId).innerHTML = '<img src="'+ev.target.result+'">';
-      document.getElementById(previewId).dataset.img = ev.target.result;
-    };
-    reader.readAsDataURL(e.target.files[0]);
-  });
-}
-previewFoto('fotoAbsen','fotoAbsenPreview');
-previewFoto('fotoKomplain','fotoPreview');
+// --- Fungsi resize & compress gambar ---
+function resizeImage(file, maxWidth, maxHeight, callback){
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const img = new Image();
+    img.onload = function(){
+      const canvas = document.createElement("canvas");
+      let width = img.width;
+      let height = img.height;
 
-// --- Load Cards with expandable ---
+      if(width > height){
+        if(width > maxWidth){
+          height *= maxWidth / width;
+          width = maxWidth;
+        }
+      } else {
+        if(height > maxHeight){
+          width *= maxHeight / height;
+          height = maxHeight;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, width, height);
+      const dataUrl = canvas.toDataURL("image/jpeg", 0.7);
+      callback(dataUrl);
+    }
+    img.src = e.target.result;
+  }
+  reader.readAsDataURL(file);
+}
+
+// --- Preview Foto Absen ---
+document.getElementById('fotoAbsen').addEventListener('change', function(e){
+  const file = e.target.files[0];
+  if(file){
+    resizeImage(file, 800, 800, function(resizedDataUrl){
+      document.getElementById('fotoAbsenPreview').innerHTML = '<img src="'+resizedDataUrl+'">';
+      document.getElementById('fotoAbsenPreview').dataset.img = resizedDataUrl;
+    });
+  }
+});
+
+// --- Preview Foto Komplain ---
+document.getElementById('fotoKomplain').addEventListener('change', function(e){
+  const file = e.target.files[0];
+  if(file){
+    resizeImage(file, 800, 800, function(resizedDataUrl){
+      document.getElementById('fotoPreview').innerHTML = '<img src="'+resizedDataUrl+'">';
+      document.getElementById('fotoPreview').dataset.img = resizedDataUrl;
+    });
+  }
+});
+
+// --- Load Cards ---
 function loadCards(key,targetId,fields){
   const data=JSON.parse(localStorage.getItem(key))||[];
   const container=document.getElementById(targetId);
@@ -259,7 +301,7 @@ function loadCards(key,targetId,fields){
   });
 }
 
-// --- Update buttons ---
+// --- Update Buttons ---
 function updateAbsenButtons(){ const data=JSON.parse(localStorage.getItem('absen'))||[]; document.getElementById('savePdfAbsenBtn').style.display = data.length>0 ? "inline-block":"none"; document.getElementById('resetAbsenBtn').style.display = data.length>0 ? "inline-block":"none"; }
 function updateLaundryButtons(){ const data=JSON.parse(localStorage.getItem('hasilLaundry'))||[]; document.getElementById('savePdfLaundryBtn').style.display = data.length>0 ? "inline-block":"none"; document.getElementById('resetLaundryBtn').style.display = data.length>0 ? "inline-block":"none"; }
 function updateKomplainButtons(){ const data=JSON.parse(localStorage.getItem('komplain'))||[]; document.getElementById('savePdfKomplainBtn').style.display = data.length>0 ? "inline-block":"none"; document.getElementById('resetKomplainBtn').style.display = data.length>0 ? "inline-block":"none"; }
@@ -267,11 +309,59 @@ function updateButtons(){ loadCards('absen','cardsAbsen',['nama','tanggal','jam'
 updateButtons();
 
 // --- Form Submits ---
-document.getElementById('absenForm').addEventListener('submit',function(e){e.preventDefault(); const nama=document.getElementById('namaPegawai').value; const tanggal=document.getElementById('tanggalAbsen').value; const jam=document.getElementById('jamAbsen').value; const tipe=document.getElementById('tipeAbsen').value; const foto=document.getElementById('fotoAbsenPreview').dataset.img||''; let data=JSON.parse(localStorage.getItem('absen'))||[]; data.push({nama,tanggal,jam,tipe,foto}); localStorage.setItem('absen',JSON.stringify(data)); fetch("https://script.google.com/macros/s/AKfycbwaG7dT4LnqJ_kMEd7dGvqiw0iarO9AcL0o8Oli0aa3nfa4vtzKfQc7ahwgvtVQxSsR/exec",{method:"POST", body:JSON.stringify({type:"absen", payload:{nama,tanggal,jam,tipe,foto}})}); this.reset(); document.getElementById('fotoAbsenPreview').textContent=''; document.getElementById('fotoAbsenPreview').dataset.img=''; updateButtons(); });
+document.getElementById('absenForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const nama=document.getElementById('namaPegawai').value;
+  const tanggal=document.getElementById('tanggalAbsen').value;
+  const jam=document.getElementById('jamAbsen').value;
+  const tipe=document.getElementById('tipeAbsen').value;
+  const foto=document.getElementById('fotoAbsenPreview').dataset.img||'';
+  let data=JSON.parse(localStorage.getItem('absen'))||[];
+  data.push({nama,tanggal,jam,tipe,foto});
+  localStorage.setItem('absen',JSON.stringify(data));
+  fetch("https://script.google.com/macros/s/AKfycbwaG7dT4LnqJ_kMEd7dGvqiw0iarO9AcL0o8Oli0aa3nfa4vtzKfQc7ahwgvtVQxSsR/exec",{method:"POST", body:JSON.stringify({type:"absen", payload:{nama,tanggal,jam,tipe,foto}})});
+  this.reset();
+  document.getElementById('fotoAbsenPreview').textContent='';
+  document.getElementById('fotoAbsenPreview').dataset.img='';
+  updateButtons();
+});
 
-document.getElementById('hasilForm').addEventListener('submit',function(e){e.preventDefault(); const nama=document.getElementById('namaPelangganHasil').value; const berat=document.getElementById('beratLaundry').value; const baju=document.getElementById('baju').value; const celana=document.getElementById('celana').value; const jaket=document.getElementById('jaket').value; const total=document.getElementById('total').value; const tanggalSelesai=document.getElementById('tanggalSelesai').value; const jamMulai=document.getElementById('jamMulai').value; const jamSelesai=document.getElementById('jamSelesai').value; let data=JSON.parse(localStorage.getItem('hasilLaundry'))||[]; data.push({nama,berat,baju,celana,jaket,total,tanggalSelesai,jamMulai,jamSelesai}); localStorage.setItem('hasilLaundry',JSON.stringify(data)); fetch("https://script.google.com/macros/s/AKfycbwaG7dT4LnqJ_kMEd7dGvqiw0iarO9AcL0o8Oli0aa3nfa4vtzKfQc7ahwgvtVQxSsR/exec",{method:"POST", body:JSON.stringify({type:"hasilLaundry", payload:{nama,berat,baju,celana,jaket,total,tanggalSelesai,jamMulai,jamSelesai}})}); this.reset(); document.getElementById('total').value=''; updateButtons(); });
+document.getElementById('hasilForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const nama=document.getElementById('namaPelangganHasil').value;
+  const berat=document.getElementById('beratLaundry').value;
+  const baju=document.getElementById('baju').value;
+  const celana=document.getElementById('celana').value;
+  const jaket=document.getElementById('jaket').value;
+  const total=document.getElementById('total').value;
+  const tanggalSelesai=document.getElementById('tanggalSelesai').value;
+  const jamMulai=document.getElementById('jamMulai').value;
+  const jamSelesai=document.getElementById('jamSelesai').value;
+  let data=JSON.parse(localStorage.getItem('hasilLaundry'))||[];
+  data.push({nama,berat,baju,celana,jaket,total,tanggalSelesai,jamMulai,jamSelesai});
+  localStorage.setItem('hasilLaundry',JSON.stringify(data));
+  fetch("https://script.google.com/macros/s/AKfycbwaG7dT4LnqJ_kMEd7dGvqiw0iarO9AcL0o8Oli0aa3nfa4vtzKfQc7ahwgvtVQxSsR/exec",{method:"POST", body:JSON.stringify({type:"hasilLaundry", payload:{nama,berat,baju,celana,jaket,total,tanggalSelesai,jamMulai,jamSelesai}})});
+  this.reset();
+  document.getElementById('total').value='';
+  updateButtons();
+});
 
-document.getElementById('komplainForm').addEventListener('submit',function(e){e.preventDefault(); const nama=document.getElementById('namaPelanggan').value; const tanggal=document.getElementById('tanggalKomplain').value; const jam=document.getElementById('jamKomplain').value; const isi=document.getElementById('komplainText').value; const foto=document.getElementById('fotoPreview').dataset.img||''; let data=JSON.parse(localStorage.getItem('komplain'))||[]; data.push({nama,tanggal,jam,isi,foto}); localStorage.setItem('komplain',JSON.stringify(data)); fetch("https://script.google.com/macros/s/AKfycbwaG7dT4LnqJ_kMEd7dGvqiw0iarO9AcL0o8Oli0aa3nfa4vtzKfQc7ahwgvtVQxSsR/exec",{method:"POST", body:JSON.stringify({type:"komplain", payload:{nama,tanggal,jam,isi,foto}})}); this.reset(); document.getElementById('fotoPreview').textContent=''; document.getElementById('fotoPreview').dataset.img=''; updateButtons(); });
+document.getElementById('komplainForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const nama=document.getElementById('namaPelanggan').value;
+  const tanggal=document.getElementById('tanggalKomplain').value;
+  const jam=document.getElementById('jamKomplain').value;
+  const isi=document.getElementById('komplainText').value;
+  const foto=document.getElementById('fotoPreview').dataset.img||'';
+  let data=JSON.parse(localStorage.getItem('komplain'))||[];
+  data.push({nama,tanggal,jam,isi,foto});
+  localStorage.setItem('komplain',JSON.stringify(data));
+  fetch("https://script.google.com/macros/s/AKfycbwaG7dT4LnqJ_kMEd7dGvqiw0iarO9AcL0o8Oli0aa3nfa4vtzKfQc7ahwgvtVQxSsR/exec",{method:"POST", body:JSON.stringify({type:"komplain", payload:{nama,tanggal,jam,isi,foto}})});
+  this.reset();
+  document.getElementById('fotoPreview').textContent='';
+  document.getElementById('fotoPreview').dataset.img='';
+  updateButtons();
+});
 
 // --- Reset & PDF buttons ---
 document.getElementById('resetAbsenBtn').addEventListener('click',()=>{if(confirm("Yakin reset semua data Absen?")){ localStorage.removeItem('absen'); updateButtons(); alert("Data Absen berhasil di-reset!"); }});
