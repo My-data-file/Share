@@ -6,7 +6,6 @@
 <title>Aplikasi Laundry UX Pro</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-/* --- Body & Header --- */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
@@ -16,7 +15,6 @@ body {
 }
 h1 { text-align:center; color:#007bff; margin:15px 0; font-size:1.6em; }
 
-/* --- Tab content --- */
 .tab-content {
   display: none;
   padding: 15px 10px 10px 10px;
@@ -30,7 +28,6 @@ h1 { text-align:center; color:#007bff; margin:15px 0; font-size:1.6em; }
 }
 .tab-content.active { display: block; opacity:1; transform: translateY(0); }
 
-/* --- Bottom Navigation --- */
 .tabs {
   display: flex;
   justify-content: space-around;
@@ -56,7 +53,6 @@ h1 { text-align:center; color:#007bff; margin:15px 0; font-size:1.6em; }
 .tab-icon{ font-size:1.2em; display:block; }
 .tab-text{ font-size:0.75em; display:block; margin-top:2px; }
 
-/* --- Form inputs --- */
 .form-section label{
   display:block; font-size:0.85em; margin-top:10px; font-weight:600;
 }
@@ -69,7 +65,6 @@ h1 { text-align:center; color:#007bff; margin:15px 0; font-size:1.6em; }
 }
 textarea{ resize:vertical; min-height:50px; }
 
-/* --- Buttons --- */
 .form-section button{
   margin:5px 5px 5px 0; padding:8px 14px; cursor:pointer;
   border:none; border-radius:8px; color:#fff;
@@ -81,7 +76,6 @@ textarea{ resize:vertical; min-height:50px; }
   transform: translateY(-1px);
 }
 
-/* --- Card --- */
 .card{
   border:1px solid #ddd; padding:10px 12px; margin:6px 0;
   border-radius:12px; background-color:#fff;
@@ -92,7 +86,6 @@ textarea{ resize:vertical; min-height:50px; }
 }
 .card:hover{ transform: translateY(-2px); box-shadow:0 4px 14px rgba(0,0,0,0.15); }
 
-/* --- Card Details Animasi --- */
 .card-details {
   max-height: 0;
   overflow: hidden;
@@ -107,7 +100,6 @@ textarea{ resize:vertical; min-height:50px; }
   opacity: 1;
 }
 
-/* --- Foto Animasi --- */
 .card-details img {
   max-width: 70px;
   max-height: 70px;
@@ -123,19 +115,16 @@ textarea{ resize:vertical; min-height:50px; }
   opacity: 1;
 }
 
-/* --- Foto preview --- */
 .foto-preview{ margin-top:4px; }
 .foto-preview img{
   max-width:70px; max-height:70px; border-radius:8px;
   object-fit:cover; border:1px solid #ccc;
 }
 
-/* --- Scrollbar custom --- */
 .tab-content::-webkit-scrollbar{ width:6px; }
 .tab-content::-webkit-scrollbar-track{ background:#f0f4f8; }
 .tab-content::-webkit-scrollbar-thumb{ background:#ccc; border-radius:3px; }
 
-/* --- Responsive --- */
 @media (max-width:480px){
   .form-section input,.form-section select,.form-section textarea{ font-size:0.85em; padding:6px; }
   .form-section button{ width:100%; margin-bottom:6px; font-size:0.85em; padding:7px; }
@@ -185,7 +174,7 @@ textarea{ resize:vertical; min-height:50px; }
   <div id="cardsAbsen"></div>
 </div>
 
-<!-- Hasil Laundry Tab -->
+<!-- Laundry Tab -->
 <div id="hasilTab" class="tab-content form-section">
   <h2>Form Hasil Laundry</h2>
   <form id="hasilForm">
@@ -204,8 +193,8 @@ textarea{ resize:vertical; min-height:50px; }
     <label for="jaket">Jumlah Jaket</label>
     <input type="number" id="jaket" placeholder="Jumlah Jaket" required>
     
-    <label for="total">Total Harga</label>
-    <input type="number" id="total" placeholder="Total Harga" required>
+    <label for="total">Total Item</label>
+    <input type="number" id="total" placeholder="Total" readonly>
     
     <label for="tanggalSelesai">Tanggal Selesai</label>
     <input type="date" id="tanggalSelesai" required>
@@ -307,6 +296,17 @@ document.getElementById('fotoKomplain').addEventListener('change', function(e){
   }
 });
 
+// --- AUTO HITUNG TOTAL ---
+function updateTotalLaundry(){
+  const b = parseInt(document.getElementById('baju').value)||0;
+  const c = parseInt(document.getElementById('celana').value)||0;
+  const j = parseInt(document.getElementById('jaket').value)||0;
+  document.getElementById('total').value = b+c+j;
+}
+document.getElementById('baju').addEventListener('input',updateTotalLaundry);
+document.getElementById('celana').addEventListener('input',updateTotalLaundry);
+document.getElementById('jaket').addEventListener('input',updateTotalLaundry);
+
 // --- LOAD CARDS & BUTTONS ---
 function loadCards(key,targetId,fields){
   const data=JSON.parse(localStorage.getItem(key))||[];
@@ -356,6 +356,7 @@ document.getElementById('absenForm').addEventListener('submit',function(e){
   this.reset(); document.getElementById('fotoAbsenPreview').textContent=''; document.getElementById('fotoAbsenPreview').dataset.img='';
   updateButtons();
 });
+
 document.getElementById('hasilForm').addEventListener('submit',function(e){
   e.preventDefault();
   const nama=document.getElementById('namaPelangganHasil').value;
@@ -363,16 +364,23 @@ document.getElementById('hasilForm').addEventListener('submit',function(e){
   const baju=document.getElementById('baju').value;
   const celana=document.getElementById('celana').value;
   const jaket=document.getElementById('jaket').value;
-  const total=document.getElementById('total').value;
+  const total=document.getElementById('total').value; // <-- ambil dari input readonly
   const tanggalSelesai=document.getElementById('tanggalSelesai').value;
   const jamMulai=document.getElementById('jamMulai').value;
   const jamSelesai=document.getElementById('jamSelesai').value;
+
   let data=JSON.parse(localStorage.getItem('hasilLaundry'))||[];
   data.push({nama,berat,baju,celana,jaket,total,tanggalSelesai,jamMulai,jamSelesai});
   localStorage.setItem('hasilLaundry',JSON.stringify(data));
-  fetch("https://script.google.com/macros/s/AKfycbwaG7dT4LnqJ_kMEd7dGvqiw0iarO9AcL0o8Oli0aa3nfa4vtzKfQc7ahwgvtVQxSsR/exec",{method:"POST", body:JSON.stringify({type:"hasilLaundry", payload:{nama,berat,baju,celana,jaket,total,tanggalSelesai,jamMulai,jamSelesai}})});
+
+  fetch("https://script.google.com/macros/s/AKfycbwaG7dT4LnqJ_kMEd7dGvqiw0iarO9AcL0o8Oli0aa3nfa4vtzKfQc7ahwgvtVQxSsR/exec",{
+    method:"POST", 
+    body:JSON.stringify({type:"hasilLaundry", payload:{nama,berat,baju,celana,jaket,total,tanggalSelesai,jamMulai,jamSelesai}})
+  });
+
   this.reset(); document.getElementById('total').value=''; updateButtons();
 });
+
 document.getElementById('komplainForm').addEventListener('submit',function(e){
   e.preventDefault();
   const nama=document.getElementById('namaPelanggan').value;
