@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panel Admin - JetWash Laundry (Final UX)</title>
+<title>Panel Admin - JetWash Laundry</title>
 <style>
 :root{--primary:#007bff;--success:#28a745;--danger:#dc3545;--bg:#f0f4f8;--card:#fff;--muted:#f8f9fa;--text:#2b2b2b;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -32,6 +32,7 @@ th{background:var(--muted);font-weight:600;cursor:pointer;}
 tr{transition:all .3s;}
 tr:hover{background:#f7faff;}
 td img{border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.15);}
+td input.comment{width:95%;padding:4px 6px;border-radius:6px;border:1px solid #ccc;font-size:.85em;}
 .empty-row{text-align:center;color:#999;font-style:italic;opacity:.6;}
 .btn{display:inline-block;margin:8px 6px 0 0;padding:8px 16px;border:none;border-radius:10px;cursor:pointer;font-size:.9em;font-weight:600;box-shadow:0 2px 6px rgba(0,0,0,.12);transition:transform .2s ease,filter .2s;}
 .btn:hover{transform:translateY(-1px);}
@@ -49,6 +50,7 @@ td img{border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.15);}
 </style>
 </head>
 <body>
+
 <div class="sidebar">
 <h2>JetWash Admin</h2>
 <a href="#" class="active" data-page="dashboard">📊 <span>Dashboard</span></a>
@@ -57,7 +59,10 @@ td img{border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.15);}
 <a href="#" data-page="komplain">⚠️ <span>Komplain</span></a>
 <button class="btn-toggle" onclick="toggleDarkMode()">🌓</button>
 </div>
+
 <div class="content">
+
+<!-- Dashboard -->
 <div id="dashboard" class="page active">
 <h1>Dashboard</h1>
 <div class="cards">
@@ -73,7 +78,10 @@ td img{border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.15);}
 <div class="search-box"><input type="text" placeholder="Cari nama..." onkeyup="filterTable('tableAbsen',this.value)"></div>
 <div class="table-container">
 <div class="rows-per-page"></div>
-<table id="tableAbsen"><thead><tr><th>No</th><th>Nama</th><th>Tanggal</th><th>Jam</th><th>Tipe</th><th>Foto</th></tr></thead><tbody></tbody></table>
+<table id="tableAbsen">
+<thead><tr><th>No</th><th>Nama</th><th>Tanggal</th><th>Jam</th><th>Tipe</th><th>Foto</th><th>Komentar</th></tr></thead>
+<tbody></tbody>
+</table>
 <div class="pagination"></div>
 </div>
 <button class="btn btn-export" onclick="exportPdf('absen')">Export PDF</button>
@@ -86,7 +94,10 @@ td img{border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.15);}
 <div class="search-box"><input type="text" placeholder="Cari nama..." onkeyup="filterTable('tableLaundry',this.value)"></div>
 <div class="table-container">
 <div class="rows-per-page"></div>
-<table id="tableLaundry"><thead><tr><th>No</th><th>Nama</th><th>Berat</th><th>Baju</th><th>Celana</th><th>Jaket</th><th>Total</th><th>Tgl Selesai</th><th>Jam Mulai</th><th>Jam Selesai</th></tr></thead><tbody></tbody></table>
+<table id="tableLaundry">
+<thead><tr><th>No</th><th>Nama</th><th>Berat</th><th>Baju</th><th>Celana</th><th>Jaket</th><th>Total</th><th>Tgl Selesai</th><th>Jam Mulai</th><th>Jam Selesai</th><th>Komentar</th></tr></thead>
+<tbody></tbody>
+</table>
 <div class="pagination"></div>
 </div>
 <button class="btn btn-export" onclick="exportPdf('laundry')">Export PDF</button>
@@ -99,138 +110,112 @@ td img{border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.15);}
 <div class="search-box"><input type="text" placeholder="Cari nama..." onkeyup="filterTable('tableKomplain',this.value)"></div>
 <div class="table-container">
 <div class="rows-per-page"></div>
-<table id="tableKomplain"><thead><tr><th>No</th><th>Nama</th><th>Tanggal</th><th>Jam</th><th>Isi</th><th>Foto</th></tr></thead><tbody></tbody></table>
+<table id="tableKomplain">
+<thead><tr><th>No</th><th>Nama</th><th>Tanggal</th><th>Jam</th><th>Isi</th><th>Foto</th><th>Komentar</th></tr></thead>
+<tbody></tbody>
+</table>
 <div class="pagination"></div>
 </div>
 <button class="btn btn-export" onclick="exportPdf('komplain')">Export PDF</button>
 <button class="btn btn-reset" onclick="resetData('komplain')">Reset Data</button>
 </div>
+
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 <script>
-// Sidebar navigation
-document.querySelectorAll('.sidebar a').forEach(link=>{
-  link.addEventListener('click',()=>{
-    document.querySelectorAll('.sidebar a').forEach(a=>a.classList.remove('active'));
-    link.classList.add('active');
-    showPage(link.dataset.page);
-  });
-});
+// Sidebar
+document.querySelectorAll('.sidebar a').forEach(link=>{link.addEventListener('click',()=>{document.querySelectorAll('.sidebar a').forEach(a=>a.classList.remove('active'));link.classList.add('active');showPage(link.dataset.page);});});
+function showPage(page){document.querySelectorAll('.page').forEach(p=>p.style.display='none');document.getElementById(page).style.display='block';}
 
-function showPage(page){
-  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
-  document.getElementById(page).style.display='block';
-}
+// Dark mode
+function toggleDarkMode(){document.body.classList.toggle('dark');}
 
-// Dark mode toggle
-function toggleDarkMode(){ document.body.classList.toggle('dark'); }
-
-// Load table data
+// Load tables with comments
 function loadTables(){
-  let absen = JSON.parse(localStorage.getItem('absen'))||[];
-  let laundry = JSON.parse(localStorage.getItem('hasilLaundry'))||[];
-  let komplain = JSON.parse(localStorage.getItem('komplain'))||[];
+  let absen=JSON.parse(localStorage.getItem('absen'))||[];
+  let laundry=JSON.parse(localStorage.getItem('hasilLaundry'))||[];
+  let komplain=JSON.parse(localStorage.getItem('komplain'))||[];
+  let comments=JSON.parse(localStorage.getItem('comments'))||{};
   document.getElementById('countAbsen').textContent=absen.length;
   document.getElementById('countLaundry').textContent=laundry.length;
   document.getElementById('countKomplain').textContent=komplain.length;
 
-  fillTable('tableAbsen',absen,(d,i)=>`<td>${i+1}</td><td>${d.nama}</td><td>${d.tanggal}</td><td>${d.jam}</td><td>${d.tipe}</td><td>${d.foto?'<img src="'+d.foto+'" width="40">':''}</td>`);
-  fillTable('tableLaundry',laundry,(d,i)=>`<td>${i+1}</td><td>${d.nama}</td><td>${d.berat}</td><td>${d.baju}</td><td>${d.celana}</td><td>${d.jaket}</td><td>${d.total}</td><td>${d.tanggalSelesai}</td><td>${d.jamMulai}</td><td>${d.jamSelesai}</td>`);
-  fillTable('tableKomplain',komplain,(d,i)=>`<td>${i+1}</td><td>${d.nama}</td><td>${d.tanggal}</td><td>${d.jam}</td><td>${d.isi}</td><td>${d.foto?'<img src="'+d.foto+'" width="40">':''}</td>`);
-
-  ['tableAbsen','tableLaundry','tableKomplain'].forEach(makeTableInteractive);
+  fillTableWithComments('tableAbsen',absen,['nama','tanggal','jam','tipe','foto'],comments,'absen');
+  fillTableWithComments('tableLaundry',laundry,['nama','berat','baju','celana','jaket','total','tanggalSelesai','jamMulai','jamSelesai'],comments,'laundry');
+  fillTableWithComments('tableKomplain',komplain,['nama','tanggal','jam','isi','foto'],comments,'komplain');
 }
-function fillTable(tableId,data,rowBuilder){
+
+// Fill table
+function fillTableWithComments(tableId,data,fields,comments,type){
   const tbody=document.querySelector('#'+tableId+' tbody');
   tbody.innerHTML='';
-  if(data.length===0){ tbody.innerHTML='<tr class="empty-row"><td colspan="20">Data Kosong</td></tr>'; return; }
-  data.forEach((d,i)=>{ tbody.innerHTML+=`<tr>${rowBuilder(d,i)}</tr>`; });
-  fadeInRows(tbody);
+  if(data.length===0){tbody.innerHTML='<tr class="empty-row"><td colspan="20">Data Kosong</td></tr>';return;}
+  data.forEach((d,i)=>{
+    let row='<td>'+(i+1)+'</td>';
+    fields.forEach(f=>{row+='<td>'+(f==='foto'?(d[f]?'<img src="'+d[f]+'" width="40">':''):d[f])+'</td>';});
+    const commentKey=type+'_'+i;
+    row+='<td><input class="comment" type="text" placeholder="Tambahkan komentar" value="'+(comments[commentKey]||'')+'" onblur="saveComment(\''+type+'\','+i+',this.value)"></td>';
+    tbody.innerHTML+='<tr>'+row+'</tr>';
+  });
 }
-function fadeInRows(tbody){ Array.from(tbody.querySelectorAll('tr')).forEach((r,i)=>{ r.style.opacity=0; setTimeout(()=>r.style.opacity=1, i*50); }); }
 
-// Reset Data
+// Save comment
+function saveComment(type,index,value){
+  let comments=JSON.parse(localStorage.getItem('comments'))||{};
+  comments[type+'_'+index]=value;
+  localStorage.setItem('comments',JSON.stringify(comments));
+}
+
+// Reset data
 function resetData(key){
   if(confirm("Yakin reset data "+key+"?")){
-    let storageKey = key==='laundry' ? 'hasilLaundry' : key;
+    let storageKey = key==='laundry'? 'hasilLaundry': key;
     localStorage.removeItem(storageKey);
     loadTables();
   }
 }
 
-// Export PDF
+// Export PDF with comments
 function exportPdf(type){
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
   let data = JSON.parse(localStorage.getItem(type==='laundry'?'hasilLaundry':type))||[];
+  let comments = JSON.parse(localStorage.getItem('comments'))||{};
   if(data.length===0){ alert("Data kosong!"); return; }
+
   let columns=[], rows=[];
-  if(type==='absen'){ columns=["No","Nama","Tanggal","Jam","Tipe","Foto"]; rows=data.map((d,i)=>[i+1,d.nama,d.tanggal,d.jam,d.tipe,d.foto?"Ada":""]); }
-  else if(type==='laundry'){ columns=["No","Nama","Berat","Baju","Celana","Jaket","Total","Tgl Selesai","Jam Mulai","Jam Selesai"]; rows=data.map((d,i)=>[i+1,d.nama,d.berat,d.baju,d.celana,d.jaket,d.total,d.tanggalSelesai,d.jamMulai,d.jamSelesai]); }
-  else if(type==='komplain'){ columns=["No","Nama","Tanggal","Jam","Isi","Foto"]; rows=data.map((d,i)=>[i+1,d.nama,d.tanggal,d.jam,d.isi,d.foto?"Ada":""]); }
-  doc.setFontSize(14); doc.text("Export Data "+type,14,15);
-  doc.autoTable({ head:[columns], body:rows, startY:20, styles:{fontSize:8} });
+  if(type==='absen'){columns=["No","Nama","Tanggal","Jam","Tipe","Foto","Komentar"];
+    rows=data.map((d,i)=>[i+1,d.nama,d.tanggal,d.jam,d.tipe,d.foto?"Ada":"",comments[type+'_'+i]||""]);
+  } else if(type==='laundry'){columns=["No","Nama","Berat","Baju","Celana","Jaket","Total","Tgl Selesai","Jam Mulai","Jam Selesai","Komentar"];
+    rows=data.map((d,i)=>[i+1,d.nama,d.berat,d.baju,d.celana,d.jaket,d.total,d.tanggalSelesai,d.jamMulai,d.jamSelesai,comments[type+'_'+i]||""]);
+  } else if(type==='komplain'){columns=["No","Nama","Tanggal","Jam","Isi","Foto","Komentar"];
+    rows=data.map((d,i)=>[i+1,d.nama,d.tanggal,d.jam,d.isi,d.foto?"Ada":"",comments[type+'_'+i]||""]);
+  }
+
+  doc.setFontSize(14);
+  doc.text("Export Data "+type,14,15);
+  doc.autoTable({head:[columns],body:rows,startY:20,styles:{fontSize:8}});
+
   if(type==='absen'||type==='komplain'){
-    let finalY=doc.lastAutoTable.finalY+10; doc.text("Lampiran Foto:",14,finalY);
+    let finalY=doc.lastAutoTable.finalY+10;
+    doc.text("Lampiran Foto:",14,finalY);
     let y=finalY+5,x=14;
-    data.forEach(d=>{ if(d.foto){ try{ doc.addImage(d.foto,"JPEG",x,y,30,30); x+=35; if(x>160){x=14;y+=35;} } catch(e){console.log("Gagal load foto",e);} } });
+    data.forEach(d=>{
+      if(d.foto){ try{doc.addImage(d.foto,"JPEG",x,y,30,30);x+=35;if(x>160){x=14;y+=35;}}catch(e){console.log(e);} }
+    });
   }
   doc.save("data_"+type+".pdf");
 }
 
-// Table interactivity: search+sort+pagination
-function makeTableInteractive(tableId){
-  const table=document.getElementById(tableId);
-  const container=table.parentElement;
-  let currentPage=1, rowsPerPage=5, thStates={};
-  // Rows per page selector
-  let rppDiv=container.querySelector('.rows-per-page'); rppDiv.innerHTML='Rows per page: <select><option>5</option><option>10</option><option>20</option></select>';
-  rppDiv.querySelector('select').addEventListener('change',e=>{ rowsPerPage=parseInt(e.target.value); currentPage=1; updateTable(); });
-  // Sorting
-  table.querySelectorAll('th').forEach((th,index)=>{
-    th.addEventListener('click',()=>{
-      const tbody=table.querySelector('tbody'); const rows=Array.from(tbody.querySelectorAll('tr')).filter(r=>!r.classList.contains('empty-row'));
-      const asc=!thStates[index]; thStates[index]=asc;
-      rows.sort((a,b)=>{ const aText=a.cells[index].textContent.trim(); const bText=b.cells[index].textContent.trim(); return asc?aText.localeCompare(bText):bText.localeCompare(aText); });
-      rows.forEach(r=>tbody.appendChild(r)); updateTable();
-    });
-  });
-  // Pagination
-  function updateTable(){
-    const tbody=table.querySelector('tbody'); const rows=Array.from(tbody.querySelectorAll('tr')).filter(r=>!r.classList.contains('empty-row'));
-    const start=(currentPage-1)*rowsPerPage; const end=start+rowsPerPage;
-    rows.forEach((r,i)=>r.style.display=(i>=start&&i<end?'':'none'));
-    fadeInRows(tbody);
-    // Pagination buttons
-    let nav=container.querySelector('.pagination'); nav.innerHTML='';
-    const totalPages=Math.ceil(rows.length/rowsPerPage); if(totalPages<=1) return;
-    for(let i=1;i<=totalPages;i++){
-      const btn=document.createElement('button'); btn.className='btn'; btn.textContent=i;
-      if(i===currentPage){ btn.style.background='#007bff'; btn.style.color='#fff'; }
-      btn.addEventListener('click',()=>{ currentPage=i; updateTable(); });
-      nav.appendChild(btn);
-    }
-  }
-  updateTable();
-}
-
-// Filter search
-function filterTable(tableId,value){
-  const table=document.getElementById(tableId); const tbody=table.querySelector('tbody');
-  Array.from(tbody.querySelectorAll('tr')).forEach(r=>{
-    if(r.classList.contains('empty-row')) return;
-    r.style.display=Array.from(r.cells).some(td=>td.textContent.toLowerCase().includes(value.toLowerCase()))?'':'none';
-  });
-}
-
+// Auto refresh on localStorage changes
 window.addEventListener("storage", loadTables);
 (function(){
-  const originalSetItem = localStorage.setItem;
-  localStorage.setItem = function(key,value){ originalSetItem.apply(this,arguments); loadTables(); };
-  const originalRemoveItem = localStorage.removeItem;
-  localStorage.removeItem = function(key){ originalRemoveItem.apply(this,arguments); loadTables(); };
+  const originalSetItem=localStorage.setItem;
+  localStorage.setItem=function(k,v){originalSetItem.apply(this,arguments);loadTables();};
+  const originalRemoveItem=localStorage.removeItem;
+  localStorage.removeItem=function(k){originalRemoveItem.apply(this,arguments);loadTables();};
 })();
 loadTables();
 </script>
