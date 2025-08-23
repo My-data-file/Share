@@ -3,352 +3,236 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panel Admin - JetWash Laundry</title>
+<title>Panel Admin - JetWash Laundry (Final UX)</title>
 <style>
-:root{
-  --primary:#007bff;
-  --primary-dark:#0056b3;
-  --success:#28a745;
-  --danger:#dc3545;
-  --bg:#f0f4f8;
-  --card:#ffffff;
-  --muted:#f8f9fa;
-  --text:#2b2b2b;
-  --dark-bg:#121212;
-  --dark-card:#1e1e1e;
-  --dark-text:#e0e0e0;
-}
-/* Reset */
-*{box-sizing:border-box;margin:0;padding:0}
-/* Body */
-body{
-  font-family:'Segoe UI',sans-serif;
-  background:var(--bg);
-  display:flex;
-  min-height:100vh;
-  overflow:hidden;
-  transition:background .3s, color .3s;
-  color:var(--text);
-}
-/* Dark mode */
-body.dark{background:var(--dark-bg);color:var(--dark-text);}
-body.dark .card, body.dark .table-container{background:var(--dark-card);}
+:root{--primary:#007bff;--success:#28a745;--danger:#dc3545;--bg:#f0f4f8;--card:#fff;--muted:#f8f9fa;--text:#2b2b2b;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',sans-serif;background:var(--bg);display:flex;min-height:100vh;overflow:hidden;color:var(--text);transition:background .3s,color .3s;}
+body.dark{background:#121212;color:#e0e0e0;}
+body.dark .card, body.dark .table-container{background:#1e1e1e;}
 body.dark th{background:#2c2c2c;border-color:#3a3a3a;}
 body.dark tr:hover{background:#333;}
-/* Sidebar */
-.sidebar{
-  width:240px;
-  background:var(--primary);
-  color:#fff;
-  flex-shrink:0;
-  display:flex;
-  flex-direction:column;
-  padding-top:20px;
-  transition:all .3s ease;
-}
-.sidebar h2{text-align:center;margin-bottom:18px;font-size:1.2em;font-weight:600}
-.sidebar a{
-  color:#fff;
-  text-decoration:none;
-  padding:12px 20px;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  transition:background .2s, padding-left .2s;
-  border-left:4px solid transparent;
-}
-.sidebar a:hover{background:rgba(255,255,255,.12);padding-left:24px}
-.sidebar a.active{background:rgba(255,255,255,.18);border-left-color:#fff}
-/* Content */
-.content{
-  flex:1;
-  padding:20px;
-  overflow-y:auto;
-}
-h1{margin-bottom:14px;color:var(--primary);font-size:1.4em;font-weight:700}
-/* Dashboard cards */
-.cards{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:20px}
-.card{
-  flex:1 1 200px;
-  background:var(--card);
-  padding:14px 18px;
-  border-radius:12px;
-  box-shadow:0 3px 10px rgba(0,0,0,.08);
-  cursor:pointer;
-  transition:transform .15s, box-shadow .15s;
-}
-.card:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(0,0,0,.12)}
-.card h3{font-size:1.1em;margin-bottom:6px}
+.sidebar{width:240px;background:var(--primary);color:#fff;flex-shrink:0;display:flex;flex-direction:column;padding-top:20px;transition:all .3s;}
+.sidebar h2{text-align:center;margin-bottom:18px;font-size:1.2em;font-weight:600;}
+.sidebar a{color:#fff;text-decoration:none;padding:12px 20px;display:flex;align-items:center;gap:8px;transition:all .3s;border-left:4px solid transparent;}
+.sidebar a:hover{background:rgba(255,255,255,.12);padding-left:24px;}
+.sidebar a.active{background:rgba(255,255,255,.18);border-left-color:#fff;}
+.sidebar .btn-toggle{background:#0056b3;color:#fff;margin-top:auto;margin:8px;cursor:pointer;}
+.content{flex:1;padding:20px;overflow-y:auto;}
+h1{margin-bottom:14px;color:var(--primary);font-size:1.4em;font-weight:700;}
+.cards{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:20px;transition:all .3s;}
+.card{flex:1 1 200px;background:var(--card);padding:14px 18px;border-radius:12px;box-shadow:0 3px 10px rgba(0,0,0,.08);cursor:pointer;transition:transform .3s,box-shadow .3s,background .3s;}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 18px rgba(0,0,0,.12);}
+.card h3{font-size:1.1em;margin-bottom:6px;}
 .card p{font-size:.92em;}
-/* Table */
-.table-container{
-  background:var(--card);
-  border-radius:14px;
-  padding:14px;
-  box-shadow:0 3px 10px rgba(0,0,0,.08);
-  overflow-x:auto;
-  margin-bottom:14px;
-}
-table{
-  width:100%;
-  border-collapse:collapse;
-  font-size:.9em;
-}
-th,td{
-  padding:10px 12px;
-  border-bottom:1px solid #e9ecef;
-  text-align:left;
-  vertical-align:top;
-}
-th{background:var(--muted);font-weight:600}
-tr:hover{background:#f7faff}
-td img{border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.15)}
-.empty-row{text-align:center;color:#999;font-style:italic}
-/* Buttons */
-.btn{
-  display:inline-block;
-  margin:8px 6px 0 0;
-  padding:8px 16px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-  font-size:.9em;
-  font-weight:600;
-  box-shadow:0 2px 6px rgba(0,0,0,.12);
-  transition:transform .08s ease-in-out, filter .2s;
-}
-.btn:hover{transform:translateY(-1px)}
-.btn-export{background:linear-gradient(145deg,var(--success),#218838);color:#fff}
-.btn-reset{background:linear-gradient(145deg,var(--danger),#a71d2a);color:#fff}
-.btn-toggle{background:var(--primary-dark);color:#fff;margin-left:auto;}
-/* Search input */
+.table-container{background:var(--card);border-radius:14px;padding:14px;box-shadow:0 3px 10px rgba(0,0,0,.08);overflow-x:auto;margin-bottom:14px;transition:all .3s;}
+table{width:100%;border-collapse:collapse;font-size:.9em;transition:all .3s;}
+th,td{padding:10px 12px;border-bottom:1px solid #e9ecef;text-align:left;vertical-align:top;transition:all .3s;}
+th{background:var(--muted);font-weight:600;cursor:pointer;}
+tr{transition:all .3s;}
+tr:hover{background:#f7faff;}
+td img{border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.15);}
+.empty-row{text-align:center;color:#999;font-style:italic;opacity:.6;}
+.btn{display:inline-block;margin:8px 6px 0 0;padding:8px 16px;border:none;border-radius:10px;cursor:pointer;font-size:.9em;font-weight:600;box-shadow:0 2px 6px rgba(0,0,0,.12);transition:transform .2s ease,filter .2s;}
+.btn:hover{transform:translateY(-1px);}
+.btn-export{background:linear-gradient(145deg,var(--success),#218838);color:#fff;}
+.btn-reset{background:linear-gradient(145deg,var(--danger),#a71d2a);color:#fff;}
+.btn-toggle{padding:6px 12px;border-radius:8px;}
 .search-box{margin-bottom:10px;}
-.search-box input{padding:8px 12px;width:250px;border-radius:8px;border:1px solid #ccc;}
-/* Pagination & rows-per-page */
+.search-box input{padding:8px 12px;width:250px;border-radius:8px;border:1px solid #ccc;transition:all .3s;}
 .pagination{display:flex;gap:6px;margin:6px 0;flex-wrap:wrap;}
 .pagination .btn{padding:5px 10px;font-size:.85em;}
 .rows-per-page{margin:6px 0;display:flex;align-items:center;gap:6px;font-size:.85em;}
 .rows-per-page select{padding:4px 8px;border-radius:6px;border:1px solid #ccc;}
-/* Responsive */
-@media(max-width:900px){
-  .sidebar{width:70px;align-items:center}
-  .sidebar h2{display:none}
-  .sidebar a{justify-content:center;padding:14px}
-  .sidebar a span{display:none}
-  .content{padding:16px}
-}
-@media(max-width:600px){
-  body{flex-direction:column}
-  .sidebar{width:100%;flex-direction:row;justify-content:space-around;padding:8px 0;position:sticky;top:0;z-index:5}
-  .sidebar a{border-left:none;border-bottom:4px solid transparent}
-  .sidebar a.active{border-bottom-color:#fff}
-  table,th,td{font-size:.82em}
-  .btn{font-size:.82em;padding:7px 14px}
-  .search-box input{width:100%}
-}
+@media(max-width:900px){.sidebar{width:70px;align-items:center}.sidebar h2{display:none}.sidebar a{justify-content:center;padding:14px}.sidebar a span{display:none}.content{padding:16px}}
+@media(max-width:600px){body{flex-direction:column}.sidebar{width:100%;flex-direction:row;justify-content:space-around;padding:8px 0;position:sticky;top:0;z-index:5}.sidebar a{border-left:none;border-bottom:4px solid transparent}.sidebar a.active{border-bottom-color:#fff}table,th,td{font-size:.82em}.btn{font-size:.82em;padding:7px 14px}.search-box input{width:100%}}
 </style>
 </head>
 <body>
-
 <div class="sidebar">
-  <h2>JetWash Admin</h2>
-  <a href="#" class="active" data-page="dashboard">📊 <span>Dashboard</span></a>
-  <a href="#" data-page="absen">📝 <span>Absen</span></a>
-  <a href="#" data-page="laundry">🧺 <span>Laundry</span></a>
-  <a href="#" data-page="komplain">⚠️ <span>Komplain</span></a>
-  <button class="btn btn-toggle" onclick="toggleDarkMode()">🌓</button>
+<h2>JetWash Admin</h2>
+<a href="#" class="active" data-page="dashboard">📊 <span>Dashboard</span></a>
+<a href="#" data-page="absen">📝 <span>Absen</span></a>
+<a href="#" data-page="laundry">🧺 <span>Laundry</span></a>
+<a href="#" data-page="komplain">⚠️ <span>Komplain</span></a>
+<button class="btn-toggle" onclick="toggleDarkMode()">🌓</button>
+</div>
+<div class="content">
+<div id="dashboard" class="page active">
+<h1>Dashboard</h1>
+<div class="cards">
+<div class="card" onclick="showPage('absen')"><h3>Total Absen</h3><p id="countAbsen">0</p></div>
+<div class="card" onclick="showPage('laundry')"><h3>Total Laundry</h3><p id="countLaundry">0</p></div>
+<div class="card" onclick="showPage('komplain')"><h3>Total Komplain</h3><p id="countKomplain">0</p></div>
+</div>
 </div>
 
-<div class="content">
-  <div id="dashboard" class="page active">
-    <h1>Dashboard</h1>
-    <div class="cards">
-      <div class="card" onclick="showPage('absen')"><h3>Total Absen</h3><p id="countAbsen">0</p></div>
-      <div class="card" onclick="showPage('laundry')"><h3>Total Laundry</h3><p id="countLaundry">0</p></div>
-      <div class="card" onclick="showPage('komplain')"><h3>Total Komplain</h3><p id="countKomplain">0</p></div>
-    </div>
-  </div>
+<!-- Absen -->
+<div id="absen" class="page" style="display:none;">
+<h1>Data Absen</h1>
+<div class="search-box"><input type="text" placeholder="Cari nama..." onkeyup="filterTable('tableAbsen',this.value)"></div>
+<div class="table-container">
+<div class="rows-per-page"></div>
+<table id="tableAbsen"><thead><tr><th>No</th><th>Nama</th><th>Tanggal</th><th>Jam</th><th>Tipe</th><th>Foto</th></tr></thead><tbody></tbody></table>
+<div class="pagination"></div>
+</div>
+<button class="btn btn-export" onclick="exportPdf('absen')">Export PDF</button>
+<button class="btn btn-reset" onclick="resetData('absen')">Reset Data</button>
+</div>
 
-  <!-- Absen -->
-  <div id="absen" class="page" style="display:none;">
-    <h1>Data Absen</h1>
-    <div class="search-box"><input type="text" placeholder="Cari nama..." onkeyup="filterTable('tableAbsen',this.value)"></div>
-    <div class="table-container">
-      <div class="rows-per-page"></div>
-      <table id="tableAbsen">
-        <thead><tr><th>No</th><th>Nama</th><th>Tanggal</th><th>Jam</th><th>Tipe</th><th>Foto</th></tr></thead>
-        <tbody></tbody>
-      </table>
-      <div class="pagination"></div>
-    </div>
-    <button class="btn btn-export" onclick="exportPdf('absen')">Export PDF</button>
-    <button class="btn btn-reset" onclick="resetData('absen')">Reset Data</button>
-  </div>
+<!-- Laundry -->
+<div id="laundry" class="page" style="display:none;">
+<h1>Data Laundry</h1>
+<div class="search-box"><input type="text" placeholder="Cari nama..." onkeyup="filterTable('tableLaundry',this.value)"></div>
+<div class="table-container">
+<div class="rows-per-page"></div>
+<table id="tableLaundry"><thead><tr><th>No</th><th>Nama</th><th>Berat</th><th>Baju</th><th>Celana</th><th>Jaket</th><th>Total</th><th>Tgl Selesai</th><th>Jam Mulai</th><th>Jam Selesai</th></tr></thead><tbody></tbody></table>
+<div class="pagination"></div>
+</div>
+<button class="btn btn-export" onclick="exportPdf('laundry')">Export PDF</button>
+<button class="btn btn-reset" onclick="resetData('laundry')">Reset Data</button>
+</div>
 
-  <!-- Laundry -->
-  <div id="laundry" class="page" style="display:none;">
-    <h1>Data Laundry</h1>
-    <div class="search-box"><input type="text" placeholder="Cari nama..." onkeyup="filterTable('tableLaundry',this.value)"></div>
-    <div class="table-container">
-      <div class="rows-per-page"></div>
-      <table id="tableLaundry">
-        <thead><tr><th>No</th><th>Nama</th><th>Berat</th><th>Baju</th><th>Celana</th><th>Jaket</th><th>Total</th><th>Tgl Selesai</th><th>Jam Mulai</th><th>Jam Selesai</th></tr></thead>
-        <tbody></tbody>
-      </table>
-      <div class="pagination"></div>
-    </div>
-    <button class="btn btn-export" onclick="exportPdf('laundry')">Export PDF</button>
-    <button class="btn btn-reset" onclick="resetData('laundry')">Reset Data</button>
-  </div>
-
-  <!-- Komplain -->
-  <div id="komplain" class="page" style="display:none;">
-    <h1>Data Komplain</h1>
-    <div class="search-box"><input type="text" placeholder="Cari nama..." onkeyup="filterTable('tableKomplain',this.value)"></div>
-    <div class="table-container">
-      <div class="rows-per-page"></div>
-      <table id="tableKomplain">
-        <thead><tr><th>No</th><th>Nama</th><th>Tanggal</th><th>Jam</th><th>Isi</th><th>Foto</th></tr></thead>
-        <tbody></tbody>
-      </table>
-      <div class="pagination"></div>
-    </div>
-    <button class="btn btn-export" onclick="exportPdf('komplain')">Export PDF</button>
-    <button class="btn btn-reset" onclick="resetData('komplain')">Reset Data</button>
-  </div>
+<!-- Komplain -->
+<div id="komplain" class="page" style="display:none;">
+<h1>Data Komplain</h1>
+<div class="search-box"><input type="text" placeholder="Cari nama..." onkeyup="filterTable('tableKomplain',this.value)"></div>
+<div class="table-container">
+<div class="rows-per-page"></div>
+<table id="tableKomplain"><thead><tr><th>No</th><th>Nama</th><th>Tanggal</th><th>Jam</th><th>Isi</th><th>Foto</th></tr></thead><tbody></tbody></table>
+<div class="pagination"></div>
+</div>
+<button class="btn btn-export" onclick="exportPdf('komplain')">Export PDF</button>
+<button class="btn btn-reset" onclick="resetData('komplain')">Reset Data</button>
+</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 <script>
-// ======= NAVIGATION =========
-function showPage(pageId){
-  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
-  document.getElementById(pageId).style.display='block';
-  document.querySelectorAll('.sidebar a').forEach(a=>a.classList.remove('active'));
-  document.querySelector(`.sidebar a[data-page="${pageId}"]`)?.classList.add('active');
-}
+// Sidebar navigation
 document.querySelectorAll('.sidebar a').forEach(link=>{
-  link.addEventListener('click',e=>{e.preventDefault();showPage(link.dataset.page);});
+  link.addEventListener('click',()=>{
+    document.querySelectorAll('.sidebar a').forEach(a=>a.classList.remove('active'));
+    link.classList.add('active');
+    showPage(link.dataset.page);
+  });
 });
 
-// ======= DARK MODE =======
-function toggleDarkMode(){document.body.classList.toggle('dark');}
+function showPage(page){
+  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+  document.getElementById(page).style.display='block';
+}
 
-// ======= SEARCH / FILTER =======
+// Dark mode toggle
+function toggleDarkMode(){ document.body.classList.toggle('dark'); }
+
+// Load table data
+function loadTables(){
+  let absen = JSON.parse(localStorage.getItem('absen'))||[];
+  let laundry = JSON.parse(localStorage.getItem('hasilLaundry'))||[];
+  let komplain = JSON.parse(localStorage.getItem('komplain'))||[];
+  document.getElementById('countAbsen').textContent=absen.length;
+  document.getElementById('countLaundry').textContent=laundry.length;
+  document.getElementById('countKomplain').textContent=komplain.length;
+
+  fillTable('tableAbsen',absen,(d,i)=>`<td>${i+1}</td><td>${d.nama}</td><td>${d.tanggal}</td><td>${d.jam}</td><td>${d.tipe}</td><td>${d.foto?'<img src="'+d.foto+'" width="40">':''}</td>`);
+  fillTable('tableLaundry',laundry,(d,i)=>`<td>${i+1}</td><td>${d.nama}</td><td>${d.berat}</td><td>${d.baju}</td><td>${d.celana}</td><td>${d.jaket}</td><td>${d.total}</td><td>${d.tanggalSelesai}</td><td>${d.jamMulai}</td><td>${d.jamSelesai}</td>`);
+  fillTable('tableKomplain',komplain,(d,i)=>`<td>${i+1}</td><td>${d.nama}</td><td>${d.tanggal}</td><td>${d.jam}</td><td>${d.isi}</td><td>${d.foto?'<img src="'+d.foto+'" width="40">':''}</td>`);
+
+  ['tableAbsen','tableLaundry','tableKomplain'].forEach(makeTableInteractive);
+}
+function fillTable(tableId,data,rowBuilder){
+  const tbody=document.querySelector('#'+tableId+' tbody');
+  tbody.innerHTML='';
+  if(data.length===0){ tbody.innerHTML='<tr class="empty-row"><td colspan="20">Data Kosong</td></tr>'; return; }
+  data.forEach((d,i)=>{ tbody.innerHTML+=`<tr>${rowBuilder(d,i)}</tr>`; });
+  fadeInRows(tbody);
+}
+function fadeInRows(tbody){ Array.from(tbody.querySelectorAll('tr')).forEach((r,i)=>{ r.style.opacity=0; setTimeout(()=>r.style.opacity=1, i*50); }); }
+
+// Reset Data
+function resetData(key){
+  if(confirm("Yakin reset data "+key+"?")){
+    let storageKey = key==='laundry' ? 'hasilLaundry' : key;
+    localStorage.removeItem(storageKey);
+    loadTables();
+  }
+}
+
+// Export PDF
+function exportPdf(type){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  let data = JSON.parse(localStorage.getItem(type==='laundry'?'hasilLaundry':type))||[];
+  if(data.length===0){ alert("Data kosong!"); return; }
+  let columns=[], rows=[];
+  if(type==='absen'){ columns=["No","Nama","Tanggal","Jam","Tipe","Foto"]; rows=data.map((d,i)=>[i+1,d.nama,d.tanggal,d.jam,d.tipe,d.foto?"Ada":""]); }
+  else if(type==='laundry'){ columns=["No","Nama","Berat","Baju","Celana","Jaket","Total","Tgl Selesai","Jam Mulai","Jam Selesai"]; rows=data.map((d,i)=>[i+1,d.nama,d.berat,d.baju,d.celana,d.jaket,d.total,d.tanggalSelesai,d.jamMulai,d.jamSelesai]); }
+  else if(type==='komplain'){ columns=["No","Nama","Tanggal","Jam","Isi","Foto"]; rows=data.map((d,i)=>[i+1,d.nama,d.tanggal,d.jam,d.isi,d.foto?"Ada":""]); }
+  doc.setFontSize(14); doc.text("Export Data "+type,14,15);
+  doc.autoTable({ head:[columns], body:rows, startY:20, styles:{fontSize:8} });
+  if(type==='absen'||type==='komplain'){
+    let finalY=doc.lastAutoTable.finalY+10; doc.text("Lampiran Foto:",14,finalY);
+    let y=finalY+5,x=14;
+    data.forEach(d=>{ if(d.foto){ try{ doc.addImage(d.foto,"JPEG",x,y,30,30); x+=35; if(x>160){x=14;y+=35;} } catch(e){console.log("Gagal load foto",e);} } });
+  }
+  doc.save("data_"+type+".pdf");
+}
+
+// Table interactivity: search+sort+pagination
+function makeTableInteractive(tableId){
+  const table=document.getElementById(tableId);
+  const container=table.parentElement;
+  let currentPage=1, rowsPerPage=5, thStates={};
+  // Rows per page selector
+  let rppDiv=container.querySelector('.rows-per-page'); rppDiv.innerHTML='Rows per page: <select><option>5</option><option>10</option><option>20</option></select>';
+  rppDiv.querySelector('select').addEventListener('change',e=>{ rowsPerPage=parseInt(e.target.value); currentPage=1; updateTable(); });
+  // Sorting
+  table.querySelectorAll('th').forEach((th,index)=>{
+    th.addEventListener('click',()=>{
+      const tbody=table.querySelector('tbody'); const rows=Array.from(tbody.querySelectorAll('tr')).filter(r=>!r.classList.contains('empty-row'));
+      const asc=!thStates[index]; thStates[index]=asc;
+      rows.sort((a,b)=>{ const aText=a.cells[index].textContent.trim(); const bText=b.cells[index].textContent.trim(); return asc?aText.localeCompare(bText):bText.localeCompare(aText); });
+      rows.forEach(r=>tbody.appendChild(r)); updateTable();
+    });
+  });
+  // Pagination
+  function updateTable(){
+    const tbody=table.querySelector('tbody'); const rows=Array.from(tbody.querySelectorAll('tr')).filter(r=>!r.classList.contains('empty-row'));
+    const start=(currentPage-1)*rowsPerPage; const end=start+rowsPerPage;
+    rows.forEach((r,i)=>r.style.display=(i>=start&&i<end?'':'none'));
+    fadeInRows(tbody);
+    // Pagination buttons
+    let nav=container.querySelector('.pagination'); nav.innerHTML='';
+    const totalPages=Math.ceil(rows.length/rowsPerPage); if(totalPages<=1) return;
+    for(let i=1;i<=totalPages;i++){
+      const btn=document.createElement('button'); btn.className='btn'; btn.textContent=i;
+      if(i===currentPage){ btn.style.background='#007bff'; btn.style.color='#fff'; }
+      btn.addEventListener('click',()=>{ currentPage=i; updateTable(); });
+      nav.appendChild(btn);
+    }
+  }
+  updateTable();
+}
+
+// Filter search
 function filterTable(tableId,value){
-  const filter=value.toLowerCase();
-  const rows=document.querySelectorAll('#'+tableId+' tbody tr');
-  rows.forEach(r=>{
-    r.style.display = [...r.cells].some(td=>td.textContent.toLowerCase().includes(filter)) ? '' : 'none';
+  const table=document.getElementById(tableId); const tbody=table.querySelector('tbody');
+  Array.from(tbody.querySelectorAll('tr')).forEach(r=>{
+    if(r.classList.contains('empty-row')) return;
+    r.style.display=Array.from(r.cells).some(td=>td.textContent.toLowerCase().includes(value.toLowerCase()))?'':'none';
   });
 }
 
-// ======= JS ASLI DAN INTEGRASI ALL-IN-ONE =======
-document.addEventListener('DOMContentLoaded',()=>{
-  function loadTables(){
-    let absen = JSON.parse(localStorage.getItem('absen'))||[];
-    let laundry = JSON.parse(localStorage.getItem('hasilLaundry'))||[];
-    let komplain = JSON.parse(localStorage.getItem('komplain'))||[];
-    document.getElementById('countAbsen').textContent=absen.length;
-    document.getElementById('countLaundry').textContent=laundry.length;
-    document.getElementById('countKomplain').textContent=komplain.length;
-
-    fillTable('tableAbsen',absen,(d,i)=>`<td>${i+1}</td><td>${d.nama}</td><td>${d.tanggal}</td><td>${d.jam}</td><td>${d.tipe}</td><td>${d.foto?'<img src="'+d.foto+'" width="40">':'-'}</td>`);
-    fillTable('tableLaundry',laundry,(d,i)=>`<td>${i+1}</td><td>${d.nama}</td><td>${d.berat}</td><td>${d.baju}</td><td>${d.celana}</td><td>${d.jaket}</td><td>${d.total}</td><td>${d.tanggalSelesai}</td><td>${d.jamMulai}</td><td>${d.jamSelesai}</td>`);
-    fillTable('tableKomplain',komplain,(d,i)=>`<td>${i+1}</td><td>${d.nama}</td><td>${d.tanggal}</td><td>${d.jam}</td><td>${d.isi}</td><td>${d.foto?'<img src="'+d.foto+'" width="40">':'-'}</td>`);
-
-    makeTableInteractive('tableAbsen');
-    makeTableInteractive('tableLaundry');
-    makeTableInteractive('tableKomplain');
-  }
-
-  function fillTable(tableId,data,rowBuilder){
-    const tbody=document.querySelector('#'+tableId+' tbody');
-    tbody.innerHTML='';
-    if(data.length===0){
-      tbody.innerHTML=`<tr class="empty-row"><td colspan="${document.querySelector('#'+tableId+' thead tr').children.length}">Belum ada data</td></tr>`;
-    } else { data.forEach((d,i)=>{ tbody.innerHTML+=`<tr>${rowBuilder(d,i)}</tr>`; }); }
-  }
-
-  // Auto refresh real-time
-  window.addEventListener("storage", loadTables);
-
-  // Patch setItem & removeItem
-  (function(){
-    const originalSetItem = localStorage.setItem;
-    localStorage.setItem = function(key, value){ originalSetItem.apply(this, arguments); loadTables(); };
-    const originalRemoveItem = localStorage.removeItem;
-    localStorage.removeItem = function(key){ originalRemoveItem.apply(this, arguments); loadTables(); };
-  })();
-
-  // Reset Data
-  window.resetData=function(key){ if(confirm("Yakin reset data "+key+"?")){ let storageKey = key==='laundry' ? 'hasilLaundry' : key; localStorage.removeItem(storageKey); }};
-
-  // Export PDF
-  window.exportPdf=function(type){
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    let data = JSON.parse(localStorage.getItem(type==='laundry'?'hasilLaundry':type))||[];
-    if(data.length===0){ alert("Data kosong!"); return; }
-    let columns=[], rows=[];
-    if(type==="absen"){ columns=["No","Nama","Tanggal","Jam","Tipe","Foto"]; rows=data.map((d,i)=>[i+1,d.nama,d.tanggal,d.jam,d.tipe,d.foto?"Ada":""]); }
-    else if(type==="laundry"){ columns=["No","Nama","Berat","Baju","Celana","Jaket","Total","Tgl Selesai","Jam Mulai","Jam Selesai"]; rows=data.map((d,i)=>[i+1,d.nama,d.berat,d.baju,d.celana,d.jaket,d.total,d.tanggalSelesai,d.jamMulai,d.jamSelesai]); }
-    else if(type==="komplain"){ columns=["No","Nama","Tanggal","Jam","Isi","Foto"]; rows=data.map((d,i)=>[i+1,d.nama,d.tanggal,d.jam,d.isi,d.foto?"Ada":""]); }
-    doc.setFontSize(14);
-    doc.text("Export Data "+type,14,15);
-    doc.autoTable({ head:[columns], body:rows, startY:20, styles:{fontSize:8} });
-    if(type==="absen"||type==="komplain"){
-      let finalY = doc.lastAutoTable.finalY +10;
-      doc.text("Lampiran Foto:",14,finalY);
-      let y=finalY+5, x=14;
-      data.forEach(d=>{
-        if(d.foto){ try{ doc.addImage(d.foto,"JPEG",x,y,30,30); x+=35; if(x>160){x=14;y+=35;} } catch(e){console.log("Gagal load foto",e);} }
-      });
-    }
-    doc.save("data_"+type+".pdf");
-  };
-
-  // Load tables first time
-  loadTables();
-
-  // ======= Table interactivity: search+sort+pagination =======
-  function makeTableInteractive(tableId){
-    const table=document.getElementById(tableId); let currentPage=1; let rowsPerPage=5; let thStates={};
-    // Rows per page
-    const selector=table.parentElement.querySelector('.rows-per-page select');
-    selector.addEventListener('change',e=>{ rowsPerPage=parseInt(e.target.value); currentPage=1; updateTable(); });
-    // Sorting
-    table.querySelectorAll('th').forEach((th,index)=>{
-      th.style.cursor='pointer';
-      th.addEventListener('click',()=>{
-        const tbody=table.querySelector('tbody');
-        const rows=Array.from(tbody.querySelectorAll('tr')).filter(r=>!r.classList.contains('empty-row'));
-        const asc=!thStates[index]; thStates[index]=asc;
-        rows.sort((a,b)=>{ const aText=a.cells[index].textContent.trim(); const bText=b.cells[index].textContent.trim(); return asc?aText.localeCompare(bText):bText.localeCompare(aText); });
-        rows.forEach(r=>tbody.appendChild(r));
-        updateTable();
-      });
-    });
-    // Pagination
-    function updateTable(){
-      const tbody=table.querySelector('tbody'); const rows=Array.from(tbody.querySelectorAll('tr')).filter(r=>!r.classList.contains('empty-row'));
-      const start=(currentPage-1)*rowsPerPage; const end=start+rowsPerPage;
-      rows.forEach((r,i)=>r.style.display=(i>=start&&i<end?'':'none'));
-      // Pagination buttons
-      let nav=table.parentElement.querySelector('.pagination');
-      const totalPages=Math.ceil(rows.length/rowsPerPage); nav.innerHTML='';
-      if(totalPages<=1) return;
-      for(let i=1;i<=totalPages;i++){
-        const btn=document.createElement('button'); btn.className='btn'; btn.textContent=i;
-        if(i===currentPage){ btn.style.background='#007bff'; btn.style.color='#fff'; }
-        btn.addEventListener('click',()=>{ currentPage=i; updateTable(); });
-        nav.appendChild(btn);
-      }
-    }
-    updateTable();
-  }
-});
+window.addEventListener("storage", loadTables);
+(function(){
+  const originalSetItem = localStorage.setItem;
+  localStorage.setItem = function(key,value){ originalSetItem.apply(this,arguments); loadTables(); };
+  const originalRemoveItem = localStorage.removeItem;
+  localStorage.removeItem = function(key){ originalRemoveItem.apply(this,arguments); loadTables(); };
+})();
+loadTables();
 </script>
 </body>
 </html>
