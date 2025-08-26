@@ -12,6 +12,7 @@ a { text-decoration:none; }
 header { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; padding:40px 20px; border-bottom:5px solid #facc15; display:flex; justify-content:center; align-items:center; }
 .header-inner { display:flex; align-items:center; max-width:1000px; width:95%; flex-wrap:wrap; gap:20px; }
 .logo { width:80px; height:80px; }
+.logo svg { width: 80px; height: 80px; display: block; }
 .header-text { flex:1; text-align:left; }
 .header-text h1 { font-size:2.5rem; margin-bottom:8px; }
 .header-text p { opacity:0.9; margin-bottom:15px; }
@@ -140,7 +141,16 @@ header { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; paddi
 
 <header>
   <div class="header-inner">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Laundry_icon.svg" class="logo" alt="Logo Laundry Express">
+    <!-- Inline SVG logo -->
+    <div class="logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="80" height="80">
+        <circle cx="32" cy="32" r="30" fill="#3b82f6" stroke="#facc15" stroke-width="4"/>
+        <circle cx="32" cy="32" r="14" fill="white"/>
+        <circle cx="32" cy="32" r="8" fill="#3b82f6"/>
+        <circle cx="24" cy="24" r="2" fill="#facc15"/>
+        <circle cx="40" cy="24" r="2" fill="#facc15"/>
+      </svg>
+    </div>
     <div class="header-text">
       <h1>Laundry Express</h1>
       <p>Cepat, rapi, dan bisa pesan online</p>
