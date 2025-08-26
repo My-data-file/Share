@@ -12,7 +12,7 @@ a { text-decoration:none; }
 header { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; padding:40px 20px; border-bottom:5px solid #facc15; display:flex; justify-content:center; align-items:center; position:relative; overflow:hidden; }
 .header-inner { display:flex; align-items:center; max-width:1000px; width:95%; flex-wrap:wrap; gap:20px; position:relative; z-index:1; }
 .logo { width:80px; height:80px; }
-.logo svg { width: 80px; height: 80px; display: block; }
+.logo img { width:80px; height:80px; display:block; border-radius:12px; object-fit:cover; }
 .header-text { flex:1; text-align:left; }
 .header-text h1 { font-size:2.5rem; margin-bottom:8px; }
 .header-text p { opacity:0.9; margin-bottom:15px; }
@@ -20,31 +20,11 @@ header { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; paddi
 .cta-btn:hover { transform:scale(1.05); }
 
 /* Gelembung header & footer */
-.bubble {
-  position:absolute;
-  bottom:0;
-  background:rgba(255,255,255,0.5);
-  border-radius:50%;
-  animation: rise linear infinite;
-}
-@keyframes rise {
-  0% { transform: translateY(0) scale(1); opacity:0.7; }
-  50% { opacity:0.9; }
-  100% { transform: translateY(-1200px) scale(1.2); opacity:0; }
-}
+.bubble { position:absolute; bottom:0; background:rgba(255,255,255,0.5); border-radius:50%; animation: rise linear infinite; }
+@keyframes rise { 0% { transform: translateY(0) scale(1); opacity:0.7; } 50% { opacity:0.9; } 100% { transform: translateY(-1200px) scale(1.2); opacity:0; } }
 
 /* Tabs */
-.tab-menu { 
-  display:flex; 
-  flex-wrap:wrap;       
-  justify-content:center; 
-  max-width:1000px; 
-  margin:20px auto; 
-  gap:10px; 
-  position:relative; 
-  z-index:1; 
-  overflow-x: visible;  
-}
+.tab-menu { display:flex; flex-wrap:wrap; justify-content:center; max-width:1000px; margin:20px auto; gap:10px; position:relative; z-index:1; overflow-x: visible; }
 .tab-menu .tab-btn { flex:1 1 120px; padding:12px 20px; border:none; border-radius:50px; background:#e2e8f0; color:#1d4ed8; font-weight:600; cursor:pointer; position:relative; transition:all 0.3s; }
 .tab-menu .tab-btn.active { background:#3b82f6; color:white; }
 .tab-menu .tab-btn.active::after { content:''; position:absolute; bottom:-5px; left:20%; width:60%; height:4px; background:#facc15; border-radius:2px; }
@@ -58,54 +38,18 @@ header { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; paddi
 .item.show { opacity:1; transform:translateX(0); }
 
 /* Modern Form Pesan Laundry */
-.modern-form .form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-}
+.modern-form .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 .form-group { position: relative; display: flex; align-items: center; }
 .form-group input,
-.form-group select {
-  width: 100%;
-  padding: 12px 40px 12px 12px;
-  border-radius: 12px;
-  border: 1px solid #ccc;
-  font-size: 1rem;
-  background: #f9fafb;
-  transition: all 0.3s;
-}
+.form-group select { width: 100%; padding: 12px 40px 12px 12px; border-radius: 12px; border: 1px solid #ccc; font-size: 1rem; background: #f9fafb; transition: all 0.3s; }
 .form-group input:focus,
-.form-group select:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 12px rgba(59,130,246,0.3);
-}
-.form-group label {
-  position: absolute;
-  left: 12px;
-  top: 12px;
-  color: #6b7280;
-  font-size: 0.95rem;
-  pointer-events: none;
-  transition: 0.3s ease all;
-}
+.form-group select:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 12px rgba(59,130,246,0.3); }
+.form-group label { position: absolute; left: 12px; top: 12px; color: #6b7280; font-size: 0.95rem; pointer-events: none; transition: 0.3s ease all; }
 .form-group input:focus + label,
 .form-group input:not(:placeholder-shown) + label,
 .form-group select:focus + label,
-.form-group select:not([value=""]) + label {
-  top: -10px;
-  left: 10px;
-  background: #f9fafb;
-  font-size: 0.8rem;
-  padding: 0 5px;
-  color: #3b82f6;
-}
-.form-group .icon {
-  position: absolute;
-  right: 12px;
-  font-size: 1.2rem;
-  pointer-events: none;
-}
+.form-group select:not([value=""]) + label { top: -10px; left: 10px; background: #f9fafb; font-size: 0.8rem; padding: 0 5px; color: #3b82f6; }
+.form-group .icon { position: absolute; right: 12px; font-size: 1.2rem; pointer-events: none; }
 .modern-form button { padding:12px; background:#3b82f6; color:white; font-weight:600; border:none; border-radius:12px; cursor:pointer; transition:all 0.3s; }
 .modern-form button:hover { transform:scale(1.03); }
 
@@ -145,31 +89,12 @@ header { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; paddi
 #toast.show { opacity:1; pointer-events:auto; }
 
 /* Footer */
-footer {
-  background: linear-gradient(135deg,#3b82f6,#6366f1);
-  color:white;
-  padding:20px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
+footer { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; padding:20px; text-align: center; position: relative; overflow: hidden; }
 footer p { margin: 5px 0; font-weight:600; }
 
 /* Responsive */
-@media(max-width:768px){ 
-  .grid-items{grid-template-columns:repeat(auto-fit,minmax(180px,1fr));} 
-  .header-inner{flex-direction:column;text-align:center;} 
-  .header-text h1{font-size:2rem;} 
-  .header-text p{font-size:1rem;} 
-  .logo{width:60px;height:60px;} 
-  .modern-form .form-grid { grid-template-columns:1fr !important; }
-  .form-group[style] { grid-column: span 1 !important; }
-  .modern-form button { grid-column: span 1 !important; }
-}
-@media(max-width:480px){
-  .tab-menu .tab-btn{flex:1 1 100%; font-size:0.9rem;}
-  .accordion-header::after{right:15px;}
-}
+@media(max-width:768px){ .grid-items{grid-template-columns:repeat(auto-fit,minmax(180px,1fr));} .header-inner{flex-direction:column;text-align:center;} .header-text h1{font-size:2rem;} .header-text p{font-size:1rem;} .logo{width:60px;height:60px;} .modern-form .form-grid { grid-template-columns:1fr !important; } .form-group[style] { grid-column: span 1 !important; } .modern-form button { grid-column: span 1 !important; } }
+@media(max-width:480px){ .tab-menu .tab-btn{flex:1 1 100%; font-size:0.9rem;} .accordion-header::after{right:15px;} }
 </style>
 </head>
 <body>
@@ -177,13 +102,10 @@ footer p { margin: 5px 0; font-weight:600; }
 <header>
   <div class="header-inner">
     <div class="logo">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="80" height="80">
-        <circle cx="32" cy="32" r="30" fill="#3b82f6" stroke="#facc15" stroke-width="4"/>
-        <circle cx="32" cy="32" r="14" fill="white"/>
-        <circle cx="32" cy="32" r="8" fill="#3b82f6"/>
-        <circle cx="24" cy="24" r="2" fill="#facc15"/>
-        <circle cx="40" cy="24" r="2" fill="#facc15"/>
-      </svg>
+      <img src="https://github.com/My-data-file/Share/blob/main/Logo%20Transparan.png"
+           alt="Sea Laundry Logo"
+           width="80" height="80"
+           style="border-radius:12px; object-fit:cover;">
     </div>
     <div class="header-text">
       <h1>Sea Laundry</h1>
