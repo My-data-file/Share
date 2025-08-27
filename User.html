@@ -11,7 +11,7 @@ a { text-decoration:none; }
 /* Header */
 header { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; padding:40px 20px; border-bottom:5px solid #facc15; display:flex; justify-content:center; align-items:center; position:relative; overflow:hidden; }
 .header-inner { display:flex; align-items:center; max-width:1000px; width:95%; flex-wrap:wrap; gap:20px; position:relative; z-index:1; }
-.logo { width:80px; height:80px; margin-right:25px; } /* jarak ke teks header */
+.logo { width:80px; height:80px; margin-right:25px; }
 .logo img { width:80px; height:80px; display:block; border-radius:50%; object-fit:cover; background:#facc15; padding:8px; }
 .header-text { flex:1; text-align:left; }
 .header-text h1 { font-size:2.5rem; margin-bottom:8px; }
@@ -168,6 +168,11 @@ footer p { margin: 5px 0; font-weight:600; }
           <span class="icon">🧺</span>
         </div>
         <div class="form-group" style="grid-column: span 2;">
+          <input type="text" id="catatan" placeholder=" ">
+          <label for="catatan">Catatan Tambahan</label>
+          <span class="icon">📝</span>
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
           <input type="date" id="jadwal" placeholder=" " required>
           <label for="jadwal">Jadwal Jemput / Antar</label>
           <span class="icon">📅</span>
@@ -292,9 +297,10 @@ document.getElementById('orderForm').addEventListener('submit', e=>{
   if(berat<=0){ alert('Berat harus > 0'); return; }
   const layanan = document.getElementById('layanan').value;
   const jadwal = document.getElementById('jadwal').value;
+  const catatan = document.getElementById('catatan').value.trim();
   const today = new Date().toISOString().split('T')[0];
   if(jadwal < today){ alert('Jadwal tidak boleh di masa lalu'); return; }
-  const wa = `Halo, saya ingin memesan laundry.\nNama: ${nama}\nAlamat: ${alamat}\nBerat: ${berat}kg\nLayanan: ${layanan}\nJadwal: ${jadwal}`;
+  const wa = `Halo, saya ingin memesan laundry.\nNama: ${nama}\nAlamat: ${alamat}\nBerat: ${berat}kg\nLayanan: ${layanan}\nJadwal: ${jadwal}\nCatatan: ${catatan}`;
   window.open('https://wa.me/6287877929391?text='+encodeURIComponent(wa),'_blank');
   const toast = document.getElementById('toast');
   toast.classList.add('show');
