@@ -269,7 +269,7 @@ tabs.forEach(btn => {
 showItems('home');
 
 // ================== Apps Script Integration ==================
-const GAS_URL = "https://script.google.com/macros/s/AKfycbwk10gykjHp9eJ06PZ-BP_soV7b-hJPjcUnMNLp5hV0jO53xM7DevIXNXbK827YfSw2mQ/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbwXBEufyqlB9gl4x1Iz1_WwpxrQaWHSWYdyI2GrhwmYO9unOqoFmYQQmJ6ujnVFmL4qlg/exec";
 
 document.getElementById('orderForm').addEventListener('submit', e=>{
   e.preventDefault();
@@ -349,6 +349,14 @@ function createBubble(elem) {
 const headerElem = document.querySelector('header');
 const footerElem = document.querySelector('footer');
 setInterval(()=>{ createBubble(headerElem); createBubble(footerElem); }, 500);
+
+// ================== Auto-refresh Status Order setiap 5 detik ==================
+setInterval(()=>{
+  const statusTab = document.getElementById('status');
+  if(statusTab.classList.contains('active')){
+    loadStatusFromGAS();
+  }
+}, 5000);
 </script>
 
 </body>
