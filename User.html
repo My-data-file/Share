@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Laundry Express Full</title>
 <style>
-/* ================= CSS sama persis seperti sebelumnya ================= */
+/* ================= CSS sama persis ================= */
 body { font-family:'Segoe UI', Tahoma, sans-serif; margin:0; background:#f9fafb; color:#1f2937; }
 a { text-decoration:none; }
 header { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; padding:40px 20px; border-bottom:5px solid #facc15; display:flex; justify-content:center; align-items:center; position:relative; overflow:hidden; }
@@ -45,7 +45,7 @@ header { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; paddi
 .modern-form button:hover { transform:scale(1.03); }
 .status-progress { display:flex; justify-content:space-between; flex-wrap:nowrap; margin-top:20px; position:relative; overflow-x:auto; padding-bottom:10px; }
 .status-progress::before { content:""; position:absolute; top:50%; left:5%; width:90%; height:4px; background:#e2e8f0; transform:translateY(-50%); z-index:0; border-radius:2px; }
-.status-progress .step { flex:0 0 120px; text-align:center; padding:14px 5px; border-radius:12px; background:#e2e8f0; margin:5px 5px; cursor:pointer; position:relative; z-index:1; }
+.status-progress .step { flex:0 0 120px; text-align:center; padding:14px 5px; border-radius:12px; background:#e2e8f0; margin:5px 5px; position:relative; z-index:1; }
 .status-progress .step.active { background:linear-gradient(135deg,#facc15,#fbbf24); color:white; }
 .status-progress .step::before { content:attr(data-icon); position:absolute; top:-10px; left:50%; transform:translateX(-50%); opacity:0; transition:0.4s; font-size:20px; }
 .status-progress .step.active::before { opacity:1; animation:pulse 1s infinite alternate; }
@@ -79,9 +79,7 @@ footer p { margin: 5px 0; font-weight:600; }
 <header>
   <div class="header-inner">
     <div class="logo">
-      <img src="https://raw.githubusercontent.com/My-data-file/Share/main/Logo.png"
-       alt="Sea Laundry Logo"
-       width="80" height="80">
+      <img src="https://raw.githubusercontent.com/My-data-file/Share/main/Logo.png" alt="Sea Laundry Logo" width="80" height="80">
     </div>
     <div class="header-text">
       <h1>Sea Laundry</h1>
@@ -160,20 +158,24 @@ footer p { margin: 5px 0; font-weight:600; }
   </div>
 </div>
 
-<!-- Tab lain tetap sama seperti sebelumnya -->
+<!-- ================= Status Order ================= -->
 <div class="tab-content" id="status">
   <div class="card">
     <h2>Status Order</h2>
-    <div class="status-progress">
-      <div class="step active" data-icon="📝">Dipesan</div>
+    <div class="status-progress" id="statusSteps">
+      <div class="step" data-icon="📝">Dipesan</div>
       <div class="step" data-icon="🛵">Dijemput</div>
       <div class="step" data-icon="🧺">Diproses</div>
       <div class="step" data-icon="✅">Selesai</div>
       <div class="step" data-icon="📦">Diantar</div>
     </div>
+    <p style="margin-top:10px; font-size:0.9rem; color:#555;">
+      Status hanya bisa dilihat, perubahan dilakukan oleh admin di spreadsheet.
+    </p>
   </div>
 </div>
 
+<!-- ================= Services, FAQ, Testimoni, Contact ================= -->
 <div class="tab-content" id="services">
   <div class="card">
     <h2>Layanan & Harga</h2>
@@ -213,15 +215,15 @@ footer p { margin: 5px 0; font-weight:600; }
     <div class="testimoni-grid">
       <div class="testimoni-item">
         <div class="testimoni-avatar">A</div>
-        <div><strong>Andi</strong><br>“Laundry Express cepat dan rapi! Sangat direkomendasikan.”</div>
+        <p>"Laundry cepat dan hasilnya rapi!"</p>
       </div>
       <div class="testimoni-item">
-        <div class="testimoni-avatar">R</div>
-        <div><strong>Rina</strong><br>“Pelayanan WA responsif, jemput & antar cucian sangat membantu.”</div>
+        <div class="testimoni-avatar">B</div>
+        <p>"Pelayanan ramah, pesan via WA mudah."</p>
       </div>
       <div class="testimoni-item">
-        <div class="testimoni-avatar">D</div>
-        <div><strong>Dewi</strong><br>“Cucian wangi dan rapi, hasil setrika bagus. Sangat puas!”</div>
+        <div class="testimoni-avatar">C</div>
+        <p>"Cucian wangi dan tepat waktu."</p>
       </div>
     </div>
   </div>
@@ -229,25 +231,24 @@ footer p { margin: 5px 0; font-weight:600; }
 
 <div class="tab-content" id="contact">
   <div class="card">
-    <h2>Kontak Kami</h2>
+    <h2>Kontak</h2>
     <div class="contact-info">
-      <p><strong>Alamat:</strong> Jl. Contoh No.123, Jakarta</p>
-      <p><strong>WA:</strong> <a href="https://wa.me/6287877929391" target="_blank" rel="noopener noreferrer">087877929391</a></p>
-      <p><strong>Email:</strong> info@laundryexpress.com</p>
+      <p>WA: <a href="https://wa.me/6287877929391" target="_blank">+62 878-7792-9391</a></p>
+      <p>Email: <a href="mailto:info@sealaundry.com">info@sealaundry.com</a></p>
+      <p>Alamat: Jl. Contoh No.123, Kota Anda</p>
     </div>
-    <a href="https://wa.me/6287877929391?text=Halo,%20saya%20ingin%20bertanya%20tentang%20laundry" target="_blank" rel="noopener noreferrer" class="cta-btn">Chat via WhatsApp</a>
   </div>
 </div>
 
+<div id="waChat" onclick="window.open('https://wa.me/6287877929391','_blank')">Chat WA</div>
+<div id="toast">Pesanan dikirim ke WhatsApp</div>
+
 <footer>
-  <p>© 2025 Sea Laundry. Semua hak cipta dilindungi.</p>
+  <p>&copy; 2025 Sea Laundry</p>
 </footer>
 
-<div id="waChat" onclick="window.open('https://wa.me/6287877929391','_blank')">Chat WA</div>
-<div id="toast">Pesanan berhasil dikirim ke WhatsApp!</div>
-
-<!-- ================= Script ================= -->
 <script>
+// ================= Tab & Animasi =================
 const tabs = document.querySelectorAll('.tab-btn');
 const contents = document.querySelectorAll('.tab-content');
 const showItems = (tabId)=>{
@@ -262,12 +263,13 @@ tabs.forEach(btn => {
     const tab = document.getElementById(btn.dataset.tab);
     tab.classList.add('active');
     showItems(btn.dataset.tab);
+    if(btn.dataset.tab === 'status') loadStatusFromGAS();
   });
 });
 showItems('home');
 
 // ================== Apps Script Integration ==================
-const GAS_URL = "https://script.google.com/macros/s/AKfycbwzRhyN9YW0ohwPUan-pz4uhlvsbAtDpDDHKQ_oZstpQg0PbRf_p7s__cZW9QXYJvcc4Q/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbwk10gykjHp9eJ06PZ-BP_soV7b-hJPjcUnMNLp5hV0jO53xM7DevIXNXbK827YfSw2mQ/exec";
 
 document.getElementById('orderForm').addEventListener('submit', e=>{
   e.preventDefault();
@@ -293,39 +295,47 @@ document.getElementById('orderForm').addEventListener('submit', e=>{
       type:"PesanLaundry",
       payload:{ nama, alamat, berat, layanan, catatan, jadwal }
     })
-  }).then(()=>{
-    const toast = document.getElementById('toast');
-    toast.classList.add('show');
-    setTimeout(()=>toast.classList.remove('show'),3000);
-  }).catch(err=>{
-    console.error("Gagal mengirim ke Spreadsheet:", err);
-    alert("Terjadi masalah saat menyimpan ke Spreadsheet");
-  });
+  }).then(()=>{ const toast = document.getElementById('toast'); toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),3000); })
+  .catch(err=>{ console.error("Gagal mengirim ke Spreadsheet:", err); alert("Terjadi masalah saat menyimpan ke Spreadsheet"); });
 });
 
-// Status order click
-document.querySelectorAll('.status-progress .step').forEach((s,i)=>{
-  s.addEventListener('click', ()=>{
-    document.querySelectorAll('.status-progress .step').forEach(x=>x.classList.remove('active'));
-    for(let j=0;j<=i;j++){ document.querySelectorAll('.status-progress .step')[j].classList.add('active'); }
-  });
-});
+// ================== Status Order ==================
+function loadStatusFromGAS(){
+  fetch(GAS_URL, {
+    method: "POST",
+    body: JSON.stringify({ type:"GetAllStatus" })
+  })
+  .then(res => res.json())
+  .then(data => {
+    const steps = document.querySelectorAll('#statusSteps .step');
+    steps.forEach(s => s.classList.remove('active'));
 
-// Accordion FAQ
+    if(data.status.length === 0) return;
+    const lastStatus = data.status[data.status.length - 1]; // ambil status terakhir
+    steps.forEach(s => {
+      if(isStepActive(s.textContent, lastStatus)) s.classList.add('active');
+    });
+  })
+  .catch(err => { console.error("Gagal ambil status:", err); });
+}
+
+function isStepActive(step, lastStatus){
+  const order = ["Dipesan","Dijemput","Diproses","Selesai","Diantar"];
+  return order.indexOf(step) <= order.indexOf(lastStatus);
+}
+
+// ================== Accordion ==================
 document.querySelectorAll('.accordion-header').forEach(header=>{
   header.addEventListener('click', ()=>{
     const content = header.nextElementSibling;
     const isActive = header.classList.contains('active');
     document.querySelectorAll('.accordion-header').forEach(h=>h.classList.remove('active'));
     document.querySelectorAll('.accordion-content').forEach(c=>c.style.maxHeight=null);
-    if(!isActive){
-      header.classList.add('active');
-      content.style.maxHeight = content.scrollHeight+"px";
-    }
+    if(!isActive){ header.classList.add('active'); content.style.maxHeight = content.scrollHeight+"px"; }
   });
 });
 
-// Gelembung header & footer
+// ================== Gelembung ==================
 function createBubble(elem) {
   const bubble = document.createElement('div');
   bubble.classList.add('bubble');
