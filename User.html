@@ -168,11 +168,6 @@ footer p { margin: 5px 0; font-weight:600; }
           <label for="alamat">Alamat Lengkap</label>
           <span class="icon">🏠</span>
         </div>
-	<div class="form-group">
-	  <input type="number" id="nohp" placeholder=" " min="0" oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
-	  <label for="nohp">No HP</label>
-	  <span class="icon">📱</span>
-	</div>
         <div class="form-group">
           <input type="number" id="berat" placeholder=" " min="1" required>
           <label for="berat">Berat Cucian (kg)</label>
@@ -188,35 +183,21 @@ footer p { margin: 5px 0; font-weight:600; }
           <label for="layanan">Pilih Layanan</label>
           <span class="icon">🧺</span>
         </div>
-        <div class="form-group">
-          <select id="pembayaran" required>
-            <option value="" disabled selected></option>
-            <option>Cash</option>
-            <option>Transfer Bank</option>
-            <option>E-wallet</option>
-          </select>
-          <label for="pembayaran">Metode Pembayaran</label>
-          <span class="icon">💳</span>
+        <div class="form-group" style="grid-column: span 2;">
+          <input type="text" id="catatan" placeholder=" ">
+          <label for="catatan">Catatan Tambahan</label>
+          <span class="icon">📝</span>
         </div>
-	<div class="form-group">
-	  <input type="text" id="catatan" placeholder=" ">
-	  <label for="catatan">Catatan Tambahan</label>
-	  <span class="icon">📝</span>
-	</div>
-
-	<div class="form-group">
-	  <input type="date" id="jadwal" placeholder=" " required>
-	  <label for="jadwal">Jadwal Jemput </label>
-	  <span class="icon">📅</span>
-	</div>
-
-	<button type="submit" style="grid-column: span 2;">Kirim via WhatsApp</button>
-
+        <div class="form-group" style="grid-column: span 2;">
+          <input type="date" id="jadwal" placeholder=" " required>
+          <label for="jadwal">Jadwal Jemput / Antar</label>
+          <span class="icon">📅</span>
+        </div>
+        <button type="submit" style="grid-column: span 2;">Kirim via WhatsApp</button>
       </div>
     </form>
   </div>
 </div>
-
 
 <!-- ================= Status, Services, FAQ, Testimoni, Contact ================= -->
 <div class="tab-content" id="status">
@@ -347,7 +328,7 @@ document.querySelector('.cta-btn').addEventListener('click', e=>{
 });
 
 // ================== Apps Script Integration ==================
-const GAS_URL = "https://script.google.com/macros/s/AKfycbwXBEufyqlB9gl4x1Iz1_WwpxrQaWHSWYdyI2GrhwmYO9unOqoFmYQQmJ6ujnVFmL4qlg/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzHKC5Evjx0ItxELhG5ojnSkOTMEV_YptEQlOgQYlS2l779Ppq1kDLUBZeREEG2GX_l7w/exec";
 document.getElementById('orderForm').addEventListener('submit', e=>{
   e.preventDefault();
   const nama = document.getElementById('nama').value.trim();
