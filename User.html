@@ -70,31 +70,8 @@ header { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; paddi
 #toast.show { opacity:1; pointer-events:auto; }
 footer { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; padding:20px; text-align: center; position: relative; overflow: hidden; }
 footer p { margin: 5px 0; font-weight:600; }
-
-/* ================= Responsif tambahan ================= */
-@media(max-width:768px){
-  .grid-items{grid-template-columns:repeat(auto-fit,minmax(180px,1fr));}
-  .header-inner{flex-direction:column;text-align:center;}
-  .header-text{text-align:center;}
-  .header-text h1{font-size:2rem;}
-  .logo{width:60px;height:60px;margin-right:0;}
-  .modern-form .form-grid { grid-template-columns:1fr !important; }
-  .form-group[style] { grid-column: span 1 !important; }
-  .modern-form button { grid-column: span 1 !important; }
-  .tab-menu { flex-wrap: wrap; justify-content: center; }
-  .tab-menu .tab-btn { flex:1 1 45%; margin-bottom:8px; }
-  .status-progress { flex-wrap: wrap; justify-content: space-between; }
-  .status-progress .step { flex:1 1 45%; margin-bottom:8px; }
-}
-@media(max-width:480px){
-  .tab-menu { flex-direction: column; align-items: stretch; }
-  .tab-menu .tab-btn { flex:1 1 100%; font-size:0.85rem; padding:10px; }
-  .status-progress { flex-direction: column; align-items: flex-start; }
-  .status-progress .step { flex:1 1 100%; margin-bottom:6px; }
-  .header-text h1 { font-size:1.8rem; }
-  .header-text p { font-size:0.9rem; }
-  .cta-btn { padding:10px 20px; font-size:0.9rem; }
-}
+@media(max-width:768px){ .grid-items{grid-template-columns:repeat(auto-fit,minmax(180px,1fr));} .header-inner{flex-direction:column;text-align:center;} .header-text{text-align:center;} .header-text h1{font-size:2rem;} .logo{width:60px;height:60px;margin-right:0;} .modern-form .form-grid { grid-template-columns:1fr !important; } .form-group[style] { grid-column: span 1 !important; } .modern-form button { grid-column: span 1 !important; } }
+@media(max-width:480px){ .tab-menu .tab-btn{flex:1 1 100%; font-size:0.9rem;} .accordion-header::after{right:15px;} }
 </style>
 </head>
 <body>
@@ -224,8 +201,8 @@ footer p { margin: 5px 0; font-weight:600; }
         <div class="accordion-content"><p>Ya, kami menyediakan layanan jemput & antar cucian di area tertentu.</p></div>
       </div>
       <div class="accordion-item">
-        <div class="accordion-header">Metode pembayaran apa saja?</div>
-        <div class="accordion-content"><p>Transfer bank, OVO, GoPay, dan tunai saat antar.</p></div>
+        <div class="accordion-header">Berapa lama proses laundry?</div>
+        <div class="accordion-content"><p>Proses normal 1-2 hari kerja, tergantung jenis layanan dan jumlah cucian.</p></div>
       </div>
     </div>
   </div>
@@ -233,104 +210,162 @@ footer p { margin: 5px 0; font-weight:600; }
 
 <div class="tab-content" id="testimoni">
   <div class="card">
-    <h2>Testimoni</h2>
+    <h2>Testimoni Pelanggan</h2>
     <div class="testimoni-grid">
-      <div class="testimoni-item"><div class="testimoni-avatar">A</div><p>"Layanan cepat dan ramah!"</p></div>
-      <div class="testimoni-item"><div class="testimoni-avatar">B</div><p>"Cucian selalu rapi & wangi."</p></div>
-      <div class="testimoni-item"><div class="testimoni-avatar">C</div><p>"Mudah pesan via WhatsApp."</p></div>
+      <div class="testimoni-item">
+        <div class="testimoni-avatar">A</div>
+        <p>"Laundry cepat dan hasilnya rapi!"</p>
+      </div>
+      <div class="testimoni-item">
+        <div class="testimoni-avatar">B</div>
+        <p>"Pelayanan ramah, pesan via WA mudah."</p>
+      </div>
     </div>
   </div>
 </div>
 
 <div class="tab-content" id="contact">
   <div class="card contact-info">
-    <h2>Kontak Kami</h2>
-    <p>📞 <a href="tel:+628123456789">+62 812-3456-789</a></p>
-    <p>📧 <a href="mailto:info@sealaundry.com">info@sealaundry.com</a></p>
-    <p>📍 Jalan Contoh No.1, Kota Anda</p>
+    <h2>Kontak</h2>
+    <p>WhatsApp: <a href="https://wa.me/6287877929391" target="_blank">+62 878-7792-9391</a></p>
+    <p>Email: <a href="mailto:info@sealaundry.com">info@sealaundry.com</a></p>
+    <p>Alamat: Jl. Contoh No.123, Jakarta</p>
   </div>
 </div>
 
-<div id="waChat" onclick="openWA()">Chat WhatsApp</div>
-<div id="toast"></div>
+<!-- ================= Tombol WA Icon ================= -->
+<div id="waChat" onclick="window.open('https://wa.me/6287877929391','_blank')">Chat WA</div>
+
+<div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
   <p>&copy; 2025 Sea Laundry. All rights reserved.</p>
 </footer>
 
 <script>
-/* ================= JS Tab ================= */
+// ================= LocalStorage Auto-Save =================
+const fields = ['nama','alamat','berat','layanan','jadwal','catatan'];
+window.addEventListener('DOMContentLoaded', ()=>{
+  fields.forEach(id=>{
+    const el = document.getElementById(id);
+    const saved = localStorage.getItem('order_'+id);
+    if(saved !== null) el.value = saved;
+    el.dispatchEvent(new Event('input'));
+  });
+});
+fields.forEach(id=>{
+  const el = document.getElementById(id);
+  el.addEventListener('input', ()=>localStorage.setItem('order_'+id, el.value));
+});
+
+// ================= Tab & Animasi =================
 const tabs = document.querySelectorAll('.tab-btn');
 const contents = document.querySelectorAll('.tab-content');
-tabs.forEach(tab=>{
-  tab.addEventListener('click', ()=>{
-    tabs.forEach(t=>t.classList.remove('active'));
-    tab.classList.add('active');
+const showItems = (tabId)=>{
+  const items = document.getElementById(tabId).querySelectorAll('.item');
+  items.forEach((i,j)=>setTimeout(()=>i.classList.add('show'), j*100));
+}
+tabs.forEach(btn => {
+  btn.addEventListener('click', ()=>{
+    tabs.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
     contents.forEach(c=>c.classList.remove('active'));
-    document.getElementById(tab.dataset.tab).classList.add('active');
+    const tab = document.getElementById(btn.dataset.tab);
+    tab.classList.add('active');
+    showItems(btn.dataset.tab);
+    if(btn.dataset.tab === 'status') loadStatusFromGAS();
   });
 });
+showItems('home');
 
-/* ================= JS Accordion ================= */
-const accHeaders = document.querySelectorAll('.accordion-header');
-accHeaders.forEach(header=>{
-  header.addEventListener('click', ()=>{
-    header.classList.toggle('active');
-    const content = header.nextElementSibling;
-    if(header.classList.contains('active')) content.style.maxHeight = content.scrollHeight + 'px';
-    else content.style.maxHeight = null;
-  });
+// ================== Tombol "Pesan Sekarang" dari header ==================
+document.querySelector('.cta-btn').addEventListener('click', e=>{
+  e.preventDefault();
+  const orderTabBtn = document.querySelector('.tab-btn[data-tab="order"]');
+  orderTabBtn.click(); // aktifkan tab "Pesan Laundry"
+  window.scrollTo({ top: 0, behavior: 'smooth' }); // scroll ke atas
 });
 
-/* ================= JS WhatsApp ================= */
-function openWA(){
-  const nama = document.getElementById('nama').value;
-  const alamat = document.getElementById('alamat').value;
-  const berat = document.getElementById('berat').value;
+// ================== Apps Script Integration ==================
+const GAS_URL = "https://script.google.com/macros/s/AKfycbwXBEufyqlB9gl4x1Iz1_WwpxrQaWHSWYdyI2GrhwmYO9unOqoFmYQQmJ6ujnVFmL4qlg/exec";
+document.getElementById('orderForm').addEventListener('submit', e=>{
+  e.preventDefault();
+  const nama = document.getElementById('nama').value.trim();
+  const alamat = document.getElementById('alamat').value.trim();
+  const berat = parseFloat(document.getElementById('berat').value);
   const layanan = document.getElementById('layanan').value;
-  const catatan = document.getElementById('catatan').value;
   const jadwal = document.getElementById('jadwal').value;
-  if(!nama || !alamat || !berat || !layanan || !jadwal){
-    showToast("Lengkapi form sebelum mengirim.");
-    return;
-  }
-  const waNumber = "628123456789"; // ganti nomor admin
-  const text = `Halo, saya ingin pesan laundry:\nNama: ${nama}\nAlamat: ${alamat}\nBerat: ${berat}kg\nLayanan: ${layanan}\nCatatan: ${catatan}\nJadwal: ${jadwal}`;
-  window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(text)}`, '_blank');
-}
-
-function showToast(msg){
-  const t = document.getElementById('toast');
-  t.innerText = msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3000);
-}
-
-/* ================= JS Status Progress Dummy ================= */
-const steps = document.querySelectorAll('.status-progress .step');
-let activeStep = 0;
-function updateStep(){
-  steps.forEach((s,i)=> s.classList.toggle('active', i===activeStep));
-}
-updateStep();
-// Bisa dikoneksikan ke GAS spreadsheet untuk update status
-
-/* ================= JS Bubble ================= */
-const header = document.querySelector('header');
-for(let i=0;i<15;i++){
-  const bubble = document.createElement('div');
-  bubble.className = 'bubble';
-  bubble.style.width = bubble.style.height = Math.random()*25+15+'px';
-  bubble.style.left = Math.random()*100+'%';
-  bubble.style.animationDuration = (Math.random()*5+5)+'s';
-  header.appendChild(bubble);
-}
-
-/* ================= Show grid items ================= */
-window.addEventListener('load', ()=>{
-  const items = document.querySelectorAll('.grid-items .item');
-  items.forEach((it,i)=> setTimeout(()=>it.classList.add('show'), i*200));
+  const catatan = document.getElementById('catatan').value.trim();
+  const today = new Date().toISOString().split('T')[0];
+  if(berat <= 0){ alert('Berat harus > 0'); return; }
+  if(jadwal < today){ alert('Jadwal tidak boleh di masa lalu'); return; }
+  const wa = `Halo, saya ingin memesan laundry.\nNama: ${nama}\nAlamat: ${alamat}\nBerat: ${berat}kg\nLayanan: ${layanan}\nJadwal: ${jadwal}\nCatatan: ${catatan}`;
+  window.open('https://wa.me/6287877929391?text='+encodeURIComponent(wa),'_blank');
+  fetch(GAS_URL, {
+    method:"POST",
+    body: JSON.stringify({
+      type:"PesanLaundry",
+      payload:{ nama, alamat, berat, layanan, catatan, jadwal }
+    })
+  }).then(()=>{
+    const toast = document.getElementById('toast'); 
+    toast.classList.add('show'); 
+    setTimeout(()=>toast.classList.remove('show'),3000);
+    fields.forEach(id=>localStorage.removeItem('order_'+id));
+    document.getElementById('orderForm').reset();
+  })
+  .catch(err=>{ console.error("Gagal mengirim ke Spreadsheet:", err); alert("Terjadi masalah saat menyimpan ke Spreadsheet"); });
 });
+
+// ================== Status Order ==================
+function loadStatusFromGAS(){
+  fetch(GAS_URL, { method: "POST", body: JSON.stringify({ type:"GetAllStatus" }) })
+  .then(res => res.json())
+  .then(data => {
+    const steps = document.querySelectorAll('#statusSteps .step');
+    steps.forEach(s => s.classList.remove('active'));
+    if(data.status.length === 0) return;
+    const lastStatus = data.status[data.status.length - 1];
+    steps.forEach(s => { if(isStepActive(s.textContent, lastStatus)) s.classList.add('active'); });
+  })
+  .catch(err => { console.error("Gagal ambil status:", err); });
+}
+function isStepActive(step, lastStatus){
+  const order = ["Dipesan","Dijemput","Diproses","Selesai","Diantar"];
+  return order.indexOf(step) <= order.indexOf(lastStatus);
+}
+
+// ================== Accordion ==================
+document.querySelectorAll('.accordion-header').forEach(header=>{
+  header.addEventListener('click', ()=>{
+    const content = header.nextElementSibling;
+    const isActive = header.classList.contains('active');
+    document.querySelectorAll('.accordion-header').forEach(h=>h.classList.remove('active'));
+    document.querySelectorAll('.accordion-content').forEach(c=>c.style.maxHeight=null);
+    if(!isActive){ header.classList.add('active'); content.style.maxHeight = content.scrollHeight+"px"; }
+  });
+});
+
+// ================== Gelembung ==================
+function createBubble(elem) {
+  const bubble = document.createElement('div');
+  bubble.classList.add('bubble');
+  const size = Math.random() * 30 + 20;
+  bubble.style.width = bubble.style.height = size + 'px';
+  bubble.style.left = Math.random() * 100 + '%';
+  bubble.style.animationDuration = (Math.random() * 10 + 8) + 's';
+  elem.appendChild(bubble);
+  setTimeout(()=> bubble.remove(), 12000);
+}
+const headerElem = document.querySelector('header');
+const footerElem = document.querySelector('footer');
+setInterval(()=>{ createBubble(headerElem); createBubble(footerElem); }, 500);
+
+// ================== Auto-refresh Status Order setiap 5 detik ==================
+setInterval(()=>{
+  const statusTab = document.getElementById('status');
+  if(statusTab.classList.contains('active')){ loadStatusFromGAS(); }
+}, 5000);
 </script>
 
 </body>
