@@ -278,6 +278,14 @@ tabs.forEach(btn => {
 });
 showItems('home');
 
+// ================== Tombol "Pesan Sekarang" dari header ==================
+document.querySelector('.cta-btn').addEventListener('click', e=>{
+  e.preventDefault();
+  const orderTabBtn = document.querySelector('.tab-btn[data-tab="order"]');
+  orderTabBtn.click(); // aktifkan tab "Pesan Laundry"
+  window.scrollTo({ top: 0, behavior: 'smooth' }); // scroll ke atas
+});
+
 // ================== Apps Script Integration ==================
 const GAS_URL = "https://script.google.com/macros/s/AKfycbwXBEufyqlB9gl4x1Iz1_WwpxrQaWHSWYdyI2GrhwmYO9unOqoFmYQQmJ6ujnVFmL4qlg/exec";
 document.getElementById('orderForm').addEventListener('submit', e=>{
