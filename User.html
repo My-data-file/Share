@@ -8,7 +8,18 @@
 /* ================= CSS sama persis ================= */
 body { font-family:'Segoe UI', Tahoma, sans-serif; margin:0; background:#f9fafb; color:#1f2937; }
 a { text-decoration:none; }
-header { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; padding:40px 20px; border-bottom:5px solid #facc15; display:flex; justify-content:center; align-items:center; position:relative; overflow:hidden; }
+
+header { 
+  background: linear-gradient(135deg,#3b82f6,#6366f1); 
+  color:white; 
+  padding:40px 20px; 
+  border-bottom:5px solid #facc15; 
+  display:flex; 
+  justify-content:center; 
+  align-items:center; 
+  position:relative; 
+  overflow:hidden; 
+}
 .header-inner { 
   display:flex; 
   flex-direction:column; 
@@ -21,56 +32,167 @@ header { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; paddi
   z-index:1; 
 }
 .logo { width:80px; height:80px; margin-right:25px; }
-.logo img { width:80px; height:80px; display:block; border-radius:50%; object-fit:cover; background:#facc15; padding:8px; }
+.logo img { 
+  width:80px; height:80px; 
+  display:block; 
+  border-radius:50%; 
+  object-fit:cover; 
+  background:#facc15; 
+  padding:8px; 
+}
 .header-text { flex:1; text-align:left; }
 .header-text h1 { font-size:2.5rem; margin-bottom:8px; }
 .header-text p { opacity:0.9; margin-bottom:15px; }
 .cta-btn { 
-  display:block;          /* tombol dianggap block */
-  margin: 0 auto;         /* otomatis center */
-  width: fit-content;     /* lebar menyesuaikan teks */
-  padding:12px 25px; 
-  background:#facc15; 
-  color:#1f2937; 
-  border-radius:50px; 
-  font-weight:600; 
-  transition:all 0.3s; 
-  text-align:center; 
+  display:block;
+  margin: 0 auto;
+  width: fit-content;
+  padding:12px 25px;
+  background:#facc15;
+  color:#1f2937;
+  border-radius:50px;
+  font-weight:600;
+  transition:all 0.3s;
+  text-align:center;
 }
 .cta-btn:hover { transform:scale(1.05); }
-.bubble { position:absolute; bottom:0; background:rgba(255,255,255,0.5); border-radius:50%; animation: rise linear infinite; }
-@keyframes rise { 0% { transform: translateY(0) scale(1); opacity:0.7; } 50% { opacity:0.9; } 100% { transform: translateY(-1200px) scale(1.2); opacity:0; } }
-.tab-menu { display:flex; flex-wrap:wrap; justify-content:center; max-width:1000px; margin:20px auto; gap:10px; position:relative; z-index:1; overflow-x: visible; }
-.tab-menu .tab-btn { flex:1 1 120px; padding:12px 20px; border:none; border-radius:50px; background:#e2e8f0; color:#1d4ed8; font-weight:600; cursor:pointer; position:relative; transition:all 0.3s; }
-.tab-menu .tab-btn.active { background:#3b82f6; color:white; }
-.tab-menu .tab-btn.active::after { content:''; position:absolute; bottom:-5px; left:20%; width:60%; height:4px; background:#facc15; border-radius:2px; }
+
+.bubble { 
+  position:absolute; 
+  bottom:0; 
+  background:rgba(255,255,255,0.5); 
+  border-radius:50%; 
+  animation: rise linear infinite; 
+}
+@keyframes rise { 
+  0% { transform: translateY(0) scale(1); opacity:0.7; } 
+  50% { opacity:0.9; } 
+  100% { transform: translateY(-1200px) scale(1.2); opacity:0; } 
+}
+
+.tab-menu { 
+  display:flex; 
+  flex-wrap:wrap; 
+  justify-content:center; 
+  max-width:1000px; 
+  margin:20px auto; 
+  gap:10px; 
+  position:relative; 
+  z-index:1; 
+  overflow-x: visible; 
+}
+.tab-menu .tab-btn { 
+  flex:1 1 120px; 
+  padding:12px 20px; 
+  border:none; 
+  border-radius:50px; 
+  background:#e2e8f0; 
+  color:#1d4ed8; 
+  font-weight:600; 
+  cursor:pointer; 
+  position:relative; 
+  transition:all 0.3s; 
+}
+.tab-menu .tab-btn.active { 
+  background:#3b82f6; 
+  color:white; 
+}
+.tab-menu .tab-btn.active::after { 
+  content:''; 
+  position:absolute; 
+  bottom:-5px; 
+  left:20%; 
+  width:60%; 
+  height:4px; 
+  background:#facc15; 
+  border-radius:2px; 
+}
+
 .tab-content { display:none; opacity:0; transform:translateY(20px); transition:0.4s ease; }
 .tab-content.active { display:block; opacity:1; transform:translateY(0); }
-.card { background:white; padding:25px; border-radius:20px; margin-bottom:30px; box-shadow:0 10px 30px rgba(0,0,0,0.08); }
+
+.card { 
+  background:white; 
+  padding:25px; 
+  border-radius:20px; 
+  margin-bottom:30px; 
+  box-shadow:0 10px 30px rgba(0,0,0,0.08); 
+}
 .grid-items { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; }
-.item { background:#e2e8f0; padding:15px; border-radius:12px; opacity:0; transform:translateX(-20px); transition:all 0.4s; text-align:center; }
+.item { 
+  background:#e2e8f0; 
+  padding:15px; 
+  border-radius:12px; 
+  opacity:0; 
+  transform:translateX(-20px); 
+  transition:all 0.4s; 
+  text-align:center; 
+}
 .item.show { opacity:1; transform:translateX(0); }
+
 .modern-form .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 .form-group { position: relative; display: flex; align-items: center; }
 .form-group input,
-.form-group select { width: 100%; padding: 12px 40px 12px 12px; border-radius: 12px; border: 1px solid #ccc; font-size: 1rem; background: #f9fafb; transition: all 0.3s; }
+.form-group select { 
+  width: 100%; 
+  padding: 12px 40px 12px 12px; 
+  border-radius: 12px; 
+  border: 1px solid #ccc; 
+  font-size: 1rem; 
+  background: #f9fafb; 
+  transition: all 0.3s; 
+}
 .form-group input:focus,
 .form-group select:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 12px rgba(59,130,246,0.3); }
-.form-group label { position: absolute; left: 12px; top: 12px; color: #6b7280; font-size: 0.95rem; pointer-events: none; transition: 0.3s ease all; }
+.form-group label { 
+  position: absolute; 
+  left: 12px; top: 12px; 
+  color: #6b7280; 
+  font-size: 0.95rem; 
+  pointer-events: none; 
+  transition: 0.3s ease all; 
+}
 .form-group input:focus + label,
 .form-group input:not(:placeholder-shown) + label,
 .form-group select:focus + label,
-.form-group select:not([value=""]) + label { top: -10px; left: 10px; background: #f9fafb; font-size: 0.8rem; padding: 0 5px; color: #3b82f6; }
+.form-group select:not([value=""]) + label { 
+  top: -10px; left: 10px; 
+  background: #f9fafb; font-size: 0.8rem; color: #3b82f6; padding: 0 5px;
+}
 .form-group .icon { position: absolute; right: 12px; font-size: 1.2rem; pointer-events: none; }
-.modern-form button { padding:12px; background:#3b82f6; color:white; font-weight:600; border:none; border-radius:12px; cursor:pointer; transition:all 0.3s; }
+
+.modern-form button { 
+  padding:12px; 
+  background:#3b82f6; 
+  color:white; 
+  font-weight:600; 
+  border:none; 
+  border-radius:12px; 
+  cursor:pointer; 
+  transition:all 0.3s; 
+}
 .modern-form button:hover { transform:scale(1.03); }
-.status-progress { display:flex; justify-content:space-between; flex-wrap:nowrap; margin-top:20px; position:relative; overflow-x:auto; padding-bottom:10px; }
-.status-progress::before { content:""; position:absolute; top:50%; left:5%; width:90%; height:4px; background:#e2e8f0; transform:translateY(-50%); z-index:0; border-radius:2px; }
-.status-progress .step { flex:0 0 120px; text-align:center; padding:14px 5px; border-radius:12px; background:#e2e8f0; margin:5px 5px; position:relative; z-index:1; }
+
+.status-progress { 
+  display:flex; justify-content:space-between; flex-wrap:nowrap; 
+  margin-top:20px; position:relative; overflow-x:auto; padding-bottom:10px; 
+}
+.status-progress::before { 
+  content:""; position:absolute; top:50%; left:5%; width:90%; height:4px; 
+  background:#e2e8f0; transform:translateY(-50%); z-index:0; border-radius:2px; 
+}
+.status-progress .step { 
+  flex:0 0 120px; text-align:center; padding:14px 5px; border-radius:12px; 
+  background:#e2e8f0; margin:5px 5px; position:relative; z-index:1; 
+}
 .status-progress .step.active { background:linear-gradient(135deg,#facc15,#fbbf24); color:white; }
-.status-progress .step::before { content:attr(data-icon); position:absolute; top:-10px; left:50%; transform:translateX(-50%); opacity:0; transition:0.4s; font-size:20px; }
+.status-progress .step::before { 
+  content:attr(data-icon); position:absolute; top:-10px; left:50%; transform:translateX(-50%); 
+  opacity:0; transition:0.4s; font-size:20px; 
+}
 .status-progress .step.active::before { opacity:1; animation:pulse 1s infinite alternate; }
 @keyframes pulse {0%{transform:translateX(-50%) scale(1);}50%{transform:translateX(-50%) scale(1.3);}100%{transform:translateX(-50%) scale(1.1);} }
+
 .accordion-item { margin-bottom:10px; border-radius:12px; overflow:hidden; box-shadow:0 5px 15px rgba(0,0,0,0.05); }
 .accordion-header { background:#e2e8f0; padding:12px 20px; cursor:pointer; font-weight:600; transition:background 0.3s; position:relative; }
 .accordion-header::after { content:'+'; position:absolute; right:20px; font-weight:bold; transition:transform 0.3s; }
@@ -78,17 +200,26 @@ header { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; paddi
 .accordion-header:hover { background:#cbd5e1; }
 .accordion-content { max-height:0; overflow:hidden; transition:max-height 0.4s ease; padding:0 20px; background:white; }
 .accordion-content p { padding:10px 0; margin:0; }
+
 .testimoni-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; }
 .testimoni-item { display:flex; align-items:flex-start; background:white; padding:15px; border-radius:12px; box-shadow:0 5px 20px rgba(0,0,0,0.05); gap:12px; transition:transform 0.3s, box-shadow 0.3s; }
 .testimoni-item:hover { transform:translateY(-5px) scale(1.02); box-shadow:0 10px 25px rgba(0,0,0,0.1); }
 .testimoni-avatar { width:40px; height:40px; border-radius:50%; background:#3b82f6; color:white; display:flex; justify-content:center; align-items:center; font-weight:600; flex-shrink:0; }
+
 .contact-info p { margin:10px 0; font-size:1rem; }
 .contact-info a { color:#3b82f6; font-weight:600; }
 .contact-info a:hover { text-decoration:underline; }
-#waChat { position:fixed; bottom:20px; right:20px; background:#25d366; color:white; padding:15px 20px; border-radius:50px; font-weight:600; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.2); animation: pulseWA 2s infinite; z-index:999; }
+
+#waChat { 
+  position:fixed; bottom:20px; right:20px; background:#25d366; color:white; 
+  padding:15px 20px; border-radius:50px; font-weight:600; cursor:pointer; 
+  box-shadow:0 5px 15px rgba(0,0,0,0.2); animation: pulseWA 2s infinite; z-index:999; 
+}
 @keyframes pulseWA {0%{transform:scale(1);}50%{transform:scale(1.1);}100%{transform:scale(1);} }
+
 #toast { position:fixed; bottom:80px; right:20px; background:#3b82f6; color:white; padding:12px 20px; border-radius:12px; opacity:0; pointer-events:none; transition:opacity 0.5s; z-index:9999; }
 #toast.show { opacity:1; pointer-events:auto; }
+
 footer { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; padding:20px; text-align: center; position: relative; overflow: hidden; }
 footer p { margin: 5px 0; font-weight:600; }
 
@@ -98,15 +229,14 @@ footer p { margin: 5px 0; font-weight:600; }
   .header-inner{
     flex-direction:column;
     text-align:center;
-    justify-content:center; /* logo + teks center */
-    align-items:center;   /* ✅ tambahkan ini */
+    justify-content:center;
+    align-items:center;
   } 
   .header-text{text-align:center;} 
-    flex:unset;   /* ✅ perbaikan */
   .logo{
     width:60px;
     height:60px;
-    margin:0 auto 15px auto; /* center logo di HP */
+    margin:0 auto 15px auto;
   } 
   .modern-form .form-grid { grid-template-columns:1fr !important; } 
   .form-group[style] { grid-column: span 1 !important; } 
@@ -183,12 +313,12 @@ footer p { margin: 5px 0; font-weight:600; }
           <label for="layanan">Pilih Layanan</label>
           <span class="icon">🧺</span>
         </div>
-        <div class="form-group" style="grid-column: span 2;">
+        <div class="form-group">
           <input type="text" id="catatan" placeholder=" ">
           <label for="catatan">Catatan Tambahan</label>
           <span class="icon">📝</span>
         </div>
-        <div class="form-group" style="grid-column: span 2;">
+        <div class="form-group">
           <input type="date" id="jadwal" placeholder=" " required>
           <label for="jadwal">Jadwal Jemput / Antar</label>
           <span class="icon">📅</span>
@@ -274,9 +404,7 @@ footer p { margin: 5px 0; font-weight:600; }
   </div>
 </div>
 
-<!-- ================= Tombol WA Icon ================= -->
 <div id="waChat" onclick="window.open('https://wa.me/6287877929391','_blank')">Chat WA</div>
-
 <div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
@@ -322,9 +450,8 @@ showItems('home');
 // ================== Tombol "Pesan Sekarang" dari header ==================
 document.querySelector('.cta-btn').addEventListener('click', e=>{
   e.preventDefault();
-  const orderTabBtn = document.querySelector('.tab-btn[data-tab="order"]');
-  orderTabBtn.click(); // aktifkan tab "Pesan Laundry"
-  window.scrollTo({ top: 0, behavior: 'smooth' }); // scroll ke atas
+  document.querySelector('.tab-btn[data-tab="order"]').click();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
 // ================== Apps Script Integration ==================
@@ -359,18 +486,6 @@ document.getElementById('orderForm').addEventListener('submit', e=>{
 });
 
 // ================== Status Order ==================
-function loadStatusFromGAS(){
-  fetch(GAS_URL, { method: "POST", body: JSON.stringify({ type:"GetAllStatus" }) })
-  .then(res => res.json())
-  .then(data => {
-    const steps = document.querySelectorAll('#statusSteps .step');
-    steps.forEach(s => s.classList.remove('active'));
-    if(data.status.length === 0) return;
-    const lastStatus = data.status[data.status.length - 1];
-    steps.forEach(s => { if(isStepActive(s.textContent, lastStatus)) s.classList.add('active'); });
-  })
-  .catch(err => { console.error("Gagal ambil status:", err); });
-}
 function isStepActive(step, lastStatus){
   const order = ["Dipesan","Dijemput","Diproses","Selesai","Diantar"];
   return order.indexOf(step) <= order.indexOf(lastStatus);
@@ -383,11 +498,10 @@ function loadStatusFromGAS(){
     let lastStatus;
     if(data.status.length > 0){
       lastStatus = data.status[data.status.length - 1];
-      localStorage.setItem('lastStatus', lastStatus); // simpan ke localStorage
+      localStorage.setItem('lastStatus', lastStatus);
     } else {
-      lastStatus = localStorage.getItem('lastStatus') || null; // ambil dari localStorage
+      lastStatus = localStorage.getItem('lastStatus') || null;
     }
-
     const steps = document.querySelectorAll('#statusSteps .step');
     steps.forEach(s => s.classList.remove('active'));
     if(!lastStatus) return;
@@ -395,7 +509,6 @@ function loadStatusFromGAS(){
   })
   .catch(err => {
     console.error("Gagal ambil status:", err);
-    // fallback ke localStorage saat fetch gagal
     const lastStatus = localStorage.getItem('lastStatus');
     if(lastStatus){
       const steps = document.querySelectorAll('#statusSteps .step');
@@ -414,24 +527,17 @@ window.addEventListener('DOMContentLoaded', ()=>{
     steps.forEach(s => { if(isStepActive(s.textContent, savedStatus)) s.classList.add('active'); });
   }
 });
+
 // ======= Simpan dan Load Tab Terakhir =======
-
-// Simpan tab terakhir saat diklik
 tabs.forEach(btn => {
-  btn.addEventListener('click', ()=>{
-    localStorage.setItem('lastActiveTab', btn.dataset.tab); // simpan ke localStorage
-  });
+  btn.addEventListener('click', ()=>{ localStorage.setItem('lastActiveTab', btn.dataset.tab); });
 });
-
-// Saat halaman dimuat, cek tab terakhir
 window.addEventListener('DOMContentLoaded', ()=>{
   const lastTab = localStorage.getItem('lastActiveTab');
   if(lastTab){
     const btn = document.querySelector(`.tab-btn[data-tab="${lastTab}"]`);
-    if(btn) btn.click(); // aktifkan tab terakhir
-  } else {
-    document.querySelector('.tab-btn.active').click(); // default ke tab home
-  }
+    if(btn) btn.click();
+  } else { document.querySelector('.tab-btn.active').click(); }
 });
 
 // ================== Accordion ==================
@@ -464,7 +570,7 @@ setInterval(()=>{ createBubble(headerElem); createBubble(footerElem); }, 500);
 setInterval(()=>{
   const statusTab = document.getElementById('status');
   if(statusTab.classList.contains('active')){ loadStatusFromGAS(); }
-}, 2000);
+}, 5000);
 </script>
 
 </body>
