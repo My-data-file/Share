@@ -376,6 +376,64 @@ function isStepActive(step, lastStatus){
   return order.indexOf(step) <= order.indexOf(lastStatus);
 }
 
+function loadStatusFromGAS(){
+  fetch(GAS_URL, { method: "POST", body: JSON.stringify({ type:"GetAllStatus" }) })
+  .then(res => res.json())
+  .then(data => {
+    let lastStatus;
+    if(data.status.length > 0){
+      lastStatus = data.status[data.status.length - 1];
+      localStorage.setItem('lastStatus', lastStatus); // simpan ke localStorage
+    } else {
+      lastStatus = localStorage.getItem('lastStatus') || null; // ambil dari localStorage
+    }
+
+    const steps = document.querySelectorAll('#statusSteps .step');
+    steps.forEach(s => s.classList.remove('active'));
+    if(!lastStatus) return;
+    steps.forEach(s => { if(isStepActive(s.textContent, lastStatus)) s.classList.add('active'); });
+  })
+  .catch(err => {
+    console.error("Gagal ambil status:", err);
+    // fallback ke localStorage saat fetch gagal
+    const lastStatus = localStorage.getItem('lastStatus');
+    if(lastStatus){
+      const steps = document.querySelectorAll('#statusSteps .step');
+      steps.forEach(s => s.classList.remove('active'));
+      steps.forEach(s => { if(isStepActive(s.textContent, lastStatus)) s.classList.add('active'); });
+    }
+  });
+}
+
+// ======= Load status dari localStorage saat halaman dibuka =======
+window.addEventListener('DOMContentLoaded', ()=>{
+  const savedStatus = localStorage.getItem('lastStatus');
+  if(savedStatus){
+    const steps = document.querySelectorAll('#statusSteps .step');
+    steps.forEach(s => s.classList.remove('active'));
+    steps.forEach(s => { if(isStepActive(s.textContent, savedStatus)) s.classList.add('active'); });
+  }
+});
+// ======= Simpan dan Load Tab Terakhir =======
+
+// Simpan tab terakhir saat diklik
+tabs.forEach(btn => {
+  btn.addEventListener('click', ()=>{
+    localStorage.setItem('lastActiveTab', btn.dataset.tab); // simpan ke localStorage
+  });
+});
+
+// Saat halaman dimuat, cek tab terakhir
+window.addEventListener('DOMContentLoaded', ()=>{
+  const lastTab = localStorage.getItem('lastActiveTab');
+  if(lastTab){
+    const btn = document.querySelector(`.tab-btn[data-tab="${lastTab}"]`);
+    if(btn) btn.click(); // aktifkan tab terakhir
+  } else {
+    document.querySelector('.tab-btn.active').click(); // default ke tab home
+  }
+});
+
 // ================== Accordion ==================
 document.querySelectorAll('.accordion-header').forEach(header=>{
   header.addEventListener('click', ()=>{
