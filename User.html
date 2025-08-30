@@ -4,8 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Laundry Express Full</title>
+<!-- ================= CSS UTAMA ================= -->
 <style>
-/* ================= BASE CSS ================= */
+/* ================= BASE ================= */
 body { font-family:'Segoe UI', Tahoma, sans-serif; margin:0; background:#f9fafb; color:#1f2937; }
 a { text-decoration:none; }
 
@@ -32,189 +33,55 @@ header {
   z-index:1; 
 }
 .logo { width:80px; height:80px; margin-bottom:15px; }
-.logo img { 
-  width:80px; height:80px; 
-  display:block; 
-  border-radius:50%; 
-  object-fit:cover; 
-  background:#facc15; 
-  padding:8px; 
-}
+.logo img { width:80px; height:80px; display:block; border-radius:50%; object-fit:cover; background:#facc15; padding:8px; }
 .header-text h1 { font-size:2.5rem; margin-bottom:8px; }
 .header-text p { opacity:0.9; margin-bottom:15px; }
-.cta-btn { 
-  display:block;
-  margin: 0 auto;
-  width: fit-content;
-  padding:12px 25px;
-  background:#facc15;
-  color:#1f2937;
-  border-radius:50px;
-  font-weight:600;
-  transition:all 0.3s;
-  text-align:center;
-}
+.cta-btn { display:block; margin:0 auto; width:fit-content; padding:12px 25px; background:#facc15; color:#1f2937; border-radius:50px; font-weight:600; transition:all 0.3s; text-align:center; }
 .cta-btn:hover { transform:scale(1.05); }
 
-/* ================= BUBBLES ================= */
-.bubble { 
-  position:absolute; 
-  bottom:0; 
-  background:rgba(255,255,255,0.5); 
-  border-radius:50%; 
-  animation: rise linear infinite; 
-}
-@keyframes rise { 
-  0% { transform: translateY(0) scale(1); opacity:0.7; } 
-  50% { opacity:0.9; } 
-  100% { transform: translateY(-1200px) scale(1.2); opacity:0; } 
-}
-
 /* ================= TAB MENU ================= */
-.tab-menu { 
-  display:flex; 
-  flex-wrap:wrap; 
-  justify-content:center; 
-  max-width:1000px; 
-  margin:20px auto; 
-  gap:10px; 
-  position:relative; 
-  z-index:1; 
-}
-.tab-menu .tab-btn { 
-  flex:1 1 120px; 
-  padding:12px 20px; 
-  border:none; 
-  border-radius:50px; 
-  background:#e2e8f0; 
-  color:#1d4ed8; 
-  font-weight:600; 
-  cursor:pointer; 
-  position:relative; 
-  transition:all 0.3s; 
-}
-.tab-menu .tab-btn.active { 
-  background:#3b82f6; 
-  color:white; 
-}
-.tab-menu .tab-btn.active::after { 
-  content:''; 
-  position:absolute; 
-  bottom:-5px; 
-  left:20%; 
-  width:60%; 
-  height:4px; 
-  background:#facc15; 
-  border-radius:2px; 
-}
+.tab-menu { display:flex; flex-wrap:wrap; justify-content:center; max-width:1000px; margin:20px auto; gap:10px; position:relative; z-index:1; overflow-x: visible; }
+.tab-menu .tab-btn { flex:1 1 120px; padding:12px 20px; border:none; border-radius:50px; background:#e2e8f0; color:#1d4ed8; font-weight:600; cursor:pointer; transition:all 0.3s; position:relative; }
+.tab-menu .tab-btn.active { background:#3b82f6; color:white; }
+.tab-menu .tab-btn.active::after { content:''; position:absolute; bottom:-5px; left:20%; width:60%; height:4px; background:#facc15; border-radius:2px; }
 
 /* ================= TAB CONTENT ================= */
 .tab-content { display:none; opacity:0; transform:translateY(20px); transition:0.4s ease; }
 .tab-content.active { display:block; opacity:1; transform:translateY(0); }
 
-/* ================= CARD & GRID ================= */
-.card { 
-  background:white; 
-  padding:25px; 
-  border-radius:20px; 
-  margin-bottom:30px; 
-  box-shadow:0 10px 30px rgba(0,0,0,0.08); 
-}
+.card { background:white; padding:25px; border-radius:20px; margin-bottom:30px; box-shadow:0 10px 30px rgba(0,0,0,0.08); }
 .grid-items { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; }
-.item { 
-  background:#e2e8f0; 
-  padding:15px; 
-  border-radius:12px; 
-  opacity:0; 
-  transform:translateX(-20px); 
-  transition:all 0.4s; 
-  text-align:center; 
-}
+.item { background:#e2e8f0; padding:15px; border-radius:12px; opacity:0; transform:translateX(-20px); transition:all 0.4s; text-align:center; }
 .item.show { opacity:1; transform:translateX(0); }
 
 /* ================= FORM ================= */
-.modern-form .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.modern-form .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
 .form-group { position: relative; display: flex; align-items: center; }
 .form-group input,
-.form-group select { 
-  width: 100%; 
-  padding: 12px 40px 12px 12px; 
-  border-radius: 12px; 
-  border: 1px solid #ccc; 
-  font-size: 1rem; 
-  background: #f9fafb; 
-  transition: all 0.3s; 
-}
+.form-group select { width:100%; padding:12px 40px 12px 12px; border-radius:12px; border:1px solid #ccc; font-size:1rem; background:#f9fafb; transition:all 0.3s; }
 .form-group input:focus,
-.form-group select:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 12px rgba(59,130,246,0.3); }
-.form-group label { 
-  position: absolute; 
-  left: 12px; top: 12px; 
-  color: #6b7280; 
-  font-size: 0.95rem; 
-  pointer-events: none; 
-  transition: 0.3s ease all; 
-}
+.form-group select:focus { outline:none; border-color:#3b82f6; box-shadow:0 0 12px rgba(59,130,246,0.3); }
+.form-group label { position:absolute; left:12px; top:12px; color:#6b7280; font-size:0.95rem; pointer-events:none; transition:0.3s ease all; }
 .form-group input:focus + label,
 .form-group input:not(:placeholder-shown) + label,
 .form-group select:focus + label,
-.form-group select:not([value=""]) + label { 
-  top: -10px; left: 10px; 
-  background: #f9fafb; font-size: 0.8rem; color: #3b82f6; padding: 0 5px;
-}
-.form-group .icon { position: absolute; right: 12px; font-size: 1.2rem; pointer-events: none; }
-
-.modern-form button { 
-  padding:12px; 
-  background:#3b82f6; 
-  color:white; 
-  font-weight:600; 
-  border:none; 
-  border-radius:12px; 
-  cursor:pointer; 
-  transition:all 0.3s; 
-}
+.form-group select:not([value=""]) + label { top:-10px; left:10px; background:#f9fafb; font-size:0.8rem; color:#3b82f6; padding:0 5px; }
+.form-group .icon { position:absolute; right:12px; font-size:1.2rem; pointer-events:none; }
+.modern-form button { padding:12px; background:#3b82f6; color:white; font-weight:600; border:none; border-radius:12px; cursor:pointer; transition:all 0.3s; }
 .modern-form button:hover { transform:scale(1.03); }
 
 /* ================= STATUS PROGRESS ================= */
-.status-progress { 
-  display:flex; justify-content:space-between; position:relative; margin-top:30px; padding:0 10px; 
-}
-.status-progress .step { 
-  flex:1; display:flex; flex-direction:column; align-items:center; position:relative; z-index:1; cursor:pointer;
-}
-.status-progress .progress-bar {
-  position:absolute;
-  top:18px; 
-  left:0;
-  height:4px;
-  background:#e2e8f0; 
-  border-radius:2px;
-  z-index:0;
-  width:100%;
-}
-.status-progress .progress-fill {
-  position:absolute;
-  top:0;
-  left:0;
-  height:100%;
-  width:0%;
-  background: linear-gradient(135deg,#facc15,#fbbf24);
-  border-radius:2px;
-  transition: width 0.5s ease-in-out;
-}
-.status-progress .step-circle {
-  width:40px; height:40px; border-radius:50%; background:#e2e8f0; display:flex; justify-content:center; align-items:center; font-size:20px; color:#fff; margin-bottom:6px; transition: all 0.3s;
-}
+.status-progress { display:flex; justify-content:space-between; position:relative; margin-top:30px; padding:0 10px; }
+.status-progress .step { flex:1; display:flex; flex-direction:column; align-items:center; position:relative; z-index:1; cursor:pointer; }
+.status-progress .step-circle { width:40px; height:40px; border-radius:50%; background:#e2e8f0; display:flex; justify-content:center; align-items:center; font-size:20px; color:#fff; margin-bottom:6px; transition: all 0.3s; }
+.status-progress .step.active .step-circle { background: linear-gradient(135deg,#facc15,#fbbf24); box-shadow:0 4px 12px rgba(250,204,21,0.5); }
 .status-progress .step-label { font-size:0.9rem; text-align:center; color:#555; }
-.status-progress .step.active .step-circle { 
-  background: linear-gradient(135deg,#facc15,#fbbf24); 
-  box-shadow:0 4px 12px rgba(250,204,21,0.5);
-}
+.status-progress .progress-bar { position:absolute; top:18px; left:0; height:4px; background:#e2e8f0; border-radius:2px; z-index:0; width:100%; }
+.status-progress .progress-fill { position:absolute; top:0; left:0; height:100%; width:0%; background:linear-gradient(135deg,#facc15,#fbbf24); border-radius:2px; transition:width 0.5s ease-in-out; }
 
 /* ================= ACCORDION ================= */
 .accordion-item { margin-bottom:10px; border-radius:12px; overflow:hidden; box-shadow:0 5px 15px rgba(0,0,0,0.05); }
-.accordion-header { background:#e2e8f0; padding:12px 20px; cursor:pointer; font-weight:600; transition:background 0.3s; position:relative; }
+.accordion-header { background:#e2e8f0; padding:12px 20px; cursor:pointer; font-weight:600; position:relative; transition:background 0.3s; }
 .accordion-header::after { content:'+'; position:absolute; right:20px; font-weight:bold; transition:transform 0.3s; }
 .accordion-header.active::after { content:'−'; }
 .accordion-header:hover { background:#cbd5e1; }
@@ -232,57 +99,42 @@ header {
 .contact-info a { color:#3b82f6; font-weight:600; }
 .contact-info a:hover { text-decoration:underline; }
 
-/* ================= WA CHAT & TOAST ================= */
-#waChat { 
-  position:fixed; bottom:20px; right:20px; background:#25d366; color:white; 
-  padding:15px 20px; border-radius:50px; font-weight:600; cursor:pointer; 
-  box-shadow:0 5px 15px rgba(0,0,0,0.2); animation: pulseWA 2s infinite; z-index:999; 
-}
+/* ================= WA BUTTON & TOAST ================= */
+#waChat { position:fixed; bottom:20px; right:20px; background:#25d366; color:white; padding:15px 20px; border-radius:50px; font-weight:600; cursor:pointer; box-shadow:0 5px 15px rgba(0,0,0,0.2); animation:pulseWA 2s infinite; z-index:999; }
 @keyframes pulseWA {0%{transform:scale(1);}50%{transform:scale(1.1);}100%{transform:scale(1);} }
 #toast { position:fixed; bottom:80px; right:20px; background:#3b82f6; color:white; padding:12px 20px; border-radius:12px; opacity:0; pointer-events:none; transition:opacity 0.5s; z-index:9999; }
+#toast.show { opacity:1; pointer-events:auto; }
 
 /* ================= FOOTER ================= */
-footer { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; padding:20px; text-align: center; position: relative; overflow: hidden; }
-footer p { margin: 5px 0; font-weight:600; }
+footer { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; padding:20px; text-align:center; position:relative; overflow:hidden; }
+footer p { margin:5px 0; font-weight:600; }
 
-/* ================= MOBILE RESPONSIVE ================= */
-@media(max-width:768px){
-  header { padding:30px 15px; }
-  .header-inner { gap:15px; }
-  .logo { width:60px; height:60px; }
-  .header-text h1 { font-size:2rem; }
-  .header-text p { font-size:1rem; }
-  .cta-btn { padding:10px 20px; font-size:0.9rem; }
-
-  .tab-menu { flex-wrap:wrap; gap:5px; padding:0 10px; }
-  .tab-menu .tab-btn { flex:1 1 100%; font-size:0.9rem; padding:10px; }
-
-  .grid-items { grid-template-columns: 1fr; gap:15px; }
-  .item { padding:12px; font-size:0.95rem; }
-
-  .modern-form .form-grid { grid-template-columns:1fr; gap:12px; }
-  .modern-form button { width:100%; padding:12px; font-size:1rem; }
-
-  .status-progress .step-label { font-size:0.7rem; }
-  .status-progress .step-circle { width:32px; height:32px; font-size:14px; }
-
-  .testimoni-grid { grid-template-columns:1fr; gap:15px; }
-  .testimoni-item { padding:12px; font-size:0.95rem; }
-
-  footer { padding:15px; font-size:0.9rem; }
+/* ================= MEDIA QUERY ================= */
+@media(max-width:768px){ 
+  .grid-items{grid-template-columns:repeat(auto-fit,minmax(180px,1fr));} 
+  .header-inner{ flex-direction:column; text-align:center; justify-content:center; align-items:center; } 
+  .header-text{text-align:center;} 
+  .logo{ width:60px; height:60px; margin:0 auto 15px auto; } 
+  .modern-form .form-grid { grid-template-columns:1fr !important; } 
+  .form-group[style] { grid-column: span 1 !important; } 
+  .modern-form button { grid-column: span 1 !important; } 
 }
-@media(max-width:480px){
-  .tab-menu .tab-btn{flex:1 1 100%; font-size:0.85rem;}
-  .accordion-header::after{right:15px;}
+@media(max-width:480px){ 
+  .tab-menu .tab-btn{flex:1 1 100%; font-size:0.9rem;} 
+  .accordion-header::after{right:15px;} 
+  .status-progress .step-label { font-size: 0.7rem; }
+  .status-progress .step-circle { width: 32px; height: 32px; font-size:16px; }
 }
 </style>
+
 </head>
 <body>
 
+<!-- ================= HEADER ================= -->
 <header>
   <div class="header-inner">
     <div class="logo">
-      <img src="https://raw.githubusercontent.com/My-data-file/Share/main/Logo.png" alt="Sea Laundry Logo" width="80" height="80">
+      <img src="https://raw.githubusercontent.com/My-data-file/Share/main/Logo.png" alt="Sea Laundry Logo">
     </div>
     <div class="header-text">
       <h1>Sea Laundry</h1>
@@ -292,6 +144,7 @@ footer p { margin: 5px 0; font-weight:600; }
   </div>
 </header>
 
+<!-- ================= NAV / TAB MENU ================= -->
 <nav class="tab-menu">
   <button class="tab-btn active" data-tab="home">Home</button>
   <button class="tab-btn" data-tab="order">Pesan Laundry</button>
@@ -302,7 +155,7 @@ footer p { margin: 5px 0; font-weight:600; }
   <button class="tab-btn" data-tab="contact">Kontak</button>
 </nav>
 
-<!-- ================= Tab Contents ================= -->
+<!-- ================= TAB CONTENT ================= -->
 <div class="tab-content active" id="home">
   <div class="card">
     <h2>Selamat Datang di Laundry Express</h2>
@@ -454,7 +307,7 @@ footer p { margin: 5px 0; font-weight:600; }
 <div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
-  <p>&copy; 2025 Sea Laundry 1.0. All rights reserved.</p>
+  <p>&copy; 2025 Sea Laundry New. All rights reserved.</p>
 </footer>
 
 <script>
