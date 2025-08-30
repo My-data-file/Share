@@ -261,31 +261,27 @@ header {
 footer { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; padding:20px; text-align: center; position: relative; overflow: hidden; }
 footer p { margin: 5px 0; font-weight:600; }
 
-/* ================= Media Queries ================= */
-@media(max-width:768px){
-  nav button{ padding:8px; font-size:14px; }
-  header h1{ font-size:20px; }
-  .card{ margin:8px; padding:12px; }
+/* ================= MEDIA QUERY UPDATE ================= */
+@media(max-width:768px){ 
+  .grid-items{grid-template-columns:repeat(auto-fit,minmax(180px,1fr));} 
+  .header-inner{
+    flex-direction:column;
+    text-align:center;
+    justify-content:center;
+    align-items:center;
+  } 
+  .header-text{text-align:center;} 
+  .logo{
+    width:60px;
+    height:60px;
+    margin:0 auto 15px auto;
+  } 
+  .modern-form .form-grid { grid-template-columns:1fr !important; } 
+  .form-group[style] { grid-column: span 1 !important; } 
+  .modern-form button { grid-column: span 1 !important; } 
 }
-
-@media(max-width:480px){
-  nav { flex-direction: row; flex-wrap: wrap; }
-  nav button { flex:1; padding:8px; font-size:13px; text-align:center; }
-}
-
-/* Tambahan update untuk HP (label & lingkaran lebih kecil) */
-@media(max-width:480px){
-  .status-progress .step-label {
-    font-size: 0.7rem;  /* kecil agar pas di hp */
-  }
-  .status-progress .step-circle {
-    width: 32px;
-    height: 32px;
-    font-size: 16px;
-  }
-}
+@media(max-width:480px){ .tab-menu .tab-btn{flex:1 1 100%; font-size:0.9rem;} .accordion-header::after{right:15px;} }
 </style>
-
 </head>
 <body>
 
