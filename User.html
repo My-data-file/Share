@@ -261,43 +261,78 @@ header {
 footer { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; padding:20px; text-align: center; position: relative; overflow: hidden; }
 footer p { margin: 5px 0; font-weight:600; }
 
-/* ================= MEDIA QUERY UPDATE ================= */
+/* ================= MEDIA QUERY FINAL ================= */
 @media(max-width:768px){ 
-  .grid-items{grid-template-columns:repeat(auto-fit,minmax(180px,1fr));} 
-  .header-inner{
-    flex-direction:column;
-    text-align:center;
-    justify-content:center;
-    align-items:center;
-  } 
-  .header-text{text-align:center;} 
-  .logo{
-    width:60px;
-    height:60px;
-    margin:0 auto 15px auto;
-  } 
-  .modern-form .form-grid { grid-template-columns:1fr !important; } 
-  .form-group[style] { grid-column: span 1 !important; } 
-  .modern-form button { grid-column: span 1 !important; } 
-}
-@media(max-width:480px){ .tab-menu .tab-btn{flex:1 1 100%; font-size:0.9rem;} .accordion-header::after{right:15px;} }
-@media(max-width:768px){
-  .logo{
-    width:60px;           /* ukuran lebih kecil di HP */
-    height:60px;
-    margin:0 auto 15px auto; /* top=0, left/right=center, bottom=15px */
+  /* Grid responsive */
+  .grid-items {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  /* Header responsive */
+  .header-inner {
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 20px 10px;
+  }
+
+  .header-text {
+    text-align: center;
+  }
+
+  /* Logo responsive & center */
+  .logo {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 15px auto; /* center horizontal, beri jarak bawah */
+  }
+
+  /* Form responsive */
+  .modern-form .form-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .form-group[style] {
+    grid-column: span 1 !important;
+  }
+  .modern-form button {
+    grid-column: span 1 !important;
+    width: 100%; /* button full-width di mobile */
   }
 }
-  @media(max-width:480px){
+
+@media(max-width:480px){ 
+  /* Tab menu responsive */
+  .tab-menu .tab-btn {
+    flex: 1 1 100%;
+    font-size: 0.85rem;
+    padding: 10px 12px;
+  }
+
+  /* Accordion icon */
+  .accordion-header::after {
+    right: 15px;
+  }
+
+  /* Status progress responsive */
   .status-progress .step-label {
     font-size: 0.7rem;
   }
   .status-progress .step-circle {
-    width: 32px;
-    height: 32px;
-    font-size: 16px;
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
   }
+
+  /* Grid items di very small screen */
+  .grid-items {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+}
 </style>
+  
 </head>
 <body>
 
