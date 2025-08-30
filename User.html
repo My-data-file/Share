@@ -280,8 +280,27 @@ footer p { margin: 5px 0; font-weight:600; }
   .form-group[style] { grid-column: span 1 !important; } 
   .modern-form button { grid-column: span 1 !important; } 
 }
-@media(max-width:480px){ .tab-menu .tab-btn{flex:1 1 100%; font-size:0.9rem;} .accordion-header::after{right:15px;} }
-  @media(max-width:480px){
+
+@media(max-width:480px){
+  /* Header tetap center di HP */
+  header h1 { 
+    text-align:center; 
+    font-size:18px; 
+  }
+
+  /* Tab menu tetap rapi */
+  .tab-menu { display:flex; flex-wrap:wrap; }
+  .tab-menu .tab-btn { 
+    flex:1; 
+    padding:8px; 
+    font-size:13px; 
+    text-align:center; 
+  }
+
+  /* Accordion icon tetap pas */
+  .accordion-header::after{right:15px;}
+
+  /* Status bar kecil di HP */
   .status-progress .step-label {
     font-size: 0.7rem;
   }
@@ -292,6 +311,7 @@ footer p { margin: 5px 0; font-weight:600; }
   }
 }
 </style>
+
 </head>
 <body>
 
