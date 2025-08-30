@@ -31,36 +31,35 @@ header {
   position:relative; 
   z-index:1; 
 }
-.logo {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto; /* center */
+
+.logo{
+  width:100px;
+  height:100px;
+  margin:0 auto;
+}
+.logo img{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  object-fit:cover;
+  background:#facc15;
+  padding:5px;
+  box-sizing:border-box;
 }
 
-.logo img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  border-radius: 50%;
-  object-fit: cover;
-  background: #facc15;
-  padding: 5px;
-  box-sizing: border-box; /* penting supaya padding tidak memperbesar ukuran */
-}
-.header-text { flex:1; text-align:left; }
 .header-text h1 { font-size:2.5rem; margin-bottom:8px; }
 .header-text p { opacity:0.9; margin-bottom:15px; }
+
 .cta-btn { 
-  display:block;
-  margin: 0 auto;
-  width: fit-content;
-  padding:12px 25px;
+  display:inline-block;
+  margin:0 auto;
+  padding:12px 30px;
   background:#facc15;
   color:#1f2937;
   border-radius:50px;
   font-weight:600;
-  transition:all 0.3s;
   text-align:center;
+  transition:all 0.3s;
 }
 .cta-btn:hover { transform:scale(1.05); }
 
@@ -269,69 +268,32 @@ footer { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; paddi
 footer p { margin: 5px 0; font-weight:600; }
 
 /* ================= MEDIA QUERY HEADER & LOGO ================= */
-@media(max-width:768px){ 
-  /* Header inner tersusun vertikal, center */
+@media(max-width:768px){
   .header-inner{
     flex-direction: column;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-  } 
-
-  /* Teks header */
-  .header-text{
-    text-align:center;
-  } 
+    gap:15px;
+  }
   .header-text h1{
-    font-size:2rem; /* lebih besar dari sebelumnya */
+    font-size:2rem;
   }
   .header-text p{
     font-size:1.1rem;
   }
-
-  /* Logo rapi, padding pas, center */
   .logo{
-    width:80px;  /* ukuran lebih besar untuk tablet */
+    width:80px;
     height:80px;
     margin:0 auto 10px auto;
   }
-  .logo img{
-    width:100%;
-    height:100%;
-    border-radius:50%;
-    object-fit:cover;
-    background:#facc15;
-    padding:5px;
-    box-sizing:border-box;
-  }
-
-  /* Tombol CTA */
   .cta-btn{
-    width: 85%;
-    padding: 12px 0;
-    font-size: 1.05rem;
+    width:auto;
+    padding:10px 25px;
+    font-size:1rem;
   }
-
-  /* Grid tetap responsif */
-  .grid-items{
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  }
-
-  /* Form tetap satu kolom */
-  .modern-form .form-grid { grid-template-columns:1fr !important; } 
-  .form-group[style] { grid-column: span 1 !important; } 
-  .modern-form button { grid-column: span 1 !important; } 
 }
 
 @media(max-width:480px){
-  /* Header inner dan logo lebih kecil */
   .header-inner{
     gap:10px;
-  }
-  .logo{
-    width:70px; /* sedikit lebih besar dari versi sebelumnya */
-    height:70px;
   }
   .header-text h1{
     font-size:1.7rem;
@@ -339,17 +301,16 @@ footer p { margin: 5px 0; font-weight:600; }
   .header-text p{
     font-size:1rem;
   }
-
-  /* Tombol CTA lebih ramping tapi tetap mudah klik */
-  .cta-btn{
-    width: 90%;
-    padding: 10px 0;
-    font-size: 0.95rem;
+  .logo{
+    width:70px;
+    height:70px;
   }
-
-  /* Tab menu & accordion tetap responsif */
-  .tab-menu .tab-btn{flex:1 1 100%; font-size:0.9rem;} 
-  .accordion-header::after{right:15px;} 
+  .cta-btn{
+    width:90%;
+    max-width:250px;
+    padding:8px 20px;
+    font-size:0.95rem;
+  }
 }
 
 
@@ -360,7 +321,7 @@ footer p { margin: 5px 0; font-weight:600; }
 <header>
   <div class="header-inner">
     <div class="logo">
-      <img src="https://raw.githubusercontent.com/My-data-file/Share/main/Logo.png" alt="Sea Laundry Logo" width="80" height="80">
+      <img src="https://raw.githubusercontent.com/My-data-file/Share/main/Logo.png" alt="Sea Laundry Logo">
     </div>
     <div class="header-text">
       <h1>Sea Laundry</h1>
@@ -532,7 +493,7 @@ footer p { margin: 5px 0; font-weight:600; }
 <div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
-  <p>&copy; 2025 Sea Laundry. All rights reserved.</p>
+  <p>&copy; 2021 Sea Laundry. All rights reserved.</p>
 </footer>
 
 <script>
