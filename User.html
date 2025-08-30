@@ -611,9 +611,6 @@ window.addEventListener('resize', ()=>{
 
 // ================== Gelembung ==================
 function createBubble(elem) {
-  const maxBubbles = 10; // maksimal bubble bersamaan
-  const currentBubbles = elem.querySelectorAll('.bubble').length;
-  if(currentBubbles >= maxBubbles) return; // jangan buat lebih
   const bubble = document.createElement('div');
   bubble.classList.add('bubble');
   const size = Math.random() * 30 + 20;
@@ -621,11 +618,21 @@ function createBubble(elem) {
   bubble.style.left = Math.random() * 100 + '%';
   bubble.style.animationDuration = (Math.random() * 10 + 8) + 's';
   elem.appendChild(bubble);
-  setTimeout(() => bubble.remove(), 12000);
+
+  // Hapus bubble setelah animasi selesai
+  bubble.addEventListener('animationend', ()=>bubble.remove());
 }
+
+// Pilih elemen
 const headerElem = document.querySelector('header');
 const footerElem = document.querySelector('footer');
-setInterval(() => { createBubble(headerElem); createBubble(footerElem); }, 500);
+
+// Interval lebih longgar untuk performa
+setInterval(()=>{
+  createBubble(headerElem);
+  createBubble(footerElem);
+}, 1000); // setiap 1 detik
+
 
 
 
