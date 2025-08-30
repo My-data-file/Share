@@ -279,34 +279,50 @@ footer { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; paddi
 footer p { margin: 5px 0; font-weight:600; }
 
 /* ================= MEDIA QUERY UPDATE ================= */
+/* ================= MEDIA QUERY HEADER ================= */
 @media(max-width:768px){ 
-  .grid-items{grid-template-columns:repeat(auto-fit,minmax(180px,1fr));} 
-  .header-inner{
-    flex-direction:column;
-    text-align:center;
-    justify-content:center;
-    align-items:center;
-  } 
-  .header-text{text-align:center;} 
-  .logo{
-    width:60px;
-    height:60px;
-    margin:0 auto 15px auto;
-  } 
-  .modern-form .form-grid { grid-template-columns:1fr !important; } 
-  .form-group[style] { grid-column: span 1 !important; } 
-  .modern-form button { grid-column: span 1 !important; } 
+  .header-inner {
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    gap: 15px; /* jarak antar elemen */
+  }
+  .logo {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto;
+  }
+  .header-text h1 {
+    font-size: 2rem;
+    margin-bottom: 5px;
+  }
+  .header-text p {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+  }
+  .cta-btn {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+  }
 }
-@media(max-width:480px){ .tab-menu .tab-btn{flex:1 1 100%; font-size:0.9rem;} .accordion-header::after{right:15px;} }
+
 @media(max-width:480px){
-  .status-progress .step-label {
-    font-size: 0.7rem;
+  .header-text h1 {
+    font-size: 1.6rem;
   }
-  .status-progress .step-circle {
-    width: 32px;
-    height: 32px;
-    font-size: 16px;
+  .header-text p {
+    font-size: 0.85rem;
   }
+  .logo {
+    width: 60px;
+    height: 60px;
+  }
+  .cta-btn {
+    padding: 8px 18px;
+    font-size: 0.85rem;
+  }
+}
 </style>
 </head>
 <body>
