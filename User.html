@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Laundry Express Full</title>
 <style>
-/* ================= CSS UTAMA ================= */
+/* ================= BASE CSS ================= */
 body { font-family:'Segoe UI', Tahoma, sans-serif; margin:0; background:#f9fafb; color:#1f2937; }
 a { text-decoration:none; }
 
@@ -31,7 +31,7 @@ header {
   position:relative; 
   z-index:1; 
 }
-.logo { width:80px; height:80px; margin-right:25px; }
+.logo { width:80px; height:80px; margin-bottom:15px; }
 .logo img { 
   width:80px; height:80px; 
   display:block; 
@@ -40,7 +40,6 @@ header {
   background:#facc15; 
   padding:8px; 
 }
-.header-text { flex:1; text-align:left; }
 .header-text h1 { font-size:2.5rem; margin-bottom:8px; }
 .header-text p { opacity:0.9; margin-bottom:15px; }
 .cta-btn { 
@@ -57,6 +56,7 @@ header {
 }
 .cta-btn:hover { transform:scale(1.05); }
 
+/* ================= BUBBLES ================= */
 .bubble { 
   position:absolute; 
   bottom:0; 
@@ -70,6 +70,7 @@ header {
   100% { transform: translateY(-1200px) scale(1.2); opacity:0; } 
 }
 
+/* ================= TAB MENU ================= */
 .tab-menu { 
   display:flex; 
   flex-wrap:wrap; 
@@ -79,7 +80,6 @@ header {
   gap:10px; 
   position:relative; 
   z-index:1; 
-  overflow-x: visible; 
 }
 .tab-menu .tab-btn { 
   flex:1 1 120px; 
@@ -108,9 +108,11 @@ header {
   border-radius:2px; 
 }
 
+/* ================= TAB CONTENT ================= */
 .tab-content { display:none; opacity:0; transform:translateY(20px); transition:0.4s ease; }
 .tab-content.active { display:block; opacity:1; transform:translateY(0); }
 
+/* ================= CARD & GRID ================= */
 .card { 
   background:white; 
   padding:25px; 
@@ -130,6 +132,7 @@ header {
 }
 .item.show { opacity:1; transform:translateX(0); }
 
+/* ================= FORM ================= */
 .modern-form .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 .form-group { position: relative; display: flex; align-items: center; }
 .form-group input,
@@ -173,6 +176,7 @@ header {
 }
 .modern-form button:hover { transform:scale(1.03); }
 
+/* ================= STATUS PROGRESS ================= */
 .status-progress { 
   display:flex; justify-content:space-between; position:relative; margin-top:30px; padding:0 10px; 
 }
@@ -187,7 +191,7 @@ header {
   background:#e2e8f0; 
   border-radius:2px;
   z-index:0;
-  width:100%; 
+  width:100%;
 }
 .status-progress .progress-fill {
   position:absolute;
@@ -207,20 +211,8 @@ header {
   background: linear-gradient(135deg,#facc15,#fbbf24); 
   box-shadow:0 4px 12px rgba(250,204,21,0.5);
 }
-.status-progress .progress-bar {
-  position: absolute;
-  top: 18px; 
-  left: 0;
-  height: 4px;
-  background: linear-gradient(135deg,#facc15,#fbbf24);
-  border-radius: 2px;
-  z-index: 0;
-  width: 0%;
-  transition: width 0.5s ease-in-out;
-}
-.status-progress .step.active::before { opacity:1; animation:pulse 1s infinite alternate; }
-@keyframes pulse {0%{transform:translateX(-50%) scale(1);}50%{transform:translateX(-50%) scale(1.3);}100%{transform:translateX(-50%) scale(1.1);} }
 
+/* ================= ACCORDION ================= */
 .accordion-item { margin-bottom:10px; border-radius:12px; overflow:hidden; box-shadow:0 5px 15px rgba(0,0,0,0.05); }
 .accordion-header { background:#e2e8f0; padding:12px 20px; cursor:pointer; font-weight:600; transition:background 0.3s; position:relative; }
 .accordion-header::after { content:'+'; position:absolute; right:20px; font-weight:bold; transition:transform 0.3s; }
@@ -229,50 +221,59 @@ header {
 .accordion-content { max-height:0; overflow:hidden; transition:max-height 0.4s ease; padding:0 20px; background:white; }
 .accordion-content p { padding:10px 0; margin:0; }
 
+/* ================= TESTIMONI ================= */
 .testimoni-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; }
 .testimoni-item { display:flex; align-items:flex-start; background:white; padding:15px; border-radius:12px; box-shadow:0 5px 20px rgba(0,0,0,0.05); gap:12px; transition:transform 0.3s, box-shadow 0.3s; }
 .testimoni-item:hover { transform:translateY(-5px) scale(1.02); box-shadow:0 10px 25px rgba(0,0,0,0.1); }
 .testimoni-avatar { width:40px; height:40px; border-radius:50%; background:#3b82f6; color:white; display:flex; justify-content:center; align-items:center; font-weight:600; flex-shrink:0; }
 
+/* ================= CONTACT ================= */
 .contact-info p { margin:10px 0; font-size:1rem; }
 .contact-info a { color:#3b82f6; font-weight:600; }
 .contact-info a:hover { text-decoration:underline; }
 
+/* ================= WA CHAT & TOAST ================= */
 #waChat { 
   position:fixed; bottom:20px; right:20px; background:#25d366; color:white; 
   padding:15px 20px; border-radius:50px; font-weight:600; cursor:pointer; 
   box-shadow:0 5px 15px rgba(0,0,0,0.2); animation: pulseWA 2s infinite; z-index:999; 
 }
 @keyframes pulseWA {0%{transform:scale(1);}50%{transform:scale(1.1);}100%{transform:scale(1);} }
-
 #toast { position:fixed; bottom:80px; right:20px; background:#3b82f6; color:white; padding:12px 20px; border-radius:12px; opacity:0; pointer-events:none; transition:opacity 0.5s; z-index:9999; }
-#toast.show { opacity:1; pointer-events:auto; }
 
+/* ================= FOOTER ================= */
 footer { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; padding:20px; text-align: center; position: relative; overflow: hidden; }
 footer p { margin: 5px 0; font-weight:600; }
 
-/* ================= MEDIA QUERY RESPONSIVE ================= */
-@media(max-width:768px){ 
-  .header-inner{ flex-direction:column; text-align:center; justify-content:center; align-items:center; } 
-  .logo{ width:60px; height:60px; margin:0 auto 15px auto; } 
-  .header-text{text-align:center;} 
-  .modern-form .form-grid { grid-template-columns:1fr !important; } 
-  .modern-form button { grid-column: span 1 !important; width: 100%; } 
-  .grid-items{grid-template-columns:repeat(auto-fit,minmax(180px,1fr));} 
+/* ================= MOBILE RESPONSIVE ================= */
+@media(max-width:768px){
+  header { padding:30px 15px; }
+  .header-inner { gap:15px; }
+  .logo { width:60px; height:60px; }
+  .header-text h1 { font-size:2rem; }
+  .header-text p { font-size:1rem; }
+  .cta-btn { padding:10px 20px; font-size:0.9rem; }
+
+  .tab-menu { flex-wrap:wrap; gap:5px; padding:0 10px; }
+  .tab-menu .tab-btn { flex:1 1 100%; font-size:0.9rem; padding:10px; }
+
+  .grid-items { grid-template-columns: 1fr; gap:15px; }
+  .item { padding:12px; font-size:0.95rem; }
+
+  .modern-form .form-grid { grid-template-columns:1fr; gap:12px; }
+  .modern-form button { width:100%; padding:12px; font-size:1rem; }
+
+  .status-progress .step-label { font-size:0.7rem; }
+  .status-progress .step-circle { width:32px; height:32px; font-size:14px; }
+
+  .testimoni-grid { grid-template-columns:1fr; gap:15px; }
+  .testimoni-item { padding:12px; font-size:0.95rem; }
+
+  footer { padding:15px; font-size:0.9rem; }
 }
 @media(max-width:480px){
-  .tab-menu .tab-btn{flex:1 1 100%; font-size:0.9rem;}
+  .tab-menu .tab-btn{flex:1 1 100%; font-size:0.85rem;}
   .accordion-header::after{right:15px;}
-  .status-progress .step-label { font-size:0.7rem; }
-  .status-progress .step-circle { width:32px; height:32px; font-size:16px; }
-  .grid-items { grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); }
-  .testimoni-grid { grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); }
-}
-@media(max-width:360px){
-  .header-text h1 { font-size:1.8rem; }
-  .header-text p { font-size:0.9rem; }
-  .status-progress .step-circle { width:28px; height:28px; font-size:14px; }
-  .tab-menu .tab-btn { font-size:0.85rem; padding:10px 12px; }
 }
 </style>
 </head>
