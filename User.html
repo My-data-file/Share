@@ -430,10 +430,14 @@ fields.forEach(id=>{
 // ================= Tab & Animasi =================
 const tabs = document.querySelectorAll('.tab-btn');
 const contents = document.querySelectorAll('.tab-content');
+const shownTabs = {}; // menandai tab mana yang sudah animasi
 const showItems = (tabId)=>{
+  if(shownTabs[tabId]) return; // jika sudah muncul, skip
+  shownTabs[tabId] = true;      // tandai sudah muncul
   const items = document.getElementById(tabId).querySelectorAll('.item');
   items.forEach((i,j)=>setTimeout(()=>i.classList.add('show'), j*100));
 }
+let statusLoaded = false; // menandakan status belum pernah di-load
 tabs.forEach(btn => {
   btn.addEventListener('click', ()=>{
     tabs.forEach(b=>b.classList.remove('active'));
@@ -473,6 +477,28 @@ document.querySelector('.cta-btn').addEventListener('click', e=>{
 
 // ================== Apps Script Integration ==================
 const GAS_URL = "https://script.google.com/macros/s/AKfycbw8sVqZ-jdWLZVTI3IB50gC9mplaPXncRElxQYp_m2BGqyq6EfOrMthXpIV0VNtKkEv8Q/exec";
+// Tombol WA interaktif
+const waBtn = document.getElementById('waChat');
+waBtn.addEventListener('click', ()=>{
+  waBtn.style.transform = "scale(1.1)";
+  setTimeout(()=>waBtn.style.transform="", 200);
+  window.open('https://wa.me/6287877929391','_blank');
+});
+
+// Toast lebih smooth
+function showToast(msg){
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  toast.style.opacity = 0;
+  setTimeout(()=> toast.style.opacity = 1, 50); // fade in
+  setTimeout(()=>{
+    toast.style.opacity = 0; // fade out
+    setTimeout(()=> toast.classList.remove('show'), 500); // remove after fade out
+  }, 3000);
+}
+
+// Form submit
 document.getElementById('orderForm').addEventListener('submit', e=>{
   e.preventDefault();
   const nama = document.getElementById('nama').value.trim();
@@ -484,22 +510,21 @@ document.getElementById('orderForm').addEventListener('submit', e=>{
   const today = new Date().toISOString().split('T')[0];
   if(berat <= 0){ alert('Berat harus > 0'); return; }
   if(jadwal < today){ alert('Jadwal tidak boleh di masa lalu'); return; }
+  
   const wa = `Halo, saya ingin memesan laundry.\nNama: ${nama}\nAlamat: ${alamat}\nBerat: ${berat}kg\nLayanan: ${layanan}\nJadwal: ${jadwal}\nCatatan: ${catatan}`;
   window.open('https://wa.me/6287877929391?text='+encodeURIComponent(wa),'_blank');
+  
   fetch(GAS_URL, {
     method:"POST",
-    body: JSON.stringify({
-      type:"PesanLaundry",
-      payload:{ nama, alamat, berat, layanan, catatan, jadwal }
-    })
+    body: JSON.stringify({ type:"PesanLaundry", payload:{ nama, alamat, berat, layanan, catatan, jadwal } })
   }).then(()=>{
-    const toast = document.getElementById('toast'); 
-    toast.classList.add('show'); 
-    setTimeout(()=>toast.classList.remove('show'),3000);
+    showToast("Pesanan berhasil dikirim!");
     fields.forEach(id=>localStorage.removeItem('order_'+id));
     document.getElementById('orderForm').reset();
-  })
-  .catch(err=>{ console.error("Gagal mengirim ke Spreadsheet:", err); alert("Terjadi masalah saat menyimpan ke Spreadsheet"); });
+  }).catch(err=>{
+    console.error("Gagal mengirim ke Spreadsheet:", err);
+    alert("Terjadi masalah saat menyimpan ke Spreadsheet");
+  });
 });
 
 // ================== Status Order ==================
@@ -562,14 +587,33 @@ document.querySelectorAll('.accordion-header').forEach(header=>{
   header.addEventListener('click', ()=>{
     const content = header.nextElementSibling;
     const isActive = header.classList.contains('active');
+
+    // Tutup semua accordion
     document.querySelectorAll('.accordion-header').forEach(h=>h.classList.remove('active'));
     document.querySelectorAll('.accordion-content').forEach(c=>c.style.maxHeight=null);
-    if(!isActive){ header.classList.add('active'); content.style.maxHeight = content.scrollHeight+"px"; }
+
+    // Buka yang diklik jika sebelumnya tidak aktif
+    if(!isActive){
+      header.classList.add('active');
+      content.style.maxHeight = content.scrollHeight + "px";
+    }
   });
 });
 
+// Update maxHeight saat window resize supaya animasi tetap smooth
+window.addEventListener('resize', ()=>{
+  document.querySelectorAll('.accordion-header.active').forEach(header=>{
+    const content = header.nextElementSibling;
+    content.style.maxHeight = content.scrollHeight + "px";
+  });
+});
+
+
 // ================== Gelembung ==================
 function createBubble(elem) {
+  const maxBubbles = 10; // maksimal bubble bersamaan
+  const currentBubbles = elem.querySelectorAll('.bubble').length;
+  if(currentBubbles >= maxBubbles) return; // jangan buat lebih
   const bubble = document.createElement('div');
   bubble.classList.add('bubble');
   const size = Math.random() * 30 + 20;
@@ -577,11 +621,12 @@ function createBubble(elem) {
   bubble.style.left = Math.random() * 100 + '%';
   bubble.style.animationDuration = (Math.random() * 10 + 8) + 's';
   elem.appendChild(bubble);
-  setTimeout(()=> bubble.remove(), 12000);
+  setTimeout(() => bubble.remove(), 12000);
 }
 const headerElem = document.querySelector('header');
 const footerElem = document.querySelector('footer');
-setInterval(()=>{ createBubble(headerElem); createBubble(footerElem); }, 500);
+setInterval(() => { createBubble(headerElem); createBubble(footerElem); }, 500);
+
 
 
 </script>
