@@ -3,43 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aplikasi Jemputan - Floating Button Terpisah</title>
+<title>Aplikasi Jemputan - Tombol Posisi User</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <style>
   body { font-family: Arial, sans-serif; margin: 20px; }
   h2 { text-align: center; }
-  form { max-width: 500px; margin: 0 auto; position: relative; }
-  input, textarea, select, button { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box; }
+  form { max-width: 500px; margin: 0 auto; }
+  input, textarea, button { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box; }
   textarea { resize: vertical; }
   #map { height: 300px; margin-bottom: 10px; border-radius: 8px; position: relative; }
   ul.suggestions { list-style: none; padding: 0; margin: 0; border: 1px solid #ccc; max-height: 120px; overflow-y: auto; border-radius: 4px; background: white; position: absolute; z-index: 1000; width: 100%; }
   ul.suggestions li { padding: 6px; cursor: pointer; }
   ul.suggestions li:hover { background-color: #f0f0f0; }
 
-  /* Floating button di atas layout, bukan di dalam map */
+  /* Tombol posisi user seperti tombol form */
   #btnPosisi {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1000;
     background-color: #28a745;
     color: white;
     border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s;
+    font-weight: bold;
   }
-  #btnPosisi:hover { background-color: #218838; transform: scale(1.1); }
-  @media (max-width: 480px) {
-    #btnPosisi { width: 40px; height: 40px; font-size: 20px; }
-  }
+  #btnPosisi:hover { background-color: #218838; }
 </style>
 </head>
 <body>
@@ -53,13 +39,12 @@
   <input type="text" id="alamat" placeholder="Ketikan alamat jemput..." required>
   <ul id="suggestions" class="suggestions"></ul>
 
+  <button type="button" id="btnPosisi">Gunakan Posisi Saya</button>
+
   <div id="map"></div>
 
   <button type="submit" style="background-color:#007bff;color:white;">Pesan Jemputan</button>
 </form>
-
-<!-- Tombol floating posisi user, terpisah dari map -->
-<button id="btnPosisi" title="Tampilkan Posisi Saya">📍</button>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
@@ -95,7 +80,7 @@ map.on('click', function(e) {
 // Posisi default Indonesia
 map.setView([-6.200000, 106.816666], 5);
 
-// Tombol floating posisi user
+// Tombol posisi user
 document.getElementById('btnPosisi').addEventListener('click', function() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
