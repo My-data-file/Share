@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aplikasi Jemputan - Alamat Interaktif</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; }
+  h2 { text-align: center; }
+  form { max-width: 500px; margin: 0 auto; }
+  input, textarea, select, button { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box; }
+  textarea { resize: vertical; }
+  #map { height: 300px; margin-bottom: 10px; position: relative; border-radius: 8px; }
+  ul.suggestions { list-style: none; padding: 0; margin: 0; border: 1px solid #ccc; max-height: 120px; overflow-y: auto; border-radius: 4px; background: white; position: absolute; z-index: 1000; width: 100%; }
+  ul.suggestions li { padding: 6px; cursor: pointer; }
+  ul.suggestions li:hover { background-color: #f0f0f0; }
+
+  /* Floating button */
+  #btnPosisi {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    z-index: 1000;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+  }
+  #btnPosisi:hover { background-color: #218838; transform: scale(1.1); }
+</style>
+</head>
+<body>
+<h2>Form Pemesanan Jemputan</h2>
+
+<form id="formJemput">
+  <input type="text" id="nama" placeholder="Nama Pemesan" required>
+  <input type="tel" id="hp" placeholder="Nomor HP" required>
+  <textarea id="keterangan" placeholder="Keterangan / Jumlah Barang" rows="3"></textarea>
+
+  <input type="text" id="alamat" placeholder="Ketikan alamat jemput..." required>
+  <ul id="suggestions" class="suggestions"></ul>
+
+  <div id="map">
+    <button type="button" id="btnPosisi" title="Tampilkan Posisi Saya">📍</button>
+  </div>
+
+  <button type="submit" style="background-color:#007bff;color:white;">Pesan Jemputan</button>
+</form>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+const map = L.map('map');
+let marker;
+
+// Tile layer
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+function placeMarker(latlng) {
+  if (marker) marker.setLatLng(latlng);
+  else marker = L.marker(latlng).addTo(map);
+}
+
+function reverseGeocode(latlng) {
+  fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}&addressdetails=1&accept-language=id`)
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('alamat').value = data.display_name || '';
+      clearSuggestions();
+    })
+    .catch(() => document.getElementById('alamat').value = '');
+}
+
+// Klik peta
+map.on('click', function(e) {
+  placeMarker(e.latlng);
+  reverseGeocode(e.latlng);
+});
+
+// Posisi default Indonesia
+map.setView([-6.200000, 106.816666], 5);
+
+// Tombol floating posisi user
+document.getElementById('btnPosisi').addEventListener('click', function() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        map.setView([lat, lon], 16);
+        placeMarker({lat: lat, lng: lon});
+        reverseGeocode({lat: lat, lng: lon});
+      },
+      () => alert("Tidak dapat mendapatkan lokasi Anda.")
+    );
+  } else alert("Browser Anda tidak mendukung geolocation.");
+});
+
+// Autocomplete alamat
+const input = document.getElementById('alamat');
+const suggestions = document.getElementById('suggestions');
+
+input.addEventListener('input', function() {
+  const query = this.value;
+  if (!query) { clearSuggestions(); return; }
+
+  fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&addressdetails=1&limit=5&countrycodes=ID&accept-language=id`)
+    .then(res => res.json())
+    .then(data => showSuggestions(data))
+    .catch(() => clearSuggestions());
+});
+
+function showSuggestions(items) {
+  clearSuggestions();
+  items.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = item.display_name;
+    li.addEventListener('click', () => {
+      input.value = item.display_name;
+      const latlng = [parseFloat(item.lat), parseFloat(item.lon)];
+      map.setView(latlng, 16);
+      placeMarker(latlng);
+      clearSuggestions();
+    });
+    suggestions.appendChild(li);
+  });
+}
+
+function clearSuggestions() { suggestions.innerHTML = ''; }
+
+// Submit form (dummy)
+document.getElementById('formJemput').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const data = {
+    nama: document.getElementById('nama').value,
+    hp: document.getElementById('hp').value,
+    keterangan: document.getElementById('keterangan').value,
+    alamat: document.getElementById('alamat').value,
+    latlng: marker ? marker.getLatLng() : null
+  };
+  console.log("Data pemesanan jemputan:", data);
+  alert("Pesanan jemputan berhasil dicatat!\nCek console untuk data detail.");
+});
+</script>
+</body>
+</html>
