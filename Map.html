@@ -36,7 +36,7 @@ textarea { resize: vertical; }
 </head>
 <body>
 
-<h2>Form Pemesanan Jemputan</h2>
+<h2>Form Pemesanan Jemputan 2.0</h2>
 
 <form id="formJemput">
   <input type="text" id="nama" placeholder="Nama Pemesan" required>
@@ -130,16 +130,21 @@ btnPosisi.addEventListener('click', function(){
       placeUserMarker(userLatLng);
       map.setView([lat,lng], 14);
 
-      // Reverse geocoding OSM, baru isi kolom alamat
-      fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`)
-        .then(res => res.json())
-        .then(data => {
-          document.getElementById('alamat').value = data.display_name || "";
-        })
-        .catch(err => {
-          console.error(err);
-          document.getElementById('alamat').value = "";
-        });
+      // Reverse geocoding OSM dengan header User-Agent agar alamat muncul
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`, {
+        headers: {
+          'User-Agent': 'JemputanApp/1.0 (email@domain.com)',
+          'Accept-Language': 'id'
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('alamat').value = data.display_name || "";
+      })
+      .catch(err => {
+        console.error(err);
+        document.getElementById('alamat').value = "";
+      });
 
       btnPosisi.classList.remove('loading');
       btnPosisi.innerHTML = '<span class="icon">📍</span> Gunakan Posisi Saya';
