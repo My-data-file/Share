@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aplikasi Jemputan Profesional</title>
+<title>Aplikasi Jemputan dengan Rute</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <style>
 body { font-family: Arial, sans-serif; margin: 20px; }
@@ -11,46 +11,21 @@ h2 { text-align: center; }
 form { max-width: 500px; margin: 0 auto; position: relative; }
 input, textarea, button { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box; }
 textarea { resize: vertical; }
-#map { height: 300px; margin-bottom: 10px; border-radius: 8px; position: relative; }
+#map { height: 350px; margin-bottom: 10px; border-radius: 8px; position: relative; }
 ul.suggestions { list-style: none; padding: 0; margin: 0; border: 1px solid #ccc; max-height: 120px; overflow-y: auto; border-radius: 4px; background: white; position: absolute; z-index: 1000; width: 100%; }
 ul.suggestions li { padding: 6px; cursor: pointer; }
 ul.suggestions li:hover { background-color: #f0f0f0; }
-
-/* Tombol posisi user */
-#btnPosisi {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  transition: background-color 0.2s;
-}
+#btnPosisi { background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px; transition: background-color 0.2s; }
 #btnPosisi.loading { background-color: #ffc107; color: #333; cursor: wait; }
 #btnPosisi:hover:not(.loading) { background-color: #218838; }
-
-/* Animasi loading kecil */
-.spinner {
-  border: 2px solid rgba(255,255,255,0.3);
-  border-top: 2px solid #fff;
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
-  animation: spin 1s linear infinite;
-  display: inline-block;
-}
+.spinner { border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid #fff; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; display: inline-block; }
 @keyframes spin { 100% { transform: rotate(360deg); } }
-
-/* Tampilkan jarak */
 #jarak { font-weight: bold; margin-bottom: 10px; }
 </style>
 </head>
 <body>
-<h2>Form Pemesanan Jemputan Profesional</h2>
+
+<h2>Form Pemesanan Jemputan dengan Rute</h2>
 
 <form id="formJemput">
   <input type="text" id="nama" placeholder="Nama Pemesan" required>
@@ -60,10 +35,7 @@ ul.suggestions li:hover { background-color: #f0f0f0; }
   <input type="text" id="alamat" placeholder="Ketikan alamat jemput..." required>
   <ul id="suggestions" class="suggestions"></ul>
 
-  <button type="button" id="btnPosisi">
-    <span class="icon">📍</span> Gunakan Posisi Saya
-  </button>
-
+  <button type="button" id="btnPosisi"><span class="icon">📍</span> Gunakan Posisi Saya</button>
   <div id="jarak"></div>
 
   <div id="map"></div>
@@ -74,57 +46,68 @@ ul.suggestions li:hover { background-color: #f0f0f0; }
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
 const map = L.map('map');
-let marker;
-const defaultPoint = [-6.166090, 106.703803]; // Bisa ganti titik tujuan default
+let userMarker, tujuanMarker, rutePolyline;
 
+// Titik tujuan default
+const defaultPoint = [-6.200000, 106.816666]; // Jakarta Pusat
+const defaultName = "Titik Jemput Default";
+
+// Marker tujuan default
+tujuanMarker = L.marker(defaultPoint).addTo(map).bindPopup(defaultName).openPopup();
+
+// Tile layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
-map.setView(defaultPoint, 5);
+map.setView(defaultPoint, 12);
 
-function placeMarker(latlng) {
-  if (marker) marker.setLatLng(latlng);
-  else marker = L.marker(latlng).addTo(map);
+// Fungsi menempatkan marker user
+function placeUserMarker(latlng) {
+  if(userMarker) userMarker.setLatLng(latlng);
+  else userMarker = L.marker(latlng, {icon: L.icon({iconUrl:'https://cdn-icons-png.flaticon.com/512/149/149060.png', iconSize:[30,30]})}).addTo(map).bindPopup("Posisi Anda").openPopup();
+  updateRute(latlng, defaultPoint);
 }
 
-// Reverse geocode
-function reverseGeocode(latlng) {
-  fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}&addressdetails=1&accept-language=id`)
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById('alamat').value = data.display_name || '';
-      clearSuggestions();
-      updateJarak(latlng);
-    })
-    .catch(() => document.getElementById('alamat').value = '');
+// Fungsi update rute garis lurus
+function updateRute(userLatLng, tujuanLatLng) {
+  if(rutePolyline) map.removeLayer(rutePolyline);
+  rutePolyline = L.polyline([userLatLng, tujuanLatLng], {color:'blue', weight:3, dashArray:'5,10'}).addTo(map);
+  const jarakKm = haversine(userLatLng, tujuanLatLng);
+  document.getElementById('jarak').textContent = `Jarak ke ${defaultName}: ${jarakKm.toFixed(2)} km`;
 }
 
-// Klik peta
-map.on('click', function(e) {
-  placeMarker(e.latlng);
-  reverseGeocode(e.latlng);
-});
+// Fungsi haversine (jarak lurus)
+function haversine(start, end){
+  const R = 6371; // km
+  const dLat = toRad(end[0]-start.lat);
+  const dLon = toRad(end[1]-start.lng);
+  const lat1 = toRad(start.lat);
+  const lat2 = toRad(end[0]);
+  const a = Math.sin(dLat/2)**2 + Math.sin(dLon/2)**2 * Math.cos(lat1)*Math.cos(lat2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  return R*c;
+}
+function toRad(v){return v*Math.PI/180;}
 
-// Tombol posisi user dengan animasi loading
+// Tombol posisi user
 const btnPosisi = document.getElementById('btnPosisi');
-btnPosisi.addEventListener('click', function() {
-  if (!navigator.geolocation) { alert("Browser tidak mendukung geolocation."); return; }
-
+let userLatLng = null;
+btnPosisi.addEventListener('click', function(){
+  if(!navigator.geolocation){ alert("Browser tidak mendukung geolocation."); return; }
   btnPosisi.classList.add('loading');
   btnPosisi.innerHTML = '<span class="spinner"></span> Mencari lokasi…';
-
   navigator.geolocation.getCurrentPosition(
-    (pos) => {
+    (pos)=>{
       const lat = pos.coords.latitude;
-      const lon = pos.coords.longitude;
-      map.setView([lat, lon], 16);
-      placeMarker({lat, lng: lon});
-      reverseGeocode({lat, lng: lon});
+      const lng = pos.coords.longitude;
+      userLatLng = {lat, lng};
+      placeUserMarker(userLatLng);
+      map.setView([lat,lng], 14);
       btnPosisi.classList.remove('loading');
       btnPosisi.innerHTML = '<span class="icon">📍</span> Gunakan Posisi Saya';
     },
-    () => {
+    ()=>{
       alert("Tidak dapat mendapatkan lokasi Anda.");
       btnPosisi.classList.remove('loading');
       btnPosisi.innerHTML = '<span class="icon">📍</span> Gunakan Posisi Saya';
@@ -135,64 +118,46 @@ btnPosisi.addEventListener('click', function() {
 // Autocomplete alamat
 const input = document.getElementById('alamat');
 const suggestions = document.getElementById('suggestions');
-input.addEventListener('input', function() {
+input.addEventListener('input', function(){
   const query = this.value;
-  if (!query) { clearSuggestions(); return; }
-
+  if(!query){ clearSuggestions(); return; }
   fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&addressdetails=1&limit=5&countrycodes=ID&accept-language=id`)
-    .then(res => res.json())
-    .then(data => showSuggestions(data))
-    .catch(() => clearSuggestions());
+    .then(res=>res.json())
+    .then(data=>showSuggestions(data))
+    .catch(()=>clearSuggestions());
 });
-
-function showSuggestions(items) {
+function showSuggestions(items){
   clearSuggestions();
-  items.forEach(item => {
+  items.forEach(item=>{
     const li = document.createElement('li');
     li.textContent = item.display_name;
-    li.addEventListener('click', () => {
+    li.addEventListener('click', ()=>{
       input.value = item.display_name;
       const latlng = [parseFloat(item.lat), parseFloat(item.lon)];
       map.setView(latlng, 16);
-      placeMarker(latlng);
+      if(userMarker) placeUserMarker(userMarker.getLatLng()); // update rute jika user sudah ada
       clearSuggestions();
-      updateJarak({lat: latlng[0], lng: latlng[1]});
     });
     suggestions.appendChild(li);
   });
 }
+function clearSuggestions(){ suggestions.innerHTML = ''; }
 
-function clearSuggestions() { suggestions.innerHTML = ''; }
-
-// Hitung jarak (hanya perkiraan) ke default point
-function updateJarak(latlng) {
-  const R = 6371; // km
-  const dLat = toRad(defaultPoint[0]-latlng.lat);
-  const dLon = toRad(defaultPoint[1]-latlng.lng);
-  const lat1 = toRad(latlng.lat);
-  const lat2 = toRad(defaultPoint[0]);
-  const a = Math.sin(dLat/2)*Math.sin(dLat/2) +
-            Math.sin(dLon/2)*Math.sin(dLon/2)*Math.cos(lat1)*Math.cos(lat2);
-  const c = 2*Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-  const d = R * c;
-  document.getElementById('jarak').textContent = `Jarak ke titik tujuan: ${d.toFixed(2)} km`;
-}
-
-function toRad(Value) { return Value*Math.PI/180; }
-
-// Submit form (dummy)
-document.getElementById('formJemput').addEventListener('submit', function(e) {
+// Submit form dummy
+document.getElementById('formJemput').addEventListener('submit', function(e){
   e.preventDefault();
   const data = {
     nama: document.getElementById('nama').value,
     hp: document.getElementById('hp').value,
     keterangan: document.getElementById('keterangan').value,
     alamat: document.getElementById('alamat').value,
-    latlng: marker ? marker.getLatLng() : null
+    userLatLng,
+    tujuan: defaultPoint
   };
   console.log("Data pemesanan jemputan:", data);
-  alert("Pesanan jemputan berhasil dicatat!\nCek console untuk data detail.");
+  alert("Pesanan dicatat! Cek console untuk detail.");
 });
 </script>
+
 </body>
 </html>
