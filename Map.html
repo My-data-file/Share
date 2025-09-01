@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aplikasi Jemputan dengan Rute</title>
+<title>Aplikasi Jemputan dengan Marker & Rute</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <style>
 body { font-family: Arial, sans-serif; margin: 20px; }
@@ -25,7 +25,7 @@ ul.suggestions li:hover { background-color: #f0f0f0; }
 </head>
 <body>
 
-<h2>Form Pemesanan Jemputan dengan Rute</h2>
+<h2>Form Pemesanan Jemputan</h2>
 
 <form id="formJemput">
   <input type="text" id="nama" placeholder="Nama Pemesan" required>
@@ -46,14 +46,19 @@ ul.suggestions li:hover { background-color: #f0f0f0; }
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
 const map = L.map('map');
-let userMarker, tujuanMarker, rutePolyline;
+let userMarker, rutePolyline;
 
 // Titik tujuan default
 const defaultPoint = [-6.200000, 106.816666]; // Jakarta Pusat
 const defaultName = "Titik Jemput Default";
 
-// Marker tujuan default
-tujuanMarker = L.marker(defaultPoint).addTo(map).bindPopup(defaultName).openPopup();
+// Marker tujuan default dengan ikon
+const tujuanMarker = L.marker(defaultPoint, {
+  icon: L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png', // ikon jemputan
+    iconSize: [30,30]
+  })
+}).addTo(map).bindPopup(defaultName).openPopup();
 
 // Tile layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -65,19 +70,24 @@ map.setView(defaultPoint, 12);
 // Fungsi menempatkan marker user
 function placeUserMarker(latlng) {
   if(userMarker) userMarker.setLatLng(latlng);
-  else userMarker = L.marker(latlng, {icon: L.icon({iconUrl:'https://cdn-icons-png.flaticon.com/512/149/149060.png', iconSize:[30,30]})}).addTo(map).bindPopup("Posisi Anda").openPopup();
+  else userMarker = L.marker(latlng, {
+    icon: L.icon({
+      iconUrl:'https://cdn-icons-png.flaticon.com/512/149/149060.png', // ikon user
+      iconSize:[30,30]
+    })
+  }).addTo(map).bindPopup("Posisi Anda").openPopup();
   updateRute(latlng, defaultPoint);
 }
 
 // Fungsi update rute garis lurus
-function updateRute(userLatLng, tujuanLatLng) {
+function updateRute(userLatLng, tujuanLatLng){
   if(rutePolyline) map.removeLayer(rutePolyline);
   rutePolyline = L.polyline([userLatLng, tujuanLatLng], {color:'blue', weight:3, dashArray:'5,10'}).addTo(map);
   const jarakKm = haversine(userLatLng, tujuanLatLng);
   document.getElementById('jarak').textContent = `Jarak ke ${defaultName}: ${jarakKm.toFixed(2)} km`;
 }
 
-// Fungsi haversine (jarak lurus)
+// Haversine
 function haversine(start, end){
   const R = 6371; // km
   const dLat = toRad(end[0]-start.lat);
@@ -135,7 +145,7 @@ function showSuggestions(items){
       input.value = item.display_name;
       const latlng = [parseFloat(item.lat), parseFloat(item.lon)];
       map.setView(latlng, 16);
-      if(userMarker) placeUserMarker(userMarker.getLatLng()); // update rute jika user sudah ada
+      if(userMarker) updateRute(userMarker.getLatLng(), latlng);
       clearSuggestions();
     });
     suggestions.appendChild(li);
