@@ -3,193 +3,174 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aplikasi Jemputan Gratis – Leaflet + OSM</title>
+<title>Laundry Express Full</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <style>
-body { font-family: Arial, sans-serif; margin: 20px; }
-h2 { text-align: center; }
-form { max-width: 500px; margin: 0 auto; position: relative; }
-input, textarea, button { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box; }
-textarea { resize: vertical; }
-
-/* Kolom alamat */
-#alamat { 
-  background-color: #fff9c4; /* soft kuning */
-  color: #333;
-  cursor: text;
+/* ===================== CSS ===================== */
+body { font-family:'Segoe UI', Tahoma, sans-serif; margin:0; background:#f9fafb; color:#1f2937; }
+a { text-decoration:none; }
+header {
+  background: linear-gradient(135deg,#3b82f6,#6366f1); 
+  color:white; padding:40px 20px; border-bottom:5px solid #facc15; 
+  display:flex; justify-content:center; align-items:center; position:relative; overflow:hidden;
 }
-#alamat:focus { outline: none; box-shadow: none; border-color: #ccc; }
+.header-inner { display:flex; flex-direction:column; align-items:center; text-align:center; max-width:1000px; width:95%; gap:20px; position:relative; z-index:1; }
+.logo { width:80px; height:80px; margin:0 auto; }
+.logo img { width:100%; height:100%; display:block; border-radius:50%; object-fit:cover; background:#facc15; padding:8px; }
+.header-text h1 { font-size:2.5rem; margin-bottom:8px; }
+.header-text p { opacity:0.9; margin-bottom:15px; }
+.cta-btn { display:block; margin:0 auto; width: fit-content; padding:12px 25px; background:#facc15; color:#1f2937; border-radius:50px; font-weight:600; transition:all 0.3s; text-align:center; }
+.cta-btn:hover { transform:scale(1.05); }
 
-/* Kolom jarak */
-#jarak {
-  background-color: #e0f7fa; /* soft biru muda */
-  color: #333;
-  cursor: default;
-  font-weight: bold;
-  border-color: #ccc;
-}
-#jarak:focus { outline: none; box-shadow: none; border-color: #ccc; }
+.tab-menu { display:flex; flex-wrap:wrap; justify-content:center; max-width:1000px; margin:20px auto; gap:10px; position:relative; z-index:1; overflow-x: visible; }
+.tab-menu .tab-btn { flex:1 1 120px; padding:12px 20px; border:none; border-radius:50px; background:#e2e8f0; color:#1d4ed8; font-weight:600; cursor:pointer; position:relative; transition:all 0.3s; }
+.tab-menu .tab-btn.active { background:#3b82f6; color:white; }
+.tab-menu .tab-btn.active::after { content:''; position:absolute; bottom:-5px; left:20%; width:60%; height:4px; background:#facc15; border-radius:2px; }
 
-#map { height: 350px; margin-bottom: 10px; border-radius: 8px; position: relative; }
+.tab-content { display:none; opacity:0; transform:translateY(20px); transition:0.4s ease; padding:20px 0; }
+.tab-content.active { display:block; opacity:1; transform:translateY(0); }
 
-#btnPosisi { 
-  background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; 
-  font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px; transition: background-color 0.2s; 
-}
-#btnPosisi.loading { background-color: #ffc107; color: #333; cursor: wait; }
-#btnPosisi:hover:not(.loading) { background-color: #218838; }
-.spinner { border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid #fff; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; display: inline-block; }
-@keyframes spin { 100% { transform: rotate(360deg); } }
+.card { background:white; padding:25px; border-radius:20px; margin-bottom:30px; box-shadow:0 10px 30px rgba(0,0,0,0.08); }
+.grid-items { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; }
+.item { background:#e2e8f0; padding:15px; border-radius:12px; opacity:0; transform:translateX(-20px); transition:all 0.4s; text-align:center; }
+.item.show { opacity:1; transform:translateX(0); }
+
+.modern-form .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+.form-group { position: relative; display: flex; align-items: center; }
+.form-group input, .form-group select, .form-group button { width: 100%; padding: 12px 40px 12px 12px; border-radius: 12px; border: 1px solid #ccc; font-size: 1rem; background:#f9fafb; transition: all 0.3s; }
+.form-group input:focus, .form-group select:focus, .form-group button:focus { outline:none; border-color:#3b82f6; box-shadow:0 0 12px rgba(59,130,246,0.3); }
+.form-group label { position:absolute; left:12px; top:12px; color:#6b7280; font-size:0.95rem; pointer-events:none; transition:0.3s ease all; }
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label,
+.form-group select:focus + label,
+.form-group select:not([value=""]) + label { top:-10px; left:10px; background:#f9fafb; font-size:0.8rem; color:#3b82f6; padding:0 5px; }
+.form-group .icon { position:absolute; right:12px; font-size:1.2rem; pointer-events:none; }
+
+#map { height:300px; border-radius:12px; margin-bottom:10px; }
+
+.modern-form button { padding:12px; background:#3b82f6; color:white; font-weight:600; border:none; border-radius:12px; cursor:pointer; transition:all 0.3s; }
+.modern-form button:hover { transform:scale(1.03); }
+
+@media(max-width:768px){ .modern-form .form-grid { grid-template-columns:1fr !important; } }
 </style>
 </head>
 <body>
 
-<h2>Form Pemesanan Jemputan</h2>
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <img src="https://raw.githubusercontent.com/My-data-file/Share/main/Logo.png" alt="Sea Laundry Logo">
+    </div>
+    <div class="header-text">
+      <h1>Sea Laundry</h1>
+      <p>Cepat, rapi, dan bisa pesan online</p>
+      <a href="#order" class="cta-btn">Pesan Sekarang</a>
+    </div>
+  </div>
+</header>
 
-<form id="formJemput">
-  <input type="text" id="nama" placeholder="Nama Pemesan" required>
-  <input type="tel" id="hp" placeholder="Nomor HP (10–13 digit)" required pattern="[0-9]{10,13}">
-  <textarea id="keterangan" placeholder="Keterangan / Jumlah Barang" rows="3"></textarea>
+<nav class="tab-menu">
+  <button class="tab-btn active" data-tab="home">Home</button>
+  <button class="tab-btn" data-tab="order">Pesan Laundry</button>
+  <button class="tab-btn" data-tab="status">Status Order</button>
+  <button class="tab-btn" data-tab="services">Layanan</button>
+  <button class="tab-btn" data-tab="faq">FAQ</button>
+  <button class="tab-btn" data-tab="testimoni">Testimoni</button>
+  <button class="tab-btn" data-tab="contact">Kontak</button>
+</nav>
 
-  <input type="text" id="alamat" placeholder="Alamat otomatis dari GPS" readonly>
-  <input type="text" id="jarak" placeholder="Jarak & Waktu ke laundry" readonly>
+<!-- ================= Tab Contents ================= -->
+<div class="tab-content active" id="home">
+  <div class="card">
+    <h2>Selamat Datang di Laundry Express</h2>
+    <div class="grid-items">
+      <div class="item">Laundry online modern dan cepat</div>
+      <div class="item">Pesan mudah, jemput & antar cucian Anda</div>
+      <div class="item">Cucian wangi & rapi</div>
+      <div class="item">Layanan pelanggan responsif via WhatsApp</div>
+    </div>
+  </div>
+</div>
 
-  <button type="button" id="btnPosisi"><span class="icon">📍</span> Gunakan Posisi Saya</button>
+<!-- ================= Tab Pesan Laundry ================= -->
+<div class="tab-content" id="order">
+  <div class="card">
+    <h2>Pesan Laundry</h2>
+    <form id="orderForm" class="modern-form">
+      <div class="form-grid">
+        <div class="form-group">
+          <input type="text" id="nama" placeholder=" " required>
+          <label for="nama">Nama Pemesan</label>
+          <span class="icon">👤</span>
+        </div>
+        <div class="form-group">
+          <input type="text" id="keterangan" placeholder=" ">
+          <label for="keterangan">Keterangan / Jumlah Barang</label>
+          <span class="icon">📝</span>
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <input type="text" id="alamat" placeholder=" " readonly>
+          <label for="alamat">Alamat (otomatis GPS)</label>
+          <span class="icon">🏠</span>
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <input type="text" id="jarak" placeholder=" " readonly>
+          <label for="jarak">Jarak & Waktu ke Laundry</label>
+          <span class="icon">🛣️</span>
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <button type="button" id="btnPosisi">📍 Gunakan Posisi Saya</button>
+        </div>
+        <div style="grid-column: span 2;">
+          <div id="map"></div>
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <button type="submit">Pesan Jemputan</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 
-  <div id="map"></div>
-
-  <button type="submit" style="background-color:#007bff;color:white;">Pesan Jemputan</button>
-</form>
+<!-- ================= Tab lain tetap sama ================= -->
+<div class="tab-content" id="status"><div class="card"><h2>Status Order</h2><p>Konten Status Order...</p></div></div>
+<div class="tab-content" id="services"><div class="card"><h2>Layanan & Harga</h2><p>Konten Layanan...</p></div></div>
+<div class="tab-content" id="faq"><div class="card"><h2>FAQ</h2><p>Konten FAQ...</p></div></div>
+<div class="tab-content" id="testimoni"><div class="card"><h2>Testimoni</h2><p>Konten Testimoni...</p></div></div>
+<div class="tab-content" id="contact"><div class="card"><h2>Kontak</h2><p>Kontak Info...</p></div></div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-const map = L.map('map');
-let userMarker, rutePolyline;
-
-// Titik lokasi laundry
-const defaultPoint = [-6.200000, 106.816666]; // ganti koordinat laundry
-const defaultName = "Laundry Bersih Sejahtera";
-
-// Marker laundry dengan tooltip permanen
-L.marker(defaultPoint, {
-  icon: L.icon({
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
-    iconSize: [30,30]
-  })
-}).addTo(map)
-  .bindTooltip(defaultName, {permanent: true, direction: 'top', offset: [0, -10]})
-  .openTooltip();
-
-// Tile OSM publik
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
-  attribution: '&copy; OpenStreetMap contributors'
-}).addTo(map);
-
-map.setView(defaultPoint, 12);
-
-// Fungsi menempatkan marker user
-function placeUserMarker(latlng) {
-  if(userMarker) userMarker.setLatLng(latlng);
-  else userMarker = L.marker(latlng, {
-    icon: L.icon({
-      iconUrl:'https://cdn-icons-png.flaticon.com/512/149/149060.png',
-      iconSize:[30,30]
-    })
-  }).addTo(map)
-    .bindTooltip("Posisi Anda", {permanent: true, direction:'top', offset:[0,-10]})
-    .openTooltip();
-  updateRute(latlng, defaultPoint);
-}
-
-// 🔧 Fungsi update rute via OSRM (jalan tercepat + Waktu tempuh)
-function updateRute(userLatLng, tujuanLatLng){
-  if(rutePolyline) map.removeLayer(rutePolyline);
-
-  const url = `https://router.project-osrm.org/route/v1/driving/${userLatLng.lng},${userLatLng.lat};${tujuanLatLng[1]},${tujuanLatLng[0]}?overview=full&geometries=geojson&alternatives=false`;
-
-  fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      if (data.routes && data.routes.length > 0) {
-        const route = data.routes[0];
-        const coords = route.geometry.coordinates.map(c => [c[1], c[0]]);
-        
-        rutePolyline = L.polyline(coords, { color: 'blue', weight: 4 }).addTo(map);
-
-        const jarakKm = route.distance / 1000;
-        const durasiMenit = Math.round(route.duration / 60); // detik -> menit
-
-        document.getElementById('jarak').value = `Jarak: ${jarakKm.toFixed(2)} km | Waktu: ${durasiMenit} menit`;
-
-        map.fitBounds(rutePolyline.getBounds(), { padding: [50, 50] });
-      }
-    })
-    .catch(err => {
-      console.error("Gagal memuat rute OSRM:", err);
-      const polyline = L.polyline([userLatLng, tujuanLatLng], { color: 'red', dashArray: '5,10' }).addTo(map);
-      rutePolyline = polyline;
-      document.getElementById('jarak').value = "Tidak dapat hitung rute (fallback ke garis lurus)";
-    });
-}
-
-// Tombol posisi user
-const btnPosisi = document.getElementById('btnPosisi');
-let userLatLng = null;
-btnPosisi.addEventListener('click', function(){
-  if(!navigator.geolocation){ alert("Browser tidak mendukung geolocation."); return; }
-  btnPosisi.classList.add('loading');
-  btnPosisi.innerHTML = '<span class="spinner"></span> Mencari lokasi…';
-  navigator.geolocation.getCurrentPosition(
-    (pos)=>{
-      const lat = pos.coords.latitude;
-      const lng = pos.coords.longitude;
-      userLatLng = {lat, lng};
-
-      // Reverse geocoding OSM
-      fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`, {
-        headers: {
-          'User-Agent': 'JemputanApp/1.0 (admin@laundry.com)',
-          'Accept-Language': 'id'
-        }
-      })
-      .then(res => res.json())
-      .then(data => {
-        const displayName = data.display_name || "";
-        document.getElementById('alamat').value = `${displayName} (Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)})`;
-        placeUserMarker(userLatLng); 
-      })
-      .catch(err => {
-        console.error(err);
-        document.getElementById('alamat').value = `(Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)})`;
-        placeUserMarker(userLatLng);
-      });
-
-      btnPosisi.classList.remove('loading');
-      btnPosisi.innerHTML = '<span class="icon">📍</span> Gunakan Posisi Saya';
-    },
-    ()=>{
-      alert("Tidak dapat mendapatkan lokasi Anda.");
-      btnPosisi.classList.remove('loading');
-      btnPosisi.innerHTML = '<span class="icon">📍</span> Gunakan Posisi Saya';
-    }
-  );
+// ================= Tabs =================
+const tabs = document.querySelectorAll('.tab-btn');
+const contents = document.querySelectorAll('.tab-content');
+tabs.forEach(btn => {
+  btn.addEventListener('click', ()=>{
+    tabs.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    contents.forEach(c=>c.classList.remove('active'));
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
 });
 
-// Submit form dummy
-document.getElementById('formJemput').addEventListener('submit', function(e){
-  e.preventDefault();
-  const data = {
-    nama: document.getElementById('nama').value,
-    hp: document.getElementById('hp').value,
-    keterangan: document.getElementById('keterangan').value,
-    alamat: document.getElementById('alamat').value,
-    jarak: document.getElementById('jarak').value,
-    userLatLng,
-    tujuan: defaultPoint
-  };
-  console.log("Data pemesanan jemputan:", data);
-  alert("Pesanan dicatat! Cek console untuk detail.");
+// ================= Map =================
+let map = L.map('map').setView([-6.2,106.8], 13); // default Jakarta
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 19}).addTo(map);
+let marker;
+
+document.getElementById('btnPosisi').addEventListener('click', ()=>{
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(position=>{
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      document.getElementById('alamat').value = `${lat.toFixed(6)}, ${lon.toFixed(6)}`;
+      if(marker) map.removeLayer(marker);
+      marker = L.marker([lat,lon]).addTo(map);
+      map.setView([lat,lon],15);
+      // Contoh jarak & waktu statis
+      document.getElementById('jarak').value = '5 km, 10 menit';
+    }, ()=>alert('Gagal mendapatkan posisi'));
+  }else{ alert('Browser tidak mendukung GPS'); }
 });
 </script>
 
