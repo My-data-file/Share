@@ -33,10 +33,8 @@ header {
 }
 .logo { width:80px; height:80px; margin-right:25px; }
 .logo img { 
-  width:80px; 
-  height:80px; 
+  width:80px; height:80px; 
   display:block; 
-  margin:0 auto; /* <-- tambahkan baris ini */
   border-radius:50%; 
   object-fit:cover; 
   background:#facc15; 
@@ -265,14 +263,17 @@ footer p { margin: 5px 0; font-weight:600; }
 
 /* ================= MEDIA QUERY UPDATE ================= */
 @media(max-width:768px){ 
-  .grid-items{grid-template-columns:repeat(auto-fit,minmax(180px,1fr));} 
   .header-inner{
     flex-direction:column;
     text-align:center;
     justify-content:center;
     align-items:center;
   } 
-  .header-text{text-align:center;} 
+  .header-text{
+    flex: unset;      /* <== ini tambahan */
+    text-align:center;
+    width: 100%;      /* opsional */
+  } 
   .logo{
     width:60px;
     height:60px;
@@ -471,7 +472,7 @@ footer p { margin: 5px 0; font-weight:600; }
 <div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
-  <p>&copy; 2025 Sea Laundry. All rights reserved.</p>
+  <p>&copy; 2025 Sea 1.0 Laundry. All rights reserved.</p>
 </footer>
 
 <script>
