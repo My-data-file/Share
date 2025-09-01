@@ -18,11 +18,7 @@ textarea { resize: vertical; }
   color: #333;
   cursor: text;
 }
-#alamat:focus {
-  outline: none;
-  box-shadow: none;
-  border-color: #ccc;
-}
+#alamat:focus { outline: none; box-shadow: none; border-color: #ccc; }
 
 /* Kolom jarak */
 #jarak {
@@ -32,11 +28,7 @@ textarea { resize: vertical; }
   font-weight: bold;
   border-color: #ccc;
 }
-#jarak:focus {
-  outline: none;
-  box-shadow: none;
-  border-color: #ccc;
-}
+#jarak:focus { outline: none; box-shadow: none; border-color: #ccc; }
 
 #map { height: 350px; margin-bottom: 10px; border-radius: 8px; position: relative; }
 
@@ -52,7 +44,7 @@ textarea { resize: vertical; }
 </head>
 <body>
 
-<h2>Form Pemesanan Jemputan V1</h2>
+<h2>Form Pemesanan Jemputan</h2>
 
 <form id="formJemput">
   <input type="text" id="nama" placeholder="Nama Pemesan" required>
@@ -108,6 +100,10 @@ function placeUserMarker(latlng) {
     .bindTooltip("Posisi Anda", {permanent: true, direction:'top', offset:[0,-10]})
     .openTooltip();
   updateRute(latlng, defaultPoint);
+
+  // Fit bounds agar user + laundry terlihat proporsional
+  const bounds = L.latLngBounds([latlng, defaultPoint]);
+  map.fitBounds(bounds, { padding: [50, 50] });
 }
 
 // Fungsi update rute garis lurus & jarak
@@ -143,8 +139,6 @@ btnPosisi.addEventListener('click', function(){
       const lat = pos.coords.latitude;
       const lng = pos.coords.longitude;
       userLatLng = {lat, lng};
-      placeUserMarker(userLatLng);
-      map.setView([lat,lng], 14);
 
       // Reverse geocoding OSM dengan header User-Agent
       fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`, {
@@ -157,12 +151,12 @@ btnPosisi.addEventListener('click', function(){
       .then(data => {
         const displayName = data.display_name || "";
         document.getElementById('alamat').value = `${displayName} (Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)})`;
-        updateRute(userLatLng, defaultPoint); // update jarak juga
+        placeUserMarker(userLatLng); // update map & fitBounds
       })
       .catch(err => {
         console.error(err);
         document.getElementById('alamat').value = `(Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)})`;
-        updateRute(userLatLng, defaultPoint);
+        placeUserMarker(userLatLng);
       });
 
       btnPosisi.classList.remove('loading');
