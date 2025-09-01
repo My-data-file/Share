@@ -483,7 +483,7 @@ footer p { margin: 5px 0; font-weight:600; }
 <div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
-  <p>&copy; 2025 Sea 1.0 Laundry. All rights reserved.</p>
+  <p>&copy; 2025 Sea Laundry. All rights reserved.</p>
 </footer>
 
 <script>
@@ -521,16 +521,8 @@ tabs.forEach(btn => {
     const tab = document.getElementById(btn.dataset.tab);
     tab.classList.add('active');
     showItems(btn.dataset.tab);
-if(btn.dataset.tab === 'status') {
-  const lastUpdate = new Date();
-  let p = tab.querySelector('.last-update');
-  if(!p) {
-    p = document.createElement('p');
-    p.classList.add('last-update'); // <--- pastikan ada class ini
-    tab.querySelector('.card').appendChild(p);
-  }
-  p.textContent = 'Terakhir diperbarui: ' + lastUpdate.toLocaleTimeString();
-}
+    if(btn.dataset.tab === 'status') {
+  // Hanya load status sekali saat tab status dibuka
   loadStatusFromGAS();
 
   // Tampilkan waktu terakhir update di bawah card
