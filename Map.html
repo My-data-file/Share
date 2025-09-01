@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aplikasi Jemputan dengan Marker & Rute</title>
+<title>Aplikasi Jemputan dengan Popup Permanen</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <style>
 body { font-family: Arial, sans-serif; margin: 20px; }
@@ -52,13 +52,15 @@ let userMarker, rutePolyline;
 const defaultPoint = [-6.200000, 106.816666]; // Jakarta Pusat
 const defaultName = "Titik Jemput Default";
 
-// Marker tujuan default dengan ikon
+// Marker tujuan default dengan popup permanen
 const tujuanMarker = L.marker(defaultPoint, {
   icon: L.icon({
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png', // ikon jemputan
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
     iconSize: [30,30]
   })
-}).addTo(map).bindPopup(defaultName).openPopup();
+}).addTo(map)
+  .bindPopup(`<b>${defaultName}</b><br>Lat: ${defaultPoint[0]}, Lng: ${defaultPoint[1]}`, {permanent: true, direction:'top'})
+  .openPopup();
 
 // Tile layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -67,15 +69,17 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 map.setView(defaultPoint, 12);
 
-// Fungsi menempatkan marker user
+// Fungsi menempatkan marker user dengan popup permanen
 function placeUserMarker(latlng) {
   if(userMarker) userMarker.setLatLng(latlng);
   else userMarker = L.marker(latlng, {
     icon: L.icon({
-      iconUrl:'https://cdn-icons-png.flaticon.com/512/149/149060.png', // ikon user
+      iconUrl:'https://cdn-icons-png.flaticon.com/512/149/149060.png',
       iconSize:[30,30]
     })
-  }).addTo(map).bindPopup("Posisi Anda").openPopup();
+  }).addTo(map)
+    .bindPopup(`<b>Posisi Anda</b><br>Lat: ${latlng.lat}, Lng: ${latlng.lng}`, {permanent: true, direction:'top'})
+    .openPopup();
   updateRute(latlng, defaultPoint);
 }
 
