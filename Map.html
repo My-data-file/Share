@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aplikasi Jemputan dengan Popup Permanen</title>
+<title>Aplikasi Jemputan dengan Tooltip Permanen</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <style>
 body { font-family: Arial, sans-serif; margin: 20px; }
@@ -25,7 +25,7 @@ ul.suggestions li:hover { background-color: #f0f0f0; }
 </head>
 <body>
 
-<h2>Form Pemesanan Jemputan 1.0</h2>
+<h2>Form Pemesanan Jemputan</h2>
 
 <form id="formJemput">
   <input type="text" id="nama" placeholder="Nama Pemesan" required>
@@ -52,15 +52,15 @@ let userMarker, rutePolyline;
 const defaultPoint = [-6.200000, 106.816666]; // Jakarta Pusat
 const defaultName = "Titik Jemput Default";
 
-// Marker tujuan default dengan popup permanen
+// Marker tujuan default dengan tooltip permanen
 const tujuanMarker = L.marker(defaultPoint, {
   icon: L.icon({
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
     iconSize: [30,30]
   })
 }).addTo(map)
-  .bindPopup(`<b>${defaultName}</b><br>Lat: ${defaultPoint[0]}, Lng: ${defaultPoint[1]}`, {permanent: true, direction:'top'})
-  .openPopup();
+  .bindTooltip(defaultName, {permanent: true, direction: 'top', offset: [0, -10]})
+  .openTooltip();
 
 // Tile layer
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -69,7 +69,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 map.setView(defaultPoint, 12);
 
-// Fungsi menempatkan marker user dengan popup permanen
+// Fungsi menempatkan marker user dengan tooltip permanen
 function placeUserMarker(latlng) {
   if(userMarker) userMarker.setLatLng(latlng);
   else userMarker = L.marker(latlng, {
@@ -78,8 +78,8 @@ function placeUserMarker(latlng) {
       iconSize:[30,30]
     })
   }).addTo(map)
-    .bindPopup(`<b>Posisi Anda</b><br>Lat: ${latlng.lat}, Lng: ${latlng.lng}`, {permanent: true, direction:'top'})
-    .openPopup();
+    .bindTooltip("Posisi Anda", {permanent: true, direction:'top', offset:[0,-10]})
+    .openTooltip();
   updateRute(latlng, defaultPoint);
 }
 
