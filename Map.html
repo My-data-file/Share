@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aplikasi Jemputan dengan Tooltip Permanen</title>
+<title>Aplikasi Jemputan – Posisi Anda</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <style>
 body { font-family: Arial, sans-serif; margin: 20px; }
@@ -11,10 +11,21 @@ h2 { text-align: center; }
 form { max-width: 500px; margin: 0 auto; position: relative; }
 input, textarea, button { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box; }
 textarea { resize: vertical; }
+
+/* Kolom alamat */
+#alamat { 
+  background-color: #fff9c4; /* soft kuning */
+  color: #333;
+  cursor: text;
+}
+/* Hilangkan efek fokus / garis biru */
+#alamat:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: #ccc;
+}
+
 #map { height: 350px; margin-bottom: 10px; border-radius: 8px; position: relative; }
-ul.suggestions { list-style: none; padding: 0; margin: 0; border: 1px solid #ccc; max-height: 120px; overflow-y: auto; border-radius: 4px; background: white; position: absolute; z-index: 1000; width: 100%; }
-ul.suggestions li { padding: 6px; cursor: pointer; }
-ul.suggestions li:hover { background-color: #f0f0f0; }
 #btnPosisi { background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px; transition: background-color 0.2s; }
 #btnPosisi.loading { background-color: #ffc107; color: #333; cursor: wait; }
 #btnPosisi:hover:not(.loading) { background-color: #218838; }
@@ -32,8 +43,7 @@ ul.suggestions li:hover { background-color: #f0f0f0; }
   <input type="tel" id="hp" placeholder="Nomor HP" required>
   <textarea id="keterangan" placeholder="Keterangan / Jumlah Barang" rows="3"></textarea>
 
-  <input type="text" id="alamat" placeholder="Ketikan alamat jemput..." required>
-  <ul id="suggestions" class="suggestions"></ul>
+  <input type="text" id="alamat" placeholder="Posisi Anda" readonly>
 
   <button type="button" id="btnPosisi"><span class="icon">📍</span> Gunakan Posisi Saya</button>
   <div id="jarak"></div>
@@ -48,11 +58,11 @@ ul.suggestions li:hover { background-color: #f0f0f0; }
 const map = L.map('map');
 let userMarker, rutePolyline;
 
-// Titik tujuan default
-const defaultPoint = [-6.200000, 106.816666]; // Jakarta Pusat
-const defaultName = "Titik Jemput Default";
+// Titik lokasi laundry
+const defaultPoint = [-6.200000, 106.816666]; // ganti dengan koordinat laundry
+const defaultName = "Laundry Bersih Sejahtera";
 
-// Marker tujuan default dengan tooltip permanen
+// Marker laundry dengan tooltip permanen
 const tujuanMarker = L.marker(defaultPoint, {
   icon: L.icon({
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
@@ -118,6 +128,10 @@ btnPosisi.addEventListener('click', function(){
       userLatLng = {lat, lng};
       placeUserMarker(userLatLng);
       map.setView([lat,lng], 14);
+
+      // Set alamat otomatis dan beri warna berbeda
+      document.getElementById('alamat').value = "Posisi Anda";
+
       btnPosisi.classList.remove('loading');
       btnPosisi.innerHTML = '<span class="icon">📍</span> Gunakan Posisi Saya';
     },
@@ -128,34 +142,6 @@ btnPosisi.addEventListener('click', function(){
     }
   );
 });
-
-// Autocomplete alamat
-const input = document.getElementById('alamat');
-const suggestions = document.getElementById('suggestions');
-input.addEventListener('input', function(){
-  const query = this.value;
-  if(!query){ clearSuggestions(); return; }
-  fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&addressdetails=1&limit=5&countrycodes=ID&accept-language=id`)
-    .then(res=>res.json())
-    .then(data=>showSuggestions(data))
-    .catch(()=>clearSuggestions());
-});
-function showSuggestions(items){
-  clearSuggestions();
-  items.forEach(item=>{
-    const li = document.createElement('li');
-    li.textContent = item.display_name;
-    li.addEventListener('click', ()=>{
-      input.value = item.display_name;
-      const latlng = [parseFloat(item.lat), parseFloat(item.lon)];
-      map.setView(latlng, 16);
-      if(userMarker) updateRute(userMarker.getLatLng(), latlng);
-      clearSuggestions();
-    });
-    suggestions.appendChild(li);
-  });
-}
-function clearSuggestions(){ suggestions.innerHTML = ''; }
 
 // Submit form dummy
 document.getElementById('formJemput').addEventListener('submit', function(e){
