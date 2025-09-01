@@ -521,8 +521,16 @@ tabs.forEach(btn => {
     const tab = document.getElementById(btn.dataset.tab);
     tab.classList.add('active');
     showItems(btn.dataset.tab);
-    if(btn.dataset.tab === 'status') {
-  // Hanya load status sekali saat tab status dibuka
+if(btn.dataset.tab === 'status') {
+  const lastUpdate = new Date();
+  let p = tab.querySelector('.last-update');
+  if(!p) {
+    p = document.createElement('p');
+    p.classList.add('last-update'); // <--- pastikan ada class ini
+    tab.querySelector('.card').appendChild(p);
+  }
+  p.textContent = 'Terakhir diperbarui: ' + lastUpdate.toLocaleTimeString();
+}
   loadStatusFromGAS();
 
   // Tampilkan waktu terakhir update di bawah card
