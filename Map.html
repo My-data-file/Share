@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aplikasi Jemputan – Posisi Anda</title>
+<title>Aplikasi Jemputan Gratis – Leaflet + OSM</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <style>
 body { font-family: Arial, sans-serif; margin: 20px; }
@@ -18,7 +18,7 @@ textarea { resize: vertical; }
   color: #333;
   cursor: text;
 }
-/* Hilangkan efek fokus / garis biru */
+/* Hilangkan efek fokus */
 #alamat:focus {
   outline: none;
   box-shadow: none;
@@ -59,11 +59,11 @@ const map = L.map('map');
 let userMarker, rutePolyline;
 
 // Titik lokasi laundry
-const defaultPoint = [-6.200000, 106.816666]; // ganti dengan koordinat laundry
+const defaultPoint = [-6.200000, 106.816666]; // ganti koordinat laundry
 const defaultName = "Laundry Bersih Sejahtera";
 
 // Marker laundry dengan tooltip permanen
-const tujuanMarker = L.marker(defaultPoint, {
+L.marker(defaultPoint, {
   icon: L.icon({
     iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
     iconSize: [30,30]
@@ -72,14 +72,15 @@ const tujuanMarker = L.marker(defaultPoint, {
   .bindTooltip(defaultName, {permanent: true, direction: 'top', offset: [0, -10]})
   .openTooltip();
 
-// Tile layer
+// Tile OSM publik
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
   attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
 map.setView(defaultPoint, 12);
 
-// Fungsi menempatkan marker user dengan tooltip permanen
+// Fungsi menempatkan marker user
 function placeUserMarker(latlng) {
   if(userMarker) userMarker.setLatLng(latlng);
   else userMarker = L.marker(latlng, {
@@ -93,7 +94,7 @@ function placeUserMarker(latlng) {
   updateRute(latlng, defaultPoint);
 }
 
-// Fungsi update rute garis lurus
+// Fungsi update rute garis lurus & jarak
 function updateRute(userLatLng, tujuanLatLng){
   if(rutePolyline) map.removeLayer(rutePolyline);
   rutePolyline = L.polyline([userLatLng, tujuanLatLng], {color:'blue', weight:3, dashArray:'5,10'}).addTo(map);
@@ -103,7 +104,7 @@ function updateRute(userLatLng, tujuanLatLng){
 
 // Haversine
 function haversine(start, end){
-  const R = 6371; // km
+  const R = 6371; 
   const dLat = toRad(end[0]-start.lat);
   const dLon = toRad(end[1]-start.lng);
   const lat1 = toRad(start.lat);
@@ -128,10 +129,7 @@ btnPosisi.addEventListener('click', function(){
       userLatLng = {lat, lng};
       placeUserMarker(userLatLng);
       map.setView([lat,lng], 14);
-
-      // Set alamat otomatis dan beri warna berbeda
       document.getElementById('alamat').value = "Posisi Anda";
-
       btnPosisi.classList.remove('loading');
       btnPosisi.innerHTML = '<span class="icon">📍</span> Gunakan Posisi Saya';
     },
