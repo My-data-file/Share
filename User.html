@@ -264,21 +264,21 @@ footer p { margin: 5px 0; font-weight:600; }
 /* ================= MEDIA QUERY UPDATE ================= */
 @media(max-width:768px){ 
   .header-inner{
-    flex-direction:column;
-    text-align:center;
-    justify-content:center;
-    align-items:center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   } 
   .header-text{
-    flex: unset;      /* <== ini tambahan */
-    text-align:center;
-    width: 100%;      /* opsional */
-  } 
+    flex: 0 0 auto;   /* Hapus efek stretch flex */
+    width: auto;      /* Supaya tidak mengambil seluruh lebar */
+  }
   .logo{
-    width:60px;
-    height:60px;
-    margin:0 auto 15px auto;
-  } 
+    margin: 0 auto 15px auto; /* center logo */
+    width: 60px;
+    height: 60px;
+  }
+}
   .modern-form .form-grid { grid-template-columns:1fr !important; } 
   .form-group[style] { grid-column: span 1 !important; } 
   .modern-form button { grid-column: span 1 !important; } 
@@ -472,7 +472,7 @@ footer p { margin: 5px 0; font-weight:600; }
 <div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
-  <p>&copy; 2025 Sea 1.0 Laundry. All rights reserved.</p>
+  <p>&copy; 2025 Sea 1.1 Laundry. All rights reserved.</p>
 </footer>
 
 <script>
