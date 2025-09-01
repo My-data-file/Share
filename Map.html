@@ -52,10 +52,9 @@ textarea { resize: vertical; }
   <textarea id="keterangan" placeholder="Keterangan / Jumlah Barang" rows="3"></textarea>
 
   <input type="text" id="alamat" placeholder="Alamat otomatis dari GPS" readonly>
-  <input type="text" id="jarak" placeholder="Jarak & ETA ke laundry" readonly>
+  <input type="text" id="jarak" placeholder="Jarak & Waktu ke laundry" readonly>
 
   <button type="button" id="btnPosisi"><span class="icon">📍</span> Gunakan Posisi Saya</button>
-  <button type="button" onclick="document.getElementById('alamat').readOnly=false;">✏️ Masukkan Alamat Manual</button>
 
   <div id="map"></div>
 
@@ -103,7 +102,7 @@ function placeUserMarker(latlng) {
   updateRute(latlng, defaultPoint);
 }
 
-// 🔧 Fungsi update rute via OSRM (jalan tercepat + ETA)
+// 🔧 Fungsi update rute via OSRM (jalan tercepat + Waktu tempuh)
 function updateRute(userLatLng, tujuanLatLng){
   if(rutePolyline) map.removeLayer(rutePolyline);
 
@@ -121,7 +120,7 @@ function updateRute(userLatLng, tujuanLatLng){
         const jarakKm = route.distance / 1000;
         const durasiMenit = Math.round(route.duration / 60); // detik -> menit
 
-        document.getElementById('jarak').value = `Jarak: ${jarakKm.toFixed(2)} km | ETA: ${durasiMenit} menit`;
+        document.getElementById('jarak').value = `Jarak: ${jarakKm.toFixed(2)} km | Waktu: ${durasiMenit} menit`;
 
         map.fitBounds(rutePolyline.getBounds(), { padding: [50, 50] });
       }
