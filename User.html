@@ -9,53 +9,54 @@
 body { font-family:'Segoe UI', Tahoma, sans-serif; margin:0; background:#f9fafb; color:#1f2937; }
 a { text-decoration:none; }
 
-header { 
-  background: linear-gradient(135deg,#3b82f6,#6366f1); 
-  color:white; 
-  padding:40px 20px; 
-  border-bottom:5px solid #facc15; 
-  display:flex; 
-  justify-content:center; 
-  align-items:center; 
-  position:relative; 
-  overflow:hidden; 
+header {
+  background: linear-gradient(135deg,#3b82f6,#6366f1);
+  color: white;
+  padding: 40px 20px;
+  border-bottom: 5px solid #facc15;
 }
-.header-inner { 
-  display:flex; 
-  flex-direction:column; 
-  align-items:center; 
-  text-align:center; 
-  max-width:1000px; 
-  width:95%; 
-  gap:20px; 
-  position:relative; 
-  z-index:1; 
-}
-.logo { width:80px; height:80px; margin-right:25px; }
-.logo img { 
-  width:80px; height:80px; 
-  display:block; 
-  border-radius:50%; 
-  object-fit:cover; 
-  background:#facc15; 
-  padding:8px; 
-}
-.header-text { flex:1; text-align:left; }
-.header-text h1 { font-size:2.5rem; margin-bottom:8px; }
-.header-text p { opacity:0.9; margin-bottom:15px; }
-.cta-btn { 
-  display:block;
+
+.header-inner {
+  display: flex;
+  flex-direction: row; /* desktop: logo dan text sejajar */
+  align-items: center; /* vertikal center */
+  justify-content: center; /* horizontal center */
+  gap: 20px; /* jarak logo-text */
+  max-width: 1000px;
   margin: 0 auto;
-  width: fit-content;
-  padding:12px 25px;
-  background:#facc15;
-  color:#1f2937;
-  border-radius:50px;
-  font-weight:600;
-  transition:all 0.3s;
-  text-align:center;
+  width: 95%;
+  text-align: left;
 }
-.cta-btn:hover { transform:scale(1.05); }
+
+.logo img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #facc15;
+  padding: 8px;
+}
+
+.header-text h1 {
+  font-size: 2.5rem;
+  margin-bottom: 8px;
+}
+
+.header-text p {
+  opacity: 0.9;
+  margin-bottom: 15px;
+}
+
+.cta-btn {
+  display: inline-block;
+  padding: 12px 25px;
+  background: #facc15;
+  color: #1f2937;
+  border-radius: 50px;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.3s;
+}
 
 .bubble {
   position: absolute;
@@ -262,7 +263,6 @@ footer { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; paddi
 footer p { margin: 5px 0; font-weight:600; }
 
 /* ================= MEDIA QUERY UPDATE ================= */
-/* ================= Header Centering Fix ================= */
 header .header-inner {
   display: flex;
   flex-direction: row; /* default desktop */
@@ -281,20 +281,20 @@ header .header-text {
 }
 
 /* ================= Media Query HP ================= */
-@media(max-width:768px){
-  header .header-inner {
-    flex-direction: column; /* stack logo + text */
+@media (max-width: 768px) {
+  .header-inner {
+    flex-direction: column; /* stack vertikal */
     align-items: center;
-    justify-content: center;
     text-align: center;
   }
-  header .logo {
-    margin: 0 0 15px 0; /* bawah logo jarak ke text */
+
+  .logo img {
     width: 60px;
     height: 60px;
+    margin-bottom: 15px; /* jarak ke text */
   }
-  header .header-text {
-    flex: none;
+
+  .header-text {
     width: auto;
   }
 }
@@ -319,7 +319,7 @@ header .header-text {
 <header>
   <div class="header-inner">
     <div class="logo">
-      <img src="https://raw.githubusercontent.com/My-data-file/Share/main/Logo.png" alt="Sea Laundry Logo" width="80" height="80">
+      <img src="https://raw.githubusercontent.com/My-data-file/Share/main/Logo.png" alt="Sea Laundry Logo">
     </div>
     <div class="header-text">
       <h1>Sea Laundry</h1>
@@ -491,7 +491,7 @@ header .header-text {
 <div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
-  <p>&copy; 2025 Sea 1.2 Laundry. All rights reserved.</p>
+  <p>&copy; 2025 Sea 2.0 Laundry. All rights reserved.</p>
 </footer>
 
 <script>
