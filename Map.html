@@ -18,25 +18,41 @@ textarea { resize: vertical; }
   color: #333;
   cursor: text;
 }
-/* Hilangkan efek fokus */
 #alamat:focus {
   outline: none;
   box-shadow: none;
   border-color: #ccc;
 }
 
+/* Kolom jarak */
+#jarak {
+  background-color: #e0f7fa; /* soft biru muda */
+  color: #333;
+  cursor: default;
+  font-weight: bold;
+  border-color: #ccc;
+}
+#jarak:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: #ccc;
+}
+
 #map { height: 350px; margin-bottom: 10px; border-radius: 8px; position: relative; }
-#btnPosisi { background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px; transition: background-color 0.2s; }
+
+#btnPosisi { 
+  background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; 
+  font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px; transition: background-color 0.2s; 
+}
 #btnPosisi.loading { background-color: #ffc107; color: #333; cursor: wait; }
 #btnPosisi:hover:not(.loading) { background-color: #218838; }
 .spinner { border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid #fff; border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite; display: inline-block; }
 @keyframes spin { 100% { transform: rotate(360deg); } }
-#jarak { font-weight: bold; margin-bottom: 10px; }
 </style>
 </head>
 <body>
 
-<h2>Form Pemesanan Jemputan</h2>
+<h2>Form Pemesanan Jemputan V1</h2>
 
 <form id="formJemput">
   <input type="text" id="nama" placeholder="Nama Pemesan" required>
@@ -44,9 +60,9 @@ textarea { resize: vertical; }
   <textarea id="keterangan" placeholder="Keterangan / Jumlah Barang" rows="3"></textarea>
 
   <input type="text" id="alamat" placeholder="" readonly>
+  <input type="text" id="jarak" placeholder="" readonly>
 
   <button type="button" id="btnPosisi"><span class="icon">📍</span> Gunakan Posisi Saya</button>
-  <div id="jarak"></div>
 
   <div id="map"></div>
 
@@ -99,7 +115,7 @@ function updateRute(userLatLng, tujuanLatLng){
   if(rutePolyline) map.removeLayer(rutePolyline);
   rutePolyline = L.polyline([userLatLng, tujuanLatLng], {color:'blue', weight:3, dashArray:'5,10'}).addTo(map);
   const jarakKm = haversine(userLatLng, tujuanLatLng);
-  document.getElementById('jarak').textContent = `Jarak ke ${defaultName}: ${jarakKm.toFixed(2)} km`;
+  document.getElementById('jarak').value = `Jarak ke ${defaultName}: ${jarakKm.toFixed(2)} km`;
 }
 
 // Haversine
@@ -140,12 +156,13 @@ btnPosisi.addEventListener('click', function(){
       .then(res => res.json())
       .then(data => {
         const displayName = data.display_name || "";
-        // Tambahkan koordinat di akhir text
         document.getElementById('alamat').value = `${displayName} (Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)})`;
+        updateRute(userLatLng, defaultPoint); // update jarak juga
       })
       .catch(err => {
         console.error(err);
         document.getElementById('alamat').value = `(Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)})`;
+        updateRute(userLatLng, defaultPoint);
       });
 
       btnPosisi.classList.remove('loading');
@@ -167,6 +184,7 @@ document.getElementById('formJemput').addEventListener('submit', function(e){
     hp: document.getElementById('hp').value,
     keterangan: document.getElementById('keterangan').value,
     alamat: document.getElementById('alamat').value,
+    jarak: document.getElementById('jarak').value,
     userLatLng,
     tujuan: defaultPoint
   };
