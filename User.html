@@ -57,17 +57,17 @@ header {
 }
 .cta-btn:hover { transform:scale(1.05); }
 
-.bubble { 
-  position:absolute; 
-  bottom:0; 
-  background:rgba(255,255,255,0.5); 
-  border-radius:50%; 
-  animation: rise linear infinite; 
+.bubble {
+  position: absolute;
+  bottom: -50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  animation: rise linear forwards;
 }
-@keyframes rise { 
-  0% { transform: translateY(0) scale(1); opacity:0.7; } 
-  50% { opacity:0.9; } 
-  100% { transform: translateY(-1200px) scale(1.2); opacity:0; } 
+
+@keyframes rise {
+  from { transform: translateY(0); opacity: 1; }
+  to   { transform: translateY(-120vh); opacity: 0; }
 }
 
 .tab-menu { 
@@ -685,29 +685,26 @@ window.addEventListener('resize', ()=>{
 
 
 // ================== Gelembung ==================
-function createBubble(elem) {
-  const bubble = document.createElement('div');
-  bubble.classList.add('bubble');
-  const size = Math.random() * 30 + 20;
-  bubble.style.width = bubble.style.height = size + 'px';
-  bubble.style.left = Math.random() * 100 + '%';
-  bubble.style.animationDuration = (Math.random() * 10 + 8) + 's';
-  elem.appendChild(bubble);
-
-  // Hapus bubble setelah animasi selesai
-  bubble.addEventListener('animationend', ()=>bubble.remove());
-}
-
-// Pilih elemen
 const headerElem = document.querySelector('header');
 const footerElem = document.querySelector('footer');
 
-// Interval lebih longgar untuk performa
-setInterval(()=>{
-  createBubble(headerElem);
-  createBubble(footerElem);
-}, 3000); // setiap 3 detik
+function createBubble(elem) {
+  if (elem.querySelectorAll('.bubble').length > 20) return;
+  const bubble = document.createElement('div');
+  bubble.classList.add('bubble');
 
+  const size = Math.random() * 40 + 20;
+  bubble.style.width = bubble.style.height = size + 'px';
+  bubble.style.left = Math.random() * 100 + '%';
+  bubble.style.animationDuration = (Math.random() * 6 + 6) + 's';
+
+  elem.appendChild(bubble);
+
+  bubble.addEventListener('animationend', () => bubble.remove());
+}
+
+setInterval(() => createBubble(headerElem), 800);
+setInterval(() => createBubble(footerElem), 800);
 
 
 
