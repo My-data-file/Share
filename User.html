@@ -262,21 +262,40 @@ footer { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; paddi
 footer p { margin: 5px 0; font-weight:600; }
 
 /* ================= MEDIA QUERY UPDATE ================= */
-@media(max-width:768px){ 
-  .header-inner{
-    flex-direction: column;
-    justify-content: center;
+/* ================= Header Centering Fix ================= */
+header .header-inner {
+  display: flex;
+  flex-direction: row; /* default desktop */
+  align-items: center;
+  justify-content: center;
+  text-align: left; /* desktop tetap kiri */
+}
+
+header .logo {
+  margin: 0 25px 0 0; /* desktop spacing logo-text */
+}
+
+header .header-text {
+  flex: none; /* jangan stretch */
+  width: auto;
+}
+
+/* ================= Media Query HP ================= */
+@media(max-width:768px){
+  header .header-inner {
+    flex-direction: column; /* stack logo + text */
     align-items: center;
+    justify-content: center;
     text-align: center;
-  } 
-  .header-text{
-    flex: 0 0 auto;   /* Hapus efek stretch flex */
-    width: auto;      /* Supaya tidak mengambil seluruh lebar */
   }
-  .logo{
-    margin: 0 auto 15px auto; /* center logo */
+  header .logo {
+    margin: 0 0 15px 0; /* bawah logo jarak ke text */
     width: 60px;
     height: 60px;
+  }
+  header .header-text {
+    flex: none;
+    width: auto;
   }
 }
   .modern-form .form-grid { grid-template-columns:1fr !important; } 
