@@ -324,31 +324,12 @@ header {
 .contact-info a { color:#3b82f6; font-weight:600; }
 .contact-info a:hover { text-decoration:underline; }
 
-/* ===== Tombol WA Bulat Floating ===== */
 #waChat { 
-  position: fixed;
-  bottom: 20px;              /* jarak dari bawah */
-  right: 20px;               /* jarak dari kanan */
-  width: 60px;               /* lebar tombol */
-  height: 60px;              /* tinggi tombol */
-  background: #25d366;       /* warna hijau khas WA */
-  color: white;              /* warna tulisan */
-  font-weight: bold;         /* bold tulisan */
-  font-size: 1.2rem;         /* ukuran tulisan */
-  display: flex;             /* flex untuk center teks */
-  justify-content: center;   
-  align-items: center;
-  border-radius: 50%;        /* membuat bulat */
-  cursor: pointer;           
-  box-shadow: 0 8px 20px rgba(0,0,0,0.3); /* shadow lebih dramatis */
-  transition: transform 0.2s, box-shadow 0.2s;
-  z-index: 999;              /* pastikan di atas semua */
+  position:fixed; bottom:20px; right:20px; background:#25d366; color:white; 
+  padding:15px 20px; border-radius:50px; font-weight:600; cursor:pointer; 
+  box-shadow:0 5px 15px rgba(0,0,0,0.2); animation: pulseWA 2s infinite; z-index:999; 
 }
-
-#waChat:hover {
-  transform: scale(1.1);          /* membesar saat hover */
-  box-shadow: 0 12px 25px rgba(0,0,0,0.35); /* shadow lebih besar */
-}
+@keyframes pulseWA {0%{transform:scale(1);}50%{transform:scale(1.1);}100%{transform:scale(1);} }
 
 #toast { position:fixed; bottom:80px; right:20px; background:#3b82f6; color:white; padding:12px 20px; border-radius:12px; opacity:0; pointer-events:none; transition:opacity 0.5s; z-index:9999; }
 #toast.show { opacity:1; pointer-events:auto; }
@@ -597,7 +578,8 @@ footer p { margin: 5px 0; font-weight:600; }
   </div>
 </div>
 
-<div id="waChat">WA</div>
+<div id="waChat" onclick="window.open('https://wa.me/6287877929391','_blank')">Chat WA</div>
+<div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
   <p>&copy; 2025 v0 Sea Laundry. All rights reserved.</p>
