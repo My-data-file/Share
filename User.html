@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Laundry Express Full</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<!-- ====== Leaflet Routing Machine ====== -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+<script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.min.js"></script>
 <style>
 /* ================= CSS sama persis ================= */
 #map {
@@ -762,125 +765,129 @@ setInterval(() => createBubble(footerElem), 800);
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-// ================== INISIALISASI MAP ==================
-let map;    // Variabel map Leaflet
-let marker; // Marker lokasi
+// ===== Leaflet Map & Routing =====
+let map, marker, routingControl;
 
+// Posisi Laundry default
+const laundryLat = -6.200000;
+const laundryLon = 106.816666;
+
+// Inisialisasi map
 function initMap() {
-  if(map) return; // Jika map sudah diinisialisasi, skip
+  if (map) return;
 
-  // Map default di Jakarta
-  map = L.map('map').setView([-6.200000, 106.816666], 13);
+  map = L.map('map').setView([laundryLat, laundryLon], 13);
 
-  // Tile layer OpenStreetMap
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  // Marker draggable di tengah map
-  marker = L.marker([-6.200000, 106.816666], {draggable:true}).addTo(map);
+  // Marker Laundry default
+  marker = L.marker([laundryLat, laundryLon], {draggable:true})
+    .addTo(map)
+    .bindPopup("Sea Laundry")
+    .openPopup();
 
-  // Klik map -> pindahkan marker & update input alamat
+  // Event klik map -> pindah marker + isi alamat
   map.on('click', async function(e) {
     marker.setLatLng(e.latlng);
-    const lat = e.latlng.lat;
-    const lon = e.latlng.lng;
 
-    // Reverse geocode alamat
-    try {
-      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
-      const data = await res.json();
-      document.getElementById('alamat').value = data.display_name || '';
-    } catch(err) {
-      console.error('Gagal reverse geocode:', err);
-    }
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${e.latlng.lat}&lon=${e.latlng.lng}&format=json`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    document.getElementById('alamat').value = data.display_name || '';
   });
 }
 
-// Buka tab Pesan Laundry -> inisialisasi map
-document.querySelector('.tab-btn[data-tab="order"]').addEventListener('click', () => {
-  setTimeout(() => {
-    initMap();
-    map.invalidateSize(); // refresh ukuran map
-  }, 300);
-});
+// Tombol "Posisi Saya" sudah ada di HTML
+const btnPosisi = document.getElementById('btn-posisi');
+btnPosisi.addEventListener('click', ()=>{
+  if (!map) initMap();
 
-// ================== TOMBOL POSISI SAYA ==================
-// Pastikan ada <button id="btn-posisi">Posisi Saya</button> di HTML
-document.getElementById('btn-posisi').addEventListener('click', () => {
   if (!navigator.geolocation) {
-    alert("Browser Anda tidak mendukung Geolocation.");
+    alert("Geolokasi tidak didukung browser Anda.");
     return;
   }
 
-  navigator.geolocation.getCurrentPosition(async (pos) => {
-    const lat = pos.coords.latitude;
-    const lon = pos.coords.longitude;
+  navigator.geolocation.getCurrentPosition(position=>{
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
 
-    // Pusatkan map & pindahkan marker
-    marker.setLatLng([lat, lon]);
-    map.setView([lat, lon], 16);
+    // Hapus routing sebelumnya jika ada
+    if(routingControl) map.removeControl(routingControl);
 
-    // Ambil alamat dari koordinat
-    try {
-      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
-      const data = await res.json();
-      document.getElementById('alamat').value = data.display_name || '';
-    } catch(err) {
-      console.error('Gagal reverse geocode:', err);
-    }
+    // Marker user
+    const userMarker = L.marker([lat, lon], {icon: L.icon({iconUrl: 'https://cdn-icons-png.flaticon.com/512/64/64113.png', iconSize:[30,30]})})
+      .addTo(map)
+      .bindPopup("Posisi Saya")
+      .openPopup();
 
-  }, (err) => {
-    alert("Gagal mendapatkan lokasi: " + err.message);
-  }, { enableHighAccuracy: true });
+    map.setView([lat, lon], 13);
+
+    // Buat routing (user -> laundry)
+    routingControl = L.Routing.control({
+      waypoints: [
+        L.latLng(lat, lon),
+        L.latLng(laundryLat, laundryLon)
+      ],
+      routeWhileDragging: false,
+      show: true,
+      addWaypoints: false,
+      draggableWaypoints: false,
+      lineOptions: { styles:[{color:'#facc15', weight:5}] }
+    }).addTo(map);
+
+  }, err=>{
+    alert("Gagal mendapatkan posisi: " + err.message);
+  });
 });
 
-// ================== AUTOCOMPLETE ALAMAT ==================
+// Autocomplete alamat (tetap jalan)
 const alamatInput = document.getElementById('alamat');
 const suggestionsBox = document.getElementById('alamat-suggestions');
 
 alamatInput.addEventListener('input', async function() {
   const query = this.value.trim();
+  if(query.length < 3){ suggestionsBox.innerHTML = ''; return; }
 
-  if(query.length < 3){
-    suggestionsBox.innerHTML = '';
-    return;
-  }
+  const url = `https://nominatim.openstreetmap.org/search?format=json&q=${query}&limit=5&countrycodes=ID`;
+  const res = await fetch(url);
+  const data = await res.json();
 
-  try {
-    const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}&limit=5&countrycodes=ID`);
-    const data = await res.json();
+  suggestionsBox.innerHTML = '';
+  data.forEach(item=>{
+    const div = document.createElement('div');
+    div.textContent = item.display_name;
+    div.addEventListener('click', ()=>{
+      alamatInput.value = item.display_name;
+      suggestionsBox.innerHTML = '';
 
-    suggestionsBox.innerHTML = '';
-    data.forEach(item => {
-      const div = document.createElement('div');
-      div.textContent = item.display_name;
-
-      div.addEventListener('click', () => {
-        alamatInput.value = item.display_name;
-        suggestionsBox.innerHTML = '';
-
-        const lat = parseFloat(item.lat);
-        const lon = parseFloat(item.lon);
-
-        map.setView([lat, lon], 16);
-        marker.setLatLng([lat, lon]);
-      });
-
-      suggestionsBox.appendChild(div);
+      const lat = parseFloat(item.lat);
+      const lon = parseFloat(item.lon);
+      map.setView([lat,lon], 16);
+      marker.setLatLng([lat,lon]);
     });
-  } catch(err) {
-    console.error('Gagal autocomplete alamat:', err);
-  }
+    suggestionsBox.appendChild(div);
+  });
 });
 
-// Tutup suggestions saat klik di luar
-document.addEventListener('click', e => {
+document.addEventListener('click', e=>{
   if(!alamatInput.contains(e.target) && !suggestionsBox.contains(e.target)){
     suggestionsBox.innerHTML = '';
   }
 });
+
+window.addEventListener('load', ()=>{
+  if(map) setTimeout(()=>{ map.invalidateSize(); map.setView([laundryLat, laundryLon], 13); }, 500);
+});
+
+// Inisialisasi map pertama kali tab dibuka
+document.querySelector('.tab-btn[data-tab="order"]').addEventListener('click', ()=>{
+  setTimeout(()=>{ initMap(); map.invalidateSize(); }, 300);
+});
 </script>
+
 
 </body>
 </html>
