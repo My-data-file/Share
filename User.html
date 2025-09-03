@@ -4,8 +4,34 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Laundry Express Full</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <style>
 /* ================= CSS sama persis ================= */
+#map {
+  width: 100%;
+  height: 300px; /* Atau sesuai kebutuhan */
+  border-radius: 12px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+}
+    #alamat-suggestions {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 1000;
+    width: 100%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  #alamat-suggestions div {
+    padding: 8px 10px;
+    cursor: pointer;
+  }
+  #alamat-suggestions div:hover {
+    background: #f0f0f0;
+  }
 body { font-family:'Segoe UI', Tahoma, sans-serif; margin:0; background:#f9fafb; color:#1f2937; }
 a { text-decoration:none; }
 
@@ -117,7 +143,14 @@ header {
   border-radius:2px; 
 }
 
-.tab-content { display:none; opacity:0; transform:translateY(20px); transition:0.4s ease; }
+.tab-content {
+  display: none;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  width: 100%;           
+  box-sizing: border-box; 
+}
 .tab-content.active { display:block; opacity:1; transform:translateY(0); }
 
 .card { 
@@ -316,7 +349,7 @@ footer p { margin: 5px 0; font-weight:600; }
 </header>
 
 <nav class="tab-menu">
-  <button class="tab-btn active" data-tab="home">Home</button>
+  <button class="tab-btn" data-tab="home">Home</button>
   <button class="tab-btn" data-tab="order">Pesan Laundry</button>
   <button class="tab-btn" data-tab="status">Status Order</button>
   <button class="tab-btn" data-tab="services">Layanan</button>
@@ -326,7 +359,7 @@ footer p { margin: 5px 0; font-weight:600; }
 </nav>
 
 <!-- ================= Tab Contents ================= -->
-<div class="tab-content active" id="home">
+<div class="tab-content" id="home">
   <div class="card">
     <h2>Selamat Datang di Laundry Express</h2>
     <div class="grid-items">
@@ -343,22 +376,32 @@ footer p { margin: 5px 0; font-weight:600; }
     <h2>Pesan Laundry</h2>
     <form id="orderForm" class="modern-form">
       <div class="form-grid">
-        <div class="form-group">
+        <div class="form-group" style="grid-column: span 2;">
           <input type="text" id="nama" placeholder=" " required>
           <label for="nama">Nama Anda</label>
           <span class="icon">👤</span>
         </div>
-        <div class="form-group">
-          <input type="text" id="alamat" placeholder=" " required>
-          <label for="alamat">Alamat Lengkap</label>
-          <span class="icon">🏠</span>
+	<div class="form-group" style="grid-column: span 2;">
+	  <input type="text" id="alamat" placeholder=" " required>
+	  <label for="alamat">Alamat Lengkap</label>
+	  <span class="icon">🏠</span>
+	  <div id="alamat-suggestions"></div> <!-- Tempat suggestion alamat -->
+	</div>
+        <div style="grid-column: span 2; text-align:center; margin-bottom:5px;">
+          <button type="button" id="btn-posisi" 
+                  style="padding:8px 15px; border:none; border-radius:8px; background:#3b82f6; color:white; cursor:pointer; font-weight:600;">
+            📍 Posisi Saya
+          </button>
         </div>
-        <div class="form-group">
+	<div class="form-group" style="grid-column: span 2;">
+ 	 <div id="map"></div>
+	</div>
+        <div class="form-group" style="grid-column: span 2;">
           <input type="number" id="berat" placeholder=" " min="1" required>
           <label for="berat">Berat Cucian (kg)</label>
           <span class="icon">⚖️</span>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="grid-column: span 2;">
           <select id="layanan" required>
             <option value="" disabled selected></option>
             <option>Cuci Kering</option>
@@ -368,12 +411,12 @@ footer p { margin: 5px 0; font-weight:600; }
           <label for="layanan">Pilih Layanan</label>
           <span class="icon">🧺</span>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="grid-column: span 2;">
           <input type="text" id="catatan" placeholder=" ">
           <label for="catatan">Catatan Tambahan</label>
           <span class="icon">📝</span>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="grid-column: span 2;">
           <input type="date" id="jadwal" placeholder=" " required>
           <label for="jadwal">Jadwal Jemput / Antar</label>
           <span class="icon">📅</span>
@@ -714,8 +757,129 @@ function createBubble(elem) {
 setInterval(() => createBubble(headerElem), 800);
 setInterval(() => createBubble(footerElem), 800);
 
+</script>
 
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+// ================== INISIALISASI MAP ==================
+let map;    // Variabel map Leaflet
+let marker; // Marker lokasi
 
+function initMap() {
+  if(map) return; // Jika map sudah diinisialisasi, skip
+
+  // Map default di Jakarta
+  map = L.map('map').setView([-6.200000, 106.816666], 13);
+
+  // Tile layer OpenStreetMap
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  // Marker draggable di tengah map
+  marker = L.marker([-6.200000, 106.816666], {draggable:true}).addTo(map);
+
+  // Klik map -> pindahkan marker & update input alamat
+  map.on('click', async function(e) {
+    marker.setLatLng(e.latlng);
+    const lat = e.latlng.lat;
+    const lon = e.latlng.lng;
+
+    // Reverse geocode alamat
+    try {
+      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+      const data = await res.json();
+      document.getElementById('alamat').value = data.display_name || '';
+    } catch(err) {
+      console.error('Gagal reverse geocode:', err);
+    }
+  });
+}
+
+// Buka tab Pesan Laundry -> inisialisasi map
+document.querySelector('.tab-btn[data-tab="order"]').addEventListener('click', () => {
+  setTimeout(() => {
+    initMap();
+    map.invalidateSize(); // refresh ukuran map
+  }, 300);
+});
+
+// ================== TOMBOL POSISI SAYA ==================
+// Pastikan ada <button id="btn-posisi">Posisi Saya</button> di HTML
+document.getElementById('btn-posisi').addEventListener('click', () => {
+  if (!navigator.geolocation) {
+    alert("Browser Anda tidak mendukung Geolocation.");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(async (pos) => {
+    const lat = pos.coords.latitude;
+    const lon = pos.coords.longitude;
+
+    // Pusatkan map & pindahkan marker
+    marker.setLatLng([lat, lon]);
+    map.setView([lat, lon], 16);
+
+    // Ambil alamat dari koordinat
+    try {
+      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+      const data = await res.json();
+      document.getElementById('alamat').value = data.display_name || '';
+    } catch(err) {
+      console.error('Gagal reverse geocode:', err);
+    }
+
+  }, (err) => {
+    alert("Gagal mendapatkan lokasi: " + err.message);
+  }, { enableHighAccuracy: true });
+});
+
+// ================== AUTOCOMPLETE ALAMAT ==================
+const alamatInput = document.getElementById('alamat');
+const suggestionsBox = document.getElementById('alamat-suggestions');
+
+alamatInput.addEventListener('input', async function() {
+  const query = this.value.trim();
+
+  if(query.length < 3){
+    suggestionsBox.innerHTML = '';
+    return;
+  }
+
+  try {
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}&limit=5&countrycodes=ID`);
+    const data = await res.json();
+
+    suggestionsBox.innerHTML = '';
+    data.forEach(item => {
+      const div = document.createElement('div');
+      div.textContent = item.display_name;
+
+      div.addEventListener('click', () => {
+        alamatInput.value = item.display_name;
+        suggestionsBox.innerHTML = '';
+
+        const lat = parseFloat(item.lat);
+        const lon = parseFloat(item.lon);
+
+        map.setView([lat, lon], 16);
+        marker.setLatLng([lat, lon]);
+      });
+
+      suggestionsBox.appendChild(div);
+    });
+  } catch(err) {
+    console.error('Gagal autocomplete alamat:', err);
+  }
+});
+
+// Tutup suggestions saat klik di luar
+document.addEventListener('click', e => {
+  if(!alamatInput.contains(e.target) && !suggestionsBox.contains(e.target)){
+    suggestionsBox.innerHTML = '';
+  }
+});
 </script>
 
 </body>
