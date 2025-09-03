@@ -10,7 +10,23 @@
 <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.min.js"></script>
 <style>
 /* ================= CSS sama persis ================= */
-#map {
+#btn-posisi {
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  background:#3b82f6; /* biru awal */
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#btn-posisi:disabled {
+  opacity:0.7;
+  cursor:not-allowed;
+}
+  #map {
   width: 100%;
   height: 300px; /* Atau sesuai kebutuhan */
   border-radius: 12px;
@@ -348,22 +364,6 @@ footer p { margin: 5px 0; font-weight:600; }
 @media(max-width:480px){
   #map { height:220px !important; }
   .form-group input, .form-group select, #btn-posisi, button[type=submit] { font-size:0.95rem; padding:10px; }
-}
-#btn-posisi {
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:8px;
-  background:#3b82f6; /* biru awal */
-  color:white;
-  font-weight:600;
-  cursor:pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-}
-
-#btn-posisi:disabled {
-  opacity:0.7;
-  cursor:not-allowed;
 }
 </style>
 </head>
