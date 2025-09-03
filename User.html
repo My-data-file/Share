@@ -527,7 +527,7 @@ footer p { margin: 5px 0; font-weight:600; }
 <div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
-  <p>&copy; 2026 Sea Laundry. All rights reserved.</p>
+  <p>&copy; 2025 Sea Laundry. All rights reserved.</p>
 </footer>
 
 <script>
@@ -769,24 +769,6 @@ setInterval(() => createBubble(footerElem), 800);
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-// ======= Map Leaflet =======
-const laundryLat = -6.200000;
-const laundryLon = 106.816666;
-let map, laundryMarker, userMarker = null, routingControl = null;
-
-function initMap() {
-  if(map) return;
-  map = L.map('map').setView([laundryLat, laundryLon], 13);
-
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map);
-
-  laundryMarker = L.marker([laundryLat, laundryLon]).addTo(map)
-                  .bindPopup("Sea Laundry").openPopup();
-}
-
-// Tombol Posisi Saya
 document.getElementById('btn-posisi').addEventListener('click', () => {
   if(!map) initMap();
 
@@ -799,15 +781,15 @@ document.getElementById('btn-posisi').addEventListener('click', () => {
     const userLat = pos.coords.latitude;
     const userLon = pos.coords.longitude;
 
+    // Hapus marker & rute lama
     if(userMarker) map.removeLayer(userMarker);
     if(routingControl) map.removeControl(routingControl);
 
+    // Marker user
     userMarker = L.marker([userLat, userLon]).addTo(map)
                   .bindPopup("Posisi Saya").openPopup();
 
-    map.setView([userLat, userLon], 13);
-    map.invalidateSize();
-
+    // Update input alamat otomatis
     try{
       const url = `https://nominatim.openstreetmap.org/reverse?lat=${userLat}&lon=${userLon}&format=json`;
       const res = await fetch(url);
@@ -815,38 +797,40 @@ document.getElementById('btn-posisi').addEventListener('click', () => {
       document.getElementById('alamat').value = data.display_name || '';
     }catch(err){ console.error(err); }
 
-    routingControl = L.Routing.control({
-      waypoints: [
-        L.latLng(userLat, userLon),
-        L.latLng(laundryLat, laundryLon)
-      ],
-      router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' }),
-      routeWhileDragging: false,
-      draggableWaypoints: false,
-      addWaypoints: false,
-      lineOptions: { styles: [{color:'#facc15', weight:5}] },
-      createMarker: function(i, wp){
-        if(i===0) return L.marker(wp.latLng).bindPopup("Posisi Saya");
-        if(i===1) return L.marker(wp.latLng).bindPopup("Sea Laundry");
-        return null;
-      }
-    }).addTo(map);
+    // Map resize dulu supaya map terlihat (penting di tab tersembunyi)
+    setTimeout(()=>{
+      map.invalidateSize();
 
-    routingControl.on('routesfound', function(e){
-      const route = e.routes[0];
-      const bounds = L.latLngBounds(route.coordinates);
-      map.fitBounds(bounds, {padding:[50,50]});
-    });
+      // Routing user -> laundry
+      routingControl = L.Routing.control({
+        waypoints: [
+          L.latLng(userLat, userLon),
+          L.latLng(laundryLat, laundryLon)
+        ],
+        router: L.Routing.osrmv1({
+          serviceUrl: 'https://router.project-osrm.org/route/v1/driving/'
+        }),
+        routeWhileDragging: false,
+        draggableWaypoints: false,
+        addWaypoints: false,
+        lineOptions: { styles: [{color:'#facc15', weight:5}] },
+        createMarker: function(i, wp){
+          if(i===0) return L.marker(wp.latLng).bindPopup("Posisi Saya");
+          if(i===1) return L.marker(wp.latLng).bindPopup("Sea Laundry");
+          return null;
+        }
+      }).addTo(map);
+
+      // Fit bounds otomatis
+      routingControl.on('routesfound', function(e){
+        const route = e.routes[0];
+        const bounds = L.latLngBounds(route.coordinates);
+        map.fitBounds(bounds, {padding:[50,50]});
+      });
+
+    }, 200); // delay kecil supaya map sudah render
 
   }, err => { alert("Gagal dapatkan posisi: "+err.message); });
-});
-
-// Init map saat tab Order dibuka
-document.querySelector('.tab-btn[data-tab="order"]').addEventListener('click', ()=>{
-  setTimeout(()=>{ 
-    initMap(); 
-    if(map) map.invalidateSize(); 
-  }, 300);
 });
 </script>
 
