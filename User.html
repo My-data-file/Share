@@ -564,7 +564,7 @@ footer p { margin: 5px 0; font-weight:600; }
 <div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
-  <p>&copy; 2025 Sea Laundry. All rights reserved.</p>
+  <p>&copy; 2025 v1 Sea Laundry. All rights reserved.</p>
 </footer>
 
 <script>
@@ -808,7 +808,7 @@ setInterval(() => createBubble(footerElem), 800);
 <script>
 const laundryLat = -6.200000;   // ganti dengan latitude laundry
 const laundryLon = 106.816666;   // ganti dengan longitude laundry
-let map = null, userMarker = null, rutePolyline = null;
+let map = null, laundryMarker = null, userMarker = null, rutePolyline = null;
 
 // ===== Inisialisasi Map =====
 function initMap() {
@@ -819,7 +819,8 @@ function initMap() {
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  L.marker([laundryLat, laundryLon])
+  // Marker Laundry
+  laundryMarker = L.marker([laundryLat, laundryLon])
     .addTo(map)
     .bindPopup("Sea Laundry")
     .openPopup();
@@ -828,11 +829,16 @@ function initMap() {
 // ===== Fungsi buat marker user + rute =====
 function placeUserMarker(lat, lng) {
   const userLatLng = [lat, lng];
+
+  // Marker user
   if(userMarker) userMarker.setLatLng(userLatLng);
   else userMarker = L.marker(userLatLng)
                       .addTo(map)
-                      .bindPopup("Posisi Saya")
-                      .openPopup();
+                      .bindPopup("Posisi Saya");
+
+  // Selalu buka popup kedua marker
+  laundryMarker.openPopup();
+  userMarker.openPopup();
 
   updateRute(userLatLng, [laundryLat, laundryLon]);
 }
@@ -872,34 +878,44 @@ function updateRute(userLatLng, laundryLatLng) {
 }
 
 // ===== Tombol Posisi Saya =====
-document.getElementById('btn-posisi').addEventListener('click', ()=>{
+const btnPosisi = document.getElementById('btn-posisi');
+btnPosisi.addEventListener('click', ()=>{
   if(!navigator.geolocation){
     alert("Browser tidak mendukung geolocation");
     return;
   }
+
+  btnPosisi.disabled = true;
+  const originalText = btnPosisi.textContent;
+  btnPosisi.textContent = "📍 Mencari…";
 
   navigator.geolocation.getCurrentPosition(
     pos=>{
       const lat = pos.coords.latitude;
       const lng = pos.coords.longitude;
 
-      // Reverse geocoding OSM
       fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`)
         .then(res => res.json())
         .then(data => {
           const displayName = data.display_name || '';
-          const alamatInput = document.getElementById('alamat');
-          if(alamatInput) alamatInput.value = displayName;
+          document.getElementById('alamat').value = displayName;
           placeUserMarker(lat, lng);
+          btnPosisi.disabled = false;
+          btnPosisi.textContent = originalText;
         })
         .catch(err=>{
           console.error(err);
-          const alamatInput = document.getElementById('alamat');
-          if(alamatInput) alamatInput.value = `(Lat:${lat.toFixed(6)}, Lng:${lng.toFixed(6)})`;
+          document.getElementById('alamat').value = `(Lat:${lat.toFixed(6)}, Lng:${lng.toFixed(6)})`;
           placeUserMarker(lat, lng);
+          btnPosisi.disabled = false;
+          btnPosisi.textContent = originalText;
         });
     },
-    err => { alert("Gagal dapatkan lokasi: "+err.message); }
+    err => { 
+      alert("Gagal dapatkan lokasi: "+err.message);
+      btnPosisi.disabled = false;
+      btnPosisi.textContent = originalText;
+    }
   );
 });
 
@@ -910,8 +926,16 @@ document.querySelector('.tab-btn[data-tab="order"]').addEventListener('click', (
     map.invalidateSize();
   }, 300);
 });
-</script>
 
+// ===== Inisialisasi map langsung jika tab Order aktif =====
+window.addEventListener('DOMContentLoaded', ()=>{
+  const activeTab = document.querySelector('.tab-btn.active');
+  if(activeTab && activeTab.dataset.tab === 'order'){
+    initMap();
+    map.invalidateSize();
+  }
+});
+</script>
 
 </body>
 </html>
