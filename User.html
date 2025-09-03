@@ -527,7 +527,7 @@ footer p { margin: 5px 0; font-weight:600; }
 <div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
-  <p>&copy; 2025 Sea Laundry. All rights reserved.</p>
+  <p>&copy; 2026 Sea Laundry. All rights reserved.</p>
 </footer>
 
 <script>
@@ -769,8 +769,26 @@ setInterval(() => createBubble(footerElem), 800);
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
+// ======= Inisialisasi Map di tab "order" =======
+let mapInitialized = false;
+
+function initMapOnce() {
+  if(mapInitialized) return;
+  mapInitialized = true;
+
+  map = L.map('map').setView([laundryLat, laundryLon], 13);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  laundryMarker = L.marker([laundryLat, laundryLon]).addTo(map)
+                  .bindPopup("Sea Laundry").openPopup();
+}
+
+// ======= Tombol Posisi Saya + Routing =======
 document.getElementById('btn-posisi').addEventListener('click', () => {
-  if(!map) initMap();
+  initMapOnce(); // pastikan map sudah diinisialisasi
 
   if(!navigator.geolocation){
     alert("Browser tidak mendukung geolokasi");
@@ -797,40 +815,44 @@ document.getElementById('btn-posisi').addEventListener('click', () => {
       document.getElementById('alamat').value = data.display_name || '';
     }catch(err){ console.error(err); }
 
-    // Map resize dulu supaya map terlihat (penting di tab tersembunyi)
-    setTimeout(()=>{
-      map.invalidateSize();
+    // Pastikan map tahu ukuran div (penting di tab tersembunyi)
+    map.invalidateSize();
 
-      // Routing user -> laundry
-      routingControl = L.Routing.control({
-        waypoints: [
-          L.latLng(userLat, userLon),
-          L.latLng(laundryLat, laundryLon)
-        ],
-        router: L.Routing.osrmv1({
-          serviceUrl: 'https://router.project-osrm.org/route/v1/driving/'
-        }),
-        routeWhileDragging: false,
-        draggableWaypoints: false,
-        addWaypoints: false,
-        lineOptions: { styles: [{color:'#facc15', weight:5}] },
-        createMarker: function(i, wp){
-          if(i===0) return L.marker(wp.latLng).bindPopup("Posisi Saya");
-          if(i===1) return L.marker(wp.latLng).bindPopup("Sea Laundry");
-          return null;
-        }
-      }).addTo(map);
+    // Routing user -> laundry
+    routingControl = L.Routing.control({
+      waypoints: [
+        L.latLng(userLat, userLon),
+        L.latLng(laundryLat, laundryLon)
+      ],
+      router: L.Routing.osrmv1({
+        serviceUrl: 'https://router.project-osrm.org/route/v1/driving/'
+      }),
+      routeWhileDragging: false,
+      draggableWaypoints: false,
+      addWaypoints: false,
+      lineOptions: { styles: [{color:'#facc15', weight:5}] },
+      createMarker: function(i, wp){
+        if(i===0) return L.marker(wp.latLng).bindPopup("Posisi Saya");
+        if(i===1) return L.marker(wp.latLng).bindPopup("Sea Laundry");
+        return null;
+      }
+    }).addTo(map);
 
-      // Fit bounds otomatis
-      routingControl.on('routesfound', function(e){
-        const route = e.routes[0];
-        const bounds = L.latLngBounds(route.coordinates);
-        map.fitBounds(bounds, {padding:[50,50]});
-      });
-
-    }, 200); // delay kecil supaya map sudah render
+    routingControl.on('routesfound', function(e){
+      const route = e.routes[0];
+      const bounds = L.latLngBounds(route.coordinates);
+      map.fitBounds(bounds, {padding:[50,50]});
+    });
 
   }, err => { alert("Gagal dapatkan posisi: "+err.message); });
+});
+
+// ======= Inisialisasi map saat tab order dibuka =======
+document.querySelector('.tab-btn[data-tab="order"]').addEventListener('click', ()=>{
+  setTimeout(()=>{ 
+    initMapOnce(); 
+    map.invalidateSize(); 
+  }, 200);
 });
 </script>
 
