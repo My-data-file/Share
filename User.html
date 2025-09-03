@@ -544,7 +544,7 @@ footer p { margin: 5px 0; font-weight:600; }
 <div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
-  <p>&copy; 2025 Sea Laundry. All rights reserved.</p>
+  <p>&copy; 2026 Sea Laundry. All rights reserved.</p>
 </footer>
 
 <script>
@@ -792,7 +792,7 @@ let map = null, userMarker = null, rutePolyline = null;
 
 // ===== Inisialisasi Map =====
 function initMap() {
-  if(map) return; // mencegah double init
+  if(map) return;
   map = L.map('map').setView([laundryLat, laundryLon], 13);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -818,7 +818,7 @@ function placeUserMarker(lat, lng) {
   updateRute(userLatLng, [laundryLat, laundryLon]);
 }
 
-// ===== Fungsi update rute ke laundry =====
+// ===== Fungsi update rute ke laundry + jarak/waktu =====
 function updateRute(userLatLng, laundryLatLng) {
   if(rutePolyline) map.removeLayer(rutePolyline);
 
@@ -828,12 +828,26 @@ function updateRute(userLatLng, laundryLatLng) {
     .then(res => res.json())
     .then(data => {
       if(data.routes && data.routes.length > 0) {
-        const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+        const route = data.routes[0];
+        const coords = route.geometry.coordinates.map(c => [c[1], c[0]]);
         rutePolyline = L.polyline(coords, { color:'blue', weight:4 }).addTo(map);
+
+        // ===== Hitung jarak & waktu =====
+        const jarakKm = route.distance / 1000;
+        const durasiMenit = Math.round(route.duration / 60);
+        const jarakText = `Jarak: ${jarakKm.toFixed(2)} km | Waktu: ${durasiMenit} menit`;
+
+        if(document.getElementById('jarak')) document.getElementById('jarak').value = jarakText;
+
         map.fitBounds(rutePolyline.getBounds(), { padding:[50,50] });
       }
     })
-    .catch(err => console.error("Gagal load rute OSRM:", err));
+    .catch(err => {
+      console.error("Gagal load rute OSRM:", err);
+      const polyline = L.polyline([userLatLng, laundryLatLng], { color: 'red', dashArray: '5,10' }).addTo(map);
+      rutePolyline = polyline;
+      if(document.getElementById('jarak')) document.getElementById('jarak').value = "Tidak dapat hitung rute (fallback ke garis lurus)";
+    });
 }
 
 // ===== Tombol Posisi Saya =====
@@ -848,17 +862,16 @@ document.getElementById('btn-posisi').addEventListener('click', ()=>{
       const lat = pos.coords.latitude;
       const lng = pos.coords.longitude;
 
-      // Reverse geocoding OSM
       fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`)
         .then(res => res.json())
         .then(data => {
           const displayName = data.display_name || '';
-          document.getElementById('alamat').value = displayName;
+          if(document.getElementById('alamat')) document.getElementById('alamat').value = displayName;
           placeUserMarker(lat, lng);
         })
         .catch(err=>{
           console.error(err);
-          document.getElementById('alamat').value = `(Lat:${lat.toFixed(6)}, Lng:${lng.toFixed(6)})`;
+          if(document.getElementById('alamat')) document.getElementById('alamat').value = `(Lat:${lat.toFixed(6)}, Lng:${lng.toFixed(6)})`;
           placeUserMarker(lat, lng);
         });
     },
