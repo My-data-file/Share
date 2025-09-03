@@ -523,7 +523,7 @@ footer p { margin: 5px 0; font-weight:600; }
 <div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
-  <p>&copy; 2025 Sea Laundry. All rights reserved.</p>
+  <p>&copy; 2025 V1 Sea Laundry. All rights reserved.</p>
 </footer>
 
 <script>
@@ -780,40 +780,11 @@ function initMap() {
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  laundryMarker = L.marker([laundryLat, laundryLon])
-                  .addTo(map)
+  laundryMarker = L.marker([laundryLat, laundryLon]).addTo(map)
                   .bindPopup("Sea Laundry").openPopup();
 }
 
-// ======= Fungsi Routing =======
-function routeUserToLaundry(userLat, userLon){
-  if(routingControl) map.removeControl(routingControl);
-
-  routingControl = L.Routing.control({
-    waypoints: [
-      L.latLng(userLat, userLon),
-      L.latLng(laundryLat, laundryLon)
-    ],
-    lineOptions: { styles: [{color:'#facc15', weight:5}] },
-    routeWhileDragging: false,
-    draggableWaypoints: false,
-    addWaypoints: false,
-    createMarker: function(i, wp){
-      if(i === 0) return L.marker(wp.latLng).bindPopup("Posisi Saya");
-      if(i === 1) return L.marker(wp.latLng).bindPopup("Sea Laundry");
-      return null;
-    }
-  }).addTo(map);
-
-  // Sesuaikan zoom & posisi supaya semua terlihat
-  const bounds = L.latLngBounds([
-    [userLat, userLon],
-    [laundryLat, laundryLon]
-  ]);
-  map.fitBounds(bounds, { padding: [50,50] });
-}
-
-// ======= Tombol Posisi Saya =======
+// ======= Tombol Posisi Saya + Routing =======
 document.getElementById('btn-posisi').addEventListener('click', () => {
   if(!map) initMap();
 
@@ -823,23 +794,54 @@ document.getElementById('btn-posisi').addEventListener('click', () => {
   }
 
   navigator.geolocation.getCurrentPosition(async pos => {
-    const lat = pos.coords.latitude;
-    const lon = pos.coords.longitude;
+    const userLat = pos.coords.latitude;
+    const userLon = pos.coords.longitude;
+
+    // Hapus marker & rute lama
+    if(userMarker) map.removeLayer(userMarker);
+    if(routingControl) map.removeControl(routingControl);
 
     // Marker user
-    if(userMarker) map.removeLayer(userMarker);
-    userMarker = L.marker([lat, lon]).addTo(map).bindPopup("Posisi Saya").openPopup();
+    userMarker = L.marker([userLat, userLon]).addTo(map)
+                  .bindPopup("Posisi Saya").openPopup();
 
-    // Update input alamat
+    map.setView([userLat, userLon], 13);
+    map.invalidateSize();
+
+    // Update input alamat otomatis
     try{
-      const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
+      const url = `https://nominatim.openstreetmap.org/reverse?lat=${userLat}&lon=${userLon}&format=json`;
       const res = await fetch(url);
       const data = await res.json();
       document.getElementById('alamat').value = data.display_name || '';
     }catch(err){ console.error(err); }
 
-    // Routing ke laundry
-    routeUserToLaundry(lat, lon);
+    // Routing user -> laundry
+    routingControl = L.Routing.control({
+      waypoints: [
+        L.latLng(userLat, userLon),
+        L.latLng(laundryLat, laundryLon)
+      ],
+      router: L.Routing.osrmv1({
+        serviceUrl: 'https://router.project-osrm.org/route/v1'
+      }),
+      routeWhileDragging: false,
+      draggableWaypoints: false,
+      addWaypoints: false,
+      lineOptions: { styles: [{color:'#facc15', weight:5}] },
+      createMarker: function(i, wp){
+        if(i===0) return L.marker(wp.latLng).bindPopup("Posisi Saya");
+        if(i===1) return L.marker(wp.latLng).bindPopup("Sea Laundry");
+        return null;
+      }
+    }).addTo(map);
+
+    // Fit bounds otomatis
+    routingControl.on('routesfound', function(e){
+      const route = e.routes[0];
+      const bounds = L.latLngBounds(route.coordinates);
+      map.fitBounds(bounds, {padding:[50,50]});
+    });
 
   }, err => { alert("Gagal dapatkan posisi: "+err.message); });
 });
@@ -851,8 +853,6 @@ document.querySelector('.tab-btn[data-tab="order"]').addEventListener('click', (
     map.invalidateSize(); 
   }, 300);
 });
-</script>
-
 </script>
 
 
