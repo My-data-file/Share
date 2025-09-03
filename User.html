@@ -306,28 +306,21 @@ header {
 footer { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; padding:20px; text-align: center; position: relative; overflow: hidden; }
 footer p { margin: 5px 0; font-weight:600; }
 
-/* ================= MEDIA QUERY UPDATE ================= */
+/* Media Queries */
 @media(max-width:768px){
-  .header-inner{ flex-direction:column; text-align:center; justify-content:center; align-items:center; } 
-  .header-text{text-align:center;} 
-  .logo{ width:60px; height:60px; margin:0 auto 15px auto; } 
-  .modern-form .form-grid { grid-template-columns:1fr !important; } 
-  .form-group[style] { grid-column: span 1 !important; } 
-  .modern-form button { width:100%; grid-column: span 1 !important; } 
-  #btn-posisi { width:100%; margin-bottom:10px; } 
-  #map { height:250px !important; }
+  .header-inner { flex-direction:column; text-align:center; }
+  .header-text{text-align:center;}
+  .logo { width:60px; height:60px; margin-bottom:15px; }
+  .modern-form .form-grid { grid-template-columns:1fr !important; }
+  .form-group[style] { grid-column:span 1 !important; }
+  .modern-form button { grid-column:span 1 !important; }
 }
 
 @media(max-width:480px){
-  .tab-menu .tab-btn{flex:1 1 100%; font-size:0.85rem;} 
-  .accordion-header::after{right:15px;}
-  .status-progress .step-label { font-size:0.65rem; }
-  .status-progress .step-circle { width:28px; height:28px; font-size:14px; }
-  #map { height:220px !important; }
-  .form-group input, .form-group select { padding:10px 35px 10px 10px; font-size:0.9rem; }
-  .cta-btn { padding:10px 20px; font-size:0.95rem; }
-  .header-text h1 { font-size:2rem; }
-  .header-text p { font-size:0.9rem; }
+  .tab-menu { flex-direction:column; }
+  .tab-menu .tab-btn { width:100%; font-size:0.9rem; }
+  .status-progress .step-label { font-size:0.7rem; }
+  .status-progress .step-circle { width:32px; height:32px; font-size:16px; }
 }
 </style>
 </head>
