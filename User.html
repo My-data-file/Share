@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
+<head>f
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Laundry Express Full</title>
@@ -337,7 +337,7 @@ header {
 footer { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; padding:20px; text-align: center; position: relative; overflow: hidden; }
 footer p { margin: 5px 0; font-weight:600; }
 
-<!-- ================== MEDIA QUERY ================== -->
+/* ================== MEDIA QUERY ================== */
 <style>
 @media(max-width:768px){
   #map { height: 250px !important; margin-bottom:15px; }
@@ -348,6 +348,22 @@ footer p { margin: 5px 0; font-weight:600; }
 @media(max-width:480px){
   #map { height:220px !important; }
   .form-group input, .form-group select, #btn-posisi, button[type=submit] { font-size:0.95rem; padding:10px; }
+}
+#btn-posisi {
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  background:#3b82f6; /* biru awal */
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#btn-posisi:disabled {
+  opacity:0.7;
+  cursor:not-allowed;
 }
 </style>
 </head>
@@ -402,6 +418,39 @@ footer p { margin: 5px 0; font-weight:600; }
           <span class="icon">👤</span>
         </div>
 
+        <!-- Berat -->
+        <div class="form-group">
+          <input type="number" id="berat" placeholder=" " min="1" required>
+          <label for="berat">Berat Cucian (kg)</label>
+          <span class="icon">⚖️</span>
+        </div>
+
+        <!-- Layanan -->
+        <div class="form-group">
+          <select id="layanan" required>
+            <option value="" disabled selected></option>
+            <option>Cuci Kering</option>
+            <option>Cuci + Setrika</option>
+            <option>Setrika Saja</option>
+          </select>
+          <label for="layanan">Pilih Layanan</label>
+          <span class="icon">🧺</span>
+        </div>
+
+        <!-- Catatan -->
+        <div class="form-group">
+          <input type="text" id="catatan" placeholder=" ">
+          <label for="catatan">Catatan Tambahan</label>
+          <span class="icon">📝</span>
+        </div>
+
+        <!-- Jadwal -->
+        <div class="form-group">
+          <input type="date" id="jadwal" placeholder=" " required>
+          <label for="jadwal">Jadwal Jemput / Antar</label>
+          <span class="icon">📅</span>
+        </div>
+
         <!-- Alamat -->
         <div class="form-group">
           <input type="text" id="alamat" placeholder=" " required>
@@ -446,39 +495,6 @@ footer p { margin: 5px 0; font-weight:600; }
       text-align:center;">
   Jarak: -- km | Perkiraan Waktu: -- menit
 </div>
-
-        <!-- Berat -->
-        <div class="form-group">
-          <input type="number" id="berat" placeholder=" " min="1" required>
-          <label for="berat">Berat Cucian (kg)</label>
-          <span class="icon">⚖️</span>
-        </div>
-
-        <!-- Layanan -->
-        <div class="form-group">
-          <select id="layanan" required>
-            <option value="" disabled selected></option>
-            <option>Cuci Kering</option>
-            <option>Cuci + Setrika</option>
-            <option>Setrika Saja</option>
-          </select>
-          <label for="layanan">Pilih Layanan</label>
-          <span class="icon">🧺</span>
-        </div>
-
-        <!-- Catatan -->
-        <div class="form-group">
-          <input type="text" id="catatan" placeholder=" ">
-          <label for="catatan">Catatan Tambahan</label>
-          <span class="icon">📝</span>
-        </div>
-
-        <!-- Jadwal -->
-        <div class="form-group">
-          <input type="date" id="jadwal" placeholder=" " required>
-          <label for="jadwal">Jadwal Jemput / Antar</label>
-          <span class="icon">📅</span>
-        </div>
 
         <!-- Submit -->
         <button type="submit" style="width:100%; padding:12px; border:none; border-radius:12px; background:#3b82f6; color:white; font-weight:600;">
@@ -928,6 +944,7 @@ btnPosisi.addEventListener('click', ()=>{
   btnPosisi.disabled = true;
   const originalText = btnPosisi.textContent;
   btnPosisi.textContent = "📍 Mencari…";
+  btnPosisi.style.background = "#3b82f6"; // biru saat mencari
 
   navigator.geolocation.getCurrentPosition(
     pos=>{
@@ -940,24 +957,30 @@ btnPosisi.addEventListener('click', ()=>{
           const displayName = data.display_name || '';
           document.getElementById('alamat').value = displayName;
           placeUserMarker(lat, lng);
+
           btnPosisi.disabled = false;
           btnPosisi.textContent = originalText;
+          btnPosisi.style.background = "#16a34a"; // hijau jika berhasil
         })
         .catch(err=>{
           console.error(err);
           document.getElementById('alamat').value = `(Lat:${lat.toFixed(6)}, Lng:${lng.toFixed(6)})`;
           placeUserMarker(lat, lng);
+
           btnPosisi.disabled = false;
           btnPosisi.textContent = originalText;
+          btnPosisi.style.background = "#ef4444"; // merah kalau gagal reverse
         });
     },
     err => { 
       alert("Gagal dapatkan lokasi: "+err.message);
       btnPosisi.disabled = false;
       btnPosisi.textContent = originalText;
+      btnPosisi.style.background = "#ef4444"; // merah kalau gagal geolocation
     }
   );
 });
+
 
 // ===== Init map saat tab Order dibuka =====
 document.querySelector('.tab-btn[data-tab="order"]').addEventListener('click', ()=>{
