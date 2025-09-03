@@ -523,7 +523,7 @@ footer p { margin: 5px 0; font-weight:600; }
 <div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
-  <p>&copy; 2025 v1 Sea Laundry. All rights reserved.</p>
+  <p>&copy; 2025 Sea Laundry. All rights reserved.</p>
 </footer>
 
 <script>
@@ -780,11 +780,40 @@ function initMap() {
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  laundryMarker = L.marker([laundryLat, laundryLon]).addTo(map)
+  laundryMarker = L.marker([laundryLat, laundryLon])
+                  .addTo(map)
                   .bindPopup("Sea Laundry").openPopup();
 }
 
-// ======= Tombol Posisi Saya + Routing =======
+// ======= Fungsi Routing =======
+function routeUserToLaundry(userLat, userLon){
+  if(routingControl) map.removeControl(routingControl);
+
+  routingControl = L.Routing.control({
+    waypoints: [
+      L.latLng(userLat, userLon),
+      L.latLng(laundryLat, laundryLon)
+    ],
+    lineOptions: { styles: [{color:'#facc15', weight:5}] },
+    routeWhileDragging: false,
+    draggableWaypoints: false,
+    addWaypoints: false,
+    createMarker: function(i, wp){
+      if(i === 0) return L.marker(wp.latLng).bindPopup("Posisi Saya");
+      if(i === 1) return L.marker(wp.latLng).bindPopup("Sea Laundry");
+      return null;
+    }
+  }).addTo(map);
+
+  // Sesuaikan zoom & posisi supaya semua terlihat
+  const bounds = L.latLngBounds([
+    [userLat, userLon],
+    [laundryLat, laundryLon]
+  ]);
+  map.fitBounds(bounds, { padding: [50,50] });
+}
+
+// ======= Tombol Posisi Saya =======
 document.getElementById('btn-posisi').addEventListener('click', () => {
   if(!map) initMap();
 
@@ -797,15 +826,9 @@ document.getElementById('btn-posisi').addEventListener('click', () => {
     const lat = pos.coords.latitude;
     const lon = pos.coords.longitude;
 
-    // Hapus marker dan routing lama
-    if(userMarker) map.removeLayer(userMarker);
-    if(routingControl) map.removeControl(routingControl);
-
     // Marker user
+    if(userMarker) map.removeLayer(userMarker);
     userMarker = L.marker([lat, lon]).addTo(map).bindPopup("Posisi Saya").openPopup();
-
-    map.setView([lat, lon], 13);
-    map.invalidateSize();
 
     // Update input alamat
     try{
@@ -815,18 +838,8 @@ document.getElementById('btn-posisi').addEventListener('click', () => {
       document.getElementById('alamat').value = data.display_name || '';
     }catch(err){ console.error(err); }
 
-    // Routing user -> laundry
-    routingControl = L.Routing.control({
-      waypoints: [
-        L.latLng(lat, lon),
-        L.latLng(laundryLat, laundryLon)
-      ],
-      routeWhileDragging: false,
-      draggableWaypoints: false,
-      addWaypoints: false,
-      lineOptions: { styles: [{color:'#facc15', weight:5}] },
-      createMarker: function() { return null; } // marker manual
-    }).addTo(map);
+    // Routing ke laundry
+    routeUserToLaundry(lat, lon);
 
   }, err => { alert("Gagal dapatkan posisi: "+err.message); });
 });
@@ -838,6 +851,8 @@ document.querySelector('.tab-btn[data-tab="order"]').addEventListener('click', (
     map.invalidateSize(); 
   }, 300);
 });
+</script>
+
 </script>
 
 
