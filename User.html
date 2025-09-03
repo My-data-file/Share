@@ -35,6 +35,19 @@
   #alamat-suggestions div:hover {
     background: #f0f0f0;
   }
+  #map-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.8);
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  color: #1f2937;
+  display: none; /* default tersembunyi */
+  z-index: 1001;
+}
 body { font-family:'Segoe UI', Tahoma, sans-serif; margin:0; background:#f9fafb; color:#1f2937; }
 a { text-decoration:none; }
 
@@ -390,6 +403,7 @@ footer p { margin: 5px 0; font-weight:600; }
         <!-- Map -->
         <div style="width:100%;">
           <div id="map" style="width:100%; height:250px; border-radius:12px; border:1px solid #ccc;"></div>
+          <div id="map-loading">Menghitung rute…</div>
         </div>
 
         <!-- Berat -->
@@ -527,7 +541,7 @@ footer p { margin: 5px 0; font-weight:600; }
 <div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
-  <p>&copy; 2025 Sea Laundry. All rights reserved.</p>
+  <p>&copy; 2027 Sea Laundry. All rights reserved.</p>
 </footer>
 
 <script>
@@ -769,93 +783,69 @@ setInterval(() => createBubble(footerElem), 800);
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-let map, laundryMarker, userMarker = null, routingControl = null;
-const laundryLat = -6.200000;   // latitude laundry
-const laundryLon = 106.816666;  // longitude laundry
-let mapInitialized = false;
+const btnPosisi = document.getElementById('btn-posisi'); // pastikan ini sesuai id tombol
+const mapLoading = document.createElement('div');
+mapLoading.id = 'map-loading';
+mapLoading.textContent = 'Menghitung rute…';
+document.querySelector('.form-group #map').appendChild(mapLoading);
 
-// Fungsi buat map
-function initMap() {
-  if(mapInitialized) return;
-  mapInitialized = true;
+let userMarker = null, rutePolyline = null;
 
-  map = L.map('map').setView([laundryLat, laundryLon], 13);
+btnPosisi.addEventListener('click', function(){
+  if(!navigator.geolocation){ alert("Browser tidak mendukung geolocation."); return; }
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map);
+  // tampilkan loading
+  mapLoading.style.display = 'block';
+  btnPosisi.disabled = true;
 
-  laundryMarker = L.marker([laundryLat, laundryLon]).addTo(map)
-                  .bindPopup("Sea Laundry").openPopup();
-
-  // Memastikan map bisa render ukuran div di tab tersembunyi
-  setTimeout(()=> map.invalidateSize(), 200);
-  setTimeout(()=> map.invalidateSize(), 500);
-  setTimeout(()=> map.invalidateSize(), 1000);
-}
-
-// Saat tab "Pesan Laundry" dibuka
-document.querySelector('.tab-btn[data-tab="order"]').addEventListener('click', ()=>{
-  initMap();
-});
-
-// Tombol Posisi Saya
-document.getElementById('btn-posisi').addEventListener('click', () => {
-  if(!mapInitialized) initMap();
-
-  if(!navigator.geolocation){
-    alert("Browser tidak mendukung geolokasi");
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(async pos => {
+  navigator.geolocation.getCurrentPosition(async pos=>{
     const userLat = pos.coords.latitude;
     const userLon = pos.coords.longitude;
 
+    // hapus marker lama & rute lama
     if(userMarker) map.removeLayer(userMarker);
-    if(routingControl) map.removeControl(routingControl);
+    if(rutePolyline) map.removeLayer(rutePolyline);
 
-    // Marker user
+    // marker user
     userMarker = L.marker([userLat, userLon]).addTo(map)
                   .bindPopup("Posisi Saya").openPopup();
 
-    // Update input alamat otomatis
+    map.setView([userLat, userLon], 13);
+    map.invalidateSize();
+
+    // reverse geocoding
     try{
-      const url = `https://nominatim.openstreetmap.org/reverse?lat=${userLat}&lon=${userLon}&format=json`;
-      const res = await fetch(url);
+      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${userLat}&lon=${userLon}&format=json`);
       const data = await res.json();
       document.getElementById('alamat').value = data.display_name || '';
     }catch(err){ console.error(err); }
 
-    map.invalidateSize();
+    // routing user -> laundry
+    const laundryLat = -6.200000;
+    const laundryLon = 106.816666;
 
-    // Routing user -> laundry
-    routingControl = L.Routing.control({
-      waypoints: [
-        L.latLng(userLat, userLon),
-        L.latLng(laundryLat, laundryLon)
-      ],
-      router: L.Routing.osrmv1({
-        serviceUrl: 'https://router.project-osrm.org/route/v1/driving/' // pastikan ada trailing slash
-      }),
-      routeWhileDragging: false,
-      draggableWaypoints: false,
-      addWaypoints: false,
-      lineOptions: { styles: [{color:'#facc15', weight:5}] },
-      createMarker: function(i, wp){
-        if(i===0) return L.marker(wp.latLng).bindPopup("Posisi Saya");
-        if(i===1) return L.marker(wp.latLng).bindPopup("Sea Laundry");
-        return null;
-      }
-    }).addTo(map);
+    const url = `https://router.project-osrm.org/route/v1/driving/${userLon},${userLat};${laundryLon},${laundryLat}?overview=full&geometries=geojson`;
 
-    routingControl.on('routesfound', function(e){
-      const route = e.routes[0];
-      const bounds = L.latLngBounds(route.coordinates);
-      map.fitBounds(bounds, {padding:[50,50]});
-    });
+    fetch(url)
+      .then(res=>res.json())
+      .then(data=>{
+        if(data.routes && data.routes.length > 0){
+          const coords = data.routes[0].geometry.coordinates.map(c=>[c[1],c[0]]);
+          rutePolyline = L.polyline(coords, {color:'#facc15', weight:5}).addTo(map);
+          map.fitBounds(rutePolyline.getBounds(), {padding:[50,50]});
+        }
+      })
+      .catch(err => console.error("Gagal memuat rute:", err))
+      .finally(()=> {
+        mapLoading.style.display = 'none'; // sembunyikan loading
+        btnPosisi.disabled = false;
+      });
 
-  }, err => { alert("Gagal dapatkan posisi: "+err.message); });
+  }, err=>{
+    alert("Gagal dapatkan posisi: "+err.message);
+    mapLoading.style.display = 'none';
+    btnPosisi.disabled = false;
+  });
 });
 </script>
 
