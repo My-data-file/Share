@@ -307,49 +307,27 @@ footer { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; paddi
 footer p { margin: 5px 0; font-weight:600; }
 
 /* ================= MEDIA QUERY UPDATE ================= */
-@media(max-width:768px){ 
-  .header-inner{
-    flex-direction:column;
-    text-align:center;
-    justify-content:center;
-    align-items:center;
-  } 
+@media(max-width:768px){
+  .header-inner{ flex-direction:column; text-align:center; justify-content:center; align-items:center; } 
   .header-text{text-align:center;} 
-  .logo{
-    width:60px;
-    height:60px;
-    margin:0 auto 15px auto;
-  } 
+  .logo{ width:60px; height:60px; margin:0 auto 15px auto; } 
   .modern-form .form-grid { grid-template-columns:1fr !important; } 
   .form-group[style] { grid-column: span 1 !important; } 
-  .modern-form button { grid-column: span 1 !important; } 
-}
-@media(max-width:480px){ .tab-menu .tab-btn{flex:1 1 100%; font-size:0.9rem;} .accordion-header::after{right:15px;} }
-@media(max-width:480px){
-  .status-progress .step-label {
-    font-size: 0.7rem;
-  }
-  .status-progress .step-circle {
-    width: 32px;
-    height: 32px;
-    font-size: 16px;
-  }
-/* ====== Responsive khusus Tab Pesan Laundry ====== */
-@media(max-width:768px){
-  .form-group[style] { grid-column: span 1 !important; } /* semua form jadi 1 kolom */
-  #btn-posisi, .modern-form button { 
-    grid-column: span 1 !important; 
-    width: 100%; 
-  }
+  .modern-form button { width:100%; grid-column: span 1 !important; } 
+  #btn-posisi { width:100%; margin-bottom:10px; } 
+  #map { height:250px !important; }
 }
 
 @media(max-width:480px){
-  #map { height: 250px; } /* map lebih pendek untuk HP kecil */
-  .form-group input, .form-group select {
-    padding: 10px 35px 10px 10px; 
-    font-size: 0.9rem; 
-  }
-  .form-group .icon { right: 8px; font-size: 1rem; }
+  .tab-menu .tab-btn{flex:1 1 100%; font-size:0.85rem;} 
+  .accordion-header::after{right:15px;}
+  .status-progress .step-label { font-size:0.65rem; }
+  .status-progress .step-circle { width:28px; height:28px; font-size:14px; }
+  #map { height:220px !important; }
+  .form-group input, .form-group select { padding:10px 35px 10px 10px; font-size:0.9rem; }
+  .cta-btn { padding:10px 20px; font-size:0.95rem; }
+  .header-text h1 { font-size:2rem; }
+  .header-text p { font-size:0.9rem; }
 }
 </style>
 </head>
@@ -540,7 +518,7 @@ footer p { margin: 5px 0; font-weight:600; }
 <div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
-  <p>&copy; 2025 1.0 Sea Laundry. All rights reserved.</p>
+  <p>&copy; 2025 Sea Laundry. All rights reserved.</p>
 </footer>
 
 <script>
@@ -868,7 +846,7 @@ document.querySelector('.tab-btn[data-tab="order"]').addEventListener('click', (
   setTimeout(()=>{ 
     initMap(); 
     map.invalidateSize(); 
-  }, 300);
+  }, 500);
 });
 </script>
 
