@@ -306,40 +306,17 @@ header {
 footer { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; padding:20px; text-align: center; position: relative; overflow: hidden; }
 footer p { margin: 5px 0; font-weight:600; }
 
-/* ================= MEDIA QUERY UPDATE ================= */
+<!-- ================== MEDIA QUERY ================== -->
+<style>
 @media(max-width:768px){
-  .header-inner{ flex-direction:column; text-align:center; justify-content:center; align-items:center; } 
-  .header-text{text-align:center;} 
-  .logo{ width:60px; height:60px; margin:0 auto 15px auto; } 
-  .modern-form .form-grid { grid-template-columns:1fr !important; } 
-  .form-group[style] { grid-column: span 1 !important; } 
-  .modern-form button { width:100%; grid-column: span 1 !important; } 
-  #btn-posisi { width:100%; margin-bottom:10px; } 
-  #map { height:250px !important; }
+  #map { height: 250px !important; margin-bottom:15px; }
+  #btn-posisi { width:100% !important; margin-bottom:10px; }
+  .form-grid { grid-template-columns:1fr !important; gap:12px; }
 }
 
 @media(max-width:480px){
-  .tab-menu .tab-btn{flex:1 1 100%; font-size:0.85rem;} 
-  .accordion-header::after{right:15px;}
-  .status-progress .step-label { font-size:0.65rem; }
-  .status-progress .step-circle { width:28px; height:28px; font-size:14px; }
   #map { height:220px !important; }
-  .form-group input, .form-group select { padding:10px 35px 10px 10px; font-size:0.9rem; }
-  .cta-btn { padding:10px 20px; font-size:0.95rem; }
-  .header-text h1 { font-size:2rem; }
-  .header-text p { font-size:0.9rem; }
-}
-@media(max-width:768px){
-  .modern-form .form-grid { grid-template-columns: 1fr !important; }
-  .form-group[style] { grid-column: span 1 !important; }
-  #btn-posisi, #map { width: 100% !important; margin-bottom: 15px; }
-  #map { height: 250px !important; }
-}
-
-@media(max-width:480px){
-  #map { height: 220px !important; }
-  #btn-posisi { font-size: 0.9rem; padding: 10px; }
-  .form-group input, .form-group select { padding: 10px 12px; font-size: 0.95rem; }
+  .form-group input, .form-group select, #btn-posisi, button[type=submit] { font-size:0.95rem; padding:10px; }
 }
 </style>
 </head>
@@ -381,35 +358,48 @@ footer p { margin: 5px 0; font-weight:600; }
   </div>
 </div>
 
+<!-- ================== PERBAIKAN TAB PESAN LAUNDRY ================== -->
 <div class="tab-content" id="order">
   <div class="card">
     <h2>Pesan Laundry</h2>
     <form id="orderForm" class="modern-form">
-      <div class="form-grid">
+      <div class="form-grid" style="grid-template-columns: 1fr !important; gap:15px;">
+        <!-- Nama -->
         <div class="form-group">
           <input type="text" id="nama" placeholder=" " required>
           <label for="nama">Nama Anda</label>
           <span class="icon">👤</span>
         </div>
+
+        <!-- Alamat -->
         <div class="form-group">
           <input type="text" id="alamat" placeholder=" " required>
           <label for="alamat">Alamat Lengkap</label>
           <span class="icon">🏠</span>
           <div id="alamat-suggestions"></div>
         </div>
+
         <!-- Tombol Posisi Saya -->
-        <div style="grid-column: span 2; text-align:center; margin-bottom:10px;">
-          <button type="button" id="btn-posisi">📍 Posisi Saya</button>
+        <div style="width:100%; text-align:center;">
+          <button type="button" id="btn-posisi"
+                  style="width:100%; padding:12px; border:none; border-radius:8px; background:#3b82f6; color:white; font-weight:600;">
+            📍 Posisi Saya
+          </button>
         </div>
+
         <!-- Map -->
-        <div class="form-group" style="grid-column: span 2;">
-          <div id="map"></div>
+        <div style="width:100%;">
+          <div id="map" style="width:100%; height:250px; border-radius:12px; border:1px solid #ccc;"></div>
         </div>
+
+        <!-- Berat -->
         <div class="form-group">
           <input type="number" id="berat" placeholder=" " min="1" required>
           <label for="berat">Berat Cucian (kg)</label>
           <span class="icon">⚖️</span>
         </div>
+
+        <!-- Layanan -->
         <div class="form-group">
           <select id="layanan" required>
             <option value="" disabled selected></option>
@@ -420,22 +410,30 @@ footer p { margin: 5px 0; font-weight:600; }
           <label for="layanan">Pilih Layanan</label>
           <span class="icon">🧺</span>
         </div>
+
+        <!-- Catatan -->
         <div class="form-group">
           <input type="text" id="catatan" placeholder=" ">
           <label for="catatan">Catatan Tambahan</label>
           <span class="icon">📝</span>
         </div>
+
+        <!-- Jadwal -->
         <div class="form-group">
           <input type="date" id="jadwal" placeholder=" " required>
           <label for="jadwal">Jadwal Jemput / Antar</label>
           <span class="icon">📅</span>
         </div>
-        <button type="submit" style="grid-column: span 2;">Kirim via WhatsApp</button>
+
+        <!-- Submit -->
+        <button type="submit" style="width:100%; padding:12px; border:none; border-radius:12px; background:#3b82f6; color:white; font-weight:600;">
+          Kirim via WhatsApp
+        </button>
       </div>
     </form>
   </div>
 </div>
-
+  
 <!-- ================= Status, Services, FAQ, Testimoni, Contact ================= -->
 <div class="tab-content" id="status">
   <div class="card">
