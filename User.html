@@ -523,7 +523,7 @@ footer p { margin: 5px 0; font-weight:600; }
 <div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
-  <p>&copy; 2025 Sea Laundry. All rights reserved.</p>
+  <p>&copy; 2025 v1 Sea Laundry. All rights reserved.</p>
 </footer>
 
 <script>
@@ -765,58 +765,57 @@ setInterval(() => createBubble(footerElem), 800);
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-// ====================== Titik Laundry & Variabel ======================
-const laundryLat = -6.200000;   // ganti latitude laundry
-const laundryLon = 106.816666;  // ganti longitude laundry
+// ======= Titik Laundry =======
+const laundryLat = -6.200000;   // ganti dengan latitude laundry asli
+const laundryLon = 106.816666;  // ganti dengan longitude laundry asli
 
 let map, laundryMarker, userMarker = null, routingControl = null;
 
-// ====================== Inisialisasi Map ======================
+// ======= Inisialisasi Map =======
 function initMap() {
-  if(map) return; // jangan buat ulang map
-
+  if(map) return;
   map = L.map('map').setView([laundryLat, laundryLon], 13);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  // Marker laundry
   laundryMarker = L.marker([laundryLat, laundryLon]).addTo(map)
                   .bindPopup("Sea Laundry").openPopup();
 }
 
-// ====================== Tombol Posisi Saya + Routing ======================
+// ======= Tombol Posisi Saya + Routing =======
 document.getElementById('btn-posisi').addEventListener('click', () => {
-  if (!map) initMap();
-  
-  if (!navigator.geolocation) { alert("Browser tidak mendukung geolokasi."); return; }
+  if(!map) initMap();
+
+  if(!navigator.geolocation){
+    alert("Browser tidak mendukung geolokasi");
+    return;
+  }
 
   navigator.geolocation.getCurrentPosition(async pos => {
     const lat = pos.coords.latitude;
     const lon = pos.coords.longitude;
 
-    // Hapus marker user lama
+    // Hapus marker dan routing lama
     if(userMarker) map.removeLayer(userMarker);
-
-    // Hapus routing sebelumnya
     if(routingControl) map.removeControl(routingControl);
 
     // Marker user
     userMarker = L.marker([lat, lon]).addTo(map).bindPopup("Posisi Saya").openPopup();
 
     map.setView([lat, lon], 13);
-    map.invalidateSize(); // wajib biar map tampil benar
+    map.invalidateSize();
 
-    // Reverse geocode -> update input alamat
-    try {
+    // Update input alamat
+    try{
       const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
       const res = await fetch(url);
       const data = await res.json();
       document.getElementById('alamat').value = data.display_name || '';
-    } catch(err) { console.error(err); }
+    }catch(err){ console.error(err); }
 
-    // Routing user → laundry
+    // Routing user -> laundry
     routingControl = L.Routing.control({
       waypoints: [
         L.latLng(lat, lon),
@@ -826,17 +825,17 @@ document.getElementById('btn-posisi').addEventListener('click', () => {
       draggableWaypoints: false,
       addWaypoints: false,
       lineOptions: { styles: [{color:'#facc15', weight:5}] },
-      createMarker: function() { return null; } // pakai marker manual
+      createMarker: function() { return null; } // marker manual
     }).addTo(map);
 
-  }, err => { alert("Gagal dapatkan posisi: " + err.message); });
+  }, err => { alert("Gagal dapatkan posisi: "+err.message); });
 });
 
-// ====================== Init map saat tab Order dibuka ======================
+// ======= Init map saat tab Order dibuka =======
 document.querySelector('.tab-btn[data-tab="order"]').addEventListener('click', ()=>{
-  setTimeout(()=>{
-    initMap();
-    map.invalidateSize();
+  setTimeout(()=>{ 
+    initMap(); 
+    map.invalidateSize(); 
   }, 300);
 });
 </script>
