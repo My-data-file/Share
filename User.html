@@ -682,19 +682,36 @@ document.getElementById('orderForm').addEventListener('submit', e=>{
   const jadwal = document.getElementById('jadwal').value;
   const catatan = document.getElementById('catatan').value.trim();
   const today = new Date().toISOString().split('T')[0];
+
   if(berat <= 0){ alert('Berat harus > 0'); return; }
   if(jadwal < today){ alert('Jadwal tidak boleh di masa lalu'); return; }
-  
+
   const wa = `Halo, saya ingin memesan laundry.\nNama: ${nama}\nAlamat: ${alamat}\nBerat: ${berat}kg\nLayanan: ${layanan}\nJadwal: ${jadwal}\nCatatan: ${catatan}`;
   window.open('https://wa.me/6287877929391?text='+encodeURIComponent(wa),'_blank');
-  
+
+  // Kirim ke GAS
   fetch(GAS_URL, {
     method:"POST",
     body: JSON.stringify({ type:"PesanLaundry", payload:{ nama, alamat, berat, layanan, catatan, jadwal } })
   }).then(()=>{
     showToast("Pesanan berhasil dikirim!");
+
+    // Reset form dan localStorage
     fields.forEach(id=>localStorage.removeItem('order_'+id));
     document.getElementById('orderForm').reset();
+
+    // ===== Reset map & rute =====
+    if(userMarker){
+      map.removeLayer(userMarker);
+      userMarker = null;
+    }
+    if(rutePolyline){
+      map.removeLayer(rutePolyline);
+      rutePolyline = null;
+    }
+    document.getElementById('route-info').textContent = "Jarak: -- km | Perkiraan Waktu: -- menit";
+    map.setView([laundryLat, laundryLon], 13);
+
   }).catch(err=>{
     console.error("Gagal mengirim ke Spreadsheet:", err);
     alert("Terjadi masalah saat menyimpan ke Spreadsheet");
