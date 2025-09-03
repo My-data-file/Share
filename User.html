@@ -334,6 +334,23 @@ footer p { margin: 5px 0; font-weight:600; }
     height: 32px;
     font-size: 16px;
   }
+/* ====== Responsive khusus Tab Pesan Laundry ====== */
+@media(max-width:768px){
+  .form-group[style] { grid-column: span 1 !important; } /* semua form jadi 1 kolom */
+  #btn-posisi, .modern-form button { 
+    grid-column: span 1 !important; 
+    width: 100%; 
+  }
+}
+
+@media(max-width:480px){
+  #map { height: 250px; } /* map lebih pendek untuk HP kecil */
+  .form-group input, .form-group select {
+    padding: 10px 35px 10px 10px; 
+    font-size: 0.9rem; 
+  }
+  .form-group .icon { right: 8px; font-size: 1rem; }
+}
 </style>
 </head>
 <body>
@@ -523,7 +540,7 @@ footer p { margin: 5px 0; font-weight:600; }
 <div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
-  <p>&copy; 2025 V1 Sea Laundry. All rights reserved.</p>
+  <p>&copy; 2025 Sea Laundry. All rights reserved.</p>
 </footer>
 
 <script>
