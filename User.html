@@ -769,10 +769,13 @@ setInterval(() => createBubble(footerElem), 800);
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-// ======= Inisialisasi Map di tab "order" =======
+let map, laundryMarker, userMarker = null, routingControl = null;
+const laundryLat = -6.200000;   // latitude laundry
+const laundryLon = 106.816666;  // longitude laundry
 let mapInitialized = false;
 
-function initMapOnce() {
+// Fungsi buat map
+function initMap() {
   if(mapInitialized) return;
   mapInitialized = true;
 
@@ -784,11 +787,21 @@ function initMapOnce() {
 
   laundryMarker = L.marker([laundryLat, laundryLon]).addTo(map)
                   .bindPopup("Sea Laundry").openPopup();
+
+  // Memastikan map bisa render ukuran div di tab tersembunyi
+  setTimeout(()=> map.invalidateSize(), 200);
+  setTimeout(()=> map.invalidateSize(), 500);
+  setTimeout(()=> map.invalidateSize(), 1000);
 }
 
-// ======= Tombol Posisi Saya + Routing =======
+// Saat tab "Pesan Laundry" dibuka
+document.querySelector('.tab-btn[data-tab="order"]').addEventListener('click', ()=>{
+  initMap();
+});
+
+// Tombol Posisi Saya
 document.getElementById('btn-posisi').addEventListener('click', () => {
-  initMapOnce(); // pastikan map sudah diinisialisasi
+  if(!mapInitialized) initMap();
 
   if(!navigator.geolocation){
     alert("Browser tidak mendukung geolokasi");
@@ -799,15 +812,12 @@ document.getElementById('btn-posisi').addEventListener('click', () => {
     const userLat = pos.coords.latitude;
     const userLon = pos.coords.longitude;
 
-    // Hapus marker & rute lama
     if(userMarker) map.removeLayer(userMarker);
     if(routingControl) map.removeControl(routingControl);
 
-    // Marker user
     userMarker = L.marker([userLat, userLon]).addTo(map)
                   .bindPopup("Posisi Saya").openPopup();
 
-    // Update input alamat otomatis
     try{
       const url = `https://nominatim.openstreetmap.org/reverse?lat=${userLat}&lon=${userLon}&format=json`;
       const res = await fetch(url);
@@ -815,10 +825,8 @@ document.getElementById('btn-posisi').addEventListener('click', () => {
       document.getElementById('alamat').value = data.display_name || '';
     }catch(err){ console.error(err); }
 
-    // Pastikan map tahu ukuran div (penting di tab tersembunyi)
     map.invalidateSize();
 
-    // Routing user -> laundry
     routingControl = L.Routing.control({
       waypoints: [
         L.latLng(userLat, userLon),
@@ -846,15 +854,8 @@ document.getElementById('btn-posisi').addEventListener('click', () => {
 
   }, err => { alert("Gagal dapatkan posisi: "+err.message); });
 });
-
-// ======= Inisialisasi map saat tab order dibuka =======
-document.querySelector('.tab-btn[data-tab="order"]').addEventListener('click', ()=>{
-  setTimeout(()=>{ 
-    initMapOnce(); 
-    map.invalidateSize(); 
-  }, 200);
-});
 </script>
+
 
 </body>
 </html>
