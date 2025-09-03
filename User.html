@@ -407,12 +407,6 @@ footer p { margin: 5px 0; font-weight:600; }
           background:rgba(255,255,255,0.9);padding:10px 20px;border-radius:8px;font-weight:bold;z-index:1000;">
           Menghitung rute…
         </div>
-        <!-- Input jarak dan estimasi waktu -->
-        <div style="margin-top:8px;">
-        <input type="text" id="jarak" readonly 
-           style="width:100%;padding:8px;border-radius:8px;border:1px solid #ccc;background:#f3f4f6;" 
-           placeholder="Jarak & waktu rute akan muncul di sini">
-        </div>
         </div>
 
         <!-- Berat -->
@@ -550,7 +544,7 @@ footer p { margin: 5px 0; font-weight:600; }
 <div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
-  <p>&copy; 2026 Sea Laundry. All rights reserved.</p>
+  <p>&copy; 2025 Sea Laundry. All rights reserved.</p>
 </footer>
 
 <script>
@@ -789,121 +783,95 @@ setInterval(() => createBubble(footerElem), 800);
 
 </script>
 
-<!-- =================== JS Map & Rute =================== -->
+<!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-const map = L.map('map');
-let userMarker, rutePolyline;
+const laundryLat = -6.200000;   // ganti dengan latitude laundry
+const laundryLon = 106.816666;   // ganti dengan longitude laundry
+let map = null, userMarker = null, rutePolyline = null;
 
-// Titik lokasi laundry
-const defaultPoint = [-6.200000, 106.816666]; // ganti koordinat laundry
-const defaultName = "Laundry Bersih Sejahtera";
+// ===== Inisialisasi Map =====
+function initMap() {
+  if(map) return; // mencegah double init
+  map = L.map('map').setView([laundryLat, laundryLon], 13);
 
-// Marker laundry
-L.marker(defaultPoint, {
-  icon: L.icon({
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
-    iconSize: [30,30]
-  })
-}).addTo(map)
-  .bindTooltip(defaultName, {permanent: true, direction: 'top', offset: [0, -10]})
-  .openTooltip();
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
 
-// Tile OSM
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
-  attribution: '&copy; OpenStreetMap contributors'
-}).addTo(map);
-
-map.setView(defaultPoint, 12);
-
-// Fungsi tempatkan marker user
-function placeUserMarker(latlng) {
-  if(userMarker) userMarker.setLatLng(latlng);
-  else userMarker = L.marker(latlng, {
-    icon: L.icon({
-      iconUrl:'https://cdn-icons-png.flaticon.com/512/149/149060.png',
-      iconSize:[30,30]
-    })
-  }).addTo(map)
-    .bindTooltip("Posisi Anda", {permanent: true, direction:'top', offset:[0,-10]})
-    .openTooltip();
-  updateRute(latlng, defaultPoint);
+  L.marker([laundryLat, laundryLon])
+    .addTo(map)
+    .bindPopup("Sea Laundry")
+    .openPopup();
 }
 
-// Fungsi update rute
-function updateRute(userLatLng, tujuanLatLng){
+// ===== Fungsi buat marker user + rute =====
+function placeUserMarker(lat, lng) {
+  const userLatLng = [lat, lng];
+
+  if(userMarker) userMarker.setLatLng(userLatLng);
+  else userMarker = L.marker(userLatLng)
+                      .addTo(map)
+                      .bindPopup("Posisi Saya")
+                      .openPopup();
+
+  updateRute(userLatLng, [laundryLat, laundryLon]);
+}
+
+// ===== Fungsi update rute ke laundry =====
+function updateRute(userLatLng, laundryLatLng) {
   if(rutePolyline) map.removeLayer(rutePolyline);
 
-  const url = `https://router.project-osrm.org/route/v1/driving/${userLatLng.lng},${userLatLng.lat};${tujuanLatLng[1]},${tujuanLatLng[0]}?overview=full&geometries=geojson&alternatives=false`;
+  const url = `https://router.project-osrm.org/route/v1/driving/${userLatLng[1]},${userLatLng[0]};${laundryLatLng[1]},${laundryLatLng[0]}?overview=full&geometries=geojson&alternatives=false`;
 
   fetch(url)
     .then(res => res.json())
     .then(data => {
-      if (data.routes && data.routes.length > 0) {
-        const route = data.routes[0];
-        const coords = route.geometry.coordinates.map(c => [c[1], c[0]]);
-        
-        rutePolyline = L.polyline(coords, { color: 'blue', weight: 4 }).addTo(map);
-
-        const jarakKm = route.distance / 1000;
-        const durasiMenit = Math.round(route.duration / 60);
-
-        document.getElementById('jarak-text').textContent = `Jarak: ${jarakKm.toFixed(2)} km | Waktu: ${durasiMenit} menit`;
-
-        map.fitBounds(rutePolyline.getBounds(), { padding: [50, 50] });
-      } else {
-        document.getElementById('jarak-text').textContent = "Tidak dapat hitung rute (fallback ke garis lurus)";
+      if(data.routes && data.routes.length > 0) {
+        const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+        rutePolyline = L.polyline(coords, { color:'blue', weight:4 }).addTo(map);
+        map.fitBounds(rutePolyline.getBounds(), { padding:[50,50] });
       }
     })
-    .catch(err => {
-      console.error("Gagal memuat rute OSRM:", err);
-      rutePolyline = L.polyline([userLatLng, tujuanLatLng], { color: 'red', dashArray: '5,10' }).addTo(map);
-      document.getElementById('jarak-text').textContent = "Tidak dapat hitung rute (fallback ke garis lurus)";
-    });
+    .catch(err => console.error("Gagal load rute OSRM:", err));
 }
 
-// Tombol posisi user
-const btnPosisi = document.getElementById('btnPosisi');
-let userLatLng = null;
-btnPosisi.addEventListener('click', function(){
-  if(!navigator.geolocation){ alert("Browser tidak mendukung geolocation."); return; }
-  btnPosisi.classList.add('loading');
-  btnPosisi.innerHTML = '<span class="spinner"></span> Mencari lokasi…';
+// ===== Tombol Posisi Saya =====
+document.getElementById('btn-posisi').addEventListener('click', ()=>{
+  if(!navigator.geolocation){
+    alert("Browser tidak mendukung geolocation");
+    return;
+  }
+
   navigator.geolocation.getCurrentPosition(
-    (pos)=>{
+    pos=>{
       const lat = pos.coords.latitude;
       const lng = pos.coords.longitude;
-      userLatLng = {lat, lng};
 
       // Reverse geocoding OSM
-      fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`, {
-        headers: {
-          'User-Agent': 'JemputanApp/1.0 (admin@laundry.com)',
-          'Accept-Language': 'id'
-        }
-      })
-      .then(res => res.json())
-      .then(data => {
-        const displayName = data.display_name || "";
-        document.getElementById('alamat').value = `${displayName} (Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)})`;
-        placeUserMarker(userLatLng); 
-      })
-      .catch(err => {
-        console.error(err);
-        document.getElementById('alamat').value = `(Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)})`;
-        placeUserMarker(userLatLng);
-      });
-
-      btnPosisi.classList.remove('loading');
-      btnPosisi.innerHTML = '<span class="icon">📍</span> Gunakan Posisi Saya';
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`)
+        .then(res => res.json())
+        .then(data => {
+          const displayName = data.display_name || '';
+          document.getElementById('alamat').value = displayName;
+          placeUserMarker(lat, lng);
+        })
+        .catch(err=>{
+          console.error(err);
+          document.getElementById('alamat').value = `(Lat:${lat.toFixed(6)}, Lng:${lng.toFixed(6)})`;
+          placeUserMarker(lat, lng);
+        });
     },
-    ()=>{
-      alert("Tidak dapat mendapatkan lokasi Anda.");
-      btnPosisi.classList.remove('loading');
-      btnPosisi.innerHTML = '<span class="icon">📍</span> Gunakan Posisi Saya';
-    }
+    err => { alert("Gagal dapatkan lokasi: "+err.message); }
   );
+});
+
+// ===== Init map saat tab Order dibuka =====
+document.querySelector('.tab-btn[data-tab="order"]').addEventListener('click', ()=>{
+  setTimeout(()=>{
+    initMap();
+    map.invalidateSize(); // pastikan render setelah div terlihat
+  }, 300);
 });
 </script>
 
