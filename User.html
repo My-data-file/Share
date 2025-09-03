@@ -815,9 +815,11 @@ document.getElementById('btn-posisi').addEventListener('click', () => {
     if(userMarker) map.removeLayer(userMarker);
     if(routingControl) map.removeControl(routingControl);
 
+    // Marker user
     userMarker = L.marker([userLat, userLon]).addTo(map)
                   .bindPopup("Posisi Saya").openPopup();
 
+    // Update input alamat otomatis
     try{
       const url = `https://nominatim.openstreetmap.org/reverse?lat=${userLat}&lon=${userLon}&format=json`;
       const res = await fetch(url);
@@ -827,13 +829,14 @@ document.getElementById('btn-posisi').addEventListener('click', () => {
 
     map.invalidateSize();
 
+    // Routing user -> laundry
     routingControl = L.Routing.control({
       waypoints: [
         L.latLng(userLat, userLon),
         L.latLng(laundryLat, laundryLon)
       ],
       router: L.Routing.osrmv1({
-        serviceUrl: 'https://router.project-osrm.org/route/v1/driving/'
+        serviceUrl: 'https://router.project-osrm.org/route/v1/driving/' // pastikan ada trailing slash
       }),
       routeWhileDragging: false,
       draggableWaypoints: false,
@@ -855,7 +858,6 @@ document.getElementById('btn-posisi').addEventListener('click', () => {
   }, err => { alert("Gagal dapatkan posisi: "+err.message); });
 });
 </script>
-
 
 </body>
 </html>
