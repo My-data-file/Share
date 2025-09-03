@@ -399,14 +399,35 @@ footer p { margin: 5px 0; font-weight:600; }
           </button>
         </div>
 
-        <!-- Map -->
-        <div id="map-container" style="position:relative;">
-        <div id="map" style="width:100%;height:300px;"></div>
-        <div id="map-loading" style="display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-          background:rgba(255,255,255,0.9);padding:10px 20px;border-radius:8px;font-weight:bold;z-index:1000;">
-          Menghitung rute…
-        </div>
-        </div>
+<!-- Map + Kolom Jarak & Waktu -->
+<div id="map-container" style="position:relative;">
+  <div id="map" style="width:100%;height:300px;"></div>
+  <div id="map-loading" style="
+        display:none;
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        background:rgba(255,255,255,0.9);
+        padding:10px 20px;
+        border-radius:8px;
+        font-weight:bold;
+        z-index:1000;">
+    Menghitung rute…
+  </div>
+</div>
+
+<!-- Kolom jarak & waktu -->
+<div id="route-info" style="
+      margin-top:10px;
+      padding:12px;
+      background:#e2e8f0;
+      border-radius:8px;
+      font-weight:600;
+      color:#1f2937;
+      text-align:center;">
+  Jarak: -- km | Perkiraan Waktu: -- menit
+</div>
 
         <!-- Berat -->
         <div class="form-group">
@@ -791,7 +812,7 @@ let map = null, userMarker = null, rutePolyline = null;
 
 // ===== Inisialisasi Map =====
 function initMap() {
-  if(map) return; // mencegah double init
+  if(map) return;
   map = L.map('map').setView([laundryLat, laundryLon], 13);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -807,7 +828,6 @@ function initMap() {
 // ===== Fungsi buat marker user + rute =====
 function placeUserMarker(lat, lng) {
   const userLatLng = [lat, lng];
-
   if(userMarker) userMarker.setLatLng(userLatLng);
   else userMarker = L.marker(userLatLng)
                       .addTo(map)
@@ -817,8 +837,13 @@ function placeUserMarker(lat, lng) {
   updateRute(userLatLng, [laundryLat, laundryLon]);
 }
 
-// ===== Fungsi update rute ke laundry =====
+// ===== Fungsi update rute ke laundry + kolom info =====
 function updateRute(userLatLng, laundryLatLng) {
+  const infoDiv = document.getElementById('route-info');
+  const loadingDiv = document.getElementById('map-loading');
+  loadingDiv.style.display = 'block';
+  infoDiv.textContent = "Menghitung jarak & waktu…";
+
   if(rutePolyline) map.removeLayer(rutePolyline);
 
   const url = `https://router.project-osrm.org/route/v1/driving/${userLatLng[1]},${userLatLng[0]};${laundryLatLng[1]},${laundryLatLng[0]}?overview=full&geometries=geojson&alternatives=false`;
@@ -826,13 +851,24 @@ function updateRute(userLatLng, laundryLatLng) {
   fetch(url)
     .then(res => res.json())
     .then(data => {
+      loadingDiv.style.display = 'none';
       if(data.routes && data.routes.length > 0) {
         const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
         rutePolyline = L.polyline(coords, { color:'blue', weight:4 }).addTo(map);
         map.fitBounds(rutePolyline.getBounds(), { padding:[50,50] });
+
+        const jarakKm = (data.routes[0].distance / 1000).toFixed(1);
+        const waktuMenit = Math.ceil(data.routes[0].duration / 60);
+        infoDiv.textContent = `Jarak: ${jarakKm} km | Perkiraan Waktu: ${waktuMenit} menit`;
+      } else {
+        infoDiv.textContent = "Gagal menghitung rute";
       }
     })
-    .catch(err => console.error("Gagal load rute OSRM:", err));
+    .catch(err => {
+      loadingDiv.style.display = 'none';
+      console.error("Gagal load rute OSRM:", err);
+      infoDiv.textContent = "Gagal menghitung rute";
+    });
 }
 
 // ===== Tombol Posisi Saya =====
@@ -852,12 +888,14 @@ document.getElementById('btn-posisi').addEventListener('click', ()=>{
         .then(res => res.json())
         .then(data => {
           const displayName = data.display_name || '';
-          document.getElementById('alamat').value = displayName;
+          const alamatInput = document.getElementById('alamat');
+          if(alamatInput) alamatInput.value = displayName;
           placeUserMarker(lat, lng);
         })
         .catch(err=>{
           console.error(err);
-          document.getElementById('alamat').value = `(Lat:${lat.toFixed(6)}, Lng:${lng.toFixed(6)})`;
+          const alamatInput = document.getElementById('alamat');
+          if(alamatInput) alamatInput.value = `(Lat:${lat.toFixed(6)}, Lng:${lng.toFixed(6)})`;
           placeUserMarker(lat, lng);
         });
     },
@@ -869,10 +907,11 @@ document.getElementById('btn-posisi').addEventListener('click', ()=>{
 document.querySelector('.tab-btn[data-tab="order"]').addEventListener('click', ()=>{
   setTimeout(()=>{
     initMap();
-    map.invalidateSize(); // pastikan render setelah div terlihat
+    map.invalidateSize();
   }, 300);
 });
 </script>
+
 
 </body>
 </html>
