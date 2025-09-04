@@ -427,12 +427,12 @@ footer p { margin: 5px 0; font-weight:600; }
           <span class="icon">👤</span>
         </div>
 
-        <!-- Berat -->
-        <div class="form-group">
-          <input type="number" id="berat" placeholder=" " min="1" required>
-          <label for="berat">Berat Cucian (kg)</label>
-          <span class="icon">⚖️</span>
-        </div>
+<!-- No HP -->
+<div class="form-group">
+  <input type="tel" id="nohp" placeholder=" " required>
+  <label for="nohp">No HP</label>
+  <span class="icon">📞</span>
+</div>
 
         <!-- Layanan -->
         <div class="form-group">
@@ -612,7 +612,7 @@ footer p { margin: 5px 0; font-weight:600; }
 
 <script>
 // ================= LocalStorage Auto-Save =================
-const fields = ['nama','alamat','berat','layanan','jadwal','catatan'];
+const fields = ['nama','alamat','nohp','layanan','jadwal','catatan'];
 window.addEventListener('DOMContentLoaded', ()=>{
   fields.forEach(id=>{
     const el = document.getElementById(id);
@@ -624,6 +624,38 @@ window.addEventListener('DOMContentLoaded', ()=>{
 fields.forEach(id=>{
   const el = document.getElementById(id);
   el.addEventListener('input', ()=>localStorage.setItem('order_'+id, el.value));
+});
+
+// ===== Format otomatis No HP =====
+const nohpInput = document.getElementById('nohp');
+
+nohpInput.addEventListener('input', (e) => {
+  let val = e.target.value;
+
+  // Hapus semua karakter selain angka
+  val = val.replace(/\D/g, '');
+
+  // Live format otomatis +62
+  if(val.startsWith('0')) {
+    val = '+62' + val.slice(1); // 0xxxx → +62xxxx
+  } else if(val.startsWith('62')) {
+    val = '+62' + val.slice(2); // 62xxxx → +62xxxx
+  } else if(!val.startsWith('+62')) {
+    val = '+62' + val; // langsung tambahkan +62
+  }
+
+  // Batasi panjang (misal max 15 digit total)
+  if(val.length > 15) val = val.slice(0, 15);
+
+  e.target.value = val;
+});
+
+// Optional: prevent paste yang mengandung huruf atau simbol
+nohpInput.addEventListener('paste', (e) => {
+  e.preventDefault();
+  const paste = (e.clipboardData || window.clipboardData).getData('text');
+  const clean = paste.replace(/\D/g, '');
+  nohpInput.value = '+62' + clean.slice(0, 13); // 13 agar total max 15 termasuk +62
 });
 
 // ================= Tab & Animasi =================
@@ -703,7 +735,7 @@ document.getElementById('orderForm').addEventListener('submit', e=>{
 
   const nama = document.getElementById('nama').value.trim();
   const alamat = document.getElementById('alamat').value.trim();
-  const berat = parseFloat(document.getElementById('berat').value);
+  const nohp = document.getElementById('nohp').value.trim();
   const layanan = document.getElementById('layanan').value;
   const jadwal = document.getElementById('jadwal').value;
   const catatan = document.getElementById('catatan').value.trim();
@@ -718,7 +750,7 @@ document.getElementById('orderForm').addEventListener('submit', e=>{
   const waMessage = `*Halo, saya ingin memesan laundry:*
 
 • *Nama:* ${nama}
-• *Berat:* ${berat} kg
+• *No HP:* ${nohp}
 • *Layanan:* ${layanan}
 • *Jadwal Penjemputan:* ${jadwal}
 • *Catatan:* ${catatan}
