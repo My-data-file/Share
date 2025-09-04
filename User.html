@@ -715,7 +715,7 @@ document.getElementById('orderForm').addEventListener('submit', e=>{
   const mapsLink = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(alamat);
 
   // WA message versi menarik
-  const waMessage = `Halo, saya ingin memesan laundry:
+  const waMessage = `*Halo, saya ingin memesan laundry:*
 
 • *Nama:* ${nama}
 • *Alamat:* ${alamat}
@@ -725,7 +725,7 @@ document.getElementById('orderForm').addEventListener('submit', e=>{
 • *Jadwal Penjemputan:* ${jadwal}
 • *Catatan:* ${catatan}
 
-Kami akan segera menghubungi Anda untuk konfirmasi. Terima kasih telah memilih layanan kami!`;
+*Kami akan segera menghubungi Anda untuk konfirmasi. Terima kasih telah memilih layanan kami!*`;
 
   window.open('https://wa.me/6287877929391?text=' + encodeURIComponent(waMessage), '_blank');
 
