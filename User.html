@@ -607,7 +607,7 @@ footer p { margin: 5px 0; font-weight:600; }
 <div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
-  <p>&copy; 2025 v1 Sea Laundry. All rights reserved.</p>
+  <p>&copy; 2025 v0 Sea Laundry. All rights reserved.</p>
 </footer>
 
 <script>
@@ -864,7 +864,6 @@ setInterval(() => createBubble(footerElem), 800);
 </script>
 
 <!-- Leaflet JS -->
-<!-- Leaflet JS -->
 <script>
 const laundryLat = -6.200000;
 const laundryLon = 106.816666;
@@ -893,7 +892,7 @@ function placeUserMarker(lat, lng) {
 
   // Icon hijau untuk posisi user
   const greenIcon = L.icon({
-    iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png', // pin hijau
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
     iconSize: [30, 30],
     iconAnchor: [15, 30],
     popupAnchor: [0, -28]
@@ -969,6 +968,18 @@ btnPosisi.addEventListener('click', ()=>{
       const lat = pos.coords.latitude;
       const lng = pos.coords.longitude;
 
+      // Ambil alamat dengan Nominatim
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`)
+        .then(res => res.json())
+        .then(data => {
+          const displayName = data.display_name || '';
+          document.getElementById('alamat').value = displayName; // isi kolom alamat
+        })
+        .catch(err=>{
+          console.error("Reverse geocoding gagal:", err);
+          document.getElementById('alamat').value = `(Lat:${lat.toFixed(6)}, Lng:${lng.toFixed(6)})`;
+        });
+
       placeUserMarker(lat, lng);
 
       btnPosisi.disabled = false;
@@ -1001,6 +1012,7 @@ window.addEventListener('DOMContentLoaded', ()=>{
   }
 });
 </script>
+
 
 
 </body>
