@@ -632,30 +632,22 @@ const nohpInput = document.getElementById('nohp');
 nohpInput.addEventListener('input', (e) => {
   let val = e.target.value;
 
-  // Hapus semua karakter selain angka
+  // Hapus semua karakter kecuali angka
   val = val.replace(/\D/g, '');
 
-  // Live format otomatis +62
-  if(val.startsWith('0')) {
-    val = '+62' + val.slice(1); // 0xxxx → +62xxxx
-  } else if(val.startsWith('62')) {
-    val = '+62' + val.slice(2); // 62xxxx → +62xxxx
-  } else if(!val.startsWith('+62')) {
-    val = '+62' + val; // langsung tambahkan +62
+  // Tambahkan +62 jika diawali 0 atau tidak diawali 62
+  if(val.startsWith('0')){
+    val = '+62' + val.slice(1);
+  } else if(val.startsWith('62')){
+    val = '+62' + val.slice(2);
+  } else if(!val.startsWith('+62')){
+    val = '+62' + val;
   }
 
-  // Batasi panjang (misal max 15 digit total)
-  if(val.length > 15) val = val.slice(0, 15);
+  // Batasi panjang max 15 digit termasuk +62
+  if(val.length > 15) val = val.slice(0,15);
 
   e.target.value = val;
-});
-
-// Optional: prevent paste yang mengandung huruf atau simbol
-nohpInput.addEventListener('paste', (e) => {
-  e.preventDefault();
-  const paste = (e.clipboardData || window.clipboardData).getData('text');
-  const clean = paste.replace(/\D/g, '');
-  nohpInput.value = '+62' + clean.slice(0, 13); // 13 agar total max 15 termasuk +62
 });
 
 // ================= Tab & Animasi =================
@@ -734,37 +726,32 @@ document.getElementById('orderForm').addEventListener('submit', e=>{
   e.preventDefault();
 
   const nama = document.getElementById('nama').value.trim();
-  const alamat = document.getElementById('alamat').value.trim();
   const nohp = document.getElementById('nohp').value.trim();
   const layanan = document.getElementById('layanan').value;
-  const jadwal = document.getElementById('jadwal').value;
   const catatan = document.getElementById('catatan').value.trim();
+  const jadwal = document.getElementById('jadwal').value;
+  const alamat = document.getElementById('alamat').value.trim();
   const today = new Date().toISOString().split('T')[0];
 
-  if(berat <= 0){ alert('Berat harus > 0'); return; }
-  if(jadwal < today){ alert('Jadwal tidak boleh di masa lalu'); return; }
+  const mapsLink = document.getElementById('alamat').dataset.maplink || ("https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(alamat));
 
-  const mapsLink = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(alamat);
-
-  // WA message versi menarik
   const waMessage = `*Halo, saya ingin memesan laundry:*
 
 • *Nama:* ${nama}
 • *No HP:* ${nohp}
 • *Layanan:* ${layanan}
-• *Jadwal Penjemputan:* ${jadwal}
 • *Catatan:* ${catatan}
+• *Jadwal Penjemputan:* ${jadwal}
 • *Alamat:* ${alamat}
 • *Lihat di Maps:* ${mapsLink}
 
-*Kami akan segera menghubungi Anda untuk konfirmasi. Terima kasih telah memilih layanan kami!*`;
+*Kami akan segera menghubungi Anda untuk konfirmasi. Terima kasih!*`;
 
   window.open('https://wa.me/6287877929391?text=' + encodeURIComponent(waMessage), '_blank');
 
-  // Kirim ke Apps Script (Spreadsheet)
   fetch(GAS_URL, {
     method:"POST",
-    body: JSON.stringify({ type:"PesanLaundry", payload:{ nama, alamat, berat, layanan, catatan, jadwal } })
+    body: JSON.stringify({ type:"PesanLaundry", payload:{ nama, nohp, layanan, catatan, jadwal, alamat } })
   }).then(()=>{
     showToast("Pesanan berhasil dikirim!");
     fields.forEach(id=>localStorage.removeItem('order_'+id));
@@ -781,9 +768,7 @@ document.getElementById('orderForm').addEventListener('submit', e=>{
     console.error("Gagal mengirim ke Spreadsheet:", err);
     alert("Terjadi masalah saat menyimpan ke Spreadsheet");
   });
-
 });
-
 
 // ================== Status Order ==================
 
