@@ -869,13 +869,14 @@ const laundryLat = -6.200000;
 const laundryLon = 106.816666;
 let map = null, laundryMarker = null, userMarker = null, rutePolyline = null;
 
-// Cache alamat supaya tidak request Nominatim berulang
+// Cache alamat (supaya tidak request Nominatim berulang)
 let lastLat = null, lastLng = null, lastAlamat = "";
 
 // ===== Inisialisasi Map =====
 function initMap() {
   if(map) return;
-  map = L.map('map').setView([laundryLat, laundryLon], 13);
+  map = L.map('map', { zoomControl: false })  // Hilangkan tombol + -
+         .setView([laundryLat, laundryLon], 13);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors'
@@ -889,24 +890,27 @@ function initMap() {
 }
 
 // ===== Fungsi buat marker user + rute =====
-function placeUserMarker(lat, lng, displayName="") {
+function placeUserMarker(lat, lng) {
   const userLatLng = [lat, lng];
 
-  // Marker user selalu terbuka
+  // Icon hijau untuk posisi user
+  const greenIcon = L.icon({
+    iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png', // pin hijau
+    iconSize: [30, 30],
+    iconAnchor: [15, 30],
+    popupAnchor: [0, -28]
+  });
+
   if(userMarker){
     userMarker.setLatLng(userLatLng)
-      .setPopupContent(`<b>Posisi Saya</b><br>${displayName}`)
+      .setIcon(greenIcon)
+      .setPopupContent(`<b>Posisi Saya</b>`)
       .openPopup();
   } else {
-    userMarker = L.marker(userLatLng, {
-      icon: L.icon({
-        iconUrl:'https://cdn-icons-png.flaticon.com/512/64/64113.png',
-        iconSize:[30,30]
-      })
-    })
-    .addTo(map)
-    .bindPopup(`<b>Posisi Saya</b><br>${displayName}`, {autoClose:false, closeOnClick:false})
-    .openPopup();
+    userMarker = L.marker(userLatLng, { icon: greenIcon })
+      .addTo(map)
+      .bindPopup(`<b>Posisi Saya</b>`, {autoClose:false, closeOnClick:false})
+      .openPopup();
   }
 
   // Pastikan kedua marker selalu terlihat
@@ -952,7 +956,7 @@ function updateRute(userLatLng, laundryLatLng) {
 
       // === Fallback hitung jarak manual (haversine) ===
       const jarakKm = haversine(userLatLng[0], userLatLng[1], laundryLatLng[0], laundryLatLng[1]).toFixed(1);
-      infoDiv.textContent += ` | Perkiraan jarak lurus: ${jarakKm} km`;
+      infoDiv.textContent += ` | Jarak lurus: ${jarakKm} km`;
     });
 }
 
@@ -985,10 +989,10 @@ btnPosisi.addEventListener('click', ()=>{
       const lat = pos.coords.latitude;
       const lng = pos.coords.longitude;
 
-      // Cek apakah sudah cache alamat
+      // Cek cache alamat
       if(lastLat === lat && lastLng === lng && lastAlamat !== ""){
         document.getElementById('alamat').value = lastAlamat;
-        placeUserMarker(lat, lng, lastAlamat);
+        placeUserMarker(lat, lng);
 
         btnPosisi.textContent = originalText;
         btnPosisi.className = "btn btn-success";
@@ -1003,7 +1007,7 @@ btnPosisi.addEventListener('click', ()=>{
           lastLat = lat; lastLng = lng; lastAlamat = displayName;
 
           document.getElementById('alamat').value = displayName;
-          placeUserMarker(lat, lng, displayName);
+          placeUserMarker(lat, lng);
 
           btnPosisi.textContent = originalText;
           btnPosisi.className = "btn btn-success";
@@ -1013,7 +1017,7 @@ btnPosisi.addEventListener('click', ()=>{
           console.error(err);
           const fallback = `(Lat:${lat.toFixed(6)}, Lng:${lng.toFixed(6)})`;
           document.getElementById('alamat').value = fallback;
-          placeUserMarker(lat, lng, fallback);
+          placeUserMarker(lat, lng);
 
           btnPosisi.textContent = originalText;
           btnPosisi.className = "btn btn-error";
@@ -1046,7 +1050,6 @@ window.addEventListener('DOMContentLoaded', ()=>{
   }
 });
 </script>
-
 
 </body>
 </html>
