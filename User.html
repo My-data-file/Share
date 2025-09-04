@@ -437,7 +437,6 @@ footer p { margin: 5px 0; font-weight:600; }
         <!-- Layanan -->
         <div class="form-group">
           <select id="layanan" required>
-            <option value="" disabled selected></option>
             <option>Cuci Kering</option>
             <option>Cuci + Setrika</option>
             <option>Setrika Saja</option>
@@ -735,15 +734,15 @@ document.getElementById('orderForm').addEventListener('submit', e=>{
 
   const mapsLink = document.getElementById('alamat').dataset.maplink || ("https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(alamat));
 
-  const waMessage = `*Halo, saya ingin memesan laundry:*
+  const waMessage = `*Halo, saya ingin memesan laundry :*
 
-• *Nama:* ${nama}
-• *No HP:* ${nohp}
-• *Layanan:* ${layanan}
-• *Catatan:* ${catatan}
-• *Jadwal Penjemputan:* ${jadwal}
-• *Alamat:* ${alamat}
-• *Lihat di Maps:* ${mapsLink}
+• *Nama :* ${nama}
+• *No HP :* ${nohp}
+• *Layanan :* ${layanan}
+• *Catatan :* ${catatan}
+• *Jadwal Penjemputan :* ${jadwal}
+• *Alamat :* ${alamat}
+• *Lihat di Maps :* ${mapsLink}
 
 *Kami akan segera menghubungi Anda untuk konfirmasi. Terima kasih!*`;
 
