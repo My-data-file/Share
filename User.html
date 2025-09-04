@@ -459,6 +459,13 @@ footer p { margin: 5px 0; font-weight:600; }
           <span class="icon">📅</span>
         </div>
 
+<!-- Jam -->
+<div class="form-group">
+  <input type="time" id="jam" placeholder=" " required>
+  <label for="jam">Jam Penjemputan</label>
+  <span class="icon">⏰</span>
+</div>
+
         <!-- Alamat -->
         <div class="form-group">
           <input type="text" id="alamat" placeholder=" " required>
@@ -698,7 +705,7 @@ document.querySelector('.cta-btn').addEventListener('click', e=>{
 });
 
 // ================== Apps Script Integration ==================
-const GAS_URL = "https://script.google.com/macros/s/AKfycbwq5hpaK3Mc_h0U33XS5Sc6BQz-sKPtssOrhYLXdLD0-G3y6dQAnQb1naHrI6zG1InSnQ/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzInOiseg9wkm7wHIWYXCnqPvykCJa7JQe9w-qxyTpH1aID_2yYKEDL88RT3e5Y35PLnA/exec";
 // Tombol WA interaktif
 const waBtn = document.getElementById('waChat');
 waBtn.addEventListener('click', ()=>{
@@ -728,9 +735,18 @@ document.getElementById('orderForm').addEventListener('submit', e=>{
   const nohp = document.getElementById('nohp').value.trim();
   const layanan = document.getElementById('layanan').value;
   const catatan = document.getElementById('catatan').value.trim();
-  const jadwal = document.getElementById('jadwal').value;
+  const tanggal = document.getElementById('jadwal').value;
+  const jam = document.getElementById('jam').value;
+  const jadwal = tanggal + " " + jam; // gabungkan tanggal + jam
   const alamat = document.getElementById('alamat').value.trim();
   const today = new Date().toISOString().split('T')[0];
+
+  const now = new Date();
+  const selectedDateTime = new Date(`${tanggal}T${jam}`);
+  if(selectedDateTime < now){ 
+    alert('Jadwal tidak boleh di masa lalu'); 
+    return; 
+  }
 
   const mapsLink = document.getElementById('alamat').dataset.maplink || ("https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(alamat));
 
@@ -740,7 +756,7 @@ document.getElementById('orderForm').addEventListener('submit', e=>{
 • *No HP :* ${nohp}
 • *Layanan :* ${layanan}
 • *Catatan :* ${catatan}
-• *Jadwal Penjemputan :* ${jadwal}
+• *Jadwal Penjemputan:* ${tanggal} jam ${jam}
 • *Alamat :* ${alamat}
 • *Lihat di Maps :* ${mapsLink}
 
@@ -750,8 +766,19 @@ document.getElementById('orderForm').addEventListener('submit', e=>{
 
   fetch(GAS_URL, {
     method:"POST",
-    body: JSON.stringify({ type:"PesanLaundry", payload:{ nama, nohp, layanan, catatan, jadwal, alamat } })
-  }).then(()=>{
+    body: JSON.stringify({
+    type: "PesanLaundry",
+    payload: {
+      nama: nama,
+      nohp: nohp,
+      layanan: layanan,
+      catatan: catatan,
+      jadwal: jadwal,
+      alamat: alamat
+    }
+  })
+})
+    .then(()=>{
     showToast("Pesanan berhasil dikirim!");
     fields.forEach(id=>localStorage.removeItem('order_'+id));
     document.getElementById('orderForm').reset();
