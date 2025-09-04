@@ -10,6 +10,16 @@
 <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.min.js"></script>
 <style>
 /* ================= CSS sama persis ================= */
+    .btn { 
+      padding: 8px 12px; 
+      border-radius: 6px; 
+      color: #fff; 
+      border: none; 
+      cursor: pointer; 
+    }
+    .btn-loading { background: #3b82f6; }   /* biru */
+    .btn-success { background: #16a34a; }   /* hijau */
+    .btn-error   { background: #ef4444; }   /* merah */
 #map {
   width: 100%;
   height: 300px; /* Atau sesuai kebutuhan */
@@ -337,8 +347,7 @@ header {
 footer { background: linear-gradient(135deg,#3b82f6,#6366f1); color:white; padding:20px; text-align: center; position: relative; overflow: hidden; }
 footer p { margin: 5px 0; font-weight:600; }
 
-<!-- ================== MEDIA QUERY ================== -->
-<style>
+/* ================== MEDIA QUERY ================== */
 @media(max-width:768px){
   #map { height: 250px !important; margin-bottom:15px; }
   #btn-posisi { width:100% !important; margin-bottom:10px; }
@@ -348,6 +357,22 @@ footer p { margin: 5px 0; font-weight:600; }
 @media(max-width:480px){
   #map { height:220px !important; }
   .form-group input, .form-group select, #btn-posisi, button[type=submit] { font-size:0.95rem; padding:10px; }
+}
+#btn-posisi {
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  background:#3b82f6; /* biru awal */
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#btn-posisi:disabled {
+  opacity:0.7;
+  cursor:not-allowed;
 }
 </style>
 </head>
@@ -401,6 +426,7 @@ footer p { margin: 5px 0; font-weight:600; }
           <label for="nama">Nama Anda</label>
           <span class="icon">👤</span>
         </div>
+
         <!-- Berat -->
         <div class="form-group">
           <input type="number" id="berat" placeholder=" " min="1" required>
@@ -433,7 +459,7 @@ footer p { margin: 5px 0; font-weight:600; }
           <label for="jadwal">Jadwal Jemput / Antar</label>
           <span class="icon">📅</span>
         </div>
-        
+
         <!-- Alamat -->
         <div class="form-group">
           <input type="text" id="alamat" placeholder=" " required>
@@ -581,7 +607,7 @@ footer p { margin: 5px 0; font-weight:600; }
 <div id="toast">Pesanan berhasil dikirim!</div>
 
 <footer>
-  <p>&copy; 2025 v0 Sea Laundry. All rights reserved.</p>
+  <p>&copy; 2025 v1 Sea Laundry. All rights reserved.</p>
 </footer>
 
 <script>
@@ -838,11 +864,13 @@ setInterval(() => createBubble(footerElem), 800);
 </script>
 
 <!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
 const laundryLat = -6.200000;
 const laundryLon = 106.816666;
 let map = null, laundryMarker = null, userMarker = null, rutePolyline = null;
+
+// Cache alamat supaya tidak request Nominatim berulang
+let lastLat = null, lastLng = null, lastAlamat = "";
 
 // ===== Inisialisasi Map =====
 function initMap() {
@@ -861,18 +889,23 @@ function initMap() {
 }
 
 // ===== Fungsi buat marker user + rute =====
-function placeUserMarker(lat, lng) {
+function placeUserMarker(lat, lng, displayName="") {
   const userLatLng = [lat, lng];
 
   // Marker user selalu terbuka
   if(userMarker){
-    userMarker.setLatLng(userLatLng).openPopup();
+    userMarker.setLatLng(userLatLng)
+      .setPopupContent(`<b>Posisi Saya</b><br>${displayName}`)
+      .openPopup();
   } else {
     userMarker = L.marker(userLatLng, {
-      icon: L.icon({iconUrl:'https://cdn-icons-png.flaticon.com/512/64/64113.png', iconSize:[30,30]})
+      icon: L.icon({
+        iconUrl:'https://cdn-icons-png.flaticon.com/512/64/64113.png',
+        iconSize:[30,30]
+      })
     })
     .addTo(map)
-    .bindPopup("<b>Posisi Saya</b>", {autoClose:false, closeOnClick:false})
+    .bindPopup(`<b>Posisi Saya</b><br>${displayName}`, {autoClose:false, closeOnClick:false})
     .openPopup();
   }
 
@@ -890,7 +923,10 @@ function updateRute(userLatLng, laundryLatLng) {
   loadingDiv.style.display = 'flex';
   infoDiv.textContent = "Menghitung jarak & waktu…";
 
-  if(rutePolyline) map.removeLayer(rutePolyline);
+  if(rutePolyline) {
+    map.removeLayer(rutePolyline);
+    rutePolyline = null;
+  }
 
   const url = `https://router.project-osrm.org/route/v1/driving/${userLatLng[1]},${userLatLng[0]};${laundryLatLng[1]},${laundryLatLng[0]}?overview=full&geometries=geojson&alternatives=false`;
 
@@ -900,7 +936,7 @@ function updateRute(userLatLng, laundryLatLng) {
       loadingDiv.style.display = 'none';
       if(data.routes && data.routes.length > 0) {
         const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
-        rutePolyline = L.polyline(coords, { color:'blue', weight:4 }).addTo(map);
+        rutePolyline = L.polyline(coords, { color:'blue', weight:4, opacity:0.8 }).addTo(map);
 
         const jarakKm = (data.routes[0].distance / 1000).toFixed(1);
         const waktuMenit = Math.ceil(data.routes[0].duration / 60);
@@ -912,8 +948,23 @@ function updateRute(userLatLng, laundryLatLng) {
     .catch(err => {
       loadingDiv.style.display = 'none';
       console.error("Gagal load rute OSRM:", err);
-      infoDiv.textContent = "Gagal menghitung rute";
+      infoDiv.textContent = "Gagal menghitung rute, coba lagi";
+
+      // === Fallback hitung jarak manual (haversine) ===
+      const jarakKm = haversine(userLatLng[0], userLatLng[1], laundryLatLng[0], laundryLatLng[1]).toFixed(1);
+      infoDiv.textContent += ` | Perkiraan jarak lurus: ${jarakKm} km`;
     });
+}
+
+// ===== Fungsi Haversine (backup jarak lurus km) =====
+function haversine(lat1, lon1, lat2, lon2) {
+  const R = 6371; // km
+  const dLat = (lat2-lat1) * Math.PI/180;
+  const dLon = (lon2-lon1) * Math.PI/180;
+  const a = Math.sin(dLat/2)**2 +
+            Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) *
+            Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
 
 // ===== Tombol Posisi Saya =====
@@ -927,33 +978,53 @@ btnPosisi.addEventListener('click', ()=>{
   btnPosisi.disabled = true;
   const originalText = btnPosisi.textContent;
   btnPosisi.textContent = "📍 Mencari…";
+  btnPosisi.className = "btn btn-loading"; // pakai class css
 
   navigator.geolocation.getCurrentPosition(
     pos=>{
       const lat = pos.coords.latitude;
       const lng = pos.coords.longitude;
 
+      // Cek apakah sudah cache alamat
+      if(lastLat === lat && lastLng === lng && lastAlamat !== ""){
+        document.getElementById('alamat').value = lastAlamat;
+        placeUserMarker(lat, lng, lastAlamat);
+
+        btnPosisi.textContent = originalText;
+        btnPosisi.className = "btn btn-success";
+        setTimeout(()=> btnPosisi.disabled = false, 1000);
+        return;
+      }
+
       fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`)
         .then(res => res.json())
         .then(data => {
-          const displayName = data.display_name || '';
+          const displayName = data.display_name || `(Lat:${lat.toFixed(6)}, Lng:${lng.toFixed(6)})`;
+          lastLat = lat; lastLng = lng; lastAlamat = displayName;
+
           document.getElementById('alamat').value = displayName;
-          placeUserMarker(lat, lng);
-          btnPosisi.disabled = false;
+          placeUserMarker(lat, lng, displayName);
+
           btnPosisi.textContent = originalText;
+          btnPosisi.className = "btn btn-success";
+          setTimeout(()=> btnPosisi.disabled = false, 1000);
         })
         .catch(err=>{
           console.error(err);
-          document.getElementById('alamat').value = `(Lat:${lat.toFixed(6)}, Lng:${lng.toFixed(6)})`;
-          placeUserMarker(lat, lng);
-          btnPosisi.disabled = false;
+          const fallback = `(Lat:${lat.toFixed(6)}, Lng:${lng.toFixed(6)})`;
+          document.getElementById('alamat').value = fallback;
+          placeUserMarker(lat, lng, fallback);
+
           btnPosisi.textContent = originalText;
+          btnPosisi.className = "btn btn-error";
+          setTimeout(()=> btnPosisi.disabled = false, 1000);
         });
     },
     err => { 
       alert("Gagal dapatkan lokasi: "+err.message);
-      btnPosisi.disabled = false;
       btnPosisi.textContent = originalText;
+      btnPosisi.className = "btn btn-error";
+      setTimeout(()=> btnPosisi.disabled = false, 1000);
     }
   );
 });
@@ -975,6 +1046,7 @@ window.addEventListener('DOMContentLoaded', ()=>{
   }
 });
 </script>
+
 
 </body>
 </html>
