@@ -764,7 +764,7 @@
 <!-- ========== AWAL JS ========== -->
 <script>
 // ================= LocalStorage Auto-Save =================
-const fields = ['nama','alamat','nohp','layanan','jadwal','catatan'];
+const fields = ['nama','alamat','nohp','layanan','jadwal','jam','catatan'];
 
 window.addEventListener('DOMContentLoaded', () => {
   fields.forEach(id => {
@@ -840,9 +840,18 @@ showItems('home');
 // ================= Tombol "Pesan Sekarang" =================
 document.querySelector('.cta-btn').addEventListener('click', e=>{
   e.preventDefault();
-  document.querySelector('.tab-btn[data-tab="order"]').click();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Klik tab "order"
+  const orderTabBtn = document.querySelector('.tab-btn[data-tab="order"]');
+  orderTabBtn.click();
+
+  // Scroll ke form setelah tab aktif
+  setTimeout(()=>{
+    const form = document.getElementById('orderForm');
+    if(form) form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    form.querySelector('input, select, textarea')?.focus(); // fokus ke field pertama
+  }, 300); // delay 300ms supaya tab sudah aktif
 });
+
 
 // ================= Apps Script Integration =================
 const GAS_URL = "https://script.google.com/macros/s/AKfycbzZrZEd2UeMxwhwbsm_0kMCH4r-DRJ-M8VKASYR9GhyrgAn1vmUiybq6nhk3KCfnWtp9Q/exec";
@@ -890,6 +899,11 @@ document.getElementById('orderForm').addEventListener('submit', e=>{
   const waMessage = `*Halo, saya ingin memesan laundry :*\n\n• *Nama :* ${nama}\n• *No HP :* ${nohp}\n• *Layanan :* ${layanan}\n• *Catatan :* ${catatan}\n• *Jadwal Penjemputan:* ${tanggal} jam ${jam}\n• *Alamat :* ${alamat}\n• *Lihat di Maps :* ${mapsLink}\n\n*Kami akan segera menghubungi Anda untuk konfirmasi. Terima kasih!*`;
 
   window.open('https://wa.me/6287877929391?text=' + encodeURIComponent(waMessage), '_blank');
+
+  // Pindah ke tab Status Order
+  document.querySelector('.tab-btn[data-tab="status"]').click();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
 
   fetch(GAS_URL, {
     method:"POST",
