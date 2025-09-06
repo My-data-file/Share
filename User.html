@@ -22,6 +22,19 @@
     }
     a { text-decoration:none; }
 
+    /* ================== RESET ================== */
+    #resetForm {
+      width:100%;
+      padding:12px;
+      border:none;
+      border-radius:8px;
+      background: #ef4444;
+      color:white;
+      font-weight:600;
+      cursor:pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
     /* ================== BUTTONS ================== */
     .btn {
       padding: 8px 12px;
@@ -549,6 +562,11 @@
     <form id="orderForm" class="modern-form">
       <div class="form-grid" style="grid-template-columns: 1fr !important; gap:15px;">
         
+	<!-- Reset -->
+	<div style="width:100%; text-align:center;">
+          <button type="button" id="resetForm">Reset</button>
+        </div>
+
         <!-- Nama -->
         <div class="form-group">
           <input type="text" id="nama" placeholder=" " required>
@@ -796,6 +814,22 @@ nohpInput.addEventListener('input', (e) => {
   e.target.value = val;
 });
 
+// ================= Tombol "Reset" =================
+// RESET FORM
+document.getElementById("resetForm").addEventListener("click", function () {
+  if (confirm("Apakah kamu yakin ingin mereset semua inputan?")) {
+    document.getElementById("orderForm").reset();
+
+    // hapus localStorage
+    ["nama", "alamat", "nohp", "jenis", "berat", "catatan"].forEach(id => {
+      localStorage.removeItem("order_" + id);
+    });
+
+    // isi default nomor HP jadi +62 lagi
+    document.getElementById("nohp").value = "+62";
+  }
+});
+
 // ================= Tab & Animasi =================
 const tabs = document.querySelectorAll('.tab-btn');
 const contents = document.querySelectorAll('.tab-content');
@@ -854,7 +888,7 @@ document.querySelector('.cta-btn').addEventListener('click', e=>{
 
 
 // ================= Apps Script Integration =================
-const GAS_URL = "https://script.google.com/macros/s/AKfycbzZrZEd2UeMxwhwbsm_0kMCH4r-DRJ-M8VKASYR9GhyrgAn1vmUiybq6nhk3KCfnWtp9Q/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbyWDpInFbREEUSblYwe_NQcaDC6AIxX1mM2bDzlKgR3hK73EjK0d6l-WPquf5Kh3qU8hQ/exec";
 const waBtn = document.getElementById('waChat');
 waBtn.addEventListener('click', ()=>{
   waBtn.style.transform = "scale(1.1)";
