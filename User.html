@@ -533,6 +533,26 @@
     display: none !important;
     }
 
+/* ================= CSS: Promo ================= */
+.promo-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.promo-item {
+  background:#f3f4f6;
+  padding:15px;
+  border-radius:10px;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+  transition:all 0.3s;
+}
+
+.promo-item:hover {
+  transform:translateY(-5px);
+  box-shadow:0 4px 10px rgba(0,0,0,0.15);
+}
+
   </style>
 </head>
 <body>
@@ -563,7 +583,7 @@
   <button class="tab-btn" data-tab="status">Status Order</button>
   <button class="tab-btn" data-tab="services">Layanan</button>
   <button class="tab-btn" data-tab="faq">FAQ</button>
-  <button class="tab-btn" data-tab="testimoni">Testimoni</button>
+  <button class="tab-btn" data-tab="promo">Promo</button>
   <button class="tab-btn" data-tab="contact">Kontak</button>
 </nav>
 
@@ -783,18 +803,21 @@
 </div>
 
 <!-- ================= TAB TESTIMONI ================= -->
-<div class="tab-content" id="testimoni">
+<div class="tab-content" id="promo">
   <div class="card">
-    <h2>Testimoni Pelanggan</h2>
-    <div class="testimoni-grid">
-      <div class="testimoni-item">
-        <div class="testimoni-avatar">A</div>
-        <p>"Laundry cepat dan hasilnya rapi!"</p>
-      </div>
-      <div class="testimoni-item">
-        <div class="testimoni-avatar">B</div>
-        <p>"Pelayanan ramah, pesan via WA mudah."</p>
-      </div>
+    <h2>Promo Menarik</h2>
+    <div class="promo-grid">
+
+<div class="promo-item">
+  <h3>Diskon 20% Laundry Kilat</h3>
+  <p>Hanya berlaku minggu ini! Segera pesan via WA.</p>
+</div>
+
+<div class="promo-item">
+  <h3>Cuci 5 Gratis 1</h3>
+  <p>Promo spesial untuk pelanggan setia.</p>
+</div>
+
     </div>
   </div>
 </div>
@@ -815,7 +838,7 @@
 
 <!-- ================= FOOTER ================= -->
 <footer>
-  <p>&copy; 2025 v1 Sea Laundry. All rights reserved.</p>
+  <p>&copy; 2025 Sea Laundry. All rights reserved.</p>
 </footer>
 <!-- ========== AKHIR HTML ========== -->
 
