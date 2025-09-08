@@ -609,7 +609,7 @@
         <!-- Pilih Layanan -->
         <div class="form-group">
           <select id="layanan" required>
-            <option value="" disabled selected>-- Pilih Layanan --</option>
+            <option value="" disabled selected>Pilih Layanan</option>
             <option value="cuci">Cuci Kering</option>
             <option value="setrika">Setrika Saja</option>
             <option value="cucisetrika">Cuci + Setrika</option>
@@ -689,6 +689,13 @@
 	  Kirim via WhatsApp
 	</button>
 
+	<!-- History -->
+<div style="display:flex; gap:10px; margin-top:10px;">
+  <button type="button" id="pakaiTerakhir" style="flex:1; padding:10px; border:none; border-radius:8px; background:#10b981; color:white; font-weight:600; cursor:pointer;">
+    Gunakan Pesanan Terakhir
+  </button>
+</div>
+
       </div>
     </form>
   </div>
@@ -698,6 +705,13 @@
 <div class="tab-content" id="status">
   <div class="card">
     <h2>Status Order</h2>
+
+    <!-- Detail Pesanan -->
+    <div id="detailPesanan" class="card">
+    <p>Belum ada pesanan.</p>
+    </div>
+
+</div>
     <div class="status-progress" id="statusSteps">
       <div class="step">
         <div class="step-circle">📝</div>
@@ -721,8 +735,10 @@
       </div>
       <!-- Progress Bar -->
       <div class="progress-bar"></div>
-    </div>
-  </div>
+      </div>
+
+
+</div>
 </div>
 
 <!-- ================= TAB SERVICES ================= -->
@@ -937,6 +953,11 @@ function showToast(msg){
 document.getElementById('orderForm').addEventListener('submit', e=>{
   e.preventDefault();
 
+  // --- Konfirmasi sebelum mengirim WA ---
+  if(!confirm("Apakah Anda yakin ingin mengirim pesanan via WhatsApp?")) {
+    return; // batal submit
+  }
+
   const nama = document.getElementById('nama').value.trim();
   const nohp = document.getElementById('nohp').value.trim();
   const layanan = document.getElementById('layanan').value;
@@ -987,6 +1008,7 @@ document.getElementById('orderForm').addEventListener('submit', e=>{
     alert("Terjadi masalah saat menyimpan ke Spreadsheet");
   });
 });
+
 
 // ================= Status Order =================
 function updateProgressBar(lastStatus){
@@ -1180,6 +1202,99 @@ window.addEventListener('DOMContentLoaded',()=>{
     map.invalidateSize();
   }
 });
+
+// ====== SIMPAN + TAMPILKAN PESANAN ======
+document.addEventListener("DOMContentLoaded", function() {
+  const form = document.getElementById("orderForm");
+  const resetBtn = document.getElementById("resetForm");
+  const detailContainer = document.getElementById("detailPesanan");
+
+  function tampilkanPesanan(pesanan) {
+    detailContainer.innerHTML = "";
+    const heading = document.createElement("h3");
+    heading.textContent = "Detail Pesanan Terakhir";
+    detailContainer.appendChild(heading);
+
+    const fields = [
+      ["Nama", pesanan.nama],
+      ["No. HP", pesanan.nohp],
+      ["Alamat", pesanan.alamat],
+      ["Layanan", pesanan.layanan],
+      ["Jadwal Jemput", pesanan.jadwal],
+      ["Jam Jemput", pesanan.jam],
+      ["Catatan", pesanan.catatan || "Tidak ada"],
+    ];
+
+    fields.forEach(([label, value]) => {
+      const p = document.createElement("p");
+      p.innerHTML = `<b>${label}:</b> ${value}`;
+      detailContainer.appendChild(p);
+    });
+  }
+
+  if (form) {
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const pesanan = {
+        nama: document.getElementById("nama").value.trim(),
+        nohp: document.getElementById("nohp").value.trim(),
+        alamat: document.getElementById("alamat").value.trim(),
+        layanan: document.getElementById("layanan").value,
+        jadwal: document.getElementById("jadwal").value,
+        jam: document.getElementById("jam").value,
+        catatan: document.getElementById("catatan").value.trim(),
+      };
+
+      if(!pesanan.nama || !pesanan.nohp || !pesanan.alamat || !pesanan.layanan || !pesanan.jadwal || !pesanan.jam) {
+        alert("Harap isi semua field wajib!");
+        return;
+      }
+
+      localStorage.setItem("pesananTerakhir", JSON.stringify(pesanan));
+      tampilkanPesanan(pesanan);
+      form.reset();
+    });
+  }
+
+  if(resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      form.reset();
+      localStorage.removeItem("pesananTerakhir");
+      detailContainer.innerHTML = "<p>Belum ada pesanan.</p>";
+    });
+  }
+
+  const data = localStorage.getItem("pesananTerakhir");
+  if(data) {
+    tampilkanPesanan(JSON.parse(data));
+  }
+});
+
+const pakaiBtn = document.getElementById("pakaiTerakhir");
+
+if(pakaiBtn) {
+  pakaiBtn.addEventListener("click", () => {
+    const data = localStorage.getItem("pesananTerakhir");
+    if(!data) {
+      alert("Belum ada pesanan terakhir yang tersimpan.");
+      return;
+    }
+
+    if(confirm("Apakah Anda yakin ingin mengisi form dengan pesanan terakhir?")) {
+      const pesanan = JSON.parse(data);
+
+      document.getElementById("nama").value = pesanan.nama || "";
+      document.getElementById("nohp").value = pesanan.nohp || "";
+      document.getElementById("alamat").value = pesanan.alamat || "";
+      document.getElementById("layanan").value = pesanan.layanan || "";
+      document.getElementById("jadwal").value = pesanan.jadwal || "";
+      document.getElementById("jam").value = pesanan.jam || "";
+      document.getElementById("catatan").value = pesanan.catatan || "";
+    }
+  });
+}
+
 
 </script>
 
