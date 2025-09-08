@@ -508,6 +508,26 @@
       opacity:0.7;
       cursor:not-allowed;
     }
+
+    /* ================= CSS: Tombol Kirim via WA ================= */
+    button.btn-wa, 
+    a.btn-wa {
+    background-color: #25d366 !important; /* Hijau khas WhatsApp */
+    color: white !important;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none; /* hilangkan garis bawah kalau pakai <a> */
+    display: inline-block;
+    }
+
+    button.btn-wa:hover, 
+    a.btn-wa:hover {
+    background-color: #20b954 !important; /* Hijau lebih gelap saat hover */
+    }
+
   </style>
 </head>
 <body>
@@ -660,9 +680,9 @@
         </div>
 
         <!-- Tombol Submit WA -->
-        <button type="submit" style="width:100%; padding:12px; border:none; border-radius:12px; background:#3b82f6; color:white; font-weight:600;">
-          Kirim via WhatsApp
-        </button>
+	<button type="submit" class="btn-wa" style="width:100%;">
+	  Kirim via WhatsApp
+	</button>
 
       </div>
     </form>
