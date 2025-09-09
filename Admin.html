@@ -3,52 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sea Laundry - Admin</title>
+<title>Admin Dashboard - Sea Laundry</title>
 <style>
-:root{--primary:#007bff;--success:#28a745;--danger:#dc3545;--bg:#f0f4f8;--card:#fff;--muted:#f8f9fa;--text:#2b2b2b;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Segoe UI',sans-serif;background:var(--bg);display:flex;min-height:100vh;overflow:hidden;color:var(--text);}
-body.dark{background:#121212;color:#e0e0e0;}
-body.dark .card, body.dark .table-container{background:#1e1e1e;}
-body.dark th{background:#2c2c2c;border-color:#3a3a3a;}
-body.dark tr:hover{background:#333;}
-.sidebar{width:240px;background:var(--primary);color:#fff;flex-shrink:0;display:flex;flex-direction:column;padding-top:20px;}
-.sidebar h2{text-align:center;margin-bottom:18px;font-size:1.2em;font-weight:600;}
-.sidebar a{color:#fff;text-decoration:none;padding:12px 20px;display:flex;align-items:center;gap:8px;border-left:4px solid transparent;transition:all .3s;}
-.sidebar a:hover{background:rgba(255,255,255,.12);padding-left:24px;}
-.sidebar a.active{background:rgba(255,255,255,.18);border-left-color:#fff;}
-.sidebar .btn-toggle{background:#0056b3;color:#fff;margin-top:auto;margin:8px;cursor:pointer;padding:6px 12px;border-radius:8px;}
-.content{flex:1;padding:20px;overflow-y:auto;}
-h1{margin-bottom:14px;color:var(--primary);font-size:1.4em;font-weight:700;}
-.table-container{background:var(--card);border-radius:14px;padding:14px;box-shadow:0 3px 10px rgba(0,0,0,.08);overflow-x:auto;margin-bottom:14px;}
-table{width:100%;border-collapse:collapse;font-size:.9em;}
-th,td{padding:10px 12px;border-bottom:1px solid #e9ecef;text-align:left;vertical-align:top;}
-th{background:var(--muted);font-weight:600;}
-tr:hover{background:#f7faff;}
-td input{width:95%;padding:4px 6px;border-radius:6px;border:1px solid #ccc;font-size:.85em;}
-.empty-row{text-align:center;color:#999;font-style:italic;opacity:.6;}
-.btn{display:inline-block;margin:8px 6px 0 0;padding:8px 16px;border:none;border-radius:10px;cursor:pointer;font-size:.9em;font-weight:600;box-shadow:0 2px 6px rgba(0,0,0,.12);}
-.btn:hover{transform:translateY(-1px);}
-.search-box{margin-bottom:10px;}
-.search-box input{padding:8px 12px;width:250px;border-radius:8px;border:1px solid #ccc;transition:all .3s;}
-@media(max-width:900px){.sidebar{width:70px;align-items:center}.sidebar h2{display:none}.sidebar a{justify-content:center;padding:14px}.sidebar a span{display:none}.content{padding:16px}}
-@media(max-width:600px){body{flex-direction:column}.sidebar{width:100%;flex-direction:row;justify-content:space-around;padding:8px 0;position:sticky;top:0;z-index:5}.sidebar a{border-left:none;border-bottom:4px solid transparent}.sidebar a.active{border-bottom-color:#fff}table,th,td{font-size:.82em}.btn{font-size:.82em;padding:7px 14px}.search-box input{width:100%}}
+:root{--primary:#007bff;--bg:#f0f4f8;--card:#fff;--text:#2b2b2b;}
+body{font-family:'Segoe UI',sans-serif;background:var(--bg);margin:0;padding:0;color:var(--text);}
+.container{padding:20px;}
+h1{color:var(--primary);}
+table{width:100%;border-collapse:collapse;margin-top:14px;}
+th,td{border:1px solid #ccc;padding:8px;text-align:left;}
+th{background:#eee;}
+input{padding:4px 6px;border-radius:4px;border:1px solid #ccc;}
+button{padding:6px 12px;margin:2px;border-radius:6px;cursor:pointer;}
+@media(max-width:600px){table,th,td{font-size:0.8em;}}
 </style>
 </head>
 <body>
-
-<div class="sidebar">
-<h2>Sea Laundry Admin</h2>
-<a href="#" class="active" data-page="laundry">🧺 <span>Laundry</span></a>
-<button class="btn-toggle" onclick="toggleDarkMode()">🌓</button>
-</div>
-
-<div class="content">
-<h1>Data Laundry</h1>
-<div class="search-box"><input type="text" placeholder="Cari nama..." onkeyup="filterTable(this.value)"></div>
-<div class="table-container">
-<table id="tableLaundry">
-<thead><tr>
+<div class="container">
+<h1>Dashboard Admin</h1>
+<table id="laundryTable">
+<thead>
+<tr>
 <th>No</th>
 <th>Nama</th>
 <th>Alamat</th>
@@ -56,63 +30,51 @@ td input{width:95%;padding:4px 6px;border-radius:6px;border:1px solid #ccc;font-
 <th>Layanan</th>
 <th>Catatan</th>
 <th>Jadwal</th>
+<th>Maps</th>
 <th>Status</th>
-</tr></thead>
+<th>Aksi</th>
+</tr>
+</thead>
 <tbody></tbody>
 </table>
 </div>
-</div>
 
 <script>
-// Sidebar
-document.querySelectorAll('.sidebar a').forEach(link=>{
-  link.addEventListener('click',()=>{
-    document.querySelectorAll('.sidebar a').forEach(a=>a.classList.remove('active'));
-    link.classList.add('active');
-  });
-});
-
-function toggleDarkMode(){document.body.classList.toggle('dark');}
-
-// Ambil data dari Apps Script
-function loadData(){
-  google.script.run.withSuccessHandler(renderTable).getAllLaundryData();
-}
-
-function renderTable(data){
-  const tbody=document.querySelector('#tableLaundry tbody');
-  tbody.innerHTML='';
-  if(data.length===0){tbody.innerHTML='<tr class="empty-row"><td colspan="8">Data Kosong</td></tr>';return;}
-  data.forEach((row,i)=>{
-    const tr=document.createElement('tr');
-    tr.innerHTML=`
+function loadAdminData(){
+  google.script.run.withSuccessHandler(function(data){
+    const tbody=document.querySelector("#laundryTable tbody");
+    tbody.innerHTML="";
+    data.forEach((d,i)=>{
+      const tr=document.createElement("tr");
+      tr.innerHTML=`
       <td>${i+1}</td>
-      <td contenteditable="true" onblur="updateCell(${i},'Nama',this.innerText)">${row['Nama']||''}</td>
-      <td contenteditable="true" onblur="updateCell(${i},'Alamat',this.innerText)">${row['Alamat']||''}</td>
-      <td contenteditable="true" onblur="updateCell(${i},'No HP',this.innerText)">${row['No HP']||''}</td>
-      <td contenteditable="true" onblur="updateCell(${i},'Layanan',this.innerText)">${row['Layanan']||''}</td>
-      <td contenteditable="true" onblur="updateCell(${i},'Catatan',this.innerText)">${row['Catatan']||''}</td>
-      <td contenteditable="true" onblur="updateCell(${i},'Jadwal',this.innerText)">${row['Jadwal']||''}</td>
-      <td contenteditable="true" onblur="updateCell(${i},'Status',this.innerText)">${row['Status']||''}</td>
-    `;
-    tbody.appendChild(tr);
-  });
+      <td>${d.nama || ""}</td>
+      <td>${d.alamat || ""}</td>
+      <td>${d.nohp || ""}</td>
+      <td>${d.layanan || ""}</td>
+      <td>${d.catatan || ""}</td>
+      <td>${d.jadwal || ""}</td>
+      <td>${d.Maps || "" ? `<a href="${d.Maps}" target="_blank">Link</a>` : ""}</td>
+      <td><input type="text" value="${d.Status || ""}" onchange="updateStatus(${i}, this.value)"></td>
+      <td><button onclick="deleteRow(${i})">Hapus</button></td>`;
+      tbody.appendChild(tr);
+    });
+  }).getAllLaundryData();
 }
 
-// Update data langsung ke Spreadsheet
-function updateCell(rowIndex,colName,newValue){
-  google.script.run.updateLaundryData(rowIndex,colName,newValue);
+function updateStatus(index,value){
+  google.script.run.withSuccessHandler(()=>{console.log("Update sukses")})
+                   .updateLaundryData(index,"Status",value);
 }
 
-// Cari/filter
-function filterTable(value){
-  const trs=document.querySelectorAll('#tableLaundry tbody tr');
-  trs.forEach(tr=>{
-    tr.style.display=tr.innerText.toLowerCase().includes(value.toLowerCase())?'':'none';
-  });
+function deleteRow(index){
+  if(confirm("Hapus data ini?")){
+    google.script.run.withSuccessHandler(loadAdminData)
+                     .updateLaundryData(index,"Status","Dihapus"); // contoh hapus -> ubah status
+  }
 }
 
-loadData();
+window.onload=loadAdminData;
 </script>
 </body>
 </html>
