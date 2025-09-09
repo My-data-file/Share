@@ -1,146 +1,105 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sea Laundry Admin</title>
-<style>
-:root{--primary:#007bff;--bg:#f9fafb;--card:#fff;--text:#1f2937;}
-body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;transition:all .3s;}
-.sidebar{width:220px;background:var(--primary);color:#fff;flex-shrink:0;display:flex;flex-direction:column;padding-top:20px;}
-.sidebar h2{text-align:center;margin-bottom:18px;font-size:1.2em;}
-.sidebar a{color:#fff;text-decoration:none;padding:12px 20px;display:flex;align-items:center;gap:8px;transition:all .3s;border-left:4px solid transparent;}
-.sidebar a:hover{background:rgba(255,255,255,.12);padding-left:24px;}
-.sidebar a.active{background:rgba(255,255,255,.18);border-left-color:#fff;}
-.sidebar .btn-toggle{background:#0056b3;color:#fff;margin-top:auto;margin:8px;cursor:pointer;}
-.content{flex:1;padding:20px;overflow-x:auto;}
-h1{margin-bottom:14px;color:var(--primary);}
-.cards{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:20px;}
-.card{flex:1 1 200px;background:var(--card);padding:14px 18px;border-radius:12px;box-shadow:0 3px 10px rgba(0,0,0,.08);cursor:pointer;}
-.card h3{font-size:1.1em;margin-bottom:6px;}
-.card p{font-size:.92em;}
-.table-container{background:var(--card);border-radius:14px;padding:14px;box-shadow:0 3px 10px rgba(0,0,0,.08);overflow-x:auto;margin-bottom:14px;}
-table{width:100%;border-collapse:collapse;font-size:.9em;}
-th,td{padding:10px 12px;border-bottom:1px solid #e9ecef;text-align:left;}
-th{background:#f8f9fa;font-weight:600;}
-tr:hover{background:#f1f5f9;}
-td input, td select{padding:4px 6px;border-radius:6px;border:1px solid #ccc;font-size:.85em;width:100%;}
-.search-box{margin-bottom:10px;}
-.search-box input{padding:8px 12px;width:250px;border-radius:8px;border:1px solid #ccc;transition:all .3s;}
-@media(max-width:900px){.sidebar{width:70px}.sidebar h2{display:none}.sidebar a{justify-content:center;padding:14px}.sidebar a span{display:none}.content{padding:16px}}
-@media(max-width:600px){body{flex-direction:column}.sidebar{width:100%;flex-direction:row;justify-content:space-around;padding:8px 0}.sidebar a{border-left:none;border-bottom:4px solid transparent}.sidebar a.active{border-bottom-color:#fff}table,th,td{font-size:.82em}.search-box input{width:100%}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Sea Laundry</title>
+  <style>
+    body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; background: #f9fafb; color: #1f2937; }
+    header { background: #2563eb; color: white; padding: 15px; text-align: center; font-size: 1.5em; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background: #1e40af; color: white; }
+    tr:nth-child(even) { background: #f3f4f6; }
+    button { background: #2563eb; color: white; border: none; padding: 8px 16px; cursor: pointer; border-radius: 5px; }
+    button:hover { background: #1e40af; }
+    .maps-link { color: #1d4ed8; text-decoration: underline; }
+  </style>
 </head>
 <body>
 
-<div class="sidebar">
-<h2>Sea Laundry Admin</h2>
-<a href="#" class="active" data-page="dashboard">📊 <span>Dashboard</span></a>
-<a href="#" data-page="laundry">🧺 <span>Laundry</span></a>
-<button class="btn-toggle" onclick="toggleDarkMode()">🌓</button>
-</div>
+<header>Admin Panel - Sea Laundry</header>
 
-<div class="content">
+<div style="padding: 0 20px;">
+  <button onclick="refreshOrders()">Refresh Manual</button>
 
-<!-- Dashboard -->
-<div id="dashboard" class="page">
-<h1>Dashboard</h1>
-<div class="cards">
-<div class="card"><h3>Total Order</h3><p id="totalOrders">0</p></div>
-<div class="card"><h3>Dipesan</h3><p id="statusDipesan">0</p></div>
-<div class="card"><h3>Diproses</h3><p id="statusDiproses">0</p></div>
-<div class="card"><h3>Diantar</h3><p id="statusDiantar">0</p></div>
-<div class="card"><h3>Selesai</h3><p id="statusSelesai">0</p></div>
-<div class="card"><h3>Batal</h3><p id="statusBatal">0</p></div>
-</div>
-</div>
-
-<!-- Laundry -->
-<div id="laundry" class="page" style="display:none;">
-<h1>Data Laundry</h1>
-<div class="search-box"><input type="text" placeholder="Cari nama..." onkeyup="filterTable(this.value)"></div>
-<div class="table-container">
-<table id="tableLaundry">
-<thead><tr>
-<th>No</th><th>Nama</th><th>Alamat</th><th>NoHP</th><th>Layanan</th><th>Catatan</th><th>Jadwal</th><th>Status</th><th>Komentar</th>
-</tr></thead>
-<tbody></tbody>
-</table>
-</div>
-</div>
-
+  <table id="ordersTable">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Waktu</th>
+        <th>Nama</th>
+        <th>Alamat</th>
+        <th>No HP</th>
+        <th>Layanan</th>
+        <th>Catatan</th>
+        <th>Jadwal</th>
+        <th>Maps</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="ordersBody">
+      <tr><td colspan="10" style="text-align:center;">Loading...</td></tr>
+    </tbody>
+  </table>
 </div>
 
 <script>
-// Sidebar
-document.querySelectorAll('.sidebar a').forEach(link=>{
-  link.addEventListener('click',()=>{
-    document.querySelectorAll('.sidebar a').forEach(a=>a.classList.remove('active'));
-    link.classList.add('active');
-    showPage(link.dataset.page);
-  });
-});
-function showPage(page){
-  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
-  document.getElementById(page).style.display='block';
-}
+  // Fungsi untuk panggil Apps Script
+  async function fetchOrders() {
+    try {
+      const payload = { type: 'GetAllStatus' };
+      const response = await fetch('', {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+      return data.status || [];
+    } catch (err) {
+      console.error(err);
+      return [];
+    }
+  }
 
-// Dark mode
-function toggleDarkMode(){document.body.classList.toggle('dark');}
+  async function refreshOrders() {
+    const tableBody = document.getElementById('ordersBody');
+    tableBody.innerHTML = '<tr><td colspan="10" style="text-align:center;">Loading...</td></tr>';
 
-// Load orders
-function loadOrders(){
-  google.script.run.withSuccessHandler(renderTable).getOrders();
-}
+    try {
+      // Ambil semua data dari Sheet
+      const response = await google.script.run.withSuccessHandler(renderOrders).getAllOrders();
+    } catch (err) {
+      tableBody.innerHTML = `<tr><td colspan="10" style="color:red;">Error: ${err}</td></tr>`;
+    }
+  }
 
-// Render tabel
-function renderTable(data){
-  document.getElementById('totalOrders').textContent = data.length;
-  const statuses = {Dipesan:0, Diproses:0, Diantar:0, Selesai:0, Batal:0};
-  const tbody = document.querySelector('#tableLaundry tbody');
-  tbody.innerHTML='';
-  data.forEach((row,i)=>{
-    statuses[row.Status] = (statuses[row.Status]||0)+1;
-    tbody.innerHTML += `<tr>
-      <td>${i+1}</td>
-      <td>${row.Nama||''}</td>
-      <td>${row.Alamat||''}</td>
-      <td>${row.NoHP||''}</td>
-      <td>${row.Layanan||''}</td>
-      <td>${row.Catatan||''}</td>
-      <td>${row.Jadwal||''}</td>
-      <td><select onchange="updateField(${i},'Status',this.value)">
-        <option ${row.Status==='Dipesan'?'selected':''}>Dipesan</option>
-        <option ${row.Status==='Diproses'?'selected':''}>Diproses</option>
-        <option ${row.Status==='Diantar'?'selected':''}>Diantar</option>
-        <option ${row.Status==='Selesai'?'selected':''}>Selesai</option>
-        <option ${row.Status==='Batal'?'selected':''}>Batal</option>
-      </select></td>
-      <td><input value="${row.Komentar||''}" onblur="updateField(${i},'Komentar',this.value)"></td>
-    </tr>`;
-  });
-  // Update dashboard status
-  document.getElementById('statusDipesan').textContent = statuses.Dipesan||0;
-  document.getElementById('statusDiproses').textContent = statuses.Diproses||0;
-  document.getElementById('statusDiantar').textContent = statuses.Diantar||0;
-  document.getElementById('statusSelesai').textContent = statuses.Selesai||0;
-  document.getElementById('statusBatal').textContent = statuses.Batal||0;
-}
+  function renderOrders(rows) {
+    const tableBody = document.getElementById('ordersBody');
+    if (!rows || rows.length === 0) {
+      tableBody.innerHTML = '<tr><td colspan="10" style="text-align:center;">Tidak ada order</td></tr>';
+      return;
+    }
 
-// Update field ke Spreadsheet
-function updateField(rowIndex, field, value){
-  google.script.run.withSuccessHandler(loadOrders).updateOrder(rowIndex, field, value);
-}
+    let html = '';
+    rows.slice(1).forEach((r, i) => {
+      html += `<tr>
+        <td>${i+1}</td>
+        <td>${r[0] || ''}</td>
+        <td>${r[1] || ''}</td>
+        <td>${r[2] || ''}</td>
+        <td>${r[3] || ''}</td>
+        <td>${r[4] || ''}</td>
+        <td>${r[5] || ''}</td>
+        <td>${r[6] || ''}</td>
+        <td>${r[7] ? `<a class="maps-link" href="${r[7]}" target="_blank">Maps</a>` : ''}</td>
+        <td>${r[8] || ''}</td>
+      </tr>`;
+    });
+    tableBody.innerHTML = html;
+  }
 
-// Filter tabel
-function filterTable(query){
-  query = query.toLowerCase();
-  document.querySelectorAll('#tableLaundry tbody tr').forEach(tr=>{
-    tr.style.display = Array.from(tr.cells).some(td=>td.textContent.toLowerCase().includes(query)) ? '' : 'none';
-  });
-}
-
-window.onload = loadOrders;
+  // Auto load saat halaman dibuka
+  window.onload = refreshOrders;
 </script>
 
 </body>
