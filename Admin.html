@@ -5,73 +5,100 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sea Laundry Admin</title>
 <style>
-  body { font-family:'Segoe UI', Tahoma, sans-serif; margin:0; background:#f9fafb; color:#1f2937; }
-  h1 { text-align:center; padding:15px; }
-  table { width:100%; border-collapse: collapse; margin:10px 0; }
-  th, td { border:1px solid #ccc; padding:8px; text-align:left; }
-  th { background:#3b82f6; color:white; }
-  td input, td select { width: 100%; box-sizing:border-box; }
-  @media(max-width:768px){ table, thead, tbody, th, td, tr { display:block; } 
-    th { position: absolute; top:-9999px; left:-9999px; }
-    td { border:none; position:relative; padding-left:50%; margin-bottom:10px; }
-    td:before { position:absolute; top:0; left:6px; width:45%; padding-right:10px; white-space:nowrap; font-weight:bold; }
-    td:nth-of-type(1):before { content:"Waktu"; } td:nth-of-type(2):before { content:"Nama"; }
-    td:nth-of-type(3):before { content:"Alamat"; } td:nth-of-type(4):before { content:"No HP"; }
-    td:nth-of-type(5):before { content:"Layanan"; } td:nth-of-type(6):before { content:"Catatan"; }
-    td:nth-of-type(7):before { content:"Jadwal"; } td:nth-of-type(8):before { content:"Maps"; }
-    td:nth-of-type(9):before { content:"Status"; }
-  }
+body { font-family:'Segoe UI', Tahoma, sans-serif; margin:0; background:#f9fafb; color:#1f2937; }
+header { background:#3b82f6; color:white; padding:15px; text-align:center; font-size:1.5em; }
+.container { padding:15px; max-width:1200px; margin:auto; }
+table { width:100%; border-collapse:collapse; margin-top:15px; }
+th, td { border:1px solid #ddd; padding:8px; text-align:left; }
+th { background:#60a5fa; color:white; position:sticky; top:0; }
+select { padding:5px; }
+@media (max-width:768px) {
+  table, thead, tbody, th, td, tr { display:block; }
+  th { position:relative; top:auto; }
+  td { border:none; padding:8px 0; }
+  td::before { content: attr(data-label); font-weight:bold; display:inline-block; width:120px; }
+}
+button { padding:5px 10px; background:#3b82f6; color:white; border:none; cursor:pointer; }
+button:hover { background:#2563eb; }
 </style>
 </head>
 <body>
-<h1>Sea Laundry Admin</h1>
-<table id="ordersTable">
-  <thead>
-    <tr>
-      <th>Waktu</th><th>Nama</th><th>Alamat</th><th>No HP</th>
-      <th>Layanan</th><th>Catatan</th><th>Jadwal</th><th>Maps</th><th>Status</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+<header>Sea Laundry Admin</header>
+<div class="container">
+  <button onclick="loadOrders()">Refresh Data</button>
+  <table id="ordersTable">
+    <thead>
+      <tr id="headerRow"></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
 
 <script>
-function renderOrders(orders){
-  const tbody = document.querySelector("#ordersTable tbody");
-  tbody.innerHTML = "";
-  orders.forEach((o, i)=>{
-    const tr = document.createElement("tr");
+function loadOrders() {
+  google.script.run.withSuccessHandler(renderTable).getOrders();
+}
 
-    tr.innerHTML = `
-      <td>${new Date(o.timestamp).toLocaleString()}</td>
-      <td><input value="${o.nama}" onchange="updateField(${i}, 'nama', this.value)"></td>
-      <td><input value="${o.alamat}" onchange="updateField(${i}, 'alamat', this.value)"></td>
-      <td><input value="${o.nohp}" onchange="updateField(${i}, 'nohp', this.value)"></td>
-      <td><input value="${o.layanan}" onchange="updateField(${i}, 'layanan', this.value)"></td>
-      <td><input value="${o.catatan}" onchange="updateField(${i}, 'catatan', this.value)"></td>
-      <td><input value="${o.jadwal}" onchange="updateField(${i}, 'jadwal', this.value)"></td>
-      <td>${o.mapsLink ? `<a href="${o.mapsLink}" target="_blank">Maps</a>` : ''}</td>
-      <td>
-        <select onchange="updateField(${i}, 'status', this.value)">
-          <option value="Dipesan">Dipesan</option>
-          <option value="Dijemput">Dijemput</option>
-          <option value="Diproses">Diproses</option>
-          <option value="Selesai">Selesai</option>
-          <option value="Dibatalkan">Dibatalkan</option>
-        </select>
-      </td>
-    `;
-    tr.querySelector("select").value = o.status;
+function renderTable(data) {
+  const table = document.getElementById('ordersTable');
+  const thead = table.querySelector('thead tr');
+  const tbody = table.querySelector('tbody');
+
+  thead.innerHTML = '';
+  tbody.innerHTML = '';
+
+  if(data.length === 0) return;
+
+  // Header
+  Object.keys(data[0]).filter(k => k !== "_row").forEach(h => {
+    const th = document.createElement('th');
+    th.textContent = h;
+    thead.appendChild(th);
+  });
+  thead.appendChild(document.createElement('th')).textContent = 'Aksi';
+
+  // Rows
+  data.forEach(row => {
+    const tr = document.createElement('tr');
+    Object.keys(row).filter(k => k !== "_row").forEach(k => {
+      const td = document.createElement('td');
+      td.setAttribute('data-label', k);
+
+      if(k === "Status") {
+        const sel = document.createElement('select');
+        ["Dipesan","Diambil","Dicuci","Selesai","Batal"].forEach(s => {
+          const opt = document.createElement('option');
+          opt.value = s; opt.textContent = s;
+          if(row[k] === s) opt.selected = true;
+          sel.appendChild(opt);
+        });
+        sel.onchange = () => updateStatus(row._row, sel.value);
+        td.appendChild(sel);
+      } else {
+        td.textContent = row[k];
+      }
+      tr.appendChild(td);
+    });
+
+    const aksiTd = document.createElement('td');
+    aksiTd.setAttribute('data-label','Aksi');
+    const btn = document.createElement('button');
+    btn.textContent = 'Update';
+    btn.onclick = () => alert('Status sudah diperbarui otomatis!');
+    aksiTd.appendChild(btn);
+    tr.appendChild(aksiTd);
+
     tbody.appendChild(tr);
   });
 }
 
-function updateField(row, field, value){
-  google.script.run.updateOrder(row, field, value);
+function updateStatus(rowIndex, value) {
+  google.script.run.withSuccessHandler(() => console.log('Update sukses'))
+                   .updateOrder(rowIndex, "Status", value);
 }
 
-// Load data saat halaman dibuka
-google.script.run.withSuccessHandler(renderOrders).getOrders();
+// Load data otomatis saat buka
+loadOrders();
 </script>
 </body>
 </html>
