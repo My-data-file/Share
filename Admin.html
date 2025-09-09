@@ -5,22 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Dashboard - Sea Laundry</title>
 <style>
-:root{--primary:#007bff;--bg:#f0f4f8;--card:#fff;--text:#2b2b2b;}
-body{font-family:'Segoe UI',sans-serif;background:var(--bg);margin:0;padding:0;color:var(--text);}
+:root{--primary:#007bff;--card:#fff;--bg:#f9fafb;--text:#1f2937;}
+body{font-family:'Segoe UI',sans-serif;margin:0;background:var(--bg);color:var(--text);}
 .container{padding:20px;}
 h1{color:var(--primary);}
-table{width:100%;border-collapse:collapse;margin-top:14px;}
+table{width:100%;border-collapse:collapse;margin-top:12px;}
 th,td{border:1px solid #ccc;padding:8px;text-align:left;}
 th{background:#eee;}
-input{padding:4px 6px;border-radius:4px;border:1px solid #ccc;}
-button{padding:6px 12px;margin:2px;border-radius:6px;cursor:pointer;}
-@media(max-width:600px){table,th,td{font-size:0.8em;}}
+input.comment{width:100%;padding:4px;border-radius:4px;border:1px solid #ccc;}
+@media(max-width:600px){table,th,td{font-size:0.85em}}
 </style>
 </head>
 <body>
 <div class="container">
-<h1>Dashboard Admin</h1>
-<table id="laundryTable">
+<h1>Admin Dashboard</h1>
+<table id="tableOrders">
 <thead>
 <tr>
 <th>No</th>
@@ -28,11 +27,9 @@ button{padding:6px 12px;margin:2px;border-radius:6px;cursor:pointer;}
 <th>Alamat</th>
 <th>No HP</th>
 <th>Layanan</th>
-<th>Catatan</th>
 <th>Jadwal</th>
-<th>Maps</th>
 <th>Status</th>
-<th>Aksi</th>
+<th>Komentar</th>
 </tr>
 </thead>
 <tbody></tbody>
@@ -40,41 +37,40 @@ button{padding:6px 12px;margin:2px;border-radius:6px;cursor:pointer;}
 </div>
 
 <script>
-function loadAdminData(){
-  google.script.run.withSuccessHandler(function(data){
-    const tbody=document.querySelector("#laundryTable tbody");
-    tbody.innerHTML="";
-    data.forEach((d,i)=>{
-      const tr=document.createElement("tr");
-      tr.innerHTML=`
-      <td>${i+1}</td>
-      <td>${d.nama || ""}</td>
-      <td>${d.alamat || ""}</td>
-      <td>${d.nohp || ""}</td>
-      <td>${d.layanan || ""}</td>
-      <td>${d.catatan || ""}</td>
-      <td>${d.jadwal || ""}</td>
-      <td>${d.Maps || "" ? `<a href="${d.Maps}" target="_blank">Link</a>` : ""}</td>
-      <td><input type="text" value="${d.Status || ""}" onchange="updateStatus(${i}, this.value)"></td>
-      <td><button onclick="deleteRow(${i})">Hapus</button></td>`;
-      tbody.appendChild(tr);
-    });
-  }).getAllLaundryData();
+function loadAdminData() {
+  google.script.run.withSuccessHandler(renderOrders).getAllOrders();
 }
 
-function updateStatus(index,value){
-  google.script.run.withSuccessHandler(()=>{console.log("Update sukses")})
-                   .updateLaundryData(index,"Status",value);
-}
-
-function deleteRow(index){
-  if(confirm("Hapus data ini?")){
-    google.script.run.withSuccessHandler(loadAdminData)
-                     .updateLaundryData(index,"Status","Dihapus"); // contoh hapus -> ubah status
+function renderOrders(data){
+  const tbody = document.querySelector("#tableOrders tbody");
+  tbody.innerHTML = "";
+  if(data.length===0){
+    tbody.innerHTML='<tr><td colspan="8" style="text-align:center">Data Kosong</td></tr>';
+    return;
   }
+  data.forEach((row,i)=>{
+    tbody.innerHTML += `<tr>
+      <td>${i+1}</td>
+      <td>${row.nama || ''}</td>
+      <td>${row.alamat || ''}</td>
+      <td>${row.nohp || ''}</td>
+      <td>${row.layanan || ''}</td>
+      <td>${row.jadwal || ''}</td>
+      <td><input type="text" value="${row.Status || ''}" onblur="updateOrder(${i}, 'Status', this.value)"></td>
+      <td><input type="text" class="comment" value="${row.catatan || ''}" onblur="updateOrder(${i}, 'catatan', this.value)"></td>
+    </tr>`;
+  });
 }
 
-window.onload=loadAdminData;
+// Update status / komentar langsung ke spreadsheet
+function updateOrder(rowIndex, columnName, value){
+  google.script.run.withSuccessHandler(res=>{
+    console.log(res);
+  }).updateOrder(rowIndex, columnName, value);
+}
+
+// Auto load saat halaman dibuka
+document.addEventListener("DOMContentLoaded", loadAdminData);
 </script>
 </body>
 </html>
