@@ -7,13 +7,66 @@
 <style>
 body { font-family: Arial, sans-serif; background:#f4f4f4; margin:0; padding:0; }
 header { background:#1f2937; color:white; padding:15px; text-align:center; }
-.container { padding:20px; }
-table { width:100%; border-collapse: collapse; margin-top:20px; background:white; }
-th, td { border:1px solid #ccc; padding:8px; text-align:left; }
-th { background:#e5e7eb; }
-button { padding:5px 10px; margin:2px; cursor:pointer; }
-select { padding:3px; }
-.status-select { width:120px; }
+.container { padding:15px; }
+
+/* Tombol */
+button { 
+  padding:7px 14px; 
+  margin:5px 0; 
+  cursor:pointer; 
+  border:none; 
+  border-radius:5px; 
+  background:#2563eb; 
+  color:white; 
+  font-weight:bold; 
+  transition: background 0.2s; 
+  font-size:14px;
+}
+button:hover { background:#1e40af; }
+
+/* Input & Select */
+input, select { padding:7px; border:1px solid #ccc; border-radius:5px; font-size:14px; }
+.filter-bar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:10px; }
+
+/* Tabel */
+.table-container { 
+  width:100%; 
+  overflow-x:auto; 
+  background:white; 
+  border-radius:8px; 
+  box-shadow:0 1px 4px rgba(0,0,0,0.1); 
+}
+table { width:100%; border-collapse: collapse; min-width:800px; }
+th, td { border:1px solid #ccc; padding:10px; text-align:left; font-size:14px; }
+th { background:#e5e7eb; cursor:pointer; }
+tbody tr:nth-child(even) { background:#f9fafb; }
+tbody tr:hover { background:#f3f4f6; }
+
+/* Highlight Search */
+mark { background: yellow; color: black; padding:0 2px; }
+
+/* Notifikasi */
+#notif {
+  display:none;
+  padding:10px;
+  margin-bottom:10px;
+  border-radius:5px;
+  font-weight:bold;
+}
+#notif.success { background:#d1fae5; color:#065f46; }
+#notif.error { background:#fee2e2; color:#991b1b; }
+
+/* Responsif */
+@media (max-width: 768px){
+  header h1 { font-size:18px; }
+  .filter-bar { flex-direction:column; align-items:stretch; }
+  input, select, button { width:100%; }
+  th, td { font-size:13px; padding:8px; }
+}
+@media (max-width: 480px){
+  header h1 { font-size:16px; }
+  th, td { font-size:12px; padding:6px; }
+}
 </style>
 </head>
 <body>
@@ -23,31 +76,66 @@ select { padding:3px; }
 </header>
 
 <div class="container">
-  <button onclick="loadOrders()">Refresh Orders</button>
-  <table id="ordersTable">
-    <thead>
-      <tr>
-        <th>No</th>
-        <th>Nama</th>
-        <th>Alamat</th>
-        <th>No HP</th>
-        <th>Layanan</th>
-        <th>Catatan</th>
-        <th>Jadwal</th>
-        <th>Maps</th>
-        <th>Status</th>
-        <th>Aksi</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td colspan="10" style="text-align:center;">Loading...</td></tr>
-    </tbody>
-  </table>
+  <div id="notif"></div>
+
+  <div class="filter-bar">
+    <button onclick="confirmRefresh()">🔄 Refresh Orders</button>
+    <input type="text" id="searchInput" placeholder="Cari data apa saja..." onkeyup="applyFilters()">
+    <select id="statusFilter" onchange="applyFilters()">
+      <option value="">Filter Status</option>
+      <option>Dipesan</option>
+      <option>Dijemput</option>
+      <option>Diproses</option>
+      <option>Selesai</option>
+      <option>Diantar</option>
+    </select>
+  </div>
+
+  <div class="table-container">
+    <table id="ordersTable">
+      <thead>
+        <tr>
+          <th onclick="sortTable(0)">No</th>
+          <th onclick="sortTable(1)">Nama</th>
+          <th onclick="sortTable(2)">Alamat</th>
+          <th onclick="sortTable(3)">No HP</th>
+          <th onclick="sortTable(4)">Layanan</th>
+          <th>Catatan</th>
+          <th onclick="sortTable(6)">Jadwal</th>
+          <th>Maps</th>
+          <th onclick="sortTable(8)">Status</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="10" style="text-align:center;">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <script>
-const GAS_URL = "https://script.google.com/macros/s/AKfycbzUi45pbENNxmua_SaIpFFxnE-E2EtxRyC_vwT538ytVqaUPSMzWkPmhq16E67tkvpJPg/exec"; // Ganti dengan URL Apps Script web app
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzUi45pbENNxmua_SaIpFFxnE-E2EtxRyC_vwT538ytVqaUPSMzWkPmhq16E67tkvpJPg/exec"; 
+let currentData = [];
+let filteredData = [];
 
+/* Notifikasi */
+function showNotif(msg, type="success"){
+  const notif = document.getElementById("notif");
+  notif.textContent = msg;
+  notif.className = type === "success" ? "success" : "error";
+  notif.style.display = "block";
+  setTimeout(()=> notif.style.display="none", 3000);
+}
+
+/* Refresh dengan konfirmasi */
+function confirmRefresh(){
+  if(confirm("Yakin mau reload data order?")){
+    loadOrders();
+  }
+}
+
+/* Load data order */
 function loadOrders(){
   fetch(GAS_URL,{
     method:"POST",
@@ -55,43 +143,70 @@ function loadOrders(){
   })
   .then(res=>res.json())
   .then(data=>{
-    const tbody = document.querySelector("#ordersTable tbody");
-    tbody.innerHTML = "";
-    if(!data.orders || data.orders.length===0){
-      tbody.innerHTML = "<tr><td colspan='10' style='text-align:center;'>Tidak ada order</td></tr>";
-      return;
-    }
-    data.orders.forEach((o,i)=>{
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${i+1}</td>
-        <td>${o.Nama || ""}</td>
-        <td>${o.Alamat || ""}</td>
-        <td>${o['No HP'] || ""}</td>
-        <td>${o.Layanan || ""}</td>
-        <td>${o.Catatan || ""}</td>
-        <td>${o.Jadwal || ""}</td>
-        <td>${o.Maps ? `<a href="${o.Maps}" target="_blank">Lihat</a>` : ""}</td>
-        <td>
-          <select class="status-select" data-row="${i+2}">
-            <option ${o.Status==="Dipesan"?"selected":""}>Dipesan</option>
-            <option ${o.Status==="Dijemput"?"selected":""}>Dijemput</option>
-            <option ${o.Status==="Diproses"?"selected":""}>Diproses</option>
-            <option ${o.Status==="Selesai"?"selected":""}>Selesai</option>
-            <option ${o.Status==="Diantar"?"selected":""}>Diantar</option>
-          </select>
-        </td>
-        <td><button onclick="updateStatus(this)">Update</button></td>
-      `;
-      tbody.appendChild(tr);
-    });
+    currentData = data.orders || data || [];
+    filteredData = [...currentData];
+    renderTable(filteredData);
   })
   .catch(err=>{
-    console.error(err);
-    alert("Gagal load order");
+    console.error("Fetch error:", err);
+    showNotif("⚠️ Gagal load order", "error");
   });
 }
 
+/* Highlight Search */
+function highlightText(text, keyword){
+  if(!text) text = "";
+  if(!keyword) return text;
+  const regex = new RegExp(`(${keyword})`, "gi");
+  return text.toString().replace(regex, "<mark>$1</mark>");
+}
+
+/* Render tabel */
+function renderTable(data){
+  const tbody = document.querySelector("#ordersTable tbody");
+  tbody.innerHTML = "";
+  const search = document.getElementById("searchInput").value.toLowerCase();
+
+  if(!data || data.length===0){
+    tbody.innerHTML = "<tr><td colspan='10' style='text-align:center;'>Tidak ada order</td></tr>";
+    return;
+  }
+  data.forEach((o,i)=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${i+1}</td>
+      <td>${highlightText(o.Nama || o.nama || "", search)}</td>
+      <td>${highlightText(o.Alamat || o.alamat || "", search)}</td>
+      <td>${highlightText(o["No HP"] || o.NoHp || o.nohp || "", search)}</td>
+      <td>${highlightText(o.Layanan || o.layanan || "", search)}</td>
+      <td>${highlightText(o.Catatan || o.catatan || "", search)}</td>
+      <td>${highlightText(o.Jadwal || o.jadwal || "", search)}</td>
+      <td>${o.Maps ? `<a href="${o.Maps}" target="_blank">Lihat</a>` : ""}</td>
+      <td>
+        <select class="status-select" data-row="${i+2}">
+          <option ${o.Status==="Dipesan"?"selected":""}>Dipesan</option>
+          <option ${o.Status==="Dijemput"?"selected":""}>Dijemput</option>
+          <option ${o.Status==="Diproses"?"selected":""}>Diproses</option>
+          <option ${o.Status==="Selesai"?"selected":""}>Selesai</option>
+          <option ${o.Status==="Diantar"?"selected":""}>Diantar</option>
+        </select>
+      </td>
+      <td><button onclick="confirmUpdate(this)">Update</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+/* Konfirmasi Update */
+function confirmUpdate(btn){
+  const select = btn.parentElement.previousElementSibling.querySelector("select");
+  const newStatus = select.value;
+  if(confirm(`Yakin update status ke "${newStatus}"?`)){
+    updateStatus(btn);
+  }
+}
+
+/* Update Status */
 function updateStatus(btn){
   const select = btn.parentElement.previousElementSibling.querySelector("select");
   const newStatus = select.value;
@@ -106,16 +221,50 @@ function updateStatus(btn){
   })
   .then(res=>res.json())
   .then(data=>{
-    if(data.result==="ok") alert("Status berhasil diperbarui");
-    else alert("Gagal update status");
+    if(data.result==="ok") showNotif("✅ Status berhasil diperbarui","success");
+    else showNotif("⚠️ Gagal update status","error");
   })
   .catch(err=>{
     console.error(err);
-    alert("Gagal update status");
+    showNotif("⚠️ Gagal update status","error");
   });
 }
 
-// Load otomatis saat halaman dibuka
+/* Search & Filter */
+function applyFilters(){
+  const search = document.getElementById("searchInput").value.toLowerCase();
+  const status = document.getElementById("statusFilter").value;
+
+  filteredData = currentData.filter(o=>{
+    const allValues = Object.values(o).join(" ").toLowerCase();
+    const matchSearch = allValues.includes(search);
+    const matchStatus = status ? ((o.Status||"").toLowerCase() === status.toLowerCase()) : true;
+    return matchSearch && matchStatus;
+  });
+
+  renderTable(filteredData);
+}
+
+/* Sortir Kolom */
+let sortDir = {};
+function sortTable(colIndex){
+  const keyMap = {
+    1:"Nama", 2:"Alamat", 3:"No HP", 4:"Layanan", 6:"Jadwal", 8:"Status"
+  };
+  const key = keyMap[colIndex];
+  if(!key) return;
+
+  sortDir[key] = !sortDir[key];
+  let sorted = [...filteredData].sort((a,b)=>{
+    let valA = (a[key]||"").toString().toLowerCase();
+    let valB = (b[key]||"").toString().toLowerCase();
+    if(valA < valB) return sortDir[key] ? -1 : 1;
+    if(valA > valB) return sortDir[key] ? 1 : -1;
+    return 0;
+  });
+  renderTable(sorted);
+}
+
 window.addEventListener("DOMContentLoaded", loadOrders);
 </script>
 
