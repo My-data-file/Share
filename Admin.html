@@ -13,33 +13,49 @@ header { background:#1f2937; color:white; padding:15px; text-align:center; }
 button { padding:7px 14px; margin:5px 0; cursor:pointer; border:none; border-radius:5px; background:#2563eb; color:white; font-weight:bold; transition: background 0.2s;}
 button:hover { background:#1e40af; }
 
-/* Dashboard grid */
+/* Filter per kolom */
+input, select { padding:6px; border:1px solid #ccc; border-radius:5px; font-size:13px; }
+.filter-bar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:10px; }
+
+/* Dashboard */
 #dashboard { display:grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap:15px; margin-bottom:20px; }
 .card { padding:15px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
 .card h3 { font-size:14px; color:#374151; margin:0; }
 .card p { font-size:20px; font-weight:bold; margin:5px 0 0; }
+
+/* Tabel */
+.table-container { width:100%; overflow-x:auto; background:white; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); }
+table { width:100%; border-collapse: collapse; min-width:1000px; }
+th, td { border:1px solid #ccc; padding:8px; text-align:left; font-size:13px; }
+th { background:#e5e7eb; position:sticky; top:0; z-index:2; }
+tbody tr:nth-child(even) { background:#f9fafb; }
+
+/* Hover row */
+tbody tr:hover { background:#e0f2fe !important; }
+
+/* Highlight filter aktif */
+thead input:focus {
+  border: 2px solid #2563eb;
+  outline: none;
+  background: #f0f9ff;
+}
 
 /* Notifikasi */
 #notif { display:none; padding:10px; margin-bottom:10px; border-radius:5px; font-weight:bold; }
 #notif.success { background:#d1fae5; color:#065f46; }
 #notif.error { background:#fee2e2; color:#991b1b; }
 
-/* Table */
-.table-container { width:100%; overflow:auto; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); }
-table { width:100%; border-collapse: collapse; min-width:1000px; }
-th, td { border:1px solid #ccc; padding:8px; text-align:left; font-size:13px; }
-thead th { background:#e5e7eb; position:sticky; top:0; z-index:3; }
-thead tr.filter-row input { width:100%; box-sizing:border-box; font-size:12px; padding:4px; }
-tbody tr:nth-child(even) { background:#f9fafb; }
-tbody tr:hover { background:#f3f4f6; }
+/* Animasi flash setelah update */
+@keyframes flashGreen {
+  from { background-color: #bbf7d0; }
+  to { background-color: inherit; }
+}
+tr.flash { animation: flashGreen 1.5s ease-out; }
 
 /* Responsif */
 @media (max-width:768px){
   table, th, td { font-size:12px; padding:6px; }
-}
-@media (max-width:480px){
-  table { font-size:11px; }
-  th, td { padding:4px; }
+  .filter-bar { flex-direction:column; align-items:flex-start; }
 }
 </style>
 </head>
@@ -81,39 +97,24 @@ tbody tr:hover { background:#f3f4f6; }
     <button onclick="confirmRefresh()">🔄 Refresh Orders</button>
   </div>
 
-  <!-- Table -->
   <div class="table-container">
     <table id="ordersTable">
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>Nama</th>
-          <th>Alamat</th>
-          <th>No HP</th>
-          <th>Layanan</th>
-          <th>Catatan</th>
-          <th>Jadwal</th>
-          <th>Maps</th>
-          <th>Status</th>
-          <th>Berat (Kg)</th>
-          <th>Harga (Rp)</th>
-          <th>Aksi</th>
-        </tr>
-        <tr class="filter-row">
-          <th></th>
-          <th><input type="text" placeholder="Filter" oninput="filterColumn(event,1)"></th>
-          <th><input type="text" placeholder="Filter" oninput="filterColumn(event,2)"></th>
-          <th><input type="text" placeholder="Filter" oninput="filterColumn(event,3)"></th>
-          <th><input type="text" placeholder="Filter" oninput="filterColumn(event,4)"></th>
-          <th><input type="text" placeholder="Filter" oninput="filterColumn(event,5)"></th>
-          <th><input type="text" placeholder="Filter" oninput="filterColumn(event,6)"></th>
-          <th></th>
-          <th></th>
-          <th><input type="text" placeholder="Filter" oninput="filterColumn(event,9)"></th>
-          <th><input type="text" placeholder="Filter" oninput="filterColumn(event,10)"></th>
-          <th></th>
-        </tr>
-      </thead>
+<thead>
+  <tr>
+    <th>No</th>
+    <th>Nama<br><input type="text" placeholder="Filter" oninput="filterColumn(event,1)"></th>
+    <th>Alamat<br><input type="text" placeholder="Filter" oninput="filterColumn(event,2)"></th>
+    <th>No HP<br><input type="text" placeholder="Filter" oninput="filterColumn(event,3)"></th>
+    <th>Layanan<br><input type="text" placeholder="Filter" oninput="filterColumn(event,4)"></th>
+    <th>Catatan<br><input type="text" placeholder="Filter" oninput="filterColumn(event,5)"></th>
+    <th>Jadwal<br><input type="text" placeholder="Filter" oninput="filterColumn(event,6)"></th>
+    <th>Maps</th>
+    <th>Status</th>
+    <th>Berat (Kg)<br><input type="text" placeholder="Filter" oninput="filterColumn(event,9)"></th>
+    <th>Harga (Rp)<br><input type="text" placeholder="Filter" oninput="filterColumn(event,10)"></th>
+    <th>Aksi</th>
+  </tr>
+</thead>
       <tbody>
         <tr><td colspan="12" style="text-align:center;">Loading...</td></tr>
       </tbody>
@@ -126,6 +127,7 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbwJax3FO_zvxRrsYtL6X_3x
 let currentData = [];
 const statusOptions = ["Dipesan", "Dijemput", "Diproses", "Selesai", "Diantar"];
 
+/* Notifikasi */
 function showNotif(msg,type="success"){
   const notif=document.getElementById("notif");
   notif.textContent=msg;
@@ -133,24 +135,40 @@ function showNotif(msg,type="success"){
   notif.style.display="block";
   setTimeout(()=>notif.style.display="none",3000);
 }
-function confirmRefresh(){if(confirm("Yakin mau reload data order?")) loadOrders();}
 
+/* Refresh dengan konfirmasi */
+function confirmRefresh(){
+  if(confirm("Yakin mau reload data order?")){
+    loadOrders();
+  }
+}
+
+/* Load data */
 function loadOrders(){
-  fetch(GAS_URL,{method:"POST",body: JSON.stringify({ type:"GetAllOrders" })})
+  fetch(GAS_URL,{
+    method:"POST",
+    body: JSON.stringify({ type:"GetAllOrders" })
+  })
   .then(res=>res.json())
   .then(data=>{
     currentData=data.orders||[];
     renderTable(currentData);
     updateDashboard(currentData);
   })
-  .catch(err=>{console.error(err); showNotif("⚠️ Gagal load order","error");});
+  .catch(err=>{
+    console.error(err);
+    showNotif("⚠️ Gagal load order","error");
+  });
 }
 
+/* Render tabel */
 function renderTable(data){
   const tbody=document.querySelector("#ordersTable tbody");
   tbody.innerHTML="";
-  if(!data||data.length===0){tbody.innerHTML="<tr><td colspan='12' style='text-align:center;'>Tidak ada order</td></tr>"; return;}
-  
+  if(!data||data.length===0){
+    tbody.innerHTML="<tr><td colspan='12' style='text-align:center;'>Tidak ada order</td></tr>";
+    return;
+  }
   data.forEach((o,i)=>{
     const noHp=o["No HP"]?.toString()||"";
     const harga=o.Harga||0;
@@ -183,6 +201,7 @@ function renderTable(data){
   });
 }
 
+/* Update row */
 function updateRow(btn,rowIndex){
   if(!confirm("Yakin update data row ini?")) return;
   const tr=btn.closest("tr");
@@ -199,23 +218,38 @@ function updateRow(btn,rowIndex){
   .then(r=>{
     if(r.result==="ok"){
       showNotif("✅ Data berhasil disimpan","success");
-      // update row langsung tanpa reload
-      tr.querySelectorAll("[contenteditable]").forEach(td=>{if(payload[td.dataset.key]) td.textContent=payload[td.dataset.key];});
-      const sel = tr.querySelector("select[data-key='Status']");
-      if(sel) sel.value = payload.Status || sel.value;
-    } else showNotif("⚠️ Gagal update","error");
+      // update langsung
+      tr.querySelectorAll("[contenteditable]").forEach(td=>{
+        if(payload[td.dataset.key]) td.textContent=payload[td.dataset.key];
+      });
+      const sel=tr.querySelector("select[data-key='Status']");
+      if(sel) sel.value=payload.Status||sel.value;
+      // flash hijau
+      tr.classList.add("flash");
+      setTimeout(()=>tr.classList.remove("flash"),1500);
+    }else{
+      showNotif("⚠️ Gagal update","error");
+    }
   })
-  .catch(err=>{console.error(err); showNotif("⚠️ Gagal update","error");});
-}
-
-function filterColumn(e,index){
-  const val=e.target.value.toLowerCase();
-  document.querySelectorAll("#ordersTable tbody tr").forEach(r=>{
-    const td=r.children[index];
-    if(td) r.style.display=td.textContent.toLowerCase().includes(val)?"":"none";
+  .catch(err=>{
+    console.error(err);
+    showNotif("⚠️ Gagal update","error");
   });
 }
 
+/* Filter per kolom */
+function filterColumn(e,index){
+  const val=e.target.value.toLowerCase();
+  const rows=document.querySelectorAll("#ordersTable tbody tr");
+  rows.forEach(r=>{
+    const td=r.children[index];
+    if(td){
+      r.style.display=td.textContent.toLowerCase().includes(val)?"":"none";
+    }
+  });
+}
+
+/* Dashboard */
 function updateDashboard(data){
   let totalOrders=data.length;
   let totalWeight=data.reduce((sum,o)=>sum+parseFloat(o.Berat||0),0);
