@@ -13,38 +13,33 @@ header { background:#1f2937; color:white; padding:15px; text-align:center; }
 button { padding:7px 14px; margin:5px 0; cursor:pointer; border:none; border-radius:5px; background:#2563eb; color:white; font-weight:bold; transition: background 0.2s;}
 button:hover { background:#1e40af; }
 
-/* Filter input */
-input, select { padding:6px; border:1px solid #ccc; border-radius:5px; font-size:13px; }
-.filter-bar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:10px; }
-
 /* Dashboard grid */
 #dashboard { display:grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap:15px; margin-bottom:20px; }
 .card { padding:15px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
 .card h3 { font-size:14px; color:#374151; margin:0; }
 .card p { font-size:20px; font-weight:bold; margin:5px 0 0; }
 
-/* Table */
-.table-container { width:100%; overflow-x:auto; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); }
-table { width:100%; border-collapse: collapse; min-width:1000px; }
-th, td { border:1px solid #ccc; padding:8px; text-align:left; font-size:13px; }
-th { background:#e5e7eb; position:sticky; top:0; z-index:2; }
-tbody tr:nth-child(even) { background:#f9fafb; }
-tbody tr:hover { background:#f3f4f6; }
-
 /* Notifikasi */
 #notif { display:none; padding:10px; margin-bottom:10px; border-radius:5px; font-weight:bold; }
 #notif.success { background:#d1fae5; color:#065f46; }
 #notif.error { background:#fee2e2; color:#991b1b; }
 
+/* Table */
+.table-container { width:100%; overflow:auto; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); }
+table { width:100%; border-collapse: collapse; min-width:1000px; }
+th, td { border:1px solid #ccc; padding:8px; text-align:left; font-size:13px; }
+thead th { background:#e5e7eb; position:sticky; top:0; z-index:3; }
+thead tr.filter-row input { width:100%; box-sizing:border-box; font-size:12px; padding:4px; }
+tbody tr:nth-child(even) { background:#f9fafb; }
+tbody tr:hover { background:#f3f4f6; }
+
 /* Responsif */
 @media (max-width:768px){
   table, th, td { font-size:12px; padding:6px; }
-  .filter-bar { flex-direction:column; align-items:flex-start; }
 }
 @media (max-width:480px){
-  table { font-size:12px; }
-  th, td { padding:5px; }
-  .table-container { overflow-x:auto; }
+  table { font-size:11px; }
+  th, td { padding:4px; }
 }
 </style>
 </head>
@@ -92,17 +87,31 @@ tbody tr:hover { background:#f3f4f6; }
       <thead>
         <tr>
           <th>No</th>
-          <th>Nama<br><input type="text" placeholder="Filter" oninput="filterColumn(event,1)"></th>
-          <th>Alamat<br><input type="text" placeholder="Filter" oninput="filterColumn(event,2)"></th>
-          <th>No HP<br><input type="text" placeholder="Filter" oninput="filterColumn(event,3)"></th>
-          <th>Layanan<br><input type="text" placeholder="Filter" oninput="filterColumn(event,4)"></th>
-          <th>Catatan<br><input type="text" placeholder="Filter" oninput="filterColumn(event,5)"></th>
-          <th>Jadwal<br><input type="text" placeholder="Filter" oninput="filterColumn(event,6)"></th>
+          <th>Nama</th>
+          <th>Alamat</th>
+          <th>No HP</th>
+          <th>Layanan</th>
+          <th>Catatan</th>
+          <th>Jadwal</th>
           <th>Maps</th>
           <th>Status</th>
-          <th>Berat (Kg)<br><input type="text" placeholder="Filter" oninput="filterColumn(event,9)"></th>
-          <th>Harga (Rp)<br><input type="text" placeholder="Filter" oninput="filterColumn(event,10)"></th>
+          <th>Berat (Kg)</th>
+          <th>Harga (Rp)</th>
           <th>Aksi</th>
+        </tr>
+        <tr class="filter-row">
+          <th></th>
+          <th><input type="text" placeholder="Filter" oninput="filterColumn(event,1)"></th>
+          <th><input type="text" placeholder="Filter" oninput="filterColumn(event,2)"></th>
+          <th><input type="text" placeholder="Filter" oninput="filterColumn(event,3)"></th>
+          <th><input type="text" placeholder="Filter" oninput="filterColumn(event,4)"></th>
+          <th><input type="text" placeholder="Filter" oninput="filterColumn(event,5)"></th>
+          <th><input type="text" placeholder="Filter" oninput="filterColumn(event,6)"></th>
+          <th></th>
+          <th></th>
+          <th><input type="text" placeholder="Filter" oninput="filterColumn(event,9)"></th>
+          <th><input type="text" placeholder="Filter" oninput="filterColumn(event,10)"></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -117,7 +126,6 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbwJax3FO_zvxRrsYtL6X_3x
 let currentData = [];
 const statusOptions = ["Dipesan", "Dijemput", "Diproses", "Selesai", "Diantar"];
 
-/* Notifikasi */
 function showNotif(msg,type="success"){
   const notif=document.getElementById("notif");
   notif.textContent=msg;
@@ -125,11 +133,8 @@ function showNotif(msg,type="success"){
   notif.style.display="block";
   setTimeout(()=>notif.style.display="none",3000);
 }
-
-/* Refresh */
 function confirmRefresh(){if(confirm("Yakin mau reload data order?")) loadOrders();}
 
-/* Load data */
 function loadOrders(){
   fetch(GAS_URL,{method:"POST",body: JSON.stringify({ type:"GetAllOrders" })})
   .then(res=>res.json())
@@ -141,7 +146,6 @@ function loadOrders(){
   .catch(err=>{console.error(err); showNotif("⚠️ Gagal load order","error");});
 }
 
-/* Render table */
 function renderTable(data){
   const tbody=document.querySelector("#ordersTable tbody");
   tbody.innerHTML="";
@@ -179,7 +183,6 @@ function renderTable(data){
   });
 }
 
-/* Update row langsung */
 function updateRow(btn,rowIndex){
   if(!confirm("Yakin update data row ini?")) return;
   const tr=btn.closest("tr");
@@ -196,35 +199,23 @@ function updateRow(btn,rowIndex){
   .then(r=>{
     if(r.result==="ok"){
       showNotif("✅ Data berhasil disimpan","success");
-      // update tampilan row langsung
-      tr.querySelectorAll("[contenteditable]").forEach(td=>{
-        if(payload[td.dataset.key]) td.textContent=payload[td.dataset.key];
-      });
+      // update row langsung tanpa reload
+      tr.querySelectorAll("[contenteditable]").forEach(td=>{if(payload[td.dataset.key]) td.textContent=payload[td.dataset.key];});
       const sel = tr.querySelector("select[data-key='Status']");
       if(sel) sel.value = payload.Status || sel.value;
-    } else {
-      showNotif("⚠️ Gagal update","error");
-    }
+    } else showNotif("⚠️ Gagal update","error");
   })
-  .catch(err=>{
-    console.error(err);
-    showNotif("⚠️ Gagal update","error");
-  });
+  .catch(err=>{console.error(err); showNotif("⚠️ Gagal update","error");});
 }
 
-/* Filter per kolom */
 function filterColumn(e,index){
   const val=e.target.value.toLowerCase();
-  const rows=document.querySelectorAll("#ordersTable tbody tr");
-  rows.forEach(r=>{
+  document.querySelectorAll("#ordersTable tbody tr").forEach(r=>{
     const td=r.children[index];
-    if(td){
-      r.style.display=td.textContent.toLowerCase().includes(val)?"":"none";
-    }
+    if(td) r.style.display=td.textContent.toLowerCase().includes(val)?"":"none";
   });
 }
 
-/* Dashboard */
 function updateDashboard(data){
   let totalOrders=data.length;
   let totalWeight=data.reduce((sum,o)=>sum+parseFloat(o.Berat||0),0);
