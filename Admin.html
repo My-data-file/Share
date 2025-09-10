@@ -106,7 +106,6 @@ th input { display:block; margin:5px auto; text-align:center; }
 <div id="newOrdersBox" style="padding:10px; margin:10px 0; border:2px solid #2563eb; border-radius:8px; background:#eff6ff;">
   <h3 style="margin:0 0 10px 0; color:#1e40af;">📢 Pesanan Baru</h3>
   <ul id="newOrdersList" style="list-style:none; padding:0; margin:0;"></ul>
-  <p id="noNewOrders" style="text-align:center; color:#374151; margin-top:5px;">Tidak ada pesanan baru</p>
 </div>
 
   <div class="filter-bar">
@@ -168,33 +167,27 @@ function highlightNewOrders(data){
       list.appendChild(li);
     });
   } else {
-    // jika tidak ada notif, beri keterangan
-    const li = document.createElement("li");
-    li.style.marginBottom = "6px";
-    li.textContent = "Tidak ada pesanan baru.";
-    list.appendChild(li);
     box.style.display = "block";
+    const li = document.createElement("li");
+    li.textContent = "Tidak ada order baru";
+    li.style.fontStyle = "italic";
+    li.style.color = "#555";
+    list.appendChild(li);
   }
 }
 
 
 /* Tombol Lihat */
 function gotoOrder(rowIndex, btn) {
-  seenOrders.add(String(rowIndex));
-  saveSeenOrders();
-
-  // scroll ke row terkait
+  // Scroll ke row yang bersangkutan
   const row = [...document.querySelectorAll("#ordersTable tbody tr")]
-    .find(r => {
-      const onclickBtn = r.querySelector("button");
-      return onclickBtn && onclickBtn.getAttribute("onclick")?.includes(rowIndex);
-    });
-
+    .find(r => r.querySelector("button")?.onclick.toString().includes(rowIndex));
   if (row) {
     row.scrollIntoView({ behavior: "smooth", block: "center" });
     row.classList.add("flash");
     setTimeout(() => row.classList.remove("flash"), 1500);
   }
+  // Jangan hapus dari notifikasi di sini
 }
 
 
@@ -267,7 +260,7 @@ function renderTable(data) {
   });
 }
 
-function updateRow(btn,rowIndex) {
+function updateRow(btn, rowIndex) {
   if (!confirm("Yakin update data row ini?")) return;
   const tr = btn.closest("tr");
   const payload = {};
@@ -286,11 +279,11 @@ function updateRow(btn,rowIndex) {
       tr.classList.add("flash");
       setTimeout(() => tr.classList.remove("flash"), 1500);
 
-      // 🔹 hapus notifikasi jika status bukan "Dipesan"
-      const order = currentData.find(o => o.rowIndex === rowIndex);
-      if(order){
-        order.Status = payload.Status; // update status lokal
-        highlightNewOrders(currentData); // update notifikasi
+      // 🔹 Hapus dari notifikasi jika status bukan Dipesan
+      if(payload.Status && payload.Status !== "Dipesan") {
+        seenOrders.add(String(rowIndex));
+        saveSeenOrders();
+        highlightNewOrders(currentData);
       }
 
     } else {
