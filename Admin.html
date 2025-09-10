@@ -102,11 +102,12 @@ th input { display:block; margin:5px auto; text-align:center; }
     </div>
   </div>
 
-  <!-- Notifikasi Order Baru -->
-  <div id="newOrdersBox" style="display:none; padding:10px; margin:10px 0; border:2px solid #2563eb; border-radius:8px; background:#eff6ff;">
-    <h3 style="margin:0 0 10px 0; color:#1e40af;">📢 Pesanan Baru</h3>
-    <ul id="newOrdersList" style="list-style:none; padding:0; margin:0;"></ul>
-  </div>
+<!-- Notifikasi Order Baru -->
+<div id="newOrdersBox" style="padding:10px; margin:10px 0; border:2px solid #2563eb; border-radius:8px; background:#eff6ff;">
+  <h3 style="margin:0 0 10px 0; color:#1e40af;">📢 Pesanan Baru</h3>
+  <ul id="newOrdersList" style="list-style:none; padding:0; margin:0;"></ul>
+  <p id="noNewOrders" style="text-align:center; color:#374151; margin-top:5px;">Tidak ada pesanan baru</p>
+</div>
 
   <div class="filter-bar">
     <button onclick="confirmRefresh()">🔄 Refresh Orders</button>
@@ -147,11 +148,15 @@ let seenOrders = new Set(JSON.parse(localStorage.getItem("seenOrders") || "[]"))
 
 function saveSeenOrders() { localStorage.setItem("seenOrders", JSON.stringify([...seenOrders])); }
 
+/* Highlight Pesanan Baru */
 function highlightNewOrders(data){
   const box = document.getElementById("newOrdersBox");
   const list = document.getElementById("newOrdersList");
-  list.innerHTML = "";
-  let pendingOrders = data.filter(o => o.Status === "Dipesan" && !seenOrders.has(String(o.rowIndex)));
+  const noNew = document.getElementById("noNewOrders");
+  list.innerHTML = ""; // reset daftar lama
+
+  let pendingOrders = data.filter(o => o.Status === "Dipesan");
+
   if(pendingOrders.length > 0){
     box.style.display = "block";
     pendingOrders.forEach(o => {
@@ -163,26 +168,28 @@ function highlightNewOrders(data){
           onclick="gotoOrder(${o.rowIndex}, this)">Lihat</button>`;
       list.appendChild(li);
     });
-  } else { box.style.display = "none"; }
+    noNew.style.display = "none";
+  } else {
+    box.style.display = "block";
+    noNew.style.display = "block";
+  }
 }
 
+/* Tombol Lihat */
 function gotoOrder(rowIndex, btn) {
-  seenOrders.add(String(rowIndex));
-  saveSeenOrders();
-  btn.parentElement.remove();
-  if (document.querySelectorAll("#newOrdersList li").length === 0)
-    document.getElementById("newOrdersBox").style.display = "none";
-
-  // scroll ke row
-  const rows = document.querySelectorAll("#ordersTable tbody tr");
-  for (const tr of rows) {
-    const updateBtn = tr.querySelector("button");
-    if (updateBtn && updateBtn.getAttribute("onclick").includes(`${rowIndex}`)) {
-      tr.scrollIntoView({ behavior: "smooth", block: "center" });
-      tr.classList.add("flash");
-      setTimeout(() => tr.classList.remove("flash"), 1500);
-      break;
-    }
+  const row = [...document.querySelectorAll("#ordersTable tbody tr")]
+    .find(r => r.querySelector("button")?.onclick.toString().includes(rowIndex));
+  if (row) {
+    row.scrollIntoView({ behavior: "smooth", block: "center" });
+    row.classList.add("flash");
+    setTimeout(() => row.classList.remove("flash"), 1500);
+  }
+  // Hanya tandai sebagai seen jika status sudah bukan "Dipesan"
+  const trStatus = row.querySelector("select[data-key='Status']").value;
+  if(trStatus !== "Dipesan"){
+    seenOrders.add(String(rowIndex));
+    saveSeenOrders();
+    highlightNewOrders(currentData);
   }
 }
 
