@@ -9,34 +9,40 @@ body { font-family: Arial, sans-serif; background:#f4f4f4; margin:0; padding:0; 
 header { background:#1f2937; color:white; padding:15px; text-align:center; }
 .container { padding:20px; }
 
-button { padding:10px 14px; margin:5px 0; cursor:pointer; border:none; border-radius:5px; background:#2563eb; color:white; font-weight:bold; transition: background 0.2s;}
+/* Tombol */
+button { padding:7px 14px; margin:5px 0; cursor:pointer; border:none; border-radius:5px; background:#2563eb; color:white; font-weight:bold; transition: background 0.2s;}
 button:hover { background:#1e40af; }
 
-input, select { padding:6px; border:1px solid #ccc; border-radius:5px; font-size:13px; width:100%; box-sizing:border-box; }
+/* Filter input */
+input, select { padding:6px; border:1px solid #ccc; border-radius:5px; font-size:13px; }
+.filter-bar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:10px; }
 
-#dashboard { display:grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap:15px; margin-bottom:20px; }
-.card { padding:15px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); background:white; }
+/* Dashboard grid */
+#dashboard { display:grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap:15px; margin-bottom:20px; }
+.card { padding:15px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
 .card h3 { font-size:14px; color:#374151; margin:0; }
 .card p { font-size:20px; font-weight:bold; margin:5px 0 0; }
 
-.table-container { width:100%; overflow-x:auto; background:white; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); }
+/* Table */
+.table-container { width:100%; overflow-x:auto; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); }
 table { width:100%; border-collapse: collapse; min-width:1000px; }
 th, td { border:1px solid #ccc; padding:8px; text-align:left; font-size:13px; }
 th { background:#e5e7eb; position:sticky; top:0; z-index:2; }
 tbody tr:nth-child(even) { background:#f9fafb; }
 tbody tr:hover { background:#f3f4f6; }
 
+/* Notifikasi */
 #notif { display:none; padding:10px; margin-bottom:10px; border-radius:5px; font-weight:bold; }
 #notif.success { background:#d1fae5; color:#065f46; }
 #notif.error { background:#fee2e2; color:#991b1b; }
 
+/* Responsif */
 @media (max-width:768px){
   table, th, td { font-size:12px; padding:6px; }
-  #dashboard { grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); }
+  .filter-bar { flex-direction:column; align-items:flex-start; }
 }
-
 @media (max-width:480px){
-  table { width:100%; font-size:12px; }
+  table { font-size:12px; }
   th, td { padding:5px; }
   .table-container { overflow-x:auto; }
 }
@@ -53,15 +59,30 @@ tbody tr:hover { background:#f3f4f6; }
 
   <!-- Dashboard -->
   <div id="dashboard">
-    <div class="card" style="background:#bfdbfe;"><h3>Jumlah Pemesan</h3><p id="totalOrders">0</p></div>
-    <div class="card" style="background:#bbf7d0;"><h3>Total Berat (Kg)</h3><p id="totalWeight">0 Kg</p></div>
-    <div class="card" style="background:#fef08a;"><h3>Total Pemasukan</h3><p id="totalIncome">Rp 0</p></div>
-    <div class="card" style="background:#ddd6fe;"><h3>Order Aktif</h3><p id="activeOrders">0</p></div>
-    <div class="card" style="background:#e5e7eb;"><h3>Order Selesai</h3><p id="completedOrders">0</p></div>
+    <div class="card" style="background:#bfdbfe;">
+      <h3>Jumlah Pemesan</h3>
+      <p id="totalOrders">0</p>
+    </div>
+    <div class="card" style="background:#bbf7d0;">
+      <h3>Total Berat (Kg)</h3>
+      <p id="totalWeight">0 Kg</p>
+    </div>
+    <div class="card" style="background:#fef08a;">
+      <h3>Total Pemasukan</h3>
+      <p id="totalIncome">Rp 0</p>
+    </div>
+    <div class="card" style="background:#ddd6fe;">
+      <h3>Order Aktif</h3>
+      <p id="activeOrders">0</p>
+    </div>
+    <div class="card" style="background:#e5e7eb;">
+      <h3>Order Selesai</h3>
+      <p id="completedOrders">0</p>
+    </div>
   </div>
 
-  <!-- Refresh Button -->
-  <div style="margin-bottom:10px;">
+  <!-- Filter bar -->
+  <div class="filter-bar">
     <button onclick="confirmRefresh()">🔄 Refresh Orders</button>
   </div>
 
@@ -94,21 +115,38 @@ tbody tr:hover { background:#f3f4f6; }
 <script>
 const GAS_URL = "https://script.google.com/macros/s/AKfycbwJax3FO_zvxRrsYtL6X_3xsmZAWG9gwxSs-ljpvGvMCR003h0qjf3_rq7wMDn2yv8Z5A/exec";
 let currentData = [];
-const statusOptions = ["Dipesan","Dijemput","Diproses","Selesai","Diantar"];
+const statusOptions = ["Dipesan", "Dijemput", "Diproses", "Selesai", "Diantar"];
 
-function showNotif(msg,type="success"){const notif=document.getElementById("notif");notif.textContent=msg;notif.className=type==="success"?"success":"error";notif.style.display="block";setTimeout(()=>notif.style.display="none",3000);}
-function confirmRefresh(){if(confirm("Yakin mau reload data order?")){loadOrders();}}
+/* Notifikasi */
+function showNotif(msg,type="success"){
+  const notif=document.getElementById("notif");
+  notif.textContent=msg;
+  notif.className=type==="success"?"success":"error";
+  notif.style.display="block";
+  setTimeout(()=>notif.style.display="none",3000);
+}
+
+/* Refresh */
+function confirmRefresh(){if(confirm("Yakin mau reload data order?")) loadOrders();}
+
+/* Load data */
 function loadOrders(){
   fetch(GAS_URL,{method:"POST",body: JSON.stringify({ type:"GetAllOrders" })})
   .then(res=>res.json())
-  .then(data=>{currentData=data.orders||[];renderTable(currentData);updateDashboard(currentData);})
-  .catch(err=>{console.error(err);showNotif("⚠️ Gagal load order","error");});
+  .then(data=>{
+    currentData=data.orders||[];
+    renderTable(currentData);
+    updateDashboard(currentData);
+  })
+  .catch(err=>{console.error(err); showNotif("⚠️ Gagal load order","error");});
 }
 
+/* Render table */
 function renderTable(data){
   const tbody=document.querySelector("#ordersTable tbody");
   tbody.innerHTML="";
-  if(!data||data.length===0){tbody.innerHTML="<tr><td colspan='12' style='text-align:center;'>Tidak ada order</td></tr>";return;}
+  if(!data||data.length===0){tbody.innerHTML="<tr><td colspan='12' style='text-align:center;'>Tidak ada order</td></tr>"; return;}
+  
   data.forEach((o,i)=>{
     const noHp=o["No HP"]?.toString()||"";
     const harga=o.Harga||0;
@@ -117,50 +155,87 @@ function renderTable(data){
     const formattedHarga=parseInt(harga).toLocaleString("id-ID");
     const date=new Date(o.Jadwal);
     const formattedDate=isNaN(date)?o.Jadwal:(("0"+date.getDate()).slice(-2)+"-"+("0"+(date.getMonth()+1)).slice(-2)+"-"+date.getFullYear()+" "+("0"+date.getHours()).slice(-2)+":"+("0"+date.getMinutes()).slice(-2));
+    
     const tr=document.createElement("tr");
     tr.innerHTML=`
-      <td data-label="No">${i+1}</td>
-      <td data-label="Nama" contenteditable="true">${o.Nama||""}</td>
-      <td data-label="Alamat" contenteditable="true">${o.Alamat||""}</td>
-      <td data-label="No HP" contenteditable="true">${formattedHP}</td>
-      <td data-label="Layanan" contenteditable="true">${o.Layanan||""}</td>
-      <td data-label="Catatan" contenteditable="true">${o.Catatan||""}</td>
-      <td data-label="Jadwal" contenteditable="true">${formattedDate}</td>
-      <td data-label="Maps"><a href="${o.Maps||'#'}" target="_blank">Lihat</a></td>
-      <td data-label="Status"><select data-key="Status">${statusOptions.map(s=>`<option value="${s}" ${o.Status===s?'selected':''}>${s}</option>`).join('')}</select></td>
-      <td data-label="Berat (Kg)" contenteditable="true">${berat}</td>
-      <td data-label="Harga (Rp)" contenteditable="true">${formattedHarga}</td>
-      <td data-label="Aksi"><button onclick="updateRow(this,${o.rowIndex})">Update</button></td>
+      <td>${i+1}</td>
+      <td contenteditable="true" data-key="Nama">${o.Nama||""}</td>
+      <td contenteditable="true" data-key="Alamat">${o.Alamat||""}</td>
+      <td contenteditable="true" data-key="No HP">${formattedHP}</td>
+      <td contenteditable="true" data-key="Layanan">${o.Layanan||""}</td>
+      <td contenteditable="true" data-key="Catatan">${o.Catatan||""}</td>
+      <td contenteditable="true" data-key="Jadwal">${formattedDate}</td>
+      <td><a href="${o.Maps||'#'}" target="_blank">Lihat</a></td>
+      <td>
+        <select data-key="Status">
+          ${statusOptions.map(s => `<option value="${s}" ${o.Status===s?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </td>
+      <td contenteditable="true" data-key="Berat">${berat}</td>
+      <td contenteditable="true" data-key="Harga">${formattedHarga}</td>
+      <td><button onclick="updateRow(this,${o.rowIndex})">Update</button></td>
     `;
     tbody.appendChild(tr);
   });
 }
 
+/* Update row langsung */
 function updateRow(btn,rowIndex){
   if(!confirm("Yakin update data row ini?")) return;
   const tr=btn.closest("tr");
   const payload={};
-  tr.querySelectorAll("[contenteditable], select").forEach(el=>{payload[el.dataset.key]=el.value?.trim() ?? el.textContent.trim();});
-  fetch(GAS_URL,{method:"POST",body: JSON.stringify({type:"UpdateOrder", rowIndex, payload})})
-  .then(res=>res.json())
-  .then(r=>{if(r.result==="ok"){showNotif("✅ Data berhasil disimpan","success");loadOrders();}else{showNotif("⚠️ Gagal update","error");}})
-  .catch(err=>{console.error(err);showNotif("⚠️ Gagal update","error");});
-}
+  tr.querySelectorAll("[contenteditable], select").forEach(el=>{
+    payload[el.dataset.key]=el.value?.trim() ?? el.textContent.trim();
+  });
 
-function filterColumn(e,index){
-  const val=e.target.value.toLowerCase();
-  document.querySelectorAll("#ordersTable tbody tr").forEach(r=>{
-    const td=r.children[index];
-    if(td) r.style.display=td.textContent.toLowerCase().includes(val)?"":"none";
+  fetch(GAS_URL,{
+    method:"POST",
+    body: JSON.stringify({type:"UpdateOrder", rowIndex, payload})
+  })
+  .then(res=>res.json())
+  .then(r=>{
+    if(r.result==="ok"){
+      showNotif("✅ Data berhasil disimpan","success");
+      // update tampilan row langsung
+      tr.querySelectorAll("[contenteditable]").forEach(td=>{
+        if(payload[td.dataset.key]) td.textContent=payload[td.dataset.key];
+      });
+      const sel = tr.querySelector("select[data-key='Status']");
+      if(sel) sel.value = payload.Status || sel.value;
+    } else {
+      showNotif("⚠️ Gagal update","error");
+    }
+  })
+  .catch(err=>{
+    console.error(err);
+    showNotif("⚠️ Gagal update","error");
   });
 }
 
+/* Filter per kolom */
+function filterColumn(e,index){
+  const val=e.target.value.toLowerCase();
+  const rows=document.querySelectorAll("#ordersTable tbody tr");
+  rows.forEach(r=>{
+    const td=r.children[index];
+    if(td){
+      r.style.display=td.textContent.toLowerCase().includes(val)?"":"none";
+    }
+  });
+}
+
+/* Dashboard */
 function updateDashboard(data){
-  document.getElementById("totalOrders").textContent=data.length;
-  document.getElementById("totalWeight").textContent=data.reduce((sum,o)=>sum+parseFloat(o.Berat||0),0).toFixed(2)+" Kg";
-  document.getElementById("totalIncome").textContent="Rp "+data.reduce((sum,o)=>sum+parseFloat(o.Harga||0),0).toLocaleString("id-ID");
-  document.getElementById("activeOrders").textContent=data.filter(o=>!["Selesai","Diantar"].includes(o.Status)).length;
-  document.getElementById("completedOrders").textContent=data.filter(o=>["Selesai","Diantar"].includes(o.Status)).length;
+  let totalOrders=data.length;
+  let totalWeight=data.reduce((sum,o)=>sum+parseFloat(o.Berat||0),0);
+  let totalIncome=data.reduce((sum,o)=>sum+parseFloat(o.Harga||0),0);
+  let activeOrders=data.filter(o=>!["Selesai","Diantar"].includes(o.Status)).length;
+  let completedOrders=data.filter(o=>["Selesai","Diantar"].includes(o.Status)).length;
+  document.getElementById("totalOrders").textContent=totalOrders;
+  document.getElementById("totalWeight").textContent=totalWeight.toFixed(2)+" Kg";
+  document.getElementById("totalIncome").textContent="Rp "+totalIncome.toLocaleString("id-ID");
+  document.getElementById("activeOrders").textContent=activeOrders;
+  document.getElementById("completedOrders").textContent=completedOrders;
 }
 
 window.addEventListener("DOMContentLoaded",loadOrders);
