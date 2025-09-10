@@ -52,10 +52,25 @@ thead input:focus {
   background: #f0f9ff;
 }
 
-/* Notifikasi */
-#notif { display:none; padding:10px; margin-bottom:10px; border-radius:5px; font-weight:bold; }
-#notif.success { background:#d1fae5; color:#065f46; }
-#notif.error { background:#fee2e2; color:#991b1b; }
+/* Notifikasi Tengah */
+.toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 250px;
+  max-width: 80%;
+  padding: 15px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+  display: none;
+  z-index: 9999;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.toast.success { background:#16a34a; color:white; }
+.toast.error { background:#dc2626; color:white; }
 
 /* Animasi flash setelah update */
 @keyframes flashGreen {
@@ -89,7 +104,8 @@ th input {
 </header>
 
 <div class="container">
-  <div id="notif"></div>
+  <!-- Notifikasi -->
+  <div id="notif" class="toast"></div>
 
   <!-- Dashboard -->
   <div id="dashboard">
@@ -207,19 +223,20 @@ function gotoOrder(rowIndex, btn) {
   }
 }
 
-/* Notifikasi */
+/* Notifikasi Tengah */
 function showNotif(msg, type="success") {
   const notif = document.getElementById("notif");
   notif.textContent = msg;
-  notif.className = type === "success" ? "success" : "error";
+  notif.className = "toast " + (type === "success" ? "success" : "error");
   notif.style.display = "block";
-  setTimeout(() => notif.style.display = "none", 3000);
+  setTimeout(() => notif.style.display = "none", 2000);
 }
 
 /* Refresh dengan konfirmasi */
 function confirmRefresh() {
   if (confirm("Yakin mau reload data order?")) {
     loadOrders();
+    showNotif("🔄 Data berhasil direfresh","success");
   }
 }
 
