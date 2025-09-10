@@ -20,7 +20,7 @@ input, select { padding:6px; border:1px solid #ccc; border-radius:5px; font-size
   flex-wrap:wrap; 
   gap:10px; 
   align-items:center; 
-  justify-content:center;  /* tombol ditengah */
+  justify-content:center;   /* tombol center di laptop */
   margin-bottom:10px; 
 }
 
@@ -69,6 +69,15 @@ tr.flash { animation: flashGreen 1.5s ease-out; }
   table, th, td { font-size:12px; padding:6px; }
   .filter-bar { flex-direction:column; align-items:flex-start; }
 }
+@media (max-width:768px){
+  table, th, td { font-size:12px; padding:6px; }
+  .filter-bar { 
+    flex-direction:column; 
+    align-items:center;     /* tombol tetap center di HP */
+    justify-content:center; 
+  }
+}
+
 </style>
 </head>
 <body>
