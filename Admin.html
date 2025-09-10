@@ -152,10 +152,9 @@ function saveSeenOrders() { localStorage.setItem("seenOrders", JSON.stringify([.
 function highlightNewOrders(data){
   const box = document.getElementById("newOrdersBox");
   const list = document.getElementById("newOrdersList");
-  const noNew = document.getElementById("noNewOrders");
   list.innerHTML = ""; // reset daftar lama
 
-  let pendingOrders = data.filter(o => o.Status === "Dipesan");
+  let pendingOrders = data.filter(o => o.Status === "Dipesan" && !seenOrders.has(String(o.rowIndex)));
 
   if(pendingOrders.length > 0){
     box.style.display = "block";
@@ -168,30 +167,36 @@ function highlightNewOrders(data){
           onclick="gotoOrder(${o.rowIndex}, this)">Lihat</button>`;
       list.appendChild(li);
     });
-    noNew.style.display = "none";
   } else {
+    // jika tidak ada notif, beri keterangan
+    const li = document.createElement("li");
+    li.style.marginBottom = "6px";
+    li.textContent = "Tidak ada pesanan baru.";
+    list.appendChild(li);
     box.style.display = "block";
-    noNew.style.display = "block";
   }
 }
 
+
 /* Tombol Lihat */
 function gotoOrder(rowIndex, btn) {
+  seenOrders.add(String(rowIndex));
+  saveSeenOrders();
+
+  // scroll ke row terkait
   const row = [...document.querySelectorAll("#ordersTable tbody tr")]
-    .find(r => r.querySelector("button")?.onclick.toString().includes(rowIndex));
+    .find(r => {
+      const onclickBtn = r.querySelector("button");
+      return onclickBtn && onclickBtn.getAttribute("onclick")?.includes(rowIndex);
+    });
+
   if (row) {
     row.scrollIntoView({ behavior: "smooth", block: "center" });
     row.classList.add("flash");
     setTimeout(() => row.classList.remove("flash"), 1500);
   }
-  // Hanya tandai sebagai seen jika status sudah bukan "Dipesan"
-  const trStatus = row.querySelector("select[data-key='Status']").value;
-  if(trStatus !== "Dipesan"){
-    seenOrders.add(String(rowIndex));
-    saveSeenOrders();
-    highlightNewOrders(currentData);
-  }
 }
+
 
 function showNotif(msg, type="success") {
   const notif = document.getElementById("notif");
@@ -263,29 +268,41 @@ function renderTable(data) {
 }
 
 function updateRow(btn,rowIndex) {
-  if(!confirm("Yakin update data row ini?")) return;
-  const tr=btn.closest("tr");
-  const payload={};
-  tr.querySelectorAll("[contenteditable], select").forEach(el=>{ payload[el.dataset.key]=el.value?.trim()??el.textContent.trim(); });
+  if (!confirm("Yakin update data row ini?")) return;
+  const tr = btn.closest("tr");
+  const payload = {};
+  tr.querySelectorAll("[contenteditable], select").forEach(el => {
+    payload[el.dataset.key] = el.value?.trim() ?? el.textContent.trim();
+  });
 
-  fetch(GAS_URL,{ method:"POST", body:JSON.stringify({ type:"UpdateOrder", rowIndex, payload }) })
-  .then(res=>res.json())
-  .then(r=>{
-    if(r.result==="ok"){
-      showNotif("✅ Data berhasil disimpan","success");
+  fetch(GAS_URL, {
+    method: "POST",
+    body: JSON.stringify({ type:"UpdateOrder", rowIndex, payload })
+  })
+  .then(res => res.json())
+  .then(r => {
+    if (r.result === "ok") {
+      showNotif("✅ Data berhasil disimpan", "success");
       tr.classList.add("flash");
-      setTimeout(()=>tr.classList.remove("flash"),1500);
+      setTimeout(() => tr.classList.remove("flash"), 1500);
 
-      if(payload.Status!=="Dipesan"){
-        seenOrders.add(String(rowIndex));
-        saveSeenOrders();
-        highlightNewOrders(currentData);
+      // 🔹 hapus notifikasi jika status bukan "Dipesan"
+      const order = currentData.find(o => o.rowIndex === rowIndex);
+      if(order){
+        order.Status = payload.Status; // update status lokal
+        highlightNewOrders(currentData); // update notifikasi
       }
 
-    }else{ showNotif("⚠️ Gagal update","error"); }
+    } else {
+      showNotif("⚠️ Gagal update", "error");
+    }
   })
-  .catch(err=>{ console.error(err); showNotif("⚠️ Gagal update","error"); });
+  .catch(err => {
+    console.error(err);
+    showNotif("⚠️ Gagal update", "error");
+  });
 }
+
 
 function filterColumn(e,index){
   const val=e.target.value.toLowerCase();
