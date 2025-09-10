@@ -6,9 +6,7 @@
 <title>Sea Laundry Admin</title>
 <style>
 /* Warna hijau untuk order diantar */
-tr.status-diantar {
-  background-color: #d1fae5 !important;  /* hijau muda */
-}
+tr.status-diantar { background-color: #d1fae5 !important; }
 
 body { font-family: Arial, sans-serif; background:#f4f4f4; margin:0; padding:0; }
 header { background:#1f2937; color:white; padding:15px; text-align:center; }
@@ -20,23 +18,11 @@ button:hover { background:#1e40af; }
 
 /* Filter per kolom */
 input, select { padding:6px; border:1px solid #ccc; border-radius:5px; font-size:13px; }
-.filter-bar { 
-  display:flex; 
-  flex-wrap:wrap; 
-  gap:10px; 
-  align-items:center; 
-  justify-content:center;   /* tombol center di laptop */
-  margin-bottom:10px; 
-}
+.filter-bar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:center; margin-bottom:10px; }
 
 /* Dashboard */
 #dashboard { display:grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap:15px; margin-bottom:20px; }
-.card { 
-  padding:15px; 
-  border-radius:10px; 
-  box-shadow:0 2px 6px rgba(0,0,0,0.1); 
-  text-align: center;
-}
+.card { padding:15px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); text-align: center; }
 .card h3 { font-size:14px; color:#374151; margin:0; }
 .card p { font-size:20px; font-weight:bold; margin:5px 0 0; }
 
@@ -51,11 +37,7 @@ tbody tr:nth-child(even) { background:#f9fafb; }
 tbody tr:hover { background:#e0f2fe !important; }
 
 /* Highlight filter aktif */
-thead input:focus {
-  border: 2px solid #2563eb;
-  outline: none;
-  background: #f0f9ff;
-}
+thead input:focus { border: 2px solid #2563eb; outline: none; background: #f0f9ff; }
 
 /* Notifikasi Tengah */
 .toast {
@@ -78,28 +60,17 @@ thead input:focus {
 .toast.error { background:#dc2626; color:white; }
 
 /* Animasi flash setelah update */
-@keyframes flashGreen {
-  from { background-color: #bbf7d0; }
-  to { background-color: inherit; }
-}
+@keyframes flashGreen { from { background-color: #bbf7d0; } to { background-color: inherit; } }
 tr.flash { animation: flashGreen 1.5s ease-out; }
 
 /* Responsif */
 @media (max-width:768px){
   table, th, td { font-size:12px; padding:6px; }
-  .filter-bar { 
-    flex-direction:column; 
-    align-items:center;     
-    justify-content:center; 
-  }
+  .filter-bar { flex-direction:column; align-items:center; justify-content:center; }
 }
 
 /* Input search di tabel center */
-th input {
-  display:block;
-  margin:5px auto;
-  text-align:center;
-}
+th input { display:block; margin:5px auto; text-align:center; }
 
 </style>
 </head>
@@ -110,30 +81,24 @@ th input {
 </header>
 
 <div class="container">
-  <!-- Notifikasi -->
   <div id="notif" class="toast"></div>
 
   <!-- Dashboard -->
   <div id="dashboard">
     <div class="card" style="background:#bfdbfe;">
-      <h3>Jumlah Pemesan</h3>
-      <p id="totalOrders">0</p>
+      <h3>Jumlah Pemesan</h3><p id="totalOrders">0</p>
     </div>
     <div class="card" style="background:#bbf7d0;">
-      <h3>Total Berat (Kg)</h3>
-      <p id="totalWeight">0 Kg</p>
+      <h3>Total Berat (Kg)</h3><p id="totalWeight">0 Kg</p>
     </div>
     <div class="card" style="background:#fef08a;">
-      <h3>Total Pemasukan</h3>
-      <p id="totalIncome">Rp 0</p>
+      <h3>Total Pemasukan</h3><p id="totalIncome">Rp 0</p>
     </div>
     <div class="card" style="background:#ddd6fe;">
-      <h3>Order Aktif</h3>
-      <p id="activeOrders">0</p>
+      <h3>Order Aktif</h3><p id="activeOrders">0</p>
     </div>
     <div class="card" style="background:#e5e7eb;">
-      <h3>Order Selesai</h3>
-      <p id="completedOrders">0</p>
+      <h3>Order Selesai</h3><p id="completedOrders">0</p>
     </div>
   </div>
 
@@ -143,29 +108,28 @@ th input {
     <ul id="newOrdersList" style="list-style:none; padding:0; margin:0;"></ul>
   </div>
 
-  <!-- Filter bar -->
   <div class="filter-bar">
     <button onclick="confirmRefresh()">🔄 Refresh Orders</button>
   </div>
 
   <div class="table-container">
     <table id="ordersTable">
-<thead>
-  <tr>
-    <th>No</th>
-    <th>Nama<br><input type="text" placeholder="Search" oninput="filterColumn(event,1)"></th>
-    <th>Alamat<br><input type="text" placeholder="Search" oninput="filterColumn(event,2)"></th>
-    <th>No HP<br><input type="text" placeholder="Search" oninput="filterColumn(event,3)"></th>
-    <th>Layanan<br><input type="text" placeholder="Search" oninput="filterColumn(event,4)"></th>
-    <th>Catatan<br><input type="text" placeholder="Search" oninput="filterColumn(event,5)"></th>
-    <th>Jadwal<br><input type="text" placeholder="Search" oninput="filterColumn(event,6)"></th>
-    <th>Maps</th>
-    <th>Status</th>
-    <th>Berat (Kg)<br><input type="text" placeholder="Search" oninput="filterColumn(event,9)"></th>
-    <th>Harga (Rp)<br><input type="text" placeholder="Search" oninput="filterColumn(event,10)"></th>
-    <th>Aksi</th>
-  </tr>
-</thead>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Nama<br><input type="text" placeholder="Search" oninput="filterColumn(event,1)"></th>
+          <th>Alamat<br><input type="text" placeholder="Search" oninput="filterColumn(event,2)"></th>
+          <th>No HP<br><input type="text" placeholder="Search" oninput="filterColumn(event,3)"></th>
+          <th>Layanan<br><input type="text" placeholder="Search" oninput="filterColumn(event,4)"></th>
+          <th>Catatan<br><input type="text" placeholder="Search" oninput="filterColumn(event,5)"></th>
+          <th>Jadwal<br><input type="text" placeholder="Search" oninput="filterColumn(event,6)"></th>
+          <th>Maps</th>
+          <th>Status</th>
+          <th>Berat (Kg)<br><input type="text" placeholder="Search" oninput="filterColumn(event,9)"></th>
+          <th>Harga (Rp)<br><input type="text" placeholder="Search" oninput="filterColumn(event,10)"></th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
       <tbody>
         <tr><td colspan="12" style="text-align:center;">Loading...</td></tr>
       </tbody>
@@ -178,22 +142,16 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbwJax3FO_zvxRrsYtL6X_3x
 let currentData = [];
 const statusOptions = ["Dipesan", "Dijemput", "Diproses", "Selesai", "Diantar"];
 
-/* ======= NEW ORDERS HANDLER ======= */
 let knownOrders = new Set();
 let seenOrders = new Set(JSON.parse(localStorage.getItem("seenOrders") || "[]"));
 
-function saveSeenOrders() {
-  localStorage.setItem("seenOrders", JSON.stringify([...seenOrders]));
-}
+function saveSeenOrders() { localStorage.setItem("seenOrders", JSON.stringify([...seenOrders])); }
 
-/* Highlight Pesanan Baru */
 function highlightNewOrders(data){
   const box = document.getElementById("newOrdersBox");
   const list = document.getElementById("newOrdersList");
-  list.innerHTML = ""; // reset daftar lama
-
+  list.innerHTML = "";
   let pendingOrders = data.filter(o => o.Status === "Dipesan" && !seenOrders.has(String(o.rowIndex)));
-
   if(pendingOrders.length > 0){
     box.style.display = "block";
     pendingOrders.forEach(o => {
@@ -205,25 +163,21 @@ function highlightNewOrders(data){
           onclick="gotoOrder(${o.rowIndex}, this)">Lihat</button>`;
       list.appendChild(li);
     });
-  } else {
-    box.style.display = "none";
-  }
+  } else { box.style.display = "none"; }
 }
 
-/* Tombol "Lihat" scroll ke row pemesan */
 function gotoOrder(rowIndex, btn) {
   seenOrders.add(String(rowIndex));
   saveSeenOrders();
   btn.parentElement.remove();
-  const remaining = document.querySelectorAll("#newOrdersList li").length;
-  if (remaining === 0) document.getElementById("newOrdersBox").style.display = "none";
+  if (document.querySelectorAll("#newOrdersList li").length === 0)
+    document.getElementById("newOrdersBox").style.display = "none";
 
-  // Scroll ke row sesuai rowIndex
+  // scroll ke row
   const rows = document.querySelectorAll("#ordersTable tbody tr");
   for (const tr of rows) {
     const updateBtn = tr.querySelector("button");
-    if (!updateBtn) continue;
-    if (updateBtn.getAttribute("onclick").includes(`${rowIndex}`)) {
+    if (updateBtn && updateBtn.getAttribute("onclick").includes(`${rowIndex}`)) {
       tr.scrollIntoView({ behavior: "smooth", block: "center" });
       tr.classList.add("flash");
       setTimeout(() => tr.classList.remove("flash"), 1500);
@@ -232,162 +186,124 @@ function gotoOrder(rowIndex, btn) {
   }
 }
 
-/* Update row dengan auto-hide notifikasi jika status bukan Dipesan */
-function updateRow(btn,rowIndex) {
-  if (!confirm("Yakin update data row ini?")) return;
-  const tr = btn.closest("tr");
-  const payload = {};
-  tr.querySelectorAll("[contenteditable], select").forEach(el => {
-    payload[el.dataset.key] = el.value?.trim() ?? el.textContent.trim();
-  });
-
-  fetch(GAS_URL, {
-    method: "POST",
-    body: JSON.stringify({ type:"UpdateOrder", rowIndex, payload })
-  })
-  .then(res => res.json())
-  .then(r => {
-    if (r.result === "ok") {
-      showNotif("✅ Data berhasil disimpan", "success");
-      tr.classList.add("flash");
-      setTimeout(() => tr.classList.remove("flash"), 1500);
-
-      // Jika status bukan Dipesan, hapus dari seenOrders & hide notif
-      if (payload.Status !== "Dipesan") {
-        seenOrders.add(String(rowIndex)); // tandai sudah dilihat
-        saveSeenOrders();
-        highlightNewOrders(currentData); // refresh notif
-      }
-
-    } else {
-      showNotif("⚠️ Gagal update", "error");
-    }
-  })
-  .catch(err => {
-    console.error(err);
-    showNotif("⚠️ Gagal update", "error");
-  });
+function showNotif(msg, type="success") {
+  const notif = document.getElementById("notif");
+  notif.textContent = msg;
+  notif.className = "toast " + (type === "success" ? "success" : "error");
+  notif.style.display = "block";
+  setTimeout(() => notif.style.display = "none", 2000);
 }
 
-/* Render tabel */
+function confirmRefresh() {
+  if (confirm("Yakin mau reload data order?")) {
+    loadOrders();
+    showNotif("🔄 Data berhasil direfresh","success");
+  }
+}
+
+function loadOrders() {
+  fetch(GAS_URL, { method:"POST", body: JSON.stringify({ type:"GetAllOrders" }) })
+  .then(res => res.json())
+  .then(data => {
+    currentData = data.orders || [];
+    renderTable(currentData);
+    updateDashboard(currentData);
+    highlightNewOrders(currentData);
+  })
+  .catch(err => { console.error(err); showNotif("⚠️ Gagal load order", "error"); });
+}
+
 function renderTable(data) {
   const tbody = document.querySelector("#ordersTable tbody");
   tbody.innerHTML = "";
-  if (!data || data.length === 0) {
-    tbody.innerHTML = "<tr><td colspan='12' style='text-align:center;'>Tidak ada order</td></tr>";
-    return;
-  }
-  data.forEach((o,i) => {
-    const noHp = o["No HP"]?.toString() || "";
-    const harga = o.Harga || 0;
-    const berat = o.Berat || 0;
-    const formattedHP = noHp.startsWith("62") ? "0" + noHp.slice(2) : noHp;
-    const formattedHarga = parseInt(harga).toLocaleString("id-ID");
-    const date = new Date(o.Jadwal);
-    const formattedDate = isNaN(date) ? o.Jadwal :
-      (("0" + date.getDate()).slice(-2) + "-" +
-      ("0" + (date.getMonth()+1)).slice(-2) + "-" +
-      date.getFullYear() + " " +
-      ("0" + date.getHours()).slice(-2) + ":" +
-      ("0" + date.getMinutes()).slice(-2));
-
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
+  if (!data || data.length===0) { tbody.innerHTML = "<tr><td colspan='12' style='text-align:center;'>Tidak ada order</td></tr>"; return; }
+  data.forEach((o,i)=>{
+    const noHp=o["No HP"]?.toString()||"";
+    const harga=o.Harga||0;
+    const berat=o.Berat||0;
+    const formattedHP=noHp.startsWith("62")?"0"+noHp.slice(2):noHp;
+    const formattedHarga=parseInt(harga).toLocaleString("id-ID");
+    const date=new Date(o.Jadwal);
+    const formattedDate=isNaN(date)?o.Jadwal: (("0"+date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + date.getFullYear() + " " + ("0"+date.getHours()).slice(-2)+":"+("0"+date.getMinutes()).slice(-2));
+    
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
       <td>${i+1}</td>
-      <td contenteditable="true" data-key="Nama">${o.Nama || ""}</td>
-      <td contenteditable="true" data-key="Alamat">${o.Alamat || ""}</td>
+      <td contenteditable="true" data-key="Nama">${o.Nama||""}</td>
+      <td contenteditable="true" data-key="Alamat">${o.Alamat||""}</td>
       <td contenteditable="true" data-key="No HP">${formattedHP}</td>
-      <td contenteditable="true" data-key="Layanan">${o.Layanan || ""}</td>
-      <td contenteditable="true" data-key="Catatan">${o.Catatan || ""}</td>
+      <td contenteditable="true" data-key="Layanan">${o.Layanan||""}</td>
+      <td contenteditable="true" data-key="Catatan">${o.Catatan||""}</td>
       <td contenteditable="true" data-key="Jadwal">${formattedDate}</td>
-      <td><a href="${o.Maps || '#'}" target="_blank">Lihat</a></td>
+      <td><a href="${o.Maps||'#'}" target="_blank">Lihat</a></td>
       <td>
         <select data-key="Status">
-          ${statusOptions.map(s => `<option value="${s}" ${o.Status === s ? 'selected' : ''}>${s}</option>`).join('')}
+          ${statusOptions.map(s=>`<option value="${s}" ${o.Status===s?'selected':''}>${s}</option>`).join('')}
         </select>
       </td>
       <td contenteditable="true" data-key="Berat">${berat}</td>
       <td contenteditable="true" data-key="Harga">${formattedHarga}</td>
       <td><button onclick="updateRow(this,${o.rowIndex})">Update</button></td>
     `;
-
-    // 🔹 kasih warna hijau jika status sudah "Diantar"
-    if (o.Status === "Diantar") {
-      tr.classList.add("status-diantar");
-    }
-
-    // 🔹 update warna saat dropdown status diganti
+    if (o.Status==="Diantar") tr.classList.add("status-diantar");
     const statusSelect = tr.querySelector("select[data-key='Status']");
-    statusSelect.addEventListener("change", function(){
-      if (this.value === "Diantar") {
-        tr.classList.add("status-diantar");
-      } else {
-        tr.classList.remove("status-diantar");
-      }
+    statusSelect.addEventListener("change",function(){
+      if(this.value==="Diantar") tr.classList.add("status-diantar");
+      else tr.classList.remove("status-diantar");
     });
-
     tbody.appendChild(tr);
   });
 }
 
-/* Update row */
 function updateRow(btn,rowIndex) {
-  if (!confirm("Yakin update data row ini?")) return;
-  const tr = btn.closest("tr");
-  const payload = {};
-  tr.querySelectorAll("[contenteditable], select").forEach(el => {
-    payload[el.dataset.key] = el.value?.trim() ?? el.textContent.trim();
-  });
+  if(!confirm("Yakin update data row ini?")) return;
+  const tr=btn.closest("tr");
+  const payload={};
+  tr.querySelectorAll("[contenteditable], select").forEach(el=>{ payload[el.dataset.key]=el.value?.trim()??el.textContent.trim(); });
 
-  fetch(GAS_URL, {
-    method: "POST",
-    body: JSON.stringify({ type:"UpdateOrder", rowIndex, payload })
-  })
-  .then(res => res.json())
-  .then(r => {
-    if (r.result === "ok") {
-      showNotif("✅ Data berhasil disimpan", "success");
+  fetch(GAS_URL,{ method:"POST", body:JSON.stringify({ type:"UpdateOrder", rowIndex, payload }) })
+  .then(res=>res.json())
+  .then(r=>{
+    if(r.result==="ok"){
+      showNotif("✅ Data berhasil disimpan","success");
       tr.classList.add("flash");
-      setTimeout(() => tr.classList.remove("flash"), 1500);
-    } else {
-      showNotif("⚠️ Gagal update", "error");
-    }
+      setTimeout(()=>tr.classList.remove("flash"),1500);
+
+      if(payload.Status!=="Dipesan"){
+        seenOrders.add(String(rowIndex));
+        saveSeenOrders();
+        highlightNewOrders(currentData);
+      }
+
+    }else{ showNotif("⚠️ Gagal update","error"); }
   })
-  .catch(err => {
-    console.error(err);
-    showNotif("⚠️ Gagal update", "error");
+  .catch(err=>{ console.error(err); showNotif("⚠️ Gagal update","error"); });
+}
+
+function filterColumn(e,index){
+  const val=e.target.value.toLowerCase();
+  const rows=document.querySelectorAll("#ordersTable tbody tr");
+  rows.forEach(r=>{
+    const td=r.children[index];
+    if(td) r.style.display=td.textContent.toLowerCase().includes(val)?"":"none";
   });
 }
 
-/* Filter per kolom */
-function filterColumn(e,index) {
-  const val = e.target.value.toLowerCase();
-  const rows = document.querySelectorAll("#ordersTable tbody tr");
-  rows.forEach(r => {
-    const td = r.children[index];
-    if (td) {
-      r.style.display = td.textContent.toLowerCase().includes(val) ? "" : "none";
-    }
-  });
-}
-
-/* Dashboard */
-function updateDashboard(data) {
-  let totalOrders = data.length;
-  let totalWeight = data.reduce((sum,o) => sum+parseFloat(o.Berat||0),0);
-  let totalIncome = data.reduce((sum,o) => sum+parseFloat(o.Harga||0),0);
-  let activeOrders = data.filter(o => !["Selesai","Diantar"].includes(o.Status)).length;
-  let completedOrders = data.filter(o => ["Selesai","Diantar"].includes(o.Status)).length;
-  document.getElementById("totalOrders").textContent = totalOrders;
-  document.getElementById("totalWeight").textContent = totalWeight.toFixed(2)+" Kg";
-  document.getElementById("totalIncome").textContent = "Rp "+totalIncome.toLocaleString("id-ID");
-  document.getElementById("activeOrders").textContent = activeOrders;
-  document.getElementById("completedOrders").textContent = completedOrders;
+function updateDashboard(data){
+  let totalOrders=data.length;
+  let totalWeight=data.reduce((sum,o)=>sum+parseFloat(o.Berat||0),0);
+  let totalIncome=data.reduce((sum,o)=>sum+parseFloat(o.Harga||0),0);
+  let activeOrders=data.filter(o=>!["Selesai","Diantar"].includes(o.Status)).length;
+  let completedOrders=data.filter(o=>["Selesai","Diantar"].includes(o.Status)).length;
+  document.getElementById("totalOrders").textContent=totalOrders;
+  document.getElementById("totalWeight").textContent=totalWeight.toFixed(2)+" Kg";
+  document.getElementById("totalIncome").textContent="Rp "+totalIncome.toLocaleString("id-ID");
+  document.getElementById("activeOrders").textContent=activeOrders;
+  document.getElementById("completedOrders").textContent=completedOrders;
 }
 
 window.addEventListener("DOMContentLoaded", loadOrders);
 </script>
-
 
 </body>
 </html>
