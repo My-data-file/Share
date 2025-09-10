@@ -12,8 +12,7 @@ header { background:#1f2937; color:white; padding:15px; text-align:center; }
 button { padding:10px 14px; margin:5px 0; cursor:pointer; border:none; border-radius:5px; background:#2563eb; color:white; font-weight:bold; transition: background 0.2s;}
 button:hover { background:#1e40af; }
 
-input, select { padding:6px; border:1px solid #ccc; border-radius:5px; font-size:13px; }
-.filter-bar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:10px; }
+input, select { padding:6px; border:1px solid #ccc; border-radius:5px; font-size:13px; width:100%; box-sizing:border-box; }
 
 #dashboard { display:grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap:15px; margin-bottom:20px; }
 .card { padding:15px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); background:white; }
@@ -33,23 +32,14 @@ tbody tr:hover { background:#f3f4f6; }
 
 @media (max-width:768px){
   table, th, td { font-size:12px; padding:6px; }
-  .filter-bar { flex-direction:column; align-items:flex-start; }
   #dashboard { grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); }
 }
 
 @media (max-width:480px){
-  th, td { font-size:11px; padding:4px; }
-  .table-container { margin:0 -10px; }
-  #dashboard { grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); }
-  table, thead, tbody, th, td, tr { display:block; }
-  thead { display:none; }
-  tr { margin-bottom:15px; border:1px solid #ddd; border-radius:8px; padding:10px; background:white; }
-  td { display:flex; justify-content:space-between; padding:4px 0; }
-  td::before { content: attr(data-label); font-weight:bold; margin-right:10px; flex:1; }
-  td:last-child { justify-content:flex-end; }
-  .mobile-filters { display:flex; flex-direction:column; gap:5px; margin-bottom:10px; }
+  table { width:100%; font-size:12px; }
+  th, td { padding:5px; }
+  .table-container { overflow-x:auto; }
 }
-.mobile-filters { display:none; }
 </style>
 </head>
 <body>
@@ -61,6 +51,7 @@ tbody tr:hover { background:#f3f4f6; }
 <div class="container">
   <div id="notif"></div>
 
+  <!-- Dashboard -->
   <div id="dashboard">
     <div class="card" style="background:#bfdbfe;"><h3>Jumlah Pemesan</h3><p id="totalOrders">0</p></div>
     <div class="card" style="background:#bbf7d0;"><h3>Total Berat (Kg)</h3><p id="totalWeight">0 Kg</p></div>
@@ -69,17 +60,9 @@ tbody tr:hover { background:#f3f4f6; }
     <div class="card" style="background:#e5e7eb;"><h3>Order Selesai</h3><p id="completedOrders">0</p></div>
   </div>
 
-  <!-- Filter bar desktop -->
-  <div class="filter-bar">
+  <!-- Refresh Button -->
+  <div style="margin-bottom:10px;">
     <button onclick="confirmRefresh()">🔄 Refresh Orders</button>
-    <input type="text" placeholder="Filter Nama" oninput="filterColumn(event,1)">
-    <input type="text" placeholder="Filter Alamat" oninput="filterColumn(event,2)">
-    <input type="text" placeholder="Filter No HP" oninput="filterColumn(event,3)">
-    <input type="text" placeholder="Filter Layanan" oninput="filterColumn(event,4)">
-    <input type="text" placeholder="Filter Catatan" oninput="filterColumn(event,5)">
-    <input type="text" placeholder="Filter Jadwal" oninput="filterColumn(event,6)">
-    <input type="text" placeholder="Filter Berat" oninput="filterColumn(event,9)">
-    <input type="text" placeholder="Filter Harga" oninput="filterColumn(event,10)">
   </div>
 
   <!-- Table -->
@@ -88,16 +71,16 @@ tbody tr:hover { background:#f3f4f6; }
       <thead>
         <tr>
           <th>No</th>
-          <th>Nama</th>
-          <th>Alamat</th>
-          <th>No HP</th>
-          <th>Layanan</th>
-          <th>Catatan</th>
-          <th>Jadwal</th>
+          <th>Nama<br><input type="text" placeholder="Filter" oninput="filterColumn(event,1)"></th>
+          <th>Alamat<br><input type="text" placeholder="Filter" oninput="filterColumn(event,2)"></th>
+          <th>No HP<br><input type="text" placeholder="Filter" oninput="filterColumn(event,3)"></th>
+          <th>Layanan<br><input type="text" placeholder="Filter" oninput="filterColumn(event,4)"></th>
+          <th>Catatan<br><input type="text" placeholder="Filter" oninput="filterColumn(event,5)"></th>
+          <th>Jadwal<br><input type="text" placeholder="Filter" oninput="filterColumn(event,6)"></th>
           <th>Maps</th>
           <th>Status</th>
-          <th>Berat (Kg)</th>
-          <th>Harga (Rp)</th>
+          <th>Berat (Kg)<br><input type="text" placeholder="Filter" oninput="filterColumn(event,9)"></th>
+          <th>Harga (Rp)<br><input type="text" placeholder="Filter" oninput="filterColumn(event,10)"></th>
           <th>Aksi</th>
         </tr>
       </thead>
@@ -111,7 +94,7 @@ tbody tr:hover { background:#f3f4f6; }
 <script>
 const GAS_URL = "https://script.google.com/macros/s/AKfycbwJax3FO_zvxRrsYtL6X_3xsmZAWG9gwxSs-ljpvGvMCR003h0qjf3_rq7wMDn2yv8Z5A/exec";
 let currentData = [];
-const statusOptions = ["Dipesan", "Dijemput", "Diproses", "Selesai", "Diantar"];
+const statusOptions = ["Dipesan","Dijemput","Diproses","Selesai","Diantar"];
 
 function showNotif(msg,type="success"){const notif=document.getElementById("notif");notif.textContent=msg;notif.className=type==="success"?"success":"error";notif.style.display="block";setTimeout(()=>notif.style.display="none",3000);}
 function confirmRefresh(){if(confirm("Yakin mau reload data order?")){loadOrders();}}
@@ -144,11 +127,7 @@ function renderTable(data){
       <td data-label="Catatan" contenteditable="true">${o.Catatan||""}</td>
       <td data-label="Jadwal" contenteditable="true">${formattedDate}</td>
       <td data-label="Maps"><a href="${o.Maps||'#'}" target="_blank">Lihat</a></td>
-      <td data-label="Status">
-        <select data-key="Status">
-          ${statusOptions.map(s => `<option value="${s}" ${o.Status===s?'selected':''}>${s}</option>`).join('')}
-        </select>
-      </td>
+      <td data-label="Status"><select data-key="Status">${statusOptions.map(s=>`<option value="${s}" ${o.Status===s?'selected':''}>${s}</option>`).join('')}</select></td>
       <td data-label="Berat (Kg)" contenteditable="true">${berat}</td>
       <td data-label="Harga (Rp)" contenteditable="true">${formattedHarga}</td>
       <td data-label="Aksi"><button onclick="updateRow(this,${o.rowIndex})">Update</button></td>
@@ -161,9 +140,7 @@ function updateRow(btn,rowIndex){
   if(!confirm("Yakin update data row ini?")) return;
   const tr=btn.closest("tr");
   const payload={};
-  tr.querySelectorAll("[contenteditable], select").forEach(el=>{
-    payload[el.dataset.key]=el.value?.trim() ?? el.textContent.trim();
-  });
+  tr.querySelectorAll("[contenteditable], select").forEach(el=>{payload[el.dataset.key]=el.value?.trim() ?? el.textContent.trim();});
   fetch(GAS_URL,{method:"POST",body: JSON.stringify({type:"UpdateOrder", rowIndex, payload})})
   .then(res=>res.json())
   .then(r=>{if(r.result==="ok"){showNotif("✅ Data berhasil disimpan","success");loadOrders();}else{showNotif("⚠️ Gagal update","error");}})
@@ -172,21 +149,18 @@ function updateRow(btn,rowIndex){
 
 function filterColumn(e,index){
   const val=e.target.value.toLowerCase();
-  const rows=document.querySelectorAll("#ordersTable tbody tr");
-  rows.forEach(r=>{const td=r.children[index];if(td){r.style.display=td.textContent.toLowerCase().includes(val)?"":"none";}});
+  document.querySelectorAll("#ordersTable tbody tr").forEach(r=>{
+    const td=r.children[index];
+    if(td) r.style.display=td.textContent.toLowerCase().includes(val)?"":"none";
+  });
 }
 
 function updateDashboard(data){
-  let totalOrders=data.length;
-  let totalWeight=data.reduce((sum,o)=>sum+parseFloat(o.Berat||0),0);
-  let totalIncome=data.reduce((sum,o)=>sum+parseFloat(o.Harga||0),0);
-  let activeOrders=data.filter(o=>!["Selesai","Diantar"].includes(o.Status)).length;
-  let completedOrders=data.filter(o=>["Selesai","Diantar"].includes(o.Status)).length;
-  document.getElementById("totalOrders").textContent=totalOrders;
-  document.getElementById("totalWeight").textContent=totalWeight.toFixed(2)+" Kg";
-  document.getElementById("totalIncome").textContent="Rp "+totalIncome.toLocaleString("id-ID");
-  document.getElementById("activeOrders").textContent=activeOrders;
-  document.getElementById("completedOrders").textContent=completedOrders;
+  document.getElementById("totalOrders").textContent=data.length;
+  document.getElementById("totalWeight").textContent=data.reduce((sum,o)=>sum+parseFloat(o.Berat||0),0).toFixed(2)+" Kg";
+  document.getElementById("totalIncome").textContent="Rp "+data.reduce((sum,o)=>sum+parseFloat(o.Harga||0),0).toLocaleString("id-ID");
+  document.getElementById("activeOrders").textContent=data.filter(o=>!["Selesai","Diantar"].includes(o.Status)).length;
+  document.getElementById("completedOrders").textContent=data.filter(o=>["Selesai","Diantar"].includes(o.Status)).length;
 }
 
 window.addEventListener("DOMContentLoaded",loadOrders);
