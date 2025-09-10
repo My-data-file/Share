@@ -5,67 +5,64 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sea Laundry Admin</title>
 <style>
+/* ================= BASIC ================= */
 body { font-family: Arial, sans-serif; background:#f4f4f4; margin:0; padding:0; }
 header { background:#1f2937; color:white; padding:15px; text-align:center; }
-.container { padding:15px; }
+.container { padding:20px; }
 
-/* Tombol */
-button { 
-  padding:7px 14px; 
-  margin:5px 0; 
-  cursor:pointer; 
-  border:none; 
-  border-radius:5px; 
-  background:#2563eb; 
-  color:white; 
-  font-weight:bold; 
-  transition: background 0.2s; 
-  font-size:14px;
-}
+/* ================= BUTTON ================= */
+button { padding:10px 14px; margin:5px 0; cursor:pointer; border:none; border-radius:5px; background:#2563eb; color:white; font-weight:bold; transition: background 0.2s;}
 button:hover { background:#1e40af; }
 
-/* Input & Select */
-input, select { padding:7px; border:1px solid #ccc; border-radius:5px; font-size:14px; }
+/* ================= FILTER BAR ================= */
+input, select { padding:6px; border:1px solid #ccc; border-radius:5px; font-size:13px; }
 .filter-bar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:10px; }
 
-/* Tabel */
-.table-container { 
-  width:100%; 
-  overflow-x:auto; 
-  background:white; 
-  border-radius:8px; 
-  box-shadow:0 1px 4px rgba(0,0,0,0.1); 
+/* ================= DASHBOARD ================= */
+#dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+  gap:15px;
+  margin-bottom:20px;
 }
-table { width:100%; border-collapse: collapse; min-width:800px; }
-th, td { border:1px solid #ccc; padding:10px; text-align:left; font-size:14px; }
-th { background:#e5e7eb; cursor:pointer; }
+.card { padding:15px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); background:white; }
+.card h3 { font-size:14px; color:#374151; margin:0; }
+.card p { font-size:20px; font-weight:bold; margin:5px 0 0; }
+
+/* ================= TABLE ================= */
+.table-container { width:100%; overflow-x:auto; background:white; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); }
+table { width:100%; border-collapse: collapse; min-width:1000px; }
+th, td { border:1px solid #ccc; padding:8px; text-align:left; font-size:13px; }
+th { background:#e5e7eb; position:sticky; top:0; z-index:2; }
 tbody tr:nth-child(even) { background:#f9fafb; }
 tbody tr:hover { background:#f3f4f6; }
 
-/* Highlight Search */
-mark { background: yellow; color: black; padding:0 2px; }
-
-/* Notifikasi */
-#notif {
-  display:none;
-  padding:10px;
-  margin-bottom:10px;
-  border-radius:5px;
-  font-weight:bold;
-}
+/* ================= NOTIF ================= */
+#notif { display:none; padding:10px; margin-bottom:10px; border-radius:5px; font-weight:bold; }
 #notif.success { background:#d1fae5; color:#065f46; }
 #notif.error { background:#fee2e2; color:#991b1b; }
 
-/* Responsif */
-@media (max-width: 768px){
-  header h1 { font-size:18px; }
-  .filter-bar { flex-direction:column; align-items:stretch; }
-  input, select, button { width:100%; }
-  th, td { font-size:13px; padding:8px; }
+/* ================= RESPONSIVE ================= */
+@media (max-width:768px){
+  table, th, td { font-size:12px; padding:6px; }
+  .filter-bar { flex-direction:column; align-items:flex-start; }
+  #dashboard { grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); }
 }
-@media (max-width: 480px){
-  header h1 { font-size:16px; }
-  th, td { font-size:12px; padding:6px; }
+
+@media (max-width:480px){
+  th, td { font-size:11px; padding:4px; }
+  .table-container { margin:0 -10px; }
+  #dashboard { grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); }
+}
+
+/* ================= MOBILE CARD VIEW ================= */
+@media (max-width:480px){
+  table, thead, tbody, th, td, tr { display:block; }
+  thead { display:none; }
+  tr { margin-bottom:15px; border:1px solid #ddd; border-radius:8px; padding:10px; background:white; }
+  td { display:flex; justify-content:space-between; padding:4px 0; }
+  td::before { content: attr(data-label); font-weight:bold; margin-right:10px; flex:1; }
+  td:last-child { justify-content:flex-end; } /* tombol update tetap di kanan */
 }
 </style>
 </head>
@@ -78,54 +75,73 @@ mark { background: yellow; color: black; padding:0 2px; }
 <div class="container">
   <div id="notif"></div>
 
-  <div class="filter-bar">
-    <button onclick="confirmRefresh()">🔄 Refresh Orders</button>
-    <input type="text" id="searchInput" placeholder="Cari data apa saja..." onkeyup="applyFilters()">
-    <select id="statusFilter" onchange="applyFilters()">
-      <option value="">Filter Status</option>
-      <option>Dipesan</option>
-      <option>Dijemput</option>
-      <option>Diproses</option>
-      <option>Selesai</option>
-      <option>Diantar</option>
-    </select>
+  <!-- Dashboard -->
+  <div id="dashboard">
+    <div class="card" style="background:#bfdbfe;">
+      <h3>Jumlah Pemesan</h3>
+      <p id="totalOrders">0</p>
+    </div>
+    <div class="card" style="background:#bbf7d0;">
+      <h3>Total Berat (Kg)</h3>
+      <p id="totalWeight">0 Kg</p>
+    </div>
+    <div class="card" style="background:#fef08a;">
+      <h3>Total Pemasukan</h3>
+      <p id="totalIncome">Rp 0</p>
+    </div>
+    <div class="card" style="background:#ddd6fe;">
+      <h3>Order Aktif</h3>
+      <p id="activeOrders">0</p>
+    </div>
+    <div class="card" style="background:#e5e7eb;">
+      <h3>Order Selesai</h3>
+      <p id="completedOrders">0</p>
+    </div>
   </div>
 
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <button onclick="confirmRefresh()">🔄 Refresh Orders</button>
+  </div>
+
+  <!-- Table -->
   <div class="table-container">
     <table id="ordersTable">
       <thead>
         <tr>
-          <th onclick="sortTable(0)">No</th>
-          <th onclick="sortTable(1)">Nama</th>
-          <th onclick="sortTable(2)">Alamat</th>
-          <th onclick="sortTable(3)">No HP</th>
-          <th onclick="sortTable(4)">Layanan</th>
-          <th>Catatan</th>
-          <th onclick="sortTable(6)">Jadwal</th>
+          <th>No</th>
+          <th>Nama<br><input type="text" placeholder="Filter" oninput="filterColumn(event,1)"></th>
+          <th>Alamat<br><input type="text" placeholder="Filter" oninput="filterColumn(event,2)"></th>
+          <th>No HP<br><input type="text" placeholder="Filter" oninput="filterColumn(event,3)"></th>
+          <th>Layanan<br><input type="text" placeholder="Filter" oninput="filterColumn(event,4)"></th>
+          <th>Catatan<br><input type="text" placeholder="Filter" oninput="filterColumn(event,5)"></th>
+          <th>Jadwal<br><input type="text" placeholder="Filter" oninput="filterColumn(event,6)"></th>
           <th>Maps</th>
-          <th onclick="sortTable(8)">Status</th>
+          <th>Status</th>
+          <th>Berat (Kg)<br><input type="text" placeholder="Filter" oninput="filterColumn(event,9)"></th>
+          <th>Harga (Rp)<br><input type="text" placeholder="Filter" oninput="filterColumn(event,10)"></th>
           <th>Aksi</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td colspan="10" style="text-align:center;">Loading...</td></tr>
+        <tr><td colspan="12" style="text-align:center;">Loading...</td></tr>
       </tbody>
     </table>
   </div>
 </div>
 
 <script>
-const GAS_URL = "https://script.google.com/macros/s/AKfycbzUi45pbENNxmua_SaIpFFxnE-E2EtxRyC_vwT538ytVqaUPSMzWkPmhq16E67tkvpJPg/exec"; 
+const GAS_URL = "https://script.google.com/macros/s/AKfycbwJax3FO_zvxRrsYtL6X_3xsmZAWG9gwxSs-ljpvGvMCR003h0qjf3_rq7wMDn2yv8Z5A/exec";
 let currentData = [];
-let filteredData = [];
+const statusOptions = ["Dipesan", "Dijemput", "Diproses", "Selesai", "Diantar"];
 
 /* Notifikasi */
-function showNotif(msg, type="success"){
-  const notif = document.getElementById("notif");
-  notif.textContent = msg;
-  notif.className = type === "success" ? "success" : "error";
-  notif.style.display = "block";
-  setTimeout(()=> notif.style.display="none", 3000);
+function showNotif(msg,type="success"){
+  const notif=document.getElementById("notif");
+  notif.textContent=msg;
+  notif.className=type==="success"?"success":"error";
+  notif.style.display="block";
+  setTimeout(()=>notif.style.display="none",3000);
 }
 
 /* Refresh dengan konfirmasi */
@@ -135,7 +151,7 @@ function confirmRefresh(){
   }
 }
 
-/* Load data order */
+/* Load data */
 function loadOrders(){
   fetch(GAS_URL,{
     method:"POST",
@@ -143,129 +159,111 @@ function loadOrders(){
   })
   .then(res=>res.json())
   .then(data=>{
-    currentData = data.orders || data || [];
-    filteredData = [...currentData];
-    renderTable(filteredData);
+    currentData=data.orders||[];
+    renderTable(currentData);
+    updateDashboard(currentData);
   })
   .catch(err=>{
-    console.error("Fetch error:", err);
-    showNotif("⚠️ Gagal load order", "error");
+    console.error(err);
+    showNotif("⚠️ Gagal load order","error");
   });
-}
-
-/* Highlight Search */
-function highlightText(text, keyword){
-  if(!text) text = "";
-  if(!keyword) return text;
-  const regex = new RegExp(`(${keyword})`, "gi");
-  return text.toString().replace(regex, "<mark>$1</mark>");
 }
 
 /* Render tabel */
 function renderTable(data){
-  const tbody = document.querySelector("#ordersTable tbody");
-  tbody.innerHTML = "";
-  const search = document.getElementById("searchInput").value.toLowerCase();
-
-  if(!data || data.length===0){
-    tbody.innerHTML = "<tr><td colspan='10' style='text-align:center;'>Tidak ada order</td></tr>";
+  const tbody=document.querySelector("#ordersTable tbody");
+  tbody.innerHTML="";
+  if(!data||data.length===0){
+    tbody.innerHTML="<tr><td colspan='12' style='text-align:center;'>Tidak ada order</td></tr>";
     return;
   }
   data.forEach((o,i)=>{
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${i+1}</td>
-      <td>${highlightText(o.Nama || o.nama || "", search)}</td>
-      <td>${highlightText(o.Alamat || o.alamat || "", search)}</td>
-      <td>${highlightText(o["No HP"] || o.NoHp || o.nohp || "", search)}</td>
-      <td>${highlightText(o.Layanan || o.layanan || "", search)}</td>
-      <td>${highlightText(o.Catatan || o.catatan || "", search)}</td>
-      <td>${highlightText(o.Jadwal || o.jadwal || "", search)}</td>
-      <td>${o.Maps ? `<a href="${o.Maps}" target="_blank">Lihat</a>` : ""}</td>
-      <td>
-        <select class="status-select" data-row="${i+2}">
-          <option ${o.Status==="Dipesan"?"selected":""}>Dipesan</option>
-          <option ${o.Status==="Dijemput"?"selected":""}>Dijemput</option>
-          <option ${o.Status==="Diproses"?"selected":""}>Diproses</option>
-          <option ${o.Status==="Selesai"?"selected":""}>Selesai</option>
-          <option ${o.Status==="Diantar"?"selected":""}>Diantar</option>
+    const noHp=o["No HP"]?.toString()||"";
+    const harga=o.Harga||0;
+    const berat=o.Berat||0;
+    const formattedHP=noHp.startsWith("62")?"0"+noHp.slice(2):noHp;
+    const formattedHarga=parseInt(harga).toLocaleString("id-ID");
+    const date=new Date(o.Jadwal);
+    const formattedDate=isNaN(date)?o.Jadwal:(("0"+date.getDate()).slice(-2)+"-"+("0"+(date.getMonth()+1)).slice(-2)+"-"+date.getFullYear()+" "+("0"+date.getHours()).slice(-2)+":"+("0"+date.getMinutes()).slice(-2));
+    
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td data-label="No">${i+1}</td>
+      <td data-label="Nama" contenteditable="true">${o.Nama||""}</td>
+      <td data-label="Alamat" contenteditable="true">${o.Alamat||""}</td>
+      <td data-label="No HP" contenteditable="true">${formattedHP}</td>
+      <td data-label="Layanan" contenteditable="true">${o.Layanan||""}</td>
+      <td data-label="Catatan" contenteditable="true">${o.Catatan||""}</td>
+      <td data-label="Jadwal" contenteditable="true">${formattedDate}</td>
+      <td data-label="Maps"><a href="${o.Maps||'#'}" target="_blank">Lihat</a></td>
+      <td data-label="Status">
+        <select data-key="Status">
+          ${statusOptions.map(s => `<option value="${s}" ${o.Status===s?'selected':''}>${s}</option>`).join('')}
         </select>
       </td>
-      <td><button onclick="confirmUpdate(this)">Update</button></td>
+      <td data-label="Berat (Kg)" contenteditable="true">${berat}</td>
+      <td data-label="Harga (Rp)" contenteditable="true">${formattedHarga}</td>
+      <td data-label="Aksi"><button onclick="updateRow(this,${o.rowIndex})">Update</button></td>
     `;
     tbody.appendChild(tr);
   });
 }
 
-/* Konfirmasi Update */
-function confirmUpdate(btn){
-  const select = btn.parentElement.previousElementSibling.querySelector("select");
-  const newStatus = select.value;
-  if(confirm(`Yakin update status ke "${newStatus}"?`)){
-    updateStatus(btn);
-  }
-}
-
-/* Update Status */
-function updateStatus(btn){
-  const select = btn.parentElement.previousElementSibling.querySelector("select");
-  const newStatus = select.value;
-  const rowIndex = parseInt(select.dataset.row);
-
+/* Update row */
+function updateRow(btn,rowIndex){
+  if(!confirm("Yakin update data row ini?")) return;
+  const tr=btn.closest("tr");
+  const payload={};
+  tr.querySelectorAll("[contenteditable], select").forEach(el=>{
+    payload[el.dataset.key]=el.value?.trim() ?? el.textContent.trim();
+  });
+  
   fetch(GAS_URL,{
     method:"POST",
-    body: JSON.stringify({
-      type:"UpdateStatus",
-      payload: { rowIndex, status: newStatus }
-    })
+    body: JSON.stringify({type:"UpdateOrder", rowIndex, payload})
   })
   .then(res=>res.json())
-  .then(data=>{
-    if(data.result==="ok") showNotif("✅ Status berhasil diperbarui","success");
-    else showNotif("⚠️ Gagal update status","error");
+  .then(r=>{
+    if(r.result==="ok"){
+      showNotif("✅ Data berhasil disimpan","success");
+      loadOrders();
+    }else{
+      showNotif("⚠️ Gagal update","error");
+    }
   })
   .catch(err=>{
     console.error(err);
-    showNotif("⚠️ Gagal update status","error");
+    showNotif("⚠️ Gagal update","error");
   });
 }
 
-/* Search & Filter */
-function applyFilters(){
-  const search = document.getElementById("searchInput").value.toLowerCase();
-  const status = document.getElementById("statusFilter").value;
-
-  filteredData = currentData.filter(o=>{
-    const allValues = Object.values(o).join(" ").toLowerCase();
-    const matchSearch = allValues.includes(search);
-    const matchStatus = status ? ((o.Status||"").toLowerCase() === status.toLowerCase()) : true;
-    return matchSearch && matchStatus;
+/* Filter per kolom */
+function filterColumn(e,index){
+  const val=e.target.value.toLowerCase();
+  const rows=document.querySelectorAll("#ordersTable tbody tr");
+  rows.forEach(r=>{
+    const td=r.children[index];
+    if(td){
+      r.style.display=td.textContent.toLowerCase().includes(val)?"":"none";
+    }
   });
-
-  renderTable(filteredData);
 }
 
-/* Sortir Kolom */
-let sortDir = {};
-function sortTable(colIndex){
-  const keyMap = {
-    1:"Nama", 2:"Alamat", 3:"No HP", 4:"Layanan", 6:"Jadwal", 8:"Status"
-  };
-  const key = keyMap[colIndex];
-  if(!key) return;
-
-  sortDir[key] = !sortDir[key];
-  let sorted = [...filteredData].sort((a,b)=>{
-    let valA = (a[key]||"").toString().toLowerCase();
-    let valB = (b[key]||"").toString().toLowerCase();
-    if(valA < valB) return sortDir[key] ? -1 : 1;
-    if(valA > valB) return sortDir[key] ? 1 : -1;
-    return 0;
-  });
-  renderTable(sorted);
+/* Dashboard */
+function updateDashboard(data){
+  let totalOrders=data.length;
+  let totalWeight=data.reduce((sum,o)=>sum+parseFloat(o.Berat||0),0);
+  let totalIncome=data.reduce((sum,o)=>sum+parseFloat(o.Harga||0),0);
+  let activeOrders=data.filter(o=>!["Selesai","Diantar"].includes(o.Status)).length;
+  let completedOrders=data.filter(o=>["Selesai","Diantar"].includes(o.Status)).length;
+  document.getElementById("totalOrders").textContent=totalOrders;
+  document.getElementById("totalWeight").textContent=totalWeight.toFixed(2)+" Kg";
+  document.getElementById("totalIncome").textContent="Rp "+totalIncome.toLocaleString("id-ID");
+  document.getElementById("activeOrders").textContent=activeOrders;
+  document.getElementById("completedOrders").textContent=completedOrders;
 }
 
-window.addEventListener("DOMContentLoaded", loadOrders);
+window.addEventListener("DOMContentLoaded",loadOrders);
 </script>
 
 </body>
