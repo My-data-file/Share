@@ -78,12 +78,19 @@ tr.flash { animation: flashGreen 1.5s ease-out; }
   }
 }
 
+/* Biar input search di tabel center */
+th input {
+  display:block;
+  margin:5px auto;   /* auto → center horizontal */
+  text-align:center; /* teks di dalam input juga center */
+}
+
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Admin Panel - Sea Laundry v1</h1>
+  <h1>Admin Panel - Sea Laundry</h1>
 </header>
 
 <div class="container">
@@ -123,16 +130,16 @@ tr.flash { animation: flashGreen 1.5s ease-out; }
 <thead>
   <tr>
     <th>No</th>
-    <th>Nama<br><input type="text" placeholder="Filter" oninput="filterColumn(event,1)"></th>
-    <th>Alamat<br><input type="text" placeholder="Filter" oninput="filterColumn(event,2)"></th>
-    <th>No HP<br><input type="text" placeholder="Filter" oninput="filterColumn(event,3)"></th>
-    <th>Layanan<br><input type="text" placeholder="Filter" oninput="filterColumn(event,4)"></th>
-    <th>Catatan<br><input type="text" placeholder="Filter" oninput="filterColumn(event,5)"></th>
-    <th>Jadwal<br><input type="text" placeholder="Filter" oninput="filterColumn(event,6)"></th>
+    <th>Nama<br><input type="text" placeholder="Search" oninput="filterColumn(event,1)"></th>
+    <th>Alamat<br><input type="text" placeholder="Search" oninput="filterColumn(event,2)"></th>
+    <th>No HP<br><input type="text" placeholder="Search" oninput="filterColumn(event,3)"></th>
+    <th>Layanan<br><input type="text" placeholder="Search" oninput="filterColumn(event,4)"></th>
+    <th>Catatan<br><input type="text" placeholder="Search" oninput="filterColumn(event,5)"></th>
+    <th>Jadwal<br><input type="text" placeholder="Search" oninput="filterColumn(event,6)"></th>
     <th>Maps</th>
     <th>Status</th>
-    <th>Berat (Kg)<br><input type="text" placeholder="Filter" oninput="filterColumn(event,9)"></th>
-    <th>Harga (Rp)<br><input type="text" placeholder="Filter" oninput="filterColumn(event,10)"></th>
+    <th>Berat (Kg)<br><input type="text" placeholder="Search" oninput="filterColumn(event,9)"></th>
+    <th>Harga (Rp)<br><input type="text" placeholder="Search" oninput="filterColumn(event,10)"></th>
     <th>Aksi</th>
   </tr>
 </thead>
