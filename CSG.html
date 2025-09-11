@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login Perusahaan</title>
+<title>MENU AI</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 <style>
 body {
@@ -17,7 +17,6 @@ body {
     background-size: 400% 400%;
     animation: gradientBG 15s ease infinite;
 }
-
 @keyframes gradientBG {
     0%{background-position:0% 50%}
     50%{background-position:100% 50%}
@@ -25,24 +24,19 @@ body {
 }
 
 #loginCard {
-    background: rgba(255,255,255,0.85);
-    backdrop-filter: blur(12px);
-    padding:40px;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(8px);
+    padding:40px 40px 70px 40px;
     border-radius:16px;
     box-shadow:0 15px 35px rgba(0,0,0,0.25);
-    width:90%;               /* menyesuaikan layar HP */
+    width:90%;
     max-width:400px;
     text-align:center;
     color:#000;
-    opacity:0;
-    transform: translateY(-30px);
-    animation: fadeSlideIn 0.8s forwards;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
     box-sizing:border-box;
-    margin: 0 auto;          /* menjaga card tetap di tengah */
-}
-
-@keyframes fadeSlideIn {
-    to { opacity:1; transform: translateY(0); }
 }
 
 #loginCard img {
@@ -52,10 +46,10 @@ body {
     margin-bottom:20px;
 }
 
-/* Input presisi */
 .input-group {
     position: relative;
     margin:15px 0;
+    width:100%;
 }
 .input-group i {
     position: absolute;
@@ -74,12 +68,20 @@ body {
     background:#e0f7fa;
     color:#000;
     box-sizing:border-box;
+    transition: border 0.3s;
+}
+.input-group input:focus {
+    outline:none;
+    border:2px solid #0288d1;
+}
+.input-group input.valid {
+    border:2px solid #4caf50;
+}
+.input-group input.invalid {
+    border:2px solid #d32f2f;
 }
 
-.input-group input::placeholder { color:#555; }
-
-/* Tombol login */
-#loginCard button {
+#loginButton {
     width:100%;
     padding:12px;
     margin-top:10px;
@@ -90,10 +92,33 @@ body {
     font-size:16px;
     cursor:pointer;
     transition:0.3s;
+    position: relative;
 }
-#loginCard button:hover { background:#0288d1; }
+#loginButton:hover { background:#0288d1; }
 
-/* Pesan error */
+/* Spinner untuk UX */
+#loginButton.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+#loginButton.loading::after {
+    content: '';
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    width:20px;
+    height:20px;
+    border:3px solid #fff;
+    border-top-color: transparent;
+    border-radius:50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
 #errorMsg {
     color:#d32f2f;
     margin-top:10px;
@@ -109,48 +134,93 @@ body {
     100% { transform: translateX(0); }
 }
 
-/* Responsif */
+#loginCard p#copyright {
+    font-size:14px;
+    color:#000;
+    font-weight:bold;
+    margin-top:25px;
+    font-family:'Segoe UI', Tahoma, sans-serif;
+}
 @media(max-width:480px){
-    #loginCard { padding:25px; width:90%; }
+    #loginCard { padding:25px 25px 60px 25px; }
     .input-group input { font-size:14px; padding:10px 10px 10px 36px; }
-    #loginCard button { font-size:14px; padding:10px; }
+    #loginButton { font-size:14px; padding:10px; }
     #loginCard img { width:60px; height:60px; margin-bottom:15px; }
+    #loginCard p#copyright { font-size:12px; margin-top:20px; }
 }
 </style>
 </head>
 <body>
 
 <div id="loginCard">
-    <!-- Ganti logo via GitHub atau lokal -->
     <img id="logo" src="https://raw.githubusercontent.com/My-data-file/Share/main/CSG.png" alt="Logo">
-    <h2>Login Perusahaan</h2>
+
+    <h2>MENU AI</h2>
+
     <div class="input-group">
         <i class="bi bi-person"></i>
         <input type="text" id="username" placeholder="Username">
     </div>
+
     <div class="input-group">
         <i class="bi bi-lock"></i>
         <input type="password" id="password" placeholder="Password">
     </div>
-    <button onclick="login()">Login</button>
+
+    <button id="loginButton" onclick="login()">Login</button>
+
     <div id="errorMsg">Username atau password salah!</div>
+
+    <p id="copyright">&copy; 2025 PT. CITRA SASTRA GRAFIKA. V1.0</p>
 </div>
 
 <script>
+// Fokus otomatis username & Enter key
+document.getElementById('username').focus();
+document.addEventListener('keypress', function(e) {
+    if(e.key === 'Enter') login();
+});
+
+// Login function dengan spinner & validasi border
 function login() {
     const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value.trim();
     const errorDiv = document.getElementById('errorMsg');
+    const loginBtn = document.getElementById('loginButton');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
 
-    if(user === "admin" && pass === "1234") {
-        errorDiv.style.display = "none";
-        alert("Login berhasil!");
-    } else {
-        errorDiv.style.display = "block";
-        errorDiv.style.animation = 'none';
-        void errorDiv.offsetWidth;
-        errorDiv.style.animation = 'shake 0.3s';
-    }
+    // Reset valid/invalid classes
+    usernameInput.classList.remove('valid','invalid');
+    passwordInput.classList.remove('valid','invalid');
+    errorDiv.style.display = "none";
+
+    // Validasi input kosong
+    if(user === "") usernameInput.classList.add('invalid');
+    else usernameInput.classList.add('valid');
+
+    if(pass === "") passwordInput.classList.add('invalid');
+    else passwordInput.classList.add('valid');
+
+    if(user === "" || pass === "") return;
+
+    // Mulai spinner
+    loginBtn.classList.add('loading');
+
+    setTimeout(() => {
+        if(user === "admin" && pass === "1234") {
+            alert("Login berhasil!");
+            // redirect ke dashboard bisa ditambahkan di sini
+        } else {
+            errorDiv.style.display = "block";
+            errorDiv.style.animation = 'none';
+            void errorDiv.offsetWidth;
+            errorDiv.style.animation = 'shake 0.3s';
+            usernameInput.classList.add('invalid');
+            passwordInput.classList.add('invalid');
+        }
+        loginBtn.classList.remove('loading');
+    }, 1000);
 }
 </script>
 
