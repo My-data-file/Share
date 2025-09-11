@@ -3,116 +3,69 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MENU AI & Dashboard</title>
+<title>MENU AI & Dashboard Modern</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 <style>
-/* ===== Global ===== */
-* { box-sizing: border-box; } /* pastikan semua termasuk padding/border */
-body {
-    margin:0;
-    font-family:'Segoe UI', Tahoma, sans-serif;
-    background: linear-gradient(135deg, #ffffff, #b3e5fc, #e0f7fa, #000000);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-    height:100vh;
-}
-@keyframes gradientBG {
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
-}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'Segoe UI', Tahoma, sans-serif; background:#e0f7fa; min-height:100vh; }
 
-/* ===== Login Card ===== */
-#loginWrapper {
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
-}
+/* ===== Login ===== */
+#loginWrapper { display:flex; justify-content:center; align-items:center; min-height:100vh; }
 #loginCard {
-    background: rgba(255,255,255,0.85);
-    backdrop-filter: blur(12px);
-    padding:30px;
-    border-radius:16px;
-    box-shadow:0 15px 35px rgba(0,0,0,0.25);
-    width:90%;          /* lebih aman untuk HP */
-    max-width:400px;
-    text-align:center;
-    color:#000;
-    animation: fadeSlideIn 0.8s forwards;
+    background: rgba(255,255,255,0.95);
+    padding:30px; border-radius:16px; box-shadow:0 15px 35px rgba(0,0,0,0.25);
+    width:90%; max-width:400px; text-align:center;
 }
-@keyframes fadeSlideIn { to { opacity:1; transform: translateY(0); } }
 #loginCard img { width:80px; height:80px; object-fit:contain; margin-bottom:20px; }
-.input-group { position: relative; margin:15px 0; }
-.input-group i { position: absolute; top:50%; left:12px; transform: translateY(-50%); color:#000; font-size:18px; }
-.input-group input { width:100%; padding:12px 12px 12px 40px; border:1px solid #b3e5fc; border-radius:8px; font-size:16px; background:#e0f7fa; color:#000; }
+.input-group { position:relative; margin:15px 0; }
+.input-group i { position:absolute; top:50%; left:12px; transform:translateY(-50%); color:#000; font-size:18px; }
+.input-group input { width:100%; padding:12px 12px 12px 40px; border:1px solid #b3e5fc; border-radius:8px; font-size:16px; background:#fff; }
 .input-group input::placeholder { color:#555; }
-#loginCard button { width:100%; padding:12px; margin-top:10px; border:none; border-radius:8px; background:#4fc3f7; color:#fff; font-size:16px; cursor:pointer; transition:0.3s; }
-#loginCard button:hover { background:#0288d1; }
+#loginCard button { width:100%; padding:12px; margin-top:10px; border:none; border-radius:8px; background:#0288d1; color:#fff; font-size:16px; cursor:pointer; transition:0.3s; }
+#loginCard button:hover { background:#0277bd; }
 #errorMsg { color:#d32f2f; margin-top:10px; display:none; font-weight:bold; animation: shake 0.3s; }
-@keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } 100% { transform: translateX(0); } }
+@keyframes shake { 0%{transform:translateX(0);}25%{transform:translateX(-5px);}50%{transform:translateX(5px);}75%{transform:translateX(-5px);}100%{transform:translateX(0);} }
 #copyright { margin-top:15px; font-size:12px; color:#555; }
 
 /* ===== Dashboard ===== */
-#dashboardWrapper {
-    display:none;
-    height:100vh;
-    flex-direction:row;
-    position:relative;
-}
+#dashboardWrapper { display:none; height:100vh; display:flex; flex-direction:row; position:relative; }
 .sidebar {
-    width:220px;
-    flex-shrink:0;
-    background:#0288d1;
-    color:#fff;
-    display:flex;
-    flex-direction:column;
+    width:220px; background:#0288d1; color:#fff; flex-shrink:0;
+    display:flex; flex-direction:column; transition:0.3s;
 }
-.sidebar h2 {
-    text-align:center;
-    padding:20px 0;
-    margin:0;
-    font-size:20px;
-    border-bottom:1px solid rgba(255,255,255,0.2);
-}
-.menu-item { padding:15px 20px; cursor:pointer; display:flex; align-items:center; justify-content:space-between; transition:0.3s; }
-.menu-item span { flex:1; }
-.menu-item .badge { background:#f44336; color:#fff; border-radius:12px; font-size:12px; padding:2px 6px; }
-.menu-item:hover, .menu-item.active { background: rgba(255,255,255,0.2); }
+.sidebar .logo { text-align:center; padding:20px; font-size:20px; font-weight:bold; border-bottom:1px solid rgba(255,255,255,0.2); }
+.sidebar ul { list-style:none; padding:0; margin:0; }
+.sidebar .menu-item { display:flex; align-items:center; padding:15px 20px; cursor:pointer; transition:0.3s; }
+.sidebar .menu-item span { margin-left:10px; flex:1; }
+.sidebar .menu-item.active, .sidebar .menu-item:hover { background: rgba(255,255,255,0.2); border-left:4px solid #fff; }
 
+/* Main */
 .main { flex:1; display:flex; flex-direction:column; }
-.header { background:#fff; padding:15px 20px; box-shadow:0 2px 5px rgba(0,0,0,0.1); display:flex; justify-content:space-between; align-items:center; }
+.header { display:flex; justify-content:space-between; align-items:center; padding:15px 20px; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.1); flex-wrap:wrap; }
 .user-info { display:flex; align-items:center; gap:10px; }
 .user-info img { width:35px; height:35px; border-radius:50%; }
-.content { flex:1; padding:20px; overflow-y:auto; display:grid; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); gap:20px; }
+.hamburger { display:none; background:none; border:none; font-size:24px; cursor:pointer; }
+.content { flex:1; padding:20px; display:grid; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); gap:20px; overflow-y:auto; }
 .card { background:#fff; padding:15px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1); transition: transform 0.3s, box-shadow 0.3s; }
 .card:hover { transform: translateY(-5px); box-shadow:0 8px 20px rgba(0,0,0,0.15); }
 h1 { margin:0; font-size:24px; color:#0288d1; }
 
-/* Floating API Button putih, hanya di dashboard */
-#apiButton {
-    position: fixed; bottom: 20px; right: 20px;
-    background:#ffffff; width:60px; height:60px; display:flex;
-    justify-content:center; align-items:center; border-radius:50%;
-    box-shadow:0 4px 12px rgba(0,0,0,0.3); text-decoration:none;
-    z-index:999; transition:0.3s;
-}
-#apiButton:hover { background:#f0f0f0; transform: translateY(-3px); }
+/* Floating API Button */
+#apiButton { display:none; position: fixed; bottom:20px; right:20px; width:60px; height:60px; border-radius:50%; background:#fff; justify-content:center; align-items:center; box-shadow:0 4px 12px rgba(0,0,0,0.3); z-index:999; }
 #apiButton img { width:28px; height:28px; }
-#apiButton::after { content: attr(title); position: absolute; right: 70px; background:#333; color:#fff; padding:4px 8px; border-radius:5px; opacity:0; white-space: nowrap; pointer-events:none; font-size:12px; transition:0.3s; }
-#apiButton:hover::after { opacity:1; }
 
 /* ===== Responsif ===== */
+@media(max-width:768px){
+    .sidebar { width:60px; }
+    .sidebar .logo, .sidebar .menu-item span { display:none; }
+    .hamburger { display:block; }
+    .content { grid-template-columns:1fr; }
+}
 @media(max-width:480px){
-    #loginCard { padding:20px; width:95%; }
+    #loginCard { width:95%; padding:20px; }
     .input-group input { font-size:14px; padding:10px 10px 10px 36px; }
     #loginCard button { font-size:14px; padding:10px; }
     #loginCard img { width:60px; height:60px; margin-bottom:15px; }
-}
-@media(max-width:768px){
-    .sidebar { width:60px; }
-    .sidebar h2, .menu-item span { display:none; }
-    .content { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -133,30 +86,29 @@ h1 { margin:0; font-size:24px; color:#0288d1; }
 
 <!-- ===== Dashboard ===== -->
 <div id="dashboardWrapper">
-    <div class="sidebar">
-        <h2>MENU AI</h2>
-        <div class="menu-item active" data-section="home"><i class="bi bi-house"></i> <span>Home</span></div>
-        <div class="menu-item" data-section="data"><i class="bi bi-table"></i> <span>Data</span> <span class="badge" id="dataBadge">3</span></div>
-        <div class="menu-item" data-section="analisis"><i class="bi bi-graph-up"></i> <span>Analisis</span></div>
-        <div class="menu-item" data-section="pengaturan"><i class="bi bi-gear"></i> <span>Pengaturan</span></div>
-        <div class="menu-item" data-section="logout"><i class="bi bi-box-arrow-right"></i> <span>Logout</span></div>
-    </div>
+    <nav class="sidebar">
+        <div class="logo">MENU AI</div>
+        <ul class="menu">
+            <li class="menu-item active" data-section="information"><i class="bi bi-info-circle"></i> <span>Information</span></li>
+            <li class="menu-item" data-section="feedback"><i class="bi bi-chat-dots"></i> <span>Feedback</span></li>
+            <li class="menu-item" data-section="logout"><i class="bi bi-box-arrow-right"></i> <span>Logout</span></li>
+        </ul>
+    </nav>
+
     <div class="main">
-        <div class="header">
-            <h1 id="pageTitle">Home</h1>
+        <header class="header">
+            <h1 id="pageTitle">Information</h1>
             <div class="user-info">
                 <img src="https://raw.githubusercontent.com/My-data-file/Share/main/CSG.png" alt="User">
                 <span>Admin</span>
             </div>
-        </div>
+            <button id="toggleSidebar" class="hamburger"><i class="bi bi-list"></i></button>
+        </header>
         <div class="content" id="mainContent">
-            <div class="card"><h3>Selamat Datang!</h3><p>Ini dashboard MENU AI.</p></div>
-            <div class="card"><h3>Notifikasi</h3><p>Data baru tersedia: 3 item.</p></div>
-            <div class="card"><h3>Tips AI</h3><p>Gunakan fitur Analisis untuk insight cepat.</p></div>
+            <div class="card"><h3>Information</h3><p>Konten penting ditampilkan di sini.</p></div>
         </div>
-
-        <!-- Floating API Button -->
-        <a href="https://www.chatbase.co/chatbot-iframe/BD4n-F-lFfsgHa1J1YS8V" target="_blank" id="apiButton" title="Buka API">
+        <!-- Floating API Button hanya muncul setelah login -->
+        <a href="https://link-anda.com" target="_blank" id="apiButton" title="Buka API">
             <img src="https://raw.githubusercontent.com/My-data-file/Share/main/CSG.png" alt="API Icon">
         </a>
     </div>
@@ -168,10 +120,14 @@ function login(){
     const user = document.getElementById('username').value.trim();
     const pass = document.getElementById('password').value.trim();
     const errorDiv = document.getElementById('errorMsg');
+
     if(user==="admin" && pass==="1234"){
         errorDiv.style.display="none";
         document.getElementById('loginWrapper').style.display="none";
         document.getElementById('dashboardWrapper').style.display="flex";
+
+        // tampilkan tombol API
+        document.getElementById('apiButton').style.display = 'flex';
     } else {
         errorDiv.style.display="block";
         errorDiv.style.animation = 'none';
@@ -180,53 +136,39 @@ function login(){
     }
 }
 
-// ===== Logout =====
+// ===== Logout dengan konfirmasi =====
 function logout(){
-    alert('Logout berhasil!');
-    document.getElementById('dashboardWrapper').style.display="none";
-    document.getElementById('loginWrapper').style.display="flex";
+    if(confirm("Apakah Anda yakin ingin logout?")){
+        document.getElementById('dashboardWrapper').style.display="none";
+        document.getElementById('loginWrapper').style.display="flex";
+
+        // sembunyikan tombol API lagi
+        document.getElementById('apiButton').style.display = 'none';
+    }
 }
 
-// ===== Dashboard interaktif =====
+// ===== Menu interaktif =====
 const menuItems = document.querySelectorAll('.menu-item');
-const apiButtonImg = document.querySelector('#apiButton img');
-const apiIcons = {
-    home: "https://raw.githubusercontent.com/My-data-file/Share/main/home-icon.png",
-    data: "https://raw.githubusercontent.com/My-data-file/Share/main/data-icon.png",
-    analisis: "https://raw.githubusercontent.com/My-data-file/Share/main/analisis-icon.png",
-    pengaturan: "https://raw.githubusercontent.com/My-data-file/Share/main/settings-icon.png"
-};
+const mainContent = document.getElementById('mainContent');
 menuItems.forEach(item => {
     item.addEventListener('click', () => {
-        menuItems.forEach(i => i.classList.remove('active'));
+        menuItems.forEach(i=>i.classList.remove('active'));
         item.classList.add('active');
-        const section = item.getAttribute('data-section');
-        document.getElementById('pageTitle').innerText = section.charAt(0).toUpperCase() + section.slice(1);
-        if(apiIcons[section]) apiButtonImg.src = apiIcons[section];
-        else apiButtonImg.src = "https://raw.githubusercontent.com/My-data-file/Share/main/CSG.png";
-
-        const content = document.getElementById('mainContent');
+        const section = item.dataset.section;
+        document.getElementById('pageTitle').innerText = section.charAt(0).toUpperCase()+section.slice(1);
         switch(section){
-            case 'home':
-                content.innerHTML = `<div class="card"><h3>Selamat Datang!</h3><p>Ini dashboard MENU AI.</p></div>`;
-                break;
-            case 'data':
-                content.innerHTML = `<div class="card"><h3>Data</h3><p>Konten data ditampilkan di sini.</p></div>`;
-                break;
-            case 'analisis':
-                content.innerHTML = `<div class="card"><h3>Analisis</h3><p>Chart dan laporan AI ditampilkan di sini.</p></div>`;
-                break;
-            case 'pengaturan':
-                content.innerHTML = `<div class="card"><h3>Pengaturan</h3><p>Ubah profil dan preferensi di sini.</p></div>`;
-                break;
-            case 'logout':
-                logout();
-                break;
-            default:
-                content.innerHTML = '<div class="card"><p>Konten belum tersedia.</p></div>';
+            case 'information': mainContent.innerHTML=`<div class="card"><h3>Information</h3><p>Konten penting ditampilkan di sini.</p></div>`; break;
+            case 'feedback': mainContent.innerHTML=`<div class="card"><h3>Feedback</h3><p>Masukan pengguna ditampilkan di sini.</p></div>`; break;
+            case 'logout': logout(); break;
         }
     });
 });
+
+// ===== Toggle sidebar HP =====
+document.getElementById('toggleSidebar').addEventListener('click', ()=>{
+    document.querySelector('.sidebar').classList.toggle('open');
+});
 </script>
+
 </body>
 </html>
