@@ -7,36 +7,43 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 <style>
 * { box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI', Tahoma, sans-serif; }
-body { background:#e0f7fa; min-height:100vh; overflow-x:hidden; }
+body { background:#e0f7fa; min-height:100vh; overflow-x:hidden; transition: background 0.3s, color 0.3s; }
 
 /* ===== LOGIN ===== */
-#loginWrapper { display:flex; justify-content:center; align-items:center; height:100vh; padding:10px; }
+#loginWrapper { display:flex; justify-content:center; align-items:center; height:100vh; padding:10px; transition:opacity 0.5s;}
+#loginWrapper.hide { opacity:0; pointer-events:none; }
 #loginCard {
     background: rgba(255,255,255,0.95);
     padding:25px; border-radius:16px; box-shadow:0 15px 35px rgba(0,0,0,0.25);
     width:100%; max-width:360px; text-align:center;
+    transition: transform 0.5s, opacity 0.5s;
 }
 #loginCard img { width:70px; height:70px; margin-bottom:15px; }
 .input-group { position:relative; margin:12px 0; }
 .input-group i { position:absolute; top:50%; left:12px; transform:translateY(-50%); color:#000; font-size:18px; }
-.input-group input { width:100%; padding:10px 12px 10px 40px; border:1px solid #b3e5fc; border-radius:8px; font-size:16px; background:#fff; }
-.input-group input::placeholder { color:#555; }
-#loginCard button { width:100%; padding:12px; margin-top:10px; border:none; border-radius:8px; background:#0288d1; color:#fff; font-size:16px; cursor:pointer; transition:0.3s; }
+.input-group input { width:100%; padding:10px 12px 10px 40px; border:1px solid #b3e5fc; border-radius:8px; font-size:16px; background:#fff; transition:border 0.3s; }
+.input-group input:focus { border-color:#0288d1; outline:none; }
+.input-group input.error { border-color:#d32f2f; }
+#loginCard button { width:100%; padding:12px; margin-top:10px; border:none; border-radius:8px; background:#0288d1; color:#fff; font-size:16px; cursor:pointer; transition:0.3s; position:relative; }
 #loginCard button:hover { background:#0277bd; }
+#loginCard button.loading::after { content:"..."; position:absolute; right:15px; }
 #errorMsg { color:#d32f2f; margin-top:10px; display:none; font-weight:bold; animation: shake 0.3s; }
 @keyframes shake { 0%{transform:translateX(0);}25%{transform:translateX(-5px);}50%{transform:translateX(5px);}75%{transform:translateX(-5px);}100%{transform:translateX(0);} }
 #copyright { margin-top:10px; font-size:12px; color:#555; }
 
 /* ===== DASHBOARD ===== */
-#dashboardWrapper { display:none; height:100vh; flex-direction:row; width:100%; overflow:hidden; }
+#dashboardWrapper { display:none; height:100vh; flex-direction:row; width:100%; overflow:hidden; opacity:0; transition:opacity 0.5s; }
+#dashboardWrapper.show { display:flex; opacity:1; }
 .sidebar {
-    width:220px; background:#0288d1; color:#fff; flex-shrink:0; display:flex; flex-direction:column; height:100vh;
+    width:220px; background:#0288d1; color:#fff; flex-shrink:0; display:flex; flex-direction:column; height:100vh; transition:width 0.3s;
 }
-.sidebar .logo { text-align:center; padding:20px; font-size:20px; font-weight:bold; border-bottom:1px solid rgba(255,255,255,0.2); }
-.sidebar ul { list-style:none; padding:0; margin-top:20px; }
-.sidebar .menu-item { display:flex; align-items:center; padding:15px 20px; cursor:pointer; transition:0.3s; }
-.sidebar .menu-item span { margin-left:10px; }
+.sidebar .logo { text-align:center; padding:20px; font-size:20px; font-weight:bold; border-bottom:1px solid rgba(255,255,255,0.2); transition:opacity 0.3s; }
+.sidebar ul { list-style:none; padding:0; margin-top:20px; flex-grow:1; }
+.sidebar .menu-item { display:flex; align-items:center; padding:15px 20px; cursor:pointer; transition:0.3s; white-space:nowrap; overflow:hidden; }
+.sidebar .menu-item span { margin-left:10px; transition:opacity 0.3s; }
 .sidebar .menu-item.active, .sidebar .menu-item:hover { background: rgba(255,255,255,0.2); border-left:4px solid #fff; }
+.sidebar .logout-btn { margin:20px; padding:12px; border:none; border-radius:8px; background:#d32f2f; color:#fff; font-size:16px; cursor:pointer; transition:0.3s; }
+.sidebar .logout-btn:hover { background:#b71c1c; }
 .main { flex:1; display:flex; flex-direction:column; min-height:100vh; }
 .header { display:flex; justify-content:space-between; align-items:center; padding:15px 20px; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.1); flex-wrap:wrap; }
 .user-info { display:flex; align-items:center; gap:10px; }
@@ -44,7 +51,6 @@ body { background:#e0f7fa; min-height:100vh; overflow-x:hidden; }
 .content { flex:1; padding:20px; display:grid; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); gap:20px; overflow-y:auto; }
 .card { background:#fff; padding:15px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1); transition: transform 0.3s, box-shadow 0.3s; }
 .card:hover { transform: translateY(-5px); box-shadow:0 8px 20px rgba(0,0,0,0.15); }
-h1 { margin:0; font-size:24px; color:#0288d1; }
 
 /* Floating API Button */
 #apiButton {
@@ -56,12 +62,19 @@ h1 { margin:0; font-size:24px; color:#0288d1; }
 #apiButton img { width:40px; height:40px; transition: transform 0.3s; }
 #apiButton:hover img { transform: scale(1.2); }
 
-/* ===== Responsif ===== */
+/* Tooltip */
+#apiButton:hover::after { content:"API Link"; position:absolute; bottom:80px; background:#0288d1; color:#fff; padding:5px 10px; border-radius:5px; font-size:12px; white-space:nowrap; }
+
+/* Toast */
+#toastContainer { position:fixed; bottom:20px; right:20px; display:flex; flex-direction:column; gap:10px; z-index:1000; }
+.toast { background:#333; color:#fff; padding:10px 15px; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.2); opacity:0; transform:translateY(20px); transition:opacity 0.3s, transform 0.3s; display:flex; align-items:center; justify-content:space-between; min-width:200px; }
+.toast.show { opacity:1; transform:translateY(0); }
+.toast button { background:none; border:none; color:#fff; font-size:16px; cursor:pointer; margin-left:10px; }
+
 @media(max-width:768px){
     .sidebar { width:60px; }
     .sidebar .logo, .sidebar .menu-item span { display:none; }
     .main { margin-left:60px; }
-    .content { grid-template-columns:1fr; }
 }
 @media(max-width:480px){
     #loginCard { width:95%; max-width:360px; padding:20px; margin:0 auto; }
@@ -86,7 +99,7 @@ h1 { margin:0; font-size:24px; color:#0288d1; }
         <h2>MENU AI</h2>
         <div class="input-group"><i class="bi bi-person"></i><input type="text" id="username" placeholder="Username"></div>
         <div class="input-group"><i class="bi bi-lock"></i><input type="password" id="password" placeholder="Password"></div>
-        <button onclick="login()">Login</button>
+        <button id="loginBtn" onclick="login()">Login</button>
         <div id="errorMsg">Username atau password salah!</div>
         <div id="copyright">© 2025 PT. CITRA SASTRA GRAFIKA. V1.0</div>
     </div>
@@ -99,8 +112,8 @@ h1 { margin:0; font-size:24px; color:#0288d1; }
         <ul class="menu">
             <li class="menu-item active" data-section="information"><i class="bi bi-info-circle"></i> <span>Information</span></li>
             <li class="menu-item" data-section="feedback"><i class="bi bi-chat-dots"></i> <span>Feedback</span></li>
-            <li class="menu-item" data-section="logout"><i class="bi bi-box-arrow-right"></i> <span>Logout</span></li>
         </ul>
+        <button class="logout-btn" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Logout</button>
     </nav>
     <div class="main">
         <header class="header">
@@ -117,41 +130,78 @@ h1 { margin:0; font-size:24px; color:#0288d1; }
     </div>
 </div>
 
+<!-- Toast Container -->
+<div id="toastContainer"></div>
+
 <script>
-// Persistensi login
+const loginWrapper = document.getElementById('loginWrapper');
+const dashboardWrapper = document.getElementById('dashboardWrapper');
+const apiButton = document.getElementById('apiButton');
+const errorDiv = document.getElementById('errorMsg');
+const toastContainer = document.getElementById('toastContainer');
+
 window.addEventListener('DOMContentLoaded', () => {
     if(localStorage.getItem('loggedIn')==='true'){
-        document.getElementById('loginWrapper').style.display='none';
-        document.getElementById('dashboardWrapper').style.display='flex';
-        document.getElementById('apiButton').style.display='flex';
+        loginWrapper.style.display='none';
+        dashboardWrapper.style.display='flex';
+        dashboardWrapper.classList.add('show');
+        apiButton.style.display='flex';
+        document.getElementById('mainContent').innerHTML = `<div class="card"><h3>Information</h3><p>Konten penting ditampilkan di sini.</p></div>`;
     }
 });
 
-// Login
+function showToast(message){
+    const toast=document.createElement('div');
+    toast.className='toast';
+    toast.innerHTML=`<span>${message}</span><button onclick="this.parentElement.remove()">&times;</button>`;
+    toastContainer.appendChild(toast);
+    setTimeout(()=>toast.classList.add('show'),100);
+    setTimeout(()=>{
+        toast.classList.remove('show');
+        setTimeout(()=>toast.remove(),300);
+    },3000);
+}
+
 function login(){
-    const user=document.getElementById('username').value.trim();
-    const pass=document.getElementById('password').value.trim();
-    const errorDiv=document.getElementById('errorMsg');
+    const user = document.getElementById('username').value.trim();
+    const pass = document.getElementById('password').value.trim();
     if(user==="admin" && pass==="1234"){
         errorDiv.style.display="none";
-        localStorage.setItem('loggedIn','true');
-        document.getElementById('loginWrapper').style.display='none';
-        document.getElementById('dashboardWrapper').style.display='flex';
-        document.getElementById('apiButton').style.display='flex';
+        loginWrapper.classList.add('hide');
+        setTimeout(()=>{
+            loginWrapper.style.display='none';
+            dashboardWrapper.style.display='flex';
+            dashboardWrapper.classList.add('show');
+            apiButton.style.display='flex';
+            localStorage.setItem('loggedIn','true');
+            document.getElementById('mainContent').innerHTML = `<div class="card"><h3>Information</h3><p>Konten penting ditampilkan di sini.</p></div>`;
+            showToast("Login berhasil ✅");
+        },500);
     } else {
         errorDiv.style.display='block';
+        document.getElementById('username').classList.add('error');
+        document.getElementById('password').classList.add('error');
         errorDiv.style.animation='none';
         void errorDiv.offsetWidth;
         errorDiv.style.animation='shake 0.3s';
+        setTimeout(()=>{
+            document.getElementById('username').classList.remove('error');
+            document.getElementById('password').classList.remove('error');
+        },500);
     }
 }
 
-// Logout
 function logout(){
     if(confirm("Apakah yakin ingin logout?")){
-        localStorage.removeItem('loggedIn');
-        document.getElementById('dashboardWrapper').style.display='none';
-        document.getElementById('loginWrapper').style.display='flex';
+        dashboardWrapper.classList.remove('show');
+        setTimeout(()=>{
+            dashboardWrapper.style.display='none';
+            loginWrapper.style.display='flex';
+            loginWrapper.classList.remove('hide');
+            apiButton.style.display='none';
+            localStorage.removeItem('loggedIn');
+            showToast("Logout berhasil 👋");
+        },500);
     }
 }
 
@@ -167,8 +217,6 @@ document.querySelectorAll('.menu-item').forEach(item=>{
             mainContent.innerHTML=`<div class="card"><h3>Information</h3><p>Konten penting ditampilkan di sini.</p></div>`;
         } else if(section==='feedback'){
             mainContent.innerHTML=`<div class="card"><h3>Feedback</h3><p>Masukan pengguna ditampilkan di sini.</p></div>`;
-        } else if(section==='logout'){
-            logout();
         }
     });
 });
