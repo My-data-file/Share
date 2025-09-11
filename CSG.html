@@ -43,7 +43,7 @@ body { background:#e0f7fa; min-height:100vh; overflow-x:hidden; }
 .sidebar .menu-item span { margin-left:10px; transition:opacity 0.3s; }
 .sidebar .menu-item.active, .sidebar .menu-item:hover { background: rgba(255,255,255,0.2); border-left:4px solid #fff; }
 
-/* Tombol Logout khusus */
+/* Tombol Logout */
 .logout-item {
     margin-top: auto;
     background: #444;
@@ -74,8 +74,6 @@ body { background:#e0f7fa; min-height:100vh; overflow-x:hidden; }
 #apiButton:hover { transform: scale(1.2); box-shadow:0 8px 20px rgba(0,0,0,0.4); }
 #apiButton img { width:40px; height:40px; transition: transform 0.3s; }
 #apiButton:hover img { transform: scale(1.2); }
-
-/* Tooltip */
 #apiButton:hover::after { content:"API Link"; position:absolute; bottom:80px; background:#0288d1; color:#fff; padding:5px 10px; border-radius:5px; font-size:12px; white-space:nowrap; }
 
 @media(max-width:768px){
@@ -90,7 +88,6 @@ body { background:#e0f7fa; min-height:100vh; overflow-x:hidden; }
     .input-group input { font-size:14px; padding:10px 10px 10px 36px; }
     #loginCard button { font-size:14px; padding:10px; }
     #loginCard img { width:60px; height:60px; margin-bottom:15px; }
-
     .main { margin:0; width:100%; }
     .header { padding:10px; font-size:14px; }
     .content { padding:10px; gap:10px; grid-template-columns:1fr; overflow-y:auto; }
@@ -145,13 +142,13 @@ const dashboardWrapper = document.getElementById('dashboardWrapper');
 const apiButton = document.getElementById('apiButton');
 const errorDiv = document.getElementById('errorMsg');
 
+// LOGIN
 window.addEventListener('DOMContentLoaded', () => {
     if(localStorage.getItem('loggedIn')==='true'){
         loginWrapper.style.display='none';
         dashboardWrapper.style.display='flex';
         dashboardWrapper.classList.add('show');
         apiButton.style.display='flex';
-        document.getElementById('mainContent').innerHTML = `<div class="card"><h3>Information</h3><p>Konten penting ditampilkan di sini.</p></div>`;
     }
 });
 
@@ -167,7 +164,6 @@ function login(){
             dashboardWrapper.classList.add('show');
             apiButton.style.display='flex';
             localStorage.setItem('loggedIn','true');
-            document.getElementById('mainContent').innerHTML = `<div class="card"><h3>Information</h3><p>Konten penting ditampilkan di sini.</p></div>`;
         },500);
     } else {
         errorDiv.style.display='block';
@@ -196,20 +192,103 @@ function logout(){
     }
 }
 
-// Menu interaktif
+// Menu interaktif & form feedback
 document.querySelectorAll('.menu-item').forEach(item=>{
-    item.addEventListener('click', ()=>{
-        const section=item.dataset.section;
-        document.querySelectorAll('.menu-item').forEach(i=>i.classList.remove('active'));
-        item.classList.add('active');
-        document.getElementById('pageTitle').innerText=section.charAt(0).toUpperCase()+section.slice(1);
-        const mainContent=document.getElementById('mainContent');
-        if(section==='information'){
-            mainContent.innerHTML=`<div class="card"><h3>Information</h3><p>Konten penting ditampilkan di sini.</p></div>`;
-        } else if(section==='feedback'){
-            mainContent.innerHTML=`<div class="card"><h3>Feedback</h3><p>Masukan pengguna ditampilkan di sini.</p></div>`;
-        }
-    });
+  item.addEventListener('click', ()=>{
+    const section=item.dataset.section;
+    document.querySelectorAll('.menu-item').forEach(i=>i.classList.remove('active'));
+    item.classList.add('active');
+    document.getElementById('pageTitle').innerText=section.charAt(0).toUpperCase()+section.slice(1);
+    const mainContent=document.getElementById('mainContent');
+
+    if(section==='information'){
+      mainContent.innerHTML=`<div class="card"><h3>Information</h3><p>Konten penting ditampilkan di sini.</p></div>`;
+    } 
+    else if(section==='feedback'){
+      mainContent.innerHTML=`
+      <div class="card">
+        <h3>Form Feedback</h3>
+        <form id="feedbackForm" enctype="multipart/form-data">
+          <label for="tanggal">Tanggal:</label>
+          <input type="text" id="tanggal" name="tanggal" readonly style="width:100%;padding:8px;margin:8px 0;border:1px solid #ccc;border-radius:6px;background:#f1f1f1;">
+          <label for="jam">Jam:</label>
+          <input type="text" id="jam" name="jam" readonly style="width:100%;padding:8px;margin:8px 0;border:1px solid #ccc;border-radius:6px;background:#f1f1f1;">
+          <label for="mesin">Mesin:</label>
+          <input type="text" id="mesin" name="mesin" required placeholder="Nama Mesin" style="width:100%;padding:8px;margin:8px 0;border:1px solid #ccc;border-radius:6px;">
+          <label for="spk">No SPK:</label>
+          <input type="text" id="spk" name="spk" required placeholder="Nomor SPK" style="width:100%;padding:8px;margin:8px 0;border:1px solid #ccc;border-radius:6px;">
+          <label for="nama">Nama:</label>
+          <input type="text" id="nama" name="nama" required placeholder="Nama Operator" style="width:100%;padding:8px;margin:8px 0;border:1px solid #ccc;border-radius:6px;">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+            <div>
+              <label for="temuan">Temuan:</label>
+              <textarea id="temuan" name="temuan" rows="4" required style="width:100%;padding:8px;margin:8px 0;border:1px solid #ccc;border-radius:6px;"></textarea>
+              <label for="fotoTemuan">Foto Temuan:</label>
+              <input type="file" id="fotoTemuan" name="fotoTemuan" accept="image/*" style="margin:8px 0;">
+              <img id="previewTemuan" src="" alt="Preview Temuan" style="display:none;width:100%;margin-bottom:10px;border:1px solid #ccc;border-radius:6px;">
+            </div>
+            <div>
+              <label for="tindakan">Tindakan:</label>
+              <textarea id="tindakan" name="tindakan" rows="4" required style="width:100%;padding:8px;margin:8px 0;border:1px solid #ccc;border-radius:6px;"></textarea>
+              <label for="fotoTindakan">Foto Tindakan:</label>
+              <input type="file" id="fotoTindakan" name="fotoTindakan" accept="image/*" style="margin:8px 0;">
+              <img id="previewTindakan" src="" alt="Preview Tindakan" style="display:none;width:100%;margin-bottom:10px;border:1px solid #ccc;border-radius:6px;">
+            </div>
+          </div>
+          <label for="kesimpulan">Kesimpulan:</label>
+          <textarea id="kesimpulan" name="kesimpulan" rows="2" required style="width:100%;padding:8px;margin:8px 0;border:1px solid #ccc;border-radius:6px;"></textarea>
+          <label for="catatan">Catatan:</label>
+          <textarea id="catatan" name="catatan" rows="2" style="width:100%;padding:8px;margin:8px 0;border:1px solid #ccc;border-radius:6px;"></textarea>
+          <button type="submit" style="padding:10px 15px;border:none;border-radius:6px;background:#0288d1;color:#fff;cursor:pointer;">Kirim</button>
+        </form>
+        <p id="feedbackStatus" style="margin-top:10px;font-weight:bold;"></p>
+      </div>`;
+
+      // Delay untuk memastikan DOM form tersedia
+      setTimeout(()=>{
+        const now = new Date();
+        document.getElementById("tanggal").value = now.toLocaleDateString("id-ID");
+        document.getElementById("jam").value = now.toLocaleTimeString("id-ID", { hour12:false });
+
+        document.getElementById('fotoTemuan').addEventListener('change', function(){
+          const preview = document.getElementById('previewTemuan');
+          if(this.files && this.files[0]){
+            const reader = new FileReader();
+            reader.onload = e => { preview.src = e.target.result; preview.style.display='block'; }
+            reader.readAsDataURL(this.files[0]);
+          } else { preview.src=''; preview.style.display='none'; }
+        });
+
+        document.getElementById('fotoTindakan').addEventListener('change', function(){
+          const preview = document.getElementById('previewTindakan');
+          if(this.files && this.files[0]){
+            const reader = new FileReader();
+            reader.onload = e => { preview.src = e.target.result; preview.style.display='block'; }
+            reader.readAsDataURL(this.files[0]);
+          } else { preview.src=''; preview.style.display='none'; }
+        });
+
+        document.getElementById('feedbackForm').addEventListener('submit', async function(e){
+          e.preventDefault();
+          const status=document.getElementById('feedbackStatus');
+          const formData = new FormData(this);
+          try {
+            let res = await fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", { method:"POST", body: formData });
+            if(res.ok){
+              status.textContent="Feedback berhasil dikirim!";
+              status.style.color="green";
+              this.reset();
+              const now2 = new Date();
+              document.getElementById("tanggal").value = now2.toLocaleDateString("id-ID");
+              document.getElementById("jam").value = now2.toLocaleTimeString("id-ID", { hour12:false });
+              document.getElementById('previewTemuan').style.display='none';
+              document.getElementById('previewTindakan').style.display='none';
+            } else { status.textContent="Gagal mengirim, coba lagi."; status.style.color="red"; }
+          } catch(err){ status.textContent="Error koneksi!"; status.style.color="red"; }
+        });
+      },100);
+    }
+  });
 });
 </script>
 
