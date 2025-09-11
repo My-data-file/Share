@@ -7,7 +7,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 <style>
 * { box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI', Tahoma, sans-serif; }
-body { background:#e0f7fa; min-height:100vh; overflow-x:hidden; transition: background 0.3s, color 0.3s; }
+body { background:#e0f7fa; min-height:100vh; overflow-x:hidden; }
 
 /* ===== LOGIN ===== */
 #loginWrapper { display:flex; justify-content:center; align-items:center; height:100vh; padding:10px; transition:opacity 0.5s;}
@@ -42,7 +42,7 @@ body { background:#e0f7fa; min-height:100vh; overflow-x:hidden; transition: back
 .sidebar .menu-item { display:flex; align-items:center; padding:15px 20px; cursor:pointer; transition:0.3s; white-space:nowrap; overflow:hidden; }
 .sidebar .menu-item span { margin-left:10px; transition:opacity 0.3s; }
 .sidebar .menu-item.active, .sidebar .menu-item:hover { background: rgba(255,255,255,0.2); border-left:4px solid #fff; }
-.sidebar .logout-btn { margin:20px; padding:12px; border:none; border-radius:8px; background:#d32f2f; color:#fff; font-size:16px; cursor:pointer; transition:0.3s; }
+.sidebar .logout-btn { margin:20px; padding:12px; background:#d32f2f; border:none; border-radius:8px; color:#fff; font-size:14px; cursor:pointer; transition:0.3s; }
 .sidebar .logout-btn:hover { background:#b71c1c; }
 .main { flex:1; display:flex; flex-direction:column; min-height:100vh; }
 .header { display:flex; justify-content:space-between; align-items:center; padding:15px 20px; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.1); flex-wrap:wrap; }
@@ -67,14 +67,17 @@ body { background:#e0f7fa; min-height:100vh; overflow-x:hidden; transition: back
 
 /* Toast */
 #toastContainer { position:fixed; bottom:20px; right:20px; display:flex; flex-direction:column; gap:10px; z-index:1000; }
-.toast { background:#333; color:#fff; padding:10px 15px; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.2); opacity:0; transform:translateY(20px); transition:opacity 0.3s, transform 0.3s; display:flex; align-items:center; justify-content:space-between; min-width:200px; }
-.toast.show { opacity:1; transform:translateY(0); }
-.toast button { background:none; border:none; color:#fff; font-size:16px; cursor:pointer; margin-left:10px; }
+.toast { background:#333; color:#fff; padding:10px 15px; border-radius:8px; font-size:14px; opacity:0; transform:translateX(100%); transition: all 0.3s ease; display:flex; justify-content:space-between; align-items:center; min-width:200px; }
+.toast.show { opacity:1; transform:translateX(0); }
+.toast button { background:none; border:none; color:#fff; cursor:pointer; margin-left:10px; }
 
+/* Responsive */
 @media(max-width:768px){
     .sidebar { width:60px; }
     .sidebar .logo, .sidebar .menu-item span { display:none; }
     .main { margin-left:60px; }
+    .header { padding:10px; font-size:14px; }
+    .user-info span { display:none; }
 }
 @media(max-width:480px){
     #loginCard { width:95%; max-width:360px; padding:20px; margin:0 auto; }
@@ -83,10 +86,11 @@ body { background:#e0f7fa; min-height:100vh; overflow-x:hidden; transition: back
     #loginCard img { width:60px; height:60px; margin-bottom:15px; }
 
     .main { margin:0; width:100%; }
-    .header { padding:10px; font-size:14px; }
+    .header { padding:10px; font-size:13px; }
     .content { padding:10px; gap:10px; grid-template-columns:1fr; overflow-y:auto; }
     #apiButton { width:60px; height:60px; bottom:15px; right:15px; }
     #apiButton img { width:30px; height:30px; }
+    .toast { font-size:12px; padding:8px 12px; min-width:160px; }
 }
 </style>
 </head>
@@ -113,7 +117,7 @@ body { background:#e0f7fa; min-height:100vh; overflow-x:hidden; transition: back
             <li class="menu-item active" data-section="information"><i class="bi bi-info-circle"></i> <span>Information</span></li>
             <li class="menu-item" data-section="feedback"><i class="bi bi-chat-dots"></i> <span>Feedback</span></li>
         </ul>
-        <button class="logout-btn" onclick="logout()"><i class="bi bi-box-arrow-right"></i> Logout</button>
+        <button class="logout-btn" onclick="confirmLogout()"><i class="bi bi-box-arrow-right"></i> Logout</button>
     </nav>
     <div class="main">
         <header class="header">
@@ -153,9 +157,9 @@ window.addEventListener('DOMContentLoaded', () => {
 function showToast(message){
     const toast=document.createElement('div');
     toast.className='toast';
-    toast.innerHTML=`<span>${message}</span><button onclick="this.parentElement.remove()">&times;</button>`;
+    toast.innerHTML=`<span>${message}</span><button onclick="this.parentElement.remove()">✖</button>`;
     toastContainer.appendChild(toast);
-    setTimeout(()=>toast.classList.add('show'),100);
+    setTimeout(()=> toast.classList.add('show'),100);
     setTimeout(()=>{
         toast.classList.remove('show');
         setTimeout(()=>toast.remove(),300);
@@ -175,7 +179,7 @@ function login(){
             apiButton.style.display='flex';
             localStorage.setItem('loggedIn','true');
             document.getElementById('mainContent').innerHTML = `<div class="card"><h3>Information</h3><p>Konten penting ditampilkan di sini.</p></div>`;
-            showToast("Login berhasil ✅");
+            showToast('Login berhasil ✅');
         },500);
     } else {
         errorDiv.style.display='block';
@@ -191,18 +195,22 @@ function login(){
     }
 }
 
-function logout(){
+function confirmLogout(){
     if(confirm("Apakah yakin ingin logout?")){
-        dashboardWrapper.classList.remove('show');
-        setTimeout(()=>{
-            dashboardWrapper.style.display='none';
-            loginWrapper.style.display='flex';
-            loginWrapper.classList.remove('hide');
-            apiButton.style.display='none';
-            localStorage.removeItem('loggedIn');
-            showToast("Logout berhasil 👋");
-        },500);
+        logout();
     }
+}
+
+function logout(){
+    dashboardWrapper.classList.remove('show');
+    setTimeout(()=>{
+        dashboardWrapper.style.display='none';
+        loginWrapper.style.display='flex';
+        loginWrapper.classList.remove('hide');
+        apiButton.style.display='none';
+        localStorage.removeItem('loggedIn');
+        showToast('Logout berhasil 👋');
+    },500);
 }
 
 // Menu interaktif
