@@ -3,224 +3,231 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MENU AI</title>
+<title>MENU AI Dashboard Modern</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 <style>
+/* Body utama */
 body {
     margin:0;
-    font-family:sans-serif;
+    font-family:'Segoe UI', Tahoma, sans-serif;
+    display:flex; /* Sidebar + Main */
     min-height:100vh;
+    background:#f0f4f8;
+    position: relative; /* untuk floating button */
+}
+
+/* Sidebar kiri */
+.sidebar {
+    width:220px;
+    flex-shrink:0; /* jangan menyusut */
+    background:#0288d1;
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+}
+.sidebar h2 {
+    text-align:center;
+    padding:20px 0;
+    margin:0;
+    font-size:20px;
+    border-bottom:1px solid rgba(255,255,255,0.2);
+    white-space: nowrap;
+}
+.menu-item {
+    padding:15px 20px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    transition:0.3s;
+}
+.menu-item span { flex:1; }
+.menu-item .badge {
+    background:#f44336;
+    color:#fff;
+    border-radius:12px;
+    font-size:12px;
+    padding:2px 6px;
+}
+.menu-item:hover, .menu-item.active { background: rgba(255,255,255,0.2); }
+
+/* Main content kanan */
+.main {
+    flex:1; /* ambil sisa ruang */
+    display:flex;
+    flex-direction:column;
+}
+.header {
+    background:#fff;
+    padding:15px 20px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.user-info {
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+.user-info img {
+    width:35px;
+    height:35px;
+    border-radius:50%;
+}
+.content {
+    flex:1;
+    padding:20px;
+    overflow-y:auto;
+    display:grid;
+    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+.card {
+    background:#fff;
+    padding:15px;
+    border-radius:12px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow:0 8px 20px rgba(0,0,0,0.15);
+}
+h1 { margin:0; font-size:24px; color:#0288d1; }
+.logout-btn {
+    background:#f44336;
+    color:#fff;
+    border:none;
+    padding:8px 12px;
+    border-radius:5px;
+    cursor:pointer;
+    transition:0.3s;
+}
+.logout-btn:hover { background:#d32f2f; }
+
+/* Floating API Button dengan custom icon via link */
+#apiButton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background:#0288d1;
+    width:60px;
+    height:60px;
     display:flex;
     justify-content:center;
     align-items:center;
-    background: linear-gradient(135deg, #ffffff, #b3e5fc, #e0f7fa, #000000);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-}
-@keyframes gradientBG {
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
-}
-
-#loginCard {
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(8px);
-    padding:40px 40px 70px 40px;
-    border-radius:16px;
-    box-shadow:0 15px 35px rgba(0,0,0,0.25);
-    width:90%;
-    max-width:400px;
-    text-align:center;
-    color:#000;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    box-sizing:border-box;
-}
-
-#loginCard img {
-    width:80px;
-    height:80px;
-    object-fit:contain;
-    margin-bottom:20px;
-}
-
-.input-group {
-    position: relative;
-    margin:15px 0;
-    width:100%;
-}
-.input-group i {
-    position: absolute;
-    top:50%;
-    left:12px;
-    transform: translateY(-50%);
-    color:#000;
-    font-size:18px;
-}
-.input-group input {
-    width:100%;
-    padding:12px 12px 12px 40px;
-    border:1px solid #b3e5fc;
-    border-radius:8px;
-    font-size:16px;
-    background:#e0f7fa;
-    color:#000;
-    box-sizing:border-box;
-    transition: border 0.3s;
-}
-.input-group input:focus {
-    outline:none;
-    border:2px solid #0288d1;
-}
-.input-group input.valid {
-    border:2px solid #4caf50;
-}
-.input-group input.invalid {
-    border:2px solid #d32f2f;
-}
-
-#loginButton {
-    width:100%;
-    padding:12px;
-    margin-top:10px;
-    border:none;
-    border-radius:8px;
-    background:#4fc3f7;
-    color:#fff;
-    font-size:16px;
-    cursor:pointer;
-    transition:0.3s;
-    position: relative;
-}
-#loginButton:hover { background:#0288d1; }
-
-/* Spinner untuk UX */
-#loginButton.loading {
-    pointer-events: none;
-    opacity: 0.7;
-}
-#loginButton.loading::after {
-    content: '';
-    position: absolute;
-    top:50%;
-    left:50%;
-    transform: translate(-50%, -50%);
-    width:20px;
-    height:20px;
-    border:3px solid #fff;
-    border-top-color: transparent;
     border-radius:50%;
-    animation: spin 1s linear infinite;
+    box-shadow:0 4px 12px rgba(0,0,0,0.3);
+    text-decoration:none;
+    z-index:999;
+    transition:0.3s;
 }
-@keyframes spin {
-    0% { transform: translate(-50%, -50%) rotate(0deg); }
-    100% { transform: translate(-50%, -50%) rotate(360deg); }
+#apiButton:hover {
+    background:#026aa7;
+    transform: translateY(-3px);
 }
+#apiButton img {
+    width:28px;
+    height:28px;
+}
+#apiButton::after {
+    content: attr(title);
+    position: absolute;
+    right: 70px;
+    background:#333;
+    color:#fff;
+    padding:4px 8px;
+    border-radius:5px;
+    opacity:0;
+    white-space: nowrap;
+    pointer-events:none;
+    font-size:12px;
+    transition:0.3s;
+}
+#apiButton:hover::after { opacity:1; }
 
-#errorMsg {
-    color:#d32f2f;
-    margin-top:10px;
-    display:none;
-    font-weight:bold;
-    animation: shake 0.3s;
-}
-@keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    50% { transform: translateX(5px); }
-    75% { transform: translateX(-5px); }
-    100% { transform: translateX(0); }
-}
-
-#loginCard p#copyright {
-    font-size:14px;
-    color:#000;
-    font-weight:bold;
-    margin-top:25px;
-    font-family:'Segoe UI', Tahoma, sans-serif;
-}
-@media(max-width:480px){
-    #loginCard { padding:25px 25px 60px 25px; }
-    .input-group input { font-size:14px; padding:10px 10px 10px 36px; }
-    #loginButton { font-size:14px; padding:10px; }
-    #loginCard img { width:60px; height:60px; margin-bottom:15px; }
-    #loginCard p#copyright { font-size:12px; margin-top:20px; }
+/* Responsif */
+@media(max-width:768px){
+    .sidebar { width:60px; }
+    .sidebar h2, .menu-item span { display:none; }
+    .content { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
-<div id="loginCard">
-    <img id="logo" src="https://raw.githubusercontent.com/My-data-file/Share/main/CSG.png" alt="Logo">
-
+<!-- Sidebar kiri -->
+<div class="sidebar">
     <h2>MENU AI</h2>
-
-    <div class="input-group">
-        <i class="bi bi-person"></i>
-        <input type="text" id="username" placeholder="Username">
-    </div>
-
-    <div class="input-group">
-        <i class="bi bi-lock"></i>
-        <input type="password" id="password" placeholder="Password">
-    </div>
-
-    <button id="loginButton" onclick="login()">Login</button>
-
-    <div id="errorMsg">Username atau password salah!</div>
-
-    <p id="copyright">&copy; 2025 PT. CITRA SASTRA GRAFIKA. V1.0</p>
+    <div class="menu-item active" data-section="home"><i class="bi bi-house"></i> <span>Home</span></div>
+    <div class="menu-item" data-section="data"><i class="bi bi-table"></i> <span>Data</span> <span class="badge" id="dataBadge">3</span></div>
+    <div class="menu-item" data-section="analisis"><i class="bi bi-graph-up"></i> <span>Analisis</span></div>
+    <div class="menu-item" data-section="pengaturan"><i class="bi bi-gear"></i> <span>Pengaturan</span></div>
+    <div class="menu-item" data-section="logout"><i class="bi bi-box-arrow-right"></i> <span>Logout</span></div>
 </div>
 
+<!-- Main content kanan -->
+<div class="main">
+    <div class="header">
+        <h1 id="pageTitle">Home</h1>
+        <div class="user-info">
+            <img src="https://raw.githubusercontent.com/My-data-file/Share/main/CSG.png" alt="User">
+            <span>Admin</span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+    <div class="content" id="mainContent">
+        <div class="card"><h3>Selamat Datang!</h3><p>Ini dashboard MENU AI.</p></div>
+        <div class="card"><h3>Notifikasi</h3><p>Data baru tersedia: 3 item.</p></div>
+        <div class="card"><h3>Tips AI</h3><p>Gunakan fitur Analisis untuk insight cepat.</p></div>
+    </div>
+</div>
+
+<!-- Floating API Button -->
+<a href="https://link-anda.com" target="_blank" id="apiButton" title="Buka API">
+    <img src="https://raw.githubusercontent.com/My-data-file/Share/main/CSG.png" alt="API Icon">
+</a>
+
 <script>
-// Fokus otomatis username & Enter key
-document.getElementById('username').focus();
-document.addEventListener('keypress', function(e) {
-    if(e.key === 'Enter') login();
+// Menu interaktif
+const menuItems = document.querySelectorAll('.menu-item');
+menuItems.forEach(item => {
+    item.addEventListener('click', () => {
+        menuItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        const section = item.getAttribute('data-section');
+        document.getElementById('pageTitle').innerText = section.charAt(0).toUpperCase() + section.slice(1);
+        const content = document.getElementById('mainContent');
+        switch(section){
+            case 'home':
+                content.innerHTML = `
+                    <div class="card"><h3>Selamat Datang!</h3><p>Ini dashboard MENU AI.</p></div>
+                    <div class="card"><h3>Notifikasi</h3><p>Data baru tersedia: 3 item.</p></div>
+                    <div class="card"><h3>Tips AI</h3><p>Gunakan fitur Analisis untuk insight cepat.</p></div>
+                `;
+                break;
+            case 'data':
+                content.innerHTML = '<div class="card"><h3>Data</h3><p>Tabel dan konten data akan ditampilkan di sini.</p></div>';
+                break;
+            case 'analisis':
+                content.innerHTML = '<div class="card"><h3>Analisis</h3><p>Chart dan laporan analisis AI akan ditampilkan di sini.</p></div>';
+                break;
+            case 'pengaturan':
+                content.innerHTML = '<div class="card"><h3>Pengaturan</h3><p>Ubah profil dan preferensi di sini.</p></div>';
+                break;
+            case 'logout':
+                logout();
+                break;
+            default:
+                content.innerHTML = '<div class="card"><p>Konten belum tersedia.</p></div>';
+        }
+    });
 });
 
-// Login function dengan spinner & validasi border
-function login() {
-    const user = document.getElementById('username').value.trim();
-    const pass = document.getElementById('password').value.trim();
-    const errorDiv = document.getElementById('errorMsg');
-    const loginBtn = document.getElementById('loginButton');
-    const usernameInput = document.getElementById('username');
-    const passwordInput = document.getElementById('password');
-
-    // Reset valid/invalid classes
-    usernameInput.classList.remove('valid','invalid');
-    passwordInput.classList.remove('valid','invalid');
-    errorDiv.style.display = "none";
-
-    // Validasi input kosong
-    if(user === "") usernameInput.classList.add('invalid');
-    else usernameInput.classList.add('valid');
-
-    if(pass === "") passwordInput.classList.add('invalid');
-    else passwordInput.classList.add('valid');
-
-    if(user === "" || pass === "") return;
-
-    // Mulai spinner
-    loginBtn.classList.add('loading');
-
-    setTimeout(() => {
-        if(user === "admin" && pass === "1234") {
-            alert("Login berhasil!");
-            // redirect ke dashboard bisa ditambahkan di sini
-        } else {
-            errorDiv.style.display = "block";
-            errorDiv.style.animation = 'none';
-            void errorDiv.offsetWidth;
-            errorDiv.style.animation = 'shake 0.3s';
-            usernameInput.classList.add('invalid');
-            passwordInput.classList.add('invalid');
-        }
-        loginBtn.classList.remove('loading');
-    }, 1000);
+function logout(){
+    alert('Logout berhasil! Kembali ke halaman login.');
+    // window.location.href = "login.html"; // aktifkan jika ada halaman login
 }
 </script>
 
