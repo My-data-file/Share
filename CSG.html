@@ -3,23 +3,65 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MENU AI Dashboard Modern</title>
+<title>MENU AI & Dashboard</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 <style>
-/* Body utama */
+/* ===== Global ===== */
 body {
     margin:0;
     font-family:'Segoe UI', Tahoma, sans-serif;
-    display:flex; /* Sidebar + Main */
-    min-height:100vh;
-    background:#f0f4f8;
-    position: relative; /* untuk floating button */
+    background: linear-gradient(135deg, #ffffff, #b3e5fc, #e0f7fa, #000000);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    height:100vh;
+}
+@keyframes gradientBG {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
 }
 
-/* Sidebar kiri */
+/* ===== Login Card ===== */
+#loginWrapper {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+#loginCard {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    padding:40px;
+    border-radius:16px;
+    box-shadow:0 15px 35px rgba(0,0,0,0.25);
+    width:100%;
+    max-width:400px;
+    text-align:center;
+    color:#000;
+    animation: fadeSlideIn 0.8s forwards;
+}
+@keyframes fadeSlideIn { to { opacity:1; transform: translateY(0); } }
+#loginCard img { width:80px; height:80px; object-fit:contain; margin-bottom:20px; }
+.input-group { position: relative; margin:15px 0; }
+.input-group i { position: absolute; top:50%; left:12px; transform: translateY(-50%); color:#000; font-size:18px; }
+.input-group input { width:100%; padding:12px 12px 12px 40px; border:1px solid #b3e5fc; border-radius:8px; font-size:16px; background:#e0f7fa; color:#000; box-sizing:border-box; }
+.input-group input::placeholder { color:#555; }
+#loginCard button { width:100%; padding:12px; margin-top:10px; border:none; border-radius:8px; background:#4fc3f7; color:#fff; font-size:16px; cursor:pointer; transition:0.3s; }
+#loginCard button:hover { background:#0288d1; }
+#errorMsg { color:#d32f2f; margin-top:10px; display:none; font-weight:bold; animation: shake 0.3s; }
+@keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } 100% { transform: translateX(0); } }
+#copyright { margin-top:15px; font-size:12px; color:#555; }
+
+/* ===== Dashboard ===== */
+#dashboardWrapper {
+    display:none;
+    height:100vh;
+    flex-direction:row;
+    position:relative;
+}
 .sidebar {
     width:220px;
-    flex-shrink:0; /* jangan menyusut */
+    flex-shrink:0;
     background:#0288d1;
     color:#fff;
     display:flex;
@@ -33,121 +75,40 @@ body {
     border-bottom:1px solid rgba(255,255,255,0.2);
     white-space: nowrap;
 }
-.menu-item {
-    padding:15px 20px;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    transition:0.3s;
-}
+.menu-item { padding:15px 20px; cursor:pointer; display:flex; align-items:center; justify-content:space-between; transition:0.3s; }
 .menu-item span { flex:1; }
-.menu-item .badge {
-    background:#f44336;
-    color:#fff;
-    border-radius:12px;
-    font-size:12px;
-    padding:2px 6px;
-}
+.menu-item .badge { background:#f44336; color:#fff; border-radius:12px; font-size:12px; padding:2px 6px; }
 .menu-item:hover, .menu-item.active { background: rgba(255,255,255,0.2); }
 
-/* Main content kanan */
-.main {
-    flex:1; /* ambil sisa ruang */
-    display:flex;
-    flex-direction:column;
-}
-.header {
-    background:#fff;
-    padding:15px 20px;
-    box-shadow:0 2px 5px rgba(0,0,0,0.1);
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-.user-info {
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-.user-info img {
-    width:35px;
-    height:35px;
-    border-radius:50%;
-}
-.content {
-    flex:1;
-    padding:20px;
-    overflow-y:auto;
-    display:grid;
-    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
-    gap:20px;
-}
-.card {
-    background:#fff;
-    padding:15px;
-    border-radius:12px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow:0 8px 20px rgba(0,0,0,0.15);
-}
+.main { flex:1; display:flex; flex-direction:column; }
+.header { background:#fff; padding:15px 20px; box-shadow:0 2px 5px rgba(0,0,0,0.1); display:flex; justify-content:space-between; align-items:center; }
+.user-info { display:flex; align-items:center; gap:10px; }
+.user-info img { width:35px; height:35px; border-radius:50%; }
+.content { flex:1; padding:20px; overflow-y:auto; display:grid; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); gap:20px; }
+.card { background:#fff; padding:15px; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.1); transition: transform 0.3s, box-shadow 0.3s; }
+.card:hover { transform: translateY(-5px); box-shadow:0 8px 20px rgba(0,0,0,0.15); }
 h1 { margin:0; font-size:24px; color:#0288d1; }
-.logout-btn {
-    background:#f44336;
-    color:#fff;
-    border:none;
-    padding:8px 12px;
-    border-radius:5px;
-    cursor:pointer;
-    transition:0.3s;
-}
-.logout-btn:hover { background:#d32f2f; }
 
-/* Floating API Button dengan custom icon via link */
+/* Floating API Button putih, default muncul di dashboardWrapper */
 #apiButton {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background:#0288d1;
-    width:60px;
-    height:60px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    border-radius:50%;
-    box-shadow:0 4px 12px rgba(0,0,0,0.3);
-    text-decoration:none;
-    z-index:999;
-    transition:0.3s;
+    position: fixed; bottom: 20px; right: 20px;
+    background:#ffffff; width:60px; height:60px; display:flex;
+    justify-content:center; align-items:center; border-radius:50%;
+    box-shadow:0 4px 12px rgba(0,0,0,0.3); text-decoration:none;
+    z-index:999; transition:0.3s;
 }
-#apiButton:hover {
-    background:#026aa7;
-    transform: translateY(-3px);
-}
-#apiButton img {
-    width:28px;
-    height:28px;
-}
-#apiButton::after {
-    content: attr(title);
-    position: absolute;
-    right: 70px;
-    background:#333;
-    color:#fff;
-    padding:4px 8px;
-    border-radius:5px;
-    opacity:0;
-    white-space: nowrap;
-    pointer-events:none;
-    font-size:12px;
-    transition:0.3s;
-}
+#apiButton:hover { background:#f0f0f0; transform: translateY(-3px); }
+#apiButton img { width:28px; height:28px; }
+#apiButton::after { content: attr(title); position: absolute; right: 70px; background:#333; color:#fff; padding:4px 8px; border-radius:5px; opacity:0; white-space: nowrap; pointer-events:none; font-size:12px; transition:0.3s; }
 #apiButton:hover::after { opacity:1; }
 
 /* Responsif */
+@media(max-width:480px){
+    #loginCard { padding:30px; }
+    .input-group input { font-size:14px; padding:10px 10px 10px 36px; }
+    #loginCard button { font-size:14px; padding:10px; }
+    #loginCard img { width:60px; height:60px; margin-bottom:15px; }
+}
 @media(max-width:768px){
     .sidebar { width:60px; }
     .sidebar h2, .menu-item span { display:none; }
@@ -157,64 +118,106 @@ h1 { margin:0; font-size:24px; color:#0288d1; }
 </head>
 <body>
 
-<!-- Sidebar kiri -->
-<div class="sidebar">
-    <h2>MENU AI</h2>
-    <div class="menu-item active" data-section="home"><i class="bi bi-house"></i> <span>Home</span></div>
-    <div class="menu-item" data-section="data"><i class="bi bi-table"></i> <span>Data</span> <span class="badge" id="dataBadge">3</span></div>
-    <div class="menu-item" data-section="analisis"><i class="bi bi-graph-up"></i> <span>Analisis</span></div>
-    <div class="menu-item" data-section="pengaturan"><i class="bi bi-gear"></i> <span>Pengaturan</span></div>
-    <div class="menu-item" data-section="logout"><i class="bi bi-box-arrow-right"></i> <span>Logout</span></div>
+<!-- ===== Login ===== -->
+<div id="loginWrapper">
+    <div id="loginCard">
+        <img id="logo" src="https://raw.githubusercontent.com/My-data-file/Share/main/CSG.png" alt="Logo">
+        <h2>MENU AI</h2>
+        <div class="input-group"><i class="bi bi-person"></i><input type="text" id="username" placeholder="Username"></div>
+        <div class="input-group"><i class="bi bi-lock"></i><input type="password" id="password" placeholder="Password"></div>
+        <button onclick="login()">Login</button>
+        <div id="errorMsg">Username atau password salah!</div>
+        <div id="copyright">© 2025 PT. CITRA SASTRA GRAFIKA. V1.0</div>
+    </div>
 </div>
 
-<!-- Main content kanan -->
-<div class="main">
-    <div class="header">
-        <h1 id="pageTitle">Home</h1>
-        <div class="user-info">
-            <img src="https://raw.githubusercontent.com/My-data-file/Share/main/CSG.png" alt="User">
-            <span>Admin</span>
-            <button class="logout-btn" onclick="logout()">Logout</button>
+<!-- ===== Dashboard ===== -->
+<div id="dashboardWrapper">
+    <div class="sidebar">
+        <h2>MENU AI</h2>
+        <div class="menu-item active" data-section="home"><i class="bi bi-house"></i> <span>Home</span></div>
+        <div class="menu-item" data-section="data"><i class="bi bi-table"></i> <span>Data</span> <span class="badge" id="dataBadge">3</span></div>
+        <div class="menu-item" data-section="analisis"><i class="bi bi-graph-up"></i> <span>Analisis</span></div>
+        <div class="menu-item" data-section="pengaturan"><i class="bi bi-gear"></i> <span>Pengaturan</span></div>
+        <div class="menu-item" data-section="logout"><i class="bi bi-box-arrow-right"></i> <span>Logout</span></div>
+    </div>
+    <div class="main">
+        <div class="header">
+            <h1 id="pageTitle">Home</h1>
+            <div class="user-info">
+                <img src="https://raw.githubusercontent.com/My-data-file/Share/main/CSG.png" alt="User">
+                <span>Admin</span>
+            </div>
         </div>
-    </div>
-    <div class="content" id="mainContent">
-        <div class="card"><h3>Selamat Datang!</h3><p>Ini dashboard MENU AI.</p></div>
-        <div class="card"><h3>Notifikasi</h3><p>Data baru tersedia: 3 item.</p></div>
-        <div class="card"><h3>Tips AI</h3><p>Gunakan fitur Analisis untuk insight cepat.</p></div>
+        <div class="content" id="mainContent">
+            <div class="card"><h3>Selamat Datang!</h3><p>Ini dashboard MENU AI.</p></div>
+            <div class="card"><h3>Notifikasi</h3><p>Data baru tersedia: 3 item.</p></div>
+            <div class="card"><h3>Tips AI</h3><p>Gunakan fitur Analisis untuk insight cepat.</p></div>
+        </div>
+
+        <!-- Floating API Button hanya di dashboardWrapper -->
+        <a href="https://link-anda.com" target="_blank" id="apiButton" title="Buka API">
+            <img src="https://raw.githubusercontent.com/My-data-file/Share/main/CSG.png" alt="API Icon">
+        </a>
     </div>
 </div>
-
-<!-- Floating API Button -->
-<a href="https://link-anda.com" target="_blank" id="apiButton" title="Buka API">
-    <img src="https://raw.githubusercontent.com/My-data-file/Share/main/CSG.png" alt="API Icon">
-</a>
 
 <script>
-// Menu interaktif
+// ===== Login =====
+function login(){
+    const user = document.getElementById('username').value.trim();
+    const pass = document.getElementById('password').value.trim();
+    const errorDiv = document.getElementById('errorMsg');
+    if(user==="admin" && pass==="1234"){
+        errorDiv.style.display="none";
+        document.getElementById('loginWrapper').style.display="none";
+        document.getElementById('dashboardWrapper').style.display="flex";
+    } else {
+        errorDiv.style.display="block";
+        errorDiv.style.animation = 'none';
+        void errorDiv.offsetWidth;
+        errorDiv.style.animation = 'shake 0.3s';
+    }
+}
+
+// ===== Logout =====
+function logout(){
+    alert('Logout berhasil!');
+    document.getElementById('dashboardWrapper').style.display="none";
+    document.getElementById('loginWrapper').style.display="flex";
+}
+
+// ===== Dashboard interaktif =====
 const menuItems = document.querySelectorAll('.menu-item');
+const apiButtonImg = document.querySelector('#apiButton img');
+const apiIcons = {
+    home: "https://raw.githubusercontent.com/My-data-file/Share/main/home-icon.png",
+    data: "https://raw.githubusercontent.com/My-data-file/Share/main/data-icon.png",
+    analisis: "https://raw.githubusercontent.com/My-data-file/Share/main/analisis-icon.png",
+    pengaturan: "https://raw.githubusercontent.com/My-data-file/Share/main/settings-icon.png"
+};
 menuItems.forEach(item => {
     item.addEventListener('click', () => {
         menuItems.forEach(i => i.classList.remove('active'));
         item.classList.add('active');
         const section = item.getAttribute('data-section');
         document.getElementById('pageTitle').innerText = section.charAt(0).toUpperCase() + section.slice(1);
+        if(apiIcons[section]) apiButtonImg.src = apiIcons[section];
+        else apiButtonImg.src = "https://raw.githubusercontent.com/My-data-file/Share/main/CSG.png";
+
         const content = document.getElementById('mainContent');
         switch(section){
             case 'home':
-                content.innerHTML = `
-                    <div class="card"><h3>Selamat Datang!</h3><p>Ini dashboard MENU AI.</p></div>
-                    <div class="card"><h3>Notifikasi</h3><p>Data baru tersedia: 3 item.</p></div>
-                    <div class="card"><h3>Tips AI</h3><p>Gunakan fitur Analisis untuk insight cepat.</p></div>
-                `;
+                content.innerHTML = `<div class="card"><h3>Selamat Datang!</h3><p>Ini dashboard MENU AI.</p></div>`;
                 break;
             case 'data':
-                content.innerHTML = '<div class="card"><h3>Data</h3><p>Tabel dan konten data akan ditampilkan di sini.</p></div>';
+                content.innerHTML = `<div class="card"><h3>Data</h3><p>Konten data ditampilkan di sini.</p></div>`;
                 break;
             case 'analisis':
-                content.innerHTML = '<div class="card"><h3>Analisis</h3><p>Chart dan laporan analisis AI akan ditampilkan di sini.</p></div>';
+                content.innerHTML = `<div class="card"><h3>Analisis</h3><p>Chart dan laporan AI ditampilkan di sini.</p></div>`;
                 break;
             case 'pengaturan':
-                content.innerHTML = '<div class="card"><h3>Pengaturan</h3><p>Ubah profil dan preferensi di sini.</p></div>';
+                content.innerHTML = `<div class="card"><h3>Pengaturan</h3><p>Ubah profil dan preferensi di sini.</p></div>`;
                 break;
             case 'logout':
                 logout();
@@ -224,12 +227,6 @@ menuItems.forEach(item => {
         }
     });
 });
-
-function logout(){
-    alert('Logout berhasil! Kembali ke halaman login.');
-    // window.location.href = "login.html"; // aktifkan jika ada halaman login
-}
 </script>
-
 </body>
 </html>
