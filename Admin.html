@@ -68,15 +68,23 @@ th:nth-child(2) { background:#e5e7eb; }
 /* cloned header (fixed) */
 .cloned-header {
   position: fixed;
-  top: 0; /* di atas viewport */
+  top: 0; /* default: laptop tetap rapat di atas */
   left: 0;
   overflow: hidden;
-  pointer-events: auto; /* kita akan forward input ke original */
+  pointer-events: auto;
   z-index: 9998;
-  display: none; /* tampilkan hanya saat perlu */
+  display: none;
   background: transparent;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
+
+/* Untuk layar HP, header tabel diturunkan sedikit */
+@media (max-width:768px) {
+  .cloned-header {
+    top: 60px; /* sesuaikan tinggi header HP kamu */
+  }
+}
+
 .cloned-header table {
   border-collapse: collapse;
   table-layout: fixed;
