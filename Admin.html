@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Sea Laundry Admin</title>
 <style>
 /* Warna hijau untuk order diantar */
 tr.status-diantar { background-color: #d1fae5 !important; }
 
-body { font-family: Arial, sans-serif; background:#f4f4f4; margin:0; padding:0; }
+body {
+  font-family: Arial, sans-serif;
+  background:#f4f4f4;
+  margin:0;
+  padding:0;
+  overflow-x:auto; /* bisa geser horizontal dari mana saja */
+}
 header { background:#1f2937; color:white; padding:15px; text-align:center; }
 .container { padding:20px; }
 
@@ -27,17 +33,68 @@ input, select { padding:6px; border:1px solid #ccc; border-radius:5px; font-size
 .card p { font-size:20px; font-weight:bold; margin:5px 0 0; }
 
 /* Tabel */
-.table-container { width:100%; overflow-x:auto; background:white; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); }
+.table-container {
+  width:100%;
+  overflow-x:auto;    /* drag/scroll di container (tetap responsif) */
+  background:white;
+  border-radius:8px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.1);
+  position:relative;
+  cursor: grab;
+}
+.table-container:active { cursor: grabbing; }
+
 table { width:100%; border-collapse: collapse; min-width:1000px; }
 th, td { border:1px solid #ccc; padding:8px; text-align:center; font-size:13px; }
-th { background:#e5e7eb; position:sticky; top:0; z-index:2; }
+th { background:#e5e7eb; } /* header normal (we use cloned fixed header for stickiness) */
 tbody tr:nth-child(even) { background:#f9fafb; }
 
 /* Hover row */
 tbody tr:hover { background:#e0f2fe !important; }
 
-/* Highlight filter aktif */
-thead input:focus { border: 2px solid #2563eb; outline: none; background: #f0f9ff; }
+/* Sticky kolom Nama (data rows) */
+th:nth-child(2), td:nth-child(2) {
+  position: sticky;
+  left: 0;
+  z-index: 5;
+  /* beri background dan garis pemisah agar tidak tembus */
+  background: #fff;
+  border-right: 1px solid #ccc;
+}
+tbody tr:nth-child(even) td:nth-child(2) { background: #f9fafb; }
+tbody tr:hover td:nth-child(2) { background: #e0f2fe !important; }
+th:nth-child(2) { background:#e5e7eb; }
+
+/* cloned header (fixed) */
+.cloned-header {
+  position: fixed;
+  top: 0; /* di atas viewport */
+  left: 0;
+  overflow: hidden;
+  pointer-events: auto; /* kita akan forward input ke original */
+  z-index: 9998;
+  display: none; /* tampilkan hanya saat perlu */
+  background: transparent;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.cloned-header table {
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.cloned-header th, .cloned-header td {
+  box-sizing: border-box;
+  border:1px solid #ccc;
+  padding:8px;
+  text-align:center;
+  font-size:13px;
+  background:#e5e7eb;
+}
+
+/* pastikan cloned header nama terlihat seperti header nyata */
+.cloned-header th:nth-child(2) {
+  background:#e5e7eb;
+  border-right: 1px solid #ccc;
+}
 
 /* Notifikasi Tengah */
 .toast {
@@ -70,8 +127,7 @@ tr.flash { animation: flashGreen 1.5s ease-out; }
 }
 
 /* Input search di tabel center */
-th input { display:block; margin:5px auto; text-align:center; }
-
+th input { display:block; margin:5px auto; text-align:center; width: 90%; box-sizing: border-box; }
 </style>
 </head>
 <body>
@@ -102,11 +158,11 @@ th input { display:block; margin:5px auto; text-align:center; }
     </div>
   </div>
 
-<!-- Notifikasi Order Baru -->
-<div id="newOrdersBox" style="padding:10px; margin:10px 0; border:2px solid #2563eb; border-radius:8px; background:#eff6ff;">
-  <h3 style="margin:0 0 10px 0; color:#1e40af;">📢 Pesanan Baru</h3>
-  <ul id="newOrdersList" style="list-style:none; padding:0; margin:0;"></ul>
-</div>
+  <!-- Notifikasi Order Baru -->
+  <div id="newOrdersBox" style="padding:10px; margin:10px 0; border:2px solid #2563eb; border-radius:8px; background:#eff6ff;">
+    <h3 style="margin:0 0 10px 0; color:#1e40af;">📢 Pesanan Baru</h3>
+    <ul id="newOrdersList" style="list-style:none; padding:0; margin:0;"></ul>
+  </div>
 
   <div class="filter-bar">
     <button onclick="confirmRefresh()">🔄 Refresh Orders</button>
@@ -137,15 +193,33 @@ th input { display:block; margin:5px auto; text-align:center; }
   </div>
 </div>
 
+<!-- cloned header container will be injected here by JS -->
+<div id="clonedHeaderContainer" class="cloned-header" aria-hidden="true"></div>
+
 <script>
-const GAS_URL = "https://script.google.com/macros/s/AKfycbxktyyO3LPN2B1lAPHcB93pXrOXaiaTZYxV_he5EO3JCyJPu-nUlhohTBmWie1MYNMeHQ/exec";
+/* ---------- YOUR EXISTING APP LOGIC (GAS_URL, loadOrders, renderTable, updateRow, dll.) ---------- */
+const GAS_URL = "https://script.google.com/macros/s/AKfycbwJax3FO_zvxRrsYtL6X_3xsmZAWG9gwxSs-ljpvGvMCR003h0qjf3_rq7wMDn2yv8Z5A/exec";
 let currentData = [];
 const statusOptions = ["Dipesan", "Dijemput", "Diproses", "Selesai", "Diantar"];
 
 let knownOrders = new Set();
 let seenOrders = new Set(JSON.parse(localStorage.getItem("seenOrders") || "[]"));
-
 function saveSeenOrders() { localStorage.setItem("seenOrders", JSON.stringify([...seenOrders])); }
+
+function showNotif(msg, type="success") {
+  const notif = document.getElementById("notif");
+  notif.textContent = msg;
+  notif.className = "toast " + (type === "success" ? "success" : "error");
+  notif.style.display = "block";
+  setTimeout(() => notif.style.display = "none", 2000);
+}
+
+function confirmRefresh() {
+  if (confirm("Yakin mau reload data order?")) {
+    loadOrders();
+    showNotif("🔄 Data berhasil direfresh","success");
+  }
+}
 
 /* Highlight Pesanan Baru */
 function highlightNewOrders(data){
@@ -176,10 +250,8 @@ function highlightNewOrders(data){
   }
 }
 
-
 /* Tombol Lihat */
 function gotoOrder(rowIndex, btn) {
-  // Scroll ke row yang bersangkutan
   const row = [...document.querySelectorAll("#ordersTable tbody tr")]
     .find(r => r.querySelector("button")?.onclick.toString().includes(rowIndex));
   if (row) {
@@ -187,25 +259,9 @@ function gotoOrder(rowIndex, btn) {
     row.classList.add("flash");
     setTimeout(() => row.classList.remove("flash"), 1500);
   }
-  // Jangan hapus dari notifikasi di sini
 }
 
-
-function showNotif(msg, type="success") {
-  const notif = document.getElementById("notif");
-  notif.textContent = msg;
-  notif.className = "toast " + (type === "success" ? "success" : "error");
-  notif.style.display = "block";
-  setTimeout(() => notif.style.display = "none", 2000);
-}
-
-function confirmRefresh() {
-  if (confirm("Yakin mau reload data order?")) {
-    loadOrders();
-    showNotif("🔄 Data berhasil direfresh","success");
-  }
-}
-
+/* Load data dari GAS */
 function loadOrders() {
   fetch(GAS_URL, { method:"POST", body: JSON.stringify({ type:"GetAllOrders" }) })
   .then(res => res.json())
@@ -214,10 +270,12 @@ function loadOrders() {
     renderTable(currentData);
     updateDashboard(currentData);
     highlightNewOrders(currentData);
+    syncClonedHeader(); // sync header widths after table rendered
   })
   .catch(err => { console.error(err); showNotif("⚠️ Gagal load order", "error"); });
 }
 
+/* Render tabel (sama seperti sebelumnya) */
 function renderTable(data) {
   const tbody = document.querySelector("#ordersTable tbody");
   tbody.innerHTML = "";
@@ -227,7 +285,7 @@ function renderTable(data) {
     const harga=o.Harga||0;
     const berat=o.Berat||0;
     const formattedHP=noHp.startsWith("62")?"0"+noHp.slice(2):noHp;
-    const formattedHarga=parseInt(harga).toLocaleString("id-ID");
+    const formattedHarga= isNaN(parseInt(harga)) ? harga : parseInt(harga).toLocaleString("id-ID");
     const date=new Date(o.Jadwal);
     const formattedDate=isNaN(date)?o.Jadwal: (("0"+date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + date.getFullYear() + " " + ("0"+date.getHours()).slice(-2)+":"+("0"+date.getMinutes()).slice(-2));
     
@@ -248,11 +306,7 @@ function renderTable(data) {
       </td>
       <td contenteditable="true" data-key="Berat">${berat}</td>
       <td contenteditable="true" data-key="Harga">${formattedHarga}</td>
-<td style="display:flex; justify-content:center; gap:5px;">
-  <button onclick="updateRow(this,${o.rowIndex})">Update</button>
-  <button style="background:#dc2626;" onclick="deleteRow(${o.rowIndex}, this)">Hapus</button>
-</td>
-
+      <td><button onclick="updateRow(this,${o.rowIndex})">Update</button></td>
     `;
     if (o.Status==="Diantar") tr.classList.add("status-diantar");
     const statusSelect = tr.querySelector("select[data-key='Status']");
@@ -262,6 +316,9 @@ function renderTable(data) {
     });
     tbody.appendChild(tr);
   });
+
+  // after render, update cloned header sizes
+  setTimeout(syncClonedHeader, 50);
 }
 
 function updateRow(btn, rowIndex) {
@@ -283,7 +340,6 @@ function updateRow(btn, rowIndex) {
       tr.classList.add("flash");
       setTimeout(() => tr.classList.remove("flash"), 1500);
 
-      // 🔹 Hapus dari notifikasi jika status bukan Dipesan
       if(payload.Status && payload.Status !== "Dipesan") {
         seenOrders.add(String(rowIndex));
         saveSeenOrders();
@@ -300,42 +356,12 @@ function updateRow(btn, rowIndex) {
   });
 }
 
-
 function filterColumn(e,index){
   const val=e.target.value.toLowerCase();
   const rows=document.querySelectorAll("#ordersTable tbody tr");
   rows.forEach(r=>{
     const td=r.children[index];
     if(td) r.style.display=td.textContent.toLowerCase().includes(val)?"":"none";
-  });
-}
-
-function deleteRow(rowIndex, btn) {
-  if (!confirm("Yakin ingin menghapus pesanan ini?")) return;
-
-  fetch(GAS_URL, {
-    method: "POST",
-    body: JSON.stringify({ type: "DeleteOrder", rowIndex })
-  })
-  .then(res => res.json())
-  .then(r => {
-    if (r.result === "ok") {
-      showNotif("🗑️ Pesanan berhasil dihapus", "success");
-      // Hapus baris dari tabel
-      const tr = btn.closest("tr");
-      tr.remove();
-      // Update dashboard
-      currentData = currentData.filter(o => o.rowIndex !== rowIndex);
-      updateDashboard(currentData);
-      // Update notif baru jika perlu
-      highlightNewOrders(currentData);
-    } else {
-      showNotif("⚠️ Gagal menghapus pesanan", "error");
-    }
-  })
-  .catch(err => {
-    console.error(err);
-    showNotif("⚠️ Gagal menghapus pesanan", "error");
   });
 }
 
@@ -352,6 +378,152 @@ function updateDashboard(data){
   document.getElementById("completedOrders").textContent=completedOrders;
 }
 
+/* ---------- CLONED HEADER IMPLEMENTATION (fixes "kepotong" issue) ---------- */
+let clonedWrapper = null;
+let clonedTable = null;
+function createClonedHeader() {
+  const container = document.getElementById("clonedHeaderContainer");
+  const originalTable = document.getElementById("ordersTable");
+  if (!originalTable || !container) return;
+
+  // If already created, skip
+  if (container.querySelector('table')) return;
+
+  const thead = originalTable.querySelector('thead');
+  if (!thead) return;
+
+  // clone thead into a small table
+  clonedTable = document.createElement('table');
+  clonedTable.className = 'cloned-table';
+  const cloneThead = thead.cloneNode(true);
+  clonedTable.appendChild(cloneThead);
+  container.appendChild(clonedTable);
+  clonedWrapper = container;
+
+  // forward input events from cloned header to original header inputs
+  setupCloneInputForwarding();
+  // initial sync
+  syncClonedHeader();
+}
+
+function setupCloneInputForwarding(){
+  const originalInputs = Array.from(document.querySelectorAll('#ordersTable thead input, #ordersTable thead select'));
+  const cloneInputs = Array.from(document.querySelectorAll('#clonedHeaderContainer thead input, #clonedHeaderContainer thead select'));
+  cloneInputs.forEach((cInput, idx) => {
+    cInput.addEventListener('input', e => {
+      const orig = originalInputs[idx];
+      if (!orig) return;
+      orig.value = e.target.value;
+      // trigger original input event to filter
+      orig.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    cInput.addEventListener('focus', e => {
+      const orig = originalInputs[idx];
+      if (orig) orig.focus();
+    });
+  });
+}
+
+function syncClonedHeader(){
+  const originalTable = document.getElementById("ordersTable");
+  const container = document.getElementById("clonedHeaderContainer");
+  if (!originalTable || !container) return;
+
+  // ensure cloned header exists
+  createClonedHeader();
+
+  const tableRect = originalTable.getBoundingClientRect();
+  const theadCells = Array.from(originalTable.querySelectorAll('thead th'));
+  const cloneCells = Array.from(container.querySelectorAll('thead th'));
+
+  // set widths for cloned cells to match original
+  cloneCells.forEach((c, i) => {
+    const orig = theadCells[i];
+    if (!orig) return;
+    const w = Math.max(orig.getBoundingClientRect().width, orig.offsetWidth);
+    c.style.width = w + 'px';
+  });
+
+  // set container/table widths
+  const tblWidth = originalTable.getBoundingClientRect().width;
+  container.style.width = tblWidth + 'px';
+  clonedTable.style.width = tblWidth + 'px';
+
+  // position left to match table
+  container.style.left = (tableRect.left + window.scrollX) + 'px';
+}
+
+function updateClonedHeaderVisibility(){
+  const originalTable = document.getElementById("ordersTable");
+  const container = document.getElementById("clonedHeaderContainer");
+  if (!originalTable || !container) return;
+  const rect = originalTable.getBoundingClientRect();
+
+  // show cloned header when table top scrolled above viewport top
+  // and bottom is still visible (so header shouldn't show past table)
+  if (rect.top < 0 && rect.bottom > 0) {
+    container.style.display = 'block';
+    // adjust left and width again to follow horizontal scroll
+    syncClonedHeader();
+  } else {
+    container.style.display = 'none';
+  }
+}
+
+/* update on scroll/resize and container scroll */
+window.addEventListener('scroll', updateClonedHeaderVisibility, {passive:true});
+window.addEventListener('resize', () => { syncClonedHeader(); updateClonedHeaderVisibility(); });
+document.querySelectorAll('.table-container').forEach(tc => {
+  tc.addEventListener('scroll', () => { syncClonedHeader(); updateClonedHeaderVisibility(); });
+});
+
+/* create on initial load */
+window.addEventListener('DOMContentLoaded', () => {
+  createClonedHeader();
+  syncClonedHeader();
+  updateClonedHeaderVisibility();
+});
+
+/* ---------- Drag-to-scroll for table-container ---------- */
+(function() {
+  const container = document.querySelector(".table-container");
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+
+  if (container) {
+    container.addEventListener("mousedown", e => {
+      isDown = true;
+      startX = e.pageX - container.offsetLeft;
+      scrollLeft = container.scrollLeft;
+    });
+    container.addEventListener("mouseleave", () => isDown = false);
+    container.addEventListener("mouseup", () => isDown = false);
+    container.addEventListener("mousemove", e => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - container.offsetLeft;
+      const walk = (x - startX) * 1;
+      container.scrollLeft = scrollLeft - walk;
+      // also sync cloned header position while dragging
+      syncClonedHeader();
+    });
+    // also support touch dragging
+    let touchStartX = 0, touchScrollLeft = 0;
+    container.addEventListener('touchstart', e => {
+      touchStartX = e.touches[0].pageX - container.offsetLeft;
+      touchScrollLeft = container.scrollLeft;
+    }, {passive:true});
+    container.addEventListener('touchmove', e => {
+      const x = e.touches[0].pageX - container.offsetLeft;
+      const walk = (x - touchStartX) * 1;
+      container.scrollLeft = touchScrollLeft - walk;
+      syncClonedHeader();
+    }, {passive:true});
+  }
+})();
+
+/* ---------- init load ---------- */
 window.addEventListener("DOMContentLoaded", loadOrders);
 </script>
 
