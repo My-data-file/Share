@@ -27,8 +27,7 @@ input, select { padding:6px; border:1px solid #ccc; border-radius:5px; font-size
 .card p { font-size:20px; font-weight:bold; margin:5px 0 0; }
 
 /* Tabel */
-.table-container { width:100%; overflow-x:auto; background:white; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); cursor: grab; }
-.table-container:active { cursor: grabbing; }
+.table-container { width:100%; overflow-x:auto; background:white; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.1); }
 table { width:100%; border-collapse: collapse; min-width:1000px; }
 th, td { border:1px solid #ccc; padding:8px; text-align:center; font-size:13px; }
 th { background:#e5e7eb; position:sticky; top:0; z-index:2; }
@@ -72,6 +71,7 @@ tr.flash { animation: flashGreen 1.5s ease-out; }
 
 /* Input search di tabel center */
 th input { display:block; margin:5px auto; text-align:center; }
+
 </style>
 </head>
 <body>
@@ -141,14 +141,17 @@ th input { display:block; margin:5px auto; text-align:center; }
 const GAS_URL = "https://script.google.com/macros/s/AKfycbwJax3FO_zvxRrsYtL6X_3xsmZAWG9gwxSs-ljpvGvMCR003h0qjf3_rq7wMDn2yv8Z5A/exec";
 let currentData = [];
 const statusOptions = ["Dipesan", "Dijemput", "Diproses", "Selesai", "Diantar"];
+
+let knownOrders = new Set();
 let seenOrders = new Set(JSON.parse(localStorage.getItem("seenOrders") || "[]"));
 
 function saveSeenOrders() { localStorage.setItem("seenOrders", JSON.stringify([...seenOrders])); }
 
+/* Highlight Pesanan Baru */
 function highlightNewOrders(data){
   const box = document.getElementById("newOrdersBox");
   const list = document.getElementById("newOrdersList");
-  list.innerHTML = "";
+  list.innerHTML = ""; // reset daftar lama
 
   let pendingOrders = data.filter(o => o.Status === "Dipesan" && !seenOrders.has(String(o.rowIndex)));
 
@@ -157,17 +160,26 @@ function highlightNewOrders(data){
     pendingOrders.forEach(o => {
       const li = document.createElement("li");
       li.style.marginBottom = "6px";
-      li.innerHTML = `<span><b>${o.Nama||"Tanpa Nama"}</b> - ${o.Layanan||""}</span>
+      li.innerHTML = `
+        <span><b>${o.Nama||"Tanpa Nama"}</b> - ${o.Layanan||""}</span>
         <button style="margin-left:10px; padding:2px 8px; font-size:12px;" 
           onclick="gotoOrder(${o.rowIndex}, this)">Lihat</button>`;
       list.appendChild(li);
     });
   } else {
-    box.style.display = "none";
+    box.style.display = "block";
+    const li = document.createElement("li");
+    li.textContent = "Tidak ada order baru";
+    li.style.fontStyle = "italic";
+    li.style.color = "#555";
+    list.appendChild(li);
   }
 }
 
+
+/* Tombol Lihat */
 function gotoOrder(rowIndex, btn) {
+  // Scroll ke row yang bersangkutan
   const row = [...document.querySelectorAll("#ordersTable tbody tr")]
     .find(r => r.querySelector("button")?.onclick.toString().includes(rowIndex));
   if (row) {
@@ -175,18 +187,20 @@ function gotoOrder(rowIndex, btn) {
     row.classList.add("flash");
     setTimeout(() => row.classList.remove("flash"), 1500);
   }
+  // Jangan hapus dari notifikasi di sini
 }
+
 
 function showNotif(msg, type="success") {
   const notif = document.getElementById("notif");
   notif.textContent = msg;
-  notif.className = "toast " + (type==="success"?"success":"error");
+  notif.className = "toast " + (type === "success" ? "success" : "error");
   notif.style.display = "block";
-  setTimeout(()=> notif.style.display="none", 2000);
+  setTimeout(() => notif.style.display = "none", 2000);
 }
 
 function confirmRefresh() {
-  if(confirm("Yakin mau reload data order?")) {
+  if (confirm("Yakin mau reload data order?")) {
     loadOrders();
     showNotif("🔄 Data berhasil direfresh","success");
   }
@@ -194,23 +208,20 @@ function confirmRefresh() {
 
 function loadOrders() {
   fetch(GAS_URL, { method:"POST", body: JSON.stringify({ type:"GetAllOrders" }) })
-  .then(res=>res.json())
-  .then(data=>{
+  .then(res => res.json())
+  .then(data => {
     currentData = data.orders || [];
     renderTable(currentData);
     updateDashboard(currentData);
     highlightNewOrders(currentData);
   })
-  .catch(err => { console.error(err); showNotif("⚠️ Gagal load order","error"); });
+  .catch(err => { console.error(err); showNotif("⚠️ Gagal load order", "error"); });
 }
 
-function renderTable(data){
+function renderTable(data) {
   const tbody = document.querySelector("#ordersTable tbody");
   tbody.innerHTML = "";
-  if(!data || data.length===0) {
-    tbody.innerHTML = "<tr><td colspan='12' style='text-align:center;'>Tidak ada order</td></tr>"; 
-    return;
-  }
+  if (!data || data.length===0) { tbody.innerHTML = "<tr><td colspan='12' style='text-align:center;'>Tidak ada order</td></tr>"; return; }
   data.forEach((o,i)=>{
     const noHp=o["No HP"]?.toString()||"";
     const harga=o.Harga||0;
@@ -219,7 +230,7 @@ function renderTable(data){
     const formattedHarga=parseInt(harga).toLocaleString("id-ID");
     const date=new Date(o.Jadwal);
     const formattedDate=isNaN(date)?o.Jadwal: (("0"+date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" + date.getFullYear() + " " + ("0"+date.getHours()).slice(-2)+":"+("0"+date.getMinutes()).slice(-2));
-
+    
     const tr=document.createElement("tr");
     tr.innerHTML=`
       <td>${i+1}</td>
@@ -230,14 +241,16 @@ function renderTable(data){
       <td contenteditable="true" data-key="Catatan">${o.Catatan||""}</td>
       <td contenteditable="true" data-key="Jadwal">${formattedDate}</td>
       <td><a href="${o.Maps||'#'}" target="_blank">Lihat</a></td>
-      <td><select data-key="Status">
-        ${statusOptions.map(s=>`<option value="${s}" ${o.Status===s?'selected':''}>${s}</option>`).join('')}
-      </select></td>
+      <td>
+        <select data-key="Status">
+          ${statusOptions.map(s=>`<option value="${s}" ${o.Status===s?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </td>
       <td contenteditable="true" data-key="Berat">${berat}</td>
       <td contenteditable="true" data-key="Harga">${formattedHarga}</td>
       <td><button onclick="updateRow(this,${o.rowIndex})">Update</button></td>
     `;
-    if(o.Status==="Diantar") tr.classList.add("status-diantar");
+    if (o.Status==="Diantar") tr.classList.add("status-diantar");
     const statusSelect = tr.querySelector("select[data-key='Status']");
     statusSelect.addEventListener("change",function(){
       if(this.value==="Diantar") tr.classList.add("status-diantar");
@@ -247,45 +260,58 @@ function renderTable(data){
   });
 }
 
-function updateRow(btn,rowIndex){
-  if(!confirm("Yakin update data row ini?")) return;
-  const tr=btn.closest("tr");
-  const payload={};
-  tr.querySelectorAll("[contenteditable], select").forEach(el=>{
-    payload[el.dataset.key]=el.value?.trim() ?? el.textContent.trim();
+function updateRow(btn, rowIndex) {
+  if (!confirm("Yakin update data row ini?")) return;
+  const tr = btn.closest("tr");
+  const payload = {};
+  tr.querySelectorAll("[contenteditable], select").forEach(el => {
+    payload[el.dataset.key] = el.value?.trim() ?? el.textContent.trim();
   });
 
   fetch(GAS_URL, {
-    method:"POST",
+    method: "POST",
     body: JSON.stringify({ type:"UpdateOrder", rowIndex, payload })
-  }).then(res=>res.json()).then(r=>{
-    if(r.result==="ok") {
-      showNotif("✅ Data berhasil disimpan","success");
+  })
+  .then(res => res.json())
+  .then(r => {
+    if (r.result === "ok") {
+      showNotif("✅ Data berhasil disimpan", "success");
       tr.classList.add("flash");
-      setTimeout(()=>tr.classList.remove("flash"),1500);
-      if(payload.Status && payload.Status!=="Dipesan"){
+      setTimeout(() => tr.classList.remove("flash"), 1500);
+
+      // 🔹 Hapus dari notifikasi jika status bukan Dipesan
+      if(payload.Status && payload.Status !== "Dipesan") {
         seenOrders.add(String(rowIndex));
         saveSeenOrders();
         highlightNewOrders(currentData);
       }
-    } else showNotif("⚠️ Gagal update","error");
-  }).catch(err=>{console.error(err); showNotif("⚠️ Gagal update","error"); });
+
+    } else {
+      showNotif("⚠️ Gagal update", "error");
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    showNotif("⚠️ Gagal update", "error");
+  });
 }
+
 
 function filterColumn(e,index){
   const val=e.target.value.toLowerCase();
-  document.querySelectorAll("#ordersTable tbody tr").forEach(r=>{
+  const rows=document.querySelectorAll("#ordersTable tbody tr");
+  rows.forEach(r=>{
     const td=r.children[index];
-    r.style.display=td && td.textContent.toLowerCase().includes(val)? "":"none";
+    if(td) r.style.display=td.textContent.toLowerCase().includes(val)?"":"none";
   });
 }
 
 function updateDashboard(data){
-  const totalOrders=data.length;
-  const totalWeight=data.reduce((sum,o)=>sum+parseFloat(o.Berat||0),0);
-  const totalIncome=data.reduce((sum,o)=>sum+parseFloat(o.Harga||0),0);
-  const activeOrders=data.filter(o=>!["Selesai","Diantar"].includes(o.Status)).length;
-  const completedOrders=data.filter(o=>["Selesai","Diantar"].includes(o.Status)).length;
+  let totalOrders=data.length;
+  let totalWeight=data.reduce((sum,o)=>sum+parseFloat(o.Berat||0),0);
+  let totalIncome=data.reduce((sum,o)=>sum+parseFloat(o.Harga||0),0);
+  let activeOrders=data.filter(o=>!["Selesai","Diantar"].includes(o.Status)).length;
+  let completedOrders=data.filter(o=>["Selesai","Diantar"].includes(o.Status)).length;
   document.getElementById("totalOrders").textContent=totalOrders;
   document.getElementById("totalWeight").textContent=totalWeight.toFixed(2)+" Kg";
   document.getElementById("totalIncome").textContent="Rp "+totalIncome.toLocaleString("id-ID");
@@ -293,31 +319,7 @@ function updateDashboard(data){
   document.getElementById("completedOrders").textContent=completedOrders;
 }
 
-// Drag/scroll fleksibel (desktop & mobile)
-function enableDragScroll(containerSelector){
-  const container=document.querySelector(containerSelector);
-  if(!container) return;
-  let isDown=false,startX,scrollLeft;
-  container.addEventListener('pointerdown',e=>{
-    isDown=true;
-    container.setPointerCapture(e.pointerId);
-    startX=e.clientX;
-    scrollLeft=container.scrollLeft;
-  });
-  container.addEventListener('pointermove',e=>{
-    if(!isDown) return;
-    const walk=e.clientX-startX;
-    container.scrollLeft=scrollLeft-walk;
-  });
-  container.addEventListener('pointerup',()=>{isDown=false;});
-  container.addEventListener('pointercancel',()=>{isDown=false;});
-}
-
-// Jalankan saat DOM siap
-window.addEventListener("DOMContentLoaded", ()=>{
-  loadOrders();
-  enableDragScroll(".table-container");
-});
+window.addEventListener("DOMContentLoaded", loadOrders);
 </script>
 
 </body>
