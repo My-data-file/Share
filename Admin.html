@@ -48,6 +48,9 @@
   .status.Selesai{background:#dcfce7;color:#166534}
   .status.Diantar{background:#d1fae5;color:#065f46}
 
+  /* card hijau untuk status Diantar */
+  .order-card.diantar { background-color: #d1fae5; }
+
   .order-card button{width:100%;margin-top:10px}
 
   /* highlight sementara saat scroll */
@@ -134,20 +137,16 @@
 </div>
 
 <script>
-/* ========== CONFIG ========== */
 const GAS_URL = "https://script.google.com/macros/s/AKfycbwJax3FO_zvxRrsYtL6X_3xsmZAWG9gwxSs-ljpvGvMCR003h0qjf3_rq7wMDn2yv8Z5A/exec";
 const statusOptions = ["Dipesan","Dijemput","Diproses","Selesai","Diantar"];
 
-/* state */
 let currentData = [];
 let seenOrders = new Set(JSON.parse(localStorage.getItem("seenOrders")||"[]"));
 let selectedRowIndex = null;
 
-/* helpers */
 function saveSeenOrders(){ localStorage.setItem("seenOrders", JSON.stringify([...seenOrders])); }
 function showNotif(msg, type="success"){ const n=document.getElementById("notif"); n.textContent=msg; n.className="toast "+(type==="success"?"success":"error"); n.style.display="block"; setTimeout(()=>n.style.display="none",2000); }
 
-/* ========== LOAD ORDERS ========== */
 function loadOrders(){
   fetch(GAS_URL, { method:"POST", body: JSON.stringify({ type:"GetAllOrders" }) })
     .then(r=>r.json())
@@ -161,7 +160,6 @@ function loadOrders(){
     .catch(err => { console.error(err); showNotif("⚠️ Gagal load order","error"); });
 }
 
-/* ========== RENDER CARDS ========== */
 function renderCards(data){
   const grid = document.getElementById("ordersGrid");
   grid.innerHTML = "";
@@ -173,7 +171,7 @@ function renderCards(data){
     const harga = (parseInt(o.Harga)||0).toLocaleString("id-ID");
     const berat = o.Berat || 0;
     const card = document.createElement("div");
-    card.className = "order-card";
+    card.className = "order-card" + (o.Status === "Diantar" ? " diantar" : "");
     card.innerHTML = `
       <h4>${escapeHtml(o.Nama||"Tanpa Nama")}</h4>
       <p>📞 ${escapeHtml(o["No HP"]||"-")}</p>
@@ -187,9 +185,9 @@ function renderCards(data){
     grid.appendChild(card);
   });
 }
+
 function escapeHtml(s){ return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;"); }
 
-/* ========== SCROLL TO CARD FUNCTION ========== */
 function scrollToCard(rowIndex){
   const cards = document.querySelectorAll('#ordersGrid .order-card');
   for(const card of cards){
@@ -203,7 +201,6 @@ function scrollToCard(rowIndex){
   }
 }
 
-/* ========== HIGHLIGHT PESANAN BARU ========== */
 function highlightNewOrders(data){
   const list = document.getElementById("newOrdersList");
   list.innerHTML = "";
@@ -223,7 +220,6 @@ function highlightNewOrders(data){
   }
 }
 
-/* ========== MODAL ========== */
 function openModalByRow(rowIndex){
   const order = currentData.find(o => String(o.rowIndex) === String(rowIndex));
   if(order) openModal(order);
@@ -280,7 +276,6 @@ function saveModal(){
     .catch(err => { console.error(err); showNotif("⚠️ Gagal update","error"); });
 }
 
-/* ========== FILTER / SEARCH ========== */
 document.getElementById("searchInput").addEventListener("input", applyFilters);
 document.getElementById("statusFilter").addEventListener("change", applyFilters);
 function applyFilters(){
@@ -295,7 +290,6 @@ function applyFilters(){
   renderCards(filtered);
 }
 
-/* ========== DASHBOARD ========== */
 function updateDashboard(data){
   const totalOrders = data.length;
   const totalWeight = data.reduce((s,o)=> s + (parseFloat(o.Berat)||0), 0);
@@ -309,16 +303,13 @@ function updateDashboard(data){
   document.getElementById("completedOrders").textContent = completed;
 }
 
-/* ========== REFRESH ========== */
 function confirmRefresh(){ if(confirm("Yakin mau reload data order?")){ loadOrders(); showNotif("🔄 Data berhasil direfresh","success"); } }
 
-/* ========== COLLAPSIBLE NEW ORDERS ========== */
 document.querySelector('#newOrdersBox h3').addEventListener('click', ()=>{
   const box = document.getElementById('newOrdersBox');
   box.classList.toggle('collapsed');
 });
 
-/* ========== INIT ========== */
 window.addEventListener("DOMContentLoaded", loadOrders);
 </script>
 </body>
