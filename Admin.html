@@ -91,9 +91,7 @@
     animation: spin 1s linear infinite;
     margin-bottom: 12px;
   }
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
   @media (max-width:640px){
     .filter-bar{flex-direction:column;align-items:stretch}
@@ -170,7 +168,7 @@
 </div>
 
 <script>
-const GAS_URL = "https://script.google.com/macros/s/AKfycbwJax3FO_zvxRrsYtL6X_3xsmZAWG9gwxSs-ljpvGvMCR003h0qjf3_rq7wMDn2yv8Z5A/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbyhfdzj1_8VSpMWXSJw5Y1raqUiocwJoSmMSKTidtr0pVnvPdnFseNFbZv5VcUhiAdPcw/exec";
 const statusOptions = ["Dipesan","Dijemput","Diproses","Selesai","Diantar"];
 
 let currentData = [];
@@ -219,9 +217,35 @@ function renderCards(data){
       <p><span class="status ${o.Status}">${o.Status}</span></p>
       <p>⚖️ ${berat} Kg | 💰 Rp ${harga}</p>
       <button onclick="openModalByRow(${o.rowIndex})">Detail / Update</button>
+      <button onclick="deleteOrder(${o.rowIndex})" style="background:#dc2626;margin-top:6px">Hapus</button>
     `;
     grid.appendChild(card);
   });
+}
+
+function deleteOrder(rowIndex){
+  if(!confirm("Yakin ingin menghapus order ini?")) return;
+  showLoading();
+  fetch(GAS_URL, { 
+    method:"POST", 
+    body: JSON.stringify({ type:"DeleteOrder", rowIndex })
+  })
+  .then(r=>r.json())
+  .then(res=>{
+    if(res.result === "ok"){
+      showNotif("✅ Order berhasil dihapus","success");
+      seenOrders.delete(String(rowIndex));
+      saveSeenOrders();
+      loadOrders();
+    } else {
+      showNotif("⚠️ Gagal hapus order","error");
+    }
+  })
+  .catch(err=>{
+    console.error(err);
+    showNotif("⚠️ Gagal hapus order","error");
+  })
+  .finally(()=>hideLoading());
 }
 
 function escapeHtml(s){ return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;"); }
