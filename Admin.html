@@ -176,7 +176,7 @@ let seenOrders = new Set(JSON.parse(localStorage.getItem("seenOrders")||"[]"));
 let selectedRowIndex = null;
 
 function saveSeenOrders(){ localStorage.setItem("seenOrders", JSON.stringify([...seenOrders])); }
-function showNotif(msg, type="success"){ const n=document.getElementById("notif"); n.textContent=msg; n.className="toast "+(type==="success"?"success":"error"); n.style.display="block"; setTimeout(()=>n.style.display="none",2000); }
+function showNotif(msg, type="success"){ const n=document.getElementById("notif"); n.textContent=msg; n.className="toast "+(type==="success"?"success":"error"); n.style.display="block"; setTimeout(()=>n.style.display="none",3000); }
 
 function showLoading(){ document.getElementById("loadingOverlay").style.display = "flex"; document.getElementById("refreshBtn").disabled = true; }
 function hideLoading(){ document.getElementById("loadingOverlay").style.display = "none"; document.getElementById("refreshBtn").disabled = false; }
@@ -191,11 +191,13 @@ function loadOrders(){
       renderCards(currentData);
       updateDashboard(currentData);
       highlightNewOrders(currentData);
+      notifyOverdueOrders(currentData); // ✅ notif order lewat jadwal
     })
     .catch(err => { console.error(err); showNotif("⚠️ Gagal load order","error"); })
     .finally(()=> hideLoading());
 }
 
+// ======= renderCards with highlight & formatted Jadwal =======
 function renderCards(data){
   const grid = document.getElementById("ordersGrid");
   grid.innerHTML = "";
@@ -203,17 +205,36 @@ function renderCards(data){
     grid.innerHTML = "<p style='text-align:center;color:#666'>Tidak ada order</p>";
     return;
   }
+
+  const now = new Date();
+
   data.forEach(o => {
     const harga = (parseInt(o.Harga)||0).toLocaleString("id-ID");
     const berat = o.Berat || 0;
+
+    // Format Jadwal
+    let jadwalText = o.Jadwal || "-";
+    let jadwalDate = null;
+    if(o.Jadwal){
+      jadwalDate = new Date(o.Jadwal);
+      const pad = n => n.toString().padStart(2,'0');
+      jadwalText = `${pad(jadwalDate.getDate())}/${pad(jadwalDate.getMonth()+1)}/${jadwalDate.getFullYear()} ${pad(jadwalDate.getHours())}:${pad(jadwalDate.getMinutes())}`;
+    }
+
     const card = document.createElement("div");
     card.className = "order-card" + (o.Status === "Diantar" ? " diantar" : "");
+
+    // highlight jika jadwal sudah lewat dan status belum selesai/diantar
+    if(jadwalDate && jadwalDate < now && !["Selesai","Diantar"].includes(o.Status)){
+      card.style.backgroundColor = "#fee2e2"; // merah lembut
+    }
+
     card.innerHTML = `
       <h4>${escapeHtml(o.Nama||"Tanpa Nama")}</h4>
       <p>📞 ${escapeHtml(o["No HP"]||"-")}</p>
       <p>📍 ${escapeHtml(o.Alamat||"-")}</p>
       <p>🛠 ${escapeHtml(o.Layanan||"-")}</p>
-      <p>⏰ ${escapeHtml(o.Jadwal||"-")}</p>
+      <p>⏰ ${escapeHtml(jadwalText)}</p>
       <p><span class="status ${o.Status}">${o.Status}</span></p>
       <p>⚖️ ${berat} Kg | 💰 Rp ${harga}</p>
       <button onclick="openModalByRow(${o.rowIndex})">Detail / Update</button>
@@ -223,29 +244,33 @@ function renderCards(data){
   });
 }
 
+// ======= Notify overdue orders =======
+function notifyOverdueOrders(data){
+  const now = new Date();
+  const overdue = data.filter(o => {
+    const jd = o.Jadwal ? new Date(o.Jadwal) : null;
+    return jd && jd < now && !["Selesai","Diantar"].includes(o.Status);
+  });
+  if(overdue.length > 0){
+    showNotif(`⚠️ Ada ${overdue.length} order yang sudah lewat jadwal!`, "error");
+  }
+}
+
 function deleteOrder(rowIndex){
   if(!confirm("Yakin ingin menghapus order ini?")) return;
   showLoading();
-  fetch(GAS_URL, { 
-    method:"POST", 
-    body: JSON.stringify({ type:"DeleteOrder", rowIndex })
-  })
-  .then(r=>r.json())
-  .then(res=>{
-    if(res.result === "ok"){
-      showNotif("✅ Order berhasil dihapus","success");
-      seenOrders.delete(String(rowIndex));
-      saveSeenOrders();
-      loadOrders();
-    } else {
-      showNotif("⚠️ Gagal hapus order","error");
-    }
-  })
-  .catch(err=>{
-    console.error(err);
-    showNotif("⚠️ Gagal hapus order","error");
-  })
-  .finally(()=>hideLoading());
+  fetch(GAS_URL, { method:"POST", body: JSON.stringify({ type:"DeleteOrder", rowIndex }) })
+    .then(r=>r.json())
+    .then(res=>{
+      if(res.result === "ok"){
+        showNotif("✅ Order berhasil dihapus","success");
+        seenOrders.delete(String(rowIndex));
+        saveSeenOrders();
+        loadOrders();
+      } else showNotif("⚠️ Gagal hapus order","error");
+    })
+    .catch(err=>{ console.error(err); showNotif("⚠️ Gagal hapus order","error"); })
+    .finally(()=>hideLoading());
 }
 
 function escapeHtml(s){ return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;"); }
@@ -289,13 +314,22 @@ function openModalByRow(rowIndex){
 function openModal(order){
   selectedRowIndex = order.rowIndex;
   const cont = document.getElementById("modalContent");
+
+  // format Jadwal ke datetime-local
+  let dtVal = "";
+  if(order.Jadwal){
+    const jd = new Date(order.Jadwal);
+    const pad = n => n.toString().padStart(2,'0');
+    dtVal = `${jd.getFullYear()}-${pad(jd.getMonth()+1)}-${pad(jd.getDate())}T${pad(jd.getHours())}:${pad(jd.getMinutes())}`;
+  }
+
   cont.innerHTML = `
     <div class="form-row"><label>Nama</label><input id="m_Nama" value="${escapeHtml(order.Nama||"")}"></div>
     <div class="form-row"><label>Alamat</label><textarea id="m_Alamat">${escapeHtml(order.Alamat||"")}</textarea></div>
     <div class="form-row"><label>No HP</label><input id="m_NoHP" value="${escapeHtml(order["No HP"]||"")}"></div>
     <div class="form-row"><label>Layanan</label><input id="m_Layanan" value="${escapeHtml(order.Layanan||"")}"></div>
     <div class="form-row"><label>Catatan</label><textarea id="m_Catatan">${escapeHtml(order.Catatan||"")}</textarea></div>
-    <div class="form-row"><label>Jadwal</label><input id="m_Jadwal" value="${escapeHtml(order.Jadwal||"")}"></div>
+    <div class="form-row"><label>Jadwal</label><input id="m_Jadwal" type="datetime-local" value="${dtVal}"></div>
     <div class="form-row"><label>Status</label>
       <select id="m_Status">${statusOptions.map(s=>`<option value="${s}" ${order.Status===s?'selected':''}>${s}</option>`).join("")}</select>
     </div>
@@ -305,8 +339,10 @@ function openModal(order){
   `;
   document.getElementById("orderModal").style.display = "flex";
 }
+
 document.getElementById("modalCloseBtn").addEventListener("click", closeModal);
 function closeModal(){ document.getElementById("orderModal").style.display="none"; selectedRowIndex = null; }
+
 document.getElementById("modalSaveBtn").addEventListener("click", saveModal);
 function saveModal(){
   if(selectedRowIndex === null){ showNotif("Tidak ada order terpilih","error"); return; }
@@ -379,5 +415,6 @@ document.querySelector('#newOrdersBox h3').addEventListener('click', ()=>{
 
 window.addEventListener("DOMContentLoaded", loadOrders);
 </script>
+
 </body>
 </html>
