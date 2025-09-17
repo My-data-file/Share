@@ -68,6 +68,33 @@
   .toast.success{background:#16a34a}
   .toast.error{background:#dc2626}
 
+  /* loading overlay */
+  .loading-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 12000;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+  }
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #fff;
+    border-top: 4px solid #2563eb;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 12px;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
   @media (max-width:640px){
     .filter-bar{flex-direction:column;align-items:stretch}
     #dashboard{grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px;}
@@ -117,7 +144,7 @@
       <option value="Selesai">Selesai</option>
       <option value="Diantar">Diantar</option>
     </select>
-    <button onclick="confirmRefresh()">🔄 Refresh Orders</button>
+    <button id="refreshBtn" onclick="confirmRefresh()">🔄 Refresh Orders</button>
   </div>
 
   <!-- orders grid -->
@@ -136,6 +163,12 @@
   </div>
 </div>
 
+<!-- Loading Overlay -->
+<div id="loadingOverlay" class="loading-overlay">
+  <div class="spinner"></div>
+  <p>Sedang memuat data...</p>
+</div>
+
 <script>
 const GAS_URL = "https://script.google.com/macros/s/AKfycbwJax3FO_zvxRrsYtL6X_3xsmZAWG9gwxSs-ljpvGvMCR003h0qjf3_rq7wMDn2yv8Z5A/exec";
 const statusOptions = ["Dipesan","Dijemput","Diproses","Selesai","Diantar"];
@@ -147,7 +180,11 @@ let selectedRowIndex = null;
 function saveSeenOrders(){ localStorage.setItem("seenOrders", JSON.stringify([...seenOrders])); }
 function showNotif(msg, type="success"){ const n=document.getElementById("notif"); n.textContent=msg; n.className="toast "+(type==="success"?"success":"error"); n.style.display="block"; setTimeout(()=>n.style.display="none",2000); }
 
+function showLoading(){ document.getElementById("loadingOverlay").style.display = "flex"; document.getElementById("refreshBtn").disabled = true; }
+function hideLoading(){ document.getElementById("loadingOverlay").style.display = "none"; document.getElementById("refreshBtn").disabled = false; }
+
 function loadOrders(){
+  showLoading();
   fetch(GAS_URL, { method:"POST", body: JSON.stringify({ type:"GetAllOrders" }) })
     .then(r=>r.json())
     .then(resp=>{
@@ -157,7 +194,8 @@ function loadOrders(){
       updateDashboard(currentData);
       highlightNewOrders(currentData);
     })
-    .catch(err => { console.error(err); showNotif("⚠️ Gagal load order","error"); });
+    .catch(err => { console.error(err); showNotif("⚠️ Gagal load order","error"); })
+    .finally(()=> hideLoading());
 }
 
 function renderCards(data){
@@ -303,7 +341,12 @@ function updateDashboard(data){
   document.getElementById("completedOrders").textContent = completed;
 }
 
-function confirmRefresh(){ if(confirm("Yakin mau reload data order?")){ loadOrders(); showNotif("🔄 Data berhasil direfresh","success"); } }
+function confirmRefresh(){ 
+  if(confirm("Yakin mau reload data order?")){ 
+    loadOrders(); 
+    showNotif("🔄 Data berhasil direfresh","success"); 
+  } 
+}
 
 document.querySelector('#newOrdersBox h3').addEventListener('click', ()=>{
   const box = document.getElementById('newOrdersBox');
