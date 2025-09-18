@@ -10,55 +10,76 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 
 <style>
-  body{font-family:Arial,Helvetica,sans-serif;background:#f4f4f4;margin:0;padding:0}
-  header{background:#1f2937;color:#fff;padding:14px 16px;text-align:center}
-  .container{padding:18px;max-width:1200px;margin:0 auto}
-  button{padding:7px 12px;border-radius:6px;border:0;background:#2563eb;color:#fff;cursor:pointer}
-  button:hover{background:#1e40af}
-  input,select,textarea{padding:8px;border:1px solid #ccc;border-radius:6px;font-size:14px;width:100%;box-sizing:border-box}
-  textarea{min-height:60px}
-  #dashboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px}
-  .card-summary{background:#fff;border-radius:10px;padding:12px;box-shadow:0 2px 6px rgba(0,0,0,0.08);text-align:center;transition:0.2s}
-  .card-summary h3{margin:0;font-size:13px;color:#374151}
-  .card-summary p{margin:6px 0 0;font-weight:700;font-size:18px}
-  .card-summary:hover{transform: translateY(-3px); box-shadow:0 4px 12px rgba(0,0,0,0.15);}
-  #newOrdersBox{background:#eff6ff;border:2px solid #2563eb;padding:10px;border-radius:8px;margin-bottom:12px;position:relative;transition:0.3s}
-  #newOrdersBox h3{margin:0 0 8px;color:#1e40af;font-size:15px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
-  #newOrdersBox h3::after{content:'▼';font-size:12px;margin-left:8px;transition:transform 0.3s;}
-  #newOrdersBox.collapsed h3::after{transform:rotate(-90deg);}
-  #newOrdersBox.collapsed ul{display:none;}
-  #newOrdersList{list-style:none;padding:0;margin:0}
-  .filter-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center;margin-bottom:14px}
-  #ordersGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
-  .order-card{background:#fff;padding:12px;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);transition:0.2s}
-  .order-card:hover{transform: translateY(-3px); box-shadow:0 4px 12px rgba(0,0,0,0.15);}
-  .order-card h4{margin:0 0 6px;color:#111827}
-  .order-card p{margin:4px 0;color:#374151;font-size:14px}
-  .status{display:inline-block;padding:4px 8px;border-radius:8px;font-weight:700;font-size:12px;margin-top:8px}
-  .status.Dipesan{background:#fee2e2;color:#991b1b}
-  .status.Dijemput{background:#dbeafe;color:#1e3a8a}
-  .status.Diproses{background:#fef9c3;color:#92400e}
-  .status.Selesai{background:#dcfce7;color:#166534}
-  .status.Diantar{background:#d1fae5;color:#065f46}
-  .order-card.diantar { background-color: #d1fae5; }
-  .order-card button{width:100%;margin-top:10px}
-  .order-card.highlight { box-shadow:0 0 12px 3px #2563eb; transition: box-shadow 0.3s; }
-  .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center}
-  .modal .box{background:#fff;border-radius:10px;padding:16px;width:94%;max-width:720px;max-height:90vh;overflow:auto; display:flex; flex-direction: column;}
-  .modal h3{margin:0 0 10px}
-  .modal .form-row{margin-bottom:8px}
-  #orderModal .box div[style*="justify-content:flex-end"] button{min-width:100px}
-  .toast{position:fixed;top:16px;right:16px;padding:12px 18px;border-radius:8px;color:#fff;font-weight:700;display:none;z-index:11000;transform:none}
-  .toast.success{background:#16a34a}
-  .toast.error{background:#dc2626}
-  .loading-overlay {display: none;position: fixed;inset: 0;background: rgba(0,0,0,0.4);z-index: 12000;align-items: center;justify-content: center;flex-direction: column;color: #fff;font-weight: 600;font-size: 16px;}
-  .spinner {width: 40px;height: 40px;border: 4px solid #fff;border-top: 4px solid #2563eb;border-radius: 50%;animation: spin 1s linear infinite;margin-bottom: 12px;}
-  @keyframes spin { to { transform: rotate(360deg); } }
-  @media (max-width:640px){
-    .filter-bar{flex-direction:column;align-items:stretch}
-    #dashboard{grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px;}
-    #ordersGrid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px;}
-  }
+body{font-family:Arial,Helvetica,sans-serif;background:#f4f4f4;margin:0;padding:0}
+header{background:#1f2937;color:#fff;padding:14px 16px;text-align:center}
+.container{padding:18px;max-width:1200px;margin:0 auto}
+button{padding:7px 12px;border-radius:6px;border:0;background:#2563eb;color:#fff;cursor:pointer}
+button:hover{background:#1e40af}
+input,select,textarea{padding:8px;border:1px solid #ccc;border-radius:6px;font-size:14px;width:100%;box-sizing:border-box}
+textarea{min-height:60px}
+#dashboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px}
+.card-summary{background:#fff;border-radius:10px;padding:12px;box-shadow:0 2px 6px rgba(0,0,0,0.08);text-align:center;transition:0.2s}
+.card-summary h3{margin:0;font-size:13px;color:#374151}
+.card-summary p{margin:6px 0 0;font-weight:700;font-size:18px}
+.card-summary:hover{transform: translateY(-3px); box-shadow:0 4px 12px rgba(0,0,0,0.15);}
+#newOrdersBox{background:#eff6ff;border:2px solid #2563eb;padding:10px;border-radius:8px;margin-bottom:12px;position:relative;transition:0.3s}
+#newOrdersBox h3{margin:0 0 8px;color:#1e40af;font-size:15px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
+#newOrdersBox h3::after{content:'▼';font-size:12px;margin-left:8px;transition:transform 0.3s;}
+#newOrdersBox.collapsed h3::after{transform:rotate(-90deg);}
+#newOrdersBox.collapsed ul{display:none;}
+#newOrdersList{list-style:none;padding:0;margin:0}
+.filter-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center;margin-bottom:14px}
+#ordersGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.order-card{background:#fff;padding:12px;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);transition:0.2s}
+.order-card:hover{transform: translateY(-3px); box-shadow:0 4px 12px rgba(0,0,0,0.15);}
+.order-card h4{margin:0 0 6px;color:#111827}
+.order-card p{margin:4px 0;color:#374151;font-size:14px}
+.status{display:inline-block;padding:4px 8px;border-radius:8px;font-weight:700;font-size:12px;margin-top:8px}
+.status.Dipesan{background:#fee2e2;color:#991b1b}
+.status.Dijemput{background:#dbeafe;color:#1e3a8a}
+.status.Diproses{background:#fef9c3;color:#92400e}
+.status.Selesai{background:#dcfce7;color:#166534}
+.status.Diantar{background:#d1fae5;color:#065f46}
+.order-card.diantar { background-color: #d1fae5; }
+.order-card button{width:100%;margin-top:10px}
+.order-card.highlight { box-shadow:0 0 12px 3px #2563eb; transition: box-shadow 0.3s; }
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center}
+.modal .box{background:#fff;border-radius:10px;padding:16px;width:94%;max-width:520px;max-height:90vh;overflow:auto; display:flex; flex-direction: column;}
+.modal h3{margin:0 0 10px}
+.modal .form-row{margin-bottom:8px}
+#orderModal .box div[style*="justify-content:flex-end"] button{min-width:100px}
+.toast{position:fixed;top:16px;right:16px;padding:12px 18px;border-radius:8px;color:#fff;font-weight:700;display:none;z-index:11000;transform:none}
+.toast.success{background:#16a34a}
+.toast.error{background:#dc2626}
+.loading-overlay {display: none;position: fixed;inset: 0;background: rgba(0,0,0,0.4);z-index: 12000;align-items: center;justify-content: center;flex-direction: column;color: #fff;font-weight: 600;font-size: 16px;}
+.spinner {width: 40px;height: 40px;border: 4px solid #fff;border-top: 4px solid #2563eb;border-radius: 50%;animation: spin 1s linear infinite;margin-bottom: 12px;}
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (max-width:640px){
+  .filter-bar{flex-direction:column;align-items:stretch}
+  #dashboard{grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px;}
+  #ordersGrid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px;}
+}
+
+/* ===== REPORT MODAL FULLSCREEN ===== */
+#reportModal .box {
+  background:#fff;
+  border-radius:10px;
+  padding:16px;
+  width:98%;
+  max-width:1200px;
+  height: calc(100vh - 40px);
+  display:flex;
+  flex-direction: column;
+}
+#reportPreview {
+  flex:1;
+  border:1px solid #ccc;
+  width:100%;
+  height: calc(100% - 80px);
+}
+@media (max-width:768px){
+  #reportModal .box { width:95%; padding:10px; }
+}
 </style>
 </head>
 <body>
@@ -72,10 +93,12 @@
     <div class="card-summary" style="background:#ddd6fe"><h3>Order Aktif</h3><p id="activeOrders">0</p></div>
     <div class="card-summary" style="background:#e5e7eb"><h3>Order Selesai</h3><p id="completedOrders">0</p></div>
   </div>
+
   <div id="newOrdersBox">
     <h3>📢 Pesanan Baru</h3>
     <ul id="newOrdersList"></ul>
   </div>
+
   <div class="filter-bar">
     <input id="searchInput" placeholder="🔍 Cari nama / HP / layanan" />
     <select id="statusFilter">
@@ -86,7 +109,7 @@
       <option value="Selesai">Selesai</option>
       <option value="Diantar">Diantar</option>
     </select>
-    <button id="refreshBtn" onclick="confirmRefresh()">🔄 Refresh Orders</button>
+    <button id="refreshBtn">🔄 Refresh Orders</button>
     <button id="reportBtn">📄 Preview Report</button>
   </div>
   <div id="ordersGrid"></div>
@@ -108,8 +131,8 @@
 <div id="reportModal" class="modal" aria-hidden="true">
   <div class="box">
     <h3>Preview Laporan Orders</h3>
-    <iframe id="reportPreview" style="flex:1;border:1px solid #ccc;width:100%;margin-bottom:8px"></iframe>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <iframe id="reportPreview"></iframe>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
       <select id="reportStatusFilter">
         <option value="">Semua Status</option>
         <option value="Dipesan">Dipesan</option>
@@ -304,7 +327,7 @@ function updateDashboard(data){
 }
 
 // ======= REFRESH =======
-function confirmRefresh(){ if(confirm("Yakin mau reload data order?")){ loadOrders(); showNotif("🔄 Data berhasil direfresh","success"); } }
+document.getElementById("refreshBtn").addEventListener("click",()=>{if(confirm("Yakin mau reload data order?")){ loadOrders(); showNotif("🔄 Data berhasil direfresh","success"); }});
 document.querySelector('#newOrdersBox h3').addEventListener('click',()=>{ document.getElementById('newOrdersBox').classList.toggle('collapsed'); });
 
 // ======= ESCAPE HTML =======
@@ -315,14 +338,14 @@ function deleteOrder(rowIndex){
   if(!confirm("Yakin ingin menghapus order ini?")) return;
   showLoading();
   fetch(GAS_URL,{method:"POST",body:JSON.stringify({type:"DeleteOrder",rowIndex})})
-    .then(r=>r.json()).then(res=>{
+    .then(r=>r.json()).then(res=>{ 
       if(res.result==="ok"){ showNotif("✅ Order berhasil dihapus","success"); seenOrders.delete(String(rowIndex)); saveSeenOrders(); loadOrders(); }
-      else showNotif("⚠️ Gagal hapus order","error");
+      else showNotif("⚠️ Gagal hapus order","error"); 
     }).catch(err=>{ console.error(err); showNotif("⚠️ Gagal hapus order","error"); })
     .finally(()=>hideLoading());
 }
 
-// ======= PREVIEW & DOWNLOAD REPORT + SUMMARY =======
+// ======= PREVIEW & DOWNLOAD REPORT =======
 document.getElementById("reportBtn").addEventListener("click",()=>{ document.getElementById("reportModal").style.display="flex"; generateReportPreview(); });
 document.getElementById("closeReportModalBtn").addEventListener("click",()=>{document.getElementById("reportModal").style.display="none";});
 document.getElementById("applyReportFilter").addEventListener("click",generateReportPreview);
@@ -334,17 +357,7 @@ function generateReportPreview(){
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({unit:'pt',format:'a4'});
-  doc.setFontSize(12);
   doc.text("Preview Laporan Orders", 297.5, 30, {align:"center"});
-
-  // Tambah summary di atas tabel
-  const totalOrders=filtered.length;
-  const totalWeight=filtered.reduce((s,o)=>s+(parseFloat(o.Berat)||0),0);
-  const totalIncome=filtered.reduce((s,o)=>s+(parseFloat(o.Harga)||0),0);
-  doc.text(`Jumlah Pemesan: ${totalOrders}`, 40, 50);
-  doc.text(`Total Berat: ${totalWeight.toFixed(2)} Kg`, 40, 65);
-  doc.text(`Total Pemasukan: Rp ${totalIncome.toLocaleString("id-ID")}`, 40, 80);
-
   doc.autoTable({
     head:[["No","Nama","No HP","Layanan","Berat (Kg)","Harga (Rp)","Status","Jadwal"]],
     body: filtered.map((o,i)=>[
@@ -357,9 +370,8 @@ function generateReportPreview(){
       o.Status||"-",
       o.Jadwal ? new Date(o.Jadwal).toLocaleString("id-ID") : "-"
     ]),
-    startY:100
+    startY:50
   });
-
   document.getElementById("reportPreview").src = doc.output('datauristring');
 }
 
@@ -370,17 +382,7 @@ document.getElementById("downloadReportBtn").addEventListener("click",()=>{
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({unit:'pt',format:'a4'});
-  doc.setFontSize(12);
   doc.text("Laporan Orders", 297.5, 30, {align:"center"});
-
-  // Tambah summary
-  const totalOrders=filtered.length;
-  const totalWeight=filtered.reduce((s,o)=>s+(parseFloat(o.Berat)||0),0);
-  const totalIncome=filtered.reduce((s,o)=>s+(parseFloat(o.Harga)||0),0);
-  doc.text(`Jumlah Pemesan: ${totalOrders}`, 40, 50);
-  doc.text(`Total Berat: ${totalWeight.toFixed(2)} Kg`, 40, 65);
-  doc.text(`Total Pemasukan: Rp ${totalIncome.toLocaleString("id-ID")}`, 40, 80);
-
   doc.autoTable({
     head:[["No","Nama","No HP","Layanan","Berat (Kg)","Harga (Rp)","Status","Jadwal"]],
     body: filtered.map((o,i)=>[
@@ -393,9 +395,8 @@ document.getElementById("downloadReportBtn").addEventListener("click",()=>{
       o.Status||"-",
       o.Jadwal ? new Date(o.Jadwal).toLocaleString("id-ID") : "-"
     ]),
-    startY:100
+    startY:50
   });
-
   const fileName=`Laporan_Orders_${new Date().toISOString().slice(0,10)}.pdf`;
   doc.save(fileName);
   showNotif("✅ PDF berhasil didownload","success");
@@ -404,5 +405,6 @@ document.getElementById("downloadReportBtn").addEventListener("click",()=>{
 // ======= INIT =======
 window.addEventListener("DOMContentLoaded", loadOrders);
 </script>
+
 </body>
 </html>
