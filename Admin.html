@@ -30,7 +30,6 @@
   #newOrdersBox.collapsed h3::after{transform:rotate(-90deg);}
   #newOrdersBox.collapsed ul{display:none;}
   #newOrdersList{list-style:none;padding:0;margin:0}
-  #newOrdersList li{margin-bottom:8px;display:flex;gap:8px;align-items:center}
 
   /* filter bar */
   .filter-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center;margin-bottom:14px}
@@ -48,12 +47,8 @@
   .status.Selesai{background:#dcfce7;color:#166534}
   .status.Diantar{background:#d1fae5;color:#065f46}
 
-  /* card hijau untuk status Diantar */
   .order-card.diantar { background-color: #d1fae5; }
-
   .order-card button{width:100%;margin-top:10px}
-
-  /* highlight sementara saat scroll */
   .order-card.highlight { box-shadow:0 0 12px 3px #2563eb; transition: box-shadow 0.3s; }
 
   /* modal */
@@ -69,28 +64,8 @@
   .toast.error{background:#dc2626}
 
   /* loading overlay */
-  .loading-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
-    z-index: 12000;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    color: #fff;
-    font-weight: 600;
-    font-size: 16px;
-  }
-  .spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid #fff;
-    border-top: 4px solid #2563eb;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 12px;
-  }
+  .loading-overlay {display: none;position: fixed;inset: 0;background: rgba(0,0,0,0.4);z-index: 12000;align-items: center;justify-content: center;flex-direction: column;color: #fff;font-weight: 600;font-size: 16px;}
+  .spinner {width: 40px;height: 40px;border: 4px solid #fff;border-top: 4px solid #2563eb;border-radius: 50%;animation: spin 1s linear infinite;margin-bottom: 12px;}
   @keyframes spin { to { transform: rotate(360deg); } }
 
   @media (max-width:640px){
@@ -131,7 +106,7 @@
     <ul id="newOrdersList"></ul>
   </div>
 
-  <!-- filter/search/refresh -->
+  <!-- filter/search/refresh/report -->
   <div class="filter-bar">
     <input id="searchInput" placeholder="🔍 Cari nama / HP / layanan" />
     <select id="statusFilter">
@@ -143,6 +118,7 @@
       <option value="Diantar">Diantar</option>
     </select>
     <button id="refreshBtn" onclick="confirmRefresh()">🔄 Refresh Orders</button>
+    <button id="reportBtn" onclick="generateReport()">📄 Generate Report PDF</button>
   </div>
 
   <!-- orders grid -->
@@ -167,20 +143,23 @@
   <p>Sedang memuat data...</p>
 </div>
 
+<!-- jsPDF CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <script>
 const GAS_URL = "https://script.google.com/macros/s/AKfycbyhfdzj1_8VSpMWXSJw5Y1raqUiocwJoSmMSKTidtr0pVnvPdnFseNFbZv5VcUhiAdPcw/exec";
 const statusOptions = ["Dipesan","Dijemput","Diproses","Selesai","Diantar"];
-
 let currentData = [];
 let seenOrders = new Set(JSON.parse(localStorage.getItem("seenOrders")||"[]"));
 let selectedRowIndex = null;
 
+// ======= UTILITY FUNCTIONS =======
 function saveSeenOrders(){ localStorage.setItem("seenOrders", JSON.stringify([...seenOrders])); }
 function showNotif(msg, type="success"){ const n=document.getElementById("notif"); n.textContent=msg; n.className="toast "+(type==="success"?"success":"error"); n.style.display="block"; setTimeout(()=>n.style.display="none",3000); }
-
 function showLoading(){ document.getElementById("loadingOverlay").style.display = "flex"; document.getElementById("refreshBtn").disabled = true; }
 function hideLoading(){ document.getElementById("loadingOverlay").style.display = "none"; document.getElementById("refreshBtn").disabled = false; }
 
+// ======= LOAD ORDERS =======
 function loadOrders(){
   showLoading();
   fetch(GAS_URL, { method:"POST", body: JSON.stringify({ type:"GetAllOrders" }) })
@@ -191,43 +170,33 @@ function loadOrders(){
       renderCards(currentData);
       updateDashboard(currentData);
       highlightNewOrders(currentData);
-      notifyOverdueOrders(currentData); // ✅ notif order lewat jadwal
+      notifyOverdueOrders(currentData);
     })
     .catch(err => { console.error(err); showNotif("⚠️ Gagal load order","error"); })
     .finally(()=> hideLoading());
 }
 
-// ======= renderCards with highlight & formatted Jadwal =======
+// ======= RENDER CARDS =======
 function renderCards(data){
   const grid = document.getElementById("ordersGrid");
   grid.innerHTML = "";
-  if(!data || data.length === 0){
-    grid.innerHTML = "<p style='text-align:center;color:#666'>Tidak ada order</p>";
-    return;
-  }
+  if(!data.length){ grid.innerHTML="<p style='text-align:center;color:#666'>Tidak ada order</p>"; return; }
 
   const now = new Date();
-
-  data.forEach(o => {
+  data.forEach(o=>{
     const harga = (parseInt(o.Harga)||0).toLocaleString("id-ID");
     const berat = o.Berat || 0;
-
-    // Format Jadwal
     let jadwalText = o.Jadwal || "-";
     let jadwalDate = null;
     if(o.Jadwal){
       jadwalDate = new Date(o.Jadwal);
-      const pad = n => n.toString().padStart(2,'0');
+      const pad = n=>n.toString().padStart(2,'0');
       jadwalText = `${pad(jadwalDate.getDate())}/${pad(jadwalDate.getMonth()+1)}/${jadwalDate.getFullYear()} ${pad(jadwalDate.getHours())}:${pad(jadwalDate.getMinutes())}`;
     }
 
     const card = document.createElement("div");
-    card.className = "order-card" + (o.Status === "Diantar" ? " diantar" : "");
-
-    // highlight jika jadwal sudah lewat dan status belum selesai/diantar
-    if(jadwalDate && jadwalDate < now && !["Selesai","Diantar"].includes(o.Status)){
-      card.style.backgroundColor = "#fee2e2"; // merah lembut
-    }
+    card.className = "order-card" + (o.Status==="Diantar"?" diantar":"");
+    if(jadwalDate && jadwalDate<now && !["Selesai","Diantar"].includes(o.Status)) card.style.backgroundColor="#fee2e2";
 
     card.innerHTML = `
       <h4>${escapeHtml(o.Nama||"Tanpa Nama")}</h4>
@@ -244,54 +213,11 @@ function renderCards(data){
   });
 }
 
-// ======= Notify overdue orders =======
-function notifyOverdueOrders(data){
-  const now = new Date();
-  const overdue = data.filter(o => {
-    const jd = o.Jadwal ? new Date(o.Jadwal) : null;
-    return jd && jd < now && !["Selesai","Diantar"].includes(o.Status);
-  });
-  if(overdue.length > 0){
-    showNotif(`⚠️ Ada ${overdue.length} order yang sudah lewat jadwal!`, "error");
-  }
-}
-
-function deleteOrder(rowIndex){
-  if(!confirm("Yakin ingin menghapus order ini?")) return;
-  showLoading();
-  fetch(GAS_URL, { method:"POST", body: JSON.stringify({ type:"DeleteOrder", rowIndex }) })
-    .then(r=>r.json())
-    .then(res=>{
-      if(res.result === "ok"){
-        showNotif("✅ Order berhasil dihapus","success");
-        seenOrders.delete(String(rowIndex));
-        saveSeenOrders();
-        loadOrders();
-      } else showNotif("⚠️ Gagal hapus order","error");
-    })
-    .catch(err=>{ console.error(err); showNotif("⚠️ Gagal hapus order","error"); })
-    .finally(()=>hideLoading());
-}
-
-function escapeHtml(s){ return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;"); }
-
-function scrollToCard(rowIndex){
-  const cards = document.querySelectorAll('#ordersGrid .order-card');
-  for(const card of cards){
-    const btn = card.querySelector('button');
-    if(btn && btn.getAttribute('onclick') === `openModalByRow(${rowIndex})`){
-      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      card.classList.add('highlight');
-      setTimeout(()=>card.classList.remove('highlight'), 2000);
-      break;
-    }
-  }
-}
-
+// ======= HIGHLIGHT & NOTIF =======
 function highlightNewOrders(data){
   const list = document.getElementById("newOrdersList");
   list.innerHTML = "";
-  const pending = data.filter(o => o.Status === "Dipesan" && !seenOrders.has(String(o.rowIndex)));
+  const pending = data.filter(o => o.Status==="Dipesan" && !seenOrders.has(String(o.rowIndex)));
   if(pending.length){
     pending.forEach(o=>{
       const li = document.createElement("li");
@@ -301,29 +227,40 @@ function highlightNewOrders(data){
     });
   } else {
     const li = document.createElement("li");
-    li.textContent = "Tidak ada order baru";
-    li.style.fontStyle = "italic"; li.style.color = "#555";
+    li.textContent="Tidak ada order baru"; li.style.fontStyle="italic"; li.style.color="#555";
     list.appendChild(li);
   }
 }
 
-function openModalByRow(rowIndex){
-  const order = currentData.find(o => String(o.rowIndex) === String(rowIndex));
-  if(order) openModal(order);
+function notifyOverdueOrders(data){
+  const now=new Date();
+  const overdue=data.filter(o=>o.Jadwal && new Date(o.Jadwal)<now && !["Selesai","Diantar"].includes(o.Status));
+  if(overdue.length>0) showNotif(`⚠️ Ada ${overdue.length} order yang sudah lewat jadwal!`,"error");
 }
+
+function scrollToCard(rowIndex){
+  document.querySelectorAll('#ordersGrid .order-card').forEach(card=>{
+    const btn=card.querySelector('button');
+    if(btn && btn.getAttribute('onclick')===`openModalByRow(${rowIndex})`){
+      card.scrollIntoView({behavior:'smooth',block:'center'});
+      card.classList.add('highlight');
+      setTimeout(()=>card.classList.remove('highlight'),2000);
+    }
+  });
+}
+
+// ======= MODAL =======
+function openModalByRow(rowIndex){ const order=currentData.find(o=>String(o.rowIndex)===String(rowIndex)); if(order) openModal(order);}
 function openModal(order){
-  selectedRowIndex = order.rowIndex;
-  const cont = document.getElementById("modalContent");
-
-  // format Jadwal ke datetime-local
-  let dtVal = "";
+  selectedRowIndex=order.rowIndex;
+  const cont=document.getElementById("modalContent");
+  let dtVal="";
   if(order.Jadwal){
-    const jd = new Date(order.Jadwal);
-    const pad = n => n.toString().padStart(2,'0');
-    dtVal = `${jd.getFullYear()}-${pad(jd.getMonth()+1)}-${pad(jd.getDate())}T${pad(jd.getHours())}:${pad(jd.getMinutes())}`;
+    const jd=new Date(order.Jadwal);
+    const pad=n=>n.toString().padStart(2,'0');
+    dtVal=`${jd.getFullYear()}-${pad(jd.getMonth()+1)}-${pad(jd.getDate())}T${pad(jd.getHours())}:${pad(jd.getMinutes())}`;
   }
-
-  cont.innerHTML = `
+  cont.innerHTML=`
     <div class="form-row"><label>Nama</label><input id="m_Nama" value="${escapeHtml(order.Nama||"")}"></div>
     <div class="form-row"><label>Alamat</label><textarea id="m_Alamat">${escapeHtml(order.Alamat||"")}</textarea></div>
     <div class="form-row"><label>No HP</label><input id="m_NoHP" value="${escapeHtml(order["No HP"]||"")}"></div>
@@ -337,84 +274,103 @@ function openModal(order){
     <div class="form-row"><label>Harga (Rp)</label><input id="m_Harga" type="number" value="${escapeHtml(order.Harga||0)}"></div>
     <div class="form-row"><a href="${order.Maps||'#'}" target="_blank">📍 Lihat Maps</a></div>
   `;
-  document.getElementById("orderModal").style.display = "flex";
+  document.getElementById("orderModal").style.display="flex";
 }
-
-document.getElementById("modalCloseBtn").addEventListener("click", closeModal);
-function closeModal(){ document.getElementById("orderModal").style.display="none"; selectedRowIndex = null; }
-
-document.getElementById("modalSaveBtn").addEventListener("click", saveModal);
-function saveModal(){
-  if(selectedRowIndex === null){ showNotif("Tidak ada order terpilih","error"); return; }
+document.getElementById("modalCloseBtn").addEventListener("click",()=>{document.getElementById("orderModal").style.display="none";selectedRowIndex=null});
+document.getElementById("modalSaveBtn").addEventListener("click",()=>{
+  if(selectedRowIndex===null){ showNotif("Tidak ada order terpilih","error"); return; }
   if(!confirm("Yakin update data ini?")) return;
-  const payload = {
-    "Nama": (document.getElementById("m_Nama")?.value || "").trim(),
-    "Alamat": (document.getElementById("m_Alamat")?.value || "").trim(),
-    "No HP": (document.getElementById("m_NoHP")?.value || "").trim(),
-    "Layanan": (document.getElementById("m_Layanan")?.value || "").trim(),
-    "Catatan": (document.getElementById("m_Catatan")?.value || "").trim(),
-    "Jadwal": (document.getElementById("m_Jadwal")?.value || "").trim(),
-    "Status": (document.getElementById("m_Status")?.value || "").trim(),
-    "Berat": (document.getElementById("m_Berat")?.value || "").trim(),
-    "Harga": (document.getElementById("m_Harga")?.value || "").trim(),
+  const payload={
+    "Nama":(document.getElementById("m_Nama")?.value||"").trim(),
+    "Alamat":(document.getElementById("m_Alamat")?.value||"").trim(),
+    "No HP":(document.getElementById("m_NoHP")?.value||"").trim(),
+    "Layanan":(document.getElementById("m_Layanan")?.value||"").trim(),
+    "Catatan":(document.getElementById("m_Catatan")?.value||"").trim(),
+    "Jadwal":(document.getElementById("m_Jadwal")?.value||"").trim(),
+    "Status":(document.getElementById("m_Status")?.value||"").trim(),
+    "Berat":(document.getElementById("m_Berat")?.value||"").trim(),
+    "Harga":(document.getElementById("m_Harga")?.value||"").trim(),
   };
-  fetch(GAS_URL, { method:"POST", body: JSON.stringify({ type:"UpdateOrder", rowIndex:selectedRowIndex, payload }) })
-    .then(r=>r.json())
-    .then(res=>{
-      if(res.result === "ok"){
+  fetch(GAS_URL,{method:"POST",body:JSON.stringify({type:"UpdateOrder",rowIndex:selectedRowIndex,payload})})
+    .then(r=>r.json()).then(res=>{
+      if(res.result==="ok"){
         showNotif("✅ Data berhasil disimpan","success");
-        if(payload.Status && payload.Status !== "Dipesan"){
-          seenOrders.add(String(selectedRowIndex));
-          saveSeenOrders();
-        }
-        closeModal();
-        loadOrders();
-      } else { showNotif("⚠️ Gagal update","error"); }
-    })
-    .catch(err => { console.error(err); showNotif("⚠️ Gagal update","error"); });
-}
+        if(payload.Status && payload.Status!=="Dipesan"){ seenOrders.add(String(selectedRowIndex)); saveSeenOrders(); }
+        document.getElementById("orderModal").style.display="none"; selectedRowIndex=null; loadOrders();
+      } else showNotif("⚠️ Gagal update","error");
+    }).catch(err=>{ console.error(err); showNotif("⚠️ Gagal update","error"); });
+});
 
-document.getElementById("searchInput").addEventListener("input", applyFilters);
-document.getElementById("statusFilter").addEventListener("change", applyFilters);
+// ======= FILTER =======
+document.getElementById("searchInput").addEventListener("input",applyFilters);
+document.getElementById("statusFilter").addEventListener("change",applyFilters);
 function applyFilters(){
-  const q = (document.getElementById("searchInput").value || "").toLowerCase();
-  const st = document.getElementById("statusFilter").value;
-  const filtered = currentData.filter(o=>{
-    const text = `${o.Nama||""} ${o["No HP"]||""} ${o.Layanan||""}`.toLowerCase();
-    const okText = !q || text.includes(q);
-    const okStatus = !st || o.Status === st;
-    return okText && okStatus;
+  const q=(document.getElementById("searchInput").value||"").toLowerCase();
+  const st=document.getElementById("statusFilter").value;
+  const filtered=currentData.filter(o=>{
+    const text=`${o.Nama||""} ${o["No HP"]||""} ${o.Layanan||""}`.toLowerCase();
+    return (!q || text.includes(q)) && (!st || o.Status===st);
   });
   renderCards(filtered);
 }
 
+// ======= DASHBOARD =======
 function updateDashboard(data){
-  const totalOrders = data.length;
-  const totalWeight = data.reduce((s,o)=> s + (parseFloat(o.Berat)||0), 0);
-  const totalIncome = data.reduce((s,o)=> s + (parseFloat(o.Harga)||0), 0);
-  const active = data.filter(o => !["Selesai","Diantar"].includes(o.Status)).length;
-  const completed = data.filter(o => ["Selesai","Diantar"].includes(o.Status)).length;
-  document.getElementById("totalOrders").textContent = totalOrders;
-  document.getElementById("totalWeight").textContent = totalWeight.toFixed(2) + " Kg";
-  document.getElementById("totalIncome").textContent = "Rp " + totalIncome.toLocaleString("id-ID");
-  document.getElementById("activeOrders").textContent = active;
-  document.getElementById("completedOrders").textContent = completed;
+  const totalOrders=data.length;
+  const totalWeight=data.reduce((s,o)=>s+(parseFloat(o.Berat)||0),0);
+  const totalIncome=data.reduce((s,o)=>s+(parseFloat(o.Harga)||0),0);
+  const active=data.filter(o=>!["Selesai","Diantar"].includes(o.Status)).length;
+  const completed=data.filter(o=>["Selesai","Diantar"].includes(o.Status)).length;
+  document.getElementById("totalOrders").textContent=totalOrders;
+  document.getElementById("totalWeight").textContent=totalWeight.toFixed(2)+" Kg";
+  document.getElementById("totalIncome").textContent="Rp "+totalIncome.toLocaleString("id-ID");
+  document.getElementById("activeOrders").textContent=active;
+  document.getElementById("completedOrders").textContent=completed;
 }
 
-function confirmRefresh(){ 
-  if(confirm("Yakin mau reload data order?")){ 
-    loadOrders(); 
-    showNotif("🔄 Data berhasil direfresh","success"); 
-  } 
+// ======= REFRESH =======
+function confirmRefresh(){ if(confirm("Yakin mau reload data order?")){ loadOrders(); showNotif("🔄 Data berhasil direfresh","success"); } }
+document.querySelector('#newOrdersBox h3').addEventListener('click',()=>{ document.getElementById('newOrdersBox').classList.toggle('collapsed'); });
+
+// ======= ESCAPE HTML =======
+function escapeHtml(s){ return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;"); }
+
+// ======= DELETE ORDER =======
+function deleteOrder(rowIndex){
+  if(!confirm("Yakin ingin menghapus order ini?")) return;
+  showLoading();
+  fetch(GAS_URL,{method:"POST",body:JSON.stringify({type:"DeleteOrder",rowIndex})})
+    .then(r=>r.json()).then(res=>{
+      if(res.result==="ok"){ showNotif("✅ Order berhasil dihapus","success"); seenOrders.delete(String(rowIndex)); saveSeenOrders(); loadOrders(); }
+      else showNotif("⚠️ Gagal hapus order","error");
+    }).catch(err=>{ console.error(err); showNotif("⚠️ Gagal hapus order","error"); })
+    .finally(()=>hideLoading());
 }
 
-document.querySelector('#newOrdersBox h3').addEventListener('click', ()=>{
-  const box = document.getElementById('newOrdersBox');
-  box.classList.toggle('collapsed');
-});
+// ======= GENERATE PDF REPORT =======
+function generateReport(){
+  const selesai=currentData.filter(o=>o.Status==="Selesai");
+  if(!selesai.length){ showNotif("Tidak ada order selesai","error"); return; }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({unit:'pt',format:'a4'});
+  const margin=40; let y=50;
+  doc.setFontSize(16); doc.text("Laporan Order Selesai",297.5,y,{align:"center"}); y+=30;
+  const headers=["No","Nama","No HP","Layanan","Berat (Kg)","Harga (Rp)","Jadwal"];
+  const colWidths=[30,100,80,80,50,60,100];
+  let x=margin; doc.setFontSize(12);
+  headers.forEach((h,i)=>{ doc.text(h,x,y); x+=colWidths[i]; }); y+=15;
+  doc.setLineWidth(0.5); doc.line(margin,y-5,550,y-5);
+  selesai.forEach((o,i)=>{
+    let x=margin;
+    const line=[ (i+1).toString(), o.Nama||"-", o["No HP"]||"-", o.Layanan||"-", o.Berat||"0", (parseInt(o.Harga)||0).toLocaleString("id-ID"), o.Jadwal?new Date(o.Jadwal).toLocaleString("id-ID"):"-" ];
+    line.forEach((text,j)=>{ doc.text(text.toString(),x,y); x+=colWidths[j]; });
+    y+=15; if(y>770){ doc.addPage(); y=50; }
+  });
+  const fileName=`Laporan_Order_Selesai_${new Date().toISOString().slice(0,10)}.pdf`;
+  doc.save(fileName); showNotif("✅ PDF report berhasil dibuat","success");
+}
 
 window.addEventListener("DOMContentLoaded", loadOrders);
 </script>
-
 </body>
 </html>
