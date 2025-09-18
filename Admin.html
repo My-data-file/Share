@@ -62,7 +62,7 @@
 </style>
 </head>
 <body>
-<header><h1 style="margin:0">Admin Panel - Sea Laundry v1</h1></header>
+<header><h1 style="margin:0">Admin Panel - Sea Laundry</h1></header>
 <div class="container">
   <div id="notif" class="toast"></div>
   <div id="dashboard">
@@ -368,15 +368,26 @@ function generateReportPreview() {
     ]),
     startY: 50,
     styles: { fontSize: 9, cellPadding: 4 },
-    headStyles: { fillColor: [31, 41, 55], textColor: 255 }, // abu tua, teks putih
+    headStyles: { fillColor: [31, 41, 55], textColor: 255 },
     alternateRowStyles: { fillColor: [240, 240, 240] }
   });
 
-  // tampilkan di iframe (pakai datauristring agar jalan di HP)
-  const iframe = document.getElementById("reportPreview");
-  iframe.src = ""; // reset dulu
-  const pdfDataUri = doc.output("datauristring");
-  iframe.src = pdfDataUri;
+  // buat blob pdf
+  const pdfBlob = doc.output("blob");
+  const blobUrl = URL.createObjectURL(pdfBlob);
+
+  // cek device
+  const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+
+  if (isMobile) {
+    // buka langsung di tab baru kalau mobile
+    window.open(blobUrl, "_blank");
+  } else {
+    // tampilkan di iframe kalau desktop
+    const iframe = document.getElementById("reportPreview");
+    iframe.src = "";
+    setTimeout(() => { iframe.src = blobUrl; }, 50);
+  }
 }
 
 
