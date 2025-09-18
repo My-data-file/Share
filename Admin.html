@@ -69,7 +69,7 @@
 </style>
 </head>
 <body>
-<header><h1 style="margin:0">Admin Panel - Sea Laundry</h1></header>
+<header><h1 style="margin:0">Admin Panel - Sea Laundry v1</h1></header>
 <div class="container">
   <div id="notif" class="toast"></div>
   <div id="dashboard">
@@ -361,10 +361,11 @@ function generateReportPreview(){
     startY:50
   });
 
-  // Buka PDF langsung di tab baru
-  const pdfData = doc.output('blob');
-  const pdfUrl = URL.createObjectURL(pdfData);
-  window.open(pdfUrl, "_blank");
+  // Gunakan Blob URL agar iframe bisa tampil di HP
+  const pdfBlob = doc.output('blob');
+  const pdfUrl = URL.createObjectURL(pdfBlob);
+  const iframe = document.getElementById("reportPreview");
+  iframe.src = pdfUrl;
 }
 
 document.getElementById("downloadReportBtn").addEventListener("click",()=>{
