@@ -59,10 +59,11 @@
     #dashboard{grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px;}
     #ordersGrid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px;}
   }
+  #reportPreview{flex:1;border:1px solid #ccc;width:100%;height:85%;margin-bottom:8px;overflow:auto;}
 </style>
 </head>
 <body>
-<header><h1 style="margin:0">Admin Panel - Sea Laundry v1</h1></header>
+<header><h1 style="margin:0">Admin Panel - Sea Laundry</h1></header>
 <div class="container">
   <div id="notif" class="toast"></div>
   <div id="dashboard">
@@ -108,7 +109,7 @@
 <div id="reportModal" class="modal" aria-hidden="true">
   <div class="box" style="width:98%;max-width:none;height:95vh;">
     <h3>Preview Laporan Orders</h3>
-    <iframe id="reportPreview" style="flex:1;border:1px solid #ccc;width:100%;height:85%;margin-bottom:8px"></iframe>
+    <div id="reportPreview"></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
       <select id="reportStatusFilter">
         <option value="">Semua Status</option>
@@ -255,6 +256,7 @@ function openModal(order){
   document.getElementById("orderModal").style.display="flex";
 }
 
+// ======= MODAL EVENT =======
 document.getElementById("modalCloseBtn").addEventListener("click",()=>{document.getElementById("orderModal").style.display="none";selectedRowIndex=null});
 document.getElementById("modalSaveBtn").addEventListener("click",()=>{
   if(selectedRowIndex===null){ showNotif("Tidak ada order terpilih","error"); return; }
@@ -334,10 +336,7 @@ document.getElementById("applyReportFilter").addEventListener("click",generateRe
 function generateReportPreview(){
   const statusFilter = document.getElementById("reportStatusFilter").value;
   const filtered = statusFilter ? currentData.filter(o=>o.Status===statusFilter) : currentData;
-  if(!filtered.length){ 
-    showNotif("Tidak ada order untuk preview","error"); 
-    return; 
-  }
+  if(!filtered.length){ showNotif("Tidak ada order untuk preview","error"); return; }
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({unit:'pt',format:'a4'});
@@ -357,16 +356,20 @@ function generateReportPreview(){
     startY:50
   });
 
-  // Gunakan base64 Data URI agar kompatibel HP
-  const pdfBase64 = doc.output('datauristring');
-  const iframe = document.getElementById("reportPreview");
+  // Gunakan Blob URL supaya preview langsung muncul di HP
+  const canvas = document.getElementById("reportPreview");
+  const pdfBlob = doc.output('blob');
+  const url = URL.createObjectURL(pdfBlob);
 
-  // Tambahkan delay kecil agar iframe sempat render di HP
-  setTimeout(() => {
-    iframe.src = pdfBase64;
-  }, 50);
+  // render PDF ke iframe/canvas menggunakan object/embed
+  const iframe = document.createElement('iframe');
+  iframe.src = url;
+  iframe.style.width='100%';
+  iframe.style.height='100%';
+  iframe.style.border='none';
+  canvas.innerHTML = '';
+  canvas.appendChild(iframe);
 }
-
 
 document.getElementById("downloadReportBtn").addEventListener("click",()=>{
   const statusFilter = document.getElementById("reportStatusFilter").value;
@@ -398,5 +401,7 @@ document.getElementById("downloadReportBtn").addEventListener("click",()=>{
 // ======= INIT =======
 window.addEventListener("DOMContentLoaded", loadOrders);
 </script>
+
 </body>
 </html>
+
