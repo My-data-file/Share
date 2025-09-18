@@ -62,7 +62,7 @@
 </style>
 </head>
 <body>
-<header><h1 style="margin:0">Admin Panel - Sea Laundry</h1></header>
+<header><h1 style="margin:0">Admin Panel - Sea Laundry v1</h1></header>
 <div class="container">
   <div id="notif" class="toast"></div>
   <div id="dashboard">
@@ -331,61 +331,54 @@ document.getElementById("reportBtn").addEventListener("click",()=>{ document.get
 document.getElementById("closeReportModalBtn").addEventListener("click",()=>{ document.getElementById("reportModal").style.display="none"; });
 document.getElementById("applyReportFilter").addEventListener("click",generateReportPreview);
 
-function generateReportPreview(){
-  const statusFilter = document.getElementById("reportStatusFilter").value;
-  const filtered = statusFilter ? currentData.filter(o=>o.Status===statusFilter) : currentData;
-  if(!filtered.length){ showNotif("Tidak ada order untuk preview","error"); return; }
-
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({unit:'pt',format:'a4'});
-  doc.text("Preview Laporan Orders", 297.5, 30, {align:"center"});
-  doc.autoTable({
-    head:[["No","Nama","No HP","Layanan","Berat (Kg)","Harga (Rp)","Status","Jadwal"]],
-    body: filtered.map((o,i)=>[
-      i+1,
-      o.Nama||"-",
-      o["No HP"]||"-",
-      o.Layanan||"-",
-      o.Berat||0,
-      (parseInt(o.Harga)||0).toLocaleString("id-ID"),
-      o.Status||"-",
-      o.Jadwal ? new Date(o.Jadwal).toLocaleString("id-ID") : "-"
-    ]),
-    startY:50
-  });
-
-  // Gunakan Blob URL supaya preview langsung muncul di HP
-  const iframe = document.getElementById("reportPreview");
-  const pdfBlob = doc.output('blob');
-  iframe.src = URL.createObjectURL(pdfBlob);
+function formatDate(d) {
+  if (!d) return "-";
+  const dt = new Date(d);
+  const pad = n => n.toString().padStart(2, "0");
+  return `${pad(dt.getDate())}/${pad(dt.getMonth() + 1)}/${dt.getFullYear()} ${pad(dt.getHours())}:${pad(dt.getMinutes())}`;
 }
 
-document.getElementById("downloadReportBtn").addEventListener("click",()=>{
+function generateReportPreview() {
   const statusFilter = document.getElementById("reportStatusFilter").value;
-  const filtered = statusFilter ? currentData.filter(o=>o.Status===statusFilter) : currentData;
-  if(!filtered.length){ showNotif("Tidak ada order untuk download","error"); return; }
+  const filtered = statusFilter ? currentData.filter(o => o.Status === statusFilter) : currentData;
+  if (!filtered.length) {
+    showNotif("Tidak ada order untuk preview", "error");
+    return;
+  }
 
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({unit:'pt',format:'a4'});
-  doc.text("Laporan Orders", 297.5, 30, {align:"center"});
+  const doc = new jsPDF({ unit: "pt", format: "a4" });
+
+  // judul laporan
+  const reportTitle = "Laporan Orders - Sea Laundry";
+  doc.text(reportTitle, 297.5, 30, { align: "center" });
+
+  // tabel
   doc.autoTable({
-    head:[["No","Nama","No HP","Layanan","Berat (Kg)","Harga (Rp)","Status","Jadwal"]],
-    body: filtered.map((o,i)=>[
-      i+1,
-      o.Nama||"-",
-      o["No HP"]||"-",
-      o.Layanan||"-",
-      o.Berat||0,
-      (parseInt(o.Harga)||0).toLocaleString("id-ID"),
-      o.Status||"-",
-      o.Jadwal ? new Date(o.Jadwal).toLocaleString("id-ID") : "-"
+    head: [["No","Nama","No HP","Layanan","Berat (Kg)","Harga (Rp)","Status","Jadwal"]],
+    body: filtered.map((o, i) => [
+      i + 1,
+      o.Nama || "-",
+      o["No HP"] || "-",
+      o.Layanan || "-",
+      o.Berat || 0,
+      (parseInt(o.Harga) || 0).toLocaleString("id-ID"),
+      o.Status || "-",
+      formatDate(o.Jadwal)
     ]),
-    startY:50
+    startY: 50,
+    styles: { fontSize: 9, cellPadding: 4 },
+    headStyles: { fillColor: [31, 41, 55], textColor: 255 }, // abu tua, teks putih
+    alternateRowStyles: { fillColor: [240, 240, 240] }
   });
-  const fileName=`Laporan_Orders_${new Date().toISOString().slice(0,10)}.pdf`;
-  doc.save(fileName);
-  showNotif("✅ PDF berhasil didownload","success");
-});
+
+  // tampilkan di iframe (pakai datauristring agar jalan di HP)
+  const iframe = document.getElementById("reportPreview");
+  iframe.src = ""; // reset dulu
+  const pdfDataUri = doc.output("datauristring");
+  iframe.src = pdfDataUri;
+}
+
 
 // ======= INIT =======
 window.addEventListener("DOMContentLoaded", loadOrders);
