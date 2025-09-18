@@ -44,7 +44,7 @@
   .order-card button{width:100%;margin-top:10px}
   .order-card.highlight { box-shadow:0 0 12px 3px #2563eb; transition: box-shadow 0.3s; }
   .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center}
-  .modal .box{background:#fff;border-radius:10px;padding:16px;width:94%;max-width:520px;max-height:90vh;overflow:auto}
+  .modal .box{background:#fff;border-radius:10px;padding:16px;width:94%;max-width:520px;max-height:90vh;overflow:auto; display:flex; flex-direction: column;}
   .modal h3{margin:0 0 10px}
   .modal .form-row{margin-bottom:8px}
   #orderModal .box div[style*="justify-content:flex-end"] button{min-width:100px}
@@ -87,10 +87,12 @@
       <option value="Diantar">Diantar</option>
     </select>
     <button id="refreshBtn" onclick="confirmRefresh()">🔄 Refresh Orders</button>
-    <button id="reportBtn" onclick="generateReport()">📄 Generate Report PDF</button>
+    <button id="reportBtn">📄 Preview Report</button>
   </div>
   <div id="ordersGrid"></div>
 </div>
+
+<!-- MODAL DETAIL ORDER -->
 <div id="orderModal" class="modal" aria-hidden="true">
   <div class="box">
     <h3>Detail & Update Order</h3>
@@ -101,6 +103,28 @@
     </div>
   </div>
 </div>
+
+<!-- MODAL PREVIEW REPORT -->
+<div id="reportModal" class="modal" aria-hidden="true">
+  <div class="box">
+    <h3>Preview Laporan Orders</h3>
+    <iframe id="reportPreview" style="flex:1;border:1px solid #ccc;width:100%;margin-bottom:8px"></iframe>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <select id="reportStatusFilter">
+        <option value="">Semua Status</option>
+        <option value="Dipesan">Dipesan</option>
+        <option value="Dijemput">Dijemput</option>
+        <option value="Diproses">Diproses</option>
+        <option value="Selesai">Selesai</option>
+        <option value="Diantar">Diantar</option>
+      </select>
+      <button id="applyReportFilter">🔍 Filter</button>
+      <button id="downloadReportBtn">⬇️ Download PDF</button>
+      <button id="closeReportModalBtn">❌ Tutup</button>
+    </div>
+  </div>
+</div>
+
 <div id="loadingOverlay" class="loading-overlay">
   <div class="spinner"></div>
   <p>Sedang memuat data...</p>
@@ -130,7 +154,6 @@ function loadOrders(){
       renderCards(currentData);
       updateDashboard(currentData);
       highlightNewOrders(currentData);
-      notifyOverdueOrders(currentData);
     })
     .catch(err => { console.error(err); showNotif("⚠️ Gagal load order","error"); })
     .finally(()=> hideLoading());
@@ -147,10 +170,9 @@ function renderCards(data){
     const harga = (parseInt(o.Harga)||0).toLocaleString("id-ID");
     const berat = o.Berat || 0;
     let jadwalText = o.Jadwal || "-";
-    let jadwalDate = null;
-    if(o.Jadwal){
-      jadwalDate = new Date(o.Jadwal);
-      const pad = n=>n.toString().padStart(2,'0');
+    let jadwalDate = o.Jadwal ? new Date(o.Jadwal) : null;
+    if(jadwalDate){
+      const pad=n=>n.toString().padStart(2,'0');
       jadwalText = `${pad(jadwalDate.getDate())}/${pad(jadwalDate.getMonth()+1)}/${jadwalDate.getFullYear()} ${pad(jadwalDate.getHours())}:${pad(jadwalDate.getMinutes())}`;
     }
     const card = document.createElement("div");
@@ -172,14 +194,11 @@ function renderCards(data){
   });
 }
 
-<!-- ======= HIGHLIGHT & NOTIF ======= -->
+// ======= HIGHLIGHT & NOTIF =======
 function highlightNewOrders(data){
   const list = document.getElementById("newOrdersList");
   list.innerHTML = "";
-
-  // ambil semua order baru (belum pernah dilihat)
   const pending = data.filter(o => !seenOrders.has(String(o.rowIndex)));
-
   if(pending.length){
     pending.forEach(o=>{
       const li = document.createElement("li");
@@ -188,19 +207,9 @@ function highlightNewOrders(data){
       list.appendChild(li);
     });
   } else {
-    const li = document.createElement("li");
-    li.textContent="Tidak ada order baru"; 
-    li.style.fontStyle="italic"; 
-    li.style.color="#555";
+    const li = document.createElement("li"); li.textContent="Tidak ada order baru"; li.style.fontStyle="italic"; li.style.color="#555";
     list.appendChild(li);
   }
-}
-
-
-function notifyOverdueOrders(data){
-  const now=new Date();
-  const overdue=data.filter(o=>o.Jadwal && new Date(o.Jadwal)<now && !["Selesai","Diantar"].includes(o.Status));
-  if(overdue.length>0) showNotif(`⚠️ Ada ${overdue.length} order yang sudah lewat jadwal!`,"error");
 }
 
 function scrollToCard(rowIndex){
@@ -214,7 +223,7 @@ function scrollToCard(rowIndex){
   });
 }
 
-// ======= MODAL =======
+// ======= MODAL DETAIL =======
 function openModalByRow(rowIndex){ const order=currentData.find(o=>String(o.rowIndex)===String(rowIndex)); if(order) openModal(order);}
 function openModal(order){
   selectedRowIndex=order.rowIndex;
@@ -241,6 +250,7 @@ function openModal(order){
   `;
   document.getElementById("orderModal").style.display="flex";
 }
+
 document.getElementById("modalCloseBtn").addEventListener("click",()=>{document.getElementById("orderModal").style.display="none";selectedRowIndex=null});
 document.getElementById("modalSaveBtn").addEventListener("click",()=>{
   if(selectedRowIndex===null){ showNotif("Tidak ada order terpilih","error"); return; }
@@ -312,44 +322,70 @@ function deleteOrder(rowIndex){
     .finally(()=>hideLoading());
 }
 
-// ======= GENERATE PDF REPORT =======
-function generateReport(){
-  // hanya ambil order dengan status Diantar
-  const diantar=currentData.filter(o=>o.Status==="Diantar");
-  if(!diantar.length){ showNotif("Tidak ada order diantar","error"); return; }
-  
+// ======= PREVIEW REPORT =======
+document.getElementById("reportBtn").addEventListener("click",()=>{
+  document.getElementById("reportModal").style.display="flex";
+  generateReportPreview();
+});
+
+document.getElementById("closeReportModalBtn").addEventListener("click",()=>{document.getElementById("reportModal").style.display="none";});
+document.getElementById("applyReportFilter").addEventListener("click",generateReportPreview);
+
+function generateReportPreview(){
+  const statusFilter = document.getElementById("reportStatusFilter").value;
+  const filtered = statusFilter ? currentData.filter(o=>o.Status===statusFilter) : currentData;
+  if(!filtered.length){ showNotif("Tidak ada order untuk preview","error"); return; }
+
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({unit:'pt',format:'a4'});
-  const margin=40; let y=50;
-  doc.setFontSize(16); 
-  doc.text("Laporan Order Diantar",297.5,y,{align:"center"}); 
-  y+=30;
-
-  const headers=["No","Nama","No HP","Layanan","Berat (Kg)","Harga (Rp)","Jadwal"];
-  const colWidths=[30,100,80,80,50,60,100];
-
-  let x=margin; doc.setFontSize(12);
-  headers.forEach((h,i)=>{ doc.text(h,x,y); x+=colWidths[i]; }); 
-  y+=15;
-  doc.setLineWidth(0.5); doc.line(margin,y-5,550,y-5);
-
-  diantar.forEach((o,i)=>{
-    let x=margin;
-    const line=[ (i+1).toString(), o.Nama||"-", o["No HP"]||"-", o.Layanan||"-", o.Berat||"0", (parseInt(o.Harga)||0).toLocaleString("id-ID"), o.Jadwal?new Date(o.Jadwal).toLocaleString("id-ID"):"-" ];
-    line.forEach((text,j)=>{ doc.text(text.toString(),x,y); x+=colWidths[j]; });
-    y+=15; 
-    if(y>770){ doc.addPage(); y=50; }
+  doc.text("Preview Laporan Orders", 297.5, 30, {align:"center"});
+  doc.autoTable({
+    head:[["No","Nama","No HP","Layanan","Berat (Kg)","Harga (Rp)","Status","Jadwal"]],
+    body: filtered.map((o,i)=>[
+      i+1,
+      o.Nama||"-",
+      o["No HP"]||"-",
+      o.Layanan||"-",
+      o.Berat||0,
+      (parseInt(o.Harga)||0).toLocaleString("id-ID"),
+      o.Status||"-",
+      o.Jadwal ? new Date(o.Jadwal).toLocaleString("id-ID") : "-"
+    ]),
+    startY:50
   });
-
-  const fileName=`Laporan_Order_Diantar_${new Date().toISOString().slice(0,10)}.pdf`;
-  doc.save(fileName); 
-  showNotif("✅ PDF report berhasil dibuat","success");
+  const iframe = document.getElementById("reportPreview");
+  iframe.src = doc.output('datauristring');
 }
 
+document.getElementById("downloadReportBtn").addEventListener("click",()=>{
+  const statusFilter = document.getElementById("reportStatusFilter").value;
+  const filtered = statusFilter ? currentData.filter(o=>o.Status===statusFilter) : currentData;
+  if(!filtered.length){ showNotif("Tidak ada order untuk download","error"); return; }
 
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({unit:'pt',format:'a4'});
+  doc.text("Laporan Orders", 297.5, 30, {align:"center"});
+  doc.autoTable({
+    head:[["No","Nama","No HP","Layanan","Berat (Kg)","Harga (Rp)","Status","Jadwal"]],
+    body: filtered.map((o,i)=>[
+      i+1,
+      o.Nama||"-",
+      o["No HP"]||"-",
+      o.Layanan||"-",
+      o.Berat||0,
+      (parseInt(o.Harga)||0).toLocaleString("id-ID"),
+      o.Status||"-",
+      o.Jadwal ? new Date(o.Jadwal).toLocaleString("id-ID") : "-"
+    ]),
+    startY:50
+  });
+  const fileName=`Laporan_Orders_${new Date().toISOString().slice(0,10)}.pdf`;
+  doc.save(fileName);
+  showNotif("✅ PDF berhasil didownload","success");
+});
 
+// ======= INIT =======
 window.addEventListener("DOMContentLoaded", loadOrders);
-
 </script>
 </body>
 </html>
