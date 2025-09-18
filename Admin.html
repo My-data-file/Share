@@ -1,69 +1,102 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Sea Laundry Admin</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Laundry Orders</title>
 
-<!-- jsPDF & autoTable -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <!-- jsPDF & AutoTable -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+  <!-- pdf.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
-<!-- pdf.js (buat render di HP/Laptop langsung ke canvas) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #f9f9f9;
+    }
+    header {
+      background: #4a90e2;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    .container { padding: 1rem; }
 
-<style>
-  body{font-family:Arial,Helvetica,sans-serif;background:#f4f4f4;margin:0;padding:0}
-  header{background:#1f2937;color:#fff;padding:14px 16px;text-align:center}
-  .container{padding:18px;max-width:1200px;margin:0 auto}
-  button{padding:7px 12px;border-radius:6px;border:0;background:#2563eb;color:#fff;cursor:pointer}
-  button:hover{background:#1e40af}
-  input,select{padding:8px;border:1px solid #ccc;border-radius:6px;font-size:14px;width:100%}
-  #dashboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px}
-  .card-summary{background:#fff;border-radius:10px;padding:12px;box-shadow:0 2px 6px rgba(0,0,0,0.08);text-align:center}
-  .card-summary h3{margin:0;font-size:13px;color:#374151}
-  .card-summary p{margin:6px 0 0;font-weight:700;font-size:18px}
-  .filter-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center;margin-bottom:14px}
-  #ordersGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
-  .order-card{background:#fff;padding:12px;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08)}
-  .status{display:inline-block;padding:4px 8px;border-radius:8px;font-weight:700;font-size:12px}
-  .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center}
-  .modal .box{background:#fff;border-radius:10px;padding:16px;width:98%;max-width:none;max-height:95vh;overflow:auto;display:flex;flex-direction:column}
-  #reportPreview {border:1px solid #ccc;width:100%;height:auto;max-height:80vh;margin-bottom:8px}
-  @media(max-width:640px){.filter-bar{flex-direction:column;align-items:stretch}}
-</style>
+    /* Grid Cards */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+      gap: 1rem;
+    }
+    .card {
+      background: white;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .card h4 { margin: 0 0 0.5rem 0; }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left:0; top:0;
+      width:100%; height:100%;
+      background: rgba(0,0,0,0.5);
+      justify-content:center;
+      align-items:center;
+    }
+    .modal .box {
+      background: white;
+      border-radius: 8px;
+      padding: 1rem;
+      max-height: 95vh;
+      overflow: auto;
+      width: 90%;
+    }
+
+    /* Loading Overlay */
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      top:0; left:0;
+      width:100%; height:100%;
+      background: rgba(255,255,255,0.8);
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+    }
+    .spinner {
+      border:4px solid #ccc;
+      border-top:4px solid #4a90e2;
+      border-radius:50%;
+      width:40px; height:40px;
+      animation:spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0%{transform:rotate(0deg);}
+      100%{transform:rotate(360deg);}
+    }
+
+    /* Responsive */
+    @media(max-width:600px){
+      .modal .box { width: 98%; padding:0.5rem; }
+    }
+  </style>
 </head>
 <body>
-<header><h1>Admin Panel - Sea Laundry</h1></header>
-<div class="container">
-  <div id="dashboard">
-    <div class="card-summary" style="background:#bfdbfe"><h3>Jumlah Pemesan</h3><p id="totalOrders">0</p></div>
-    <div class="card-summary" style="background:#bbf7d0"><h3>Total Berat (Kg)</h3><p id="totalWeight">0 Kg</p></div>
-    <div class="card-summary" style="background:#fef08a"><h3>Total Pemasukan</h3><p id="totalIncome">Rp 0</p></div>
-  </div>
-  <div class="filter-bar">
-    <input id="searchInput" placeholder="🔍 Cari nama / HP / layanan" />
-    <select id="statusFilter">
-      <option value="">Semua Status</option>
-      <option value="Dipesan">Dipesan</option>
-      <option value="Dijemput">Dijemput</option>
-      <option value="Diproses">Diproses</option>
-      <option value="Selesai">Selesai</option>
-      <option value="Diantar">Diantar</option>
-    </select>
-    <button id="reportBtn">📄 Preview Report</button>
-  </div>
-  <div id="ordersGrid"></div>
-</div>
-
-<!-- MODAL PREVIEW REPORT -->
-<div id="reportModal" class="modal" aria-hidden="true">
-  <div class="box">
-    <h3>📄 Preview Laporan Orders</h3>
-    <!-- Canvas untuk render PDF -->
-    <canvas id="reportPreview"></canvas>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <select id="reportStatusFilter">
+  <header>
+    <h2>Manajemen Pesanan Laundry</h2>
+  </header>
+  <div class="container">
+    <div style="margin-bottom:1rem;display:flex;gap:8px;flex-wrap:wrap">
+      <input id="searchInput" placeholder="Cari nama/nomor HP..." style="flex:1;padding:6px">
+      <select id="statusFilter">
         <option value="">Semua Status</option>
         <option value="Dipesan">Dipesan</option>
         <option value="Dijemput">Dijemput</option>
@@ -71,93 +104,211 @@
         <option value="Selesai">Selesai</option>
         <option value="Diantar">Diantar</option>
       </select>
-      <button id="applyReportFilter">🔍 Filter</button>
-      <button id="downloadReportBtn">⬇️ Download PDF</button>
-      <button id="closeReportModalBtn">❌ Tutup</button>
+      <button id="reportBtn">📊 Preview Report</button>
+    </div>
+    <div class="grid" id="ordersGrid"></div>
+  </div>
+  <!-- MODAL DETAIL ORDER -->
+  <div id="orderModal" class="modal" aria-hidden="true">
+    <div class="box">
+      <h3>Detail & Update Order</h3>
+      <div id="modalContent"></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
+        <button id="modalSaveBtn">💾 Simpan</button>
+        <button id="modalCloseBtn">❌ Tutup</button>
+      </div>
     </div>
   </div>
-</div>
+
+  <!-- MODAL PREVIEW REPORT FULLSCREEN -->
+  <div id="reportModal" class="modal" aria-hidden="true">
+    <div class="box" style="width:98%;max-width:none;height:95vh;display:flex;flex-direction:column;">
+      <h3>Preview Laporan Orders</h3>
+      <canvas id="reportPreview" style="flex:1;border:1px solid #ccc;width:100%;height:85%;margin-bottom:8px"></canvas>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <select id="reportStatusFilter">
+          <option value="">Semua Status</option>
+          <option value="Dipesan">Dipesan</option>
+          <option value="Dijemput">Dijemput</option>
+          <option value="Diproses">Diproses</option>
+          <option value="Selesai">Selesai</option>
+          <option value="Diantar">Diantar</option>
+        </select>
+        <button id="applyReportFilter">🔍 Filter</button>
+        <button id="downloadReportBtn">⬇️ Download PDF</button>
+        <button id="closeReportModalBtn">❌ Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOADING OVERLAY -->
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Sedang memuat data...</p>
+  </div>
 <script>
-const { jsPDF } = window.jspdf;
-let currentData = [
-  {Nama:"Andi", "No HP":"08123", Layanan:"Cuci Kering", Berat:5, Harga:25000, Status:"Diantar", Jadwal:new Date().toISOString()},
-  {Nama:"Budi", "No HP":"08234", Layanan:"Setrika", Berat:3, Harga:15000, Status:"Selesai", Jadwal:new Date().toISOString()}
-]; // contoh dummy, ganti dengan loadOrders()
+const GAS_URL = "https://script.google.com/macros/s/AKfycbyhfdzj1_8VSpMWXSJw5Y1raqUiocwJoSmMSKTidtr0pVnvPdnFseNFbZv5VcUhiAdPcw/exec";
+let currentData = [];
+let selectedRowIndex = null;
 
-// ===== Modal =====
-document.getElementById("reportBtn").addEventListener("click",()=>{
-  document.getElementById("reportModal").style.display="flex";
-  generateReportPreview();
-});
-document.getElementById("closeReportModalBtn").addEventListener("click",()=>{
-  document.getElementById("reportModal").style.display="none";
-});
-document.getElementById("applyReportFilter").addEventListener("click",generateReportPreview);
-
-// ===== Generate Preview =====
-async function generateReportPreview(){
-  const statusFilter=document.getElementById("reportStatusFilter").value;
-  const filtered=statusFilter?currentData.filter(o=>o.Status===statusFilter):currentData;
-  if(!filtered.length){alert("Tidak ada data");return;}
-
-  // Buat PDF pakai jsPDF
-  const doc=new jsPDF({unit:"pt",format:"a4"});
-  doc.text("Laporan Orders",297.5,30,{align:"center"});
-  doc.autoTable({
-    head:[["No","Nama","No HP","Layanan","Berat","Harga","Status","Jadwal"]],
-    body:filtered.map((o,i)=>[
-      i+1,
-      o.Nama||"-",
-      o["No HP"]||"-",
-      o.Layanan||"-",
-      o.Berat||0,
-      (parseInt(o.Harga)||0).toLocaleString("id-ID"),
-      o.Status||"-",
-      o.Jadwal?new Date(o.Jadwal).toLocaleString("id-ID"):"-"
-    ]),
-    startY:50
-  });
-
-  // Convert ke blob
-  const pdfBlob=doc.output("blob");
-  const pdfUrl=URL.createObjectURL(pdfBlob);
-
-  // Render PDF ke canvas via pdf.js
-  const pdf=await pdfjsLib.getDocument(pdfUrl).promise;
-  const page=await pdf.getPage(1);
-  const scale=1.2;
-  const viewport=page.getViewport({scale});
-  const canvas=document.getElementById("reportPreview");
-  const ctx=canvas.getContext("2d");
-  canvas.height=viewport.height;
-  canvas.width=viewport.width;
-  await page.render({canvasContext:ctx,viewport}).promise;
+// ======= LOAD ORDERS =======
+function loadOrders(){
+  document.getElementById("loadingOverlay").style.display = "flex";
+  fetch(GAS_URL,{method:"POST",body:JSON.stringify({type:"GetAllOrders"})})
+    .then(r=>r.json())
+    .then(resp=>{
+      currentData = (resp.orders||[]).map((o,i)=>({...o,rowIndex:o.rowIndex??(i+2)}));
+      renderCards(currentData);
+      updateDashboard(currentData);
+      document.getElementById("loadingOverlay").style.display = "none";
+    })
+    .catch(err=>{
+      console.error(err);
+      document.getElementById("loadingOverlay").style.display = "none";
+    });
 }
 
-// ===== Download =====
-document.getElementById("downloadReportBtn").addEventListener("click",()=>{
-  const statusFilter=document.getElementById("reportStatusFilter").value;
-  const filtered=statusFilter?currentData.filter(o=>o.Status===statusFilter):currentData;
-  if(!filtered.length){alert("Tidak ada data");return;}
+// ======= RENDER CARDS =======
+function renderCards(data){
+  const grid = document.getElementById("ordersGrid");
+  grid.innerHTML = "";
+  if(!data.length){ grid.innerHTML="<p style='text-align:center;color:#666'>Tidak ada order</p>"; return; }
 
-  const doc=new jsPDF({unit:"pt",format:"a4"});
-  doc.text("Laporan Orders",297.5,30,{align:"center"});
-  doc.autoTable({
-    head:[["No","Nama","No HP","Layanan","Berat","Harga","Status","Jadwal"]],
-    body:filtered.map((o,i)=>[
-      i+1,
-      o.Nama||"-",
-      o["No HP"]||"-",
-      o.Layanan||"-",
-      o.Berat||0,
-      (parseInt(o.Harga)||0).toLocaleString("id-ID"),
-      o.Status||"-",
-      o.Jadwal?new Date(o.Jadwal).toLocaleString("id-ID"):"-"
-    ]),
-    startY:50
+  data.forEach(o=>{
+    const harga = (parseInt(o.Harga)||0).toLocaleString("id-ID");
+    const berat = o.Berat||0;
+    const card = document.createElement("div");
+    card.className="order-card";
+    card.innerHTML=`<h4>${o.Nama||"-"}</h4>
+      <p>📞 ${o["No HP"]||"-"}</p>
+      <p>🛠 ${o.Layanan||"-"}</p>
+      <p><span class="status ${o.Status}">${o.Status}</span></p>
+      <p>⚖️ ${berat} Kg | 💰 Rp ${harga}</p>
+      <button onclick="openModalByRow(${o.rowIndex})">Detail / Update</button>`;
+    grid.appendChild(card);
   });
-  doc.save(`Laporan_${new Date().toISOString().slice(0,10)}.pdf`);
+}
+
+// ======= DASHBOARD =======
+function updateDashboard(data){
+  const totalOrders=data.length;
+  const totalWeight=data.reduce((s,o)=>s+(parseFloat(o.Berat)||0),0);
+  const totalIncome=data.reduce((s,o)=>s+(parseFloat(o.Harga)||0),0);
+  const active=data.filter(o=>!["Selesai","Diantar"].includes(o.Status)).length;
+  const completed=data.filter(o=>["Selesai","Diantar"].includes(o.Status)).length;
+  document.getElementById("totalOrders").textContent=totalOrders;
+  document.getElementById("totalWeight").textContent=totalWeight.toFixed(2)+" Kg";
+  document.getElementById("totalIncome").textContent="Rp "+totalIncome.toLocaleString("id-ID");
+  document.getElementById("activeOrders").textContent=active;
+  document.getElementById("completedOrders").textContent=completed;
+}
+
+// ======= FILTER =======
+document.getElementById("searchInput").addEventListener("input",()=>{
+  const q=document.getElementById("searchInput").value.toLowerCase();
+  const st=document.getElementById("statusFilter").value;
+  const filtered=currentData.filter(o=>{
+    const text=`${o.Nama||""} ${o["No HP"]||""} ${o.Layanan||""}`.toLowerCase();
+    return (!q||text.includes(q)) && (!st||o.Status===st);
+  });
+  renderCards(filtered);
 });
+document.getElementById("statusFilter").addEventListener("change",()=>document.getElementById("searchInput").dispatchEvent(new Event("input")));
+document.getElementById("refreshBtn").addEventListener("click",loadOrders);
+
+// ======= MODAL DETAIL =======
+function openModalByRow(rowIndex){ 
+  const order=currentData.find(o=>String(o.rowIndex)===String(rowIndex)); 
+  if(order) openModal(order);
+}
+function openModal(order){
+  selectedRowIndex=order.rowIndex;
+  const cont=document.getElementById("modalContent");
+  cont.innerHTML=`<div class="form-row"><label>Nama</label><input id="m_Nama" value="${order.Nama||""}"></div>
+  <div class="form-row"><label>Layanan</label><input id="m_Layanan" value="${order.Layanan||""}"></div>`;
+  document.getElementById("orderModal").style.display="flex";
+}
+document.getElementById("modalCloseBtn").addEventListener("click",()=>{document.getElementById("orderModal").style.display="none";});
+
+// ======= REPORT PREVIEW =======
+const reportModal = document.getElementById("reportModal");
+const reportPreview = document.getElementById("reportPreview");
+const reportStatusFilter = document.getElementById("reportStatusFilter");
+
+// Tombol buka modal
+document.getElementById("reportBtn").addEventListener("click",()=>{
+  reportStatusFilter.value="";
+  generateReportPreview();
+  reportModal.style.display="flex";
+});
+document.getElementById("closeReportModalBtn").addEventListener("click",()=>reportModal.style.display="none");
+document.getElementById("applyReportFilter").addEventListener("click",()=>generateReportPreview(reportStatusFilter.value));
+
+// ======= GENERATE REPORT PDF DAN TAMPILKAN DI CANVAS =======
+async function generateReportPreview(statusFilter=""){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({unit:'pt',format:'a4'});
+  const margin = 40; let y=50;
+
+  doc.setFontSize(16); 
+  doc.text("Laporan Orders", 297.5, y, {align:"center"}); 
+  y+=30;
+
+  let filtered = currentData;
+  if(statusFilter) filtered = filtered.filter(o=>o.Status===statusFilter);
+
+  const totalOrders = filtered.length;
+  const totalWeight = filtered.reduce((s,o)=>s+(parseFloat(o.Berat)||0),0);
+  const totalIncome = filtered.reduce((s,o)=>s+(parseFloat(o.Harga)||0),0);
+  doc.setFontSize(12);
+  doc.text(`Total Orders: ${totalOrders}`, margin, y); y+=15;
+  doc.text(`Total Berat: ${totalWeight.toFixed(2)} Kg`, margin, y); y+=15;
+  doc.text(`Total Pemasukan: Rp ${totalIncome.toLocaleString("id-ID")}`, margin, y); y+=20;
+
+  // Table headers
+  const headers = ["No","Nama","No HP","Layanan","Status","Berat","Harga","Jadwal"];
+  const colWidths = [30,100,80,80,60,50,60,100];
+  let x=margin;
+  headers.forEach((h,i)=>{ doc.text(h,x,y); x+=colWidths[i]; });
+  y+=15; doc.line(margin,y-5,550,y-5);
+
+  filtered.forEach((o,i)=>{
+    x=margin;
+    const jadwal = o.Jadwal ? new Date(o.Jadwal).toLocaleString("id-ID") : "-";
+    const line = [i+1, o.Nama||"-", o["No HP"]||"-", o.Layanan||"-", o.Status, o.Berat||0, parseInt(o.Harga||0).toLocaleString("id-ID"), jadwal];
+    line.forEach((t,j)=>{ doc.text(t.toString(), x, y); x+=colWidths[j]; });
+    y+=15;
+    if(y>770){ doc.addPage(); y=50; }
+  });
+
+  const pdfData = doc.output("arraybuffer");
+
+  // Tampilkan ke canvas pakai pdf.js
+  const pdfjsLib = window['pdfjs-dist/build/pdf'];
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+  const pdf = await pdfjsLib.getDocument({data: pdfData}).promise;
+  const page = await pdf.getPage(1);
+  const viewport = page.getViewport({scale: 1});
+  const context = reportPreview.getContext("2d");
+  reportPreview.width = viewport.width;
+  reportPreview.height = viewport.height;
+  await page.render({canvasContext: context, viewport: viewport}).promise;
+}
+
+// ======= DOWNLOAD REPORT PDF =======
+document.getElementById("downloadReportBtn").addEventListener("click",()=>{
+  const { jsPDF } = window.jspdf;
+  // Gunakan kembali generateReportPreview untuk filter
+  generateReportPreview(reportStatusFilter.value).then(()=>{
+    const doc = new jsPDF({unit:'pt',format:'a4'});
+    doc.save(`Laporan_Orders_${new Date().toISOString().slice(0,10)}.pdf`);
+  });
+});
+
+window.addEventListener("DOMContentLoaded", loadOrders);
 </script>
+<!-- Tambahkan pdf.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
 </body>
 </html>
