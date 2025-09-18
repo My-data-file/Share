@@ -44,7 +44,7 @@
   .order-card button{width:100%;margin-top:10px}
   .order-card.highlight { box-shadow:0 0 12px 3px #2563eb; transition: box-shadow 0.3s; }
   .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center}
-  .modal .box{background:#fff;border-radius:10px;padding:16px;width:94%;max-width:520px;max-height:90vh;overflow:auto; display:flex; flex-direction: column;}
+  .modal .box{background:#fff;border-radius:10px;padding:16px;width:94%;max-width:720px;max-height:90vh;overflow:auto; display:flex; flex-direction: column;}
   .modal h3{margin:0 0 10px}
   .modal .form-row{margin-bottom:8px}
   #orderModal .box div[style*="justify-content:flex-end"] button{min-width:100px}
@@ -173,7 +173,7 @@ function renderCards(data){
     let jadwalDate = o.Jadwal ? new Date(o.Jadwal) : null;
     if(jadwalDate){
       const pad=n=>n.toString().padStart(2,'0');
-      jadwalText = `${pad(jadwalDate.getDate())}/${pad(jadwalDate.getMonth()+1)}/${jadwalDate.getFullYear()} ${pad(jadwalDate.getHours())}:${pad(jadwalDate.getMinutes())}`;
+      jadwalText = `${pad(jadwalDate.getDate())}/${pad(jadwalDate.getMonth()+1)}/${pad(jadwalDate.getFullYear())} ${pad(jadwalDate.getHours())}:${pad(jadwalDate.getMinutes())}`;
     }
     const card = document.createElement("div");
     card.className = "order-card" + (o.Status==="Diantar"?" diantar":"");
@@ -322,12 +322,8 @@ function deleteOrder(rowIndex){
     .finally(()=>hideLoading());
 }
 
-// ======= PREVIEW REPORT =======
-document.getElementById("reportBtn").addEventListener("click",()=>{
-  document.getElementById("reportModal").style.display="flex";
-  generateReportPreview();
-});
-
+// ======= PREVIEW & DOWNLOAD REPORT + SUMMARY =======
+document.getElementById("reportBtn").addEventListener("click",()=>{ document.getElementById("reportModal").style.display="flex"; generateReportPreview(); });
 document.getElementById("closeReportModalBtn").addEventListener("click",()=>{document.getElementById("reportModal").style.display="none";});
 document.getElementById("applyReportFilter").addEventListener("click",generateReportPreview);
 
@@ -338,7 +334,17 @@ function generateReportPreview(){
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({unit:'pt',format:'a4'});
+  doc.setFontSize(12);
   doc.text("Preview Laporan Orders", 297.5, 30, {align:"center"});
+
+  // Tambah summary di atas tabel
+  const totalOrders=filtered.length;
+  const totalWeight=filtered.reduce((s,o)=>s+(parseFloat(o.Berat)||0),0);
+  const totalIncome=filtered.reduce((s,o)=>s+(parseFloat(o.Harga)||0),0);
+  doc.text(`Jumlah Pemesan: ${totalOrders}`, 40, 50);
+  doc.text(`Total Berat: ${totalWeight.toFixed(2)} Kg`, 40, 65);
+  doc.text(`Total Pemasukan: Rp ${totalIncome.toLocaleString("id-ID")}`, 40, 80);
+
   doc.autoTable({
     head:[["No","Nama","No HP","Layanan","Berat (Kg)","Harga (Rp)","Status","Jadwal"]],
     body: filtered.map((o,i)=>[
@@ -351,10 +357,10 @@ function generateReportPreview(){
       o.Status||"-",
       o.Jadwal ? new Date(o.Jadwal).toLocaleString("id-ID") : "-"
     ]),
-    startY:50
+    startY:100
   });
-  const iframe = document.getElementById("reportPreview");
-  iframe.src = doc.output('datauristring');
+
+  document.getElementById("reportPreview").src = doc.output('datauristring');
 }
 
 document.getElementById("downloadReportBtn").addEventListener("click",()=>{
@@ -364,7 +370,17 @@ document.getElementById("downloadReportBtn").addEventListener("click",()=>{
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({unit:'pt',format:'a4'});
+  doc.setFontSize(12);
   doc.text("Laporan Orders", 297.5, 30, {align:"center"});
+
+  // Tambah summary
+  const totalOrders=filtered.length;
+  const totalWeight=filtered.reduce((s,o)=>s+(parseFloat(o.Berat)||0),0);
+  const totalIncome=filtered.reduce((s,o)=>s+(parseFloat(o.Harga)||0),0);
+  doc.text(`Jumlah Pemesan: ${totalOrders}`, 40, 50);
+  doc.text(`Total Berat: ${totalWeight.toFixed(2)} Kg`, 40, 65);
+  doc.text(`Total Pemasukan: Rp ${totalIncome.toLocaleString("id-ID")}`, 40, 80);
+
   doc.autoTable({
     head:[["No","Nama","No HP","Layanan","Berat (Kg)","Harga (Rp)","Status","Jadwal"]],
     body: filtered.map((o,i)=>[
@@ -377,8 +393,9 @@ document.getElementById("downloadReportBtn").addEventListener("click",()=>{
       o.Status||"-",
       o.Jadwal ? new Date(o.Jadwal).toLocaleString("id-ID") : "-"
     ]),
-    startY:50
+    startY:100
   });
+
   const fileName=`Laporan_Orders_${new Date().toISOString().slice(0,10)}.pdf`;
   doc.save(fileName);
   showNotif("✅ PDF berhasil didownload","success");
