@@ -62,7 +62,7 @@
 </style>
 </head>
 <body>
-<header><h1 style="margin:0">Admin Panel - Sea Laundry</h1></header>
+<header><h1 style="margin:0">Admin Panel - Sea Laundry v1</h1></header>
 <div class="container">
   <div id="notif" class="toast"></div>
   <div id="dashboard">
@@ -334,7 +334,10 @@ document.getElementById("applyReportFilter").addEventListener("click",generateRe
 function generateReportPreview(){
   const statusFilter = document.getElementById("reportStatusFilter").value;
   const filtered = statusFilter ? currentData.filter(o=>o.Status===statusFilter) : currentData;
-  if(!filtered.length){ showNotif("Tidak ada order untuk preview","error"); return; }
+  if(!filtered.length){ 
+    showNotif("Tidak ada order untuk preview","error"); 
+    return; 
+  }
 
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({unit:'pt',format:'a4'});
@@ -354,11 +357,16 @@ function generateReportPreview(){
     startY:50
   });
 
-  // Gunakan Blob URL supaya preview langsung muncul di HP
+  // Gunakan base64 Data URI agar kompatibel HP
+  const pdfBase64 = doc.output('datauristring');
   const iframe = document.getElementById("reportPreview");
-  const pdfBlob = doc.output('blob');
-  iframe.src = URL.createObjectURL(pdfBlob);
+
+  // Tambahkan delay kecil agar iframe sempat render di HP
+  setTimeout(() => {
+    iframe.src = pdfBase64;
+  }, 50);
 }
+
 
 document.getElementById("downloadReportBtn").addEventListener("click",()=>{
   const statusFilter = document.getElementById("reportStatusFilter").value;
