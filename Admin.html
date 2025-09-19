@@ -64,37 +64,51 @@
     #ordersGrid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px;}
   }
 
-.report-controls-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, auto));
-  gap: 8px;
-  justify-content: center;
+.report-controls-smart {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
   align-items: center;
-  margin-top: 10px;
   text-align: center;
 }
 
-.report-controls-grid select,
-.report-controls-grid button {
-  padding: 6px 10px;
+.page-info {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.control-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.control-row button,
+.control-row select {
+  padding: 6px 12px;
   font-size: 14px;
   min-width: 100px;
   text-align: center;
-  white-space: nowrap; /* biar nggak pecah kata */
+  border-radius: 6px;
+  border: 1px solid #ccc;
 }
 
-.report-controls-grid span {
-  min-width: 120px;
-  text-align: center;
-  font-weight: bold;
-}
-
-/* khusus layar kecil */
+/* Responsif HP */
 @media (max-width: 640px) {
-  .report-controls-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 kolom biar rapi */
+  .control-row {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .control-row button,
+  .control-row select {
+    flex: 1;
+    min-width: auto;
   }
 }
+
 
 
 </style>
@@ -148,30 +162,51 @@
   <div class="box" style="width:98%;max-width:none;height:95vh;">
     <h3>Preview Laporan Orders</h3>
 
+    <!-- Tempat render PDF -->
     <div id="reportPages" style="flex:1;overflow:auto;height:80%;border:1px solid #ccc;padding:6px"></div>
 
-    <!-- Kontrol laporan semua di tengah -->
-<div class="report-controls-grid">
-  <select id="reportStatusFilter">
-    <option value="">Semua Status</option>
-    <option value="Dipesan">Dipesan</option>
-    <option value="Dijemput">Dijemput</option>
-    <option value="Diproses">Diproses</option>
-    <option value="Selesai">Selesai</option>
-    <option value="Diantar">Diantar</option>
-  </select>
-  <button id="applyReportFilter">🔍 Filter</button>
-  <button id="zoomInBtn">🔍➕</button>
-  <button id="zoomOutBtn">🔍➖</button>
-  <button id="fitWidthBtn">↔️</button>
-  <button id="prevPageBtn">⬅️</button>
-  <span id="pageInfo">Halaman 1 / 1</span>
-  <button id="nextPageBtn">➡️</button>
-  <button id="downloadReportBtn">⬇️ Download</button>
-  <button id="closeReportModalBtn">❌ Tutup</button>
-</div>
+    <!-- Kontrol laporan -->
+    <div class="report-controls-smart">
+      <!-- Info halaman di atas -->
+      <div class="page-info">
+        <span id="pageInfo">Halaman 1 / 1</span>
+      </div>
+
+      <!-- Baris filter -->
+      <div class="control-row">
+        <select id="reportStatusFilter">
+          <option value="">Semua Status</option>
+          <option value="Dipesan">Dipesan</option>
+          <option value="Dijemput">Dijemput</option>
+          <option value="Diproses">Diproses</option>
+          <option value="Selesai">Selesai</option>
+          <option value="Diantar">Diantar</option>
+        </select>
+        <button id="applyReportFilter">🔍 Filter</button>
+      </div>
+
+      <!-- Baris zoom -->
+      <div class="control-row">
+        <button id="zoomOutBtn">🔍➖</button>
+        <button id="zoomInBtn">🔍➕</button>
+        <button id="fitWidthBtn">↔️ Fit</button>
+      </div>
+
+      <!-- Baris navigasi -->
+      <div class="control-row">
+        <button id="prevPageBtn">⬅️ Prev</button>
+        <button id="nextPageBtn">➡️ Next</button>
+      </div>
+
+      <!-- Baris aksi -->
+      <div class="control-row">
+        <button id="downloadReportBtn">⬇️ Download</button>
+        <button id="closeReportModalBtn">❌ Tutup</button>
+      </div>
+    </div>
   </div>
 </div>
+
 
 
 
