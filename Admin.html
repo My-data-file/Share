@@ -64,52 +64,35 @@
     #ordersGrid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px;}
   }
 
-.report-controls {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.report-controls-center {
-  display: flex;
-  flex-wrap: wrap;
+.report-controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, auto));
   gap: 8px;
   justify-content: center;
   align-items: center;
   margin-top: 10px;
+  text-align: center;
 }
 
-.report-controls-center select,
-.report-controls-center button {
+.report-controls-grid select,
+.report-controls-grid button {
   padding: 6px 10px;
+  font-size: 14px;
+  min-width: 100px;
+  text-align: center;
+  white-space: nowrap; /* biar nggak pecah kata */
 }
 
-.controls-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
+.report-controls-grid span {
+  min-width: 120px;
+  text-align: center;
+  font-weight: bold;
 }
 
-.controls-left {
-  justify-content: flex-start;
-}
-
-.controls-center {
-  justify-content: center;
-}
-
-.controls-right {
-  justify-content: flex-end;
-}
-
+/* khusus layar kecil */
 @media (max-width: 640px) {
-  .controls-row {
-    justify-content: center;
-  }
-  .controls-left, .controls-right {
-    justify-content: center; /* di HP semua rata tengah */
+  .report-controls-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 kolom biar rapi */
   }
 }
 
@@ -118,7 +101,7 @@
 </head>
 <body>
 
-<header><h1 style="margin:0">Admin Panel - Sea Laundry</h1></header>
+<header><h1 style="margin:0">Admin Panel - Sea Laundry v0</h1></header>
 <div class="container">
   <div id="notif" class="toast"></div>
   <div id="dashboard">
@@ -168,25 +151,25 @@
     <div id="reportPages" style="flex:1;overflow:auto;height:80%;border:1px solid #ccc;padding:6px"></div>
 
     <!-- Kontrol laporan semua di tengah -->
-    <div class="report-controls-center">
-      <select id="reportStatusFilter">
-        <option value="">Semua Status</option>
-        <option value="Dipesan">Dipesan</option>
-        <option value="Dijemput">Dijemput</option>
-        <option value="Diproses">Diproses</option>
-        <option value="Selesai">Selesai</option>
-        <option value="Diantar">Diantar</option>
-      </select>
-      <button id="applyReportFilter">🔍 Filter</button>
-      <button id="zoomInBtn">🔍➕</button>
-      <button id="zoomOutBtn">🔍➖</button>
-      <button id="fitWidthBtn">↔️</button>
-      <button id="prevPageBtn">⬅️</button>
-      <span id="pageInfo">Halaman 1 / 1</span>
-      <button id="nextPageBtn">➡️</button>
-      <button id="downloadReportBtn">⬇️ Download</button>
-      <button id="closeReportModalBtn">❌ Tutup</button>
-    </div>
+<div class="report-controls-grid">
+  <select id="reportStatusFilter">
+    <option value="">Semua Status</option>
+    <option value="Dipesan">Dipesan</option>
+    <option value="Dijemput">Dijemput</option>
+    <option value="Diproses">Diproses</option>
+    <option value="Selesai">Selesai</option>
+    <option value="Diantar">Diantar</option>
+  </select>
+  <button id="applyReportFilter">🔍 Filter</button>
+  <button id="zoomInBtn">🔍➕</button>
+  <button id="zoomOutBtn">🔍➖</button>
+  <button id="fitWidthBtn">↔️</button>
+  <button id="prevPageBtn">⬅️</button>
+  <span id="pageInfo">Halaman 1 / 1</span>
+  <button id="nextPageBtn">➡️</button>
+  <button id="downloadReportBtn">⬇️ Download</button>
+  <button id="closeReportModalBtn">❌ Tutup</button>
+</div>
   </div>
 </div>
 
