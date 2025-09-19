@@ -331,55 +331,44 @@ document.getElementById("reportBtn").addEventListener("click",()=>{ document.get
 document.getElementById("closeReportModalBtn").addEventListener("click",()=>{ document.getElementById("reportModal").style.display="none"; });
 document.getElementById("applyReportFilter").addEventListener("click",generateReportPreview);
 
-function formatDate(d) {
-  if (!d) return "-";
-  const dt = new Date(d);
-  const pad = n => n.toString().padStart(2, "0");
-  return `${pad(dt.getDate())}/${pad(dt.getMonth() + 1)}/${dt.getFullYear()} ${pad(dt.getHours())}:${pad(dt.getMinutes())}`;
-}
-
-function generateReportPreview() {
+function generateReportPreview(){
   const statusFilter = document.getElementById("reportStatusFilter").value;
-  const filtered = statusFilter ? currentData.filter(o => o.Status === statusFilter) : currentData;
-  if (!filtered.length) {
-    showNotif("Tidak ada order untuk preview", "error");
-    return;
+  const filtered = statusFilter ? currentData.filter(o=>o.Status===statusFilter) : currentData;
+  if(!filtered.length){ 
+    showNotif("Tidak ada order untuk preview","error"); 
+    return; 
   }
 
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit: "pt", format: "a4" });
-
-  // judul laporan
-  const reportTitle = "Laporan Orders - Sea Laundry";
-  doc.text(reportTitle, 297.5, 30, { align: "center" });
-
-  // tabel
+  const doc = new jsPDF({unit:'pt',format:'a4'});
+  doc.text("Preview Laporan Orders", 297.5, 30, {align:"center"});
   doc.autoTable({
-    head: [["No","Nama","No HP","Layanan","Berat (Kg)","Harga (Rp)","Status","Jadwal"]],
-    body: filtered.map((o, i) => [
-      i + 1,
-      o.Nama || "-",
-      o["No HP"] || "-",
-      o.Layanan || "-",
-      o.Berat || 0,
-      (parseInt(o.Harga) || 0).toLocaleString("id-ID"),
-      o.Status || "-",
-      formatDate(o.Jadwal)
+    head:[["No","Nama","No HP","Layanan","Berat (Kg)","Harga (Rp)","Status","Jadwal"]],
+    body: filtered.map((o,i)=>[
+      i+1,
+      o.Nama||"-",
+      o["No HP"]||"-",
+      o.Layanan||"-",
+      o.Berat||0,
+      (parseInt(o.Harga)||0).toLocaleString("id-ID"),
+      o.Status||"-",
+      o.Jadwal ? new Date(o.Jadwal).toLocaleString("id-ID") : "-"
     ]),
-    startY: 50,
-    styles: { fontSize: 9, cellPadding: 4 },
-    headStyles: { fillColor: [31, 41, 55], textColor: 255 },
-    alternateRowStyles: { fillColor: [240, 240, 240] }
+    startY:50
   });
 
-  // buat data URI base64
-  const pdfDataUri = doc.output("datauristring");
-
-  // ganti iframe dengan embed agar langsung tampil di HP
-  const container = document.getElementById("reportPreview");
-  const embedHtml = `<embed src="${pdfDataUri}" type="application/pdf" width="100%" height="100%" style="border:0;border-radius:8px;" />`;
-  container.outerHTML = `<div id="reportPreview" style="flex:1;">${embedHtml}</div>`;
+  const iframe = document.getElementById("reportPreview");
+  try {
+    // 🔑 Paling kompatibel di HP: pakai datauristring
+    iframe.src = doc.output("datauristring");
+  } catch(err) {
+    console.error("Preview gagal:", err);
+    showNotif("⚠️ Preview tidak didukung, file akan didownload","error");
+    const fileName = `Laporan_Orders_${new Date().toISOString().slice(0,10)}.pdf`;
+    doc.save(fileName);
+  }
 }
+
 
 // ======= INIT =======
 window.addEventListener("DOMContentLoaded", loadOrders);
