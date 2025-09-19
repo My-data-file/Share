@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -62,11 +63,50 @@
     #dashboard{grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px;}
     #ordersGrid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px;}
   }
+.report-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.controls-left,
+.controls-center,
+.controls-right {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.controls-center {
+  justify-content: center;
+  flex: 1; /* biar selalu di tengah */
+}
+
+@media (max-width: 640px) {
+  .report-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .controls-left,
+  .controls-center,
+  .controls-right {
+    justify-content: center;
+    width: 100%;
+  }
+  .controls-right {
+    justify-content: flex-end;
+  }
+}
+
 </style>
 </head>
 <body>
 
-<header><h1 style="margin:0">Admin Panel - Sea Laundry</h1></header>
+<header><h1 style="margin:0">Admin Panel - Sea Laundry v0</h1></header>
 <div class="container">
   <div id="notif" class="toast"></div>
   <div id="dashboard">
@@ -112,28 +152,43 @@
 <div id="reportModal" class="modal" aria-hidden="true">
   <div class="box" style="width:98%;max-width:none;height:95vh;">
     <h3>Preview Laporan Orders</h3>
+
     <div id="reportPages" style="flex:1;overflow:auto;height:80%;border:1px solid #ccc;padding:6px"></div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px">
-      <select id="reportStatusFilter">
-        <option value="">Semua Status</option>
-        <option value="Dipesan">Dipesan</option>
-        <option value="Dijemput">Dijemput</option>
-        <option value="Diproses">Diproses</option>
-        <option value="Selesai">Selesai</option>
-        <option value="Diantar">Diantar</option>
-      </select>
-      <button id="applyReportFilter">🔍 Filter</button>
-      <button id="zoomInBtn">🔍➕ Zoom In</button>
-      <button id="zoomOutBtn">🔍➖ Zoom Out</button>
-      <button id="fitWidthBtn">↔️ Fit to Width</button>
-      <button id="prevPageBtn">⬅️ Prev</button>
-      <span id="pageInfo">Halaman 1 / 1</span>
-      <button id="nextPageBtn">➡️ Next</button>
-      <button id="downloadReportBtn">⬇️ Download PDF</button>
-      <button id="closeReportModalBtn">❌ Tutup</button>
+
+    <!-- Kontrol laporan -->
+    <div class="report-controls">
+      <!-- Bagian kiri: filter -->
+      <div class="controls-left">
+        <select id="reportStatusFilter">
+          <option value="">Semua Status</option>
+          <option value="Dipesan">Dipesan</option>
+          <option value="Dijemput">Dijemput</option>
+          <option value="Diproses">Diproses</option>
+          <option value="Selesai">Selesai</option>
+          <option value="Diantar">Diantar</option>
+        </select>
+        <button id="applyReportFilter">🔍 Filter</button>
+      </div>
+
+      <!-- Bagian tengah: navigasi/zoom -->
+      <div class="controls-center">
+        <button id="zoomInBtn">🔍➕</button>
+        <button id="zoomOutBtn">🔍➖</button>
+        <button id="fitWidthBtn">↔️</button>
+        <button id="prevPageBtn">⬅️</button>
+        <span id="pageInfo">Halaman 1 / 1</span>
+        <button id="nextPageBtn">➡️</button>
+      </div>
+
+      <!-- Bagian kanan: download & tutup -->
+      <div class="controls-right">
+        <button id="downloadReportBtn">⬇️ Download</button>
+        <button id="closeReportModalBtn">❌ Tutup</button>
+      </div>
     </div>
   </div>
 </div>
+
 
 <div id="loadingOverlay" class="loading-overlay">
   <div class="spinner"></div>
