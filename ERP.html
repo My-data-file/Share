@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ERP Cetak Offset - Full Chart Dashboard</title>
+<style>
+:root {
+    --bg-color: #f4f4f4; --nav-bg: #34495e; --header-bg: #2c3e50; --text-color: #2c3e50;
+    --submenu-bg: #3b5360; --accent-color: #1abc9c; --widget-bg: #ffffff;
+}
+[data-theme="dark"] {
+    --bg-color: #1e1e1e; --nav-bg: #2c3e50; --header-bg: #1b1b1b; --text-color: #f4f4f4;
+    --submenu-bg: #2c3e50; --accent-color: #16a085; --widget-bg: #2c3e50;
+}
+body {font-family: Arial,sans-serif; margin:0; background-color: var(--bg-color); color: var(--text-color); transition:0.3s;}
+header {
+  display: flex;
+  justify-content: center; /* center horizontal */
+  align-items: center;
+  position: relative;
+  padding: 15px 20px;
+  background-color: var(--header-bg);
+  color: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Tombol tetap di kanan */
+header div {
+  position: absolute;
+  right: 20px;
+}
+header button {background: var(--accent-color); border:none; color:white; padding:8px 12px; cursor:pointer; border-radius:5px; margin-left:5px;}
+nav {background-color: var(--nav-bg); width:240px; height:100vh; position:fixed; left:0; top:0; padding-top:20px; overflow-y:auto; transition:0.3s; z-index:1000;}
+nav.collapsed{width:60px;}
+nav a, nav .menu-title{display:flex; justify-content:space-between; align-items:center; color:white; text-decoration:none; padding:12px 20px; margin:5px 0; border-left:5px solid transparent; cursor:pointer; transition:0.3s; white-space:nowrap;}
+nav a:hover, nav .menu-title:hover{background-color: var(--accent-color); border-left:5px solid var(--accent-color);}
+.menu-icon{margin-right:10px; min-width:20px; text-align:center;}
+.submenu{max-height:0; overflow:hidden; transition:0.4s; background-color: var(--submenu-bg);}
+.submenu a{padding:10px 30px; display:block; margin:2px 0; background-color: var(--submenu-bg);}
+.menu-item.active>.submenu{max-height:500px;}
+.expand-icon{transition:0.3s;}
+.menu-item.active>.menu-title .expand-icon{transform:rotate(90deg);}
+main{margin-left:240px; padding:20px; transition:0.3s;}
+nav.collapsed+main{margin-left:60px;}
+.tab-content{opacity:0; max-height:0; overflow:hidden; transition:0.4s;}
+.tab-content.active{opacity:1; max-height:3000px;}
+.dashboard{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px;}
+.widget{background-color: var(--widget-bg); padding:20px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+.widget h3{margin:0 0 10px 0; font-size:1.1em;}
+.widget p{font-size:1.5em; margin:0;}
+.chart-container{margin-top:20px; background-color: var(--widget-bg); padding:20px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+form input, form select, form button{padding:5px; margin-right:5px;}
+form button{background-color: var(--accent-color); color:white; border:none; border-radius:3px; cursor:pointer;}
+table {width:100%; border-collapse: collapse; margin-top:10px;}
+table, th, td {border:1px solid #ccc; text-align:center; padding:5px;}
+@media (max-width:768px){
+    nav{transform:translateX(-100%);}
+    nav.show{transform:translateX(0);}
+    main{margin-left:0;}
+    nav.collapsed+main{margin-left:0;}
+}
+</style>
+</head>
+<body data-theme="light">
+
+<header>
+<h1>ERP Cetak Offset</h1>
+<div>
+<button id="toggleTheme">Tema</button>
+<button id="toggleSidebar">☰</button>
+<button id="refreshData">🔄</button>
+</div>
+</header>
+
+<nav id="sidebar">
+<a href="#" data-tab="tab-dashboard"><span class="menu-icon">🏠</span> Dashboard</a>
+<div class="menu-item">
+<div class="menu-title"><span><span class="menu-icon">⚙️</span> Produksi</span> <span class="expand-icon">▶</span></div>
+<div class="submenu">
+<a href="#" data-tab="tab-order">📄 Order Masuk</a>
+<a href="#" data-tab="tab-schedule">🗓️ Penjadwalan Mesin</a>
+<a href="#" data-tab="tab-monitoring">📊 Monitoring Produksi</a>
+</div>
+</div>
+<div class="menu-item">
+<div class="menu-title"><span><span class="menu-icon">📦</span> Stok & Bahan</span> <span class="expand-icon">▶</span></div>
+<div class="submenu">
+<a href="#" data-tab="tab-material">🧾 Bahan Baku</a>
+<a href="#" data-tab="tab-inventory">📦 Inventory Produk</a>
+</div>
+</div>
+<div class="menu-item">
+<div class="menu-title"><span><span class="menu-icon">🔍</span> Quality Control</span> <span class="expand-icon">▶</span></div>
+<div class="submenu">
+<a href="#" data-tab="tab-inspection">✅ Inspeksi</a>
+<a href="#" data-tab="tab-revision">🔧 Revisi & Perbaikan</a>
+</div>
+</div>
+<div class="menu-item">
+<div class="menu-title"><span><span class="menu-icon">📊</span> Laporan</span> <span class="expand-icon">▶</span></div>
+<div class="submenu">
+<a href="#" data-tab="tab-report">📈 Laporan Produksi</a>
+</div>
+</div>
+<a href="#" data-tab="tab-settings"><span class="menu-icon">⚙️</span> Pengaturan</a>
+</nav>
+
+<main>
+<!-- Tab content akan diisi di Bagian 2 -->
+
+
+<!-- Dashboard -->
+<div class="tab-content active" id="tab-dashboard">
+<h2>Dashboard Produksi</h2>
+<div class="dashboard">
+<div class="widget"><h3>Total Order</h3><p id="totalOrder">0</p></div>
+<div class="widget"><h3>Mesin Aktif</h3><p id="activeMachines">0</p></div>
+<div class="widget"><h3>Bahan Tersedia</h3><p id="availableMaterial">0</p></div>
+<div class="widget"><h3>Quality Alerts</h3><p id="qualityAlerts">0</p></div>
+</div>
+<div class="chart-container">
+<h3>Produksi Harian</h3>
+<canvas id="productionChart" width="400" height="150"></canvas>
+</div>
+</div>
+
+<!-- Order Masuk -->
+<div class="tab-content" id="tab-order">
+<h2>Order Masuk</h2>
+<form id="orderForm">
+<input type="text" id="orderName" placeholder="Nama Order" required>
+<select id="orderStatus">
+<option value="Proses">Proses</option>
+<option value="Selesai">Selesai</option>
+</select>
+<button type="submit">Tambah Order</button>
+</form>
+<table id="orderTable">
+<tr><th>No</th><th>Order</th><th>Status</th></tr>
+</table>
+<div class="chart-container">
+<h3>Status Order</h3>
+<canvas id="orderChart" width="400" height="150"></canvas>
+</div>
+</div>
+
+<!-- Penjadwalan Mesin -->
+<div class="tab-content" id="tab-schedule">
+<h2>Penjadwalan Mesin</h2>
+<form id="scheduleForm">
+<input type="text" id="machineName" placeholder="Mesin" required>
+<input type="date" id="scheduleDate" required>
+<button type="submit">Tambah Jadwal</button>
+</form>
+<table id="scheduleTable">
+<tr><th>No</th><th>Mesin</th><th>Tanggal</th></tr>
+</table>
+<div class="chart-container">
+<h3>Jadwal Mesin per Hari</h3>
+<canvas id="scheduleChart" width="400" height="150"></canvas>
+</div>
+</div>
+
+<!-- Monitoring Produksi -->
+<div class="tab-content" id="tab-monitoring">
+<h2>Monitoring Produksi</h2>
+<p>Ini bisa ditambahkan chart per mesin atau status produksi (placeholder).</p>
+</div>
+
+<!-- Bahan Baku -->
+<div class="tab-content" id="tab-material">
+<h2>Bahan Baku</h2>
+<form id="materialForm">
+<input type="text" id="materialName" placeholder="Nama Bahan" required>
+<input type="number" id="materialQty" placeholder="Qty" required>
+<button type="submit">Tambah Bahan</button>
+</form>
+<table id="materialTable">
+<tr><th>No</th><th>Bahan</th><th>Qty</th></tr>
+</table>
+<div class="chart-container">
+<h3>Stok Bahan</h3>
+<canvas id="materialChart" width="400" height="150"></canvas>
+</div>
+</div>
+
+<!-- Inventory Produk -->
+<div class="tab-content" id="tab-inventory">
+<h2>Inventory Produk</h2>
+<form id="inventoryForm">
+<input type="text" id="productName" placeholder="Nama Produk" required>
+<input type="number" id="productStock" placeholder="Stock" required>
+<button type="submit">Tambah Produk</button>
+</form>
+<table id="inventoryTable">
+<tr><th>No</th><th>Produk</th><th>Stock</th></tr>
+</table>
+<div class="chart-container">
+<h3>Stock Produk</h3>
+<canvas id="inventoryChart" width="400" height="150"></canvas>
+</div>
+</div>
+
+<!-- Quality Control - Inspeksi -->
+<div class="tab-content" id="tab-inspection">
+<h2>Inspeksi Kualitas</h2>
+<form id="inspectionForm">
+<input type="text" id="inspectionItem" placeholder="Nama Item" required>
+<select id="inspectionResult">
+<option value="Lulus">Lulus</option>
+<option value="Gagal">Gagal</option>
+</select>
+<button type="submit">Tambah Inspeksi</button>
+</form>
+<table id="inspectionTable">
+<tr><th>No</th><th>Item</th><th>Hasil</th></tr>
+</table>
+<div class="chart-container">
+<h3>Hasil Inspeksi</h3>
+<canvas id="inspectionChart" width="400" height="150"></canvas>
+</div>
+</div>
+
+<!-- Quality Control - Revisi & Perbaikan -->
+<div class="tab-content" id="tab-revision">
+<h2>Revisi & Perbaikan</h2>
+<form id="revisionForm">
+<input type="text" id="revisionItem" placeholder="Item Revisi" required>
+<select id="revisionStatus">
+<option value="Dalam Perbaikan">Dalam Perbaikan</option>
+<option value="Selesai">Selesai</option>
+</select>
+<button type="submit">Tambah Revisi</button>
+</form>
+<table id="revisionTable">
+<tr><th>No</th><th>Item</th><th>Status</th></tr>
+</table>
+<div class="chart-container">
+<h3>Status Revisi</h3>
+<canvas id="revisionChart" width="400" height="150"></canvas>
+</div>
+</div>
+
+<!-- Laporan -->
+<div class="tab-content" id="tab-report">
+<h2>Laporan Produksi, Stok, dan Kualitas</h2>
+<div class="chart-container">
+<h3>Produksi Mingguan</h3>
+<canvas id="reportProductionChart" width="400" height="150"></canvas>
+</div>
+<div class="chart-container">
+<h3>Stock Bahan & Produk</h3>
+<canvas id="reportStockChart" width="400" height="150"></canvas>
+</div>
+<div class="chart-container">
+<h3>Kualitas (Inspeksi & Revisi)</h3>
+<canvas id="reportQualityChart" width="400" height="150"></canvas>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// ===== Data Arrays =====
+let orders = [], schedules = [], materials = [], inventory = [];
+let inspections = [], revisions = [];
+
+// ===== Chart Variables =====
+let productionChart, orderChart, scheduleChart, materialChart, inventoryChart;
+let inspectionChart, revisionChart;
+let reportProductionChart, reportStockChart, reportQualityChart;
+
+// ===== Dashboard =====
+function getDynamicData() {
+    return {
+        totalOrder: orders.length,
+        activeMachines: schedules.length,
+        availableMaterial: materials.reduce((a,b)=>a+b.qty,0),
+        qualityAlerts: inspections.filter(i=>i.result==="Gagal").length,
+        productionDaily: Array.from({length:7},()=>Math.floor(Math.random()*50)+10)
+    };
+}
+
+function updateDashboard() {
+    const data = getDynamicData();
+    document.getElementById('totalOrder').textContent = data.totalOrder;
+    document.getElementById('activeMachines').textContent = data.activeMachines;
+    document.getElementById('availableMaterial').textContent = data.availableMaterial;
+    document.getElementById('qualityAlerts').textContent = data.qualityAlerts;
+
+    productionChart.data.datasets[0].data = data.productionDaily;
+    productionChart.update();
+
+    // Order Chart
+    const statusCount = {Proses:0, Selesai:0};
+    orders.forEach(o=>statusCount[o.status]++);
+    orderChart.data.datasets[0].data = [statusCount.Proses,statusCount.Selesai];
+    orderChart.update();
+
+    // Schedule Chart
+    const schedulePerMachine = {};
+    schedules.forEach(s=>{schedulePerMachine[s.name]=(schedulePerMachine[s.name]||0)+1;});
+    scheduleChart.data.labels = Object.keys(schedulePerMachine);
+    scheduleChart.data.datasets[0].data = Object.values(schedulePerMachine);
+    scheduleChart.update();
+
+    // Material Chart
+    materialChart.data.labels = materials.map(m=>m.name);
+    materialChart.data.datasets[0].data = materials.map(m=>m.qty);
+    materialChart.update();
+
+    // Inventory Chart
+    inventoryChart.data.labels = inventory.map(p=>p.name);
+    inventoryChart.data.datasets[0].data = inventory.map(p=>p.stock);
+    inventoryChart.update();
+
+    // Inspection Chart
+    const inspectionCount = {Lulus:0,Gagal:0};
+    inspections.forEach(i=>inspectionCount[i.result]++);
+    inspectionChart.data.datasets[0].data = [inspectionCount.Lulus,inspectionCount.Gagal];
+    inspectionChart.update();
+
+    // Revision Chart
+    const revisionCount = {["Dalam Perbaikan"]:0, Selesai:0};
+    revisions.forEach(r=>revisionCount[r.status]++);
+    revisionChart.data.datasets[0].data = [revisionCount["Dalam Perbaikan"],revisionCount.Selesai];
+    revisionChart.update();
+
+    // Laporan Charts
+    reportProductionChart.data.datasets[0].data = data.productionDaily;
+    reportProductionChart.update();
+
+    reportStockChart.data.datasets[0].data = materials.map(m=>m.qty);
+    reportStockChart.data.datasets[1].data = inventory.map(p=>p.stock);
+    reportStockChart.update();
+
+    reportQualityChart.data.datasets[0].data = [inspectionCount.Lulus, inspectionCount.Gagal];
+    reportQualityChart.data.datasets[1].data = [revisionCount.Selesai, revisionCount["Dalam Perbaikan"]];
+    reportQualityChart.update();
+}
+
+// ===== Chart Initialization =====
+function initCharts() {
+    const ctx1 = document.getElementById('productionChart').getContext('2d');
+    productionChart = new Chart(ctx1,{type:'bar',data:{labels:['Sen','Sel','Rab','Kam','Jum','Sab','Min'],datasets:[{label:'Unit Produksi',data:[0,0,0,0,0,0,0],backgroundColor:'rgba(26,188,156,0.7)'}]}, options:{responsive:true,scales:{y:{beginAtZero:true}}}});
+
+    const ctx2 = document.getElementById('orderChart').getContext('2d');
+    orderChart = new Chart(ctx2,{type:'doughnut',data:{labels:['Proses','Selesai'],datasets:[{label:'Order Status',data:[0,0],backgroundColor:['#3498db','#2ecc71']}]}, options:{responsive:true}});
+
+    const ctx3 = document.getElementById('scheduleChart').getContext('2d');
+    scheduleChart = new Chart(ctx3,{type:'bar',data:{labels:[],datasets:[{label:'Jadwal Mesin',data:[],backgroundColor:'rgba(155,89,182,0.7)'}]}, options:{responsive:true,scales:{y:{beginAtZero:true}}}});
+
+    const ctx4 = document.getElementById('materialChart').getContext('2d');
+    materialChart = new Chart(ctx4,{type:'bar',data:{labels:[],datasets:[{label:'Qty Bahan',data:[],backgroundColor:'rgba(241,196,15,0.7)'}]}, options:{responsive:true,scales:{y:{beginAtZero:true}}}});
+
+    const ctx5 = document.getElementById('inventoryChart').getContext('2d');
+    inventoryChart = new Chart(ctx5,{type:'bar',data:{labels:[],datasets:[{label:'Stock Produk',data:[],backgroundColor:'rgba(230,126,34,0.7)'}]}, options:{responsive:true,scales:{y:{beginAtZero:true}}}});
+
+    const ctx6 = document.getElementById('inspectionChart').getContext('2d');
+    inspectionChart = new Chart(ctx6,{type:'doughnut',data:{labels:['Lulus','Gagal'],datasets:[{label:'Inspeksi',data:[0,0],backgroundColor:['#2ecc71','#e74c3c']}]}, options:{responsive:true}});
+
+    const ctx7 = document.getElementById('revisionChart').getContext('2d');
+    revisionChart = new Chart(ctx7,{type:'doughnut',data:{labels:['Dalam Perbaikan','Selesai'],datasets:[{label:'Revisi',data:[0,0],backgroundColor:['#f1c40f','#2ecc71']}]}, options:{responsive:true}});
+
+    const ctx8 = document.getElementById('reportProductionChart').getContext('2d');
+    reportProductionChart = new Chart(ctx8,{type:'bar',data:{labels:['Sen','Sel','Rab','Kam','Jum','Sab','Min'],datasets:[{label:'Produksi',data:[0,0,0,0,0,0,0],backgroundColor:'rgba(26,188,156,0.7)'}]}, options:{responsive:true,scales:{y:{beginAtZero:true}}}});
+
+    const ctx9 = document.getElementById('reportStockChart').getContext('2d');
+    reportStockChart = new Chart(ctx9,{type:'bar',data:{labels:[],datasets:[{label:'Bahan',data:[],backgroundColor:'rgba(241,196,15,0.7)'},{label:'Produk',data:[],backgroundColor:'rgba(230,126,34,0.7)'}]}, options:{responsive:true,scales:{y:{beginAtZero:true}}}});
+
+    const ctx10 = document.getElementById('reportQualityChart').getContext('2d');
+    reportQualityChart = new Chart(ctx10,{type:'bar',data:{labels:['Inspeksi','Revisi'],datasets:[{label:'Lulus vs Gagal',data:[0,0],backgroundColor:'rgba(46,204,113,0.7)'},{label:'Revisi Selesai/Dalam Perbaikan',data:[0,0],backgroundColor:'rgba(241,196,15,0.7)'}]}, options:{responsive:true,scales:{y:{beginAtZero:true}}}});
+}
+
+// ===== Sidebar Expand/Collapse & Theme Toggle =====
+const sidebar = document.getElementById('sidebar');
+document.getElementById('toggleSidebar').addEventListener('click',()=>{
+    if(window.innerWidth<=768){sidebar.classList.toggle('show');}
+    else{sidebar.classList.toggle('collapsed');}
+});
+const body = document.body;
+document.getElementById('toggleTheme').addEventListener('click',()=>{body.setAttribute('data-theme',body.getAttribute('data-theme')==='light'?'dark':'light');});
+
+// ===== Tab Switching =====
+const sidebarLinks = document.querySelectorAll('#sidebar a');
+sidebarLinks.forEach(link=>{
+    link.addEventListener('click',e=>{
+        e.preventDefault();
+        const tabId = link.dataset.tab;
+        if(!tabId) return;
+        document.querySelectorAll('.tab-content').forEach(tab=>tab.classList.remove('active'));
+        const activeTab = document.getElementById(tabId);
+        if(activeTab) activeTab.classList.add('active');
+        if(window.innerWidth<=768) sidebar.classList.remove('show');
+    });
+});
+
+// ===== Forms Submission =====
+function initForms(){
+    // Order
+    document.getElementById('orderForm').addEventListener('submit',e=>{
+        e.preventDefault();
+        const name=document.getElementById('orderName').value;
+        const status=document.getElementById('orderStatus').value;
+        orders.push({name,status});
+        const table=document.getElementById('orderTable');
+        table.innerHTML='<tr><th>No</th><th>Order</th><th>Status</th></tr>';
+        orders.forEach((o,i)=>{table.innerHTML+=`<tr><td>${i+1}</td><td>${o.name}</td><td>${o.status}</td></tr>`;});
+        e.target.reset(); updateDashboard();
+    });
+    // Schedule
+    document.getElementById('scheduleForm').addEventListener('submit',e=>{
+        e.preventDefault();
+        const name=document.getElementById('machineName').value;
+        const date=document.getElementById('scheduleDate').value;
+        schedules.push({name,date});
+        const table=document.getElementById('scheduleTable');
+        table.innerHTML='<tr><th>No</th><th>Mesin</th><th>Tanggal</th></tr>';
+        schedules.forEach((s,i)=>{table.innerHTML+=`<tr><td>${i+1}</td><td>${s.name}</td><td>${s.date}</td></tr>`;});
+        e.target.reset(); updateDashboard();
+    });
+    // Material
+    document.getElementById('materialForm').addEventListener('submit',e=>{
+        e.preventDefault();
+        const name=document.getElementById('materialName').value;
+        const qty=parseInt(document.getElementById('materialQty').value);
+        materials.push({name,qty});
+        const table=document.getElementById('materialTable');
+        table.innerHTML='<tr><th>No</th><th>Bahan</th><th>Qty</th></tr>';
+        materials.forEach((m,i)=>{table.innerHTML+=`<tr><td>${i+1}</td><td>${m.name}</td><td>${m.qty}</td></tr>`;});
+        e.target.reset(); updateDashboard();
+    });
+    // Inventory
+    document.getElementById('inventoryForm').addEventListener('submit',e=>{
+        e.preventDefault();
+        const name=document.getElementById('productName').value;
+        const stock=parseInt(document.getElementById('productStock').value);
+        inventory.push({name,stock});
+        const table=document.getElementById('inventoryTable');
+        table.innerHTML='<tr><th>No</th><th>Produk</th><th>Stock</th></tr>';
+        inventory.forEach((p,i)=>{table.innerHTML+=`<tr><td>${i+1}</td><td>${p.name}</td><td>${p.stock}</td></tr>`;});
+        e.target.reset(); updateDashboard();
+    });
+    // Inspection
+    document.getElementById('inspectionForm').addEventListener('submit',e=>{
+        e.preventDefault();
+        const item=document.getElementById('inspectionItem').value;
+        const result=document.getElementById('inspectionResult').value;
+        inspections.push({item,result});
+        const table=document.getElementById('inspectionTable');
+        table.innerHTML='<tr><th>No</th><th>Item</th><th>Hasil</th></tr>';
+        inspections.forEach((i,j)=>{table.innerHTML+=`<tr><td>${j+1}</td><td>${i.item}</td><td>${i.result}</td></tr>`;});
+        e.target.reset(); updateDashboard();
+    });
+    // Revision
+    document.getElementById('revisionForm').addEventListener('submit',e=>{
+        e.preventDefault();
+        const item=document.getElementById('revisionItem').value;
+        const status=document.getElementById('revisionStatus').value;
+        revisions.push({item,status});
+        const table=document.getElementById('revisionTable');
+        table.innerHTML='<tr><th>No</th><th>Item</th><th>Status</th></tr>';
+        revisions.forEach((r,j)=>{table.innerHTML+=`<tr><td>${j+1}</td><td>${r.item}</td><td>${r.status}</td></tr>`;});
+        e.target.reset(); updateDashboard();
+    });
+}
+
+// ===== Initialize =====
+initCharts();
+initForms();
+updateDashboard();
+document.getElementById('refreshData').addEventListener('click',updateDashboard);
+
+// ===== Submenu Expand/Collapse =====
+document.querySelectorAll('.menu-item .menu-title').forEach(title=>{
+    title.addEventListener('click',()=>{title.parentElement.classList.toggle('active');});
+});
+</script>
+</body>
+</html>
