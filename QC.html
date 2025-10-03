@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>SYSTEM QC - Compact HP</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SYSTEM QC - Mobile Auto Collapse</title>
 <style>
 :root{
   --bg:#f4f7fb; --card:#fff; --accent:#0ea5a4; --accent-2:#0369a1;
@@ -12,37 +12,34 @@
 body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);color:#111;}
 header{background:var(--accent);color:#fff;padding:1rem;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,.1);}
 #darkToggle{padding:6px 12px;border:none;border-radius:8px;background:#fff;color:#111;cursor:pointer;font-weight:500;}
-.container{display:flex;flex-direction:column;min-height:100vh;}
-nav{display:flex;overflow-x:auto;background:#fff;border-bottom:1px solid #e5e7eb;}
-nav button{flex:1;min-width:100px;padding:.8rem 0;border:none;background:var(--accent);color:#fff;font-weight:500;cursor:pointer;transition:all .2s;margin-right:2px;}
+nav{display:flex;overflow-x:auto;background:#fff;border-bottom:1px solid #e5e7eb;padding:0.3rem;}
+nav button{flex:1;min-width:90px;margin:0 2px;padding:.6rem 0;border:none;background:var(--accent);color:#fff;font-weight:500;cursor:pointer;border-radius:8px;transition:all .2s;}
 nav button.active{background:var(--accent-2);}
-nav button:hover{background:var(--accent-2);}
-main{flex:1;padding:.5rem;display:flex;flex-direction:column;gap:.8rem;}
-.card{background:var(--card);padding:.8rem;border-radius:var(--radius);box-shadow:0 2px 6px rgba(0,0,0,.06);}
-.tabs{display:flex;gap:.3rem;margin-bottom:.5rem;overflow-x:auto;}
+main{flex:1;padding:.5rem;display:flex;flex-direction:column;gap:.6rem;}
+.card{background:var(--card);padding:.7rem;border-radius:var(--radius);box-shadow:0 2px 6px rgba(0,0,0,.05);}
+.tabs{display:flex;overflow-x:auto;gap:.3rem;margin-bottom:.5rem;}
 .tabs button{flex:1;padding:.5rem;font-size:0.85rem;border:none;border-radius:var(--radius);background:#e5e7eb;cursor:pointer;}
 .tabs button.active{background:var(--accent);color:#fff;}
 .tab-content{display:none;}
 .tab-content.active{display:block;}
-input[type=text]{width:100%;padding:.6rem;border:1px solid #ccc;border-radius:8px;margin-bottom:.5rem;box-sizing:border-box;font-size:0.9rem;}
+input[type=text]{width:100%;padding:.55rem;border:1px solid #ccc;border-radius:8px;margin-bottom:.4rem;font-size:0.9rem;box-sizing:border-box;}
 input[type=text]:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(14,165,164,.2);outline:none;}
-ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.4rem;}
-li{background:#fff;padding:.6rem;border-radius:var(--radius);display:flex;flex-direction:column;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.3rem;}
+li{background:#fff;padding:.5rem;border-radius:var(--radius);display:flex;flex-direction:column;box-shadow:0 1px 3px rgba(0,0,0,.05);}
 li span{margin-bottom:.3rem;word-break:break-word;}
-.action{padding:.5rem;border:none;border-radius:8px;font-weight:500;font-size:0.85rem;cursor:pointer;transition:all .2s;margin-bottom:3px;}
+.action{padding:.45rem;border:none;border-radius:8px;font-weight:500;font-size:0.85rem;cursor:pointer;transition:all .2s;margin-bottom:3px;width:100%;}
 .action.edit{background:#facc15;}
 .action.save{background:var(--success);color:#fff;}
 .action.delete{background:#dc2626;color:#fff;}
 .action.call{background:var(--accent);color:#fff;}
 .action:hover{opacity:.9;transform:translateY(-1px);}
-#dashboard h2{margin:0 0 .5rem 0;font-size:1.1rem;}
-#dashboard > div{padding:.7rem;background:#f9fafb;border-radius:var(--radius);}
+#dashboard h2{margin:0 0 .5rem 0;font-size:1.05rem;}
+#dashboard > div{padding:.6rem;background:#f9fafb;border-radius:var(--radius);}
 #listFinishing table{width:100%;border-collapse:collapse;font-size:0.8rem;overflow-x:auto;display:block;}
-#listFinishing table th,#listFinishing table td{padding:3px 5px;border:1px solid #ccc;text-align:left;white-space:nowrap;}
+#listFinishing table th,#listFinishing table td{padding:3px 4px;border:1px solid #ccc;white-space:nowrap;}
 #listFinishing table th{text-align:center;}
 .highlight{animation: flash 1s ease;}
 @keyframes flash{0%{background:#fef08a;}100%{background:white;}}
-/* DARK MODE */
 body.dark{background:#111827;color:#f3f4f6;}
 body.dark header{background:#1f2937;color:#f3f4f6;}
 body.dark #darkToggle{background:#374151;color:#f3f4f6;}
@@ -64,111 +61,105 @@ body.dark .action.call{background:#0ea5a4;color:#fff;}
 <button id="darkToggle">🌙 Dark</button>
 </header>
 
-<div class="container">
 <nav>
-  <button onclick="showMenu('dashboard')">Dashboard</button>
-  <button onclick="showMenu('qcBapro')">QC Bapro</button>
-  <button onclick="showMenu('qcPa')">QC PA</button>
-  <button onclick="showMenu('qcFinishing')">QC Finishing</button>
-  <button onclick="showMenu('qcLem')">QC Lem</button>
+<button onclick="showMenu('dashboard')">Dashboard</button>
+<button onclick="showMenu('qcBapro')">QC Bapro</button>
+<button onclick="showMenu('qcPa')">QC PA</button>
+<button onclick="showMenu('qcFinishing')">QC Finishing</button>
+<button onclick="showMenu('qcLem')">QC Lem</button>
 </nav>
+
 <main>
-  <section id="dashboard" class="card"></section>
+<section id="dashboard" class="card"></section>
 
-  <!-- QC Bapro Compact -->
-  <section id="qcBapro" class="card qc-section">
-    <div class="tabs">
-      <button class="active" data-tab="inputBapro" onclick="switchTab(this)">Inputan</button>
-      <button data-tab="hasilBapro" onclick="switchTab(this)">Hasil</button>
-    </div>
-    <div id="inputBapro" class="tab-content active">
-      <input type="text" id="baproItem" placeholder="Tambah item QC Bapro">
-      <button onclick="addItem('bapro')" class="action save">Tambah</button>
-    </div>
-    <div id="hasilBapro" class="tab-content">
-      <input type="text" placeholder="Cari..." oninput="filterList('bapro',this.value)">
-      <ul id="listBapro"></ul>
-    </div>
-  </section>
+<section id="qcBapro" class="card qc-section">
+<div class="tabs">
+  <button class="active" data-tab="inputBapro" onclick="switchTab(this)">Inputan</button>
+  <button data-tab="hasilBapro" onclick="switchTab(this)">Hasil</button>
+</div>
+<div id="inputBapro" class="tab-content active">
+<input type="text" id="baproItem" placeholder="Tambah item QC Bapro">
+<button onclick="addItem('bapro')" class="action save">Tambah</button>
+</div>
+<div id="hasilBapro" class="tab-content">
+<input type="text" placeholder="Cari..." oninput="filterList('bapro',this.value)">
+<ul id="listBapro"></ul>
+</div>
+</section>
 
-  <!-- QC PA Compact -->
-  <section id="qcPa" class="card qc-section">
-    <div class="tabs">
-      <button class="active" data-tab="inputPa" onclick="switchTab(this)">Inputan</button>
-      <button data-tab="hasilPa" onclick="switchTab(this)">Hasil</button>
-    </div>
-    <div id="inputPa" class="tab-content active">
-      <input type="text" id="paItem" placeholder="Tambah item QC PA">
-      <button onclick="addItem('pa')" class="action save">Tambah</button>
-    </div>
-    <div id="hasilPa" class="tab-content">
-      <input type="text" placeholder="Cari..." oninput="filterList('pa',this.value)">
-      <ul id="listPa"></ul>
-    </div>
-  </section>
+<section id="qcPa" class="card qc-section">
+<div class="tabs">
+  <button class="active" data-tab="inputPa" onclick="switchTab(this)">Inputan</button>
+  <button data-tab="hasilPa" onclick="switchTab(this)">Hasil</button>
+</div>
+<div id="inputPa" class="tab-content active">
+<input type="text" id="paItem" placeholder="Tambah item QC PA">
+<button onclick="addItem('pa')" class="action save">Tambah</button>
+</div>
+<div id="hasilPa" class="tab-content">
+<input type="text" placeholder="Cari..." oninput="filterList('pa',this.value)">
+<ul id="listPa"></ul>
+</div>
+</section>
 
-  <!-- QC Finishing Compact -->
-  <section id="qcFinishing" class="card qc-section">
-    <div class="tabs">
-      <button class="active" data-tab="inputFinishing" onclick="switchTab(this)">Inputan</button>
-      <button data-tab="hasilFinishing" onclick="switchTab(this)">Hasil</button>
-    </div>
-    <div id="inputFinishing" class="tab-content active">
-      <input type="text" id="finishingNama" placeholder="Nama Barang">
-      <input type="text" id="finishingNoKF" placeholder="No KF">
-      <input type="text" id="finishingOrder" placeholder="Order">
-      <input type="text" id="finishingBagus" placeholder="Bagus">
-      <input type="text" id="finishingJenisBS" placeholder="Jenis BS">
-      <input type="text" id="finishingJumlahBS" placeholder="Jumlah BS">
-      <button onclick="addFinishingItem()" class="action save">Tambah</button>
-    </div>
-    <div id="hasilFinishing" class="tab-content">
-      <input type="text" placeholder="Cari..." oninput="filterFinishing(this.value)">
-      <ul id="listFinishing"></ul>
-    </div>
-  </section>
+<section id="qcFinishing" class="card qc-section">
+<div class="tabs">
+  <button class="active" data-tab="inputFinishing" onclick="switchTab(this)">Inputan</button>
+  <button data-tab="hasilFinishing" onclick="switchTab(this)">Hasil</button>
+</div>
+<div id="inputFinishing" class="tab-content active">
+<input type="text" id="finishingNama" placeholder="Nama Barang">
+<input type="text" id="finishingNoKF" placeholder="No KF">
+<input type="text" id="finishingOrder" placeholder="Order">
+<input type="text" id="finishingBagus" placeholder="Bagus">
+<input type="text" id="finishingJenisBS" placeholder="Jenis BS">
+<input type="text" id="finishingJumlahBS" placeholder="Jumlah BS">
+<button onclick="addFinishingItem()" class="action save">Tambah</button>
+</div>
+<div id="hasilFinishing" class="tab-content">
+<input type="text" placeholder="Cari..." oninput="filterFinishing(this.value)">
+<ul id="listFinishing"></ul>
+</div>
+</section>
 
-  <!-- QC Lem Compact -->
-  <section id="qcLem" class="card qc-section">
-    <div class="tabs">
-      <button class="active" data-tab="inputLem" onclick="switchTab(this)">Inputan</button>
-      <button data-tab="hasilLem" onclick="switchTab(this)">Hasil</button>
-    </div>
-    <div id="inputLem" class="tab-content active">
-      <input type="text" id="lemItem" placeholder="Tambah item QC Lem">
-      <button onclick="addItem('lem')" class="action save">Tambah</button>
-    </div>
-    <div id="hasilLem" class="tab-content">
-      <input type="text" placeholder="Cari..." oninput="filterList('lem',this.value)">
-      <ul id="listLem"></ul>
-    </div>
-  </section>
+<section id="qcLem" class="card qc-section">
+<div class="tabs">
+  <button class="active" data-tab="inputLem" onclick="switchTab(this)">Inputan</button>
+  <button data-tab="hasilLem" onclick="switchTab(this)">Hasil</button>
+</div>
+<div id="inputLem" class="tab-content active">
+<input type="text" id="lemItem" placeholder="Tambah item QC Lem">
+<button onclick="addItem('lem')" class="action save">Tambah</button>
+</div>
+<div id="hasilLem" class="tab-content">
+<input type="text" placeholder="Cari..." oninput="filterList('lem',this.value)">
+<ul id="listLem"></ul>
+</div>
+</section>
 
 </main>
-</div>
 
 <script>
-// === Semua fungsi JS tetap sama persis ===
+// ==== Fungsi JS tetap sama ====
+function showMenu(menu){
+  document.querySelectorAll('main > section').forEach(sec=>sec.style.display='none');
+  document.getElementById(menu).style.display='block';
+  localStorage.setItem('activeMenu',menu);
+  document.querySelectorAll('nav button').forEach(btn=>btn.classList.remove('active'));
+  document.querySelector(`nav button[onclick="showMenu('${menu}')"]`).classList.add('active');
+}
 window.onload=function(){
-  ['bapro','pa','finishing','lem'].forEach(t=>{
-    if(t!=='finishing') renderList(t);
-    else renderFinishingList();
-  });
-  updateDashboard();
-  let active=localStorage.getItem('activeMenu')||'dashboard';
-  showMenu(active);
-  const toggle=document.getElementById('darkToggle');
-  if(localStorage.getItem('theme')==='dark'){
-    document.body.classList.add('dark'); toggle.textContent='☀️ Light';
-  }
-  toggle.addEventListener('click',()=>{
-    document.body.classList.toggle('dark');
-    if(document.body.classList.contains('dark')){
-      localStorage.setItem('theme','dark'); toggle.textContent='☀️ Light';
-    }else{
-      localStorage.setItem('theme','light'); toggle.textContent='🌙 Dark';
-    }
-  });
+['bapro','pa','finishing','lem'].forEach(t=>{if(t!=='finishing') renderList(t);else renderFinishingList();});
+updateDashboard();
+let active=localStorage.getItem('activeMenu')||'dashboard';
+showMenu(active);
+const toggle=document.getElementById('darkToggle');
+if(localStorage.getItem('theme')==='dark'){document.body.classList.add('dark'); toggle.textContent='☀️ Light';}
+toggle.addEventListener('click',()=>{
+document.body.classList.toggle('dark');
+if(document.body.classList.contains('dark')){localStorage.setItem('theme','dark'); toggle.textContent='☀️ Light';}
+else{localStorage.setItem('theme','light'); toggle.textContent='🌙 Dark';}
+});
 };
 </script>
 </body>
