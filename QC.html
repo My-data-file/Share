@@ -257,49 +257,62 @@ function addFinishingItem(){
 }
 function renderFinishingList(){
   let items=JSON.parse(localStorage.getItem('finishing'))||[];
-  const ul=document.getElementById('listFinishing'); ul.innerHTML='';
+  const ul=document.getElementById('listFinishing'); 
+  ul.innerHTML='';
   if(items.length===0) return;
-  const table=document.createElement('table'); table.innerHTML=`
-  <thead><tr style="background:#e5e7eb;">
-  <th>Tanggal</th><th>Nama</th><th>No KF</th><th>Order</th><th>Bagus</th><th>Jenis BS</th><th>Jumlah BS</th><th>Aksi</th></tr></thead><tbody></tbody>`;
-  const tbody=table.querySelector('tbody');
+
+  const table=document.createElement('table');
+  table.style.width='100%';
+  table.style.borderCollapse='collapse';
+  table.style.fontSize='0.75rem';
+
+  const thead=document.createElement('thead');
+  thead.innerHTML=`<tr style="background:#e5e7eb;">
+    <th>Tanggal</th><th>Nama</th><th>No KF</th><th>Order</th>
+    <th>Bagus</th><th>Jenis BS</th><th>Jumlah BS</th><th>Aksi</th>
+  </tr>`;
+  table.appendChild(thead);
+
+  const tbody=document.createElement('tbody');
+
   items.forEach((item,i)=>{
     const tr=document.createElement('tr');
+    tr.style.borderBottom='1px solid #ccc';
+
     if(item.editing){
-      tr.innerHTML=`<td><input type="text" value="${item.tanggal}" disabled></td><td><input type="text" value="${item.nama}" id="editFinishingNama${i}"></td><td><input type="text" value="${item.noKF}" id="editFinishingNoKF${i}"></td><td><input type="text" value="${item.order}" id="editFinishingOrder${i}"></td><td><input type="text" value="${item.bagus}" id="editFinishingBagus${i}"></td><td><input type="text" value="${item.jenisBS}" id="editFinishingJenisBS${i}"></td><td><input type="text" value="${item.jumlahBS}" id="editFinishingJumlahBS${i}"></td><td><button class="action save" onclick="saveFinishing(${i})">Save</button></td>`;
+      tr.innerHTML=`
+        <td><input type="text" value="${item.tanggal}" disabled style="width:100%;font-size:0.75rem;"></td>
+        <td><input type="text" value="${item.nama}" id="editFinishingNama${i}" style="width:100%;font-size:0.75rem;"></td>
+        <td><input type="text" value="${item.noKF}" id="editFinishingNoKF${i}" style="width:100%;font-size:0.75rem;"></td>
+        <td><input type="text" value="${item.order}" id="editFinishingOrder${i}" style="width:100%;font-size:0.75rem;"></td>
+        <td><input type="text" value="${item.bagus}" id="editFinishingBagus${i}" style="width:100%;font-size:0.75rem;"></td>
+        <td><input type="text" value="${item.jenisBS}" id="editFinishingJenisBS${i}" style="width:100%;font-size:0.75rem;"></td>
+        <td><input type="text" value="${item.jumlahBS}" id="editFinishingJumlahBS${i}" style="width:100%;font-size:0.75rem;"></td>
+        <td>
+          <button class="action save" style="padding:2px 4px;font-size:0.65rem;" onclick="saveFinishing(${i})">Save</button>
+        </td>`;
     } else {
-      tr.innerHTML=`<td>${item.tanggal}</td><td>${item.nama}</td><td>${item.noKF}</td><td>${item.order}</td><td>${item.bagus}</td><td>${item.jenisBS}</td><td>${item.jumlahBS}</td><td><button class="action edit" onclick="editFinishing(${i})">Edit</button><button class="action delete" onclick="deleteFinishing(${i})">Hapus</button><button class="action call" onclick="callFinishing(${i})">Panggil</button></td>`;
+      tr.innerHTML=`
+        <td>${item.tanggal}</td>
+        <td>${item.nama}</td>
+        <td>${item.noKF}</td>
+        <td>${item.order}</td>
+        <td>${item.bagus}</td>
+        <td>${item.jenisBS}</td>
+        <td>${item.jumlahBS}</td>
+        <td style="display:flex;gap:2px;flex-wrap:wrap;">
+          <button class="action edit" style="padding:2px 4px;font-size:0.65rem;" onclick="editFinishing(${i})">Edit</button>
+          <button class="action delete" style="padding:2px 4px;font-size:0.65rem;" onclick="deleteFinishing(${i})">Hapus</button>
+          <button class="action call" style="padding:2px 4px;font-size:0.65rem;" onclick="callFinishing(${i})">Panggil</button>
+        </td>`;
     }
+
     tbody.appendChild(tr);
   });
-  ul.appendChild(table);
-}
-function editFinishing(index){let items=JSON.parse(localStorage.getItem('finishing'))||[]; items[index].editing=true; localStorage.setItem('finishing',JSON.stringify(items)); renderFinishingList();}
-function saveFinishing(index){let items=JSON.parse(localStorage.getItem('finishing'))||[]; items[index]={ tanggal:new Date().toLocaleString(), nama:document.getElementById(`editFinishingNama${index}`).value, noKF:document.getElementById(`editFinishingNoKF${index}`).value, order:document.getElementById(`editFinishingOrder${index}`).value, bagus:document.getElementById(`editFinishingBagus${index}`).value, jenisBS:document.getElementById(`editFinishingJenisBS${index}`).value, jumlahBS:document.getElementById(`editFinishingJumlahBS${index}`).value, editing:false }; localStorage.setItem('finishing',JSON.stringify(items)); renderFinishingList(); updateDashboard();}
-function deleteFinishing(index){let items=JSON.parse(localStorage.getItem('finishing'))||[]; items.splice(index,1); localStorage.setItem('finishing',JSON.stringify(items)); renderFinishingList(); updateDashboard();}
-function callFinishing(index){let items=JSON.parse(localStorage.getItem('finishing'))||[]; if(items[index]){['finishingNama','finishingNoKF','finishingOrder','finishingBagus','finishingJenisBS','finishingJumlahBS'].forEach(id=>document.getElementById(id).value=items[index][id.replace('finishing','').toLowerCase()]||''); showMenu('qcFinishing'); switchTab(document.querySelector('#qcFinishing .tabs button[data-tab="inputFinishing"]'));}}
 
-// Filter Finishing
-function filterFinishing(query){
-  let items=JSON.parse(localStorage.getItem('finishing'))||[];
-  const ul=document.getElementById('listFinishing'); ul.innerHTML='';
-  if(items.length===0) return;
-  const table=document.createElement('table'); table.innerHTML=`
-  <thead><tr style="background:#e5e7eb;">
-  <th>Tanggal</th><th>Nama</th><th>No KF</th><th>Order</th><th>Bagus</th><th>Jenis BS</th><th>Jumlah BS</th><th>Aksi</th></tr></thead><tbody></tbody>`;
-  const tbody=table.querySelector('tbody');
-  items.forEach((item,i)=>{
-    if(Object.values(item).join(' ').toLowerCase().includes(query.toLowerCase())){
-      const tr=document.createElement('tr');
-      if(item.editing){
-        tr.innerHTML=`<td><input type="text" value="${item.tanggal}" disabled></td><td><input type="text" value="${item.nama}" id="editFinishingNama${i}"></td><td><input type="text" value="${item.noKF}" id="editFinishingNoKF${i}"></td><td><input type="text" value="${item.order}" id="editFinishingOrder${i}"></td><td><input type="text" value="${item.bagus}" id="editFinishingBagus${i}"></td><td><input type="text" value="${item.jenisBS}" id="editFinishingJenisBS${i}"></td><td><input type="text" value="${item.jumlahBS}" id="editFinishingJumlahBS${i}"></td><td><button class="action save" onclick="saveFinishing(${i})">Save</button></td>`;
-      } else {
-        tr.innerHTML=`<td>${item.tanggal}</td><td>${item.nama}</td><td>${item.noKF}</td><td>${item.order}</td><td>${item.bagus}</td><td>${item.jenisBS}</td><td>${item.jumlahBS}</td><td><button class="action edit" onclick="editFinishing(${i})">Edit</button><button class="action delete" onclick="deleteFinishing(${i})">Hapus</button><button class="action call" onclick="callFinishing(${i})">Panggil</button></td>`;
-      }
-      tbody.appendChild(tr);
-    }
-  });
+  table.appendChild(tbody);
   ul.appendChild(table);
+  ul.style.overflowX='auto';
 }
 
 // Dashboard update
@@ -330,3 +343,4 @@ window.onload=function(){
 </script>
 </body>
 </html>
+
