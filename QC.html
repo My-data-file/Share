@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>SYSTEM QC</title>
+<style>
+:root{
+  --bg:#f4f7fb; --card:#ffffff; --accent:#0ea5a4; --accent-2:#0369a1;
+  --muted:#6b7280; --danger:#dc2626; --success:#16a34a;
+  --radius:12px;
+}
+body{margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);color:#111;}
+header{
+  background:var(--accent);color:#fff;padding:1rem 1.5rem;
+  font-size:1.4rem;font-weight:bold;
+  box-shadow:0 2px 8px rgba(0,0,0,.1);
+  position:sticky;top:0;z-index:10;
+}
+#darkToggle{
+  float:right;padding:6px 12px;border:none;border-radius:8px;
+  background:#fff;color:#111;cursor:pointer;font-weight:500;
+}
+.container{display:flex;min-height:100vh;}
+nav{
+  width:220px;background:#fff;border-right:1px solid #e5e7eb;padding:1rem;
+  box-shadow:2px 0 6px rgba(0,0,0,0.05);
+}
+nav button{
+  display:block;width:100%;padding:.8rem 1rem;margin-bottom:.6rem;
+  border:none;border-radius:var(--radius);
+  background:var(--accent);color:#fff;font-weight:500;cursor:pointer;
+  transition:all .2s ease;
+}
+nav button:hover{background:var(--accent-2);transform:translateY(-1px);}
+nav button.active{background:var(--accent-2);box-shadow:0 2px 6px rgba(0,0,0,.15);}
+main{flex:1;padding:1.5rem;display:grid;gap:1rem;}
+.card{
+  background:var(--card);padding:1.2rem;
+  border-radius:var(--radius);
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.tabs{display:flex;gap:.5rem;margin-bottom:.75rem;}
+.tabs button{
+  flex:1;padding:.6rem;border:none;border-radius:var(--radius);
+  background:#e5e7eb;cursor:pointer;font-weight:500;transition:.2s;
+}
+.tabs button.active{background:var(--accent);color:#fff;}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+ul{list-style:none;padding:0;margin:0;}
+li{
+  padding:.6rem .8rem;margin-bottom:.4rem;
+  border-radius:var(--radius);
+  display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;
+  background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+li span{flex:1;}
+.action{
+  padding:.35rem .7rem;border:none;border-radius:8px;
+  cursor:pointer;font-size:.8rem;font-weight:500;
+  transition:all .2s;
+}
+.edit{background:#facc15;}
+.save{background:var(--success);color:#fff;}
+.delete{background:#dc2626;color:#fff;}
+.call{background:var(--accent);color:#fff;}
+.action:hover{opacity:.9;transform:translateY(-1px);}
+input[type=text]{
+  padding:.5rem .7rem;border:1px solid #ccc;border-radius:8px;
+  transition:border .2s,box-shadow .2s;
+  margin-right:8px; /* jarak antar input */
+  margin-bottom:6px;
+}
+input[type=text]:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 2px rgba(14,165,164,.2);
+  outline:none;
+}
+#dashboard h2{margin-top:0;margin-bottom:.8rem;}
+#dashboard > div{
+  background:#fff;padding:1rem;
+  border-radius:var(--radius);
+  margin:.5rem 0;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+.highlight{animation: flash 1s ease;}
+@keyframes flash{0%{background:#fef08a;}100%{background:white;}}
+@media(max-width:768px){
+  .container{flex-direction:column;}
+  nav{width:100%;display:flex;overflow-x:auto;}
+  nav button{flex:1;min-width:120px;}
+}
+
+/* === DARK MODE === */
+body.dark{background:#111827;color:#f3f4f6;}
+body.dark header{background:#1f2937;color:#f3f4f6;}
+body.dark #darkToggle{background:#374151;color:#f3f4f6;}
+body.dark nav{background:#1f2937;border-right:1px solid #374151;}
+body.dark nav button{background:#374151;color:#f3f4f6;}
+body.dark nav button.active{background:#0ea5a4;}
+body.dark .card{background:#1f2937;color:#f3f4f6;box-shadow:0 2px 8px rgba(0,0,0,.5);}
+body.dark li{background:#374151;color:#f3f4f6;}
+body.dark input[type=text]{background:#111827;border:1px solid #4b5563;color:#f3f4f6;}
+body.dark input[type=text]:focus{border-color:#0ea5a4;box-shadow:0 0 0 2px rgba(14,165,164,.4);}
+body.dark .action.edit{background:#eab308;color:#111;}
+body.dark .action.save{background:#16a34a;color:#fff;}
+body.dark .action.delete{background:#dc2626;color:#fff;}
+body.dark .action.call{background:#0ea5a4;color:#fff;}
+</style>
+</head>
+<body>
+<header>
+  📊 Sistem QC
+  <button id="darkToggle">🌙 Dark</button>
+</header>
+<div class="container">
+  <nav>
+    <button onclick="showMenu('dashboard')">Dashboard</button>
+    <button onclick="showMenu('qcBapro')">QC Bapro</button>
+    <button onclick="showMenu('qcPa')">QC PA</button>
+    <button onclick="showMenu('qcFinishing')">QC Finishing</button>
+    <button onclick="showMenu('qcLem')">QC Lem</button>
+  </nav>
+  <main>
+    <section id="dashboard" class="card"></section>
+
+    <!-- Menu QC Bapro -->
+    <section id="qcBapro" class="card qc-section">
+      <div class="tabs">
+        <button class="active" data-tab="inputBapro" onclick="switchTab(this)">Inputan</button>
+        <button data-tab="hasilBapro" onclick="switchTab(this)">Hasil</button>
+      </div>
+      <div id="inputBapro" class="tab-content active">
+        <input type="text" id="baproItem" placeholder="Tambah item QC Bapro">
+        <button onclick="addItem('bapro')">Tambah</button>
+      </div>
+      <div id="hasilBapro" class="tab-content">
+        <input type="text" placeholder="Cari..." oninput="filterList('bapro',this.value)">
+        <ul id="listBapro"></ul>
+      </div>
+    </section>
+
+    <!-- Menu QC PA -->
+    <section id="qcPa" class="card qc-section">
+      <div class="tabs">
+        <button class="active" data-tab="inputPa" onclick="switchTab(this)">Inputan</button>
+        <button data-tab="hasilPa" onclick="switchTab(this)">Hasil</button>
+      </div>
+      <div id="inputPa" class="tab-content active">
+        <input type="text" id="paItem" placeholder="Tambah item QC PA">
+        <button onclick="addItem('pa')">Tambah</button>
+      </div>
+      <div id="hasilPa" class="tab-content">
+        <input type="text" placeholder="Cari..." oninput="filterList('pa',this.value)">
+        <ul id="listPa"></ul>
+      </div>
+    </section>
+
+    <!-- Menu QC Finishing -->
+    <section id="qcFinishing" class="card qc-section">
+      <div class="tabs">
+        <button class="active" data-tab="inputFinishing" onclick="switchTab(this)">Inputan</button>
+        <button data-tab="hasilFinishing" onclick="switchTab(this)">Hasil</button>
+      </div>
+      <div id="inputFinishing" class="tab-content active">
+        <input type="text" id="finishingNama" placeholder="Nama Barang">
+        <input type="text" id="finishingNoKF" placeholder="No KF">
+        <input type="text" id="finishingOrder" placeholder="Order">
+        <input type="text" id="finishingBagus" placeholder="Bagus">
+        <input type="text" id="finishingJenisBS" placeholder="Jenis BS">
+        <input type="text" id="finishingJumlahBS" placeholder="Jumlah BS">
+        <button onclick="addFinishingItem()">Tambah</button>
+      </div>
+      <div id="hasilFinishing" class="tab-content">
+        <input type="text" placeholder="Cari..." oninput="filterFinishing(this.value)">
+        <ul id="listFinishing"></ul>
+      </div>
+    </section>
+
+    <!-- Menu QC Lem -->
+    <section id="qcLem" class="card qc-section">
+      <div class="tabs">
+        <button class="active" data-tab="inputLem" onclick="switchTab(this)">Inputan</button>
+        <button data-tab="hasilLem" onclick="switchTab(this)">Hasil</button>
+      </div>
+      <div id="inputLem" class="tab-content active">
+        <input type="text" id="lemItem" placeholder="Tambah item QC Lem">
+        <button onclick="addItem('lem')">Tambah</button>
+      </div>
+      <div id="hasilLem" class="tab-content">
+        <input type="text" placeholder="Cari..." oninput="filterList('lem',this.value)">
+        <ul id="listLem"></ul>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+// ===== Umum =====
+function capitalize(str){return str.charAt(0).toUpperCase()+str.slice(1);}
+function switchTab(btn){
+  let parent=btn.closest('.qc-section');
+  parent.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
+  parent.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(btn.dataset.tab).classList.add('active');
+}
+function showMenu(menu){
+  document.querySelectorAll('main > section').forEach(sec=>sec.style.display='none');
+  document.getElementById(menu).style.display='block';
+  localStorage.setItem('activeMenu',menu);
+  document.querySelectorAll('nav button').forEach(btn=>btn.classList.remove('active'));
+  document.querySelector(`nav button[onclick="showMenu('${menu}')"]`).classList.add('active');
+}
+function addItem(type){
+  const inp=document.getElementById(type+'Item');
+  if(inp.value.trim()!==''){
+    let items=JSON.parse(localStorage.getItem(type))||[];
+    items.push({ text:inp.value, editing:false });
+    localStorage.setItem(type,JSON.stringify(items));
+    inp.value='';renderList(type);updateDashboard();
+  }
+}
+function renderList(type){
+  let items=JSON.parse(localStorage.getItem(type))||[];
+  const ul=document.getElementById('list'+capitalize(type));
+  ul.innerHTML='';
+  items.forEach((item,i)=>{
+    let li=document.createElement('li');
+    if(item.editing){
+      li.innerHTML=`
+        <input type="text" value="${item.text}" id="edit-${type}-${i}">
+        <button class="action save" onclick="saveEdit('${type}',${i})">Save</button>
+        <button class="action delete" onclick="deleteItem('${type}',${i})">Hapus</button>
+        <button class="action call" onclick="callItem('${type}',${i})">Panggil</button>`;
+    } else {
+      li.innerHTML=`
+        <span>${item.text}</span>
+        <button class="action edit" onclick="editItem('${type}',${i})">Edit</button>
+        <button class="action delete" onclick="deleteItem('${type}',${i})">Hapus</button>
+        <button class="action call" onclick="callItem('${type}',${i})">Panggil</button>`;
+    }
+    ul.appendChild(li);
+  });
+}
+function editItem(type,index){
+  let items=JSON.parse(localStorage.getItem(type))||[];
+  items[index]={ text: items[index].text || items[index], editing:true };
+  localStorage.setItem(type,JSON.stringify(items));
+  renderList(type);
+}
+function saveEdit(type,index){
+  let items=JSON.parse(localStorage.getItem(type))||[];
+  let newVal=document.getElementById(`edit-${type}-${index}`).value;
+  items[index]={ text:newVal, editing:false };
+  localStorage.setItem(type,JSON.stringify(items));
+  renderList(type);updateDashboard();
+}
+function deleteItem(type,index){
+  let items=JSON.parse(localStorage.getItem(type))||[];
+  items.splice(index,1);
+  localStorage.setItem(type,JSON.stringify(items));
+  renderList(type);updateDashboard();
+}
+function callItem(type,index){
+  let items=JSON.parse(localStorage.getItem(type))||[];
+  if(items[index]){
+    let input=document.getElementById(type+'Item');
+    input.value=items[index].text;
+    showMenu('qc'+capitalize(type));
+    const tabs=document.querySelectorAll('#qc'+capitalize(type)+' .tabs button');
+    tabs.forEach(btn=>btn.classList.remove('active'));
+    document.querySelector(`#qc${capitalize(type)} .tabs button[data-tab="input${capitalize(type)}"]`).classList.add('active');
+    document.querySelectorAll('#qc'+capitalize(type)+' .tab-content').forEach(tc=>tc.classList.remove('active'));
+    document.getElementById('input'+capitalize(type)).classList.add('active');
+    input.classList.add('highlight');
+    setTimeout(()=>input.classList.remove('highlight'),1000);
+  }
+}
+function filterList(type,query){
+  let items=JSON.parse(localStorage.getItem(type))||[];
+  const ul=document.getElementById('list'+capitalize(type));
+  ul.innerHTML='';
+  items.forEach((item,i)=>{
+    if(item.text.toLowerCase().includes(query.toLowerCase())){
+      let li=document.createElement('li');
+      li.innerHTML=`
+        <span>${item.text}</span>
+        <button class="action edit" onclick="editItem('${type}',${i})">Edit</button>
+        <button class="action delete" onclick="deleteItem('${type}',${i})">Hapus</button>
+        <button class="action call" onclick="callItem('${type}',${i})">Panggil</button>`;
+      ul.appendChild(li);
+    }
+  });
+}
+function updateDashboard(){
+  let sections=['bapro','pa','finishing','lem'];
+  let html='<h2>Ringkasan Dashboard</h2>';
+  sections.forEach(sec=>{
+    let items=JSON.parse(localStorage.getItem(sec))||[];
+    html+=`<div><strong>QC ${capitalize(sec)}:</strong> ${items.length} item</div>`;
+  });
+  document.getElementById('dashboard').innerHTML=html;
+}
+
+// ===== QC Finishing =====
+function addFinishingItem() {
+  let items = JSON.parse(localStorage.getItem('finishing')) || [];
+  let now = new Date().toLocaleString();
+  let item = {
+    tanggal: now,
+    nama: document.getElementById('finishingNama').value,
+    noKF: document.getElementById('finishingNoKF').value,
+    order: document.getElementById('finishingOrder').value,
+    bagus: document.getElementById('finishingBagus').value,
+    jenisBS: document.getElementById('finishingJenisBS').value,
+    jumlahBS: document.getElementById('finishingJumlahBS').value,
+    editing: false
+  };
+  if(item.nama.trim() !== ''){
+    items.push(item);
+    localStorage.setItem('finishing', JSON.stringify(items));
+    document.getElementById('finishingNama').value = '';
+    document.getElementById('finishingNoKF').value = '';
+    document.getElementById('finishingOrder').value = '';
+    document.getElementById('finishingBagus').value = '';
+    document.getElementById('finishingJenisBS').value = '';
+    document.getElementById('finishingJumlahBS').value = '';
+    renderFinishingList();
+    updateDashboard();
+  }
+}
+function renderFinishingList() {
+  let items = JSON.parse(localStorage.getItem('finishing')) || [];
+  const ul = document.getElementById('listFinishing');
+  ul.innerHTML = '';
+
+  if(items.length === 0) return;
+
+  const table = document.createElement('table');
+  table.style.width = '100%';
+  table.style.borderCollapse = 'collapse';
+  table.style.fontSize = '0.85rem';
+  table.style.tableLayout = 'fixed';
+
+  table.innerHTML = `
+    <thead>
+      <tr style="background:#e5e7eb;">
+        <th style="padding:4px 6px;border:1px solid #ccc;text-align:center;">Tanggal</th>
+        <th style="padding:4px 6px;border:1px solid #ccc;">Nama</th>
+        <th style="padding:4px 6px;border:1px solid #ccc;">No KF</th>
+        <th style="padding:4px 6px;border:1px solid #ccc;">Order</th>
+        <th style="padding:4px 6px;border:1px solid #ccc;">Bagus</th>
+        <th style="padding:4px 6px;border:1px solid #ccc;">Jenis BS</th>
+        <th style="padding:4px 6px;border:1px solid #ccc;">Jumlah BS</th>
+        <th style="padding:4px 6px;border:1px solid #ccc;">Aksi</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  `;
+
+  const tbody = table.querySelector('tbody');
+
+  items.forEach((item,i) => {
+    const tr = document.createElement('tr');
+    tr.style.borderBottom = '1px solid #ccc';
+    tr.style.height = '32px';
+
+    if(item.editing){
+      tr.innerHTML = `
+        <td><input type="text" value="${item.tanggal}" disabled style="width:100%;padding:2px 4px;font-size:0.85rem;"></td>
+        <td><input type="text" value="${item.nama}" id="editFinishingNama${i}" style="width:100%;padding:2px 4px;font-size:0.85rem;"></td>
+        <td><input type="text" value="${item.noKF}" id="editFinishingNoKF${i}" style="width:100%;padding:2px 4px;font-size:0.85rem;"></td>
+        <td><input type="text" value="${item.order}" id="editFinishingOrder${i}" style="width:100%;padding:2px 4px;font-size:0.85rem;"></td>
+        <td><input type="text" value="${item.bagus}" id="editFinishingBagus${i}" style="width:100%;padding:2px 4px;font-size:0.85rem;"></td>
+        <td><input type="text" value="${item.jenisBS}" id="editFinishingJenisBS${i}" style="width:100%;padding:2px 4px;font-size:0.85rem;"></td>
+        <td><input type="text" value="${item.jumlahBS}" id="editFinishingJumlahBS${i}" style="width:100%;padding:2px 4px;font-size:0.85rem;"></td>
+        <td style="text-align:center; display:flex; flex-direction:column; gap:4px;">
+          <button class="action save" onclick="saveFinishing(${i})" style="padding:2px 6px;font-size:0.75rem;">Save</button>
+        </td>
+      `;
+    } else {
+      tr.innerHTML = `
+        <td style="padding:4px 6px;">${item.tanggal}</td>
+        <td style="padding:4px 6px;">${item.nama}</td>
+        <td style="padding:4px 6px;">${item.noKF}</td>
+        <td style="padding:4px 6px;">${item.order}</td>
+        <td style="padding:4px 6px;">${item.bagus}</td>
+        <td style="padding:4px 6px;">${item.jenisBS}</td>
+        <td style="padding:4px 6px;">${item.jumlahBS}</td>
+        <td style="text-align:center; display:flex; flex-direction:column; gap:4px;">
+          <button class="action edit" onclick="editFinishing(${i})" style="padding:2px 6px;font-size:0.75rem;">Edit</button>
+          <button class="action delete" onclick="deleteFinishing(${i})" style="padding:2px 6px;font-size:0.75rem;">Hapus</button>
+          <button class="action call" onclick="callFinishing(${i})" style="padding:2px 6px;font-size:0.75rem;">Panggil</button>
+        </td>
+      `;
+    }
+
+    tbody.appendChild(tr);
+  });
+
+  ul.appendChild(table);
+}
+
+function editFinishing(index){
+  let items = JSON.parse(localStorage.getItem('finishing')) || [];
+  items[index].editing = true;
+  localStorage.setItem('finishing', JSON.stringify(items));
+  renderFinishingList();
+}
+function saveFinishing(index){
+  let items = JSON.parse(localStorage.getItem('finishing')) || [];
+  items[index] = {
+    tanggal: new Date().toLocaleString(),
+    nama: document.getElementById(`editFinishingNama${index}`).value,
+    noKF: document.getElementById(`editFinishingNoKF${index}`).value,
+    order: document.getElementById(`editFinishingOrder${index}`).value,
+    bagus: document.getElementById(`editFinishingBagus${index}`).value,
+    jenisBS: document.getElementById(`editFinishingJenisBS${index}`).value,
+    jumlahBS: document.getElementById(`editFinishingJumlahBS${index}`).value,
+    editing: false
+  };
+  localStorage.setItem('finishing', JSON.stringify(items));
+  renderFinishingList();
+  updateDashboard();
+}
+function deleteFinishing(index){
+  let items = JSON.parse(localStorage.getItem('finishing')) || [];
+  items.splice(index,1);
+  localStorage.setItem('finishing', JSON.stringify(items));
+  renderFinishingList();
+  updateDashboard();
+}
+function callFinishing(index){
+  let items = JSON.parse(localStorage.getItem('finishing')) || [];
+  if(items[index]){
+    let item = items[index];
+    document.getElementById('finishingNama').value = item.nama;
+    document.getElementById('finishingNoKF').value = item.noKF;
+    document.getElementById('finishingOrder').value = item.order;
+    document.getElementById('finishingBagus').value = item.bagus;
+    document.getElementById('finishingJenisBS').value = item.jenisBS;
+    document.getElementById('finishingJumlahBS').value = item.jumlahBS;
+    showMenu('qcFinishing');
+    const tabs=document.querySelectorAll('#qcFinishing .tabs button');
+    tabs.forEach(btn=>btn.classList.remove('active'));
+    document.querySelector('#qcFinishing .tabs button[data-tab="inputFinishing"]').classList.add('active');
+    document.querySelectorAll('#qcFinishing .tab-content').forEach(tc=>tc.classList.remove('active'));
+    document.getElementById('inputFinishing').classList.add('active');
+  }
+}
+function filterFinishing(query){
+  let items = JSON.parse(localStorage.getItem('finishing')) || [];
+  const ul = document.getElementById('listFinishing');
+  ul.innerHTML = '';
+  items.forEach((item,i)=>{
+    if(item.nama.toLowerCase().includes(query.toLowerCase())){
+      let li = document.createElement('li');
+      li.innerHTML = `
+        <span>${item.tanggal} | ${item.nama} | ${item.noKF} | ${item.order} | ${item.bagus} | ${item.jenisBS} | ${item.jumlahBS}</span>
+        <button class="action edit" onclick="editFinishing(${i})">Edit</button>
+        <button class="action delete" onclick="deleteFinishing(${i})">Hapus</button>
+        <button class="action call" onclick="callFinishing(${i})">Panggil</button>
+      `;
+      ul.appendChild(li);
+    }
+  });
+}
+
+// ===== Onload =====
+window.onload=function(){
+  ['bapro','pa','finishing','lem'].forEach(t=>{
+    if(t!=='finishing') renderList(t);
+    else renderFinishingList();
+  });
+  updateDashboard();
+  let active=localStorage.getItem('activeMenu')||'dashboard';
+  showMenu(active);
+
+  // Dark mode
+  const toggle=document.getElementById('darkToggle');
+  if(localStorage.getItem('theme')==='dark'){
+    document.body.classList.add('dark');
+    toggle.textContent='☀️ Light';
+  }
+  toggle.addEventListener('click',()=>{
+    document.body.classList.toggle('dark');
+    if(document.body.classList.contains('dark')){
+      localStorage.setItem('theme','dark'); toggle.textContent='☀️ Light';
+    }else{
+      localStorage.setItem('theme','light'); toggle.textContent='🌙 Dark';
+    }
+  });
+};
+</script>
+</body>
+</html>
