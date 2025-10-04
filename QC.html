@@ -39,7 +39,7 @@ main{flex:1;padding:1.5rem;display:grid;gap:1rem;}
   border-radius:var(--radius);
   box-shadow:0 2px 8px rgba(0,0,0,.06);
 }
-.tabs{display:flex;gap:.5rem;margin-bottom:.75rem;}
+.tabs{display:flex;gap:.5rem;margin-bottom:.75rem;flex-wrap:wrap;}
 .tabs button{
   flex:1;padding:.6rem;border:none;border-radius:var(--radius);
   background:#e5e7eb;cursor:pointer;font-weight:500;transition:.2s;
@@ -54,7 +54,11 @@ input[type=text]{
 }
 
 /* Grid card QC Finishing */
-.grid-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;}
+.grid-container{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:0.8rem;
+}
 .grid-card{background:#fff;padding:.8rem;border-radius:var(--radius);box-shadow:0 2px 6px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:6px;}
 .grid-card input{padding:.4rem .6rem;border:1px solid #ccc;border-radius:6px;margin-bottom:4px;width:100%;}
 .grid-card .btn-icon{
@@ -74,16 +78,35 @@ input[type=text]{
   gap:4px;
 }
 .edit-grid input{
-  flex:1 1 48%; /* dua kolom per baris */
-  min-width: 70px;
+  flex:1 1 48%; /* dua kolom per baris desktop */
+  min-width:70px;
   margin-bottom:4px;
 }
 
 /* Responsif */
 @media(max-width:768px){
   .container{flex-direction:column;}
-  nav{width:100%;display:flex;overflow-x:auto;}
-  nav button{flex:1;min-width:120px;}
+  nav{
+    width:100%;
+    display:flex;
+    overflow-x:auto;
+    box-shadow:0 1px 4px rgba(0,0,0,.1);
+  }
+  nav button{
+    flex:1;min-width:100px;margin-right:4px;
+  }
+  main{
+    padding:1rem;
+  }
+  .edit-grid input{
+    flex:1 1 100%; /* full-width di HP */
+  }
+}
+
+@media(max-width:480px){
+  .grid-container{
+    grid-template-columns:1fr; /* 1 card per row */
+  }
 }
 
 /* Dark Mode */
@@ -100,7 +123,7 @@ body.dark input[type=text]:focus{border-color:#0ea5a4;box-shadow:0 0 0 2px rgba(
 </head>
 <body>
 <header>
-  📊 Sistem QC Finishing
+  📊 Sistem QC Finishing 1.0
   <button id="darkToggle">🌙 Dark</button>
 </header>
 <div class="container">
@@ -191,7 +214,7 @@ function renderGridFinishing(){
         <span>${item.nama}</span><br>
         <span>${item.noKF}</span>
       </div>
-      <div style="display:flex;gap:4px;">
+      <div style="display:flex;gap:4px;flex-wrap:wrap;">
         <button class="btn-icon btn-call" title="Panggil" onclick="callFinishing(${i})">📤</button>
         <button class="btn-icon btn-edit" title="Edit Inline" onclick="editFinishingInline(${i})">✏️</button>
         <button class="btn-icon btn-delete" title="Hapus" onclick="deleteFinishing(${i})">🗑️</button>
@@ -216,7 +239,7 @@ function filterFinishingGrid(query){
           <span>${item.nama}</span><br>
           <span>${item.noKF}</span>
         </div>
-        <div style="display:flex;gap:4px;">
+        <div style="display:flex;gap:4px;flex-wrap:wrap;">
           <button class="btn-icon btn-call" title="Panggil" onclick="callFinishing(${i})">📤</button>
           <button class="btn-icon btn-edit" title="Edit Inline" onclick="editFinishingInline(${i})">✏️</button>
           <button class="btn-icon btn-delete" title="Hapus" onclick="deleteFinishing(${i})">🗑️</button>
@@ -267,7 +290,7 @@ function editFinishingInline(index){
       <input type="text" class="edit-inline" value="${item.jenisBS}" placeholder="Jenis BS">
       <input type="text" class="edit-inline" value="${item.jumlahBS}" placeholder="Jumlah BS">
     </div>
-    <div style="display:flex;gap:4px;margin-top:4px;">
+    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;">
       <button class="btn-icon btn-save" title="Simpan" onclick="saveFinishingInline(${index})">💾</button>
       <button class="btn-icon btn-delete" title="Hapus" onclick="deleteFinishing(${index})">🗑️</button>
     </div>
