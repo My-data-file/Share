@@ -43,12 +43,13 @@ main{
 .tab-content.active{display:block;}
 .grid-container{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
   gap:0.8rem;
 }
 .grid-card{
   background:var(--card); border-radius:8px;
   padding:0.8rem; box-shadow:0 2px 4px rgba(0,0,0,.1);
+  width:100%; box-sizing:border-box;
 }
 .grid-card h4{margin:0 0 0.3rem;}
 .card-actions{margin-top:0.5rem; display:flex; gap:6px; flex-wrap:wrap;}
@@ -60,20 +61,28 @@ main{
 .btn-edit{background:#f59e0b; color:#fff;}
 .btn-delete{background:#ef4444; color:#fff;}
 .btn-save{background:#10b981; color:#fff;}
-.edit-grid{display:flex; flex-wrap:wrap; gap:4px;}
-.edit-grid input{
-  flex:1 1 48%; min-width:100px;
-  padding:4px; border:1px solid #ddd; border-radius:4px;
+
+/* EDIT FORM INLINE */
+.edit-grid{
+  display:flex; flex-wrap:wrap; gap:6px; width:100%;
 }
+.edit-grid input{
+  flex:1 1 calc(50% - 6px);
+  min-width:120px;
+  padding:6px; border:1px solid #ddd; border-radius:4px;
+  box-sizing:border-box;
+}
+
+/* RESPONSIVE */
 @media(max-width:768px){
   .container{flex-direction:column;}
   nav{width:100%; display:flex; overflow-x:auto;}
   nav button{flex:1; min-width:100px;}
   main{padding:0.8rem;}
+  .edit-grid input{flex:1 1 100%;}
 }
 @media(max-width:480px){
   .grid-container{grid-template-columns:1fr;}
-  .edit-grid input{flex:1 1 100%;}
 }
 </style>
 </head>
@@ -219,3 +228,4 @@ renderGridFinishing();
 </script>
 </body>
 </html>
+s
