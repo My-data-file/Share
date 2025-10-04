@@ -88,10 +88,9 @@ input[type=text], input[type=number], select{
 #dashboard .grid-card{padding:0.6rem;font-size:0.85rem;cursor:default;transition: transform .2s, box-shadow .2s;}
 #dashboard .grid-card:hover{transform:translateY(-3px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
 #dashboard .grid-card.selesai{cursor:pointer;}
-#dashboard .grid-card .tooltip{display:none;position:absolute;background:#111827;color:#f3f4f6;padding:4px 6px;border-radius:6px;font-size:0.75rem;white-space:nowrap;z-index:50;}
-#dashboard .grid-card:hover .tooltip{display:block;}
 
 @media(max-width:768px){.container{flex-direction:column;}nav{width:100%;display:flex;overflow-x:auto;padding:.5rem;}nav button{flex:1;min-width:120px;margin:0 4px 0 0;}main{padding:1rem;}}
+
 body.dark{background:#111827;color:#f3f4f6;}
 body.dark header{background:#1f2937;color:#f3f4f6;}
 body.dark #darkToggle{background:#374151;color:#f3f4f6;}
@@ -121,12 +120,35 @@ body.dark input[type=text]:focus, body.dark input[type=number]:focus, body.dark 
 <!-- Dashboard -->
 <section id="dashboard" class="card qc-section">
   <h2>Dashboard QC Finishing</h2>
-  <p>Total: <span id="countFinishing">0</span></p>
-  <h4>Proses</h4>
-  <div id="dashboardFinishingProses" class="grid-container"></div>
-  <h4>Selesai</h4>
-  <div id="dashboardFinishingSelesai" class="grid-container"></div>
+
+  <!-- Info Total -->
+  <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
+    <div style="flex:1; min-width:120px; background:#e5f6f6; padding:6px 10px; border-radius:8px; text-align:center;">
+      Total Order<br><strong id="countFinishing">0</strong>
+    </div>
+    <div style="flex:1; min-width:120px; background:#fff4e5; padding:6px 10px; border-radius:8px; text-align:center;">
+      Total Proses<br><strong id="countProses">0</strong>
+    </div>
+    <div style="flex:1; min-width:120px; background:#e5f7e5; padding:6px 10px; border-radius:8px; text-align:center;">
+      Total Selesai<br><strong id="countSelesai">0</strong>
+    </div>
+  </div>
+
+<!-- Grid Proses -->
+<div style="text-align:center; margin-bottom:4px;">
+  <h4 style="display:inline-block; margin:0;">Proses</h4>
+  <button id="toggleProses" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
+</div>
+<div id="dashboardFinishingProses" class="grid-container" style="display:none;"></div>
+
+<!-- Grid Selesai -->
+<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+  <h4 style="display:inline-block; margin:0;">Selesai</h4>
+  <button id="toggleSelesai" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
+</div>
+<div id="dashboardFinishingSelesai" class="grid-container" style="display:none;"></div>
 </section>
+
 
 <!-- QC BAPRO -->
 <section id="qcBapro" class="card qc-section" style="display:none;">
@@ -316,27 +338,71 @@ function saveFinishingInline(index){
   renderGridFinishing();
 }
 
-// Dashboard compact render
 function renderDashboardFinishingCompact(){
-  const items=JSON.parse(localStorage.getItem('finishing'))||[];
-  const containerProses=document.getElementById('dashboardFinishingProses');
-  const containerSelesai=document.getElementById('dashboardFinishingSelesai');
-  containerProses.innerHTML=''; containerSelesai.innerHTML='';
-  items.forEach(item=>{
-    const card=document.createElement('div'); card.className='grid-card '+(item.update==='Selesai'?'selesai':'');
-    const statusClass=item.update==="Proses"?"status-proses":"status-selesai";
-    card.innerHTML=`<strong>${item.nama}</strong><br><span class="${statusClass}">${item.update}</span>
-    <div class="tooltip">No KS: ${item.noKS}<br>Order: ${item.order}<br>QC: ${item.qc}</div>`;
-    if(item.update==='Proses'){ containerProses.appendChild(card); }
-    else{ card.onclick=()=>showDetailModal(item); containerSelesai.appendChild(card); }
+  const items = JSON.parse(localStorage.getItem('finishing')) || [];
+  const containerProses = document.getElementById('dashboardFinishingProses');
+  const containerSelesai = document.getElementById('dashboardFinishingSelesai');
+  containerProses.innerHTML = '';
+  containerSelesai.innerHTML = '';
+
+  let totalProses = 0;
+  let totalSelesai = 0;
+
+  items.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'grid-card';
+    const statusClass = item.update === "Proses" ? "status-proses" : "status-selesai";
+    card.innerHTML = `<strong>${item.nama}</strong><br><span class="${statusClass}">${item.update}</span>`;
+    
+    // Tambahkan ke container sesuai status
+    if(item.update === 'Proses') {
+      containerProses.appendChild(card);
+      totalProses++;
+    } else {
+      containerSelesai.appendChild(card);
+      totalSelesai++;
+    }
+
+    // Event detail card
+    card.addEventListener('click', () => showDetailModal(item));
   });
-  document.getElementById('countFinishing').textContent=items.length;
+
+  // Update info total
+  document.getElementById('countFinishing').textContent = items.length;
+  document.getElementById('countProses').textContent = totalProses;
+  document.getElementById('countSelesai').textContent = totalSelesai;
 }
 
-// Dummy modal for detail (alert)
+document.getElementById('toggleProses').onclick = () => {
+  const container = document.getElementById('dashboardFinishingProses');
+  const btn = document.getElementById('toggleProses');
+  if(container.style.display === 'none'){
+    container.style.display = 'grid';
+    btn.textContent = 'Hide';
+  } else {
+    container.style.display = 'none';
+    btn.textContent = 'Show';
+  }
+};
+
+document.getElementById('toggleSelesai').onclick = () => {
+  const container = document.getElementById('dashboardFinishingSelesai');
+  const btn = document.getElementById('toggleSelesai');
+  if(container.style.display === 'none'){
+    container.style.display = 'grid';
+    btn.textContent = 'Hide';
+  } else {
+    container.style.display = 'none';
+    btn.textContent = 'Show';
+  }
+};
+
+
+// Dummy modal untuk detail
 function showDetailModal(item){
   alert(`Detail Order:\nNama: ${item.nama}\nNo KS: ${item.noKS}\nOrder: ${item.order}\nIsi: ${item.isi}\nBagus: ${item.bagus}\nBS: ${item.jenisBS}\nQC: ${item.qc}\nUpdate: ${item.update}`);
 }
+
 
 // Initialize
 showMenu('dashboard');
