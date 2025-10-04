@@ -109,9 +109,9 @@ body.dark input[type=text]:focus{border-color:#0ea5a4;box-shadow:0 0 0 2px rgba(
 </header>
 <div class="container">
   <nav>
-    <button onclick="showMenu('dashboard')" class="active">Dashboard</button>
+    <button onclick="showMenu('dashboard')">Dashboard</button>
     <button onclick="showMenu('qcPA')">QC PA</button>
-    <button onclick="showMenu('qcFinishing')">QC Finishing</button>
+    <button onclick="showMenu('qcFinishing')" class="active">QC Finishing</button>
     <button onclick="showMenu('qcLem')">QC Lem</button>
   </nav>
   <main>
@@ -277,9 +277,9 @@ function saveFinishingInline(index){
 }
 
 // Initialize
-showMenu('qcFinishing');
+showMenu('dashboard');
 renderGridFinishing();
+
 </script>
 </body>
 </html>
-
