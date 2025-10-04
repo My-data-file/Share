@@ -10,21 +10,24 @@
   --muted:#6b7280; --danger:#dc2626; --success:#16a34a;
   --radius:12px;
 }
+*{box-sizing:border-box;}
 body{
   margin:0;
   font-family:'Segoe UI',sans-serif;
   background:var(--bg);
   color:#111;
-  width:100%;
   min-height:100vh;
+  width:100%;
+  overflow-x:hidden;
 }
 header{
   background:var(--accent);color:#fff;padding:1rem 1.5rem;
   font-size:1.4rem;font-weight:bold;box-shadow:0 2px 8px rgba(0,0,0,.1);
   position:sticky;top:0;z-index:10;
+  display:flex;align-items:center;justify-content:space-between;
 }
 #darkToggle{
-  float:right;padding:6px 12px;border:none;border-radius:8px;
+  padding:6px 12px;border:none;border-radius:8px;
   background:#fff;color:#111;cursor:pointer;font-weight:500;
 }
 .container{
@@ -36,6 +39,7 @@ header{
 nav{
   width:220px;background:#fff;border-right:1px solid #e5e7eb;padding:1rem;
   box-shadow:2px 0 6px rgba(0,0,0,0.05);
+  flex-shrink:0;
 }
 nav button{
   display:block;width:100%;padding:.8rem 1rem;margin-bottom:.6rem;
@@ -68,7 +72,7 @@ input[type=text]{
 /* Grid card QC Finishing */
 .grid-container{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
   gap:0.8rem;
 }
 .grid-card{
@@ -95,11 +99,13 @@ input[type=text]{
 }
 .edit-grid input{
   flex:1 1 48%;
-  min-width:70px;
-  margin-bottom:4px;
+  min-width:100px;
 }
 
 /* Responsif */
+@media(max-width:1024px){
+  .grid-container{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));}
+}
 @media(max-width:768px){
   .container{flex-direction:column;}
   nav{
@@ -123,7 +129,6 @@ input[type=text]{
   .grid-card{width:100%;}
   .edit-grid input{flex:1 1 100%;min-width:100%;}
 }
-
 @media(max-width:480px){
   nav button{min-width:100px;font-size:0.85rem;}
 }
@@ -142,7 +147,7 @@ body.dark input[type=text]:focus{border-color:#0ea5a4;box-shadow:0 0 0 2px rgba(
 </head>
 <body>
 <header>
-  📊 Sistem QC Finishing 1.0
+  📊 Sistem QC Finishing 
   <button id="darkToggle">🌙 Dark</button>
 </header>
 <div class="container">
