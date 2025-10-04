@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QC Finishing System</title>
+<title>QC System</title>
 <style>
 :root{
   --bg:#f4f7fb; --card:#ffffff; --accent:#0ea5a4; --accent-2:#0369a1;
@@ -12,13 +12,8 @@
 }
 *{box-sizing:border-box;}
 body{
-  margin:0;
-  font-family:'Segoe UI',sans-serif;
-  background:var(--bg);
-  color:#111;
-  min-height:100vh;
-  width:100%;
-  overflow-x:hidden;
+  margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);color:#111;
+  min-height:100vh;width:100%;overflow-x:hidden;
 }
 header{
   background:var(--accent);color:#fff;padding:1rem 1.5rem;
@@ -31,15 +26,11 @@ header{
   background:#fff;color:#111;cursor:pointer;font-weight:500;
 }
 .container{
-  display:flex;
-  flex-direction:row;
-  width:100%;
-  min-height:100vh;
+  display:flex;flex-direction:row;width:100%;min-height:100vh;
 }
 nav{
   width:220px;background:#fff;border-right:1px solid #e5e7eb;padding:1rem;
-  box-shadow:2px 0 6px rgba(0,0,0,0.05);
-  flex-shrink:0;
+  box-shadow:2px 0 6px rgba(0,0,0,0.05);flex-shrink:0;
 }
 nav button{
   display:block;width:100%;padding:.8rem 1rem;margin-bottom:.6rem;
@@ -68,12 +59,9 @@ input[type=text]{
   margin-bottom:6px;width:100%;
   transition:border .2s,box-shadow .2s;
 }
-
 /* Grid card QC Finishing */
 .grid-container{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-  gap:0.8rem;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.8rem;
 }
 .grid-card{
   background:#fff;padding:.8rem;border-radius:var(--radius);
@@ -90,50 +78,19 @@ input[type=text]{
 .btn-delete{background:#dc2626;color:#fff;}
 .btn-save{background:#16a34a;color:#fff;}
 .btn-icon:hover{opacity:.9;transform:translateY(-1px);}
-
-/* Edit grid rapi */
-.edit-grid{
-  display:flex;
-  flex-wrap:wrap;
-  gap:4px;
-}
-.edit-grid input{
-  flex:1 1 48%;
-  min-width:100px;
-}
-
-/* Responsif */
-@media(max-width:1024px){
-  .grid-container{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));}
-}
+.edit-grid{display:flex;flex-wrap:wrap;gap:4px;}
+.edit-grid input{flex:1 1 48%;min-width:100px;}
+@media(max-width:1024px){.grid-container{grid-template-columns:repeat(auto-fill,minmax(180px,1fr));}}
 @media(max-width:768px){
   .container{flex-direction:column;}
-  nav{
-    width:100%;
-    display:flex;
-    overflow-x:auto;
-    box-shadow:0 1px 4px rgba(0,0,0,.1);
-    padding:.5rem;
-  }
-  nav button{
-    flex:1;
-    min-width:120px;
-    margin:0 4px 0 0;
-  }
-  main{
-    flex:1;
-    width:100%;
-    padding:1rem;
-  }
+  nav{width:100%;display:flex;overflow-x:auto;box-shadow:0 1px 4px rgba(0,0,0,.1);padding:.5rem;}
+  nav button{flex:1;min-width:120px;margin:0 4px 0 0;}
+  main{flex:1;width:100%;padding:1rem;}
   .grid-container{grid-template-columns:1fr;}
   .grid-card{width:100%;}
   .edit-grid input{flex:1 1 100%;min-width:100%;}
 }
-@media(max-width:480px){
-  nav button{min-width:100px;font-size:0.85rem;}
-}
-
-/* Dark Mode */
+@media(max-width:480px){nav button{min-width:100px;font-size:0.85rem;}}
 body.dark{background:#111827;color:#f3f4f6;}
 body.dark header{background:#1f2937;color:#f3f4f6;}
 body.dark #darkToggle{background:#374151;color:#f3f4f6;}
@@ -147,20 +104,35 @@ body.dark input[type=text]:focus{border-color:#0ea5a4;box-shadow:0 0 0 2px rgba(
 </head>
 <body>
 <header>
-  📊 Sistem QC Finishing 
+  📊 Sistem QC 1.0
   <button id="darkToggle">🌙 Dark</button>
 </header>
 <div class="container">
   <nav>
+    <button onclick="showMenu('dashboard')">Dashboard</button>
+    <button onclick="showMenu('qcPA')">QC PA</button>
     <button onclick="showMenu('qcFinishing')" class="active">QC Finishing</button>
+    <button onclick="showMenu('qcLem')">QC Lem</button>
   </nav>
   <main>
+    <!-- Dashboard -->
+    <section id="dashboard" class="card qc-section" style="display:none;">
+      <h2>Dashboard</h2>
+      <p>Ringkasan semua menu akan tampil di sini.</p>
+    </section>
+
+    <!-- QC PA -->
+    <section id="qcPA" class="card qc-section" style="display:none;">
+      <h2>QC PA</h2>
+      <p>Form input dan hasil QC PA akan ditambahkan di sini.</p>
+    </section>
+
+    <!-- QC Finishing (Asli) -->
     <section id="qcFinishing" class="card qc-section">
       <div class="tabs">
         <button class="active" data-tab="inputFinishing" onclick="switchTab(this)">Inputan</button>
         <button data-tab="hasilFinishing" onclick="switchTab(this)">Hasil</button>
       </div>
-      <!-- Form Input -->
       <div id="inputFinishing" class="tab-content active">
         <input type="text" id="finishingNama" placeholder="Nama Barang">
         <input type="text" id="finishingNoKF" placeholder="No KF">
@@ -170,11 +142,16 @@ body.dark input[type=text]:focus{border-color:#0ea5a4;box-shadow:0 0 0 2px rgba(
         <input type="text" id="finishingJumlahBS" placeholder="Jumlah BS">
         <button onclick="addFinishingItem()">➕ Tambah</button>
       </div>
-      <!-- Hasil Grid -->
       <div id="hasilFinishing" class="tab-content">
         <input type="text" placeholder="Cari..." oninput="filterFinishingGrid(this.value)">
         <div id="gridFinishing" class="grid-container"></div>
       </div>
+    </section>
+
+    <!-- QC Lem -->
+    <section id="qcLem" class="card qc-section" style="display:none;">
+      <h2>QC Lem</h2>
+      <p>Form input dan hasil QC Lem akan ditambahkan di sini.</p>
     </section>
   </main>
 </div>
@@ -187,6 +164,8 @@ document.getElementById('darkToggle').onclick = () => document.body.classList.to
 function showMenu(menu){
   document.querySelectorAll('main > section').forEach(sec=>sec.style.display='none');
   document.getElementById(menu).style.display='block';
+  document.querySelectorAll('nav button').forEach(btn=>btn.classList.remove('active'));
+  document.querySelector(`nav button[onclick="showMenu('${menu}')"]`).classList.add('active');
 }
 
 // Tabs
@@ -198,7 +177,7 @@ function switchTab(btn){
   document.getElementById(btn.dataset.tab).classList.add('active');
 }
 
-// Tambah data baru & langsung ke Hasil
+// QC Finishing functions (copy dari kode asli)
 function addFinishingItem(){
   let items = JSON.parse(localStorage.getItem('finishing')) || [];
   let now = new Date().toLocaleString();
@@ -219,123 +198,79 @@ function addFinishingItem(){
     switchTab(document.querySelector('#qcFinishing .tabs button[data-tab="hasilFinishing"]'));
   }
 }
-
-function clearFinishingForm(){
-  ['finishingNama','finishingNoKF','finishingOrder','finishingBagus','finishingJenisBS','finishingJumlahBS'].forEach(id=>document.getElementById(id).value='');
-}
-
-// Render grid
+function clearFinishingForm(){['finishingNama','finishingNoKF','finishingOrder','finishingBagus','finishingJenisBS','finishingJumlahBS'].forEach(id=>document.getElementById(id).value='');}
 function renderGridFinishing(){
   const items = JSON.parse(localStorage.getItem('finishing')) || [];
-  const container = document.getElementById('gridFinishing');
-  container.innerHTML='';
+  const container = document.getElementById('gridFinishing'); container.innerHTML='';
   items.forEach((item,i)=>{
-    const card = document.createElement('div');
-    card.className='grid-card';
-    card.innerHTML=`
-      <div>
-        <strong>${item.tanggal}</strong><br>
-        <span>${item.nama}</span><br>
-        <span>${item.noKF}</span>
-      </div>
+    const card = document.createElement('div'); card.className='grid-card';
+    card.innerHTML=`<div><strong>${item.tanggal}</strong><br><span>${item.nama}</span><br><span>${item.noKF}</span></div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap;">
+      <button class="btn-icon btn-call" title="Panggil" onclick="callFinishing(${i})">📤</button>
+      <button class="btn-icon btn-edit" title="Edit Inline" onclick="editFinishingInline(${i})">✏️</button>
+      <button class="btn-icon btn-delete" title="Hapus" onclick="deleteFinishing(${i})">🗑️</button>
+    </div>`; container.appendChild(card);
+  });
+}
+function filterFinishingGrid(query){
+  const items = JSON.parse(localStorage.getItem('finishing')) || [];
+  const container = document.getElementById('gridFinishing'); container.innerHTML='';
+  items.forEach((item,i)=>{
+    if(item.nama.toLowerCase().includes(query.toLowerCase())){
+      const card = document.createElement('div'); card.className='grid-card';
+      card.innerHTML=`<div><strong>${item.tanggal}</strong><br><span>${item.nama}</span><br><span>${item.noKF}</span></div>
       <div style="display:flex;gap:4px;flex-wrap:wrap;">
         <button class="btn-icon btn-call" title="Panggil" onclick="callFinishing(${i})">📤</button>
         <button class="btn-icon btn-edit" title="Edit Inline" onclick="editFinishingInline(${i})">✏️</button>
         <button class="btn-icon btn-delete" title="Hapus" onclick="deleteFinishing(${i})">🗑️</button>
-      </div>
-    `;
-    container.appendChild(card);
-  });
-}
-
-// Filter grid
-function filterFinishingGrid(query){
-  const items = JSON.parse(localStorage.getItem('finishing')) || [];
-  const container = document.getElementById('gridFinishing');
-  container.innerHTML='';
-  items.forEach((item,i)=>{
-    if(item.nama.toLowerCase().includes(query.toLowerCase())){
-      const card = document.createElement('div');
-      card.className='grid-card';
-      card.innerHTML=`
-        <div>
-          <strong>${item.tanggal}</strong><br>
-          <span>${item.nama}</span><br>
-          <span>${item.noKF}</span>
-        </div>
-        <div style="display:flex;gap:4px;flex-wrap:wrap;">
-          <button class="btn-icon btn-call" title="Panggil" onclick="callFinishing(${i})">📤</button>
-          <button class="btn-icon btn-edit" title="Edit Inline" onclick="editFinishingInline(${i})">✏️</button>
-          <button class="btn-icon btn-delete" title="Hapus" onclick="deleteFinishing(${i})">🗑️</button>
-        </div>
-      `;
-      container.appendChild(card);
+      </div>`; container.appendChild(card);
     }
   });
 }
-
-// Panggil data ke form input
 function callFinishing(index){
   const items = JSON.parse(localStorage.getItem('finishing')) || [];
-  const item = items[index];
-  if(!item) return;
-  document.getElementById('finishingNama').value = item.nama;
-  document.getElementById('finishingNoKF').value = item.noKF;
-  document.getElementById('finishingOrder').value = item.order;
-  document.getElementById('finishingBagus').value = item.bagus;
-  document.getElementById('finishingJenisBS').value = item.jenisBS;
-  document.getElementById('finishingJumlahBS').value = item.jumlahBS;
-
-  showMenu('qcFinishing');
-  switchTab(document.querySelector('#qcFinishing .tabs button[data-tab="inputFinishing"]'));
+  const item = items[index]; if(!item) return;
+  document.getElementById('finishingNama').value=item.nama;
+  document.getElementById('finishingNoKF').value=item.noKF;
+  document.getElementById('finishingOrder').value=item.order;
+  document.getElementById('finishingBagus').value=item.bagus;
+  document.getElementById('finishingJenisBS').value=item.jenisBS;
+  document.getElementById('finishingJumlahBS').value=item.jumlahBS;
+  showMenu('qcFinishing'); switchTab(document.querySelector('#qcFinishing .tabs button[data-tab="inputFinishing"]'));
 }
-
-// Hapus data
 function deleteFinishing(index){
   let items = JSON.parse(localStorage.getItem('finishing')) || [];
   items.splice(index,1);
   localStorage.setItem('finishing', JSON.stringify(items));
   renderGridFinishing();
 }
-
-// Edit inline
 function editFinishingInline(index){
   let items = JSON.parse(localStorage.getItem('finishing')) || [];
-  const item = items[index];
-  const container = document.getElementById('gridFinishing');
-  const card = container.children[index];
+  const item=items[index]; const container=document.getElementById('gridFinishing'); const card=container.children[index];
   if(card.querySelector('.edit-inline')) return;
-  card.innerHTML=`
-    <div class="edit-grid">
-      <input type="text" class="edit-inline" value="${item.nama}" placeholder="Nama">
-      <input type="text" class="edit-inline" value="${item.noKF}" placeholder="No KF">
-      <input type="text" class="edit-inline" value="${item.order}" placeholder="Order">
-      <input type="text" class="edit-inline" value="${item.bagus}" placeholder="Bagus">
-      <input type="text" class="edit-inline" value="${item.jenisBS}" placeholder="Jenis BS">
-      <input type="text" class="edit-inline" value="${item.jumlahBS}" placeholder="Jumlah BS">
-    </div>
-    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;">
-      <button class="btn-icon btn-save" title="Simpan" onclick="saveFinishingInline(${index})">💾</button>
-      <button class="btn-icon btn-delete" title="Hapus" onclick="deleteFinishing(${index})">🗑️</button>
-    </div>
-  `;
+  card.innerHTML=`<div class="edit-grid">
+    <input type="text" class="edit-inline" value="${item.nama}" placeholder="Nama">
+    <input type="text" class="edit-inline" value="${item.noKF}" placeholder="No KF">
+    <input type="text" class="edit-inline" value="${item.order}" placeholder="Order">
+    <input type="text" class="edit-inline" value="${item.bagus}" placeholder="Bagus">
+    <input type="text" class="edit-inline" value="${item.jenisBS}" placeholder="Jenis BS">
+    <input type="text" class="edit-inline" value="${item.jumlahBS}" placeholder="Jumlah BS">
+  </div>
+  <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;">
+    <button class="btn-icon btn-save" title="Simpan" onclick="saveFinishingInline(${index})">💾</button>
+    <button class="btn-icon btn-delete" title="Hapus" onclick="deleteFinishing(${index})">🗑️</button>
+  </div>`;
 }
-
-// Save edit inline
 function saveFinishingInline(index){
-  const container = document.getElementById('gridFinishing');
-  const card = container.children[index];
-  const inputs = card.querySelectorAll('.edit-inline');
-
+  const container=document.getElementById('gridFinishing'); const card=container.children[index]; const inputs=card.querySelectorAll('.edit-inline');
   let items = JSON.parse(localStorage.getItem('finishing')) || [];
-  items[index] = {
-    ...items[index],
-    nama: inputs[0].value,
-    noKF: inputs[1].value,
-    order: inputs[2].value,
-    bagus: inputs[3].value,
-    jenisBS: inputs[4].value,
-    jumlahBS: inputs[5].value
+  items[index]={...items[index],
+    nama:inputs[0].value,
+    noKF:inputs[1].value,
+    order:inputs[2].value,
+    bagus:inputs[3].value,
+    jenisBS:inputs[4].value,
+    jumlahBS:inputs[5].value
   };
   localStorage.setItem('finishing', JSON.stringify(items));
   renderGridFinishing();
