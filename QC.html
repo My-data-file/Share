@@ -3,89 +3,49 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QC System Compact Dashboard</title>
+<title>QC System</title>
+
 <style>
+/* ======================== Variabel Warna & Radius ======================== */
 :root{
-  --bg:#f4f7fb; --card:#ffffff; --accent:#0ea5a4; --accent-2:#0369a1;
-  --muted:#6b7280; --danger:#dc2626; --success:#16a34a; --warning:#facc15;
+  --bg:#f4f7fb; 
+  --card:#ffffff; 
+  --accent:#0ea5a4; 
+  --accent-2:#0369a1;
+  --muted:#6b7280; 
+  --danger:#dc2626; 
+  --success:#16a34a; 
+  --warning:#facc15;
   --radius:12px;
 }
+
+/* ======================== Reset & Body ======================== */
 *{box-sizing:border-box;}
 body{
-  margin:0;font-family:'Segoe UI',sans-serif;background:var(--bg);color:#111;
-  min-height:100vh;width:100%;overflow-x:hidden;
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:var(--bg);
+  color:#111;
+  min-height:100vh;
+  width:100%;
+  overflow-x:hidden;
 }
+
+/* ======================== Header ======================== */
 header{
-  background:var(--accent);color:#fff;padding:1rem 1.5rem;
-  font-size:1.4rem;font-weight:bold;box-shadow:0 2px 8px rgba(0,0,0,.1);
-  position:sticky;top:0;z-index:10;
-  display:flex;align-items:center;justify-content:space-between;
+  background:var(--accent);
+  color:#fff;
+  padding:1rem 1.5rem;
+  font-size:1.4rem;
+  font-weight:bold;
+  box-shadow:0 2px 8px rgba(0,0,0,.1);
+  position:sticky;
+  top:0;
+  z-index:10;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
-.container{
-  display:flex;flex-direction:row;width:100%;min-height:100vh;
-}
-nav{
-  width:220px;background:#fff;border-right:1px solid #e5e7eb;padding:1rem;
-  box-shadow:2px 0 6px rgba(0,0,0,0.05);flex-shrink:0;
-}
-nav button{
-  display:block;width:100%;padding:.8rem 1rem;margin-bottom:.6rem;
-  border:none;border-radius:var(--radius);
-  background:var(--accent);color:#fff;font-weight:500;cursor:pointer;
-  transition:all .2s ease;
-}
-nav button:hover{background:var(--accent-2);transform:translateY(-1px);}
-nav button.active{background:var(--accent-2);box-shadow:0 2px 6px rgba(0,0,0,.15);}
-main{flex:1;padding:1.5rem;display:grid;gap:1rem;}
-.card{
-  background:var(--card);padding:1.2rem;
-  border-radius:var(--radius);
-  box-shadow:0 2px 8px rgba(0,0,0,.06);
-}
-.tabs{display:flex;gap:.5rem;margin-bottom:.75rem;flex-wrap:wrap;}
-.tabs button{
-  flex:1;padding:.6rem;border:none;border-radius:var(--radius);
-  background:#e5e7eb;cursor:pointer;font-weight:500;transition:.2s;
-}
-.tabs button.active{background:var(--accent);color:#fff;}
-.tab-content{display:none;}
-.tab-content.active{display:block;}
-input[type=text], input[type=number], select{
-  padding:.5rem .7rem;border:1px solid #ccc;border-radius:8px;
-  margin-bottom:6px;width:100%;
-  transition:border .2s,box-shadow .2s;
-}
-.grid-container{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.8rem;
-}
-.grid-card{
-  background:#fff;padding:.8rem;border-radius:var(--radius);
-  box-shadow:0 2px 6px rgba(0,0,0,.1);
-  display:flex;flex-direction:column;gap:6px;position:relative;
-}
-.grid-card input{padding:.4rem .6px;border:1px solid #ccc;border-radius:6px;margin-bottom:4px;width:100%;}
-.grid-card .btn-icon{
-  border:none;cursor:pointer;border-radius:6px;padding:4px 6px;font-size:0.9rem;transition:.2s;
-  display:inline-flex;align-items:center;justify-content:center;
-}
-.btn-call{background:var(--accent);color:#fff;}
-.btn-edit{background:#facc15;color:#111;}
-.btn-delete{background:#dc2626;color:#fff;}
-.btn-save{background:#16a34a;color:#fff;}
-.btn-icon:hover{opacity:.9;transform:translateY(-1px);}
-.edit-grid{display:flex;flex-wrap:wrap;gap:4px;}
-.edit-grid input, .edit-grid select{flex:1 1 48%;min-width:100px;}
-.status-proses{background:var(--warning);color:#111;padding:2px 6px;border-radius:6px;font-weight:600;}
-.status-selesai{background:var(--success);color:#fff;padding:2px 6px;border-radius:6px;font-weight:600;}
-.form-group { margin-bottom: 10px; }
-
-/* Dashboard Compact QC Finishing */
-#dashboard .grid-container{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:0.6rem;}
-#dashboard .grid-card{padding:0.6rem;font-size:0.85rem;cursor:default;transition: transform .2s, box-shadow .2s;}
-#dashboard .grid-card:hover{transform:translateY(-3px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
-#dashboard .grid-card.selesai{cursor:pointer;}
-
-@media(max-width:768px){.container{flex-direction:column;}nav{width:100%;display:flex;overflow-x:auto;padding:.5rem;}nav button{flex:1;min-width:120px;margin:0 4px 0 0;}main{padding:1rem;}}
 
 #headerTitle {
   font-size: 1.2rem;
@@ -102,15 +62,222 @@ input[type=text], input[type=number], select{
   margin-top: 2px;
 }
 
+/* ======================== Layout Container & Nav ======================== */
+.container{
+  display:flex;
+  flex-direction:row;
+  width:100%;
+  min-height:100vh;
+}
+
+nav{
+  width:220px;
+  background:#fff;
+  border-right:1px solid #e5e7eb;
+  padding:1rem;
+  box-shadow:2px 0 6px rgba(0,0,0,0.05);
+  flex-shrink:0;
+}
+
+nav button{
+  display:block;
+  width:100%;
+  padding:.8rem 1rem;
+  margin-bottom:.6rem;
+  border:none;
+  border-radius:var(--radius);
+  background:var(--accent);
+  color:#fff;
+  font-weight:500;
+  cursor:pointer;
+  transition:all .2s ease;
+}
+nav button:hover{
+  background:var(--accent-2);
+  transform:translateY(-1px);
+}
+nav button.active{
+  background:var(--accent-2);
+  box-shadow:0 2px 6px rgba(0,0,0,.15);
+}
+
+/* ======================== Main & Card ======================== */
+main{
+  flex:1;
+  padding:1.5rem;
+  display:grid;
+  gap:1rem;
+}
+
+.card{
+  background:var(--card);
+  padding:1.2rem;
+  border-radius:var(--radius);
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+
+/* ======================== Tabs ======================== */
+.tabs{
+  display:flex;
+  gap:.5rem;
+  margin-bottom:.75rem;
+  flex-wrap:wrap;
+}
+
+.tabs button{
+  flex:1;
+  padding:.6rem;
+  border:none;
+  border-radius:var(--radius);
+  background:#e5e7eb;
+  cursor:pointer;
+  font-weight:500;
+  transition:.2s;
+}
+.tabs button.active{
+  background:var(--accent);
+  color:#fff;
+}
+
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+
+/* ======================== Form Input ======================== */
+input[type=text], input[type=number], select{
+  padding:.5rem .7rem;
+  border:1px solid #ccc;
+  border-radius:8px;
+  margin-bottom:6px;
+  width:100%;
+  transition:border .2s, box-shadow .2s;
+}
+
+/* ======================== Grid ======================== */
+.grid-container{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:0.8rem;
+}
+
+.grid-card{
+  background:#fff;
+  padding:.8rem;
+  border-radius:var(--radius);
+  box-shadow:0 2px 6px rgba(0,0,0,.1);
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  position:relative;
+}
+
+.grid-card input{
+  padding:.4rem .6px;
+  border:1px solid #ccc;
+  border-radius:6px;
+  margin-bottom:4px;
+  width:100%;
+}
+
+/* ======================== Tombol Aksi di Grid ======================== */
+.grid-card .btn-icon{
+  border:none;
+  cursor:pointer;
+  border-radius:6px;
+  padding:4px 6px;
+  font-size:0.9rem;
+  transition:.2s;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+.btn-call{background:var(--accent);color:#fff;}
+.btn-edit{background:#facc15;color:#111;}
+.btn-delete{background:var(--danger);color:#fff;}
+.btn-save{background:var(--success);color:#fff;}
+.btn-icon:hover{opacity:.9;transform:translateY(-1px);}
+
+/* ======================== Edit Inline ======================== */
+.edit-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:4px;
+}
+.edit-grid input, .edit-grid select{
+  flex:1 1 48%;
+  min-width:100px;
+}
+
+/* ======================== Status ======================== */
+.status-proses{
+  background:var(--warning);
+  color:#111;
+  padding:2px 6px;
+  border-radius:6px;
+  font-weight:600;
+}
+.status-selesai{
+  background:var(--success);
+  color:#fff;
+  padding:2px 6px;
+  border-radius:6px;
+  font-weight:600;
+}
+
+.form-group { margin-bottom: 10px; }
+
+/* ======================== Dashboard Compact QC Finishing ======================== */
+#dashboard .grid-container{
+  grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+  gap:0.6rem;
+}
+
+#dashboard .grid-card{
+  padding:0.6rem;
+  font-size:0.85rem;
+  cursor:default;
+  transition: transform .2s, box-shadow .2s;
+}
+
+#dashboard .grid-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 4px 12px rgba(0,0,0,.15);
+}
+
+#dashboard .grid-card.selesai{
+  cursor:pointer;
+}
+
+/* ======================== Responsif ======================== */
+@media(max-width:768px){
+  .container{flex-direction:column;}
+  nav{
+    width:100%;
+    display:flex;
+    overflow-x:auto;
+    padding:.5rem;
+  }
+  nav button{
+    flex:1;
+    min-width:120px;
+    margin:0 4px 0 0;
+  }
+  main{padding:1rem;}
+}
+
 </style>
 </head>
 <body>
+
+<!-- ======================== Header ======================== -->
 <header>
   <div id="headerTitle">📊 Sistem QC</div>
   <div id="headerTime">Selasa, 5 Oktober 2025 14:30</div>
 </header>
 
+<!-- ======================== Container ======================== -->
 <div class="container">
+
+  <!-- ======================== Menu Nav ======================== -->
   <nav>
     <button onclick="showMenu('dashboard')" class="active">DASBOARD</button>
     <button onclick="showMenu('qcBapro')">QC BAPRO</button>
@@ -118,272 +285,323 @@ input[type=text], input[type=number], select{
     <button onclick="showMenu('qcFinishing')">QC FINISHING</button>
     <button onclick="showMenu('qcLem')">QC LEM</button>
   </nav>
+
+  <!-- ======================== Main Section ======================== -->
   <main>
 
-<!-- Dashboard -->
-<section id="dashboard" class="card qc-section">
-  <h2>Dashboard QC Finishing</h2>
+    <!-- ======================== Dashboard ======================== -->
+    <section id="dashboard" class="card qc-section">
+      <h2>Dashboard QC Finishing</h2>
 
-  <!-- Info Total -->
-  <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
-    <div style="flex:1; min-width:120px; background:#e5f6f6; padding:6px 10px; border-radius:8px; text-align:center;">
-      Total Order<br><strong id="countFinishing">0</strong>
-    </div>
-    <div style="flex:1; min-width:120px; background:#fff4e5; padding:6px 10px; border-radius:8px; text-align:center;">
-      Total Proses<br><strong id="countProses">0</strong>
-    </div>
-    <div style="flex:1; min-width:120px; background:#e5f7e5; padding:6px 10px; border-radius:8px; text-align:center;">
-      Total Selesai<br><strong id="countSelesai">0</strong>
-    </div>
-  </div>
+      <!-- Info Total -->
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
+        <div style="flex:1; min-width:120px; background:#e5f6f6; padding:6px 10px; border-radius:8px; text-align:center;">
+          Total Order<br><strong id="countFinishing">0</strong>
+        </div>
+        <div style="flex:1; min-width:120px; background:#fff4e5; padding:6px 10px; border-radius:8px; text-align:center;">
+          Total Proses<br><strong id="countProses">0</strong>
+        </div>
+        <div style="flex:1; min-width:120px; background:#e5f7e5; padding:6px 10px; border-radius:8px; text-align:center;">
+          Total Selesai<br><strong id="countSelesai">0</strong>
+        </div>
+      </div>
 
-<!-- Grid Proses -->
-<div style="text-align:center; margin-bottom:4px;">
-  <h4 style="display:inline-block; margin:0;">Proses</h4>
-  <button id="toggleProses" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
-</div>
-<div id="dashboardFinishingProses" class="grid-container" style="display:none;"></div>
+      <!-- Grid Proses -->
+      <div style="text-align:center; margin-bottom:4px;">
+        <h4 style="display:inline-block; margin:0;">Proses</h4>
+        <button id="toggleProses" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
+      </div>
+      <div id="dashboardFinishingProses" class="grid-container" style="display:none;"></div>
 
-<!-- Grid Selesai -->
-<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
-  <h4 style="display:inline-block; margin:0;">Selesai</h4>
-  <button id="toggleSelesai" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
-</div>
-<div id="dashboardFinishingSelesai" class="grid-container" style="display:none;"></div>
-</section>
+      <!-- Grid Selesai -->
+      <div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+        <h4 style="display:inline-block; margin:0;">Selesai</h4>
+        <button id="toggleSelesai" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
+      </div>
+      <div id="dashboardFinishingSelesai" class="grid-container" style="display:none;"></div>
+    </section>
 
+    <!-- ======================== QC BAPRO ======================== -->
+    <section id="qcBapro" class="card qc-section" style="display:none;">
+      <h2>QC BAPRO</h2>
+      <p>Form input dan hasil QC BAPRO akan ditambahkan di sini.</p>
+    </section>
 
-<!-- QC BAPRO -->
-<section id="qcBapro" class="card qc-section" style="display:none;">
-  <h2>QC BAPRO</h2>
-  <p>Form input dan hasil QC BAPRO akan ditambahkan di sini.</p>
-</section>
+    <!-- ======================== QC PA ======================== -->
+    <section id="qcPA" class="card qc-section" style="display:none;">
+      <h2>QC PA</h2>
+      <p>Form input dan hasil QC PA akan ditambahkan di sini.</p>
+    </section>
 
-<!-- QC PA -->
-<section id="qcPA" class="card qc-section" style="display:none;">
-  <h2>QC PA</h2>
-  <p>Form input dan hasil QC PA akan ditambahkan di sini.</p>
-</section>
+    <!-- ======================== QC Finishing ======================== -->
+    <section id="qcFinishing" class="card qc-section" style="display:none;">
 
-<!-- QC Finishing -->
-<section id="qcFinishing" class="card qc-section" style="display:none;">
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="active" data-tab="inputFinishing" onclick="switchTab(this)">Inputan</button>
+        <button data-tab="hasilFinishing" onclick="switchTab(this)">Hasil</button>
+      </div>
 
-  <div class="tabs">
-    <button class="active" data-tab="inputFinishing" onclick="switchTab(this)">Inputan</button>
-    <button data-tab="hasilFinishing" onclick="switchTab(this)">Hasil</button>
-  </div>
-  <div id="inputFinishing" class="tab-content active">
-    <div class="form-group"><input type="text" id="finishingNama" placeholder="Nama Order"></div>
-    <div class="form-group"><input type="text" id="finishingNoKS" placeholder="No KS"></div>
-    <div class="form-group"><input type="number" id="finishingOrder" placeholder="Total Order (lembar)"></div>
-    <div class="form-group"><input type="number" id="finishingIsi" placeholder="Isi/Dus (pcs)"></div>
-    <div class="form-group"><input type="number" id="finishingBagus" placeholder="Total Bagus (pcs)"></div>
-    <div class="form-group"><input type="number" id="finishingJenisBS" placeholder="Total BS (pcs)"></div>
-    <div class="form-group">
-      <select id="finishingQC">
-        <option value="">QC</option>
-        <option value="Anom">Anom</option>
-        <option value="Irna">Irna</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <select id="finishingUpdate">
-        <option value="">Update</option>
-        <option value="Proses">Proses</option>
-        <option value="Selesai">Selesai</option>
-      </select>
-    </div>
-    <div class="form-group"><button onclick="addFinishingItem()">➕ Tambah</button></div>
-  </div>
-  <div id="hasilFinishing" class="tab-content">
-    <input type="text" placeholder="Cari..." oninput="filterFinishingGrid(this.value)">
-    <div id="gridFinishing" class="grid-container"></div>
-  </div>
-</section>
+      <!-- Tab Inputan -->
+      <div id="inputFinishing" class="tab-content active">
+        <div class="form-group"><input type="text" id="finishingNama" placeholder="Nama Order"></div>
+        <div class="form-group"><input type="text" id="finishingNoKS" placeholder="No KS"></div>
+        <div class="form-group"><input type="number" id="finishingOrder" placeholder="Total Order (lembar)"></div>
+        <div class="form-group"><input type="number" id="finishingIsi" placeholder="Isi/Dus (pcs)"></div>
+        <div class="form-group"><input type="number" id="finishingBagus" placeholder="Total Bagus (pcs)"></div>
+        <div class="form-group"><input type="number" id="finishingJenisBS" placeholder="Total BS (pcs)"></div>
+        <div class="form-group">
+          <select id="finishingQC">
+            <option value="">QC</option>
+            <option value="Anom">Anom</option>
+            <option value="Irna">Irna</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <select id="finishingUpdate">
+            <option value="">Update</option>
+            <option value="Proses">Proses</option>
+            <option value="Selesai">Selesai</option>
+          </select>
+        </div>
+        <div class="form-group"><button onclick="addFinishingItem()">➕ Tambah</button></div>
+      </div>
 
-<!-- QC Lem -->
-<section id="qcLem" class="card qc-section" style="display:none;">
-  <h2>QC Lem</h2>
-  <p>Form input dan hasil QC Lem akan ditambahkan di sini.</p>
-</section>
+      <!-- Tab Hasil -->
+      <div id="hasilFinishing" class="tab-content">
+        <input type="text" placeholder="Cari..." oninput="filterFinishingGrid(this.value)">
+        <div id="gridFinishing" class="grid-container"></div>
+      </div>
 
-</main>
+    </section>
+
+    <!-- ======================== QC Lem ======================== -->
+    <section id="qcLem" class="card qc-section" style="display:none;">
+      <h2>QC Lem</h2>
+      <p>Form input dan hasil QC Lem akan ditambahkan di sini.</p>
+    </section>
+
+  </main>
 </div>
 
 <script>
-// ===== Menu =====
-function showMenu(menu){
-  document.querySelectorAll('main > section').forEach(sec=>sec.style.display='none');
-  document.getElementById(menu).style.display='block';
-  document.querySelectorAll('nav button').forEach(btn=>btn.classList.remove('active'));
+// ====================== MENU ======================
+function showMenu(menu) {
+  // Sembunyikan semua section
+  document.querySelectorAll('main > section').forEach(sec => sec.style.display = 'none');
+
+  // Tampilkan section yang dipilih
+  document.getElementById(menu).style.display = 'block';
+
+  // Update tombol nav aktif
+  document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
   document.querySelector(`nav button[onclick="showMenu('${menu}')"]`).classList.add('active');
-  if(menu==='dashboard') renderDashboardFinishingCompact();
+
+  // Render dashboard jika menu dashboard
+  if (menu === 'dashboard') renderDashboardFinishingCompact();
 }
 
-// ===== Tabs =====
-function switchTab(btn){
-  let parent=btn.parentElement;
-  parent.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+// ====================== TABS ======================
+function switchTab(btn) {
+  const parent = btn.parentElement;
+
+  // Hapus active pada semua tab
+  parent.querySelectorAll('button').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  parent.parentElement.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+
+  // Tampilkan konten tab yang dipilih
+  parent.parentElement.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
   document.getElementById(btn.dataset.tab).classList.add('active');
 }
 
-// ===== QC Finishing =====
-function addFinishingItem(){
-  // Ambil nilai form
-  let nama = document.getElementById('finishingNama').value.trim();
-  let noKS = document.getElementById('finishingNoKS').value.trim();
-  let order = document.getElementById('finishingOrder').value.trim();
-  let isi = document.getElementById('finishingIsi').value.trim();
-  let bagus = document.getElementById('finishingBagus').value.trim();
-  let jenisBS = document.getElementById('finishingJenisBS').value.trim();
-  let qc = document.getElementById('finishingQC').value;
-  let update = document.getElementById('finishingUpdate').value;
+// ====================== QC FINISHING ======================
 
-  if(!nama || !noKS || !order || !isi || !bagus || !jenisBS || !qc || !update){
-    alert("⚠️ Semua kolom wajib diisi!"); return;
+// Tambah item baru
+function addFinishingItem() {
+  const nama = document.getElementById('finishingNama').value.trim();
+  const noKS = document.getElementById('finishingNoKS').value.trim();
+  const order = document.getElementById('finishingOrder').value.trim();
+  const isi = document.getElementById('finishingIsi').value.trim();
+  const bagus = document.getElementById('finishingBagus').value.trim();
+  const jenisBS = document.getElementById('finishingJenisBS').value.trim();
+  const qc = document.getElementById('finishingQC').value;
+  const update = document.getElementById('finishingUpdate').value;
+
+  if (!nama || !noKS || !order || !isi || !bagus || !jenisBS || !qc || !update) {
+    alert("⚠️ Semua kolom wajib diisi!");
+    return;
   }
-  if(!confirm("Apakah Anda yakin ingin menambahkan data ini?")) return;
 
-  const item = {tanggal: new Date().toLocaleString(), nama, noKS, order, isi, bagus, jenisBS, qc, update};
+  if (!confirm("Apakah Anda yakin ingin menambahkan data ini?")) return;
 
-  // Simpan di localStorage
+  const item = { tanggal: new Date().toLocaleString(), nama, noKS, order, isi, bagus, jenisBS, qc, update };
+
+  // Simpan ke localStorage
   let items = JSON.parse(localStorage.getItem('finishing')) || [];
   items.push(item);
   localStorage.setItem('finishing', JSON.stringify(items));
 
-  // Render tab Hasil segera
+  // Render tab Hasil
   switchTab(document.querySelector('#qcFinishing .tabs button[data-tab="hasilFinishing"]'));
   renderGridFinishing();
 
   // Bersihkan form
   clearFinishingForm();
 
-  // Kirim data ke Spreadsheet (async)
+  // Kirim ke Spreadsheet (async)
   const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzkgn49JZNjSQMrP0Qqmh7eT0ly4UgkBxprh56A08DetM5ke_oryHV5r-vcI8I74Q3zJg/exec";
   fetch(WEBAPP_URL, {
     method: "POST",
     body: JSON.stringify(item)
   })
-  .then(res => res.json())
-  .then(data => console.log("✅ Data dikirim"))
-  .catch(err => console.error("⚠️ Error:", err));
+    .then(res => res.json())
+    .then(data => console.log("✅ Data dikirim"))
+    .catch(err => console.error("⚠️ Error:", err));
 }
 
-function clearFinishingForm(){
-  ['finishingNama','finishingNoKS','finishingOrder','finishingIsi','finishingBagus','finishingJenisBS','finishingQC','finishingUpdate'].forEach(id=>document.getElementById(id).value='');
+// Bersihkan form input
+function clearFinishingForm() {
+  ['finishingNama', 'finishingNoKS', 'finishingOrder', 'finishingIsi', 'finishingBagus', 'finishingJenisBS', 'finishingQC', 'finishingUpdate']
+    .forEach(id => document.getElementById(id).value = '');
 }
 
-function renderGridFinishing(query=""){
+// Render grid tab Hasil
+function renderGridFinishing(query = "") {
   const items = JSON.parse(localStorage.getItem('finishing')) || [];
-  const container = document.getElementById('gridFinishing'); container.innerHTML='';
-  items.forEach((item,i)=>{
-    if(item.nama.toLowerCase().includes(query.toLowerCase()) ||
-       item.noKS.toLowerCase().includes(query.toLowerCase()) ){
-      const card = document.createElement('div'); card.className='grid-card';
-      let statusClass = item.update==="Proses"?"status-proses":(item.update==="Selesai"?"status-selesai":"");
-      card.innerHTML = `<div>
-        <strong>${item.tanggal}</strong><br>
-        <span>Nama Order: ${item.nama}</span><br>
-        <span>No KS: ${item.noKS}</span><br>
-        <span>Order: ${item.order}</span><br>
-        <span>Isi/Dus: ${item.isi}</span><br>
-        <span>Bagus: ${item.bagus}</span><br>
-        <span>BS: ${item.jenisBS}</span><br>
-        <span>QC: ${item.qc}</span><br>
-        <span class="${statusClass}">${item.update}</span>
-      </div>
-      <div style="display:flex;gap:4px;flex-wrap:wrap;">
-        <button class="btn-icon btn-call" title="Panggil" onclick="callFinishing(${i})">📤</button>
-        <button class="btn-icon btn-edit" title="Edit Inline" onclick="editFinishingInline(${i})">✏️</button>
-        <button class="btn-icon btn-delete" title="Hapus" onclick="deleteFinishing(${i})">🗑️</button>
-      </div>`;
+  const container = document.getElementById('gridFinishing');
+  container.innerHTML = '';
+
+  items.forEach((item, i) => {
+    if (item.nama.toLowerCase().includes(query.toLowerCase()) ||
+        item.noKS.toLowerCase().includes(query.toLowerCase())) {
+
+      const card = document.createElement('div');
+      card.className = 'grid-card';
+
+      const statusClass = item.update === "Proses" ? "status-proses" : (item.update === "Selesai" ? "status-selesai" : "");
+
+      card.innerHTML = `
+        <div>
+          <strong>${item.tanggal}</strong><br>
+          <span>Nama Order: ${item.nama}</span><br>
+          <span>No KS: ${item.noKS}</span><br>
+          <span>Order: ${item.order}</span><br>
+          <span>Isi/Dus: ${item.isi}</span><br>
+          <span>Bagus: ${item.bagus}</span><br>
+          <span>BS: ${item.jenisBS}</span><br>
+          <span>QC: ${item.qc}</span><br>
+          <span class="${statusClass}">${item.update}</span>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap;">
+          <button class="btn-icon btn-call" title="Panggil" onclick="callFinishing(${i})">📤</button>
+          <button class="btn-icon btn-edit" title="Edit Inline" onclick="editFinishingInline(${i})">✏️</button>
+          <button class="btn-icon btn-delete" title="Hapus" onclick="deleteFinishing(${i})">🗑️</button>
+        </div>`;
+
       container.appendChild(card);
     }
   });
 }
 
-function filterFinishingGrid(query){renderGridFinishing(query);}
+// Filter grid Hasil
+function filterFinishingGrid(query) {
+  renderGridFinishing(query);
+}
 
-function callFinishing(index){
-  const items=JSON.parse(localStorage.getItem('finishing'))||[]; 
-  const item=items[index]; if(!item) return;
-  document.getElementById('finishingNama').value=item.nama;
-  document.getElementById('finishingNoKS').value=item.noKS;
-  document.getElementById('finishingOrder').value=item.order;
-  document.getElementById('finishingIsi').value=item.isi;
-  document.getElementById('finishingBagus').value=item.bagus;
-  document.getElementById('finishingJenisBS').value=item.jenisBS;
-  document.getElementById('finishingQC').value=item.qc;
-  document.getElementById('finishingUpdate').value=item.update;
-  showMenu('qcFinishing'); 
+// Panggil item ke form input
+function callFinishing(index) {
+  const items = JSON.parse(localStorage.getItem('finishing')) || [];
+  const item = items[index]; 
+  if (!item) return;
+
+  document.getElementById('finishingNama').value = item.nama;
+  document.getElementById('finishingNoKS').value = item.noKS;
+  document.getElementById('finishingOrder').value = item.order;
+  document.getElementById('finishingIsi').value = item.isi;
+  document.getElementById('finishingBagus').value = item.bagus;
+  document.getElementById('finishingJenisBS').value = item.jenisBS;
+  document.getElementById('finishingQC').value = item.qc;
+  document.getElementById('finishingUpdate').value = item.update;
+
+  showMenu('qcFinishing');
   switchTab(document.querySelector('#qcFinishing .tabs button[data-tab="inputFinishing"]'));
 }
 
-function deleteFinishing(index){
-  let items=JSON.parse(localStorage.getItem('finishing'))||[];
-  if(confirm("Hapus data ini?")){
-    items.splice(index,1); 
-    localStorage.setItem('finishing',JSON.stringify(items)); 
+// Hapus item
+function deleteFinishing(index) {
+  let items = JSON.parse(localStorage.getItem('finishing')) || [];
+  if (confirm("Hapus data ini?")) {
+    items.splice(index, 1);
+    localStorage.setItem('finishing', JSON.stringify(items));
     renderGridFinishing();
   }
 }
 
-function editFinishingInline(index){
-  let items=JSON.parse(localStorage.getItem('finishing'))||[];
-  const item=items[index]; const container=document.getElementById('gridFinishing'); const card=container.children[index];
-  if(card.querySelector('.edit-inline')) return;
-  card.innerHTML=`<div class="edit-grid">
-    <input type="text" class="edit-inline" value="${item.nama}" placeholder="Nama Order">
-    <input type="text" class="edit-inline" value="${item.noKS}" placeholder="No KS">
-    <input type="number" class="edit-inline" value="${item.order}" placeholder="Order">
-    <input type="number" class="edit-inline" value="${item.isi}" placeholder="Isi/Dus">
-    <input type="number" class="edit-inline" value="${item.bagus}" placeholder="Bagus">
-    <input type="number" class="edit-inline" value="${item.jenisBS}" placeholder="BS">
-    <select class="edit-inline">
-      <option value="Anom" ${item.qc==="Anom"?'selected':''}>Anom</option>
-      <option value="Irna" ${item.qc==="Irna"?'selected':''}>Irna</option>
-    </select>
-    <select class="edit-inline">
-      <option value="Proses" ${item.update==="Proses"?'selected':''}>Proses</option>
-      <option value="Selesai" ${item.update==="Selesai"?'selected':''}>Selesai</option>
-    </select>
-  </div>
-  <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;">
-    <button class="btn-icon btn-save" title="Simpan" onclick="saveFinishingInline(${index})">💾</button>
-    <button class="btn-icon btn-delete" title="Hapus" onclick="deleteFinishing(${index})">🗑️</button>
-  </div>`;
+// Edit inline
+function editFinishingInline(index) {
+  let items = JSON.parse(localStorage.getItem('finishing')) || [];
+  const item = items[index];
+  const container = document.getElementById('gridFinishing');
+  const card = container.children[index];
+
+  if (card.querySelector('.edit-inline')) return;
+
+  card.innerHTML = `
+    <div class="edit-grid">
+      <input type="text" class="edit-inline" value="${item.nama}" placeholder="Nama Order">
+      <input type="text" class="edit-inline" value="${item.noKS}" placeholder="No KS">
+      <input type="number" class="edit-inline" value="${item.order}" placeholder="Order">
+      <input type="number" class="edit-inline" value="${item.isi}" placeholder="Isi/Dus">
+      <input type="number" class="edit-inline" value="${item.bagus}" placeholder="Bagus">
+      <input type="number" class="edit-inline" value="${item.jenisBS}" placeholder="BS">
+      <select class="edit-inline">
+        <option value="Anom" ${item.qc === "Anom" ? 'selected' : ''}>Anom</option>
+        <option value="Irna" ${item.qc === "Irna" ? 'selected' : ''}>Irna</option>
+      </select>
+      <select class="edit-inline">
+        <option value="Proses" ${item.update === "Proses" ? 'selected' : ''}>Proses</option>
+        <option value="Selesai" ${item.update === "Selesai" ? 'selected' : ''}>Selesai</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;">
+      <button class="btn-icon btn-save" title="Simpan" onclick="saveFinishingInline(${index})">💾</button>
+      <button class="btn-icon btn-delete" title="Hapus" onclick="deleteFinishing(${index})">🗑️</button>
+    </div>`;
 }
 
-function saveFinishingInline(index){
-  const container=document.getElementById('gridFinishing'); 
-  const card=container.children[index]; 
-  const inputs=card.querySelectorAll('.edit-inline');
-  let items=JSON.parse(localStorage.getItem('finishing'))||[];
-  items[index]={...items[index],
-    nama:inputs[0].value,
-    noKS:inputs[1].value,
-    order:inputs[2].value,
-    isi:inputs[3].value,
-    bagus:inputs[4].value,
-    jenisBS:inputs[5].value,
-    qc:inputs[6].value,
-    update:inputs[7].value
+// Simpan edit inline
+function saveFinishingInline(index) {
+  const container = document.getElementById('gridFinishing');
+  const card = container.children[index];
+  const inputs = card.querySelectorAll('.edit-inline');
+
+  let items = JSON.parse(localStorage.getItem('finishing')) || [];
+
+  items[index] = {
+    ...items[index],
+    nama: inputs[0].value,
+    noKS: inputs[1].value,
+    order: inputs[2].value,
+    isi: inputs[3].value,
+    bagus: inputs[4].value,
+    jenisBS: inputs[5].value,
+    qc: inputs[6].value,
+    update: inputs[7].value
   };
-  localStorage.setItem('finishing',JSON.stringify(items));
+
+  localStorage.setItem('finishing', JSON.stringify(items));
   renderGridFinishing();
 }
 
-// ===== Auto uppercase untuk input teks di tab input =====
+// Auto uppercase untuk input teks
 document.querySelectorAll('#qcFinishing input[type=text]').forEach(input => {
   input.addEventListener('input', () => {
     input.value = input.value.toUpperCase();
   });
 });
 
-// ===== Dashboard =====
-function renderDashboardFinishingCompact(){
+// ====================== DASHBOARD ======================
+function renderDashboardFinishingCompact() {
   const items = JSON.parse(localStorage.getItem('finishing')) || [];
   const containerProses = document.getElementById('dashboardFinishingProses');
   const containerSelesai = document.getElementById('dashboardFinishingSelesai');
@@ -397,12 +615,13 @@ function renderDashboardFinishingCompact(){
     const card = document.createElement('div');
     card.className = 'grid-card';
     const statusClass = item.update === "Proses" ? "status-proses" : "status-selesai";
-    
-    card.innerHTML = `<strong>${item.nama}</strong><br>
-                      <span>QC: ${item.qc}</span><br>
-                      <span class="${statusClass}">${item.update}</span>`;
-    
-    if(item.update === 'Proses') {
+
+    card.innerHTML = `
+      <strong>${item.nama}</strong><br>
+      <span>QC: ${item.qc}</span><br>
+      <span class="${statusClass}">${item.update}</span>`;
+
+    if (item.update === 'Proses') {
       containerProses.appendChild(card);
       totalProses++;
     } else {
@@ -418,40 +637,38 @@ function renderDashboardFinishingCompact(){
   document.getElementById('countSelesai').textContent = totalSelesai;
 }
 
+// Toggle grid dashboard Proses/Selesai
 document.getElementById('toggleProses').onclick = () => {
   const container = document.getElementById('dashboardFinishingProses');
   const btn = document.getElementById('toggleProses');
-  if(container.style.display === 'none'){
-    container.style.display = 'grid';
-    btn.textContent = 'Hide';
-  } else {
-    container.style.display = 'none';
-    btn.textContent = 'Show';
-  }
+  container.style.display = container.style.display === 'none' ? 'grid' : 'none';
+  btn.textContent = container.style.display === 'grid' ? 'Hide' : 'Show';
 };
 
 document.getElementById('toggleSelesai').onclick = () => {
   const container = document.getElementById('dashboardFinishingSelesai');
   const btn = document.getElementById('toggleSelesai');
-  if(container.style.display === 'none'){
-    container.style.display = 'grid';
-    btn.textContent = 'Hide';
-  } else {
-    container.style.display = 'none';
-    btn.textContent = 'Show';
-  }
+  container.style.display = container.style.display === 'none' ? 'grid' : 'none';
+  btn.textContent = container.style.display === 'grid' ? 'Hide' : 'Show';
 };
 
-// Dummy modal
-function showDetailModal(item){
-  alert(`Detail Order:\nNama: ${item.nama}\nNo KS: ${item.noKS}\nOrder: ${item.order}\nIsi: ${item.isi}\nBagus: ${item.bagus}\nBS: ${item.jenisBS}\nQC: ${item.qc}\nUpdate: ${item.update}`);
+// Dummy modal untuk detail
+function showDetailModal(item) {
+  alert(`Detail Order:
+Nama: ${item.nama}
+No KS: ${item.noKS}
+Order: ${item.order}
+Isi: ${item.isi}
+Bagus: ${item.bagus}
+BS: ${item.jenisBS}
+QC: ${item.qc}
+Update: ${item.update}`);
 }
 
-// ===== Initialize =====
+// ====================== INITIALIZE ======================
 showMenu('dashboard');
 renderGridFinishing();
-
-
 </script>
+
 </body>
 </html>
