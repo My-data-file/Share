@@ -166,7 +166,8 @@ input[type=text], input[type=number], select{
 </section>
 
 <!-- QC Finishing -->
-<section id="qcFinishing" class="card qc-section">
+<section id="qcFinishing" class="card qc-section" style="display:none;">
+
   <div class="tabs">
     <button class="active" data-tab="inputFinishing" onclick="switchTab(this)">Inputan</button>
     <button data-tab="hasilFinishing" onclick="switchTab(this)">Hasil</button>
@@ -210,7 +211,7 @@ input[type=text], input[type=number], select{
 </div>
 
 <script>
-// Menu
+// ===== Menu =====
 function showMenu(menu){
   document.querySelectorAll('main > section').forEach(sec=>sec.style.display='none');
   document.getElementById(menu).style.display='block';
@@ -219,7 +220,7 @@ function showMenu(menu){
   if(menu==='dashboard') renderDashboardFinishingCompact();
 }
 
-// Tabs
+// ===== Tabs =====
 function switchTab(btn){
   let parent=btn.parentElement;
   parent.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
@@ -228,7 +229,7 @@ function switchTab(btn){
   document.getElementById(btn.dataset.tab).classList.add('active');
 }
 
-// QC Finishing
+// ===== QC Finishing =====
 function addFinishingItem(){
   // Ambil nilai form
   let nama = document.getElementById('finishingNama').value.trim();
@@ -259,32 +260,30 @@ function addFinishingItem(){
   // Bersihkan form
   clearFinishingForm();
 
-  // Kirim data ke Spreadsheet (async, tidak menunggu)
+  // Kirim data ke Spreadsheet (async)
   const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzkgn49JZNjSQMrP0Qqmh7eT0ly4UgkBxprh56A08DetM5ke_oryHV5r-vcI8I74Q3zJg/exec";
   fetch(WEBAPP_URL, {
     method: "POST",
     body: JSON.stringify(item)
   })
   .then(res => res.json())
-  .then(data => {
-    if(data.status==="success") console.log("✅ Data berhasil dikirim ke Spreadsheet");
-    else console.warn("⚠️ Error:", data.message);
-  })
+  .then(data => console.log("✅ Data dikirim"))
   .catch(err => console.error("⚠️ Error:", err));
 }
-
 
 function clearFinishingForm(){
   ['finishingNama','finishingNoKS','finishingOrder','finishingIsi','finishingBagus','finishingJenisBS','finishingQC','finishingUpdate'].forEach(id=>document.getElementById(id).value='');
 }
+
 function renderGridFinishing(query=""){
-  const items=JSON.parse(localStorage.getItem('finishing'))||[];
-  const container=document.getElementById('gridFinishing'); container.innerHTML='';
+  const items = JSON.parse(localStorage.getItem('finishing')) || [];
+  const container = document.getElementById('gridFinishing'); container.innerHTML='';
   items.forEach((item,i)=>{
-    if(item.nama.toLowerCase().includes(query.toLowerCase())){
-      const card=document.createElement('div'); card.className='grid-card';
-      let statusClass=item.update==="Proses"?"status-proses":(item.update==="Selesai"?"status-selesai":"");
-      card.innerHTML=`<div>
+    if(item.nama.toLowerCase().includes(query.toLowerCase()) ||
+       item.noKS.toLowerCase().includes(query.toLowerCase()) ){
+      const card = document.createElement('div'); card.className='grid-card';
+      let statusClass = item.update==="Proses"?"status-proses":(item.update==="Selesai"?"status-selesai":"");
+      card.innerHTML = `<div>
         <strong>${item.tanggal}</strong><br>
         <span>Nama Order: ${item.nama}</span><br>
         <span>No KS: ${item.noKS}</span><br>
@@ -299,13 +298,17 @@ function renderGridFinishing(query=""){
         <button class="btn-icon btn-call" title="Panggil" onclick="callFinishing(${i})">📤</button>
         <button class="btn-icon btn-edit" title="Edit Inline" onclick="editFinishingInline(${i})">✏️</button>
         <button class="btn-icon btn-delete" title="Hapus" onclick="deleteFinishing(${i})">🗑️</button>
-      </div>`; container.appendChild(card);
+      </div>`;
+      container.appendChild(card);
     }
   });
 }
+
 function filterFinishingGrid(query){renderGridFinishing(query);}
+
 function callFinishing(index){
-  const items=JSON.parse(localStorage.getItem('finishing'))||[]; const item=items[index]; if(!item) return;
+  const items=JSON.parse(localStorage.getItem('finishing'))||[]; 
+  const item=items[index]; if(!item) return;
   document.getElementById('finishingNama').value=item.nama;
   document.getElementById('finishingNoKS').value=item.noKS;
   document.getElementById('finishingOrder').value=item.order;
@@ -314,12 +317,19 @@ function callFinishing(index){
   document.getElementById('finishingJenisBS').value=item.jenisBS;
   document.getElementById('finishingQC').value=item.qc;
   document.getElementById('finishingUpdate').value=item.update;
-  showMenu('qcFinishing'); switchTab(document.querySelector('#qcFinishing .tabs button[data-tab="inputFinishing"]'));
+  showMenu('qcFinishing'); 
+  switchTab(document.querySelector('#qcFinishing .tabs button[data-tab="inputFinishing"]'));
 }
+
 function deleteFinishing(index){
   let items=JSON.parse(localStorage.getItem('finishing'))||[];
-  if(confirm("Hapus data ini?")){items.splice(index,1); localStorage.setItem('finishing',JSON.stringify(items)); renderGridFinishing();}
+  if(confirm("Hapus data ini?")){
+    items.splice(index,1); 
+    localStorage.setItem('finishing',JSON.stringify(items)); 
+    renderGridFinishing();
+  }
 }
+
 function editFinishingInline(index){
   let items=JSON.parse(localStorage.getItem('finishing'))||[];
   const item=items[index]; const container=document.getElementById('gridFinishing'); const card=container.children[index];
@@ -345,6 +355,7 @@ function editFinishingInline(index){
     <button class="btn-icon btn-delete" title="Hapus" onclick="deleteFinishing(${index})">🗑️</button>
   </div>`;
 }
+
 function saveFinishingInline(index){
   const container=document.getElementById('gridFinishing'); 
   const card=container.children[index]; 
@@ -364,23 +375,14 @@ function saveFinishingInline(index){
   renderGridFinishing();
 }
 
+// ===== Auto uppercase untuk input teks di tab input =====
 document.querySelectorAll('#qcFinishing input[type=text]').forEach(input => {
   input.addEventListener('input', () => {
     input.value = input.value.toUpperCase();
   });
 });
 
-// Dasboard
-function updateDashboardDateTime(){
-  const now = new Date();
-  const options = { weekday: 'long', year: 'numeric', month: '2-digit', day: '2-digit' };
-  const dateStr = now.toLocaleDateString('id-ID', options); // Hanya tanggal + hari
-  const timeStr = now.toLocaleTimeString('id-ID');          // Hanya jam
-  document.getElementById('dashboardDateTime').textContent = `${dateStr} ${timeStr}`;
-}
-setInterval(updateDashboardDateTime, 1000);
-updateDashboardDateTime(); // Inisialisasi langsung
-
+// ===== Dashboard =====
 function renderDashboardFinishingCompact(){
   const items = JSON.parse(localStorage.getItem('finishing')) || [];
   const containerProses = document.getElementById('dashboardFinishingProses');
@@ -396,12 +398,10 @@ function renderDashboardFinishingCompact(){
     card.className = 'grid-card';
     const statusClass = item.update === "Proses" ? "status-proses" : "status-selesai";
     
-    // Tambahkan nama QC
     card.innerHTML = `<strong>${item.nama}</strong><br>
                       <span>QC: ${item.qc}</span><br>
                       <span class="${statusClass}">${item.update}</span>`;
     
-    // Tambahkan ke container sesuai status
     if(item.update === 'Proses') {
       containerProses.appendChild(card);
       totalProses++;
@@ -410,11 +410,9 @@ function renderDashboardFinishingCompact(){
       totalSelesai++;
     }
 
-    // Event detail card
     card.addEventListener('click', () => showDetailModal(item));
   });
 
-  // Update info total
   document.getElementById('countFinishing').textContent = items.length;
   document.getElementById('countProses').textContent = totalProses;
   document.getElementById('countSelesai').textContent = totalSelesai;
@@ -444,16 +442,16 @@ document.getElementById('toggleSelesai').onclick = () => {
   }
 };
 
-
-// Dummy modal untuk detail
+// Dummy modal
 function showDetailModal(item){
   alert(`Detail Order:\nNama: ${item.nama}\nNo KS: ${item.noKS}\nOrder: ${item.order}\nIsi: ${item.isi}\nBagus: ${item.bagus}\nBS: ${item.jenisBS}\nQC: ${item.qc}\nUpdate: ${item.update}`);
 }
 
-
-// Initialize
+// ===== Initialize =====
 showMenu('dashboard');
 renderGridFinishing();
+
+
 </script>
 </body>
 </html>
