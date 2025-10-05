@@ -105,11 +105,13 @@ body.dark input[type=text]:focus, body.dark input[type=number]:focus, body.dark 
 <body>
 <header>
   📊 Sistem QC 1.0
+  <!-- Tanggal dan Jam -->
+  <div id="dashboardDateTime" style="text-align:center; margin-bottom:10px; font-weight:600;"></div>
   <button id="darkToggle">🌙 Dark</button>
 </header>
 <div class="container">
   <nav>
-    <button onclick="showMenu('dashboard')" class="active">Dashboard</button>
+    <button onclick="showMenu('dashboard')" class="active">DASBOARD</button>
     <button onclick="showMenu('qcBapro')">QC BAPRO</button>
     <button onclick="showMenu('qcPA')">QC PA</button>
     <button onclick="showMenu('qcFinishing')">QC Finishing</button>
@@ -338,6 +340,16 @@ function saveFinishingInline(index){
   renderGridFinishing();
 }
 
+function updateDashboardDateTime(){
+  const now = new Date();
+  const options = { weekday: 'long', year: 'numeric', month: '2-digit', day: '2-digit' };
+  const dateStr = now.toLocaleDateString('id-ID', options); // Hanya tanggal + hari
+  const timeStr = now.toLocaleTimeString('id-ID');          // Hanya jam
+  document.getElementById('dashboardDateTime').textContent = `${dateStr} ${timeStr}`;
+}
+setInterval(updateDashboardDateTime, 1000);
+updateDashboardDateTime(); // Inisialisasi langsung
+
 function renderDashboardFinishingCompact(){
   const items = JSON.parse(localStorage.getItem('finishing')) || [];
   const containerProses = document.getElementById('dashboardFinishingProses');
@@ -352,7 +364,11 @@ function renderDashboardFinishingCompact(){
     const card = document.createElement('div');
     card.className = 'grid-card';
     const statusClass = item.update === "Proses" ? "status-proses" : "status-selesai";
-    card.innerHTML = `<strong>${item.nama}</strong><br><span class="${statusClass}">${item.update}</span>`;
+    
+    // Tambahkan nama QC
+    card.innerHTML = `<strong>${item.nama}</strong><br>
+                      <span>QC: ${item.qc}</span><br>
+                      <span class="${statusClass}">${item.update}</span>`;
     
     // Tambahkan ke container sesuai status
     if(item.update === 'Proses') {
