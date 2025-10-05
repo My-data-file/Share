@@ -21,10 +21,6 @@ header{
   position:sticky;top:0;z-index:10;
   display:flex;align-items:center;justify-content:space-between;
 }
-#darkToggle{
-  padding:6px 12px;border:none;border-radius:8px;
-  background:#fff;color:#111;cursor:pointer;font-weight:500;
-}
 .container{
   display:flex;flex-direction:row;width:100%;min-height:100vh;
 }
@@ -91,31 +87,21 @@ input[type=text], input[type=number], select{
 
 @media(max-width:768px){.container{flex-direction:column;}nav{width:100%;display:flex;overflow-x:auto;padding:.5rem;}nav button{flex:1;min-width:120px;margin:0 4px 0 0;}main{padding:1rem;}}
 
-body.dark{background:#111827;color:#f3f4f6;}
-body.dark header{background:#1f2937;color:#f3f4f6;}
-body.dark #darkToggle{background:#374151;color:#f3f4f6;}
-body.dark nav{background:#1f2937;border-right:1px solid #374151;}
-body.dark nav button{background:#374151;color:#f3f4f6;}
-body.dark nav button.active{background:#0ea5a4;}
-body.dark .card{background:#1f2937;color:#f3f4f6;box-shadow:0 2px 8px rgba(0,0,0,.5);}
-body.dark input[type=text], body.dark input[type=number], body.dark select{background:#111827;border:1px solid #4b5563;color:#f3f4f6;}
-body.dark input[type=text]:focus, body.dark input[type=number]:focus, body.dark select:focus{border-color:#0ea5a4;box-shadow:0 0 0 2px rgba(14,165,164,.4);}
 </style>
 </head>
 <body>
 <header>
-  📊 Sistem QC 1.0
+  📊 Sistem QC
   <!-- Tanggal dan Jam -->
   <div id="dashboardDateTime" style="text-align:center; margin-bottom:10px; font-weight:600; font-size:1.0rem;"></div>
-  <button id="darkToggle">🌙 Dark</button>
 </header>
 <div class="container">
   <nav>
     <button onclick="showMenu('dashboard')" class="active">DASBOARD</button>
     <button onclick="showMenu('qcBapro')">QC BAPRO</button>
     <button onclick="showMenu('qcPA')">QC PA</button>
-    <button onclick="showMenu('qcFinishing')">QC Finishing</button>
-    <button onclick="showMenu('qcLem')">QC Lem</button>
+    <button onclick="showMenu('qcFinishing')">QC FINISHING</button>
+    <button onclick="showMenu('qcLem')">QC LEM</button>
   </nav>
   <main>
 
@@ -209,9 +195,6 @@ body.dark input[type=text]:focus, body.dark input[type=number]:focus, body.dark 
 </div>
 
 <script>
-// Dark mode toggle
-document.getElementById('darkToggle').onclick = () => document.body.classList.toggle('dark');
-
 // Menu
 function showMenu(menu){
   document.querySelectorAll('main > section').forEach(sec=>sec.style.display='none');
@@ -232,24 +215,50 @@ function switchTab(btn){
 
 // QC Finishing
 function addFinishingItem(){
-  let nama=document.getElementById('finishingNama').value.trim();
-  let noKS=document.getElementById('finishingNoKS').value.trim();
-  let order=document.getElementById('finishingOrder').value.trim();
-  let isi=document.getElementById('finishingIsi').value.trim();
-  let bagus=document.getElementById('finishingBagus').value.trim();
-  let jenisBS=document.getElementById('finishingJenisBS').value.trim();
-  let qc=document.getElementById('finishingQC').value;
-  let update=document.getElementById('finishingUpdate').value;
-  if(!nama || !noKS || !order || !isi || !bagus || !jenisBS || !qc || !update){alert("⚠️ Semua kolom wajib diisi!");return;}
+  // Ambil nilai form
+  let nama = document.getElementById('finishingNama').value.trim();
+  let noKS = document.getElementById('finishingNoKS').value.trim();
+  let order = document.getElementById('finishingOrder').value.trim();
+  let isi = document.getElementById('finishingIsi').value.trim();
+  let bagus = document.getElementById('finishingBagus').value.trim();
+  let jenisBS = document.getElementById('finishingJenisBS').value.trim();
+  let qc = document.getElementById('finishingQC').value;
+  let update = document.getElementById('finishingUpdate').value;
+
+  if(!nama || !noKS || !order || !isi || !bagus || !jenisBS || !qc || !update){
+    alert("⚠️ Semua kolom wajib diisi!"); return;
+  }
   if(!confirm("Apakah Anda yakin ingin menambahkan data ini?")) return;
-  let items=JSON.parse(localStorage.getItem('finishing'))||[];
-  let now=new Date().toLocaleString();
-  items.push({tanggal:now,nama,noKS,order,isi,bagus,jenisBS,qc,update});
-  localStorage.setItem('finishing',JSON.stringify(items));
-  clearFinishingForm();
-  renderGridFinishing();
+
+  const item = {tanggal: new Date().toLocaleString(), nama, noKS, order, isi, bagus, jenisBS, qc, update};
+
+  // Simpan di localStorage
+  let items = JSON.parse(localStorage.getItem('finishing')) || [];
+  items.push(item);
+  localStorage.setItem('finishing', JSON.stringify(items));
+
+  // Render tab Hasil segera
   switchTab(document.querySelector('#qcFinishing .tabs button[data-tab="hasilFinishing"]'));
+  renderGridFinishing();
+
+  // Bersihkan form
+  clearFinishingForm();
+
+  // Kirim data ke Spreadsheet (async, tidak menunggu)
+  const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzkgn49JZNjSQMrP0Qqmh7eT0ly4UgkBxprh56A08DetM5ke_oryHV5r-vcI8I74Q3zJg/exec";
+  fetch(WEBAPP_URL, {
+    method: "POST",
+    body: JSON.stringify(item)
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.status==="success") console.log("✅ Data berhasil dikirim ke Spreadsheet");
+    else console.warn("⚠️ Error:", data.message);
+  })
+  .catch(err => console.error("⚠️ Error:", err));
 }
+
+
 function clearFinishingForm(){
   ['finishingNama','finishingNoKS','finishingOrder','finishingIsi','finishingBagus','finishingJenisBS','finishingQC','finishingUpdate'].forEach(id=>document.getElementById(id).value='');
 }
@@ -340,6 +349,13 @@ function saveFinishingInline(index){
   renderGridFinishing();
 }
 
+document.querySelectorAll('#qcFinishing input[type=text]').forEach(input => {
+  input.addEventListener('input', () => {
+    input.value = input.value.toUpperCase();
+  });
+});
+
+// Dasboard
 function updateDashboardDateTime(){
   const now = new Date();
   const options = { weekday: 'long', year: 'numeric', month: '2-digit', day: '2-digit' };
