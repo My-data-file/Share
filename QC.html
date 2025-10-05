@@ -87,14 +87,29 @@ input[type=text], input[type=number], select{
 
 @media(max-width:768px){.container{flex-direction:column;}nav{width:100%;display:flex;overflow-x:auto;padding:.5rem;}nav button{flex:1;min-width:120px;margin:0 4px 0 0;}main{padding:1rem;}}
 
+#headerTitle {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-transform: uppercase; /* Hanya judul kapital */
+  text-align: center;
+}
+
+#headerTime {
+  font-size: 0.85rem; /* lebih kecil */
+  font-weight: normal;
+  text-transform: none; /* Tetap normal */
+  text-align: center;
+  margin-top: 2px;
+}
+
 </style>
 </head>
 <body>
 <header>
-  📊 Sistem QC
-  <!-- Tanggal dan Jam -->
-  <div id="dashboardDateTime" style="text-align:center; margin-bottom:10px; font-weight:600; font-size:1.0rem;"></div>
+  <div id="headerTitle">📊 Sistem QC</div>
+  <div id="headerTime">Selasa, 5 Oktober 2025 14:30</div>
 </header>
+
 <div class="container">
   <nav>
     <button onclick="showMenu('dashboard')" class="active">DASBOARD</button>
