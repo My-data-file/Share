@@ -385,38 +385,133 @@ input[type=text], input[type=number], select{
 </div>
 
 <script>
+// ====================== KONFIGURASI ======================
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyGVUa93G-vqxU_uv5yx4HzGlwfT7rwX-65WkndaCVh5CjOArak7eoZIj5DCyOyQe0r/exec";
+
+// ====================== WAKTU HEADER ======================
+function updateTime(){
+  document.getElementById('headerTime').textContent =
+    new Date().toLocaleString('id-ID',{weekday:'long',day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+setInterval(updateTime,1000); updateTime();
+
 // ====================== MENU ======================
 function showMenu(menu) {
-  // Sembunyikan semua section
   document.querySelectorAll('main > section').forEach(sec => sec.style.display = 'none');
-
-  // Tampilkan section yang dipilih
   document.getElementById(menu).style.display = 'block';
-
-  // Update tombol nav aktif
   document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
   document.querySelector(`nav button[onclick="showMenu('${menu}')"]`).classList.add('active');
 
-  // Render dashboard jika menu dashboard
   if (menu === 'dashboard') renderDashboardFinishingCompact();
 }
 
 // ====================== TABS ======================
 function switchTab(btn) {
   const parent = btn.parentElement;
-
-  // Hapus active pada semua tab
   parent.querySelectorAll('button').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-
-  // Tampilkan konten tab yang dipilih
   parent.parentElement.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
   document.getElementById(btn.dataset.tab).classList.add('active');
+
+  if (btn.dataset.tab === 'hasilFinishing') {
+    loadFinishingItems(); // refresh saat buka tab hasil
+  }
 }
 
-// ====================== QC FINISHING ======================
+// ====================== JSONP HELPER ======================
+function jsonpGet(url, params = {}) {
+  return new Promise((resolve, reject) => {
+    const cbName = 'jsonp_cb_' + Math.random().toString(36).slice(2, 9);
+    params = params || {};
+    params.callback = cbName;
+    const q = Object.entries(params).map(([k,v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join('&');
+    const script = document.createElement('script');
+    script.src = `${url}?${q}`;
+    script.onerror = () => {
+      cleanup();
+      reject(new Error('JSONP load error'));
+    };
+    window[cbName] = (res) => {
+      cleanup();
+      resolve(res);
+    };
+    function cleanup(){
+      delete window[cbName];
+      script.remove();
+    }
+    document.body.appendChild(script);
+  });
+}
 
-// Tambah item baru
+// ====================== GLOBAL STATE ======================
+let finishingItems = []; // array yang diambil dari sheet
+
+// ====================== RENDER GRID HASIL (dengan tombol Panggil, Edit, Hapus) ======================
+function renderGridFinishing(query = "") {
+  const container = document.getElementById('gridFinishing');
+  container.innerHTML = '';
+
+  const q = (query||'').toLowerCase();
+
+  finishingItems.forEach((item, i) => {
+    if (q && !(String(item.nama||'').toLowerCase().includes(q) || String(item.noKS||'').toLowerCase().includes(q))) return;
+
+    const card = document.createElement('div');
+    card.className = 'grid-card';
+
+    const statusClass = item.update === "Proses" ? "status-proses" : (item.update === "Selesai" ? "status-selesai" : "");
+
+    // tampilkan data (jika ada properti tanggal, tampilkan)
+    const tanggal = item.tanggal ? `<strong>${escapeHtml(item.tanggal)}</strong><br>` : '';
+
+    card.innerHTML = `
+      <div>
+        ${tanggal}
+        <span>Nama Order: ${escapeHtml(item.nama||'')}</span><br>
+        <span>No KS: ${escapeHtml(item.noKS||'')}</span><br>
+        <span>Order: ${escapeHtml(item.order||'')}</span><br>
+        <span>Isi/Dus: ${escapeHtml(item.isi||'')}</span><br>
+        <span>Bagus: ${escapeHtml(item.bagus||'')}</span><br>
+        <span>BS: ${escapeHtml(item.jenisBS||'')}</span><br>
+        <span>QC: ${escapeHtml(item.qc||'')}</span><br>
+        <span class="${statusClass}">${escapeHtml(item.update||'')}</span>
+      </div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
+        <button class="btn-icon btn-call" title="Panggil" onclick="callFinishing(${i})">📤</button>
+        <button class="btn-icon btn-edit" title="Edit Inline" onclick="editFinishingInline(${i})">✏️</button>
+        <button class="btn-icon btn-delete" title="Hapus" onclick="deleteFinishing(${i})">🗑️</button>
+      </div>`;
+
+    container.appendChild(card);
+  });
+
+  // update dashboard counts too
+  renderDashboardFinishingCompact();
+}
+
+// simple escape
+function escapeHtml(s){ return String(s||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+// ====================== LOAD DATA DARI SPREADSHEET ======================
+async function loadFinishingItems(){
+  try{
+    const res = await jsonpGet(WEBAPP_URL, { action: 'get', sheet: 'Finishing' });
+    if(res && res.status === 'ok' && Array.isArray(res.data)){
+      // simpan ke state
+      finishingItems = res.data.map((it, idx) => {
+        // pastikan setiap item punya id (cari id/_row/row), kalau tidak ada beri index
+        return { __index: idx, id: (it.id||it._row||it.row||null), ...it };
+      });
+      renderGridFinishing();
+    } else {
+      console.warn('loadFinishingItems unexpected', res);
+    }
+  }catch(err){
+    console.error('⚠️ Error loadFinishingItems', err);
+  }
+}
+
+// ====================== TAMBAH DATA (POST via dynamic form) ======================
 function addFinishingItem() {
   const nama = document.getElementById('finishingNama').value.trim();
   const noKS = document.getElementById('finishingNoKS').value.trim();
@@ -434,175 +529,153 @@ function addFinishingItem() {
 
   if (!confirm("Apakah Anda yakin ingin menambahkan data ini?")) return;
 
-  const item = { tanggal: new Date().toLocaleString(), nama, noKS, order, isi, bagus, jenisBS, qc, update };
+  const payload = { action: 'add', sheet: 'Finishing', tanggal: new Date().toLocaleString(), nama, noKS, order, isi, bagus, jenisBS, qc, update };
 
-  // Simpan ke localStorage
-  let items = JSON.parse(localStorage.getItem('finishing')) || [];
-  items.push(item);
-  localStorage.setItem('finishing', JSON.stringify(items));
-
-  // Render tab Hasil
-  switchTab(document.querySelector('#qcFinishing .tabs button[data-tab="hasilFinishing"]'));
-  renderGridFinishing();
-
-  // Bersihkan form
+  postPayload(payload);
   clearFinishingForm();
-
-  // Kirim ke Spreadsheet (async)
-  const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzkgn49JZNjSQMrP0Qqmh7eT0ly4UgkBxprh56A08DetM5ke_oryHV5r-vcI8I74Q3zJg/exec";
-  fetch(WEBAPP_URL, {
-    method: "POST",
-    body: JSON.stringify(item)
-  })
-    .then(res => res.json())
-    .then(data => console.log("✅ Data dikirim"))
-    .catch(err => console.error("⚠️ Error:", err));
 }
 
-// Bersihkan form input
-function clearFinishingForm() {
-  ['finishingNama', 'finishingNoKS', 'finishingOrder', 'finishingIsi', 'finishingBagus', 'finishingJenisBS', 'finishingQC', 'finishingUpdate']
-    .forEach(id => document.getElementById(id).value = '');
-}
+// ====================== PANGGIL (isi form dari item) ======================
+function callFinishing(index){
+  const item = finishingItems[index];
+  if(!item) return;
+  document.getElementById('finishingNama').value = item.nama || '';
+  document.getElementById('finishingNoKS').value = item.noKS || '';
+  document.getElementById('finishingOrder').value = item.order || '';
+  document.getElementById('finishingIsi').value = item.isi || '';
+  document.getElementById('finishingBagus').value = item.bagus || '';
+  document.getElementById('finishingJenisBS').value = item.jenisBS || '';
+  document.getElementById('finishingQC').value = item.qc || '';
+  document.getElementById('finishingUpdate').value = item.update || '';
 
-// Render grid tab Hasil
-function renderGridFinishing(query = "") {
-  const items = JSON.parse(localStorage.getItem('finishing')) || [];
-  const container = document.getElementById('gridFinishing');
-  container.innerHTML = '';
-
-  items.forEach((item, i) => {
-    if (item.nama.toLowerCase().includes(query.toLowerCase()) ||
-        item.noKS.toLowerCase().includes(query.toLowerCase())) {
-
-      const card = document.createElement('div');
-      card.className = 'grid-card';
-
-      const statusClass = item.update === "Proses" ? "status-proses" : (item.update === "Selesai" ? "status-selesai" : "");
-
-      card.innerHTML = `
-        <div>
-          <strong>${item.tanggal}</strong><br>
-          <span>Nama Order: ${item.nama}</span><br>
-          <span>No KS: ${item.noKS}</span><br>
-          <span>Order: ${item.order}</span><br>
-          <span>Isi/Dus: ${item.isi}</span><br>
-          <span>Bagus: ${item.bagus}</span><br>
-          <span>BS: ${item.jenisBS}</span><br>
-          <span>QC: ${item.qc}</span><br>
-          <span class="${statusClass}">${item.update}</span>
-        </div>
-        <div style="display:flex;gap:4px;flex-wrap:wrap;">
-          <button class="btn-icon btn-call" title="Panggil" onclick="callFinishing(${i})">📤</button>
-          <button class="btn-icon btn-edit" title="Edit Inline" onclick="editFinishingInline(${i})">✏️</button>
-          <button class="btn-icon btn-delete" title="Hapus" onclick="deleteFinishing(${i})">🗑️</button>
-        </div>`;
-
-      container.appendChild(card);
-    }
-  });
-}
-
-// Filter grid Hasil
-function filterFinishingGrid(query) {
-  renderGridFinishing(query);
-}
-
-// Panggil item ke form input
-function callFinishing(index) {
-  const items = JSON.parse(localStorage.getItem('finishing')) || [];
-  const item = items[index]; 
-  if (!item) return;
-
-  document.getElementById('finishingNama').value = item.nama;
-  document.getElementById('finishingNoKS').value = item.noKS;
-  document.getElementById('finishingOrder').value = item.order;
-  document.getElementById('finishingIsi').value = item.isi;
-  document.getElementById('finishingBagus').value = item.bagus;
-  document.getElementById('finishingJenisBS').value = item.jenisBS;
-  document.getElementById('finishingQC').value = item.qc;
-  document.getElementById('finishingUpdate').value = item.update;
-
+  // Tampilkan menu finishing dan tab inputan
   showMenu('qcFinishing');
-  switchTab(document.querySelector('#qcFinishing .tabs button[data-tab="inputFinishing"]'));
+  const tabBtn = document.querySelector('#qcFinishing .tabs button[data-tab="inputFinishing"]');
+  if(tabBtn) switchTab(tabBtn);
 }
 
-// Hapus item
-function deleteFinishing(index) {
-  let items = JSON.parse(localStorage.getItem('finishing')) || [];
-  if (confirm("Hapus data ini?")) {
-    items.splice(index, 1);
-    localStorage.setItem('finishing', JSON.stringify(items));
-    renderGridFinishing();
-  }
+// ====================== HAPUS ITEM ======================
+function deleteFinishing(index){
+  const item = finishingItems[index];
+  if(!item) return;
+  if(!confirm('Hapus data ini?')) return;
+
+  // prefer id jika ada, kalau tidak kirim index
+  const identifier = item.id || item._row || item.row || item.__index;
+  const payload = { action:'delete', sheet:'Finishing', id: identifier, index: item.__index };
+
+  postPayload(payload);
 }
 
-// Edit inline
-function editFinishingInline(index) {
-  let items = JSON.parse(localStorage.getItem('finishing')) || [];
-  const item = items[index];
+// ====================== EDIT INLINE ======================
+function editFinishingInline(index){
+  const item = finishingItems[index];
   const container = document.getElementById('gridFinishing');
   const card = container.children[index];
-
-  if (card.querySelector('.edit-inline')) return;
+  if(!card) return;
+  if(card.querySelector('.edit-inline')) return;
 
   card.innerHTML = `
     <div class="edit-grid">
-      <input type="text" class="edit-inline" value="${item.nama}" placeholder="Nama Order">
-      <input type="text" class="edit-inline" value="${item.noKS}" placeholder="No KS">
-      <input type="number" class="edit-inline" value="${item.order}" placeholder="Order">
-      <input type="number" class="edit-inline" value="${item.isi}" placeholder="Isi/Dus">
-      <input type="number" class="edit-inline" value="${item.bagus}" placeholder="Bagus">
-      <input type="number" class="edit-inline" value="${item.jenisBS}" placeholder="BS">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.nama||'')}" placeholder="Nama Order">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.noKS||'')}" placeholder="No KS">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.order||'')}" placeholder="Order">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.isi||'')}" placeholder="Isi/Dus">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.bagus||'')}" placeholder="Bagus">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.jenisBS||'')}" placeholder="BS">
       <select class="edit-inline">
-        <option value="Anom" ${item.qc === "Anom" ? 'selected' : ''}>Anom</option>
-        <option value="Irna" ${item.qc === "Irna" ? 'selected' : ''}>Irna</option>
+        <option value="Anom" ${item.qc==='Anom'? 'selected':''}>Anom</option>
+        <option value="Irna" ${item.qc==='Irna'? 'selected':''}>Irna</option>
       </select>
       <select class="edit-inline">
-        <option value="Proses" ${item.update === "Proses" ? 'selected' : ''}>Proses</option>
-        <option value="Selesai" ${item.update === "Selesai" ? 'selected' : ''}>Selesai</option>
+        <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
+        <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
       </select>
     </div>
-    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;">
+    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
       <button class="btn-icon btn-save" title="Simpan" onclick="saveFinishingInline(${index})">💾</button>
       <button class="btn-icon btn-delete" title="Hapus" onclick="deleteFinishing(${index})">🗑️</button>
     </div>`;
 }
 
-// Simpan edit inline
-function saveFinishingInline(index) {
+// ====================== SIMPAN HASIL EDIT INLINE ======================
+function saveFinishingInline(index){
   const container = document.getElementById('gridFinishing');
   const card = container.children[index];
+  if(!card) return;
   const inputs = card.querySelectorAll('.edit-inline');
 
-  let items = JSON.parse(localStorage.getItem('finishing')) || [];
-
-  items[index] = {
-    ...items[index],
-    nama: inputs[0].value,
-    noKS: inputs[1].value,
-    order: inputs[2].value,
-    isi: inputs[3].value,
-    bagus: inputs[4].value,
-    jenisBS: inputs[5].value,
+  const updated = {
+    nama: inputs[0].value.trim(),
+    noKS: inputs[1].value.trim(),
+    order: inputs[2].value.trim(),
+    isi: inputs[3].value.trim(),
+    bagus: inputs[4].value.trim(),
+    jenisBS: inputs[5].value.trim(),
     qc: inputs[6].value,
     update: inputs[7].value
   };
 
-  localStorage.setItem('finishing', JSON.stringify(items));
-  renderGridFinishing();
+  const orig = finishingItems[index];
+  const identifier = orig.id || orig._row || orig.row || orig.__index;
+
+  // 🔥 Tambahkan ini agar tanggal lama tetap disertakan!
+  const payload = { 
+    action: 'update',
+    sheet: 'Finishing',
+    id: identifier,
+    index: orig.__index,
+    tanggal: orig.tanggal || new Date().toLocaleString('id-ID'), // ← tambahkan tanggal lama atau isi baru jika kosong
+    ...updated 
+  };
+
+  postPayload(payload);
 }
 
-// Auto uppercase untuk input teks
-document.querySelectorAll('#qcFinishing input[type=text]').forEach(input => {
-  input.addEventListener('input', () => {
-    input.value = input.value.toUpperCase();
+// ====================== POST PAYLOAD (via dynamic form + iframe) ======================
+function ensureIframe(){
+  if(document.querySelector('iframe[name="hidden_iframe_post"]')) return;
+  const ifr = document.createElement('iframe');
+  ifr.name = 'hidden_iframe_post';
+  ifr.style.display = 'none';
+  ifr.addEventListener('load', ()=> {
+    // reload data after short delay to allow sheet to update
+    setTimeout(()=>{ loadFinishingItems(); }, 800);
   });
-});
+  document.body.appendChild(ifr);
+}
 
-// ====================== DASHBOARD ======================
+function postPayload(payloadObj){
+  ensureIframe();
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = WEBAPP_URL;
+  form.target = 'hidden_iframe_post';
+
+  const input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'payload';
+  input.value = JSON.stringify(payloadObj);
+  form.appendChild(input);
+
+  document.body.appendChild(form);
+  form.submit();
+  form.remove();
+}
+
+// ====================== FILTER PADA TAB HASIL ======================
+function filterFinishingGrid(query){
+  renderGridFinishing(query);
+}
+
+// ====================== CLEAR FORM ======================
+function clearFinishingForm() {
+  ['finishingNama', 'finishingNoKS', 'finishingOrder', 'finishingIsi', 'finishingBagus', 'finishingJenisBS', 'finishingQC', 'finishingUpdate']
+    .forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+}
+
+// ====================== DASHBOARD (compact) ======================
 function renderDashboardFinishingCompact() {
-  const items = JSON.parse(localStorage.getItem('finishing')) || [];
   const containerProses = document.getElementById('dashboardFinishingProses');
   const containerSelesai = document.getElementById('dashboardFinishingSelesai');
   containerProses.innerHTML = '';
@@ -611,15 +684,15 @@ function renderDashboardFinishingCompact() {
   let totalProses = 0;
   let totalSelesai = 0;
 
-  items.forEach(item => {
+  finishingItems.forEach(item => {
     const card = document.createElement('div');
     card.className = 'grid-card';
     const statusClass = item.update === "Proses" ? "status-proses" : "status-selesai";
 
     card.innerHTML = `
-      <strong>${item.nama}</strong><br>
-      <span>QC: ${item.qc}</span><br>
-      <span class="${statusClass}">${item.update}</span>`;
+      <strong>${escapeHtml(item.nama||'')}</strong><br>
+      <span>QC: ${escapeHtml(item.qc||'')}</span><br>
+      <span class="${statusClass}">${escapeHtml(item.update||'')}</span>`;
 
     if (item.update === 'Proses') {
       containerProses.appendChild(card);
@@ -632,25 +705,10 @@ function renderDashboardFinishingCompact() {
     card.addEventListener('click', () => showDetailModal(item));
   });
 
-  document.getElementById('countFinishing').textContent = items.length;
+  document.getElementById('countFinishing').textContent = finishingItems.length;
   document.getElementById('countProses').textContent = totalProses;
   document.getElementById('countSelesai').textContent = totalSelesai;
 }
-
-// Toggle grid dashboard Proses/Selesai
-document.getElementById('toggleProses').onclick = () => {
-  const container = document.getElementById('dashboardFinishingProses');
-  const btn = document.getElementById('toggleProses');
-  container.style.display = container.style.display === 'none' ? 'grid' : 'none';
-  btn.textContent = container.style.display === 'grid' ? 'Hide' : 'Show';
-};
-
-document.getElementById('toggleSelesai').onclick = () => {
-  const container = document.getElementById('dashboardFinishingSelesai');
-  const btn = document.getElementById('toggleSelesai');
-  container.style.display = container.style.display === 'none' ? 'grid' : 'none';
-  btn.textContent = container.style.display === 'grid' ? 'Hide' : 'Show';
-};
 
 // Dummy modal untuk detail
 function showDetailModal(item) {
@@ -665,9 +723,18 @@ QC: ${item.qc}
 Update: ${item.update}`);
 }
 
-// ====================== INITIALIZE ======================
+// ====================== AUTO UPPERCASE untuk input teks (khusus area finishing) ======================
+document.addEventListener('input', (e) => {
+  if (!e.target) return;
+  if (e.target.tagName === 'INPUT' && e.target.type === 'text' && e.target.closest && e.target.closest('#qcFinishing')) {
+    e.target.value = e.target.value.toUpperCase();
+  }
+});
+
+// ====================== INISIALISASI ======================
 showMenu('dashboard');
-renderGridFinishing();
+loadFinishingItems();
+
 </script>
 
 </body>
