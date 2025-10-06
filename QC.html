@@ -519,21 +519,45 @@ function addFinishingItem() {
   const isi = document.getElementById('finishingIsi').value.trim();
   const bagus = document.getElementById('finishingBagus').value.trim();
   const jenisBS = document.getElementById('finishingJenisBS').value.trim();
-  const qc = document.getElementById('finishingQC').value;
-  const update = document.getElementById('finishingUpdate').value;
+  const qc = document.getElementById('finishingQC').value.trim();
+  const update = document.getElementById('finishingUpdate').value.trim();
 
-  if (!nama || !noKS || !order || !isi || !bagus || !jenisBS || !qc || !update) {
-    alert("⚠️ Semua kolom wajib diisi!");
+  if (!nama || !noKS) {
+    alert('Nama dan No KS wajib diisi!');
     return;
   }
 
-  if (!confirm("Apakah Anda yakin ingin menambahkan data ini?")) return;
+  // 🔥 Gunakan format tanggal lokal (bukan ISO)
+  const tanggalFormatted = new Date().toLocaleString('id-ID', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
 
-  const payload = { action: 'add', sheet: 'Finishing', tanggal: new Date().toLocaleString(), nama, noKS, order, isi, bagus, jenisBS, qc, update };
+  const payload = {
+    action: 'add',
+    sheet: 'Finishing',
+    tanggal: tanggalFormatted,
+    nama,
+    noKS,
+    order,
+    isi,
+    bagus,
+    jenisBS,
+    qc,
+    update
+  };
 
   postPayload(payload);
   clearFinishingForm();
+
+  // Setelah kirim, muat ulang data
+  setTimeout(() => loadFinishingItems(), 800);
 }
+
 
 // ====================== PANGGIL (isi form dari item) ======================
 function callFinishing(index){
@@ -599,10 +623,10 @@ function editFinishingInline(index){
 }
 
 // ====================== SIMPAN HASIL EDIT INLINE ======================
-function saveFinishingInline(index){
+function saveFinishingInline(index) {
   const container = document.getElementById('gridFinishing');
   const card = container.children[index];
-  if(!card) return;
+  if (!card) return;
   const inputs = card.querySelectorAll('.edit-inline');
 
   const updated = {
@@ -619,14 +643,23 @@ function saveFinishingInline(index){
   const orig = finishingItems[index];
   const identifier = orig.id || orig._row || orig.row || orig.__index;
 
-  // 🔥 Tambahkan ini agar tanggal lama tetap disertakan!
-  const payload = { 
+  // 🔥 Gunakan tanggal lama kalau ada, kalau tidak, format baru lokal
+  const tanggalFormatted = orig.tanggal || new Date().toLocaleString('id-ID', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
+
+  const payload = {
     action: 'update',
     sheet: 'Finishing',
     id: identifier,
     index: orig.__index,
-    tanggal: orig.tanggal || new Date().toLocaleString('id-ID'), // ← tambahkan tanggal lama atau isi baru jika kosong
-    ...updated 
+    tanggal: tanggalFormatted,
+    ...updated
   };
 
   postPayload(payload);
@@ -722,6 +755,32 @@ BS: ${item.jenisBS}
 QC: ${item.qc}
 Update: ${item.update}`);
 }
+
+
+
+// ====================== TOGGLE VIEW (Show/Hide di Dashboard) ======================
+document.addEventListener('DOMContentLoaded', () => {
+  const btnProses = document.getElementById('toggleProses');
+  const btnSelesai = document.getElementById('toggleSelesai');
+  const gridProses = document.getElementById('dashboardFinishingProses');
+  const gridSelesai = document.getElementById('dashboardFinishingSelesai');
+
+  if (btnProses && gridProses) {
+    btnProses.addEventListener('click', () => {
+      const visible = gridProses.style.display === 'block';
+      gridProses.style.display = visible ? 'none' : 'block';
+      btnProses.textContent = visible ? 'Show' : 'Hide';
+    });
+  }
+
+  if (btnSelesai && gridSelesai) {
+    btnSelesai.addEventListener('click', () => {
+      const visible = gridSelesai.style.display === 'block';
+      gridSelesai.style.display = visible ? 'none' : 'block';
+      btnSelesai.textContent = visible ? 'Show' : 'Hide';
+    });
+  }
+});
 
 // ====================== AUTO UPPERCASE untuk input teks (khusus area finishing) ======================
 document.addEventListener('input', (e) => {
