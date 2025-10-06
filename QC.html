@@ -579,7 +579,7 @@ function addFinishingItem() {
   clearFinishingForm();
 
   // Setelah kirim, muat ulang data
-  setTimeout(() => loadFinishingItems(), 800);
+  setTimeout(() => loadFinishingItems(), 10000);
 }
 
 
@@ -697,7 +697,7 @@ function ensureIframe(){
   ifr.style.display = 'none';
   ifr.addEventListener('load', ()=> {
     // reload data after short delay to allow sheet to update
-    setTimeout(()=>{ loadFinishingItems(); }, 800);
+    setTimeout(()=>{ loadFinishingItems(); }, 10000);
   });
   document.body.appendChild(ifr);
 }
@@ -731,7 +731,7 @@ function clearFinishingForm() {
     .forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
 }
 
-// ====================== DASHBOARD (compact) ======================
+// ====================== DASHBOARD (compact dengan tanggal & status case-insensitive) ======================
 function renderDashboardFinishingCompact() {
   const containerProses = document.getElementById('dashboardFinishingProses');
   const containerSelesai = document.getElementById('dashboardFinishingSelesai');
@@ -742,32 +742,42 @@ function renderDashboardFinishingCompact() {
   let totalSelesai = 0;
 
   finishingItems.forEach(item => {
+    const updateVal = (item.update || "").trim().toLowerCase();
+    const tanggal = item.tanggal ? item.tanggal : "-";
+
     const card = document.createElement('div');
     card.className = 'grid-card';
-    const statusClass = item.update === "Proses" ? "status-proses" : "status-selesai";
+
+    const statusClass = updateVal === "proses" ? "status-proses" :
+                        updateVal === "selesai" ? "status-selesai" : "";
 
     card.innerHTML = `
-      <strong>${escapeHtml(item.nama||'')}</strong><br>
-      <span>QC: ${escapeHtml(item.qc||'')}</span><br>
-      <span class="${statusClass}">${escapeHtml(item.update||'')}</span>`;
+      <strong>${escapeHtml(item.nama || '')}</strong><br>
+      <span>QC: ${escapeHtml(item.qc || '')}</span><br>
+      <span>📅 ${escapeHtml(tanggal)}</span><br>
+      <span class="${statusClass}">${escapeHtml(item.update || '')}</span>
+    `;
 
-    if (item.update === 'Proses') {
+    // Tempatkan ke grid sesuai status
+    if (updateVal === 'proses') {
       containerProses.appendChild(card);
       totalProses++;
-    } else {
+    } else if (updateVal === 'selesai') {
       containerSelesai.appendChild(card);
       totalSelesai++;
     }
 
+    // Klik untuk melihat detail
     card.addEventListener('click', () => showDetailModal(item));
   });
 
+  // Update total ringkasan
   document.getElementById('countFinishing').textContent = finishingItems.length;
   document.getElementById('countProses').textContent = totalProses;
   document.getElementById('countSelesai').textContent = totalSelesai;
 }
 
-// Dummy modal untuk detail
+// ====================== Dummy modal untuk detail ======================
 function showDetailModal(item) {
   alert(`Detail Order:
 Nama: ${item.nama}
