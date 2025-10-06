@@ -225,26 +225,50 @@ input[type=text], input[type=number], select{
 
 .form-group { margin-bottom: 10px; }
 
-/* ======================== Dashboard Compact QC Finishing ======================== */
-#dashboard .grid-container{
-  grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
-  gap:0.6rem;
+/* ======================== Dashboard Finishing Compact Fix ======================== */
+#dashboardFinishingProses,
+#dashboardFinishingSelesai {
+  display: grid; /* HAPUS !important agar JS bisa kontrol show/hide */
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important;
+  gap: 6px !important;
+  justify-content: start;
+  align-items: start;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-#dashboard .grid-card{
-  padding:0.6rem;
-  font-size:0.85rem;
-  cursor:default;
-  transition: transform .2s, box-shadow .2s;
+#dashboardFinishingProses .grid-card,
+#dashboardFinishingSelesai .grid-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 6px;
+  font-size: 0.7rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  text-align: left;
+  line-height: 1.2;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-#dashboard .grid-card:hover{
-  transform:translateY(-3px);
-  box-shadow:0 4px 12px rgba(0,0,0,.15);
+#dashboardFinishingProses .grid-card:hover,
+#dashboardFinishingSelesai .grid-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-#dashboard .grid-card.selesai{
-  cursor:pointer;
+#dashboardFinishingProses .status-proses,
+#dashboardFinishingSelesai .status-selesai {
+  font-size: 0.65rem;
+  display: inline-block;
+  padding: 1px 4px;
+  border-radius: 4px;
+  margin-top: 2px;
+}
+
+/* Judul mini di dashboard */
+#dashboard h4 {
+  font-size: 0.8rem;
+  margin-bottom: 4px;
 }
 
 /* ======================== Responsif ======================== */
@@ -767,16 +791,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnProses && gridProses) {
     btnProses.addEventListener('click', () => {
-      const visible = gridProses.style.display === 'block';
-      gridProses.style.display = visible ? 'none' : 'block';
+      const visible = gridProses.style.display !== 'none';
+      gridProses.style.display = visible ? 'none' : 'grid';
       btnProses.textContent = visible ? 'Show' : 'Hide';
     });
   }
 
   if (btnSelesai && gridSelesai) {
     btnSelesai.addEventListener('click', () => {
-      const visible = gridSelesai.style.display === 'block';
-      gridSelesai.style.display = visible ? 'none' : 'block';
+      const visible = gridSelesai.style.display !== 'none';
+      gridSelesai.style.display = visible ? 'none' : 'grid';
       btnSelesai.textContent = visible ? 'Show' : 'Hide';
     });
   }
