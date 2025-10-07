@@ -315,7 +315,75 @@ input[type=text], input[type=number], select{
 
     <!-- ======================== Dashboard ======================== -->
     <section id="dashboard" class="card qc-section">
-      <h2>Dashboard QC Finishing</h2>
+
+<!-- ======================== QC Bapro ======================== -->
+<h2 style="text-align:center; color:#fff; background:#1E90FF; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
+  Dashboard QC Bapro
+</h2>
+
+      <!-- Info Total -->
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
+        <div style="flex:1; min-width:120px; background:#e5f6f6; padding:6px 10px; border-radius:8px; text-align:center;">
+          Total Order<br><strong id="countBapro">0</strong>
+        </div>
+        <div style="flex:1; min-width:120px; background:#fff4e5; padding:6px 10px; border-radius:8px; text-align:center;">
+          Total Proses<br><strong id="countProsesBapro">0</strong>
+        </div>
+        <div style="flex:1; min-width:120px; background:#e5f7e5; padding:6px 10px; border-radius:8px; text-align:center;">
+          Total Selesai<br><strong id="countSelesaiBapro">0</strong>
+        </div>
+      </div>
+
+      <!-- Grid Proses -->
+      <div style="text-align:center; margin-bottom:4px;">
+        <h4 style="display:inline-block; margin:0;">Proses</h4>
+        <button id="toggleProsesBapro" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
+      </div>
+      <div id="dashboardBaproProses" class="grid-container" style="display:none;"></div>
+
+      <!-- Grid Selesai -->
+      <div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+        <h4 style="display:inline-block; margin:0;">Selesai</h4>
+        <button id="toggleSelesaiBapro" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
+      </div>
+      <div id="dashboardBaproSelesai" class="grid-container" style="display:none;"></div>
+
+    <!-- ======================== QC PA ======================== -->
+<h2 style="text-align:center; color:#fff; background:#1E90FF; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
+  Dashboard QC PA
+</h2>
+
+      <!-- Info Total -->
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
+        <div style="flex:1; min-width:120px; background:#e5f6f6; padding:6px 10px; border-radius:8px; text-align:center;">
+          Total Order<br><strong id="countPA">0</strong>
+        </div>
+        <div style="flex:1; min-width:120px; background:#fff4e5; padding:6px 10px; border-radius:8px; text-align:center;">
+          Total Proses<br><strong id="countProsesPA">0</strong>
+        </div>
+        <div style="flex:1; min-width:120px; background:#e5f7e5; padding:6px 10px; border-radius:8px; text-align:center;">
+          Total Selesai<br><strong id="countSelesaiPA">0</strong>
+        </div>
+      </div>
+
+      <!-- Grid Proses -->
+      <div style="text-align:center; margin-bottom:4px;">
+        <h4 style="display:inline-block; margin:0;">Proses</h4>
+        <button id="toggleProsesPA" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
+      </div>
+      <div id="dashboardPAProses" class="grid-container" style="display:none;"></div>
+
+      <!-- Grid Selesai -->
+      <div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+        <h4 style="display:inline-block; margin:0;">Selesai</h4>
+        <button id="toggleSelesaiPA" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
+      </div>
+      <div id="dashboardPASelesai" class="grid-container" style="display:none;"></div>
+
+    <!-- ======================== QC Finishing ======================== -->
+<h2 style="text-align:center; color:#fff; background:#1E90FF; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
+  Dashboard QC Finishing
+</h2>
 
       <!-- Info Total -->
       <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
@@ -343,70 +411,204 @@ input[type=text], input[type=number], select{
         <button id="toggleSelesai" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
       </div>
       <div id="dashboardFinishingSelesai" class="grid-container" style="display:none;"></div>
-    </section>
-
-    <!-- ======================== QC BAPRO ======================== -->
-    <section id="qcBapro" class="card qc-section" style="display:none;">
-      <h2>QC BAPRO</h2>
-      <p>Form input dan hasil QC BAPRO akan ditambahkan di sini.</p>
-    </section>
-
-    <!-- ======================== QC PA ======================== -->
-    <section id="qcPA" class="card qc-section" style="display:none;">
-      <h2>QC PA</h2>
-      <p>Form input dan hasil QC PA akan ditambahkan di sini.</p>
-    </section>
-
-    <!-- ======================== QC Finishing ======================== -->
-    <section id="qcFinishing" class="card qc-section" style="display:none;">
-
-      <!-- Tabs -->
-      <div class="tabs">
-        <button class="active" data-tab="inputFinishing" onclick="switchTab(this)">Inputan</button>
-        <button data-tab="hasilFinishing" onclick="switchTab(this)">Hasil</button>
-      </div>
-
-      <!-- Tab Inputan -->
-      <div id="inputFinishing" class="tab-content active">
-        <div class="form-group"><input type="text" id="finishingNama" placeholder="Nama Order"></div>
-        <div class="form-group"><input type="text" id="finishingNoKS" placeholder="No KS"></div>
-        <div class="form-group"><input type="number" id="finishingOrder" placeholder="Total Order (lembar)"></div>
-        <div class="form-group"><input type="number" id="finishingIsi" placeholder="Isi/Dus (pcs)"></div>
-        <div class="form-group"><input type="number" id="finishingBagus" placeholder="Total Bagus (pcs)"></div>
-        <div class="form-group"><input type="number" id="finishingJenisBS" placeholder="Total BS (pcs)"></div>
-        <div class="form-group">
-          <select id="finishingQC">
-            <option value="">QC</option>
-            <option value="Anom">Anom</option>
-            <option value="Irna">Irna</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <select id="finishingUpdate">
-            <option value="">Update</option>
-            <option value="Proses">Proses</option>
-            <option value="Selesai">Selesai</option>
-          </select>
-<div class="form-group">
-  <textarea id="finishingKeterangan" placeholder="Keterangan (opsional)" rows="3" style="width:100%; padding:.6rem; border:1px solid #ccc; border-radius:8px;"></textarea>
-</div>
-        </div>
-        <div class="form-group"><button onclick="addFinishingItem()">➕ Tambah</button></div>
-      </div>
-
-      <!-- Tab Hasil -->
-      <div id="hasilFinishing" class="tab-content">
-        <input type="text" placeholder="Cari..." oninput="filterFinishingGrid(this.value)">
-        <div id="gridFinishing" class="grid-container"></div>
-      </div>
-
-    </section>
 
     <!-- ======================== QC Lem ======================== -->
-    <section id="qcLem" class="card qc-section" style="display:none;">
-      <h2>QC Lem</h2>
-      <p>Form input dan hasil QC Lem akan ditambahkan di sini.</p>
+<h2 style="text-align:center; color:#fff; background:#1E90FF; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
+  Dashboard QC Lem
+</h2>
+
+      <!-- Info Total -->
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
+        <div style="flex:1; min-width:120px; background:#e5f6f6; padding:6px 10px; border-radius:8px; text-align:center;">
+          Total Order<br><strong id="countLem">0</strong>
+        </div>
+        <div style="flex:1; min-width:120px; background:#fff4e5; padding:6px 10px; border-radius:8px; text-align:center;">
+          Total Proses<br><strong id="countProsesLem">0</strong>
+        </div>
+        <div style="flex:1; min-width:120px; background:#e5f7e5; padding:6px 10px; border-radius:8px; text-align:center;">
+          Total Selesai<br><strong id="countSelesaiLem">0</strong>
+        </div>
+      </div>
+
+      <!-- Grid Proses -->
+      <div style="text-align:center; margin-bottom:4px;">
+        <h4 style="display:inline-block; margin:0;">Proses</h4>
+        <button id="toggleProsesLem" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
+      </div>
+      <div id="dashboardLemProses" class="grid-container" style="display:none;"></div>
+
+      <!-- Grid Selesai -->
+      <div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+        <h4 style="display:inline-block; margin:0;">Selesai</h4>
+        <button id="toggleSelesaiLem" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
+      </div>
+      <div id="dashboardLemSelesai" class="grid-container" style="display:none;"></div>
+
     </section>
+
+<!-- ======================== QC BAPRO ======================== -->
+<section id="qcBapro" class="card qc-section" style="display:none;">
+
+  <div class="tabs">
+    <button class="active" data-tab="inputBapro" onclick="switchTab(this)">Inputan</button>
+    <button data-tab="hasilBapro" onclick="switchTab(this)">Hasil</button>
+  </div>
+
+  <div id="inputBapro" class="tab-content active">
+    <div class="form-group"><input type="text" id="baproNama" placeholder="Nama Order"></div>
+    <div class="form-group"><input type="text" id="baproNoKS" placeholder="No KS"></div>
+    <div class="form-group"><input type="number" id="baproOrder" placeholder="Total Order (lembar)"></div>
+    <div class="form-group"><input type="number" id="baproIsi" placeholder="Isi/Dus (pcs)"></div>
+    <div class="form-group"><input type="number" id="baproBagus" placeholder="Total Bagus (pcs)"></div>
+    <div class="form-group"><input type="number" id="baproJenisBS" placeholder="Total BS (pcs)"></div>
+    <div class="form-group">
+      <select id="baproQC">
+        <option value="">QC</option>
+        <option value="Anom">Anom</option>
+        <option value="Irna">Irna</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <select id="baproUpdate">
+        <option value="">Update</option>
+        <option value="Proses">Proses</option>
+        <option value="Selesai">Selesai</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <textarea id="baproKeterangan" placeholder="Keterangan (opsional)" rows="3" style="width:100%; padding:.6rem; border:1px solid #ccc; border-radius:8px;"></textarea>
+    </div>
+    <div class="form-group"><button onclick="addBaproItem()">➕ Tambah</button></div>
+  </div>
+
+  <div id="hasilBapro" class="tab-content">
+    <input type="text" placeholder="Cari..." oninput="filterBaproGrid(this.value)">
+    <div id="gridBapro" class="grid-container"></div>
+  </div>
+</section>
+
+<!-- ======================== QC PA ======================== -->
+<section id="qcPA" class="card qc-section" style="display:none;">
+
+  <div class="tabs">
+    <button class="active" data-tab="inputPA" onclick="switchTab(this)">Inputan</button>
+    <button data-tab="hasilPA" onclick="switchTab(this)">Hasil</button>
+  </div>
+
+  <div id="inputPA" class="tab-content active">
+    <div class="form-group"><input type="text" id="paNama" placeholder="Nama Order"></div>
+    <div class="form-group"><input type="text" id="paNoKS" placeholder="No KS"></div>
+    <div class="form-group"><input type="number" id="paOrder" placeholder="Total Order (lembar)"></div>
+    <div class="form-group"><input type="number" id="paIsi" placeholder="Isi/Dus (pcs)"></div>
+    <div class="form-group"><input type="number" id="paBagus" placeholder="Total Bagus (pcs)"></div>
+    <div class="form-group"><input type="number" id="paJenisBS" placeholder="Total BS (pcs)"></div>
+    <div class="form-group">
+      <select id="paQC">
+        <option value="">QC</option>
+        <option value="Anom">Anom</option>
+        <option value="Irna">Irna</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <select id="paUpdate">
+        <option value="">Update</option>
+        <option value="Proses">Proses</option>
+        <option value="Selesai">Selesai</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <textarea id="paKeterangan" placeholder="Keterangan (opsional)" rows="3" style="width:100%; padding:.6rem; border:1px solid #ccc; border-radius:8px;"></textarea>
+    </div>
+    <div class="form-group"><button onclick="addPAItem()">➕ Tambah</button></div>
+  </div>
+
+  <div id="hasilPA" class="tab-content">
+    <input type="text" placeholder="Cari..." oninput="filterPAGrid(this.value)">
+    <div id="gridPA" class="grid-container"></div>
+  </div>
+</section>
+
+<!-- ======================== QC FINISHING ======================== -->
+<section id="qcFinishing" class="card qc-section" style="display:none;">
+
+  <div class="tabs">
+    <button class="active" data-tab="inputFinishing" onclick="switchTab(this)">Inputan</button>
+    <button data-tab="hasilFinishing" onclick="switchTab(this)">Hasil</button>
+  </div>
+
+  <div id="inputFinishing" class="tab-content active">
+    <div class="form-group"><input type="text" id="finishingNama" placeholder="Nama Order"></div>
+    <div class="form-group"><input type="text" id="finishingNoKS" placeholder="No KS"></div>
+    <div class="form-group"><input type="number" id="finishingOrder" placeholder="Total Order (lembar)"></div>
+    <div class="form-group"><input type="number" id="finishingIsi" placeholder="Isi/Dus (pcs)"></div>
+    <div class="form-group"><input type="number" id="finishingBagus" placeholder="Total Bagus (pcs)"></div>
+    <div class="form-group"><input type="number" id="finishingJenisBS" placeholder="Total BS (pcs)"></div>
+    <div class="form-group">
+      <select id="finishingQC">
+        <option value="">QC</option>
+        <option value="Anom">Anom</option>
+        <option value="Irna">Irna</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <select id="finishingUpdate">
+        <option value="">Update</option>
+        <option value="Proses">Proses</option>
+        <option value="Selesai">Selesai</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <textarea id="finishingKeterangan" placeholder="Keterangan (opsional)" rows="3" style="width:100%; padding:.6rem; border:1px solid #ccc; border-radius:8px;"></textarea>
+    </div>
+    <div class="form-group"><button onclick="addFinishingItem()">➕ Tambah</button></div>
+  </div>
+
+  <div id="hasilFinishing" class="tab-content">
+    <input type="text" placeholder="Cari..." oninput="filterFinishingGrid(this.value)">
+    <div id="gridFinishing" class="grid-container"></div>
+  </div>
+</section>
+
+<!-- ======================== QC LEM ======================== -->
+<section id="qcLem" class="card qc-section" style="display:none;">
+
+  <div class="tabs">
+    <button class="active" data-tab="inputLem" onclick="switchTab(this)">Inputan</button>
+    <button data-tab="hasilLem" onclick="switchTab(this)">Hasil</button>
+  </div>
+
+  <div id="inputLem" class="tab-content active">
+    <div class="form-group"><input type="text" id="lemNama" placeholder="Nama Order"></div>
+    <div class="form-group"><input type="text" id="lemNoKS" placeholder="No KS"></div>
+    <div class="form-group"><input type="number" id="lemOrder" placeholder="Total Order (lembar)"></div>
+    <div class="form-group"><input type="number" id="lemIsi" placeholder="Isi/Dus (pcs)"></div>
+    <div class="form-group"><input type="number" id="lemBagus" placeholder="Total Bagus (pcs)"></div>
+    <div class="form-group"><input type="number" id="lemJenisBS" placeholder="Total BS (pcs)"></div>
+    <div class="form-group">
+      <select id="lemQC">
+        <option value="">QC</option>
+        <option value="Anom">Anom</option>
+        <option value="Irna">Irna</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <select id="lemUpdate">
+        <option value="">Update</option>
+        <option value="Proses">Proses</option>
+        <option value="Selesai">Selesai</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <textarea id="lemKeterangan" placeholder="Keterangan (opsional)" rows="3" style="width:100%; padding:.6rem; border:1px solid #ccc; border-radius:8px;"></textarea>
+    </div>
+    <div class="form-group"><button onclick="addLemItem()">➕ Tambah</button></div>
+  </div>
+
+  <div id="hasilLem" class="tab-content">
+    <input type="text" placeholder="Cari..." oninput="filterLemGrid(this.value)">
+    <div id="gridLem" class="grid-container"></div>
+  </div>
+</section>
 
   </main>
 </div>
