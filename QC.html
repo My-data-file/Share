@@ -345,38 +345,6 @@ input[type=text], input[type=number], select{
       <div id="dashboardFinishingSelesai" class="grid-container" style="display:none;"></div>
     </section>
 
-<!-- ================= Dashboard QC Lem ================= -->
-<section id="dashboardLem" class="card qc-section" style="display:none;">
-  <h2>Dashboard QC Lem</h2>
-
-  <!-- Info Total -->
-  <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
-    <div style="flex:1; min-width:120px; background:#e5f6f6; padding:6px 10px; border-radius:8px; text-align:center;">
-      Total Order<br><strong id="countLem">0</strong>
-    </div>
-    <div style="flex:1; min-width:120px; background:#fff4e5; padding:6px 10px; border-radius:8px; text-align:center;">
-      Total Proses<br><strong id="countProsesLem">0</strong>
-    </div>
-    <div style="flex:1; min-width:120px; background:#e5f7e5; padding:6px 10px; border-radius:8px; text-align:center;">
-      Total Selesai<br><strong id="countSelesaiLem">0</strong>
-    </div>
-  </div>
-
-  <!-- Grid Proses -->
-  <div style="text-align:center; margin-bottom:4px;">
-    <h4 style="display:inline-block; margin:0;">Proses</h4>
-    <button id="toggleProsesLem" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
-  </div>
-  <div id="dashboardLemProses" class="grid-container" style="display:none;"></div>
-
-  <!-- Grid Selesai -->
-  <div style="text-align:center; margin-top:12px; margin-bottom:4px;">
-    <h4 style="display:inline-block; margin:0;">Selesai</h4>
-    <button id="toggleSelesaiLem" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
-  </div>
-  <div id="dashboardLemSelesai" class="grid-container" style="display:none;"></div>
-</section>
-
     <!-- ======================== QC BAPRO ======================== -->
     <section id="qcBapro" class="card qc-section" style="display:none;">
       <h2>QC BAPRO</h2>
@@ -504,9 +472,6 @@ function jsonpGet(url, params = {}) {
 
 // ====================== GLOBAL STATE ======================
 let finishingItems = []; // array yang diambil dari sheet
-// ====================== GLOBAL STATE: LEM ======================
-let lemItems = [];
-
 
 // ====================== RENDER GRID HASIL ======================
 function renderGridFinishing(query = "") {
@@ -551,46 +516,6 @@ function renderGridFinishing(query = "") {
 
 function escapeHtml(s){ return String(s||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
 
-// ====================== RENDER GRID QC LEM ======================
-function renderGridLem(query = "") {
-  const container = document.getElementById('gridLem');
-  if (!container) return;
-  container.innerHTML = '';
-
-  const q = (query||'').toLowerCase();
-
-  lemItems.forEach((item, i) => {
-    if (q && !(String(item.nama||'').toLowerCase().includes(q) || String(item.noKS||'').toLowerCase().includes(q))) return;
-
-    const card = document.createElement('div');
-    card.className = 'grid-card';
-    const statusClass = item.update === "Proses" ? "status-proses" : (item.update === "Selesai" ? "status-selesai" : "");
-    const tanggal = item.tanggal ? `<strong>${escapeHtml(item.tanggal)}</strong><br>` : '';
-
-    card.innerHTML = `
-      <div>
-        ${tanggal}
-        <span>Nama Order: ${escapeHtml(item.nama||'')}</span><br>
-        <span>No KS: ${escapeHtml(item.noKS||'')}</span><br>
-        <span>Order: ${escapeHtml(item.order||'')}</span><br>
-        <span>Isi/Dus: ${escapeHtml(item.isi||'')}</span><br>
-        <span>Bagus: ${escapeHtml(item.bagus||'')}</span><br>
-        <span>BS: ${escapeHtml(item.jenisBS||'')}</span><br>
-        <span>QC: ${escapeHtml(item.qc||'')}</span><br>
-        <span class="${statusClass}">${escapeHtml(item.update||'')}</span>
-      </div>
-      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
-        <button class="btn-icon btn-call" title="Panggil" onclick="callLem(${i})">📤</button>
-        <button class="btn-icon btn-edit" title="Edit" onclick="editLemInline(${i})">✏️</button>
-        <button class="btn-icon btn-delete" title="Hapus" onclick="deleteLem(${i})">🗑️</button>
-      </div>`;
-
-    container.appendChild(card);
-  });
-
-  renderDashboardLemCompact();
-}
-
 // ====================== LOAD DATA DARI SPREADSHEET ======================
 async function loadFinishingItems(){
   try{
@@ -600,17 +525,6 @@ async function loadFinishingItems(){
       renderGridFinishing();
     } else console.warn('loadFinishingItems unexpected', res);
   }catch(err){ console.error('⚠️ Error loadFinishingItems', err); }
-}
-
-// ====================== LOAD DATA LEM ======================
-async function loadLemItems(){
-  try{
-    const res = await jsonpGet(WEBAPP_URL, { action: 'get', sheet: 'Lem' });
-    if(res && res.status === 'ok' && Array.isArray(res.data)){
-      lemItems = res.data.map((it, idx) => ({ __index: idx, id: (it.id||it._row||it.row||null), ...it }));
-      renderGridLem();
-    } else console.warn('loadLemItems unexpected', res);
-  }catch(err){ console.error('⚠️ Error loadLemItems', err); }
 }
 
 // ====================== TAMBAH DATA ======================
@@ -635,31 +549,7 @@ function addFinishingItem() {
 
   postPayload(payload);
   clearFinishingForm();
-  setTimeout(() => loadFinishingItems(), 10000);
-}
-
-// ====================== TAMBAH DATA QC LEM ======================
-function addLemItem() {
-  const nama = document.getElementById('lemNama').value.trim();
-  const noKS = document.getElementById('lemNoKS').value.trim();
-  const order = document.getElementById('lemOrder').value.trim();
-  const isi = document.getElementById('lemIsi').value.trim();
-  const bagus = document.getElementById('lemBagus').value.trim();
-  const jenisBS = document.getElementById('lemJenisBS').value.trim();
-  const qc = document.getElementById('lemQC').value.trim();
-  const update = document.getElementById('lemUpdate').value.trim();
-  const keterangan = document.getElementById('lemKeterangan').value.trim();
-
-  if (!nama || !noKS) return alert('Nama dan No KS wajib diisi!');
-
-  const tanggalFormatted = new Date().toLocaleString('id-ID', {
-    day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'
-  });
-
-  const payload = { action:'add', sheet:'Lem', tanggal: tanggalFormatted, nama,noKS,order,isi,bagus,jenisBS,qc,update,keterangan };
-  postPayload(payload);
-  clearLemForm();
-  setTimeout(() => loadLemItems(), 10000);
+  setTimeout(() => loadFinishingItems(), 20000);
 }
 
 // ====================== PANGGIL (isi form dari item) ======================
@@ -686,9 +576,28 @@ function deleteFinishing(index){
   const item = finishingItems[index];
   if(!item) return;
   if(!confirm('Hapus data ini?')) return;
+
+  const container = document.getElementById('gridFinishing');
+  const card = container.children[index];
+  const btnDelete = card?.querySelector('.btn-delete');
+
+  if (btnDelete) {
+    btnDelete.textContent = '⏳ Menghapus...';
+    btnDelete.disabled = true;
+  }
+
   const identifier = item.id || item._row || item.row || item.__index;
   const payload = { action:'delete', sheet:'Finishing', id: identifier, index: item.__index };
   postPayload(payload);
+
+  // tampilkan status dan reload otomatis
+  setTimeout(() => {
+    if (btnDelete) {
+      btnDelete.textContent = '🗑️';
+      btnDelete.disabled = false;
+    }
+    loadFinishingItems();
+  }, 20000); // tunggu update sheet
 }
 
 // ====================== EDIT INLINE ======================
@@ -719,7 +628,6 @@ function editFinishingInline(index){
     </div>
     <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
       <button class="btn-icon btn-save" title="Simpan" onclick="saveFinishingInline(${index})">💾</button>
-      <button class="btn-icon btn-delete" title="Hapus" onclick="deleteFinishing(${index})">🗑️</button>
     </div>`;
 }
 
@@ -728,6 +636,12 @@ function saveFinishingInline(index) {
   const container = document.getElementById('gridFinishing');
   const card = container.children[index];
   if (!card) return;
+  const btnSave = card.querySelector('.btn-save');
+  if (btnSave) {
+    btnSave.textContent = '⏳ Menyimpan...';
+    btnSave.disabled = true;
+  }
+
   const inputs = card.querySelectorAll('.edit-inline');
 
   const updated = {
@@ -739,7 +653,7 @@ function saveFinishingInline(index) {
     jenisBS: inputs[5].value.trim(),
     qc: inputs[6].value,
     update: inputs[7].value,
-    keterangan: inputs[8].value.trim() // ✳️ tambahan
+    keterangan: inputs[8].value.trim()
   };
 
   const orig = finishingItems[index];
@@ -751,7 +665,17 @@ function saveFinishingInline(index) {
 
   const payload = { action:'update', sheet:'Finishing', id: identifier, index: orig.__index, tanggal: tanggalFormatted, ...updated };
 
+  // kirim ke server
   postPayload(payload);
+
+  // tampilkan status “menunggu update spreadsheet”
+  setTimeout(() => {
+    if (btnSave) {
+      btnSave.textContent = '💾 Simpan';
+      btnSave.disabled = false;
+    }
+    loadFinishingItems();
+  }, 20000); // waktu refresh setelah update
 }
 
 // ====================== POST PAYLOAD ======================
@@ -818,36 +742,6 @@ function renderDashboardFinishingCompact() {
   document.getElementById('countSelesai').textContent = totalSelesai;
 }
 
-// ====================== DASHBOARD LEM ======================
-function renderDashboardLemCompact() {
-  const containerProses = document.getElementById('dashboardLemProses');
-  const containerSelesai = document.getElementById('dashboardLemSelesai');
-  if(!containerProses || !containerSelesai) return;
-  containerProses.innerHTML = ''; containerSelesai.innerHTML = '';
-
-  let totalProses = 0, totalSelesai = 0;
-
-  lemItems.forEach(item => {
-    const updateVal = (item.update || "").trim().toLowerCase();
-    const tanggal = item.tanggal ? item.tanggal : "-";
-    const card = document.createElement('div');
-    card.className = 'grid-card';
-    const statusClass = updateVal === "proses" ? "status-proses" :
-                        updateVal === "selesai" ? "status-selesai" : "";
-    card.innerHTML = `
-      <strong>${escapeHtml(item.nama || '')}</strong><br>
-      <span>QC: ${escapeHtml(item.qc || '')}</span><br>
-      <span>📅 ${escapeHtml(tanggal)}</span><br>
-      <span class="${statusClass}">${escapeHtml(item.update || '')}</span>`;
-    if (updateVal === 'proses'){ containerProses.appendChild(card); totalProses++; }
-    else if (updateVal === 'selesai'){ containerSelesai.appendChild(card); totalSelesai++; }
-  });
-
-  document.getElementById('countLem').textContent = lemItems.length;
-  document.getElementById('countProsesLem').textContent = totalProses;
-  document.getElementById('countSelesaiLem').textContent = totalSelesai;
-}
-
 // ====================== DETAIL ======================
 function showDetailModal(item) {
   alert(`Detail Order:
@@ -886,42 +780,23 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  // --- Toggle Dashboard Lem ---
-  const btnProsesLem = document.getElementById('toggleProsesLem');
-  const btnSelesaiLem = document.getElementById('toggleSelesaiLem');
-  const gridProsesLem = document.getElementById('dashboardLemProses');
-  const gridSelesaiLem = document.getElementById('dashboardLemSelesai');
-
-  if (btnProsesLem && gridProsesLem) {
-    btnProsesLem.addEventListener('click', () => {
-      const visible = gridProsesLem.style.display !== 'none';
-      gridProsesLem.style.display = visible ? 'none' : 'grid';
-      btnProsesLem.textContent = visible ? 'Show' : 'Hide';
-    });
-  }
-
-  if (btnSelesaiLem && gridSelesaiLem) {
-    btnSelesaiLem.addEventListener('click', () => {
-      const visible = gridSelesaiLem.style.display !== 'none';
-      gridSelesaiLem.style.display = visible ? 'none' : 'grid';
-      btnSelesaiLem.textContent = visible ? 'Show' : 'Hide';
-    });
-  }
-});
-
 // ====================== AUTO UPPERCASE ======================
 document.addEventListener('input', (e) => {
   if (!e.target) return;
-  if (e.target.tagName === 'INPUT' && e.target.type === 'text' && e.target.closest && e.target.closest('#qcFinishing')) {
-    e.target.value = e.target.value.toUpperCase();
+  const el = e.target;
+
+  // Berlaku untuk input text dan textarea di dalam #qcFinishing
+  if (
+    (el.tagName === 'INPUT' && el.type === 'text' && el.closest('#qcFinishing')) ||
+    (el.tagName === 'TEXTAREA' && el.closest('#qcFinishing'))
+  ) {
+    el.value = el.value.toUpperCase();
   }
 });
 
 // ====================== INISIALISASI ======================
 showMenu('dashboard');
 loadFinishingItems();
-loadLemItems();
 
 
 </script>
