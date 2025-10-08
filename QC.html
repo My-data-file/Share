@@ -247,94 +247,6 @@ input[type=text], input[type=number], select{
 
 .form-group { margin-bottom: 10px; }
 
-/* ======================== Dashboard Finishing Compact Fix ======================== */
-#dashboardFinishingTO,
-#dashboardFinishingProses,
-#dashboardFinishingSelesai {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important;
-  gap: 6px !important;
-  justify-content: start;
-  align-items: start;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-#dashboardFinishingTO .grid-card,
-#dashboardFinishingProses .grid-card,
-#dashboardFinishingSelesai .grid-card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 6px;
-  font-size: 0.7rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  text-align: left;
-  line-height: 1.2;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-#dashboardFinishingTO .grid-card:hover,
-#dashboardFinishingProses .grid-card:hover,
-#dashboardFinishingSelesai .grid-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-#dashboardFinishingTO .status-to,
-#dashboardFinishingProses .status-proses,
-#dashboardFinishingSelesai .status-selesai {
-  font-size: 0.65rem;
-  display: inline-block;
-  padding: 1px 4px;
-  border-radius: 4px;
-  margin-top: 2px;
-}
-#dashboardFinishingProses,
-#dashboardFinishingSelesai {
-  display: grid; /* HAPUS !important agar JS bisa kontrol show/hide */
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important;
-  gap: 6px !important;
-  justify-content: start;
-  align-items: start;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-#dashboardFinishingProses .grid-card,
-#dashboardFinishingSelesai .grid-card {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 6px;
-  font-size: 0.7rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  text-align: left;
-  line-height: 1.2;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-#dashboardFinishingProses .grid-card:hover,
-#dashboardFinishingSelesai .grid-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-#dashboardFinishingProses .status-proses,
-#dashboardFinishingSelesai .status-selesai {
-  font-size: 0.65rem;
-  display: inline-block;
-  padding: 1px 4px;
-  border-radius: 4px;
-  margin-top: 2px;
-}
-
-/* Judul mini di dashboard */
-#dashboard h4 {
-  font-size: 0.8rem;
-  margin-bottom: 4px;
-}
-
 /* ======================== Responsif ======================== */
 @media(max-width:768px){
   .container{flex-direction:column;}
@@ -385,63 +297,84 @@ input[type=text], input[type=number], select{
   Dashboard QC Bapro
 </h2>
 
-      <!-- Info Total -->
-      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
-        <div style="flex:1; min-width:120px; background:#e5f6f6; padding:6px 10px; border-radius:8px; text-align:center;">
-          Total Order<br><strong id="countBapro">0</strong>
-        </div>
-        <div style="flex:1; min-width:120px; background:#fff4e5; padding:6px 10px; border-radius:8px; text-align:center;">
-          Total Proses<br><strong id="countProsesBapro">0</strong>
-        </div>
-        <div style="flex:1; min-width:120px; background:#e5f7e5; padding:6px 10px; border-radius:8px; text-align:center;">
-          Total Selesai<br><strong id="countSelesaiBapro">0</strong>
-        </div>
-      </div>
+<!-- Info Total -->
+<div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
+  <div style="flex:1; min-width:120px; background:#e5f6f6; padding:6px 10px; border-radius:8px; text-align:center;">
+    Total Order<br><strong id="countBapro">0</strong>
+  </div>
+  <div style="flex:1; min-width:120px; background:#dbeafe; padding:6px 10px; border-radius:8px; text-align:center;">
+    Total TO<br><strong id="countTOBapro">0</strong>
+  </div>
+  <div style="flex:1; min-width:120px; background:#fff4e5; padding:6px 10px; border-radius:8px; text-align:center;">
+    Total Proses<br><strong id="countProsesBapro">0</strong>
+  </div>
+  <div style="flex:1; min-width:120px; background:#e5f7e5; padding:6px 10px; border-radius:8px; text-align:center;">
+    Total Selesai<br><strong id="countSelesaiBapro">0</strong>
+  </div>
+</div>
 
-      <!-- Grid Proses -->
-      <div style="text-align:center; margin-bottom:4px;">
-        <h4 style="display:inline-block; margin:0;">Proses</h4>
-        <button id="toggleProsesBapro" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
-      </div>
-      <div id="dashboardBaproProses" class="grid-container" style="display:none;"></div>
+<!-- Grid TO -->
+<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+  <h4 style="display:inline-block; margin:0;">TO</h4>
+  <button id="toggleBaproTO" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+</div>
+<div id="dashboardBaproTO" class="grid-container" style="display:none;"></div>
 
-      <!-- Grid Selesai -->
-      <div style="text-align:center; margin-top:12px; margin-bottom:4px;">
-        <h4 style="display:inline-block; margin:0;">Selesai</h4>
-        <button id="toggleSelesaiBapro" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
-      </div>
-      <div id="dashboardBaproSelesai" class="grid-container" style="display:none;"></div>
+<!-- Grid Proses -->
+<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+  <h4 style="display:inline-block; margin:0;">Proses</h4>
+  <button id="toggleBaproProses" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+</div>
+<div id="dashboardBaproProses" class="grid-container" style="display:none;"></div>
+
+<!-- Grid Selesai -->
+<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+  <h4 style="display:inline-block; margin:0;">Selesai</h4>
+  <button id="toggleBaproSelesai" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+</div>
+<div id="dashboardBaproSelesai" class="grid-container" style="display:none;"></div>
 
     <!-- ======================== QC PA ======================== -->
 <h2 style="text-align:center; color:#fff; background:#1E90FF; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
   Dashboard QC PA
 </h2>
-      <!-- Info Total -->
-      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
-        <div style="flex:1; min-width:120px; background:#e5f6f6; padding:6px 10px; border-radius:8px; text-align:center;">
-          Total Order<br><strong id="countPA">0</strong>
-        </div>
-        <div style="flex:1; min-width:120px; background:#fff4e5; padding:6px 10px; border-radius:8px; text-align:center;">
-          Total Proses<br><strong id="countProsesPA">0</strong>
-        </div>
-        <div style="flex:1; min-width:120px; background:#e5f7e5; padding:6px 10px; border-radius:8px; text-align:center;">
-          Total Selesai<br><strong id="countSelesaiPA">0</strong>
-        </div>
-      </div>
 
-      <!-- Grid Proses -->
-      <div style="text-align:center; margin-bottom:4px;">
-        <h4 style="display:inline-block; margin:0;">Proses</h4>
-        <button id="toggleProsesPA" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
-      </div>
-      <div id="dashboardPAProses" class="grid-container" style="display:none;"></div>
+<!-- Info Total -->
+<div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
+  <div style="flex:1; min-width:120px; background:#e5f6f6; padding:6px 10px; border-radius:8px; text-align:center;">
+    Total Order<br><strong id="countPA">0</strong>
+  </div>
+  <div style="flex:1; min-width:120px; background:#dbeafe; padding:6px 10px; border-radius:8px; text-align:center;">
+    Total TO<br><strong id="countTOPA">0</strong>
+  </div>
+  <div style="flex:1; min-width:120px; background:#fff4e5; padding:6px 10px; border-radius:8px; text-align:center;">
+    Total Proses<br><strong id="countProsesPA">0</strong>
+  </div>
+  <div style="flex:1; min-width:120px; background:#e5f7e5; padding:6px 10px; border-radius:8px; text-align:center;">
+    Total Selesai<br><strong id="countSelesaiPA">0</strong>
+  </div>
+</div>
 
-      <!-- Grid Selesai -->
-      <div style="text-align:center; margin-top:12px; margin-bottom:4px;">
-        <h4 style="display:inline-block; margin:0;">Selesai</h4>
-        <button id="toggleSelesaiPA" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
-      </div>
-      <div id="dashboardPASelesai" class="grid-container" style="display:none;"></div>
+<!-- Grid TO -->
+<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+  <h4 style="display:inline-block; margin:0;">TO</h4>
+  <button id="togglePATO" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+</div>
+<div id="dashboardPATO" class="grid-container" style="display:none;"></div>
+
+<!-- Grid Proses -->
+<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+  <h4 style="display:inline-block; margin:0;">Proses</h4>
+  <button id="togglePAProses" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+</div>
+<div id="dashboardPAProses" class="grid-container" style="display:none;"></div>
+
+<!-- Grid Selesai -->
+<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+  <h4 style="display:inline-block; margin:0;">Selesai</h4>
+  <button id="togglePASelesai" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+</div>
+<div id="dashboardPASelesai" class="grid-container" style="display:none;"></div>
 
 <!-- ======================== QC Finishing ======================== -->
 <h2 style="text-align:center; color:#fff; background:#1E90FF; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
@@ -490,32 +423,42 @@ input[type=text], input[type=number], select{
   Dashboard QC Lem
 </h2>
 
-      <!-- Info Total -->
-      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
-        <div style="flex:1; min-width:120px; background:#e5f6f6; padding:6px 10px; border-radius:8px; text-align:center;">
-          Total Order<br><strong id="countLem">0</strong>
-        </div>
-        <div style="flex:1; min-width:120px; background:#fff4e5; padding:6px 10px; border-radius:8px; text-align:center;">
-          Total Proses<br><strong id="countProsesLem">0</strong>
-        </div>
-        <div style="flex:1; min-width:120px; background:#e5f7e5; padding:6px 10px; border-radius:8px; text-align:center;">
-          Total Selesai<br><strong id="countSelesaiLem">0</strong>
-        </div>
-      </div>
+<!-- Info Total -->
+<div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
+  <div style="flex:1; min-width:120px; background:#e5f6f6; padding:6px 10px; border-radius:8px; text-align:center;">
+    Total Order<br><strong id="countLem">0</strong>
+  </div>
+  <div style="flex:1; min-width:120px; background:#dbeafe; padding:6px 10px; border-radius:8px; text-align:center;">
+    Total TO<br><strong id="countTOLem">0</strong>
+  </div>
+  <div style="flex:1; min-width:120px; background:#fff4e5; padding:6px 10px; border-radius:8px; text-align:center;">
+    Total Proses<br><strong id="countProsesLem">0</strong>
+  </div>
+  <div style="flex:1; min-width:120px; background:#e5f7e5; padding:6px 10px; border-radius:8px; text-align:center;">
+    Total Selesai<br><strong id="countSelesaiLem">0</strong>
+  </div>
+</div>
 
-      <!-- Grid Proses -->
-      <div style="text-align:center; margin-bottom:4px;">
-        <h4 style="display:inline-block; margin:0;">Proses</h4>
-        <button id="toggleProsesLem" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
-      </div>
-      <div id="dashboardLemProses" class="grid-container" style="display:none;"></div>
+<!-- Grid TO -->
+<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+  <h4 style="display:inline-block; margin:0;">TO</h4>
+  <button id="toggleLemTO" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+</div>
+<div id="dashboardLemTO" class="grid-container" style="display:none;"></div>
 
-      <!-- Grid Selesai -->
-      <div style="text-align:center; margin-top:12px; margin-bottom:4px;">
-        <h4 style="display:inline-block; margin:0;">Selesai</h4>
-        <button id="toggleSelesaiLem" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
-      </div>
-      <div id="dashboardLemSelesai" class="grid-container" style="display:none;"></div>
+<!-- Grid Proses -->
+<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+  <h4 style="display:inline-block; margin:0;">Proses</h4>
+  <button id="toggleLemProses" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+</div>
+<div id="dashboardLemProses" class="grid-container" style="display:none;"></div>
+
+<!-- Grid Selesai -->
+<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+  <h4 style="display:inline-block; margin:0;">Selesai</h4>
+  <button id="toggleLemSelesai" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+</div>
+<div id="dashboardLemSelesai" class="grid-container" style="display:none;"></div>
 
     </section>
 
@@ -530,10 +473,13 @@ input[type=text], input[type=number], select{
   <div id="inputBapro" class="tab-content active">
     <div class="form-group"><input type="text" id="baproNama" placeholder="Nama Order"></div>
     <div class="form-group"><input type="text" id="baproNoKS" placeholder="No KS"></div>
-    <div class="form-group"><input type="number" id="baproOrder" placeholder="Total Order (lembar)"></div>
-    <div class="form-group"><input type="number" id="baproIsi" placeholder="Isi/Dus (pcs)"></div>
-    <div class="form-group"><input type="number" id="baproBagus" placeholder="Total Bagus (pcs)"></div>
-    <div class="form-group"><input type="number" id="baproJenisBS" placeholder="Total BS (pcs)"></div>
+    <div class="form-group"><input type="text" id="baproJenis" placeholder="Jenis Kertas"></div>
+    <div class="form-group"><input type="number" id="baproKertas" placeholder="Tebal Kertas (gsm)"></div>
+    <div class="form-group"><input type="number" id="baproTebalTinta" placeholder="Tebal Tinta (micron)"></div>
+    <div class="form-group"><input type="number" id="baproDmax" placeholder="Dmax"></div>
+    <div class="form-group"><input type="number" id="baproL" placeholder="L"></div>
+    <div class="form-group"><input type="number" id="baproA" placeholder="A"></div>
+    <div class="form-group"><input type="number" id="baproB" placeholder="B"></div>
     <div class="form-group">
       <select id="baproQC">
         <option value="">QC</option>
@@ -543,9 +489,9 @@ input[type=text], input[type=number], select{
     </div>
     <div class="form-group">
       <select id="baproUpdate">
-        <option value="">Update</option>
-        <option value="Proses">Proses</option>
-        <option value="Selesai">Selesai</option>
+  <option value="Proses">Proses</option>
+  <option value="Selesai">Selesai</option>
+  <option value="TO">TO</option>
       </select>
     </div>
     <div class="form-group">
@@ -596,9 +542,9 @@ input[type=text], input[type=number], select{
     <div class="form-group">
       <select id="paUpdate">
         <option value="">Update</option>
-        <option value="TO">TO</option>
-        <option value="Proses">Proses</option>
-        <option value="Selesai">Selesai</option>
+  <option value="Proses">Proses</option>
+  <option value="Selesai">Selesai</option>
+  <option value="TO">TO</option>
       </select>
     </div>
     <div class="form-group">
@@ -640,7 +586,7 @@ input[type=text], input[type=number], select{
   <option value="Proses">Proses</option>
   <option value="Selesai">Selesai</option>
   <option value="TO">TO</option>
-</select>
+      </select>
     </div>
     <div class="form-group">
       <textarea id="finishingKeterangan" placeholder="Keterangan (opsional)" rows="3" style="width:100%; padding:.6rem; border:1px solid #ccc; border-radius:8px;"></textarea>
@@ -679,9 +625,9 @@ input[type=text], input[type=number], select{
     </div>
     <div class="form-group">
       <select id="lemUpdate">
-        <option value="">Update</option>
-        <option value="Proses">Proses</option>
-        <option value="Selesai">Selesai</option>
+  <option value="Proses">Proses</option>
+  <option value="Selesai">Selesai</option>
+  <option value="TO">TO</option>
       </select>
     </div>
     <div class="form-group">
@@ -701,7 +647,7 @@ input[type=text], input[type=number], select{
 
 <script>
 // ====================== KONFIGURASI ======================
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzbu9ZUzOez5EorkQ68ruP9ERpzGWxTT6gc9t7_oUhVoIYGEg68qLqD47DQh9YMSPAf/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzttKoym_oFvWz7p6WGeybz04ul50jEl4q6IHElkCS_zOwHgdHQ5uxUdl2UwufJNV8D/exec";
 
 // ====================== WAKTU HEADER ======================
 function updateTime(){
@@ -1146,6 +1092,1154 @@ showMenu('dashboard');
 loadFinishingItems();
 
 
+</script>
+
+<!-- ====== JS QC BAPRO (paste ini setelah script utama) ====== -->
+<script>
+// ====================== GLOBAL STATE (BAPRO) ======================
+let baproItems = []; // array yang diambil dari sheet Bapro
+
+// ====================== RENDER GRID HASIL (BAPRO) ======================
+function renderGridBapro(query = "") {
+  const container = document.getElementById('gridBapro');
+  if (!container) return;
+  container.innerHTML = '';
+
+  const q = (query || '').toLowerCase();
+
+  baproItems.forEach((item, i) => {
+    // Filter pencarian (nama atau noKS)
+    if (q && !(String(item.nama || '').toLowerCase().includes(q) || String(item.noKS || '').toLowerCase().includes(q))) return;
+
+    const card = document.createElement('div');
+    card.className = 'grid-card';
+
+    // status class (cocokkan nilai case-sensitive seperti di sheet)
+    let statusClass = '';
+    if ((item.update || '').toString() === "Proses") statusClass = "status-proses";
+    else if ((item.update || '').toString() === "Selesai") statusClass = "status-selesai";
+    else if ((item.update || '').toString() === "TO") statusClass = "status-to";
+
+    const tanggal = item.tanggal ? `<strong>${escapeHtml(item.tanggal)}</strong><br>` : '';
+
+    card.innerHTML = `
+      <div>
+        ${tanggal}
+        <span>Nama Order: ${escapeHtml(item.nama || '')}</span><br>
+        <span>No KS: ${escapeHtml(item.noKS || '')}</span><br>
+        <span>Jenis: ${escapeHtml(item.jenisKertas || '')}</span><br>
+        <span>GSM: ${escapeHtml(item.tebalKertas || '')}</span><br>
+        <span>Tinta (micron): ${escapeHtml(item.tebalTinta || '')}</span><br>
+        <span>Dmax: ${escapeHtml(item.dmax || '')}</span><br>
+        <span>L: ${escapeHtml(item.l || '')}  A: ${escapeHtml(item.a || '')}  B: ${escapeHtml(item.b || '')}</span><br>
+        <span>QC: ${escapeHtml(item.qc || '')}</span><br>
+        <span>Keterangan: ${escapeHtml(item.keterangan || '')}</span><br>
+        <span class="${statusClass}">${escapeHtml(item.update || '')}</span>
+      </div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
+        <button class="btn-icon btn-call" title="Panggil" onclick="callBapro(${i})">📤</button>
+        <button class="btn-icon btn-edit" title="Edit Inline" onclick="editBaproInline(${i})">✏️</button>
+        <button class="btn-icon btn-delete" title="Hapus" onclick="deleteBapro(${i})">🗑️</button>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+
+  // Render ulang dashboard setelah daftar hasil berubah
+  renderDashboardBaproCompact();
+}
+
+// ====================== LOAD DATA DARI SPREADSHEET (BAPRO) ======================
+async function loadBaproItems(){
+  try{
+    const res = await jsonpGet(WEBAPP_URL, { action: 'get', sheet: 'Bapro' });
+    if(res && res.status === 'ok' && Array.isArray(res.data)){
+      // NOTE: getDataFromSheet returns objects with keys sesuai header names
+      baproItems = res.data.map((it, idx) => ({ __index: idx, id: (it.id||it._row||it.row||null), ...it }));
+      renderGridBapro();
+    } else console.warn('loadBaproItems unexpected', res);
+  }catch(err){ console.error('⚠️ Error loadBaproItems', err); }
+}
+
+// ====================== TAMBAH DATA (BAPRO) ======================
+function addBaproItem() {
+  const nama = document.getElementById('baproNama').value.trim();
+  const noKS = document.getElementById('baproNoKS').value.trim();
+  const jenis = document.getElementById('baproJenis') ? document.getElementById('baproJenis').value.trim() : '';
+  const kertas = document.getElementById('baproKertas') ? document.getElementById('baproKertas').value.trim() : '';
+  const tebalTinta = document.getElementById('baproTebalTinta') ? document.getElementById('baproTebalTinta').value.trim() : '';
+  const dmax = document.getElementById('baproDmax') ? document.getElementById('baproDmax').value.trim() : '';
+  const L = document.getElementById('baproL') ? document.getElementById('baproL').value.trim() : '';
+  const A = document.getElementById('baproA') ? document.getElementById('baproA').value.trim() : '';
+  const B = document.getElementById('baproB') ? document.getElementById('baproB').value.trim() : '';
+  const qc = document.getElementById('baproQC') ? document.getElementById('baproQC').value.trim() : '';
+  const update = document.getElementById('baproUpdate') ? document.getElementById('baproUpdate').value.trim() : '';
+  const keterangan = document.getElementById('baproKeterangan') ? document.getElementById('baproKeterangan').value.trim() : '';
+
+  if (!nama || !noKS) return alert('Nama dan No KS wajib diisi!');
+
+  const tanggalFormatted = new Date().toLocaleString('id-ID', {
+    day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'
+  });
+
+  // Kunci perubahan: gunakan key names sesuai header sheet Bapro
+  const payload = { action:'add', sheet:'Bapro', tanggal: tanggalFormatted,
+    nama, noKS,
+    jenisKertas: jenis,
+    tebalKertas: kertas,
+    tebalTinta: tebalTinta,
+    dmax: dmax,
+    l: L,
+    a: A,
+    b: B,
+    qc, update, keterangan
+  };
+
+  postPayload(payload);
+  clearBaproForm();
+  // reload setelah delay agar sheet ter-update
+  setTimeout(() => loadBaproItems(), 20000);
+}
+
+// ====================== PANGGIL (isi form dari item) ======================
+function callBapro(index){
+  const item = baproItems[index];
+  if(!item) return;
+  if (document.getElementById('baproNama')) document.getElementById('baproNama').value = item.nama || '';
+  if (document.getElementById('baproNoKS')) document.getElementById('baproNoKS').value = item.noKS || '';
+  if (document.getElementById('baproJenis')) document.getElementById('baproJenis').value = item.jenisKertas || '';
+  if (document.getElementById('baproKertas')) document.getElementById('baproKertas').value = item.tebalKertas || '';
+  if (document.getElementById('baproTebalTinta')) document.getElementById('baproTebalTinta').value = item.tebalTinta || '';
+  if (document.getElementById('baproDmax')) document.getElementById('baproDmax').value = item.dmax || '';
+  if (document.getElementById('baproL')) document.getElementById('baproL').value = item.l || '';
+  if (document.getElementById('baproA')) document.getElementById('baproA').value = item.a || '';
+  if (document.getElementById('baproB')) document.getElementById('baproB').value = item.b || '';
+  if (document.getElementById('baproQC')) document.getElementById('baproQC').value = item.qc || '';
+  if (document.getElementById('baproUpdate')) document.getElementById('baproUpdate').value = item.update || '';
+  if (document.getElementById('baproKeterangan')) document.getElementById('baproKeterangan').value = item.keterangan || '';
+
+  showMenu('qcBapro');
+  const tabBtn = document.querySelector('#qcBapro .tabs button[data-tab="inputBapro"]');
+  if(tabBtn) switchTab(tabBtn);
+}
+
+// ====================== HAPUS ITEM (BAPRO) ======================
+function deleteBapro(index){
+  const item = baproItems[index];
+  if(!item) return;
+  if(!confirm('Hapus data ini?')) return;
+
+  const container = document.getElementById('gridBapro');
+  const card = container ? container.children[index] : null;
+  const btnDelete = card?.querySelector('.btn-delete');
+
+  if (btnDelete) {
+    btnDelete.textContent = '⏳ Menghapus...';
+    btnDelete.disabled = true;
+  }
+
+  const identifier = item.id || item._row || item.row || item.__index;
+  const payload = { action:'delete', sheet:'Bapro', id: identifier, index: item.__index };
+  postPayload(payload);
+
+  setTimeout(() => {
+    if (btnDelete) {
+      btnDelete.textContent = '🗑️';
+      btnDelete.disabled = false;
+    }
+    loadBaproItems();
+  }, 20000);
+}
+
+// ====================== EDIT INLINE (BAPRO) ======================
+function editBaproInline(index){
+  const item = baproItems[index];
+  const container = document.getElementById('gridBapro');
+  const card = container ? container.children[index] : null;
+  if(!card) return;
+  if(card.querySelector('.edit-inline')) return;
+
+  card.innerHTML = `
+    <div class="edit-grid">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.nama||'')}" placeholder="Nama Order">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.noKS||'')}" placeholder="No KS">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.jenisKertas||'')}" placeholder="Jenis">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.tebalKertas||'')}" placeholder="GSM">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.tebalTinta||'')}" placeholder="Tinta (micron)">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.dmax||'')}" placeholder="Dmax">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.l||'')}" placeholder="L">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.a||'')}" placeholder="A">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.b||'')}" placeholder="B">
+
+      <select class="edit-inline">
+        <option value="Marwan" ${item.qc==='Marwan'? 'selected':''}>Marwan</option>
+        <option value="Kiki" ${item.qc==='Kiki'? 'selected':''}>Kiki</option>
+      </select>
+
+      <select class="edit-inline">
+        <option value="TO" ${item.update==='TO'? 'selected':''}>TO</option>
+        <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
+        <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
+      </select>
+
+      <textarea class="edit-inline" rows="2" placeholder="Keterangan">${escapeHtml(item.keterangan||'')}</textarea>
+    </div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
+      <button class="btn-icon btn-save" title="Simpan" onclick="saveBaproInline(${index})">💾</button>
+    </div>`;
+}
+
+// ====================== SIMPAN HASIL EDIT INLINE (BAPRO) ======================
+function saveBaproInline(index) {
+  const container = document.getElementById('gridBapro');
+  const card = container ? container.children[index] : null;
+  if (!card) return;
+  const btnSave = card.querySelector('.btn-save');
+  if (btnSave) {
+    btnSave.textContent = '⏳ Menyimpan...';
+    btnSave.disabled = true;
+  }
+
+  const inputs = card.querySelectorAll('.edit-inline');
+
+  const updated = {
+    nama: inputs[0].value.trim(),
+    noKS: inputs[1].value.trim(),
+    jenisKertas: inputs[2].value.trim(),
+    tebalKertas: inputs[3].value.trim(),
+    tebalTinta: inputs[4].value.trim(),
+    dmax: inputs[5].value.trim(),
+    l: inputs[6].value.trim(),
+    a: inputs[7].value.trim(),
+    b: inputs[8].value.trim(),
+    qc: inputs[9].value,
+    update: inputs[10].value,
+    keterangan: inputs[11].value.trim()
+  };
+
+  const orig = baproItems[index];
+  const identifier = orig.id || orig._row || orig.row || orig.__index;
+
+  const tanggalFormatted = orig.tanggal || new Date().toLocaleString('id-ID', {
+    day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'
+  });
+
+  const payload = { action:'update', sheet:'Bapro', id: identifier, index: orig.__index, tanggal: tanggalFormatted, ...updated };
+
+  postPayload(payload);
+
+  setTimeout(() => {
+    if (btnSave) {
+      btnSave.textContent = '💾 Simpan';
+      btnSave.disabled = false;
+    }
+    loadBaproItems();
+  }, 20000);
+}
+
+// ====================== POST PAYLOAD BAPRO ======================
+function ensureIframeBapro() {
+  if (document.querySelector('iframe[name="hidden_iframe_post_bapro"]')) return;
+
+  const ifr = document.createElement('iframe');
+  ifr.name = 'hidden_iframe_post_bapro';
+  ifr.style.display = 'none';
+
+  // setelah kirim data, reload data Bapro dari sheet
+  ifr.addEventListener('load', () => setTimeout(() => loadBaproItems(), 10000));
+
+  document.body.appendChild(ifr);
+}
+
+function postPayloadBapro(payloadObj) {
+  ensureIframeBapro();
+
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = WEBAPP_URL_BAPRO; // ⚠️ pastikan ganti dengan URL WebApp sheet Bapro
+  form.target = 'hidden_iframe_post_bapro';
+
+  const input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'payload';
+  input.value = JSON.stringify(payloadObj);
+
+  form.appendChild(input);
+  document.body.appendChild(form);
+  form.submit();
+  form.remove();
+}
+
+// ====================== FILTER ======================
+function filterBaproGrid(query){ renderGridBapro(query); }
+
+// ====================== CLEAR FORM (BAPRO) ======================
+function clearBaproForm() {
+  ['baproNama','baproNoKS','baproJenis','baproKertas','baproTebalTinta','baproDmax','baproL','baproA','baproB','baproQC','baproUpdate','baproKeterangan']
+    .forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+}
+
+// ====================== DASHBOARD BAPRO (TO / PROSES / SELESAI) ======================
+function renderDashboardBaproCompact() {
+  const containerTO = document.getElementById('dashboardBaproTO');
+  const containerProses = document.getElementById('dashboardBaproProses');
+  const containerSelesai = document.getElementById('dashboardBaproSelesai');
+
+  // jika elemen dashboard tidak ada, jangan error
+  if (!containerProses || !containerSelesai) return;
+
+  if (containerTO) containerTO.innerHTML = '';
+  containerProses.innerHTML = '';
+  containerSelesai.innerHTML = '';
+
+  let totalTO = 0, totalProses = 0, totalSelesai = 0;
+
+  baproItems.forEach(item => {
+    const updateVal = (item.update || "").toString().trim().toLowerCase();
+    const tanggal = item.tanggal ? item.tanggal : "-";
+    const card = document.createElement('div');
+    card.className = 'grid-card';
+
+    let statusClass = "";
+    if (updateVal === "proses") statusClass = "status-proses";
+    else if (updateVal === "selesai") statusClass = "status-selesai";
+    else if (updateVal === "to") statusClass = "status-to";
+
+    card.innerHTML = `
+      <strong>${escapeHtml(item.nama || '')}</strong><br>
+      <span>QC: ${escapeHtml(item.qc || '')}</span><br>
+      <span>📅 ${escapeHtml(tanggal)}</span><br>
+      <span class="${statusClass}">${escapeHtml(item.update || '')}</span>
+    `;
+
+    if (updateVal === 'to') {
+      if (containerTO) containerTO.appendChild(card);
+      totalTO++;
+    } else if (updateVal === 'proses') {
+      containerProses.appendChild(card);
+      totalProses++;
+    } else if (updateVal === 'selesai') {
+      containerSelesai.appendChild(card);
+      totalSelesai++;
+    }
+
+    // ✅ panggil fungsi detail yang benar
+    card.addEventListener('click', () => showDetailModalBapro(item));
+  });
+
+  // update counters
+  const elTotal = document.getElementById('countBapro');
+  if (elTotal) elTotal.textContent = baproItems.length;
+  const elTO = document.getElementById('countTOBapro');
+  if (elTO) elTO.textContent = totalTO;
+  const elProses = document.getElementById('countProsesBapro');
+  if (elProses) elProses.textContent = totalProses;
+  const elSelesai = document.getElementById('countSelesaiBapro');
+  if (elSelesai) elSelesai.textContent = totalSelesai;
+}
+
+// ====================== DETAIL BAPRO ======================
+function showDetailModalBapro(item) {
+  alert(`Detail QC Bapro:
+Tanggal: ${item.tanggal || '-'}
+Nama: ${item.nama || '-'}
+No KS: ${item.noKS || '-'}
+Jenis Kertas: ${item.jenisKertas || '-'}
+Tebal Kertas: ${item.tebalKertas || '-'}
+Tebal Tinta: ${item.tebalTinta || '-'}
+Dmax: ${item.dmax || '-'}
+L: ${item.l || '-'}
+A: ${item.a || '-'}
+B: ${item.b || '-'}
+QC: ${item.qc || '-'}
+Update: ${item.update || '-'}
+Keterangan: ${item.keterangan || '-'}`);
+}
+
+// ====================== TOGGLE VIEW BAPRO (TO / PROSES / SELESAI) ======================
+document.addEventListener('DOMContentLoaded', () => {
+  const btnTOBapro = document.getElementById('toggleBaproTO');
+  const btnProsesBapro = document.getElementById('toggleBaproProses');
+  const btnSelesaiBapro = document.getElementById('toggleBaproSelesai');
+
+  const gridTOBapro = document.getElementById('dashboardBaproTO');
+  const gridProsesBapro = document.getElementById('dashboardBaproProses');
+  const gridSelesaiBapro = document.getElementById('dashboardBaproSelesai');
+
+  // 🔹 Toggle untuk TO
+  if (btnTOBapro && gridTOBapro) {
+    btnTOBapro.addEventListener('click', () => {
+      const visible = gridTOBapro.style.display !== 'none';
+      gridTOBapro.style.display = visible ? 'none' : 'grid';
+      btnTOBapro.textContent = visible ? 'Show' : 'Hide';
+    });
+  }
+
+  // 🔹 Toggle untuk Proses
+  if (btnProsesBapro && gridProsesBapro) {
+    btnProsesBapro.addEventListener('click', () => {
+      const visible = gridProsesBapro.style.display !== 'none';
+      gridProsesBapro.style.display = visible ? 'none' : 'grid';
+      btnProsesBapro.textContent = visible ? 'Show' : 'Hide';
+    });
+  }
+
+  // 🔹 Toggle untuk Selesai
+  if (btnSelesaiBapro && gridSelesaiBapro) {
+    btnSelesaiBapro.addEventListener('click', () => {
+      const visible = gridSelesaiBapro.style.display !== 'none';
+      gridSelesaiBapro.style.display = visible ? 'none' : 'grid';
+      btnSelesaiBapro.textContent = visible ? 'Show' : 'Hide';
+    });
+  }
+});
+
+// ====================== AUTO UPPERCASE KHUSUS BAPRO ======================
+document.addEventListener('input', (e) => {
+  if (!e.target) return;
+  const el = e.target;
+
+  // Berlaku untuk input text dan textarea di dalam #qcBapro
+  if (
+    (el.tagName === 'INPUT' && el.type === 'text' && el.closest('#qcBapro')) ||
+    (el.tagName === 'TEXTAREA' && el.closest('#qcBapro'))
+  ) {
+    el.value = el.value.toUpperCase();
+  }
+});
+
+// ====================== INISIALISASI TAMBAHAN (panggil loader) ======================
+loadBaproItems();
+</script>
+
+<!-- ====== JS QC PA (struktur match Bapro/Finishing) ====== -->
+<script>
+// ====================== GLOBAL STATE (PA) ======================
+let paItems = []; // array yang diambil dari sheet PA
+
+// ====================== RENDER GRID HASIL (PA) ======================
+function renderGridPA(query = "") {
+  const container = document.getElementById('gridPA');
+  if (!container) return;
+  container.innerHTML = '';
+
+  const q = (query || '').toLowerCase();
+
+  paItems.forEach((item, i) => {
+    // Filter pencarian (nama atau noKS)
+    if (q && !(String(item.nama || '').toLowerCase().includes(q) || String(item.noKS || '').toLowerCase().includes(q))) return;
+
+    const card = document.createElement('div');
+    card.className = 'grid-card';
+
+    // status class (sama gaya dengan Bapro/Finishing)
+    let statusClass = '';
+    if ((item.update || '').toString() === "Proses") statusClass = "status-proses";
+    else if ((item.update || '').toString() === "Selesai") statusClass = "status-selesai";
+    else if ((item.update || '').toString() === "TO") statusClass = "status-to";
+
+    const tanggal = item.tanggal ? `<strong>${escapeHtml(item.tanggal)}</strong><br>` : '';
+
+    card.innerHTML = `
+      <div>
+        ${tanggal}
+        <span>Nama Order: ${escapeHtml(item.nama || '')}</span><br>
+        <span>No KS: ${escapeHtml(item.noKS || '')}</span><br>
+        <span>Order: ${escapeHtml(item.order || '')}</span><br>
+        <span>Bagus: ${escapeHtml(item.bagus || '')}</span><br>
+        <span>Sortir: ${escapeHtml(item.sortir || '')}</span><br>
+        <span>Problem: ${escapeHtml(item.problem || '')}</span><br>
+        <span>Mesin: ${escapeHtml(item.mesin || '')}</span><br>
+        <span>QC: ${escapeHtml(item.qc || '')}</span><br>
+        <span>Keterangan: ${escapeHtml(item.keterangan || '')}</span><br>
+        <span class="${statusClass}">${escapeHtml(item.update || '')}</span>
+      </div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
+        <button class="btn-icon btn-call" title="Panggil" onclick="callPA(${i})">📤</button>
+        <button class="btn-icon btn-edit" title="Edit Inline" onclick="editPAInline(${i})">✏️</button>
+        <button class="btn-icon btn-delete" title="Hapus" onclick="deletePA(${i})">🗑️</button>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+
+  // Render ulang dashboard setelah daftar hasil berubah
+  renderDashboardPACompact();
+}
+
+// ====================== LOAD DATA DARI SPREADSHEET (PA) ======================
+async function loadPAItems(){
+  try{
+    // PENTING: pakai WEBAPP_URL (sama seperti Bapro/Finishing)
+    const res = await jsonpGet(WEBAPP_URL, { action: 'get', sheet: 'PA' });
+    if(res && res.status === 'ok' && Array.isArray(res.data)){
+      // sisipkan __index & id (baris)
+      paItems = res.data.map((it, idx) => ({ __index: idx, id: (it.id||it._row||it.row||null), ...it }));
+      renderGridPA();
+    } else console.warn('loadPAItems unexpected', res);
+  }catch(err){ console.error('⚠️ Error loadPAItems', err); }
+}
+
+// ====================== TAMBAH DATA (PA) ======================
+function addPAItem() {
+  const nama = document.getElementById('paNama').value.trim();
+  const noKS = document.getElementById('paNoKS').value.trim();
+  const order = document.getElementById('paOrder') ? document.getElementById('paOrder').value.trim() : '';
+  const bagus = document.getElementById('paBagus') ? document.getElementById('paBagus').value.trim() : '';
+  const sortir = document.getElementById('paSortir') ? document.getElementById('paSortir').value.trim() : '';
+  const problem = document.getElementById('paProblem') ? document.getElementById('paProblem').value.trim() : '';
+  const qc = document.getElementById('paQC') ? document.getElementById('paQC').value.trim() : '';
+  const mesin = document.getElementById('paMesin') ? document.getElementById('paMesin').value.trim() : '';
+  const update = document.getElementById('paUpdate') ? document.getElementById('paUpdate').value.trim() : '';
+  const keterangan = document.getElementById('paKeterangan') ? document.getElementById('paKeterangan').value.trim() : '';
+
+  if (!nama || !noKS) return alert('Nama dan No KS wajib diisi!');
+
+  const tanggalFormatted = new Date().toLocaleString('id-ID', {
+    day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'
+  });
+
+  // gunakan key names sesuai header di sheet PA (sama pola seperti Bapro)
+  const payload = {
+    action:'add', sheet:'PA', tanggal: tanggalFormatted,
+    nama, noKS, order, bagus, sortir, problem, qc, mesin, update, keterangan
+  };
+
+  // PENTING: kirim ke WEBAPP yang sama dengan postPayload()
+  postPayload(payload);
+  clearPAForm();
+  // reload setelah delay agar sheet ter-update
+  setTimeout(() => loadPAItems(), 20000);
+}
+
+// ====================== PANGGIL (isi form dari item) ======================
+function callPA(index){
+  const item = paItems[index];
+  if(!item) return;
+  if (document.getElementById('paNama')) document.getElementById('paNama').value = item.nama || '';
+  if (document.getElementById('paNoKS')) document.getElementById('paNoKS').value = item.noKS || '';
+  if (document.getElementById('paOrder')) document.getElementById('paOrder').value = item.order || '';
+  if (document.getElementById('paBagus')) document.getElementById('paBagus').value = item.bagus || '';
+  if (document.getElementById('paSortir')) document.getElementById('paSortir').value = item.sortir || '';
+  if (document.getElementById('paProblem')) document.getElementById('paProblem').value = item.problem || '';
+  if (document.getElementById('paQC')) document.getElementById('paQC').value = item.qc || '';
+  if (document.getElementById('paMesin')) document.getElementById('paMesin').value = item.mesin || '';
+  if (document.getElementById('paUpdate')) document.getElementById('paUpdate').value = item.update || '';
+  if (document.getElementById('paKeterangan')) document.getElementById('paKeterangan').value = item.keterangan || '';
+
+  showMenu('qcPA');
+  const tabBtn = document.querySelector('#qcPA .tabs button[data-tab="inputPA"]');
+  if(tabBtn) switchTab(tabBtn);
+}
+
+// ====================== HAPUS ITEM (PA) ======================
+function deletePA(index){
+  const item = paItems[index];
+  if(!item) return;
+  if(!confirm('Hapus data ini?')) return;
+
+  const container = document.getElementById('gridPA');
+  const card = container ? container.children[index] : null;
+  const btnDelete = card?.querySelector('.btn-delete');
+
+  if (btnDelete) {
+    btnDelete.textContent = '⏳ Menghapus...';
+    btnDelete.disabled = true;
+  }
+
+  const identifier = item.id || item._row || item.row || item.__index;
+  const payload = { action:'delete', sheet:'PA', id: identifier, index: item.__index };
+  postPayload(payload);
+
+  setTimeout(() => {
+    if (btnDelete) {
+      btnDelete.textContent = '🗑️';
+      btnDelete.disabled = false;
+    }
+    loadPAItems();
+  }, 20000);
+}
+
+// ====================== EDIT INLINE (PA) ======================
+function editPAInline(index){
+  const item = paItems[index];
+  const container = document.getElementById('gridPA');
+  const card = container ? container.children[index] : null;
+  if(!card) return;
+  if(card.querySelector('.edit-inline')) return;
+
+  card.innerHTML = `
+    <div class="edit-grid">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.nama||'')}" placeholder="Nama Order">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.noKS||'')}" placeholder="No KS">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.order||'')}" placeholder="Order">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.bagus||'')}" placeholder="Bagus">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.sortir||'')}" placeholder="Sortir">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.problem||'')}" placeholder="Problem">
+
+      <select class="edit-inline">
+        <option value="Suci" ${item.qc==='Suci'? 'selected':''}>Suci</option>
+        <option value="Anjani" ${item.qc==='Anjani'? 'selected':''}>Anjani</option>
+      </select>
+
+      <select class="edit-inline">
+        <option value="KM 640" ${item.mesin==='KM 640'? 'selected':''}>KM 640</option>
+        <option value="KM 644" ${item.mesin==='KM 644'? 'selected':''}>KM 644</option>
+        <option value="KM 620" ${item.mesin==='KM 620'? 'selected':''}>KM 620</option>
+        <option value="MT 430" ${item.mesin==='MT 430'? 'selected':''}>MT 430</option>
+        <option value="KM 640 GL" ${item.mesin==='KM 640 GL'? 'selected':''}>KM 640 GL</option>
+        <option value="RL 140" ${item.mesin==='RL 140'? 'selected':''}>RL 140</option>
+      </select>
+
+      <select class="edit-inline">
+        <option value="TO" ${item.update==='TO'? 'selected':''}>TO</option>
+        <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
+        <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
+      </select>
+
+      <textarea class="edit-inline" rows="2" placeholder="Keterangan">${escapeHtml(item.keterangan||'')}</textarea>
+    </div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
+      <button class="btn-icon btn-save" title="Simpan" onclick="savePAInline(${index})">💾</button>
+    </div>`;
+}
+
+// ====================== SIMPAN HASIL EDIT INLINE (PA) ======================
+function savePAInline(index) {
+  const container = document.getElementById('gridPA');
+  const card = container ? container.children[index] : null;
+  if (!card) return;
+  const btnSave = card.querySelector('.btn-save');
+  if (btnSave) {
+    btnSave.textContent = '⏳ Menyimpan...';
+    btnSave.disabled = true;
+  }
+
+  const inputs = card.querySelectorAll('.edit-inline');
+
+  const updated = {
+    nama: inputs[0].value.trim(),
+    noKS: inputs[1].value.trim(),
+    order: inputs[2].value.trim(),
+    bagus: inputs[3].value.trim(),
+    sortir: inputs[4].value.trim(),
+    problem: inputs[5].value.trim(),
+    qc: inputs[6].value,
+    mesin: inputs[7].value,
+    update: inputs[8].value,
+    keterangan: inputs[9].value.trim()
+  };
+
+  const orig = paItems[index];
+  const identifier = orig.id || orig._row || orig.row || orig.__index;
+
+  const tanggalFormatted = orig.tanggal || new Date().toLocaleString('id-ID', {
+    day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'
+  });
+
+  const payload = { action:'update', sheet:'PA', id: identifier, index: orig.__index, tanggal: tanggalFormatted, ...updated };
+
+  postPayload(payload);
+
+  setTimeout(() => {
+    if (btnSave) {
+      btnSave.textContent = '💾 Simpan';
+      btnSave.disabled = false;
+    }
+    loadPAItems();
+  }, 20000);
+}
+
+// ====================== FILTER ======================
+function filterPAGrid(query){ renderGridPA(query); }
+
+// ====================== CLEAR FORM (PA) ======================
+function clearPAForm() {
+  ['paNama','paNoKS','paOrder','paBagus','paSortir','paProblem','paQC','paMesin','paUpdate','paKeterangan']
+    .forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+}
+
+// ====================== DASHBOARD PA (TO / PROSES / SELESAI) ======================
+function renderDashboardPACompact() {
+  const containerTO = document.getElementById('dashboardPATO');
+  const containerProses = document.getElementById('dashboardPAProses');
+  const containerSelesai = document.getElementById('dashboardPASelesai');
+
+  if (!containerProses || !containerSelesai) return;
+
+  if (containerTO) containerTO.innerHTML = '';
+  containerProses.innerHTML = '';
+  containerSelesai.innerHTML = '';
+
+  let totalTO = 0, totalProses = 0, totalSelesai = 0;
+
+  paItems.forEach(item => {
+    const updateVal = (item.update || "").toString().trim().toLowerCase();
+    const tanggal = item.tanggal ? item.tanggal : "-";
+    const card = document.createElement('div');
+    card.className = 'grid-card';
+
+    let statusClass = "";
+    if (updateVal === "proses") statusClass = "status-proses";
+    else if (updateVal === "selesai") statusClass = "status-selesai";
+    else if (updateVal === "to") statusClass = "status-to";
+
+    card.innerHTML = `
+      <strong>${escapeHtml(item.nama || '')}</strong><br>
+      <span>QC: ${escapeHtml(item.qc || '')}</span><br>
+      <span>📅 ${escapeHtml(tanggal)}</span><br>
+      <span class="${statusClass}">${escapeHtml(item.update || '')}</span>
+    `;
+
+    if (updateVal === 'to') {
+      if (containerTO) containerTO.appendChild(card);
+      totalTO++;
+    } else if (updateVal === 'proses') {
+      containerProses.appendChild(card);
+      totalProses++;
+    } else if (updateVal === 'selesai') {
+      containerSelesai.appendChild(card);
+      totalSelesai++;
+    }
+
+    card.addEventListener('click', () => showDetailModalPA(item));
+  });
+
+  // update counters
+  const elTotal = document.getElementById('countPA');
+  if (elTotal) elTotal.textContent = paItems.length;
+  const elTO = document.getElementById('countTOPA');
+  if (elTO) elTO.textContent = totalTO;
+  const elProses = document.getElementById('countProsesPA');
+  if (elProses) elProses.textContent = totalProses;
+  const elSelesai = document.getElementById('countSelesaiPA');
+  if (elSelesai) elSelesai.textContent = totalSelesai;
+}
+
+// ====================== DETAIL PA ======================
+function showDetailModalPA(item) {
+  alert(`Detail QC PA:
+Tanggal: ${item.tanggal || '-'}
+Nama: ${item.nama || '-'}
+No KS: ${item.noKS || '-'}
+Order: ${item.order || '-'}
+Bagus: ${item.bagus || '-'}
+Sortir: ${item.sortir || '-'}
+Problem: ${item.problem || '-'}
+Mesin: ${item.mesin || '-'}
+QC: ${item.qc || '-'}
+Update: ${item.update || '-'}
+Keterangan: ${item.keterangan || '-'}`);
+}
+
+// ====================== TOGGLE VIEW PA (TO / PROSES / SELESAI) ======================
+document.addEventListener('DOMContentLoaded', () => {
+  const btnTO = document.getElementById('togglePATO');
+  const btnProses = document.getElementById('togglePAProses');
+  const btnSelesai = document.getElementById('togglePASelesai');
+
+  const gridTO = document.getElementById('dashboardPATO');
+  const gridProses = document.getElementById('dashboardPAProses');
+  const gridSelesai = document.getElementById('dashboardPASelesai');
+
+  if (btnTO && gridTO) {
+    btnTO.addEventListener('click', () => {
+      const visible = gridTO.style.display !== 'none';
+      gridTO.style.display = visible ? 'none' : 'grid';
+      btnTO.textContent = visible ? 'Show' : 'Hide';
+    });
+  }
+
+  if (btnProses && gridProses) {
+    btnProses.addEventListener('click', () => {
+      const visible = gridProses.style.display !== 'none';
+      gridProses.style.display = visible ? 'none' : 'grid';
+      btnProses.textContent = visible ? 'Show' : 'Hide';
+    });
+  }
+
+  if (btnSelesai && gridSelesai) {
+    btnSelesai.addEventListener('click', () => {
+      const visible = gridSelesai.style.display !== 'none';
+      gridSelesai.style.display = visible ? 'none' : 'grid';
+      btnSelesai.textContent = visible ? 'Show' : 'Hide';
+    });
+  }
+});
+
+// ====================== AUTO UPPERCASE KHUSUS PA ======================
+document.addEventListener('input', (e) => {
+  if (!e.target) return;
+  const el = e.target;
+  if (
+    (el.tagName === 'INPUT' && el.type === 'text' && el.closest('#qcPA')) ||
+    (el.tagName === 'TEXTAREA' && el.closest('#qcPA'))
+  ) {
+    el.value = el.value.toUpperCase();
+  }
+});
+
+// ====================== INISIALISASI (panggil loader) ======================
+loadPAItems();
+</script>
+
+<!-- ====== JS QC LEM (paste this after script utama, format disesuaikan dg QC Finishing) -->
+<script>
+// ====================== GLOBAL STATE (LEM) ======================
+let lemItems = []; // array yang diambil dari sheet Lem
+
+// ====================== RENDER GRID HASIL (LEM) ======================
+function renderGridLem(query = "") {
+  const container = document.getElementById('gridLem');
+  if (!container) return;
+  container.innerHTML = '';
+
+  const q = (query || '').toLowerCase();
+
+  lemItems.forEach((item, i) => {
+    // Filter pencarian (nama atau noKS)
+    if (q && !(String(item.nama || '').toLowerCase().includes(q) || String(item.noKS || '').toLowerCase().includes(q))) return;
+
+    const card = document.createElement('div');
+    card.className = 'grid-card';
+
+    // status class (sama seperti referensi)
+    let statusClass = '';
+    if ((item.update || '').toString() === "Proses") statusClass = "status-proses";
+    else if ((item.update || '').toString() === "Selesai") statusClass = "status-selesai";
+    else if ((item.update || '').toString() === "TO") statusClass = "status-to";
+
+    const tanggal = item.tanggal ? `<strong>${escapeHtml(item.tanggal)}</strong><br>` : '';
+
+    card.innerHTML = `
+      <div>
+        ${tanggal}
+        <span>Nama Order: ${escapeHtml(item.nama || '')}</span><br>
+        <span>No KS: ${escapeHtml(item.noKS || '')}</span><br>
+        <span>Order: ${escapeHtml(item.order || '')}</span><br>
+        <span>Isi/Dus: ${escapeHtml(item.isi || '')}</span><br>
+        <span>Bagus: ${escapeHtml(item.bagus || '')}</span><br>
+        <span>BS: ${escapeHtml(item.jenisBS || '')}</span><br>
+        <span>QC: ${escapeHtml(item.qc || '')}</span><br>
+        <span>Keterangan: ${escapeHtml(item.keterangan || '')}</span><br>
+        <span class="${statusClass}">${escapeHtml(item.update || '')}</span>
+      </div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
+        <button class="btn-icon btn-call" title="Panggil" onclick="callLem(${i})">📤</button>
+        <button class="btn-icon btn-edit" title="Edit Inline" onclick="editLemInline(${i})">✏️</button>
+        <button class="btn-icon btn-delete" title="Hapus" onclick="deleteLem(${i})">🗑️</button>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+
+  // Render ulang dashboard setelah daftar hasil berubah
+  renderDashboardLemCompact();
+}
+
+// ====================== LOAD DATA DARI SPREADSHEET (LEM) ======================
+async function loadLemItems(){
+  try{
+    // gunakan WEBAPP_URL (sama seperti Finishing) dan sheet 'Lem'
+    const res = await jsonpGet(WEBAPP_URL, { action: 'get', sheet: 'Lem' });
+    if(res && res.status === 'ok' && Array.isArray(res.data)){
+      lemItems = res.data.map((it, idx) => ({ __index: idx, id: (it.id||it._row||it.row||null), ...it }));
+      renderGridLem();
+    } else console.warn('loadLemItems unexpected', res);
+  }catch(err){ console.error('⚠️ Error loadLemItems', err); }
+}
+
+// ====================== TAMBAH DATA (LEM) ======================
+function addLemItem() {
+  const nama = document.getElementById('lemNama').value.trim();
+  const noKS = document.getElementById('lemNoKS').value.trim();
+  const order = document.getElementById('lemOrder') ? document.getElementById('lemOrder').value.trim() : '';
+  const isi = document.getElementById('lemIsi') ? document.getElementById('lemIsi').value.trim() : '';
+  const bagus = document.getElementById('lemBagus') ? document.getElementById('lemBagus').value.trim() : '';
+  const jenisBS = document.getElementById('lemJenisBS') ? document.getElementById('lemJenisBS').value.trim() : '';
+  const qc = document.getElementById('lemQC') ? document.getElementById('lemQC').value.trim() : '';
+  const update = document.getElementById('lemUpdate') ? document.getElementById('lemUpdate').value.trim() : '';
+  const keterangan = document.getElementById('lemKeterangan') ? document.getElementById('lemKeterangan').value.trim() : '';
+
+  if (!nama || !noKS) return alert('Nama dan No KS wajib diisi!');
+
+  const tanggalFormatted = new Date().toLocaleString('id-ID', {
+    day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'
+  });
+
+  // key names mengikuti header sheet "Lem"
+  const payload = {
+    action:'add', sheet:'Lem', tanggal: tanggalFormatted,
+    nama, noKS, order, isi, bagus, jenisBS, qc, update, keterangan
+  };
+
+  // gunakan postPayload sama seperti Finishing (kirim ke WEBAPP_URL)
+  postPayload(payload);
+  clearLemForm();
+  setTimeout(() => loadLemItems(), 20000);
+}
+
+// ====================== PANGGIL (isi form dari item) ======================
+function callLem(index){
+  const item = lemItems[index];
+  if(!item) return;
+  if (document.getElementById('lemNama')) document.getElementById('lemNama').value = item.nama || '';
+  if (document.getElementById('lemNoKS')) document.getElementById('lemNoKS').value = item.noKS || '';
+  if (document.getElementById('lemOrder')) document.getElementById('lemOrder').value = item.order || '';
+  if (document.getElementById('lemIsi')) document.getElementById('lemIsi').value = item.isi || '';
+  if (document.getElementById('lemBagus')) document.getElementById('lemBagus').value = item.bagus || '';
+  if (document.getElementById('lemJenisBS')) document.getElementById('lemJenisBS').value = item.jenisBS || '';
+  if (document.getElementById('lemQC')) document.getElementById('lemQC').value = item.qc || '';
+  if (document.getElementById('lemUpdate')) document.getElementById('lemUpdate').value = item.update || '';
+  if (document.getElementById('lemKeterangan')) document.getElementById('lemKeterangan').value = item.keterangan || '';
+
+  showMenu('qcLem');
+  const tabBtn = document.querySelector('#qcLem .tabs button[data-tab="inputLem"]');
+  if(tabBtn) switchTab(tabBtn);
+}
+
+// ====================== HAPUS ITEM (LEM) ======================
+function deleteLem(index){
+  const item = lemItems[index];
+  if(!item) return;
+  if(!confirm('Hapus data ini?')) return;
+
+  const container = document.getElementById('gridLem');
+  const card = container ? container.children[index] : null;
+  const btnDelete = card?.querySelector('.btn-delete');
+
+  if (btnDelete) {
+    btnDelete.textContent = '⏳ Menghapus...';
+    btnDelete.disabled = true;
+  }
+
+  const identifier = item.id || item._row || item.row || item.__index;
+  const payload = { action:'delete', sheet:'Lem', id: identifier, index: item.__index };
+  postPayload(payload);
+
+  setTimeout(() => {
+    if (btnDelete) {
+      btnDelete.textContent = '🗑️';
+      btnDelete.disabled = false;
+    }
+    loadLemItems();
+  }, 20000);
+}
+
+// ====================== EDIT INLINE (LEM) ======================
+function editLemInline(index){
+  const item = lemItems[index];
+  const container = document.getElementById('gridLem');
+  const card = container ? container.children[index] : null;
+  if(!card) return;
+  if(card.querySelector('.edit-inline')) return;
+
+  card.innerHTML = `
+    <div class="edit-grid">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.nama||'')}" placeholder="Nama Order">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.noKS||'')}" placeholder="No KS">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.order||'')}" placeholder="Order">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.isi||'')}" placeholder="Isi/Dus">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.bagus||'')}" placeholder="Bagus">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.jenisBS||'')}" placeholder="BS">
+
+      <select class="edit-inline">
+        <option value="Martini" ${item.qc==='Martini'? 'selected':''}>Martini</option>
+        <option value="Krestin" ${item.qc==='Krestin'? 'selected':''}>Krestin</option>
+        <option value="Ismie" ${item.qc==='Ismie'? 'selected':''}>Ismie</option>
+      </select>
+
+      <select class="edit-inline">
+        <option value="TO" ${item.update==='TO'? 'selected':''}>TO</option>
+        <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
+        <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
+      </select>
+
+      <textarea class="edit-inline" rows="2" placeholder="Keterangan">${escapeHtml(item.keterangan||'')}</textarea>
+    </div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
+      <button class="btn-icon btn-save" title="Simpan" onclick="saveLemInline(${index})">💾</button>
+    </div>`;
+}
+
+// ====================== SIMPAN HASIL EDIT INLINE (LEM) ======================
+function saveLemInline(index) {
+  const container = document.getElementById('gridLem');
+  const card = container ? container.children[index] : null;
+  if (!card) return;
+  const btnSave = card.querySelector('.btn-save');
+  if (btnSave) {
+    btnSave.textContent = '⏳ Menyimpan...';
+    btnSave.disabled = true;
+  }
+
+  const inputs = card.querySelectorAll('.edit-inline');
+
+  const updated = {
+    nama: inputs[0].value.trim(),
+    noKS: inputs[1].value.trim(),
+    order: inputs[2].value.trim(),
+    isi: inputs[3].value.trim(),
+    bagus: inputs[4].value.trim(),
+    jenisBS: inputs[5].value.trim(),
+    qc: inputs[6].value,
+    update: inputs[7].value,
+    keterangan: inputs[8].value.trim()
+  };
+
+  const orig = lemItems[index];
+  const identifier = orig.id || orig._row || orig.row || orig.__index;
+
+  const tanggalFormatted = orig.tanggal || new Date().toLocaleString('id-ID', {
+    day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'
+  });
+
+  const payload = { action:'update', sheet:'Lem', id: identifier, index: orig.__index, tanggal: tanggalFormatted, ...updated };
+
+  postPayload(payload);
+
+  setTimeout(() => {
+    if (btnSave) {
+      btnSave.textContent = '💾 Simpan';
+      btnSave.disabled = false;
+    }
+    loadLemItems();
+  }, 20000);
+}
+
+// ====================== FILTER ======================
+function filterLemGrid(query){ renderGridLem(query); }
+
+// ====================== CLEAR FORM (LEM) ======================
+function clearLemForm() {
+  ['lemNama','lemNoKS','lemOrder','lemIsi','lemBagus','lemJenisBS','lemQC','lemUpdate','lemKeterangan']
+    .forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+}
+
+// ====================== DASHBOARD LEM (TO / PROSES / SELESAI) ======================
+function renderDashboardLemCompact() {
+  const containerTO = document.getElementById('dashboardLemTO');
+  const containerProses = document.getElementById('dashboardLemProses');
+  const containerSelesai = document.getElementById('dashboardLemSelesai');
+
+  if (!containerProses || !containerSelesai) return;
+
+  if (containerTO) containerTO.innerHTML = '';
+  containerProses.innerHTML = '';
+  containerSelesai.innerHTML = '';
+
+  let totalTO = 0, totalProses = 0, totalSelesai = 0;
+
+  lemItems.forEach(item => {
+    const updateVal = (item.update || "").toString().trim().toLowerCase();
+    const tanggal = item.tanggal ? item.tanggal : "-";
+    const card = document.createElement('div');
+    card.className = 'grid-card';
+
+    let statusClass = "";
+    if (updateVal === "proses") statusClass = "status-proses";
+    else if (updateVal === "selesai") statusClass = "status-selesai";
+    else if (updateVal === "to") statusClass = "status-to";
+
+    card.innerHTML = `
+      <strong>${escapeHtml(item.nama || '')}</strong><br>
+      <span>QC: ${escapeHtml(item.qc || '')}</span><br>
+      <span>📅 ${escapeHtml(tanggal)}</span><br>
+      <span class="${statusClass}">${escapeHtml(item.update || '')}</span>
+    `;
+
+    if (updateVal === 'to') {
+      if (containerTO) containerTO.appendChild(card);
+      totalTO++;
+    } else if (updateVal === 'proses') {
+      containerProses.appendChild(card);
+      totalProses++;
+    } else if (updateVal === 'selesai') {
+      containerSelesai.appendChild(card);
+      totalSelesai++;
+    }
+
+    card.addEventListener('click', () => showDetailModalLem(item));
+  });
+
+  // update counters
+  const elTotal = document.getElementById('countLem');
+  if (elTotal) elTotal.textContent = lemItems.length;
+  const elTO = document.getElementById('countTOLem');
+  if (elTO) elTO.textContent = totalTO;
+  const elProses = document.getElementById('countProsesLem');
+  if (elProses) elProses.textContent = totalProses;
+  const elSelesai = document.getElementById('countSelesaiLem');
+  if (elSelesai) elSelesai.textContent = totalSelesai;
+}
+
+// ====================== DETAIL LEM ======================
+function showDetailModalLem(item) {
+  alert(`Detail QC Lem:
+Tanggal: ${item.tanggal || '-'}
+Nama: ${item.nama || '-'}
+No KS: ${item.noKS || '-'}
+Order: ${item.order || '-'}
+Isi/Dus: ${item.isi || '-'}
+Bagus: ${item.bagus || '-'}
+BS: ${item.jenisBS || '-'}
+QC: ${item.qc || '-'}
+Update: ${item.update || '-'}
+Keterangan: ${item.keterangan || '-'}`);
+}
+
+// ====================== TOGGLE VIEW LEM (TO / PROSES / SELESAI) ======================
+document.addEventListener('DOMContentLoaded', () => {
+  const btnTO = document.getElementById('toggleLemTO');
+  const btnProses = document.getElementById('toggleLemProses');
+  const btnSelesai = document.getElementById('toggleLemSelesai');
+
+  const gridTO = document.getElementById('dashboardLemTO');
+  const gridProses = document.getElementById('dashboardLemProses');
+  const gridSelesai = document.getElementById('dashboardLemSelesai');
+
+  if (btnTO && gridTO) {
+    btnTO.addEventListener('click', () => {
+      const visible = gridTO.style.display !== 'none';
+      gridTO.style.display = visible ? 'none' : 'grid';
+      btnTO.textContent = visible ? 'Show' : 'Hide';
+    });
+  }
+
+  if (btnProses && gridProses) {
+    btnProses.addEventListener('click', () => {
+      const visible = gridProses.style.display !== 'none';
+      gridProses.style.display = visible ? 'none' : 'grid';
+      btnProses.textContent = visible ? 'Show' : 'Hide';
+    });
+  }
+
+  if (btnSelesai && gridSelesai) {
+    btnSelesai.addEventListener('click', () => {
+      const visible = gridSelesai.style.display !== 'none';
+      gridSelesai.style.display = visible ? 'none' : 'grid';
+      btnSelesai.textContent = visible ? 'Show' : 'Hide';
+    });
+  }
+});
+
+// ====================== AUTO UPPERCASE KHUSUS LEM ======================
+document.addEventListener('input', (e) => {
+  if (!e.target) return;
+  const el = e.target;
+  if (
+    (el.tagName === 'INPUT' && el.type === 'text' && el.closest('#qcLem')) ||
+    (el.tagName === 'TEXTAREA' && el.closest('#qcLem'))
+  ) {
+    el.value = el.value.toUpperCase();
+  }
+});
+
+// ====================== INISIALISASI (panggil loader) ======================
+loadLemItems();
 </script>
 
 </body>
