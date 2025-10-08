@@ -197,17 +197,39 @@ input[type=text], input[type=number], select{
 .btn-icon:hover{opacity:.9;transform:translateY(-1px);}
 
 /* ======================== Edit Inline ======================== */
-.edit-grid{
-  display:flex;
-  flex-wrap:wrap;
-  gap:4px;
+.edit-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
 }
-.edit-grid input, .edit-grid select{
-  flex:1 1 48%;
-  min-width:100px;
+
+.edit-grid input,
+.edit-grid select {
+  flex: 1 1 48%;
+  min-width: 100px;
+}
+
+/* Khusus kolom Keterangan agar melebar penuh */
+.edit-grid textarea {
+  flex: 1 1 100%;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 6px;
+  font-family: inherit;
+  resize: vertical; /* bisa ubah tinggi tapi tidak lebar */
 }
 
 /* ======================== Status ======================== */
+.status-to {
+  background: #fee2e2;   /* merah muda lembut */
+  color: #b91c1c;        /* merah tua */
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 6px;
+  display: inline-block;
+}
 .status-proses{
   background:var(--warning);
   color:#111;
@@ -226,6 +248,48 @@ input[type=text], input[type=number], select{
 .form-group { margin-bottom: 10px; }
 
 /* ======================== Dashboard Finishing Compact Fix ======================== */
+#dashboardFinishingTO,
+#dashboardFinishingProses,
+#dashboardFinishingSelesai {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important;
+  gap: 6px !important;
+  justify-content: start;
+  align-items: start;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#dashboardFinishingTO .grid-card,
+#dashboardFinishingProses .grid-card,
+#dashboardFinishingSelesai .grid-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 6px;
+  font-size: 0.7rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  text-align: left;
+  line-height: 1.2;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+#dashboardFinishingTO .grid-card:hover,
+#dashboardFinishingProses .grid-card:hover,
+#dashboardFinishingSelesai .grid-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#dashboardFinishingTO .status-to,
+#dashboardFinishingProses .status-proses,
+#dashboardFinishingSelesai .status-selesai {
+  font-size: 0.65rem;
+  display: inline-block;
+  padding: 1px 4px;
+  border-radius: 4px;
+  margin-top: 2px;
+}
 #dashboardFinishingProses,
 #dashboardFinishingSelesai {
   display: grid; /* HAPUS !important agar JS bisa kontrol show/hide */
@@ -379,37 +443,47 @@ input[type=text], input[type=number], select{
       </div>
       <div id="dashboardPASelesai" class="grid-container" style="display:none;"></div>
 
-    <!-- ======================== QC Finishing ======================== -->
+<!-- ======================== QC Finishing ======================== -->
 <h2 style="text-align:center; color:#fff; background:#1E90FF; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
   Dashboard QC Finishing
 </h2>
 
-      <!-- Info Total -->
-      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
-        <div style="flex:1; min-width:120px; background:#e5f6f6; padding:6px 10px; border-radius:8px; text-align:center;">
-          Total Order<br><strong id="countFinishing">0</strong>
-        </div>
-        <div style="flex:1; min-width:120px; background:#fff4e5; padding:6px 10px; border-radius:8px; text-align:center;">
-          Total Proses<br><strong id="countProses">0</strong>
-        </div>
-        <div style="flex:1; min-width:120px; background:#e5f7e5; padding:6px 10px; border-radius:8px; text-align:center;">
-          Total Selesai<br><strong id="countSelesai">0</strong>
-        </div>
-      </div>
+<!-- Info Total -->
+<div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
+  <div style="flex:1; min-width:120px; background:#e5f6f6; padding:6px 10px; border-radius:8px; text-align:center;">
+    Total Order<br><strong id="countFinishing">0</strong>
+  </div>
+  <div style="flex:1; min-width:120px; background:#dbeafe; padding:6px 10px; border-radius:8px; text-align:center;">
+    Total TO<br><strong id="countTO">0</strong>
+  </div>
+  <div style="flex:1; min-width:120px; background:#fff4e5; padding:6px 10px; border-radius:8px; text-align:center;">
+    Total Proses<br><strong id="countProses">0</strong>
+  </div>
+  <div style="flex:1; min-width:120px; background:#e5f7e5; padding:6px 10px; border-radius:8px; text-align:center;">
+    Total Selesai<br><strong id="countSelesai">0</strong>
+  </div>
+</div>
 
-      <!-- Grid Proses -->
-      <div style="text-align:center; margin-bottom:4px;">
-        <h4 style="display:inline-block; margin:0;">Proses</h4>
-        <button id="toggleProses" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
-      </div>
-      <div id="dashboardFinishingProses" class="grid-container" style="display:none;"></div>
+<!-- Grid TO -->
+<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+  <h4 style="display:inline-block; margin:0;">TO</h4>
+  <button id="toggleTO" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+</div>
+<div id="dashboardFinishingTO" class="grid-container" style="display:none;"></div>
 
-      <!-- Grid Selesai -->
-      <div style="text-align:center; margin-top:12px; margin-bottom:4px;">
-        <h4 style="display:inline-block; margin:0;">Selesai</h4>
-        <button id="toggleSelesai" style="margin-left:8px; padding:2px 6px;font-size:0.8rem;">Show</button>
-      </div>
-      <div id="dashboardFinishingSelesai" class="grid-container" style="display:none;"></div>
+<!-- Grid Proses -->
+<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+  <h4 style="display:inline-block; margin:0;">Proses</h4>
+  <button id="toggleProses" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+</div>
+<div id="dashboardFinishingProses" class="grid-container" style="display:none;"></div>
+
+<!-- Grid Selesai -->
+<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+  <h4 style="display:inline-block; margin:0;">Selesai</h4>
+  <button id="toggleSelesai" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+</div>
+<div id="dashboardFinishingSelesai" class="grid-container" style="display:none;"></div>
 
     <!-- ======================== QC Lem ======================== -->
 <h2 style="text-align:center; color:#fff; background:#1E90FF; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
@@ -463,8 +537,8 @@ input[type=text], input[type=number], select{
     <div class="form-group">
       <select id="baproQC">
         <option value="">QC</option>
-        <option value="Anom">Anom</option>
-        <option value="Irna">Irna</option>
+        <option value="Marwan">Marwan</option>
+        <option value="Kiki">Kiki</option>
       </select>
     </div>
     <div class="form-group">
@@ -498,19 +572,31 @@ input[type=text], input[type=number], select{
     <div class="form-group"><input type="text" id="paNama" placeholder="Nama Order"></div>
     <div class="form-group"><input type="text" id="paNoKS" placeholder="No KS"></div>
     <div class="form-group"><input type="number" id="paOrder" placeholder="Total Order (lembar)"></div>
-    <div class="form-group"><input type="number" id="paIsi" placeholder="Isi/Dus (pcs)"></div>
-    <div class="form-group"><input type="number" id="paBagus" placeholder="Total Bagus (pcs)"></div>
-    <div class="form-group"><input type="number" id="paJenisBS" placeholder="Total BS (pcs)"></div>
+    <div class="form-group"><input type="number" id="paBagus" placeholder="Bagus (lembar)"></div>
+    <div class="form-group"><input type="number" id="paSortir" placeholder="Sortir (lembar)"></div>
+    <div class="form-group"><input type="number" id="paProblem" placeholder="Problem (lembar)"></div>
     <div class="form-group">
       <select id="paQC">
         <option value="">QC</option>
-        <option value="Anom">Anom</option>
-        <option value="Irna">Irna</option>
+        <option value="Suci">Suci</option>
+        <option value="Anjani">Anjani</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <select id="paMesin">
+        <option value="">Mesin</option>
+        <option value="KM 640">KM 640</option>
+        <option value="KM 644">KM 644</option>
+        <option value="KM 620">KM 620</option>
+        <option value="MT 430">MT 430</option>
+        <option value="KM 640 GL">KM 640 GL</option>
+        <option value="RL 140">RL 140</option>
       </select>
     </div>
     <div class="form-group">
       <select id="paUpdate">
         <option value="">Update</option>
+        <option value="TO">TO</option>
         <option value="Proses">Proses</option>
         <option value="Selesai">Selesai</option>
       </select>
@@ -551,10 +637,10 @@ input[type=text], input[type=number], select{
     </div>
     <div class="form-group">
       <select id="finishingUpdate">
-        <option value="">Update</option>
-        <option value="Proses">Proses</option>
-        <option value="Selesai">Selesai</option>
-      </select>
+  <option value="Proses">Proses</option>
+  <option value="Selesai">Selesai</option>
+  <option value="TO">TO</option>
+</select>
     </div>
     <div class="form-group">
       <textarea id="finishingKeterangan" placeholder="Keterangan (opsional)" rows="3" style="width:100%; padding:.6rem; border:1px solid #ccc; border-radius:8px;"></textarea>
@@ -586,8 +672,9 @@ input[type=text], input[type=number], select{
     <div class="form-group">
       <select id="lemQC">
         <option value="">QC</option>
-        <option value="Anom">Anom</option>
-        <option value="Irna">Irna</option>
+        <option value="Martini">Martini</option>
+        <option value="Krestin">Krestin</option>
+        <option value="Ismie">Ismie</option>
       </select>
     </div>
     <div class="form-group">
@@ -674,48 +761,61 @@ function jsonpGet(url, params = {}) {
 // ====================== GLOBAL STATE ======================
 let finishingItems = []; // array yang diambil dari sheet
 
-// ====================== RENDER GRID HASIL ======================
+// ====================== RENDER GRID HASIL (Fix: tampilkan TO juga) ======================
 function renderGridFinishing(query = "") {
   const container = document.getElementById('gridFinishing');
   container.innerHTML = '';
 
-  const q = (query||'').toLowerCase();
+  const q = (query || '').toLowerCase();
 
   finishingItems.forEach((item, i) => {
-    if (q && !(String(item.nama||'').toLowerCase().includes(q) || String(item.noKS||'').toLowerCase().includes(q))) return;
+    // Filter pencarian
+    if (q && !(String(item.nama || '').toLowerCase().includes(q) || String(item.noKS || '').toLowerCase().includes(q))) return;
 
     const card = document.createElement('div');
     card.className = 'grid-card';
 
-    const statusClass = item.update === "Proses" ? "status-proses" : (item.update === "Selesai" ? "status-selesai" : "");
+    // 🔧 Tambahkan status TO
+    let statusClass = '';
+    if (item.update === "Proses") statusClass = "status-proses";
+    else if (item.update === "Selesai") statusClass = "status-selesai";
+    else if (item.update === "TO") statusClass = "status-to";
+
     const tanggal = item.tanggal ? `<strong>${escapeHtml(item.tanggal)}</strong><br>` : '';
 
     card.innerHTML = `
       <div>
         ${tanggal}
-        <span>Nama Order: ${escapeHtml(item.nama||'')}</span><br>
-        <span>No KS: ${escapeHtml(item.noKS||'')}</span><br>
-        <span>Order: ${escapeHtml(item.order||'')}</span><br>
-        <span>Isi/Dus: ${escapeHtml(item.isi||'')}</span><br>
-        <span>Bagus: ${escapeHtml(item.bagus||'')}</span><br>
-        <span>BS: ${escapeHtml(item.jenisBS||'')}</span><br>
-        <span>QC: ${escapeHtml(item.qc||'')}</span><br>
-        <span>Keterangan: ${escapeHtml(item.keterangan||'')}</span><br>
-        <span class="${statusClass}">${escapeHtml(item.update||'')}</span>
+        <span>Nama Order: ${escapeHtml(item.nama || '')}</span><br>
+        <span>No KS: ${escapeHtml(item.noKS || '')}</span><br>
+        <span>Order: ${escapeHtml(item.order || '')}</span><br>
+        <span>Isi/Dus: ${escapeHtml(item.isi || '')}</span><br>
+        <span>Bagus: ${escapeHtml(item.bagus || '')}</span><br>
+        <span>BS: ${escapeHtml(item.jenisBS || '')}</span><br>
+        <span>QC: ${escapeHtml(item.qc || '')}</span><br>
+        <span>Keterangan: ${escapeHtml(item.keterangan || '')}</span><br>
+        <span class="${statusClass}">${escapeHtml(item.update || '')}</span>
       </div>
       <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
         <button class="btn-icon btn-call" title="Panggil" onclick="callFinishing(${i})">📤</button>
         <button class="btn-icon btn-edit" title="Edit Inline" onclick="editFinishingInline(${i})">✏️</button>
         <button class="btn-icon btn-delete" title="Hapus" onclick="deleteFinishing(${i})">🗑️</button>
-      </div>`;
+      </div>
+    `;
 
     container.appendChild(card);
   });
 
+  // Render ulang dashboard setelah daftar hasil berubah
   renderDashboardFinishingCompact();
 }
 
-function escapeHtml(s){ return String(s||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+function escapeHtml(s) {
+  return String(s || '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
+}
 
 // ====================== LOAD DATA DARI SPREADSHEET ======================
 async function loadFinishingItems(){
@@ -817,14 +917,18 @@ function editFinishingInline(index){
       <input type="number" class="edit-inline" value="${escapeHtml(item.isi||'')}" placeholder="Isi/Dus">
       <input type="number" class="edit-inline" value="${escapeHtml(item.bagus||'')}" placeholder="Bagus">
       <input type="number" class="edit-inline" value="${escapeHtml(item.jenisBS||'')}" placeholder="BS">
+
       <select class="edit-inline">
         <option value="Anom" ${item.qc==='Anom'? 'selected':''}>Anom</option>
         <option value="Irna" ${item.qc==='Irna'? 'selected':''}>Irna</option>
       </select>
+
       <select class="edit-inline">
+        <option value="TO" ${item.update==='TO'? 'selected':''}>TO</option>
         <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
         <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
       </select>
+
       <textarea class="edit-inline" rows="2" placeholder="Keterangan">${escapeHtml(item.keterangan||'')}</textarea>
     </div>
     <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
@@ -913,32 +1017,60 @@ function clearFinishingForm() {
     .forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
 }
 
-// ====================== DASHBOARD ======================
+// ====================== DASHBOARD (UPDATE: TAMBAH STATUS "TO") ======================
 function renderDashboardFinishingCompact() {
+  const containerTO = document.getElementById('dashboardFinishingTO');      // 🔹 container baru untuk TO
   const containerProses = document.getElementById('dashboardFinishingProses');
   const containerSelesai = document.getElementById('dashboardFinishingSelesai');
-  containerProses.innerHTML = ''; containerSelesai.innerHTML = '';
 
-  let totalProses = 0, totalSelesai = 0;
+  // pastikan elemen tidak null agar tidak error
+  if (!containerProses || !containerSelesai) return;
+
+  if (containerTO) containerTO.innerHTML = '';
+  containerProses.innerHTML = '';
+  containerSelesai.innerHTML = '';
+
+  let totalTO = 0, totalProses = 0, totalSelesai = 0;
 
   finishingItems.forEach(item => {
     const updateVal = (item.update || "").trim().toLowerCase();
     const tanggal = item.tanggal ? item.tanggal : "-";
     const card = document.createElement('div');
     card.className = 'grid-card';
-    const statusClass = updateVal === "proses" ? "status-proses" :
-                        updateVal === "selesai" ? "status-selesai" : "";
+
+    // 🟢 Tentukan warna/status class
+    let statusClass = "";
+    if (updateVal === "proses") statusClass = "status-proses";
+    else if (updateVal === "selesai") statusClass = "status-selesai";
+    else if (updateVal === "to") statusClass = "status-to"; // 💙 class baru untuk TO
+
+    // 🧩 Isi kartu
     card.innerHTML = `
       <strong>${escapeHtml(item.nama || '')}</strong><br>
       <span>QC: ${escapeHtml(item.qc || '')}</span><br>
       <span>📅 ${escapeHtml(tanggal)}</span><br>
-      <span class="${statusClass}">${escapeHtml(item.update || '')}</span>`;
-    if (updateVal === 'proses'){ containerProses.appendChild(card); totalProses++; }
-    else if (updateVal === 'selesai'){ containerSelesai.appendChild(card); totalSelesai++; }
+      <span class="${statusClass}">${escapeHtml(item.update || '')}</span>
+    `;
+
+    // 🧠 Kelompokkan berdasarkan status
+    if (updateVal === 'to') {
+      if (containerTO) containerTO.appendChild(card);
+      totalTO++;
+    } else if (updateVal === 'proses') {
+      containerProses.appendChild(card);
+      totalProses++;
+    } else if (updateVal === 'selesai') {
+      containerSelesai.appendChild(card);
+      totalSelesai++;
+    }
+
+    // 📋 klik kartu untuk lihat detail
     card.addEventListener('click', () => showDetailModal(item));
   });
 
+  // 🧮 Update counter
   document.getElementById('countFinishing').textContent = finishingItems.length;
+  document.getElementById('countTO').textContent = totalTO;
   document.getElementById('countProses').textContent = totalProses;
   document.getElementById('countSelesai').textContent = totalSelesai;
 }
@@ -957,13 +1089,26 @@ Update: ${item.update}
 Keterangan: ${item.keterangan || '-'}`);
 }
 
-// ====================== TOGGLE VIEW ======================
+// ====================== TOGGLE VIEW (UPDATE: TAMBAH TO) ======================
 document.addEventListener('DOMContentLoaded', () => {
+  const btnTO = document.getElementById('toggleTO');
   const btnProses = document.getElementById('toggleProses');
   const btnSelesai = document.getElementById('toggleSelesai');
+
+  const gridTO = document.getElementById('dashboardFinishingTO');
   const gridProses = document.getElementById('dashboardFinishingProses');
   const gridSelesai = document.getElementById('dashboardFinishingSelesai');
 
+  // 🔹 Toggle untuk TO
+  if (btnTO && gridTO) {
+    btnTO.addEventListener('click', () => {
+      const visible = gridTO.style.display !== 'none';
+      gridTO.style.display = visible ? 'none' : 'grid';
+      btnTO.textContent = visible ? 'Show' : 'Hide';
+    });
+  }
+
+  // 🔹 Toggle untuk Proses
   if (btnProses && gridProses) {
     btnProses.addEventListener('click', () => {
       const visible = gridProses.style.display !== 'none';
@@ -972,6 +1117,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // 🔹 Toggle untuk Selesai
   if (btnSelesai && gridSelesai) {
     btnSelesai.addEventListener('click', () => {
       const visible = gridSelesai.style.display !== 'none';
