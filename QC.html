@@ -268,33 +268,43 @@ input[type=text], input[type=number], select{
 </head>
 <body>
 
-<!-- ======================== Header ======================== -->
+<!-- ======================== Header Modern Elegan ======================== -->
 <header style="
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 24px;
-  background: linear-gradient(90deg, #0ea5a4, #0369a1);
+  padding: 14px 28px;
+  background: rgba(14, 165, 164, 0.85);
+  backdrop-filter: blur(10px);
   color: white;
   font-family: 'Inter', sans-serif;
   font-weight: 500;
   letter-spacing: 0.3px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
   position: sticky;
   top: 0;
   z-index: 1000;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  transition: all 0.4s ease;
 ">
-  <div style="display: flex; align-items: center; gap: 10px;">
+  <!-- Kiri: Logo + Judul -->
+  <div style="display: flex; align-items: center; gap: 12px;">
     <div style="
       background: white;
       color: #0ea5a4;
       font-weight: 700;
-      font-size: 1.2rem;
-      padding: 6px 10px;
-      border-radius: 10px;
-    ">QC</div>
-    <div id="headerTitle" style="font-size: 1.2rem;">Sistem</div>
+      font-size: 1.1rem;
+      padding: 8px 12px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+    " 
+    onmouseover="this.style.transform='scale(1.12)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.2)'"
+    onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 2px 6px rgba(0,0,0,0.1)'">
+      QC
+    </div>
+    <div id="headerTitle" style="font-size: 1.25rem; font-weight: 600;">System</div>
   </div>
   <div id="headerTime">Selasa, 5 Oktober 2025 14:30</div>
 </header>
