@@ -265,52 +265,42 @@ input[type=text], input[type=number], select{
 }
 
 /* ==================== DASHBOARD GRID CONSISTENT ==================== */
+/* ================= GRID RESPONSIVE UNIVERSAL ================= */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Atur ukuran minimum per grid */
   gap: 10px;
-  padding: 10px;
-  justify-content: stretch;
+  justify-items: stretch;
   align-items: stretch;
+  width: 100%;
 }
 
-/* Semua card seragam tinggi & proporsional */
-.grid-container .card {
-  background: var(--card, #fff);
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+/* Konsistensi antar menu agar tinggi & padding card sama */
+.grid-container > div {
+  background: #fff;
+  border-radius: 10px;
   padding: 10px;
-  text-align: center;
-  font-size: 0.8rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  min-height: 90px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100px; /* kunci tinggi agar tidak beda */
-  height: 100%;      /* isi kolom penuh */
-  box-sizing: border-box;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.grid-container .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
-}
-
-/* Responsif */
-@media (max-width: 900px) {
+/* Responsif di HP — biar tetap sejajar, tidak 1 kolom besar */
+@media (max-width: 768px) {
   .grid-container {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 8px;
   }
 }
-
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .grid-container {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 6px;
   }
 }
-
-
 
 </style>
 </head>
@@ -342,7 +332,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.9rem;">System 1.0</div>
+    <div id="headerTitle" style="font-size: 0.9rem;">System 2.0</div>
   </div>
   <div id="headerTime">Selasa, 5 Oktober 2025 14:30</div>
 </header>
@@ -2364,6 +2354,7 @@ loadLemItems();
 
 </body>
 </html>
+
 
 
 
