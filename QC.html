@@ -264,6 +264,66 @@ input[type=text], input[type=number], select{
   main{padding:1rem;}
 }
 
+/* ==================== DASHBOARD GRID CONSISTENT ==================== */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* Selalu 5 kolom di layar besar */
+  gap: 12px;
+  padding: 10px;
+  justify-items: center;
+  align-items: stretch;
+}
+
+/* Setiap card di dalam grid */
+.grid-container .card {
+  width: 100%;
+  background: var(--card, #ffffff);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  padding: 10px;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 100px; /* agar tinggi seragam */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Hover efek */
+.grid-container .card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+/* ==================== RESPONSIF HP / TABLET ==================== */
+@media (max-width: 1200px) {
+  .grid-container {
+    grid-template-columns: repeat(4, 1fr); /* tablet besar */
+  }
+}
+
+@media (max-width: 900px) {
+  .grid-container {
+    grid-template-columns: repeat(3, 1fr); /* tablet sedang */
+  }
+}
+
+@media (max-width: 600px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr); /* HP */
+  }
+}
+
+@media (max-width: 400px) {
+  .grid-container {
+    grid-template-columns: repeat(1, 1fr); /* layar kecil */
+  }
+}
+
+
+
 </style>
 </head>
 <body>
@@ -359,7 +419,7 @@ input[type=text], input[type=number], select{
 </div>
 <div id="dashboardBaproSelesai" class="grid-container" style="display:none;"></div>
 
-    <!-- ======================== QC PA ======================== -->
+    <!-- ======================== QC CETAK ======================== -->
 <h2 style="text-align:center; color:#fff; background:#ff9800; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
   QC CETAK
 </h2>
@@ -535,7 +595,7 @@ input[type=text], input[type=number], select{
   </div>
 </section>
 
-<!-- ======================== QC PA ======================== -->
+<!-- ======================== QC CETAK ======================== -->
 <section id="qcPA" class="card qc-section" style="display:none;">
 
   <h2 style="text-align:center; color:#fff; background:#ff9800; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
