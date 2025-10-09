@@ -267,14 +267,14 @@ input[type=text], input[type=number], select{
 /* ==================== DASHBOARD GRID CONSISTENT ==================== */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* ubah 160px sesuai lebar ideal */
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 10px;
   padding: 10px;
-  justify-content: stretch; /* isi space kosong otomatis */
+  justify-content: stretch;
   align-items: stretch;
 }
 
-/* Card di dalam grid */
+/* Semua card seragam tinggi & proporsional */
 .grid-container .card {
   background: var(--card, #fff);
   border-radius: 12px;
@@ -285,7 +285,10 @@ input[type=text], input[type=number], select{
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 90px;
+  align-items: center;
+  min-height: 100px; /* kunci tinggi agar tidak beda */
+  height: 100%;      /* isi kolom penuh */
+  box-sizing: border-box;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -297,15 +300,16 @@ input[type=text], input[type=number], select{
 /* Responsif */
 @media (max-width: 900px) {
   .grid-container {
-    grid-template-columns: repeat(3, 1fr); /* Tablet: 3 kolom */
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 600px) {
   .grid-container {
-    grid-template-columns: repeat(2, 1fr); /* HP: 2 kolom */
+    grid-template-columns: repeat(2, 1fr);
   }
 }
+
 
 
 </style>
@@ -2360,6 +2364,7 @@ loadLemItems();
 
 </body>
 </html>
+
 
 
 
