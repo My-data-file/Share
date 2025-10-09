@@ -264,7 +264,6 @@ input[type=text], input[type=number], select{
   main{padding:1rem;}
 }
 
-/* ==================== DASHBOARD GRID CONSISTENT ==================== */
 /* ================= GRID RESPONSIVE UNIVERSAL ================= */
 .grid-container {
   display: grid;
@@ -302,6 +301,7 @@ input[type=text], input[type=number], select{
   }
 }
 
+
 </style>
 </head>
 <body>
@@ -332,7 +332,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.9rem;">System 1.0</div>
+    <div id="headerTitle" style="font-size: 1.0rem;">System</div>
   </div>
   <div id="headerTime">Selasa, 5 Oktober 2025 14:30</div>
 </header>
@@ -397,7 +397,7 @@ input[type=text], input[type=number], select{
 </div>
 <div id="dashboardBaproSelesai" class="grid-container" style="display:none;"></div>
 
-    <!-- ======================== QC CETAK ======================== -->
+    <!-- ======================== QC PA ======================== -->
 <h2 style="text-align:center; color:#fff; background:#ff9800; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
   QC CETAK
 </h2>
@@ -542,7 +542,6 @@ input[type=text], input[type=number], select{
     <div class="form-group"><input type="text" id="baproNoKS" placeholder="No KS"></div>
     <div class="form-group"><input type="text" id="baproJenis" placeholder="Jenis Kertas"></div>
     <div class="form-group"><input type="number" id="baproKertas" placeholder="Tebal Kertas (gsm)"></div>
-    <div class="form-group"><input type="text" id="baproNamaTinta" placeholder="Nama Tinta"></div>
     <div class="form-group"><input type="number" id="baproTebalTinta" placeholder="Tebal Tinta (micron)"></div>
     <div class="form-group"><input type="number" id="baproDmax" placeholder="Dmax"></div>
     <div class="form-group"><input type="number" id="baproL" placeholder="L"></div>
@@ -574,7 +573,7 @@ input[type=text], input[type=number], select{
   </div>
 </section>
 
-<!-- ======================== QC CETAK ======================== -->
+<!-- ======================== QC PA ======================== -->
 <section id="qcPA" class="card qc-section" style="display:none;">
 
   <h2 style="text-align:center; color:#fff; background:#ff9800; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
@@ -757,7 +756,7 @@ input[type=text], input[type=number], select{
 
 <script>
 // ====================== KONFIGURASI ======================
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyV1XHpPSAKIwn9h0OmHXIS4_0QzEDimz3TJu4eOsm4XFjhnLKAooIOCwkAdoy9xrOn/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxkt78GekIGfPNFMy53Khk3l1jTwbCFW0-VfvrsW0IGCWmiy0p-DZgmlHHt74dr5zLH/exec";
 
 // ====================== WAKTU HEADER ======================
 function updateTime(){
@@ -1036,7 +1035,7 @@ function saveFinishingInline(index) {
       btnSave.disabled = false;
     }
     loadFinishingItems();
-  }, 3000); // waktu refresh setelah update
+  }, 20000); // waktu refresh setelah update
 }
 
 // ====================== POST PAYLOAD ======================
@@ -1239,7 +1238,6 @@ function renderGridBapro(query = "") {
         <span>No KS: ${escapeHtml(item.noKS || '')}</span><br>
         <span>Jenis: ${escapeHtml(item.jenisKertas || '')}</span><br>
         <span>GSM: ${escapeHtml(item.tebalKertas || '')}</span><br>
-        <span>Nama Tinta: ${escapeHtml(item.namaTinta || '')}</span><br>
         <span>Tinta (micron): ${escapeHtml(item.tebalTinta || '')}</span><br>
         <span>Dmax: ${escapeHtml(item.dmax || '')}</span><br>
         <span>L: ${escapeHtml(item.l || '')}  A: ${escapeHtml(item.a || '')}  B: ${escapeHtml(item.b || '')}</span><br>
@@ -1279,7 +1277,6 @@ function addBaproItem() {
   const noKS = document.getElementById('baproNoKS').value.trim();
   const jenis = document.getElementById('baproJenis') ? document.getElementById('baproJenis').value.trim() : '';
   const kertas = document.getElementById('baproKertas') ? document.getElementById('baproKertas').value.trim() : '';
-  const namaTinta = document.getElementById('baproNamaTinta') ? document.getElementById('baproNamaTinta').value.trim() : '';
   const tebalTinta = document.getElementById('baproTebalTinta') ? document.getElementById('baproTebalTinta').value.trim() : '';
   const dmax = document.getElementById('baproDmax') ? document.getElementById('baproDmax').value.trim() : '';
   const L = document.getElementById('baproL') ? document.getElementById('baproL').value.trim() : '';
@@ -1300,7 +1297,6 @@ function addBaproItem() {
     nama, noKS,
     jenisKertas: jenis,
     tebalKertas: kertas,
-    namaTinta: namaTinta,
     tebalTinta: tebalTinta,
     dmax: dmax,
     l: L,
@@ -1323,7 +1319,6 @@ function callBapro(index){
   if (document.getElementById('baproNoKS')) document.getElementById('baproNoKS').value = item.noKS || '';
   if (document.getElementById('baproJenis')) document.getElementById('baproJenis').value = item.jenisKertas || '';
   if (document.getElementById('baproKertas')) document.getElementById('baproKertas').value = item.tebalKertas || '';
-  if (document.getElementById('baproNamaTinta')) document.getElementById('baproNamaTinta').value = item.tebalTinta || '';
   if (document.getElementById('baproTebalTinta')) document.getElementById('baproTebalTinta').value = item.tebalTinta || '';
   if (document.getElementById('baproDmax')) document.getElementById('baproDmax').value = item.dmax || '';
   if (document.getElementById('baproL')) document.getElementById('baproL').value = item.l || '';
@@ -1380,7 +1375,6 @@ function editBaproInline(index){
       <input type="text" class="edit-inline" value="${escapeHtml(item.noKS||'')}" placeholder="No KS">
       <input type="text" class="edit-inline" value="${escapeHtml(item.jenisKertas||'')}" placeholder="Jenis">
       <input type="number" class="edit-inline" value="${escapeHtml(item.tebalKertas||'')}" placeholder="GSM">
-      <input type="number" class="edit-inline" value="${escapeHtml(item.namaTinta||'')}" placeholder="Nama Tinta">
       <input type="number" class="edit-inline" value="${escapeHtml(item.tebalTinta||'')}" placeholder="Tinta (micron)">
       <input type="number" class="edit-inline" value="${escapeHtml(item.dmax||'')}" placeholder="Dmax">
       <input type="number" class="edit-inline" value="${escapeHtml(item.l||'')}" placeholder="L">
@@ -1423,15 +1417,14 @@ function saveBaproInline(index) {
     noKS: inputs[1].value.trim(),
     jenisKertas: inputs[2].value.trim(),
     tebalKertas: inputs[3].value.trim(),
-    namaTinta: inputs[5].value.trim(),
-    tebalTinta: inputs[6].value.trim(),
-    dmax: inputs[7].value.trim(),
-    l: inputs[8].value.trim(),
-    a: inputs[9].value.trim(),
-    b: inputs[10].value.trim(),
-    qc: inputs[11].value,
-    update: inputs[12].value,
-    keterangan: inputs[13].value.trim()
+    tebalTinta: inputs[4].value.trim(),
+    dmax: inputs[5].value.trim(),
+    l: inputs[6].value.trim(),
+    a: inputs[7].value.trim(),
+    b: inputs[8].value.trim(),
+    qc: inputs[9].value,
+    update: inputs[10].value,
+    keterangan: inputs[11].value.trim()
   };
 
   const orig = baproItems[index];
@@ -1451,7 +1444,7 @@ function saveBaproInline(index) {
       btnSave.disabled = false;
     }
     loadBaproItems();
-  }, 3000);
+  }, 20000);
 }
 
 // ====================== POST PAYLOAD BAPRO ======================
@@ -1492,7 +1485,7 @@ function filterBaproGrid(query){ renderGridBapro(query); }
 
 // ====================== CLEAR FORM (BAPRO) ======================
 function clearBaproForm() {
-  ['baproNama','baproNoKS','baproJenis','baproKertas','baproNamaTinta','baproTebalTinta','baproDmax','baproL','baproA','baproB','baproQC','baproUpdate','baproKeterangan']
+  ['baproNama','baproNoKS','baproJenis','baproKertas','baproTebalTinta','baproDmax','baproL','baproA','baproB','baproQC','baproUpdate','baproKeterangan']
     .forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
 }
 
@@ -1563,7 +1556,6 @@ Nama: ${item.nama || '-'}
 No KS: ${item.noKS || '-'}
 Jenis Kertas: ${item.jenisKertas || '-'}
 Tebal Kertas: ${item.tebalKertas || '-'}
-Nama Tinta: ${item.namaTinta || '-'}
 Tebal Tinta: ${item.tebalTinta || '-'}
 Dmax: ${item.dmax || '-'}
 L: ${item.l || '-'}
@@ -1866,7 +1858,7 @@ function savePAInline(index) {
       btnSave.disabled = false;
     }
     loadPAItems();
-  }, 3000);
+  }, 20000);
 }
 
 // ====================== FILTER ======================
@@ -2225,7 +2217,7 @@ function saveLemInline(index) {
       btnSave.disabled = false;
     }
     loadLemItems();
-  }, 3000);
+  }, 20000);
 }
 
 // ====================== FILTER ======================
@@ -2362,4 +2354,6 @@ loadLemItems();
 
 </body>
 </html>
+
+
 
