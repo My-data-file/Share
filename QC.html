@@ -267,61 +267,45 @@ input[type=text], input[type=number], select{
 /* ==================== DASHBOARD GRID CONSISTENT ==================== */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(6, 1fr); /* Selalu 5 kolom di layar besar */
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* ubah 160px sesuai lebar ideal */
+  gap: 10px;
   padding: 10px;
-  justify-items: center;
+  justify-content: stretch; /* isi space kosong otomatis */
   align-items: stretch;
 }
 
-/* Setiap card di dalam grid */
+/* Card di dalam grid */
 .grid-container .card {
-  width: 100%;
-  background: var(--card, #ffffff);
+  background: var(--card, #fff);
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   padding: 10px;
   text-align: center;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  min-height: 100px; /* agar tinggi seragam */
+  font-size: 0.8rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-height: 90px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Hover efek */
 .grid-container .card:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 10px rgba(0,0,0,0.12);
 }
 
-/* ==================== RESPONSIF HP / TABLET ==================== */
-@media (max-width: 1200px) {
-  .grid-container {
-    grid-template-columns: repeat(4, 1fr); /* tablet besar */
-  }
-}
-
+/* Responsif */
 @media (max-width: 900px) {
   .grid-container {
-    grid-template-columns: repeat(3, 1fr); /* tablet sedang */
+    grid-template-columns: repeat(3, 1fr); /* Tablet: 3 kolom */
   }
 }
 
 @media (max-width: 600px) {
   .grid-container {
-    grid-template-columns: repeat(2, 1fr); /* HP */
+    grid-template-columns: repeat(2, 1fr); /* HP: 2 kolom */
   }
 }
-
-@media (max-width: 400px) {
-  .grid-container {
-    grid-template-columns: repeat(1, 1fr); /* layar kecil */
-  }
-}
-
 
 
 </style>
@@ -354,7 +338,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.9rem;">System 1.0</div>
+    <div id="headerTitle" style="font-size: 0.9rem;">System 2.0</div>
   </div>
   <div id="headerTime">Selasa, 5 Oktober 2025 14:30</div>
 </header>
@@ -2376,6 +2360,7 @@ loadLemItems();
 
 </body>
 </html>
+
 
 
 
