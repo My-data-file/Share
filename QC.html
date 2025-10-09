@@ -306,7 +306,7 @@ input[type=text], input[type=number], select{
   <nav>
     <button onclick="showMenu('dashboard')" class="active">DASBOARD</button>
     <button onclick="showMenu('qcBapro')">QC BAPRO</button>
-    <button onclick="showMenu('qcPA')">QC PA</button>
+    <button onclick="showMenu('qcPA')">QC CETAK</button>
     <button onclick="showMenu('qcFinishing')">QC FINISHING</button>
     <button onclick="showMenu('qcLem')">QC LEM</button>
   </nav>
@@ -319,7 +319,7 @@ input[type=text], input[type=number], select{
 
 <!-- ======================== QC Bapro ======================== -->
 <h2 style="text-align:center; color:#fff; background:#dc2626; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
-  QC Bapro
+  QC BAPRO
 </h2>
 
 <!-- Info Total -->
@@ -361,7 +361,7 @@ input[type=text], input[type=number], select{
 
     <!-- ======================== QC PA ======================== -->
 <h2 style="text-align:center; color:#fff; background:#ff9800; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
-  QC PA
+  QC CETAK
 </h2>
 
 <!-- Info Total -->
@@ -403,7 +403,7 @@ input[type=text], input[type=number], select{
 
 <!-- ======================== QC Finishing ======================== -->
 <h2 style="text-align:center; color:#fff; background:#22c55e; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
-  QC Finishing
+  QC FINISHING
 </h2>
 
 <!-- Info Total -->
@@ -445,7 +445,7 @@ input[type=text], input[type=number], select{
 
     <!-- ======================== QC Lem ======================== -->
 <h2 style="text-align:center; color:#fff; background:#9c27b0; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
-  QC Lem
+  QC LEM
 </h2>
 
 <!-- Info Total -->
@@ -491,7 +491,7 @@ input[type=text], input[type=number], select{
 <section id="qcBapro" class="card qc-section" style="display:none;">
 
   <h2 style="text-align:center; color:#fff; background:#dc2626; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
-    Menu QC Bapro
+    Menu QC BAPRO
   </h2>
 
   <div class="tabs">
@@ -539,7 +539,7 @@ input[type=text], input[type=number], select{
 <section id="qcPA" class="card qc-section" style="display:none;">
 
   <h2 style="text-align:center; color:#fff; background:#ff9800; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
-    Menu QC PA
+    Menu QC CETAK
   </h2>
 
   <div class="tabs">
@@ -596,7 +596,7 @@ input[type=text], input[type=number], select{
 <section id="qcFinishing" class="card qc-section" style="display:none;">
 
   <h2 style="text-align:center; color:#fff; background:#22c55e; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
-    Menu QC Finishing
+    Menu QC FINISHING
   </h2>
 
   <div class="tabs">
@@ -641,7 +641,7 @@ input[type=text], input[type=number], select{
 <section id="qcLem" class="card qc-section" style="display:none;">
 
   <h2 style="text-align:center; color:#fff; background:#9c27b0; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
-    Menu QC Lem
+    Menu QC LEM
   </h2>
 
   <div class="tabs">
@@ -1860,6 +1860,7 @@ function renderDashboardPACompact() {
     card.innerHTML = `
       <strong>${escapeHtml(item.nama || '')}</strong><br>
       <span>QC: ${escapeHtml(item.qc || '')}</span><br>
+      <span>Mesin: ${escapeHtml(item.mesin || '')}</span><br>
       <span>📅 ${escapeHtml(tanggal)}</span><br>
       <span class="${statusClass}">${escapeHtml(item.update || '')}</span>
     `;
@@ -2315,5 +2316,6 @@ loadLemItems();
 
 </body>
 </html>
+
 
 
