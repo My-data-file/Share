@@ -542,7 +542,7 @@ input[type=text], input[type=number], select{
     <div class="form-group"><input type="text" id="baproNoKS" placeholder="No KS"></div>
     <div class="form-group"><input type="text" id="baproJenis" placeholder="Jenis Kertas"></div>
     <div class="form-group"><input type="number" id="baproKertas" placeholder="Tebal Kertas (gsm)"></div>
-    <div class="form-group"><input type="number" id="baproTebalTinta" placeholder="Tebal Tinta (micron)"></div>
+    <div class="form-group"><input type="number" id="baproTebalTinta" placeholder="Nama Tinta"></div>
     <div class="form-group"><input type="number" id="baproDmax" placeholder="Dmax"></div>
     <div class="form-group"><input type="number" id="baproL" placeholder="L"></div>
     <div class="form-group"><input type="number" id="baproA" placeholder="A"></div>
@@ -1238,7 +1238,7 @@ function renderGridBapro(query = "") {
         <span>No KS: ${escapeHtml(item.noKS || '')}</span><br>
         <span>Jenis: ${escapeHtml(item.jenisKertas || '')}</span><br>
         <span>GSM: ${escapeHtml(item.tebalKertas || '')}</span><br>
-        <span>Tinta (micron): ${escapeHtml(item.tebalTinta || '')}</span><br>
+        <span>Nama Tinta: ${escapeHtml(item.tebalTinta || '')}</span><br>
         <span>Dmax: ${escapeHtml(item.dmax || '')}</span><br>
         <span>L: ${escapeHtml(item.l || '')}  A: ${escapeHtml(item.a || '')}  B: ${escapeHtml(item.b || '')}</span><br>
         <span>QC: ${escapeHtml(item.qc || '')}</span><br>
@@ -1375,7 +1375,7 @@ function editBaproInline(index){
       <input type="text" class="edit-inline" value="${escapeHtml(item.noKS||'')}" placeholder="No KS">
       <input type="text" class="edit-inline" value="${escapeHtml(item.jenisKertas||'')}" placeholder="Jenis">
       <input type="number" class="edit-inline" value="${escapeHtml(item.tebalKertas||'')}" placeholder="GSM">
-      <input type="number" class="edit-inline" value="${escapeHtml(item.tebalTinta||'')}" placeholder="Tinta (micron)">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.tebalTinta||'')}" placeholder="Nama Tinta">
       <input type="number" class="edit-inline" value="${escapeHtml(item.dmax||'')}" placeholder="Dmax">
       <input type="number" class="edit-inline" value="${escapeHtml(item.l||'')}" placeholder="L">
       <input type="number" class="edit-inline" value="${escapeHtml(item.a||'')}" placeholder="A">
@@ -1556,7 +1556,7 @@ Nama: ${item.nama || '-'}
 No KS: ${item.noKS || '-'}
 Jenis Kertas: ${item.jenisKertas || '-'}
 Tebal Kertas: ${item.tebalKertas || '-'}
-Tebal Tinta: ${item.tebalTinta || '-'}
+Nama Tinta: ${item.tebalTinta || '-'}
 Dmax: ${item.dmax || '-'}
 L: ${item.l || '-'}
 A: ${item.a || '-'}
