@@ -1196,6 +1196,39 @@ document.addEventListener('input', (e) => {
   }
 });
 
+ // ===== Password untuk QC FINISHING (ubah sesuai kebutuhan) =====
+  const QC_FINISHING_PASSWORD = 'qc123'; // <-- ganti password di sini
+
+  (function setupQcFinishingPassword() {
+    // cari tombol nav yang memanggil showMenu('qcFinishing')
+    const selector = `nav button[onclick="showMenu('qcFinishing')"]`;
+    const btn = document.querySelector(selector);
+    if (!btn) return; // kalau tidak ditemukan, lewati
+
+    // hapus attribute onclick bawaan supaya kita kontrol alurnya
+    btn.removeAttribute('onclick');
+
+    // pasang handler baru: tampilkan prompt password saat diklik
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      // prompt sederhana
+      const value = prompt('Masukkan password untuk QC FINISHING:');
+      if (value === null) {
+        // user cancel -> jangan lakukan apa-apa
+        return;
+      }
+
+      if (value === QC_FINISHING_PASSWORD) {
+        // password benar -> buka menu
+        showMenu('qcFinishing');
+      } else {
+        // salah -> beri tahu
+        alert('Password salah');
+      }
+    });
+  })();
+
 // ====================== INISIALISASI ======================
 showMenu('dashboard');
 loadFinishingItems();
@@ -1618,6 +1651,39 @@ document.addEventListener('input', (e) => {
   }
 });
 
+ // ===== Password untuk QC BAPRO (ubah sesuai kebutuhan) =====
+  const QC_BAPRO_PASSWORD = 'qc123'; // <-- ganti password di sini
+
+  (function setupQcBaproPassword() {
+    // cari tombol nav yang memanggil showMenu('qcBapro')
+    const selector = `nav button[onclick="showMenu('qcBapro')"]`;
+    const btn = document.querySelector(selector);
+    if (!btn) return; // kalau tidak ditemukan, lewati
+
+    // hapus attribute onclick bawaan supaya kita kontrol alurnya
+    btn.removeAttribute('onclick');
+
+    // pasang handler baru: tampilkan prompt password saat diklik
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      // prompt sederhana
+      const value = prompt('Masukkan password untuk QC BAPRO:');
+      if (value === null) {
+        // user cancel -> jangan lakukan apa-apa
+        return;
+      }
+
+      if (value === QC_BAPRO_PASSWORD) {
+        // password benar -> buka menu
+        showMenu('qcBapro');
+      } else {
+        // salah -> beri tahu
+        alert('Password salah');
+      }
+    });
+  })();
+
 // ====================== INISIALISASI TAMBAHAN (panggil loader) ======================
 loadBaproItems();
 </script>
@@ -1991,6 +2057,39 @@ document.addEventListener('input', (e) => {
   }
 });
 
+ // ===== Password untuk QC PA (ubah sesuai kebutuhan) =====
+  const QC_PA_PASSWORD = 'qc123'; // <-- ganti password di sini
+
+  (function setupQcPAPassword() {
+    // cari tombol nav yang memanggil showMenu('qcPA')
+    const selector = `nav button[onclick="showMenu('qcPA')"]`;
+    const btn = document.querySelector(selector);
+    if (!btn) return; // kalau tidak ditemukan, lewati
+
+    // hapus attribute onclick bawaan supaya kita kontrol alurnya
+    btn.removeAttribute('onclick');
+
+    // pasang handler baru: tampilkan prompt password saat diklik
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      // prompt sederhana
+      const value = prompt('Masukkan password untuk QC PA:');
+      if (value === null) {
+        // user cancel -> jangan lakukan apa-apa
+        return;
+      }
+
+      if (value === QC_PA_PASSWORD) {
+        // password benar -> buka menu
+        showMenu('qcPA');
+      } else {
+        // salah -> beri tahu
+        alert('Password salah');
+      }
+    });
+  })();
+
 // ====================== INISIALISASI (panggil loader) ======================
 loadPAItems();
 </script>
@@ -2347,6 +2446,39 @@ document.addEventListener('input', (e) => {
     el.value = el.value.toUpperCase();
   }
 });
+
+ // ===== Password untuk QC Lem (ubah sesuai kebutuhan) =====
+  const QC_LEM_PASSWORD = 'qc123'; // <-- ganti password di sini
+
+  (function setupQcLemPassword() {
+    // cari tombol nav yang memanggil showMenu('qcLem')
+    const selector = `nav button[onclick="showMenu('qcLem')"]`;
+    const btn = document.querySelector(selector);
+    if (!btn) return; // kalau tidak ditemukan, lewati
+
+    // hapus attribute onclick bawaan supaya kita kontrol alurnya
+    btn.removeAttribute('onclick');
+
+    // pasang handler baru: tampilkan prompt password saat diklik
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      // prompt sederhana
+      const value = prompt('Masukkan password untuk QC LEM:');
+      if (value === null) {
+        // user cancel -> jangan lakukan apa-apa
+        return;
+      }
+
+      if (value === QC_LEM_PASSWORD) {
+        // password benar -> buka menu
+        showMenu('qcLem');
+      } else {
+        // salah -> beri tahu
+        alert('Password salah');
+      }
+    });
+  })();
 
 // ====================== INISIALISASI (panggil loader) ======================
 loadLemItems();
