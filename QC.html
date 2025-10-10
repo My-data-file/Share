@@ -2065,12 +2065,12 @@ document.addEventListener('input', (e) => {
   }
 });
 
- // ===== Password untuk QC Cetak (ubah sesuai kebutuhan) =====
-  const QC_CETAK_PASSWORD = 'qc123'; // <-- ganti password di sini
+  // ===== Password untuk QC PA (ubah sesuai kebutuhan) =====
+  const QC_PA_PASSWORD = 'qc123'; // <-- ganti password di sini
 
-  (function setupQcCetakPassword() {
-    // cari tombol nav yang memanggil showMenu('qcCetak')
-    const selector = `nav button[onclick="showMenu('qcCetak')"]`;
+  (function setupQcPAPassword() {
+    // cari tombol nav yang memanggil showMenu('qcPA')
+    const selector = `nav button[onclick="showMenu('qcPA')"]`;
     const btn = document.querySelector(selector);
     if (!btn) return; // kalau tidak ditemukan, lewati
 
@@ -2088,9 +2088,9 @@ document.addEventListener('input', (e) => {
         return;
       }
 
-      if (value === QC_CETAK_PASSWORD) {
+      if (value === QC_PA_PASSWORD) {
         // password benar -> buka menu
-        showMenu('qcCetak');
+        showMenu('qcPA');
       } else {
         // salah -> beri tahu
         alert('Password salah');
@@ -2494,3 +2494,4 @@ loadLemItems();
 
 </body>
 </html>
+
