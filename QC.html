@@ -1626,6 +1626,7 @@ function renderDashboardBaproCompact() {
     card.innerHTML = `
       <strong>${escapeHtml(item.nama || '')}</strong><br>
       <strong>QC: ${escapeHtml(item.qc || '')}</strong><br>
+      <strong>Tinta: ${escapeHtml(item.NamaTinta || '')}</strong><br>
       <span>📅 ${escapeHtml(tanggal)}</span><br>
       <span class="${statusClass}">${escapeHtml(item.update || '')}</span>
     `;
