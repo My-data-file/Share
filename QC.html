@@ -550,7 +550,7 @@ input[type=text], input[type=number], select{
     <div class="form-group"><input type="text" id="baproNoKS" placeholder="No KS"></div>
     <div class="form-group"><input type="text" id="baproJenis" placeholder="Jenis Kertas"></div>
     <div class="form-group"><input type="number" id="baproKertas" placeholder="Tebal Kertas (gsm)"></div>
-    <div class="form-group"><input type="text" id="baproTebalTinta" placeholder="Nama Tinta"></div>
+    <div class="form-group"><input type="text" id="baproNamaTinta" placeholder="Nama Tinta"></div>
     <div class="form-group"><input type="number" id="baproDmax" placeholder="Dmax"></div>
     <div class="form-group"><input type="number" id="baproL" placeholder="L"></div>
     <div class="form-group"><input type="number" id="baproA" placeholder="A"></div>
@@ -764,7 +764,7 @@ input[type=text], input[type=number], select{
 
 <script>
 // ====================== KONFIGURASI ======================
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxkt78GekIGfPNFMy53Khk3l1jTwbCFW0-VfvrsW0IGCWmiy0p-DZgmlHHt74dr5zLH/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbw73Auzsta0BOUiu9FW6DS3qw7SS21yLee0KRDP1wMZxXiPWGou3iwH_yDDHZLRD0Kr/exec";
 
 // ====================== WAKTU HEADER ======================
 function updateTime(){
@@ -969,13 +969,16 @@ function deleteFinishing(index) {
   }, 8000);
 }
 
-// ====================== EDIT INLINE ======================
+// ====================== EDIT INLINE (FINISHING) ======================
 function editFinishingInline(index){
   const item = finishingItems[index];
   const container = document.getElementById('gridFinishing');
   const card = container.children[index];
   if(!card) return;
   if(card.querySelector('.edit-inline')) return;
+
+  // Simpan HTML lama untuk cancel
+  const originalHTML = card.innerHTML;
 
   card.innerHTML = `
     <div class="edit-grid">
@@ -1001,7 +1004,19 @@ function editFinishingInline(index){
     </div>
     <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
       <button class="btn-icon btn-save" title="Simpan" onclick="saveFinishingInline(${index})">💾</button>
+      <button class="btn-icon btn-cancel" title="Batal" onclick="cancelFinishingInline(${index})">✖️</button>
     </div>`;
+
+  card.dataset.originalHTML = originalHTML;
+}
+
+// ====================== CANCEL INLINE (FINISHING) ======================
+function cancelFinishingInline(index){
+  const container = document.getElementById('gridFinishing');
+  const card = container.children[index];
+  if(!card) return;
+  delete card.dataset.originalHTML;
+  renderGridFinishing(); // tampilkan ulang tampilan normal
 }
 
 // ====================== SIMPAN HASIL EDIT INLINE (FINISHING) ======================
@@ -1011,10 +1026,13 @@ async function saveFinishingInline(index) {
   if (!card) return;
 
   const btnSave = card.querySelector('.btn-save');
+  const btnCancel = card.querySelector('.btn-cancel'); // 🔹 ambil tombol cancel
+
   if (btnSave) {
     btnSave.textContent = '⏳ Menyimpan...';
     btnSave.disabled = true;
   }
+  if (btnCancel) btnCancel.style.display = 'none'; // 🔹 sembunyikan tombol cancel saat menyimpan
 
   const inputs = card.querySelectorAll('.edit-inline');
 
@@ -1048,13 +1066,8 @@ async function saveFinishingInline(index) {
   };
 
   try {
-    // kirim ke Apps Script
     await postPayload(payload);
-
-    // beri jeda agar Sheet sempat update
     await new Promise(res => setTimeout(res, 5000));
-
-    // refresh data
     await loadFinishingItems();
   } catch (err) {
     console.error('Gagal menyimpan data Finishing:', err);
@@ -1286,7 +1299,7 @@ function renderGridBapro(query = "") {
         <span>No KS: ${escapeHtml(item.noKS || '')}</span><br>
         <span>Jenis: ${escapeHtml(item.jenisKertas || '')}</span><br>
         <span>GSM: ${escapeHtml(item.tebalKertas || '')}</span><br>
-        <span>Nama Tinta: ${escapeHtml(item.tebalTinta || '')}</span><br>
+        <span>Nama Tinta: ${escapeHtml(item.NamaTinta || '')}</span><br>
         <span>Dmax: ${escapeHtml(item.dmax || '')}</span><br>
         <span>L: ${escapeHtml(item.l || '')}  A: ${escapeHtml(item.a || '')}  B: ${escapeHtml(item.b || '')}</span><br>
         <span>QC: ${escapeHtml(item.qc || '')}</span><br>
@@ -1325,7 +1338,7 @@ function addBaproItem() {
   const noKS = document.getElementById('baproNoKS').value.trim();
   const jenis = document.getElementById('baproJenis') ? document.getElementById('baproJenis').value.trim() : '';
   const kertas = document.getElementById('baproKertas') ? document.getElementById('baproKertas').value.trim() : '';
-  const tebalTinta = document.getElementById('baproTebalTinta') ? document.getElementById('baproTebalTinta').value.trim() : '';
+  const NamaTinta = document.getElementById('baproNamaTinta') ? document.getElementById('baproNamaTinta').value.trim() : '';
   const dmax = document.getElementById('baproDmax') ? document.getElementById('baproDmax').value.trim() : '';
   const L = document.getElementById('baproL') ? document.getElementById('baproL').value.trim() : '';
   const A = document.getElementById('baproA') ? document.getElementById('baproA').value.trim() : '';
@@ -1345,7 +1358,7 @@ function addBaproItem() {
     nama, noKS,
     jenisKertas: jenis,
     tebalKertas: kertas,
-    tebalTinta: tebalTinta,
+    NamaTinta: NamaTinta,
     dmax: dmax,
     l: L,
     a: A,
@@ -1367,7 +1380,7 @@ function callBapro(index){
   if (document.getElementById('baproNoKS')) document.getElementById('baproNoKS').value = item.noKS || '';
   if (document.getElementById('baproJenis')) document.getElementById('baproJenis').value = item.jenisKertas || '';
   if (document.getElementById('baproKertas')) document.getElementById('baproKertas').value = item.tebalKertas || '';
-  if (document.getElementById('baproTebalTinta')) document.getElementById('baproTebalTinta').value = item.tebalTinta || '';
+  if (document.getElementById('baproNamaTinta')) document.getElementById('baproNamaTinta').value = item.NamaTinta || '';
   if (document.getElementById('baproDmax')) document.getElementById('baproDmax').value = item.dmax || '';
   if (document.getElementById('baproL')) document.getElementById('baproL').value = item.l || '';
   if (document.getElementById('baproA')) document.getElementById('baproA').value = item.a || '';
@@ -1425,13 +1438,16 @@ function editBaproInline(index){
   if(!card) return;
   if(card.querySelector('.edit-inline')) return;
 
+  // Simpan HTML lama
+  const originalHTML = card.innerHTML;
+
   card.innerHTML = `
     <div class="edit-grid">
       <input type="text" class="edit-inline" value="${escapeHtml(item.nama||'')}" placeholder="Nama Order">
       <input type="text" class="edit-inline" value="${escapeHtml(item.noKS||'')}" placeholder="No KS">
       <input type="text" class="edit-inline" value="${escapeHtml(item.jenisKertas||'')}" placeholder="Jenis">
       <input type="number" class="edit-inline" value="${escapeHtml(item.tebalKertas||'')}" placeholder="GSM">
-      <input type="number" class="edit-inline" value="${escapeHtml(item.tebalTinta||'')}" placeholder="Nama Tinta">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.NamaTinta||'')}" placeholder="Nama Tinta">
       <input type="number" class="edit-inline" value="${escapeHtml(item.dmax||'')}" placeholder="Dmax">
       <input type="number" class="edit-inline" value="${escapeHtml(item.l||'')}" placeholder="L">
       <input type="number" class="edit-inline" value="${escapeHtml(item.a||'')}" placeholder="A">
@@ -1452,7 +1468,21 @@ function editBaproInline(index){
     </div>
     <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
       <button class="btn-icon btn-save" title="Simpan" onclick="saveBaproInline(${index})">💾</button>
+      <button class="btn-icon btn-cancel" title="Batal" onclick="cancelBaproInline(${index})">✖️</button>
     </div>`;
+
+  card.dataset.originalHTML = originalHTML;
+}
+
+// ====================== CANCEL INLINE (BAPRO) ======================
+function cancelBaproInline(index){
+  const container = document.getElementById('gridBapro');
+  const card = container ? container.children[index] : null;
+  if(!card) return;
+
+  // Hapus data lama dan render ulang item sesuai data aslinya
+  delete card.dataset.originalHTML;
+  renderGridBapro(); // panggil ulang fungsi render untuk menampilkan ulang grid normal
 }
 
 // ====================== SIMPAN HASIL EDIT INLINE (BAPRO) ======================
@@ -1462,10 +1492,14 @@ async function saveBaproInline(index) {
   if (!card) return;
 
   const btnSave = card.querySelector('.btn-save');
+  const btnCancel = card.querySelector('.btn-cancel'); // ✅ tambahkan ambil tombol cancel
+
+  // Saat mulai menyimpan
   if (btnSave) {
     btnSave.textContent = '⏳ Menyimpan...';
     btnSave.disabled = true;
   }
+  if (btnCancel) btnCancel.style.display = 'none'; // ✅ sembunyikan tombol cancel saat simpan
 
   const inputs = card.querySelectorAll('.edit-inline');
   const updated = {
@@ -1473,7 +1507,7 @@ async function saveBaproInline(index) {
     noKS: inputs[1].value.trim(),
     jenisKertas: inputs[2].value.trim(),
     tebalKertas: inputs[3].value.trim(),
-    tebalTinta: inputs[4].value.trim(),
+    NamaTinta: inputs[4].value.trim(),
     dmax: inputs[5].value.trim(),
     l: inputs[6].value.trim(),
     a: inputs[7].value.trim(),
@@ -1513,6 +1547,7 @@ async function saveBaproInline(index) {
     console.error('Gagal menyimpan data:', err);
     alert('Gagal menyimpan perubahan. Silakan coba lagi.');
   } finally {
+    // Kembalikan tombol save ke normal
     if (btnSave) {
       btnSave.textContent = '💾 Simpan';
       btnSave.disabled = false;
@@ -1558,7 +1593,7 @@ function filterBaproGrid(query){ renderGridBapro(query); }
 
 // ====================== CLEAR FORM (BAPRO) ======================
 function clearBaproForm() {
-  ['baproNama','baproNoKS','baproJenis','baproKertas','baproTebalTinta','baproDmax','baproL','baproA','baproB','baproQC','baproUpdate','baproKeterangan']
+  ['baproNama','baproNoKS','baproJenis','baproKertas','baproNamaTinta','baproDmax','baproL','baproA','baproB','baproQC','baproUpdate','baproKeterangan']
     .forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
 }
 
@@ -1629,7 +1664,7 @@ Nama: ${item.nama || '-'}
 No KS: ${item.noKS || '-'}
 Jenis Kertas: ${item.jenisKertas || '-'}
 Tebal Kertas: ${item.tebalKertas || '-'}
-Nama Tinta: ${item.tebalTinta || '-'}
+Nama Tinta: ${item.NamaTinta || '-'}
 Dmax: ${item.dmax || '-'}
 L: ${item.l || '-'}
 A: ${item.a || '-'}
@@ -1879,6 +1914,9 @@ function editPAInline(index){
   if(!card) return;
   if(card.querySelector('.edit-inline')) return;
 
+  // Simpan HTML lama untuk tombol Cancel
+  const originalHTML = card.innerHTML;
+
   card.innerHTML = `
     <div class="edit-grid">
       <input type="text" class="edit-inline" value="${escapeHtml(item.nama||'')}" placeholder="Nama Order">
@@ -1912,7 +1950,19 @@ function editPAInline(index){
     </div>
     <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
       <button class="btn-icon btn-save" title="Simpan" onclick="savePAInline(${index})">💾</button>
+      <button class="btn-icon btn-cancel" title="Batal" onclick="cancelPAInline(${index})">✖️</button>
     </div>`;
+
+  card.dataset.originalHTML = originalHTML;
+}
+
+// ====================== CANCEL INLINE (PA) ======================
+function cancelPAInline(index){
+  const container = document.getElementById('gridPA');
+  const card = container ? container.children[index] : null;
+  if(!card) return;
+  delete card.dataset.originalHTML;
+  renderGridPA(); // kembalikan tampilan normal grid PA
 }
 
 // ====================== SIMPAN HASIL EDIT INLINE (PA) ======================
@@ -1922,10 +1972,14 @@ async function savePAInline(index) {
   if (!card) return;
 
   const btnSave = card.querySelector('.btn-save');
+  const btnCancel = card.querySelector('.btn-cancel'); // ✅ ambil tombol cancel
+
+  // Saat mulai menyimpan
   if (btnSave) {
     btnSave.textContent = '⏳ Menyimpan...';
     btnSave.disabled = true;
   }
+  if (btnCancel) btnCancel.style.display = 'none'; // ✅ sembunyikan tombol cancel saat proses simpan
 
   const inputs = card.querySelectorAll('.edit-inline');
 
@@ -1960,13 +2014,8 @@ async function savePAInline(index) {
   };
 
   try {
-    // kirim data ke Apps Script
     await postPayload(payload);
-
-    // beri waktu sinkronisasi ke sheet (5 detik)
     await new Promise(res => setTimeout(res, 5000));
-
-    // refresh data
     await loadPAItems();
   } catch (err) {
     console.error('Gagal menyimpan:', err);
@@ -2292,6 +2341,9 @@ function editLemInline(index){
   if(!card) return;
   if(card.querySelector('.edit-inline')) return;
 
+  // simpan HTML lama untuk tombol cancel
+  const oldHtml = card.innerHTML;
+
   card.innerHTML = `
     <div class="edit-grid">
       <input type="text" class="edit-inline" value="${escapeHtml(item.nama||'')}" placeholder="Nama Order">
@@ -2315,22 +2367,34 @@ function editLemInline(index){
 
       <textarea class="edit-inline" rows="2" placeholder="Keterangan">${escapeHtml(item.keterangan||'')}</textarea>
     </div>
+
     <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
-      <button class="btn-icon btn-save" title="Simpan" onclick="saveLemInline(${index})">💾</button>
+      <button class="btn-icon btn-save" title="Simpan" onclick="saveLemInline(${index}, this)">💾</button>
+      <button class="btn-icon btn-cancel" title="Batal" onclick="cancelLemInline(${index}, \`${encodeURIComponent(oldHtml)}\`)">❌</button>
     </div>`;
 }
 
+// ====================== BATAL EDIT INLINE (LEM) ======================
+function cancelLemInline(index, oldHtmlEncoded) {
+  const container = document.getElementById('gridLem');
+  const card = container ? container.children[index] : null;
+  if (!card) return;
+  card.innerHTML = decodeURIComponent(oldHtmlEncoded);
+}
+
 // ====================== SIMPAN HASIL EDIT INLINE (LEM) ======================
-async function saveLemInline(index) {
+async function saveLemInline(index, btn) {
   const container = document.getElementById('gridLem');
   const card = container ? container.children[index] : null;
   if (!card) return;
 
-  const btnSave = card.querySelector('.btn-save');
+  const btnSave = btn;
+  const btnCancel = card.querySelector('.btn-cancel');
   if (btnSave) {
     btnSave.textContent = '⏳ Menyimpan...';
     btnSave.disabled = true;
   }
+  if (btnCancel) btnCancel.style.display = 'none'; // sembunyikan cancel saat menyimpan
 
   const inputs = card.querySelectorAll('.edit-inline');
   const updated = {
@@ -2363,13 +2427,8 @@ async function saveLemInline(index) {
   };
 
   try {
-    // kirim data ke Apps Script
     await postPayload(payload);
-
-    // tunggu beberapa detik agar sheet selesai update
     await new Promise(res => setTimeout(res, 5000));
-
-    // reload data dari sheet
     await loadLemItems();
   } catch (err) {
     console.error('Gagal menyimpan:', err);
