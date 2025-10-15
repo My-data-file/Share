@@ -905,6 +905,10 @@ function addFinishingItem() {
 
   if (!nama || !noKS) return alert('Nama dan No KS wajib diisi!');
 
+// === Tambah konfirmasi sederhana ===
+  const konfirmasi = confirm(`Yakin ingin menambah data baru?\n\nNama: ${nama}\nNo KS: ${noKS}`);
+  if (!konfirmasi) return; // jika tekan Cancel, berhenti di sini
+
   const tanggalFormatted = new Date().toLocaleString('id-ID', {
     day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'
   });
@@ -1348,6 +1352,10 @@ function addBaproItem() {
   const keterangan = document.getElementById('baproKeterangan') ? document.getElementById('baproKeterangan').value.trim() : '';
 
   if (!nama || !noKS) return alert('Nama dan No KS wajib diisi!');
+
+// === Tambah konfirmasi sederhana ===
+  const konfirmasi = confirm(`Yakin ingin menambah data baru?\n\nNama: ${nama}\nNo KS: ${noKS}`);
+  if (!konfirmasi) return; // jika tekan Cancel, berhenti di sini
 
   const tanggalFormatted = new Date().toLocaleString('id-ID', {
     day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'
@@ -1834,6 +1842,10 @@ function addPAItem() {
 
   if (!nama || !noKS) return alert('Nama dan No KS wajib diisi!');
 
+// === Tambah konfirmasi sederhana ===
+  const konfirmasi = confirm(`Yakin ingin menambah data baru?\n\nNama: ${nama}\nNo KS: ${noKS}`);
+  if (!konfirmasi) return; // jika tekan Cancel, berhenti di sini
+
   const tanggalFormatted = new Date().toLocaleString('id-ID', {
     day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'
   });
@@ -2263,6 +2275,10 @@ function addLemItem() {
 
   if (!nama || !noKS) return alert('Nama dan No KS wajib diisi!');
 
+// === Tambah konfirmasi sederhana ===
+  const konfirmasi = confirm(`Yakin ingin menambah data baru?\n\nNama: ${nama}\nNo KS: ${noKS}`);
+  if (!konfirmasi) return; // jika tekan Cancel, berhenti di sini
+
   const tanggalFormatted = new Date().toLocaleString('id-ID', {
     day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'
   });
@@ -2595,4 +2611,3 @@ loadLemItems();
 
 </body>
 </html>
-
