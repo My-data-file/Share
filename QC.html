@@ -343,7 +343,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 1.0rem;">System 1.0</div>
+    <div id="headerTitle" style="font-size: 1.0rem;">System 2.0</div>
   </div>
   <div id="headerTime">Selasa, 5 Oktober 2025 14:30</div>
 </header>
@@ -767,37 +767,27 @@ input[type=text], input[type=number], select{
 
 <!-- ======================== SPINNER GLOBAL ======================== -->
 <div id="loadingSpinner"
-     style="display:none; position:fixed; inset:0; z-index:9999; 
-            background:rgba(255,255,255,0.45); backdrop-filter:blur(8px);
-            -webkit-backdrop-filter:blur(8px);
-            display:flex; align-items:center; justify-content:center; flex-direction:column;">
+     style="display:none; position:fixed; top:10px; left:50%; transform:translateX(-50%);
+            z-index:9999; background:transparent;
+            display:flex; flex-direction:column; align-items:center; justify-content:center;">
 
-  <!-- Cincin Spinner -->
   <div class="spinner-ring"></div>
-
-  <!-- Teks memuat -->
-  <div class="spinner-text">Memuat Data...</div>
 </div>
 
 <style>
-/* ================== SPINNER MODERN STYLE ================== */
+/* ================== SPINNER HEADER STYLE (HITAM–HIJAU MODERN) ================== */
 .spinner-ring {
-  width: 64px;
-  height: 64px;
-  border: 6px solid rgba(14,165,233,0.25);
-  border-top-color: #0ea5e9;
+  width: 34px;
+  height: 34px;
+  border: 3px solid rgba(0,0,0,0.25);
+  border-top: 3px solid #22c55e; /* hijau segar */
   border-radius: 50%;
-  animation: spin 0.9s linear infinite, glow 1.8s ease-in-out infinite;
-  box-shadow: 0 0 12px rgba(14,165,233,0.3);
-}
-
-.spinner-text {
-  margin-top: 14px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #0f172a;
-  letter-spacing: 0.5px;
-  animation: fadeIn 1s ease-in-out infinite alternate;
+  animation: spin 0.9s linear infinite;
+  box-shadow:
+    0 0 8px rgba(0,0,0,0.7),
+    inset 0 0 10px rgba(34,197,94,0.3),
+    0 0 8px rgba(34,197,94,0.5);
+  transition: all 0.3s ease;
 }
 
 /* ================== ANIMASI ================== */
@@ -805,22 +795,13 @@ input[type=text], input[type=number], select{
   to { transform: rotate(360deg); }
 }
 
-@keyframes glow {
-  0%, 100% { box-shadow: 0 0 12px rgba(14,165,233,0.3); }
-  50% { box-shadow: 0 0 25px rgba(14,165,233,0.6); }
-}
-
-@keyframes fadeIn {
-  0% { opacity: 0.6; }
-  100% { opacity: 1; }
-}
-
-/* Responsif untuk HP */
+/* ================== RESPONSIF ================== */
 @media (max-width: 600px) {
-  .spinner-ring { width: 48px; height: 48px; border-width: 5px; }
-  .spinner-text { font-size: 1rem; }
+  #loadingSpinner { top: 6px; }
+  .spinner-ring { width: 26px; height: 26px; border-width: 3px; }
 }
 </style>
+
 
 <script>
 // ====================== KONFIGURASI ======================
