@@ -56,35 +56,29 @@ header {
   text-align: center;
 }
 
-/* === Bagian waktu (tanggal & jam) === */
+/* ======================== PERBAIKAN HEADER TIME ======================== */
 #headerTime {
-  display: flex;
   flex-direction: column;
   align-items: flex-end;
+  text-align: right;
   line-height: 1.1;
 }
 
-/* 🟢 Ubah ukuran di sini: */
+/* Ukuran teks default (desktop) */
 #headerDate {
-  font-size: 0.5rem;   /* tanggal */
-  font-weight: 500;
-  opacity: 0.9;
+  font-size: 0.5rem;
 }
-
 #headerClock {
-  font-size: 0.5rem;   /* jam */
-  font-weight: 700;
-  margin-top: 2px;
-  letter-spacing: 0.5px;
+  font-size: 0.5rem;
 }
 
-/* ================= RESPONSIVE UNTUK HP ================= */
+/* 🔹 Kecilkan di HP */
 @media (max-width: 768px) {
   #headerDate {
-    font-size: 0.5rem;  /* kecilkan tanggal di HP */
+    font-size: 0.5rem !important;
   }
   #headerClock {
-    font-size: 0.5rem;   /* kecilkan jam di HP */
+    font-size: 0.5rem !important;
   }
 }
 
@@ -344,22 +338,7 @@ input[type=text], input[type=number], select{
 <body>
 
 <!-- ======================== Header ======================== -->
-<header style="
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 24px;
-  background: linear-gradient(90deg, #0ea5a4, #0369a1);
-  color: white;
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-">
+<header>
   <div style="display: flex; align-items: center; gap: 10px;">
     <div style="
       background: white;
@@ -371,12 +350,11 @@ input[type=text], input[type=number], select{
     ">QC</div>
     <div id="headerTitle" style="font-size: 0.8rem;">System 2.0</div>
   </div>
-  
-<div id="headerTime">
-  <span id="headerDate">Selasa, 5 Oktober 2025</span>
-  <span id="headerClock">14:30</span>
-</div>
 
+  <div id="headerTime">
+    <span id="headerDate">Selasa, 5 Oktober 2025</span>
+    <span id="headerClock">14:30</span>
+  </div>
 </header>
 
 <!-- ======================== Container ======================== -->
