@@ -32,54 +32,34 @@ body{
 }
 
 /* ======================== Header ======================== */
-header {
-  background: var(--accent);
-  color: #fff;
-  padding: 1rem 1.5rem;
-  font-weight: bold;
-  box-shadow: 0 2px 8px rgba(0,0,0,.1);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-family: 'Inter', sans-serif;
-  letter-spacing: 0.3px;
-  background: linear-gradient(90deg, #0ea5a4, #0369a1);
+header{
+  background:var(--accent);
+  color:#fff;
+  padding:1rem 1.5rem;
+  font-size:1.4rem;
+  font-weight:bold;
+  box-shadow:0 2px 8px rgba(0,0,0,.1);
+  position:sticky;
+  top:0;
+  z-index:10;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
 
 #headerTitle {
-  font-size: 1rem;
-  font-weight: 600;
-  text-transform: uppercase;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-transform: uppercase; /* Hanya judul kapital */
   text-align: center;
 }
 
-/* ======================== PERBAIKAN HEADER TIME ======================== */
 #headerTime {
-  flex-direction: column;
-  align-items: flex-end;
-  text-align: right;
-  line-height: 1.1;
-}
-
-/* Ukuran teks default (desktop) */
-#headerDate {
-  font-size: 0.5rem;
-}
-#headerClock {
-  font-size: 0.5rem;
-}
-
-/* 🔹 Kecilkan di HP */
-@media (max-width: 768px) {
-  #headerDate {
-    font-size: 0.5rem !important;
-  }
-  #headerClock {
-    font-size: 0.5rem !important;
-  }
+  font-size: 0.85rem; /* lebih kecil */
+  font-weight: normal;
+  text-transform: none; /* Tetap normal */
+  text-align: center;
+  margin-top: 2px;
 }
 
 /* ======================== Layout Container & Nav ======================== */
@@ -338,7 +318,22 @@ input[type=text], input[type=number], select{
 <body>
 
 <!-- ======================== Header ======================== -->
-<header>
+<header style="
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 24px;
+  background: linear-gradient(90deg, #0ea5a4, #0369a1);
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+">
   <div style="display: flex; align-items: center; gap: 10px;">
     <div style="
       background: white;
@@ -348,13 +343,9 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.8rem;">System 2.0</div>
+    <div id="headerTitle" style="font-size: 1.0rem;">System 2.0</div>
   </div>
-
-  <div id="headerTime">
-    <span id="headerDate">Selasa, 5 Oktober 2025</span>
-    <span id="headerClock">14:30</span>
-  </div>
+  <div id="headerTime">Selasa, 5 Oktober 2025 14:30</div>
 </header>
 
 <!-- ======================== Container ======================== -->
