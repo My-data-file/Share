@@ -32,44 +32,51 @@ body{
 }
 
 /* ======================== Header ======================== */
-header{
-  background:var(--accent);
-  color:#fff;
-  padding:1rem 1.5rem;
-  font-size:1.4rem;
-  font-weight:bold;
-  box-shadow:0 2px 8px rgba(0,0,0,.1);
-  position:sticky;
-  top:0;
-  z-index:10;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+/* ======================== Header ======================== */
+header {
+  background: var(--accent);
+  color: #fff;
+  padding: 1rem 1.5rem;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0,0,0,.1);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.3px;
+  background: linear-gradient(90deg, #0ea5a4, #0369a1);
 }
 
 #headerTitle {
-  font-size: 1.2rem;
-  font-weight: bold;
-  text-transform: uppercase; /* Hanya judul kapital */
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
   text-align: center;
 }
 
-/* ==================== PERBAIKAN TAMBAHAN (UKURAN TANGGAL & JAM) ==================== */
+/* === Bagian waktu (tanggal & jam) === */
 #headerTime {
-  font-size: initial !important; /* reset agar tidak ikut header */
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  line-height: 1.1;
 }
 
+/* 🟢 Ubah ukuran di sini: */
 #headerDate {
-  font-size: 0.4rem; /* ini sekarang akan kecil sungguhan */
+  font-size: 0.5rem;   /* tanggal */
   font-weight: 500;
+  opacity: 0.9;
 }
 
 #headerClock {
-  font-size: 0.4rem; /* sedikit lebih besar */
+  font-size: 0.5rem;   /* jam */
   font-weight: 700;
+  margin-top: 2px;
+  letter-spacing: 0.5px;
 }
 
 /* ======================== Layout Container & Nav ======================== */
@@ -353,7 +360,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 2.0</div>
   </div>
   
 <div id="headerTime">
@@ -2748,4 +2755,3 @@ loadLemItems();
 
 </body>
 </html>
-
