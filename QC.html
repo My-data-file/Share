@@ -281,10 +281,13 @@ input[type=text], input[type=number], select{
   padding: 10px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   min-height: 90px;
+
+  /* 🔧 ini bagian penting */
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start; /* ⬆️ teks mulai dari atas */
+  align-items: flex-start;     /* ⬅️ teks ke kiri */
+  text-align: left;            /* pastikan teks kiri juga */
 }
 
 /* Responsif di HP — biar tetap sejajar, tidak 1 kolom besar */
