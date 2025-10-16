@@ -54,21 +54,21 @@ header{
   text-align: center;
 }
 
-/* === Atur tanggal & jam di header === */
+/* ==================== PERBAIKAN TAMBAHAN (UKURAN TANGGAL & JAM) ==================== */
 #headerTime {
+  font-size: initial !important; /* reset agar tidak ikut header */
   display: flex;
-  flex-direction: column;  /* atas bawah */
+  flex-direction: column;
   align-items: flex-end;
-  line-height: 1.1;
 }
 
 #headerDate {
-  font-size: 0.2rem;      /* lebih kecil tapi tetap terbaca */
+  font-size: 0.4rem; /* ini sekarang akan kecil sungguhan */
   font-weight: 500;
 }
 
 #headerClock {
-  font-size: 0.2rem;       /* sedikit lebih besar dari tanggal */
+  font-size: 0.4rem; /* sedikit lebih besar */
   font-weight: 700;
 }
 
@@ -2748,13 +2748,4 @@ loadLemItems();
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
 
