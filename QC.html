@@ -762,9 +762,147 @@ input[type=text], input[type=number], select{
   </main>
 </div>
 
+<!-- ======================== SPINNER GLOBAL ======================== -->
+<div id="loadingSpinner"
+     style="display:none; position:fixed; inset:0; z-index:9999; 
+            background:rgba(255,255,255,0.45); backdrop-filter:blur(8px);
+            -webkit-backdrop-filter:blur(8px);
+            display:flex; align-items:center; justify-content:center; flex-direction:column;">
+
+  <!-- Cincin Spinner -->
+  <div class="spinner-ring"></div>
+
+  <!-- Teks memuat -->
+  <div class="spinner-text">Memuat Data...</div>
+</div>
+
+<style>
+/* ================== SPINNER MODERN STYLE ================== */
+.spinner-ring {
+  width: 64px;
+  height: 64px;
+  border: 6px solid rgba(14,165,233,0.25);
+  border-top-color: #0ea5e9;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite, glow 1.8s ease-in-out infinite;
+  box-shadow: 0 0 12px rgba(14,165,233,0.3);
+}
+
+.spinner-text {
+  margin-top: 14px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #0f172a;
+  letter-spacing: 0.5px;
+  animation: fadeIn 1s ease-in-out infinite alternate;
+}
+
+/* ================== ANIMASI ================== */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 12px rgba(14,165,233,0.3); }
+  50% { box-shadow: 0 0 25px rgba(14,165,233,0.6); }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* Responsif untuk HP */
+@media (max-width: 600px) {
+  .spinner-ring { width: 48px; height: 48px; border-width: 5px; }
+  .spinner-text { font-size: 1rem; }
+}
+</style>
+
 <script>
 // ====================== KONFIGURASI ======================
 const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbw73Auzsta0BOUiu9FW6DS3qw7SS21yLee0KRDP1wMZxXiPWGou3iwH_yDDHZLRD0Kr/exec";
+
+// ====================== SPINNER GLOBAL JS ======================
+const spinner = document.getElementById('loadingSpinner');
+const showSpinner = () => spinner.style.display = 'flex';
+const hideSpinner = () => spinner.style.display = 'none';
+
+let prosesSedangJalan = 0;
+
+function mulaiProses() {
+  prosesSedangJalan++;
+  showSpinner();
+}
+
+function selesaiProses() {
+  prosesSedangJalan = Math.max(0, prosesSedangJalan - 1);
+  if (prosesSedangJalan === 0) hideSpinner();
+}
+
+// ====================== Hook global ======================
+(function () {
+  const asliJsonp = window.jsonpGet;
+  const asliPost = window.postPayload;
+
+  if (typeof asliJsonp === 'function' && !asliJsonp.__hooked) {
+    window.jsonpGet = async function(...args) {
+      mulaiProses();
+      try { return await asliJsonp.apply(this, args); }
+      finally { selesaiProses(); }
+    };
+    window.jsonpGet.__hooked = true;
+  }
+
+  if (typeof asliPost === 'function' && !asliPost.__hooked) {
+    window.postPayload = async function(...args) {
+      mulaiProses();
+      try { return await asliPost.apply(this, args); }
+      finally { selesaiProses(); }
+    };
+    window.postPayload.__hooked = true;
+  }
+})();
+
+// ====================== Load Semua Data ======================
+async function loadAllData() {
+  showSpinner();
+  try {
+    await Promise.all([
+      Promise.resolve(loadBaproItems()),
+      Promise.resolve(loadPAItems()),
+      Promise.resolve(loadFinishingItems()),
+      Promise.resolve(loadLemItems())
+    ]);
+  } catch (err) {
+    console.error('Gagal memuat data:', err);
+  } finally {
+    hideSpinner();
+  }
+}
+
+window.addEventListener('load', loadAllData);
+
+// ====================== WAKTU HEADER ======================
+function updateTime() {
+  document.getElementById('headerTime').textContent =
+    new Date().toLocaleString('id-ID', {
+      weekday:'long', day:'2-digit', month:'long', year:'numeric',
+      hour:'2-digit', minute:'2-digit', second:'2-digit'
+    });
+}
+setInterval(updateTime, 1000);
+updateTime();
+
+// ====================== MENU ======================
+function showMenu(menu) {
+  document.querySelectorAll('main > section').forEach(sec => sec.style.display = 'none');
+  document.getElementById(menu).style.display = 'block';
+  document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+  document.querySelector(`nav button[onclick="showMenu('${menu}')"]`).classList.add('active');
+
+  if (menu === 'dashboard') renderDashboardFinishingCompact();
+}
 
 // ====================== WAKTU HEADER ======================
 function updateTime(){
