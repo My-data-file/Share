@@ -55,13 +55,24 @@ header{
 }
 
 #headerTime {
-  font-size: 0.6rem; /* lebih kecil */
+  font-size: 0.6rem;
   font-weight: normal;
-  text-transform: none; /* Tetap normal */
-  text-align: right;
+  text-transform: none;
+  text-align: right; /* atau center */
   margin-top: 2px;
+  line-height: 1.2; /* biar rapat sedikit */
 }
 
+#headerTime .tanggal {
+  display: block;
+}
+
+#headerTime .jam {
+  display: block;
+  font-size: 0.65rem;
+  color: #555; /* opsional */
+}
+  
 /* ======================== Layout Container & Nav ======================== */
 .container{
   display:flex;
@@ -343,7 +354,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 1.0rem;">System 1.0</div>
+    <div id="headerTitle" style="font-size: 1.0rem;">System 2.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -2737,6 +2748,7 @@ loadLemItems();
 
 </body>
 </html>
+
 
 
 
