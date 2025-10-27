@@ -1778,6 +1778,7 @@ function renderDashboardBaproCompact() {
 
     card.innerHTML = `
       <strong>${escapeHtml(item.nama || '')}</strong><br>
+      <strong>CSO: ${escapeHtml(item.noKS || '')}</strong><br>
       <strong>QC: ${escapeHtml(item.qc || '')}</strong><br>
       <strong>Tinta: ${escapeHtml(item.NamaTinta || '')}</strong><br>
       <span>📅 ${escapeHtml(tanggal)}</span><br>
@@ -1815,7 +1816,7 @@ function showDetailModalBapro(item) {
   alert(`Detail QC Bapro:
 Tanggal: ${item.tanggal || '-'}
 Nama: ${item.nama || '-'}
-No KS: ${item.noKS || '-'}
+Nama CSO: ${item.noKS || '-'}
 Jenis Kertas: ${item.jenisKertas || '-'}
 Tebal Kertas: ${item.tebalKertas || '-'}
 Nama Tinta: ${item.NamaTinta || '-'}
@@ -2756,6 +2757,7 @@ loadLemItems();
 
 </body>
 </html>
+
 
 
 
