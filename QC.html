@@ -563,7 +563,15 @@ input[type=text], input[type=number], select{
 
   <div id="inputBapro" class="tab-content active">
     <div class="form-group"><input type="text" id="baproNama" placeholder="Nama Order"></div>
-    <div class="form-group"><input type="text" id="baproNoKS" placeholder="Nama CSO"></div>
+    <div class="form-group">
+      <select id="baproNoKS">
+        <option value="">CSO</option>
+        <option value="Yati">Yati</option>
+        <option value="Retni">Retni</option>
+        <option value="Aulia">Aulia</option>
+        <option value="Yuli">Yuli</option>
+      </select>
+    </div>
     <div class="form-group"><input type="text" id="baproJenis" placeholder="Jenis Kertas"></div>
     <div class="form-group"><input type="number" id="baproKertas" placeholder="Tebal Kertas (gsm)"></div>
     <div class="form-group"><input type="text" id="baproNamaTinta" placeholder="Nama Tinta"></div>
@@ -2757,6 +2765,7 @@ loadLemItems();
 
 </body>
 </html>
+
 
 
 
