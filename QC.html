@@ -353,7 +353,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 2.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -371,6 +371,7 @@ input[type=text], input[type=number], select{
     <button onclick="showMenu('qcPA')">QC CETAK</button>
     <button onclick="showMenu('qcFinishing')">QC FINISHING</button>
     <button onclick="showMenu('qcLem')">QC LEM</button>
+    <button onclick="showMenu('qcSPV')">QC REGISTER</button>
   </nav>
 
   <!-- ======================== Main Section ======================== -->
@@ -553,7 +554,7 @@ input[type=text], input[type=number], select{
 <section id="qcBapro" class="card qc-section" style="display:none;">
 
   <h2 style="text-align:center; color:#fff; background:#dc2626; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
-    Menu QC BAPRO
+    MENU QC BAPRO
   </h2>
 
   <div class="tabs">
@@ -568,7 +569,7 @@ input[type=text], input[type=number], select{
         <option value="">CSO</option>
         <option value="Yati">Yati</option>
         <option value="Retni">Retni</option>
-        <option value="Aulia">Aulya</option>
+        <option value="Aulia">Aulia</option>
         <option value="Yuli">Yuli</option>
       </select>
     </div>
@@ -609,7 +610,7 @@ input[type=text], input[type=number], select{
 <section id="qcPA" class="card qc-section" style="display:none;">
 
   <h2 style="text-align:center; color:#fff; background:#ff9800; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
-    Menu QC CETAK
+    MENU QC CETAK
   </h2>
 
   <div class="tabs">
@@ -666,7 +667,7 @@ input[type=text], input[type=number], select{
 <section id="qcFinishing" class="card qc-section" style="display:none;">
 
   <h2 style="text-align:center; color:#fff; background:#22c55e; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
-    Menu QC FINISHING
+    MENU QC FINISHING
   </h2>
 
   <div class="tabs">
@@ -711,7 +712,7 @@ input[type=text], input[type=number], select{
 <section id="qcLem" class="card qc-section" style="display:none;">
 
   <h2 style="text-align:center; color:#fff; background:#9c27b0; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
-    Menu QC LEM
+    MENU QC LEM
   </h2>
 
   <div class="tabs">
@@ -752,6 +753,166 @@ input[type=text], input[type=number], select{
     <div id="gridLem" class="grid-container"></div>
   </div>
 </section>
+
+<!-- ======================== QC SPV ======================== -->
+<section id="qcSPV" class="card qc-section" style="display:none;">
+
+  <h2 style="
+    text-align:center;
+    color:#fff;
+    background:#00BCD4;
+    font-size:1.2rem;
+    padding:6px 12px;
+    border-radius:8px;
+    margin-bottom:12px;">
+    MENU QC REGISTER
+  </h2>
+
+  <div class="tabs">
+    <button class="active" data-tab="spvInputSection" onclick="showSPVTab('input', this)">Inputan</button>
+    <button data-tab="spvHasilSection" onclick="showSPVTab('hasil', this)">Hasil</button>
+  </div>
+
+  <!-- ========== INPUTAN ========== -->
+  <div id="spvInputSection" style="margin-top:10px;">
+    <form id="spvForm">
+
+      <style>
+        /* ===== Style Form QC SPV ===== */
+        #spvForm .form-group { margin-bottom: 10px; }
+
+        #spvForm input[type="text"],
+        #spvForm input[type="date"],
+        #spvForm input[type="time"],
+        #spvForm textarea,
+        #spvForm select {
+          width: 100%;
+          padding: 0.6rem;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          font-size: 0.95rem;
+          box-sizing: border-box;
+        }
+
+        #spvForm button {
+          width: 100%;
+          padding: .6rem;
+          background: #00BCD4;
+          color: #fff;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 1rem;
+        }
+        #spvForm button:hover { background: #00BCD4; }
+
+        .tabs { display: flex; margin-bottom: 10px; }
+        .tabs button {
+          flex: 1;
+          padding: 8px;
+          border: none;
+          cursor: pointer;
+          background: #ddd;
+          font-weight: bold;
+        }
+        .tabs button.active {
+          background: #00BCD4;
+          color: white;
+        }
+      </style>
+
+      <!-- Input Nama Order -->
+      <div class="form-group">
+        <input type="text" id="spvOrder" placeholder="Nama Order" required>
+      </div>
+
+      <!-- Input No KS -->
+      <div class="form-group">
+        <input type="text" id="spvNoKS" placeholder="No KS" required>
+      </div>
+
+      <!-- Tanggal & Jam -->
+      <div class="form-group" style="display:flex; gap:10px;">
+        <input type="date" id="spvTanggal" required style="flex:1;">
+        <input type="time" id="spvJam" required style="flex:1;">
+      </div>
+
+      <!-- Foto Acuan -->
+      <label for="spvFoto">Foto Acuan :</label><br>
+      <input type="file" id="spvFoto" accept="image/*" capture="camera"><br><br>
+
+      <div class="form-group">
+        <textarea id="spvKet" placeholder="Keterangan Acuan (opsional)" rows="3"></textarea>
+      </div>
+
+      <!-- Foto Temuan -->
+      <label for="spvFoto1">Foto Temuan :</label><br>
+      <input type="file" id="spvFoto1" accept="image/*" capture="camera"><br><br>
+
+      <div class="form-group">
+        <textarea id="spvKet1" placeholder="Keterangan Temuan (opsional)" rows="3"></textarea>
+      </div>
+
+      <!-- Nama QC (Dropdown) -->
+      <div class="form-group">
+        <select id="spvNama" required>
+          <option value="" disabled selected>Pilih Nama QC</option>
+          <option value="NANI">NANI</option>
+          <option value="ANJANI">ANJANI</option>
+          <option value="SUCI">SUCI</option>
+          <option value="ANOM">ANOM</option>
+          <option value="IRNA">IRNA</option>
+          <option value="MARWAN">MARWAN</option>
+          <option value="KIKI">KIKI</option>
+          <option value="MARTINI">MARTINI</option>
+          <option value="KRESTIN">KRESTIN</option>
+          <option value="ISMIE">ISMIE</option>
+        </select>
+      </div>
+
+<div class="form-group">
+  <select id="spvProses" required>
+    <option value="" disabled selected>Pilih Proses</option>
+    <option value="QC BAPRO">QC BAPRO</option>
+    <option value="QC CETAK">QC CETAK</option>
+    <option value="QC FINISHING">QC FINISHING</option>
+    <option value="QC LEM">QC LEM</option>
+    <option value="RETUR">RETUR</option>
+  </select>
+</div>
+
+      <!-- Tombol Submit -->
+      <div class="form-group">
+        <button type="button" onclick="submitSPV(event)">➕ Tambah</button>
+      </div>
+    </form>
+  </div>
+
+<!-- ========== HASIL ========== -->
+<div id="spvHasilSection" style="display:none;">
+  <table id="spvTable" border="1" style="width:100%; border-collapse:collapse;">
+    <thead style="background:#eee;">
+      <tr>
+        <th>Tanggal</th>
+        <th>Nama Order</th>
+        <th>No KS</th>
+        <th>Jam</th>
+        <th>Keterangan Acuan</th>
+        <th>Foto Acuan</th>
+        <th>Keterangan Temuan</th>
+        <th>Foto Temuan</th>
+        <th>Nama QC</th>
+        <th>Proses</th> <!-- Kolom proses ditambahkan -->
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+
+</section>
+
+
 
 <!-- ======================== Floating API Button ======================== -->
 <a href="https://www.chatbase.co/chatbot-iframe/WQV6nYLIpvH1KdrwilMKh" 
@@ -827,7 +988,7 @@ input[type=text], input[type=number], select{
 
 <script>
 // ====================== KONFIGURASI ======================
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbw73Auzsta0BOUiu9FW6DS3qw7SS21yLee0KRDP1wMZxXiPWGou3iwH_yDDHZLRD0Kr/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwlRDHeE_CkjrBFKMSVlDwwvYP603gKGvBKx5J-6UzH7_8I0wD2HlboHZsWKGQhQe8n/exec";
 
 // ====================== SPINNER GLOBAL JS ======================
 const spinner = document.getElementById('loadingSpinner');
@@ -2763,11 +2924,165 @@ document.addEventListener('DOMContentLoaded', () => {
 loadLemItems();
 </script>
 
+<script>
+/* ====================== TAB QC SPV ====================== */
+
+// Tidak perlu SPV_URL lagi, cukup pakai WEBAPP_URL dari Finishing
+
+function showSPVTab(tab, btn) {
+  document.getElementById('spvInputSection').style.display = (tab === 'input') ? 'block' : 'none';
+  document.getElementById('spvHasilSection').style.display = (tab === 'hasil') ? 'block' : 'none';
+
+  document.querySelectorAll('#qcSPV .tabs button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  if (tab === 'input') {
+    const now = new Date();
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const hh = String(now.getHours()).padStart(2, '0');
+    const min = String(now.getMinutes()).padStart(2, '0');
+
+    document.getElementById('spvTanggal').value = `${yyyy}-${mm}-${dd}`;
+    document.getElementById('spvJam').value = `${hh}:${min}`;
+
+    setupUppercaseInputsSPV();
+  }
+
+  if (tab === 'hasil') loadSPV();
+}
+
+/* ====================== KONVERSI INPUT KE KAPITAL ====================== */
+function setupUppercaseInputsSPV() {
+  const inputs = document.querySelectorAll('#spvForm input[type="text"], #spvForm textarea');
+  inputs.forEach(el => {
+    el.removeEventListener('input', el._uppercaseListener);
+    const listener = () => el.value = el.value.toUpperCase();
+    el.addEventListener('input', listener);
+    el._uppercaseListener = listener;
+  });
+}
+
+/* ====================== FILE TO BASE64 ====================== */
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ====================== SUBMIT FORM ====================== */
+async function submitSPV(e) {
+  e.preventDefault();
+
+  const namaOrder = document.getElementById('spvOrder').value.trim().toUpperCase();
+  const noKS = document.getElementById('spvNoKS').value.trim().toUpperCase();
+  const tanggal = document.getElementById('spvTanggal').value;
+  const jam = document.getElementById('spvJam').value;
+  const ket = document.getElementById('spvKet').value.trim().toUpperCase();
+  const ket1 = document.getElementById('spvKet1').value.trim().toUpperCase();
+  const namaQC = document.getElementById('spvNama').value;
+  const proses = document.getElementById('spvProses').value;
+  const fotoFile = document.getElementById('spvFoto').files[0];
+  const fotoFile1 = document.getElementById('spvFoto1').files[0];
+
+  if (!namaOrder || !noKS || !tanggal || !jam || !namaQC || !proses) {
+    alert('⚠️ Harap lengkapi semua field termasuk Proses.');
+    return;
+  }
+
+  if (!confirm('Kirim data ini?')) return;
+
+  document.getElementById('spvForm').reset();
+
+  let base64Foto = "", base64Foto1 = "";
+  if (fotoFile) base64Foto = await fileToBase64(fotoFile);
+  if (fotoFile1) base64Foto1 = await fileToBase64(fotoFile1);
+
+  const payload = {
+    type: "spv",
+    payload: { namaOrder, noKS, tanggal, jam, ket, foto: base64Foto, ket1, foto1: base64Foto1, namaQC, proses }
+  };
+
+  // Gunakan WEBAPP_URL dari Finishing
+  fetch(WEBAPP_URL, {
+    method: "POST",
+    body: JSON.stringify(payload)
+  })
+  .then(res => res.text())
+  .then(() => {
+    alert("✅ Data SPV berhasil dikirim!");
+    loadSPV(); // refresh hasil setelah submit
+  })
+  .catch(err => {
+    console.error(err);
+    alert("❌ Gagal mengirim data SPV!");
+  });
+}
+
+/* ====================== LOAD HASIL ====================== */
+function loadSPV() {
+  fetch(WEBAPP_URL + '?action=get&sheet=SPV') // gunakan sheet SPV
+    .then(res => res.json())
+    .then(data => {
+      const tbody = document.querySelector('#spvTable tbody');
+      tbody.innerHTML = "";
+      data.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${formatTanggal(item.tanggal)}</td>
+          <td>${item.namaOrder || ''}</td>
+          <td>${item.noKS || ''}</td>
+          <td>${formatJam(item.jam)}</td>
+          <td>${item.ket || ''}</td>
+          <td>${item.fotoUrl ? `<a href="${item.fotoUrl}" target="_blank">📷 Lihat Foto</a>` : '-'}</td>
+          <td>${item.ket1 || ''}</td>
+          <td>${item.fotoUrl1 ? `<a href="${item.fotoUrl1}" target="_blank">📷 Lihat Foto</a>` : '-'}</td>
+          <td>${item.namaQC || ''}</td>
+          <td>${item.proses || ''}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    })
+    .catch(err => console.error("Gagal memuat data SPV:", err));
+}
+
+/* ====================== FORMAT TANGGAL & JAM ====================== */
+function formatTanggal(tgl) {
+  if (!tgl) return "";
+  const parts = tgl.split("-");
+  return parts.length === 3 ? `${parts[2]}-${parts[1]}-${parts[0]}` : tgl;
+}
+
+function formatJam(jam) {
+  if (!jam) return "";
+  return jam.length >= 5 ? jam.slice(0, 5) : jam;
+}
+
+/* ====================== PASSWORD QC SPV ====================== */
+const QC_SPV_PASSWORD = 'spv123';
+
+document.addEventListener('DOMContentLoaded', () => {
+  const menuBtn = document.querySelector(`nav button[onclick="showMenu('qcSPV')"]`);
+  if (menuBtn) {
+    const originalOnClick = menuBtn.getAttribute('onclick');
+    menuBtn.onclick = function(e) {
+      e.preventDefault();
+      const input = prompt('Masukkan password untuk QC SPV:');
+      if (input === null) return;
+      if (input === QC_SPV_PASSWORD) {
+        eval(originalOnClick);
+      } else alert('Password salah!');
+    };
+  }
+});
+</script>
+
+
+
 </body>
 </html>
-
-
-
-
-
 
