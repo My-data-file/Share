@@ -353,7 +353,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.8rem;">System 2.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -942,8 +942,7 @@ input[type=text], input[type=number], select{
           <th>Proses</th>
         </tr>
       </thead>
-      <tbody>
-      </tbody>
+      <tbody></tbody>
     </table>
   </div>
 </div>
@@ -1013,7 +1012,7 @@ input[type=text], input[type=number], select{
     text-align: left;
   }
   #spvTable td::before {
-    content: attr(data-label);
+    content: attr(data-label) ": ";
     flex: 0 0 130px; /* lebar label */
     font-weight: 600;
     color: #333;
@@ -1022,12 +1021,6 @@ input[type=text], input[type=number], select{
   #spvTable td:last-child {
     border-bottom: none;
   }
-}
-
-/* ========== Gaya lembut tambahan ========== */
-body {
-  background: #f5f7fa;
-  font-family: 'Segoe UI', sans-serif;
 }
 </style>
 
@@ -3264,10 +3257,31 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ====================== TAB HASIL ====================== */
-// Tambahkan atribut data-label agar tampil di mode mobile
 document.addEventListener("DOMContentLoaded", () => {
   const headers = Array.from(document.querySelectorAll("#spvTable thead th")).map(th => th.textContent);
   document.querySelectorAll("#spvTable tbody tr").forEach(tr => {
+    tr.querySelectorAll("td").forEach((td, i) => {
+      td.setAttribute("data-label", headers[i]);
+    });
+  });
+});
+
+// ===== Contoh: simulasi load data dari JS =====
+document.addEventListener("DOMContentLoaded", () => {
+  const tbody = document.querySelector("#spvTable tbody");
+  const data = [
+    ["2025-11-05","Order A","KS001","08:00","Cetak awal","foto1.jpg","Warna kurang","foto2.jpg","Budi","Review"]
+  ];
+
+  tbody.innerHTML = data.map(row => `
+    <tr>
+      ${row.map((val, i) => `<td>${val}</td>`).join("")}
+    </tr>
+  `).join("");
+
+  // Tambah label untuk mode mobile
+  const headers = Array.from(document.querySelectorAll("#spvTable thead th")).map(th => th.textContent);
+  tbody.querySelectorAll("tr").forEach(tr => {
     tr.querySelectorAll("td").forEach((td, i) => {
       td.setAttribute("data-label", headers[i]);
     });
