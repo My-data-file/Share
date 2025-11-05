@@ -353,7 +353,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 2.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -845,6 +845,18 @@ input[type=text], input[type=number], select{
         from { transform: rotate(0deg); }
         to { transform: rotate(360deg); }
       }
+
+      /* ===== Label Foto ===== */
+      label {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 4px;
+        color: #333;
+      }
+      input[type="file"] {
+        width: 100%;
+        padding: 6px 0;
+      }
     </style>
 
     <!-- SPINNER OVERLAY -->
@@ -867,16 +879,20 @@ input[type=text], input[type=number], select{
     </div>
 
     <!-- Foto Acuan -->
-    <label for="spvFoto">Foto Acuan :</label><br>
-    <input type="file" id="spvFoto" accept="image/*" capture="camera"><br><br>
+    <div class="form-group">
+      <label for="spvFoto">📸 Foto Acuan:</label>
+      <input type="file" id="spvFoto" accept="image/*"> <!-- kamera + galeri -->
+    </div>
 
     <div class="form-group">
       <textarea id="spvKet" placeholder="Keterangan Acuan (opsional)" rows="3"></textarea>
     </div>
 
     <!-- Foto Temuan -->
-    <label for="spvFoto1">Foto Temuan :</label><br>
-    <input type="file" id="spvFoto1" accept="image/*" capture="camera"><br><br>
+    <div class="form-group">
+      <label for="spvFoto1">📷 Foto Temuan:</label>
+      <input type="file" id="spvFoto1" accept="image/*"> <!-- kamera + galeri -->
+    </div>
 
     <div class="form-group">
       <textarea id="spvKet1" placeholder="Keterangan Temuan (opsional)" rows="3"></textarea>
@@ -899,6 +915,7 @@ input[type=text], input[type=number], select{
       </select>
     </div>
 
+    <!-- Pilih Proses -->
     <div class="form-group">
       <select id="spvProses" required>
         <option value="" disabled selected>Pilih Proses</option>
@@ -916,6 +933,7 @@ input[type=text], input[type=number], select{
     </div>
   </form>
 </div>
+
 
 <!-- ========== HASIL ========== -->
 <div id="spvHasilSection" style="display:none;">
@@ -3279,6 +3297,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
 
 
