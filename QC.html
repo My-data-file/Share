@@ -353,7 +353,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 2.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -926,27 +926,30 @@ input[type=text], input[type=number], select{
     <p style="font-size:0.9rem; color:#555;">Memuat data SPV...</p>
   </div>
 
-  <table id="spvTable" border="1" style="width:100%; border-collapse:collapse;">
-    <thead style="background:#eee;">
-      <tr>
-        <th>Tanggal</th>
-        <th>Nama Order</th>
-        <th>No KS</th>
-        <th>Jam</th>
-        <th>Keterangan Acuan</th>
-        <th>Foto Acuan</th>
-        <th>Keterangan Temuan</th>
-        <th>Foto Temuan</th>
-        <th>Nama QC</th>
-        <th>Proses</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <!-- Wrapper agar tabel bisa di-scroll di HP -->
+  <div class="table-responsive">
+    <table id="spvTable" border="1">
+      <thead>
+        <tr>
+          <th>Tanggal</th>
+          <th>Nama Order</th>
+          <th>No KS</th>
+          <th>Jam</th>
+          <th>Keterangan Acuan</th>
+          <th>Foto Acuan</th>
+          <th>Keterangan Temuan</th>
+          <th>Foto Temuan</th>
+          <th>Nama QC</th>
+          <th>Proses</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 </div>
 
 <style>
-/* Spinner CSS */
+/* ==================== Spinner ==================== */
 .spinner {
   width: 28px;
   height: 28px;
@@ -960,9 +963,50 @@ input[type=text], input[type=number], select{
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+/* ==================== Tabel Responsive ==================== */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+#spvTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  min-width: 700px; /* agar scroll muncul di layar kecil */
+}
+
+#spvTable th,
+#spvTable td {
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+  white-space: nowrap; /* mencegah teks turun ke bawah */
+}
+
+#spvTable thead {
+  background: #00BCD4;
+  color: #fff;
+  font-weight: 600;
+}
+
+#spvTable tbody tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+/* ==================== Responsif Tambahan ==================== */
+@media (max-width: 600px) {
+  #spvTable th, #spvTable td {
+    font-size: 0.8rem;
+    padding: 6px;
+  }
+}
 </style>
-
-
 
 
 <!-- ======================== Floating API Button ======================== -->
@@ -3185,7 +3229,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const originalOnClick = menuBtn.getAttribute('onclick');
     menuBtn.onclick = function(e) {
       e.preventDefault();
-      const input = prompt('Masukkan password untuk QC SPV:');
+      const input = prompt('Masukkan password untuk QC Register:');
       if (input === null) return;
       if (input === QC_SPV_PASSWORD) {
         eval(originalOnClick);
