@@ -943,7 +943,7 @@ input[type=text], input[type=number], select{
     <input 
       type="text" 
       id="spvSearch" 
-      placeholder="🔍 Cari Nama Order / No KS..." 
+      placeholder="🔍 Cari Nama Order / No KS / QC / Proses" 
       style="
         width:100%;
         padding:8px 12px;
@@ -2907,13 +2907,32 @@ document.addEventListener('DOMContentLoaded', () => {
     rows.forEach(row => {
       const namaOrder = (row.cells[1]?.textContent || '').toUpperCase();
       const noKS = (row.cells[2]?.textContent || '').toUpperCase();
-      row.style.display = (namaOrder.includes(filter) || noKS.includes(filter)) ? '' : 'none';
+      const namaQC = (row.cells[8]?.textContent || '').toUpperCase();
+      const proses = (row.cells[9]?.textContent || '').toUpperCase();
+
+      // cocokkan jika ada kata kunci di salah satu kolom
+      const match =
+        namaOrder.includes(filter) ||
+        noKS.includes(filter) ||
+        namaQC.includes(filter) ||
+        proses.includes(filter);
+
+      row.style.display = match ? '' : 'none';
     });
   });
 });
 
+
 </script>
+
+
+
+
 
 
 </body>
 </html>
+
+
+
+
