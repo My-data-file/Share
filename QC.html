@@ -963,7 +963,7 @@ input[type=text], input[type=number], select{
   100% { transform: rotate(360deg); }
 }
 
-/* ========== Tabel dasar (desktop) ========== */
+/* ========== Tabel (desktop) ========== */
 .table-wrapper {
   width: 100%;
   overflow-x: auto;
@@ -984,7 +984,7 @@ input[type=text], input[type=number], select{
   color: #fff;
 }
 
-/* ========== Mode Mobile (card style) ========== */
+/* ========== Mode Mobile (card) ========== */
 @media (max-width: 768px) {
   #spvTable, #spvTable thead, #spvTable tbody, #spvTable th, #spvTable td, #spvTable tr {
     display: block;
@@ -1013,9 +1013,9 @@ input[type=text], input[type=number], select{
   }
   #spvTable td::before {
     content: attr(data-label) ": ";
-    flex: 0 0 130px; /* lebar label */
+    flex: 0 0 130px;
     font-weight: 600;
-    color: #333;
+    color: #555;
     text-align: left;
   }
   #spvTable td:last-child {
@@ -3257,35 +3257,33 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ====================== TAB HASIL ====================== */
-document.addEventListener("DOMContentLoaded", () => {
-  const headers = Array.from(document.querySelectorAll("#spvTable thead th")).map(th => th.textContent);
+function applyDataLabels() {
+  const headers = Array.from(document.querySelectorAll("#spvTable thead th")).map(th => th.textContent.trim());
   document.querySelectorAll("#spvTable tbody tr").forEach(tr => {
     tr.querySelectorAll("td").forEach((td, i) => {
-      td.setAttribute("data-label", headers[i]);
+      td.setAttribute("data-label", headers[i] || "");
     });
   });
-});
+}
 
-// ===== Contoh: simulasi load data dari JS =====
+// ===== Contoh simulasi memuat data (bisa diganti dengan data asli kamu) =====
 document.addEventListener("DOMContentLoaded", () => {
   const tbody = document.querySelector("#spvTable tbody");
+
+  // Contoh data (nanti ganti dengan hasil fetch / loadSheet)
   const data = [
     ["2025-11-05","Order A","KS001","08:00","Cetak awal","foto1.jpg","Warna kurang","foto2.jpg","Budi","Review"]
   ];
 
+  // Tampilkan data ke tabel
   tbody.innerHTML = data.map(row => `
     <tr>
-      ${row.map((val, i) => `<td>${val}</td>`).join("")}
+      ${row.map(val => `<td>${val}</td>`).join("")}
     </tr>
   `).join("");
 
-  // Tambah label untuk mode mobile
-  const headers = Array.from(document.querySelectorAll("#spvTable thead th")).map(th => th.textContent);
-  tbody.querySelectorAll("tr").forEach(tr => {
-    tr.querySelectorAll("td").forEach((td, i) => {
-      td.setAttribute("data-label", headers[i]);
-    });
-  });
+  // Tambahkan label agar muncul di HP
+  applyDataLabels();
 });
 
 </script>
