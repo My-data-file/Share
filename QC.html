@@ -353,7 +353,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.8rem;">System 2.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -927,7 +927,7 @@ input[type=text], input[type=number], select{
   </div>
 
   <div class="table-wrapper">
-    <table id="spvTable">
+    <table id="spvTable" border="1">
       <thead>
         <tr>
           <th>Tanggal</th>
@@ -963,64 +963,61 @@ input[type=text], input[type=number], select{
   100% { transform: rotate(360deg); }
 }
 
-/* ========== Tabel (desktop) ========== */
-.table-wrapper {
-  width: 100%;
-  overflow-x: auto;
-}
+/* ========== Tabel Dasar (Desktop) ========== */
+.table-wrapper { width:100%; overflow-x:auto; }
 #spvTable {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem;
-  background: #fff;
+  width:100%;
+  border-collapse:collapse;
+  font-size:0.9rem;
+  background:#fff;
 }
 #spvTable th, #spvTable td {
-  border: 1px solid #ddd;
-  padding: 8px 10px;
-  text-align: left;
+  border:1px solid #ddd;
+  padding:8px 10px;
+  text-align:left;
 }
 #spvTable thead {
-  background: #00BCD4;
-  color: #fff;
+  background:#00BCD4;
+  color:#fff;
 }
 
-/* ========== Mode Mobile (card) ========== */
-@media (max-width: 768px) {
+/* ========== Mode Mobile (Card Style) ========== */
+@media (max-width:768px){
   #spvTable, #spvTable thead, #spvTable tbody, #spvTable th, #spvTable td, #spvTable tr {
-    display: block;
+    display:block;
   }
-  #spvTable thead {
-    display: none;
-  }
+  #spvTable thead { display:none; }
   #spvTable tr {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    padding: 8px 10px;
+    background:#fff;
+    border:1px solid #ddd;
+    border-radius:8px;
+    margin-bottom:10px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    padding:8px 10px;
   }
   #spvTable td {
-    border: none;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-    font-size: 0.85rem;
-    border-bottom: 1px solid #eee;
-    padding: 6px 0;
-    text-align: left;
+    border:none;
+    display:flex;
+    align-items:flex-start;
+    font-size:0.85rem;
+    border-bottom:1px solid #eee;
+    padding:6px 0;
+    text-align:left;
+    word-break:break-word;
   }
   #spvTable td::before {
     content: attr(data-label) ": ";
-    flex: 0 0 130px;
-    font-weight: 600;
-    color: #555;
-    text-align: left;
+    flex:0 0 130px;
+    font-weight:600;
+    color:#333;
   }
-  #spvTable td:last-child {
-    border-bottom: none;
-  }
+  #spvTable td:last-child { border-bottom:none; }
+}
+
+/* ========== Gaya tambahan ========== */
+body {
+  background:#f5f7fa;
+  font-family:'Segoe UI', sans-serif;
 }
 </style>
 
@@ -3257,8 +3254,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ====================== TAB HASIL ====================== */
+// === Tambahkan label otomatis ke setiap td ===
 function applyDataLabels() {
-  const headers = Array.from(document.querySelectorAll("#spvTable thead th")).map(th => th.textContent.trim());
+  const headers = Array.from(document.querySelectorAll("#spvTable thead th"))
+    .map(th => th.textContent.trim());
   document.querySelectorAll("#spvTable tbody tr").forEach(tr => {
     tr.querySelectorAll("td").forEach((td, i) => {
       td.setAttribute("data-label", headers[i] || "");
@@ -3266,24 +3265,12 @@ function applyDataLabels() {
   });
 }
 
-// ===== Contoh simulasi memuat data (bisa diganti dengan data asli kamu) =====
+// === Pantau perubahan data di tabel (saat Apps Script isi data) ===
 document.addEventListener("DOMContentLoaded", () => {
   const tbody = document.querySelector("#spvTable tbody");
-
-  // Contoh data (nanti ganti dengan hasil fetch / loadSheet)
-  const data = [
-    ["2025-11-05","Order A","KS001","08:00","Cetak awal","foto1.jpg","Warna kurang","foto2.jpg","Budi","Review"]
-  ];
-
-  // Tampilkan data ke tabel
-  tbody.innerHTML = data.map(row => `
-    <tr>
-      ${row.map(val => `<td>${val}</td>`).join("")}
-    </tr>
-  `).join("");
-
-  // Tambahkan label agar muncul di HP
-  applyDataLabels();
+  if (!tbody) return;
+  const observer = new MutationObserver(applyDataLabels);
+  observer.observe(tbody, { childList: true, subtree: true });
 });
 
 </script>
@@ -3292,6 +3279,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
 
 
