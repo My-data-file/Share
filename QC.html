@@ -943,7 +943,7 @@ input[type=text], input[type=number], select{
     <input 
       type="text" 
       id="spvSearch" 
-      placeholder="🔍 Cari Nama Order / No KS / QC / Proses" 
+      placeholder="🔍 Cari Order / No KS / QC / Proses" 
       style="
         width:100%;
         padding:8px 12px;
@@ -958,7 +958,7 @@ input[type=text], input[type=number], select{
   <!-- Spinner Loading -->
   <div id="spvLoading" style="display:none; text-align:center; padding:10px;">
     <div class="spinner"></div>
-    <p style="font-size:0.9rem; color:#555;">Memuat data SPV...</p>
+    <p style="font-size:0.9rem; color:#555;">Memuat Data SPV</p>
   </div>
 
   <div class="table-wrapper">
@@ -1131,7 +1131,7 @@ body {
 
 <script>
 // ====================== KONFIGURASI ======================
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxq5fNPOfVKlULq-gk8lYFsqhsH4Yt43QTev4ijFDpNSLF453k84Q2EBhW7YEnONnOC/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxAHG8Q9QopO_5rcb__zFOVwmhcdMtGUZFQNEp6KLLo8Ha6_fnW6O11IvFB1uygdq1B/exec";
 
 // ====================== SPINNER GLOBAL JS ======================
 const spinner = document.getElementById('loadingSpinner');
@@ -3072,8 +3072,6 @@ loadLemItems();
 
 <script>
 /* ====================== TAB QC SPV ====================== */
-// Tidak pakai SPV_URL lagi — pakai WEBAPP_URL utama (dari Finishing)
-
 function showSPVTab(tab, btn) {
   document.getElementById('spvInputSection').style.display = (tab === 'input') ? 'block' : 'none';
   document.getElementById('spvHasilSection').style.display = (tab === 'hasil') ? 'block' : 'none';
@@ -3083,19 +3081,20 @@ function showSPVTab(tab, btn) {
 
   if (tab === 'input') {
     setupUppercaseInputs();
-
-    // === 🔹 Update waktu otomatis setiap detik ===
     updateSPVDateTime(); // isi langsung saat pertama buka
     if (window._spvTimer) clearInterval(window._spvTimer);
     window._spvTimer = setInterval(updateSPVDateTime, 1000);
+
+    // 🔒 Pastikan field tanggal & jam tidak bisa diedit
+    document.getElementById('spvTanggal').setAttribute('readonly', true);
+    document.getElementById('spvJam').setAttribute('readonly', true);
   } else {
-    // hentikan update jika bukan tab input
     if (window._spvTimer) clearInterval(window._spvTimer);
     loadSPV();
   }
 }
 
-// === Fungsi bantu untuk update tanggal dan jam real-time ===
+/* ====================== UPDATE WAKTU REAL-TIME ====================== */
 function updateSPVDateTime() {
   const now = new Date();
   const yyyy = now.getFullYear();
@@ -3111,7 +3110,7 @@ function updateSPVDateTime() {
   if (jamInput) jamInput.value = `${hh}:${min}:${ss}`;
 }
 
-/* ====================== KONVERSI INPUT KE KAPITAL ====================== */
+/* ====================== UPPERCASE INPUT ====================== */
 function setupUppercaseInputs() {
   const inputs = document.querySelectorAll('#spvForm input[type="text"], #spvForm textarea');
   inputs.forEach(el => {
@@ -3154,8 +3153,8 @@ async function submitSPV(e) {
 
   if (!confirm('Kirim data ini?')) return;
 
-  document.getElementById('spvForm').reset(); // langsung reset setelah konfirmasi OK
-  spinner.style.display = "flex"; // tampilkan spinner
+  document.getElementById('spvForm').reset();
+  spinner.style.display = "flex";
 
   let base64Foto = "", base64Foto1 = "";
   if (fotoFile) base64Foto = await fileToBase64(fotoFile);
@@ -3193,7 +3192,7 @@ async function submitSPV(e) {
   });
 }
 
-/* ====================== LOAD HASIL (PASTI MUNCUL) ====================== */
+/* ====================== LOAD DATA HASIL ====================== */
 function loadSPV() {
   const tbody = document.querySelector('#spvTable tbody');
   if (!tbody) return;
@@ -3202,11 +3201,7 @@ function loadSPV() {
   if (!spinner) {
     spinner = document.createElement("div");
     spinner.id = "spvLoadingSpinner";
-    spinner.innerHTML = `
-      <div style="text-align:center;padding:10px;font-weight:bold;color:#00BCD4;">
-        ⏳ Memuat data QC 
-      </div>
-    `;
+    spinner.innerHTML = `<div style="text-align:center;padding:10px;font-weight:bold;color:#00BCD4;">⏳ Memuat Data QC</div>`;
     tbody.parentElement.insertAdjacentElement("beforebegin", spinner);
   }
   spinner.style.display = "block";
@@ -3215,22 +3210,13 @@ function loadSPV() {
     .then(res => res.text())
     .then(text => {
       let data;
-      try {
-        data = JSON.parse(text);
-      } catch {
-        const match = text.match(/\((.*)\)/);
-        if (match) data = JSON.parse(match[1]);
-      }
+      try { data = JSON.parse(text); }
+      catch { const match = text.match(/\((.*)\)/); if (match) data = JSON.parse(match[1]); }
 
-      if (!data) {
-        console.warn("Format data SPV tidak dikenali:", text);
-        spinner.style.display = "none";
-        return;
-      }
+      if (!data) { console.warn("Format data SPV tidak dikenali:", text); spinner.style.display = "none"; return; }
 
       const list = data.data || data || [];
       tbody.innerHTML = "";
-
       list.forEach(item => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -3243,34 +3229,29 @@ function loadSPV() {
           <td>${item.ket1 || item['Keterangan Temuan'] || ''}</td>
           <td>${item.fotoUrl1 || item['Foto Temuan'] ? `<a href="${item.fotoUrl1 || item['Foto Temuan']}" target="_blank">📷 Lihat Foto</a>` : '-'}</td>
           <td>${item.namaQC || item['Nama QC'] || ''}</td>
-          <td>${item.proses || item['Proses'] || ''}</td>
-        `;
+          <td>${item.proses || item['Proses'] || ''}</td>`;
         tbody.appendChild(tr);
       });
     })
     .catch(err => console.error("Gagal memuat data SPV:", err))
-    .finally(() => {
-      spinner.style.display = "none";
-    });
+    .finally(() => spinner.style.display = "none");
 }
 
-/* ====================== FORMAT TANGGAL & JAM ====================== */
+/* ====================== FORMAT ====================== */
 function formatTanggal(tgl) {
   if (!tgl) return "";
   const parts = tgl.split("-");
   return parts.length === 3 ? `${parts[2]}-${parts[1]}-${parts[0]}` : tgl;
 }
-
 function formatJam(jam) {
   if (!jam) return "";
   return jam.length >= 5 ? jam.slice(0, 5) : jam;
 }
 
-/* ====================== PASSWORD QC SPV ====================== */
+/* ====================== PASSWORD ====================== */
 const QC_SPV_PASSWORD = 'spv123';
 document.addEventListener('DOMContentLoaded', () => {
   setupUppercaseInputs();
-
   const menuBtn = document.querySelector(`nav button[onclick="showMenu('qcSPV')"]`);
   if (menuBtn) {
     const originalOnClick = menuBtn.getAttribute('onclick');
@@ -3278,38 +3259,19 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const input = prompt('Masukkan password untuk QC Register:');
       if (input === null) return;
-      if (input === QC_SPV_PASSWORD) {
-        eval(originalOnClick);
-      } else {
-        alert('Password salah!');
-      }
+      if (input === QC_SPV_PASSWORD) eval(originalOnClick);
+      else alert('Password salah!');
     };
   }
 
-  // 🔹 AUTO update waktu langsung saat halaman pertama kali dibuka
+  // update waktu otomatis jika tab input aktif
   const inputSection = document.getElementById('spvInputSection');
   if (inputSection && inputSection.style.display !== 'none') {
     updateSPVDateTime();
     window._spvTimer = setInterval(updateSPVDateTime, 1000);
+    document.getElementById('spvTanggal').setAttribute('readonly', true);
+    document.getElementById('spvJam').setAttribute('readonly', true);
   }
-});
-
-/* ====================== TAB HASIL ====================== */
-function applyDataLabels() {
-  const headers = Array.from(document.querySelectorAll("#spvTable thead th"))
-    .map(th => th.textContent.trim());
-  document.querySelectorAll("#spvTable tbody tr").forEach(tr => {
-    tr.querySelectorAll("td").forEach((td, i) => {
-      td.setAttribute("data-label", headers[i] || "");
-    });
-  });
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const tbody = document.querySelector("#spvTable tbody");
-  if (!tbody) return;
-  const observer = new MutationObserver(applyDataLabels);
-  observer.observe(tbody, { childList: true, subtree: true });
 });
 
 /* ====================== FILTER / SEARCH DATA ====================== */
@@ -3339,17 +3301,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-
 </script>
-
-
-
 
 
 
 </body>
 </html>
-
-
-
-
