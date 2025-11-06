@@ -353,7 +353,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.8rem;">System v2.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System v1.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -3081,18 +3081,20 @@ function showSPVTab(tab, btn) {
 
   if (tab === 'input') {
     setupUppercaseInputs();
-    updateSPVDateTime(); // isi langsung saat pertama buka
+    const tanggalInput = document.getElementById('spvTanggal');
+    const jamInput = document.getElementById('spvJam');
+    if (tanggalInput) tanggalInput.readOnly = true;
+    if (jamInput) jamInput.readOnly = true;
+
+    updateSPVDateTime();
     if (window._spvTimer) clearInterval(window._spvTimer);
     window._spvTimer = setInterval(updateSPVDateTime, 1000);
-
-    // 🔒 Pastikan field tanggal & jam tidak bisa diedit
-    document.getElementById('spvTanggal').setAttribute('readonly', true);
-    document.getElementById('spvJam').setAttribute('readonly', true);
   } else {
     if (window._spvTimer) clearInterval(window._spvTimer);
     loadSPV();
   }
 }
+
 
 /* ====================== UPDATE WAKTU REAL-TIME ====================== */
 function updateSPVDateTime() {
@@ -3307,3 +3309,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
