@@ -3135,7 +3135,6 @@ function fileToBase64(file) {
 async function submitSPV(e) {
   e.preventDefault();
   const spinner = document.getElementById("spvSpinner");
-
   const namaOrder = document.getElementById('spvOrder').value.trim().toUpperCase();
   const noKS = document.getElementById('spvNoKS').value.trim().toUpperCase();
   const tanggal = document.getElementById('spvTanggal').value;
@@ -3154,6 +3153,7 @@ async function submitSPV(e) {
 
   if (!confirm('Kirim data ini?')) return;
 
+  document.getElementById('spvForm').reset();
   spinner.style.display = "flex";
 
   let base64Foto = "", base64Foto1 = "";
@@ -3181,12 +3181,8 @@ async function submitSPV(e) {
   })
   .then(res => res.text())
   .then(() => {
-    alert("✅ Data SPV berhasil dikirim!");
-
-    document.getElementById('spvForm').reset();
-    updateSPVDateTime(); // ✅ isi lagi tanggal & jam setelah reset
-
     spinner.style.display = "none";
+    alert("✅ Data SPV berhasil dikirim!");
     loadSPV();
   })
   .catch(err => {
