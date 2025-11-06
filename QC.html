@@ -353,7 +353,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.8rem;">System v2.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System v3.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -943,7 +943,7 @@ input[type=text], input[type=number], select{
     <input 
       type="text" 
       id="spvSearch" 
-      placeholder="🔍 Cari Nama / No KS / QC / Proses" 
+      placeholder="🔍 Cari Nama Order / No KS / QC / Proses" 
       style="
         width:100%;
         padding:8px 12px;
@@ -1131,7 +1131,7 @@ body {
 
 <script>
 // ====================== KONFIGURASI ======================
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxAHG8Q9QopO_5rcb__zFOVwmhcdMtGUZFQNEp6KLLo8Ha6_fnW6O11IvFB1uygdq1B/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxq5fNPOfVKlULq-gk8lYFsqhsH4Yt43QTev4ijFDpNSLF453k84Q2EBhW7YEnONnOC/exec";
 
 // ====================== SPINNER GLOBAL JS ======================
 const spinner = document.getElementById('loadingSpinner');
@@ -3068,6 +3068,8 @@ loadLemItems();
 </script>
 
 
+
+
 <script>
 /* ====================== TAB QC SPV ====================== */
 // Tidak pakai SPV_URL lagi — pakai WEBAPP_URL utama (dari Finishing)
@@ -3109,23 +3111,7 @@ function updateSPVDateTime() {
   if (jamInput) jamInput.value = `${hh}:${min}:${ss}`;
 }
 
-/* ====================== UPDATE WAKTU REAL-TIME ====================== */
-function updateSPVDateTime() {
-  const now = new Date();
-  const yyyy = now.getFullYear();
-  const mm = String(now.getMonth() + 1).padStart(2, '0');
-  const dd = String(now.getDate()).padStart(2, '0');
-  const hh = String(now.getHours()).padStart(2, '0');
-  const min = String(now.getMinutes()).padStart(2, '0');
-  const ss = String(now.getSeconds()).padStart(2, '0');
-
-  const tanggalInput = document.getElementById('spvTanggal');
-  const jamInput = document.getElementById('spvJam');
-  if (tanggalInput) tanggalInput.value = `${yyyy}-${mm}-${dd}`;
-  if (jamInput) jamInput.value = `${hh}:${min}:${ss}`;
-}
-
-/* ====================== UPPERCASE INPUT ====================== */
+/* ====================== KONVERSI INPUT KE KAPITAL ====================== */
 function setupUppercaseInputs() {
   const inputs = document.querySelectorAll('#spvForm input[type="text"], #spvForm textarea');
   inputs.forEach(el => {
@@ -3168,8 +3154,8 @@ async function submitSPV(e) {
 
   if (!confirm('Kirim data ini?')) return;
 
-  document.getElementById('spvForm').reset();
-  spinner.style.display = "flex";
+  document.getElementById('spvForm').reset(); // langsung reset setelah konfirmasi OK
+  spinner.style.display = "flex"; // tampilkan spinner
 
   let base64Foto = "", base64Foto1 = "";
   if (fotoFile) base64Foto = await fileToBase64(fotoFile);
@@ -3209,12 +3195,8 @@ async function submitSPV(e) {
 
 /* ====================== LOAD HASIL (PASTI MUNCUL) ====================== */
 function loadSPV() {
-  const hasilSection = document.getElementById("spvHasilSection");
-  const table = document.querySelector("#spvTable");
-  const tbody = table ? table.querySelector("tbody") : null;
-  const cardContainer = document.getElementById("spvCardContainer"); // jika pakai card layout
-
-  if (!hasilSection) return;
+  const tbody = document.querySelector('#spvTable tbody');
+  if (!tbody) return;
 
   let spinner = document.getElementById("spvLoadingSpinner");
   if (!spinner) {
@@ -3222,13 +3204,14 @@ function loadSPV() {
     spinner.id = "spvLoadingSpinner";
     spinner.innerHTML = `
       <div style="text-align:center;padding:10px;font-weight:bold;color:#00BCD4;">
-        ⏳ Memuat Data QC
-      </div>`;
-    hasilSection.insertAdjacentElement("afterbegin", spinner);
+        ⏳ Memuat data QC 
+      </div>
+    `;
+    tbody.parentElement.insertAdjacentElement("beforebegin", spinner);
   }
   spinner.style.display = "block";
 
-  fetch(WEBAPP_URL + "?action=get&sheet=SPV")
+  fetch(WEBAPP_URL + '?action=get&sheet=SPV')
     .then(res => res.text())
     .then(text => {
       let data;
@@ -3246,86 +3229,48 @@ function loadSPV() {
       }
 
       const list = data.data || data || [];
+      tbody.innerHTML = "";
 
-      // --- Jika tampilan tabel ---
-      if (tbody) {
-        tbody.innerHTML = "";
-        list.forEach(item => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${formatTanggal(item.tanggal || item.Tanggal)}</td>
-            <td>${item.namaOrder || item["Nama Order"] || ""}</td>
-            <td>${item.noKS || item["No KS"] || ""}</td>
-            <td>${formatJam(item.jam || item.Jam)}</td>
-            <td>${item.ket || item["Keterangan Acuan"] || ""}</td>
-            <td>${
-              item.fotoUrl || item["Foto Acuan"]
-                ? `<a href="${item.fotoUrl || item["Foto Acuan"]}" target="_blank">📷 Lihat Foto</a>`
-                : "-"
-            }</td>
-            <td>${item.ket1 || item["Keterangan Temuan"] || ""}</td>
-            <td>${
-              item.fotoUrl1 || item["Foto Temuan"]
-                ? `<a href="${item.fotoUrl1 || item["Foto Temuan"]}" target="_blank">📷 Lihat Foto</a>`
-                : "-"
-            }</td>
-            <td>${item.namaQC || item["Nama QC"] || ""}</td>
-            <td>${item.proses || item["Proses"] || ""}</td>`;
-          tbody.appendChild(tr);
-        });
-      }
-
-      // --- Jika tampilan card ---
-      if (cardContainer) {
-        cardContainer.innerHTML = "";
-        list.forEach(item => {
-          const card = document.createElement("div");
-          card.className = "spv-card";
-          card.style.cssText =
-            "background:#fff; margin:10px 0; padding:10px; border-radius:10px; box-shadow:0 0 6px rgba(0,0,0,0.1);";
-          card.innerHTML = `
-            <div><strong>Tanggal:</strong> ${formatTanggal(item.tanggal || item.Tanggal)}</div>
-            <div><strong>Nama Order:</strong> ${item.namaOrder || item["Nama Order"] || ""}</div>
-            <div><strong>No KS:</strong> ${item.noKS || item["No KS"] || ""}</div>
-            <div><strong>Jam:</strong> ${formatJam(item.jam || item.Jam)}</div>
-            <div><strong>QC:</strong> ${item.namaQC || item["Nama QC"] || ""}</div>
-            <div><strong>Proses:</strong> ${item.proses || item["Proses"] || ""}</div>
-            <div><strong>Keterangan Acuan:</strong> ${item.ket || item["Keterangan Acuan"] || ""}</div>
-            <div><strong>Keterangan Temuan:</strong> ${item.ket1 || item["Keterangan Temuan"] || ""}</div>
-            <div><strong>Foto Acuan:</strong> ${
-              item.fotoUrl || item["Foto Acuan"]
-                ? `<a href="${item.fotoUrl || item["Foto Acuan"]}" target="_blank">📷 Lihat</a>`
-                : "-"
-            }</div>
-            <div><strong>Foto Temuan:</strong> ${
-              item.fotoUrl1 || item["Foto Temuan"]
-                ? `<a href="${item.fotoUrl1 || item["Foto Temuan"]}" target="_blank">📷 Lihat</a>`
-                : "-"
-            }</div>`;
-          cardContainer.appendChild(card);
-        });
-      }
+      list.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${formatTanggal(item.tanggal || item.Tanggal)}</td>
+          <td>${item.namaOrder || item['Nama Order'] || ''}</td>
+          <td>${item.noKS || item['No KS'] || ''}</td>
+          <td>${formatJam(item.jam || item.Jam)}</td>
+          <td>${item.ket || item['Keterangan Acuan'] || ''}</td>
+          <td>${item.fotoUrl || item['Foto Acuan'] ? `<a href="${item.fotoUrl || item['Foto Acuan']}" target="_blank">📷 Lihat Foto</a>` : '-'}</td>
+          <td>${item.ket1 || item['Keterangan Temuan'] || ''}</td>
+          <td>${item.fotoUrl1 || item['Foto Temuan'] ? `<a href="${item.fotoUrl1 || item['Foto Temuan']}" target="_blank">📷 Lihat Foto</a>` : '-'}</td>
+          <td>${item.namaQC || item['Nama QC'] || ''}</td>
+          <td>${item.proses || item['Proses'] || ''}</td>
+        `;
+        tbody.appendChild(tr);
+      });
     })
     .catch(err => console.error("Gagal memuat data SPV:", err))
-    .finally(() => (spinner.style.display = "none"));
+    .finally(() => {
+      spinner.style.display = "none";
+    });
 }
 
-
-/* ====================== FORMAT ====================== */
+/* ====================== FORMAT TANGGAL & JAM ====================== */
 function formatTanggal(tgl) {
   if (!tgl) return "";
   const parts = tgl.split("-");
   return parts.length === 3 ? `${parts[2]}-${parts[1]}-${parts[0]}` : tgl;
 }
+
 function formatJam(jam) {
   if (!jam) return "";
   return jam.length >= 5 ? jam.slice(0, 5) : jam;
 }
 
-/* ====================== PASSWORD ====================== */
+/* ====================== PASSWORD QC SPV ====================== */
 const QC_SPV_PASSWORD = 'spv123';
 document.addEventListener('DOMContentLoaded', () => {
   setupUppercaseInputs();
+
   const menuBtn = document.querySelector(`nav button[onclick="showMenu('qcSPV')"]`);
   if (menuBtn) {
     const originalOnClick = menuBtn.getAttribute('onclick');
@@ -3333,19 +3278,38 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const input = prompt('Masukkan password untuk QC Register:');
       if (input === null) return;
-      if (input === QC_SPV_PASSWORD) eval(originalOnClick);
-      else alert('Password salah!');
+      if (input === QC_SPV_PASSWORD) {
+        eval(originalOnClick);
+      } else {
+        alert('Password salah!');
+      }
     };
   }
 
-  // update waktu otomatis jika tab input aktif
+  // 🔹 AUTO update waktu langsung saat halaman pertama kali dibuka
   const inputSection = document.getElementById('spvInputSection');
   if (inputSection && inputSection.style.display !== 'none') {
     updateSPVDateTime();
     window._spvTimer = setInterval(updateSPVDateTime, 1000);
-    document.getElementById('spvTanggal').setAttribute('readonly', true);
-    document.getElementById('spvJam').setAttribute('readonly', true);
   }
+});
+
+/* ====================== TAB HASIL ====================== */
+function applyDataLabels() {
+  const headers = Array.from(document.querySelectorAll("#spvTable thead th"))
+    .map(th => th.textContent.trim());
+  document.querySelectorAll("#spvTable tbody tr").forEach(tr => {
+    tr.querySelectorAll("td").forEach((td, i) => {
+      td.setAttribute("data-label", headers[i] || "");
+    });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const tbody = document.querySelector("#spvTable tbody");
+  if (!tbody) return;
+  const observer = new MutationObserver(applyDataLabels);
+  observer.observe(tbody, { childList: true, subtree: true });
 });
 
 /* ====================== FILTER / SEARCH DATA ====================== */
@@ -3375,13 +3339,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-</script>
 
+</script>
 
 
 </body>
 </html>
-
-
-
-
