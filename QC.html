@@ -353,7 +353,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.8rem;">System v2.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System v1.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -3207,7 +3207,7 @@ async function submitSPV(e) {
   });
 }
 
-/* ====================== LOAD DATA HASIL ====================== */
+/* ====================== LOAD HASIL (PASTI MUNCUL) ====================== */
 function loadSPV() {
   const tbody = document.querySelector('#spvTable tbody');
   if (!tbody) return;
@@ -3216,7 +3216,11 @@ function loadSPV() {
   if (!spinner) {
     spinner = document.createElement("div");
     spinner.id = "spvLoadingSpinner";
-    spinner.innerHTML = `<div style="text-align:center;padding:10px;font-weight:bold;color:#00BCD4;">⏳ Memuat Data QC</div>`;
+    spinner.innerHTML = `
+      <div style="text-align:center;padding:10px;font-weight:bold;color:#00BCD4;">
+        ⏳ Memuat data QC 
+      </div>
+    `;
     tbody.parentElement.insertAdjacentElement("beforebegin", spinner);
   }
   spinner.style.display = "block";
@@ -3225,13 +3229,22 @@ function loadSPV() {
     .then(res => res.text())
     .then(text => {
       let data;
-      try { data = JSON.parse(text); }
-      catch { const match = text.match(/\((.*)\)/); if (match) data = JSON.parse(match[1]); }
+      try {
+        data = JSON.parse(text);
+      } catch {
+        const match = text.match(/\((.*)\)/);
+        if (match) data = JSON.parse(match[1]);
+      }
 
-      if (!data) { console.warn("Format data SPV tidak dikenali:", text); spinner.style.display = "none"; return; }
+      if (!data) {
+        console.warn("Format data SPV tidak dikenali:", text);
+        spinner.style.display = "none";
+        return;
+      }
 
       const list = data.data || data || [];
       tbody.innerHTML = "";
+
       list.forEach(item => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -3244,12 +3257,15 @@ function loadSPV() {
           <td>${item.ket1 || item['Keterangan Temuan'] || ''}</td>
           <td>${item.fotoUrl1 || item['Foto Temuan'] ? `<a href="${item.fotoUrl1 || item['Foto Temuan']}" target="_blank">📷 Lihat Foto</a>` : '-'}</td>
           <td>${item.namaQC || item['Nama QC'] || ''}</td>
-          <td>${item.proses || item['Proses'] || ''}</td>`;
+          <td>${item.proses || item['Proses'] || ''}</td>
+        `;
         tbody.appendChild(tr);
       });
     })
     .catch(err => console.error("Gagal memuat data SPV:", err))
-    .finally(() => spinner.style.display = "none");
+    .finally(() => {
+      spinner.style.display = "none";
+    });
 }
 
 /* ====================== FORMAT ====================== */
@@ -3322,5 +3338,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
 
