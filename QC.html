@@ -353,7 +353,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.8rem;">System v2.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -935,26 +935,29 @@ input[type=text], input[type=number], select{
 </div>
 
 
-<!-- ========== HASIL (Perbaikan Ukuran) ========== -->
-<div id="spvHasilSection" style="display:none; margin-top:10px;">
-  <div class="hasil-container">
+<!-- ========== HASIL (Disamakan dengan TAB INPUT) ========== -->
+<div id="spvHasilSection" style="display:none;">
+  <div class="form-card">
+    <h3 style="text-align:center; margin-top:0;">Hasil QC Register</h3>
+
     <!-- Kolom Pencarian -->
-    <div class="form-group">
+    <div class="form-group" style="margin-bottom:10px;">
       <input 
         type="text" 
         id="spvSearch" 
         placeholder="🔍 Cari Order / No KS / QC / Proses"
-        class="hasil-input"
+        class="form-control"
       >
     </div>
 
     <!-- Spinner Loading -->
     <div id="spvLoading" style="display:none; text-align:center; padding:10px;">
       <div class="spinner"></div>
-      <p style="font-size:0.9rem; color:#555;">Memuat Data SPV</p>
+      <p style="font-size:0.9rem; color:#555;">Memuat Data SPV...</p>
     </div>
 
-    <div class="table-wrapper">
+    <!-- Table Wrapper -->
+    <div class="table-container">
       <table id="spvTable" border="1">
         <thead>
           <tr>
@@ -977,36 +980,77 @@ input[type=text], input[type=number], select{
 </div>
 
 <style>
-/* ========== Samakan Padding & Style Tab Hasil ========== */
-#spvHasilSection .hasil-container {
-  width: 100%;
+/* ========== SAMAKAN DENGAN TAB INPUT QC ========== */
+.form-card {
   max-width: 480px;
   margin: 0 auto;
-  padding: 0 10px;
+  background: #fff;
+  padding: 12px;
+  border-radius: 10px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.1);
   box-sizing: border-box;
 }
 
-#spvHasilSection .form-group {
-  margin-bottom: 10px;
-}
-
-#spvHasilSection .hasil-input {
+.form-control {
   width: 100%;
-  padding: 0.6rem;
+  padding: 8px;
+  border-radius: 6px;
   border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 0.95rem;
   box-sizing: border-box;
+  font-size: 0.95rem;
 }
 
-/* Responsif: samakan feel dengan input tab inputan */
+.table-container {
+  overflow-x: auto;
+  margin-top: 8px;
+}
+
+#spvTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+#spvTable th, #spvTable td {
+  border: 1px solid #ddd;
+  padding: 6px 8px;
+  vertical-align: top;
+}
+
+#spvTable thead {
+  background: #f5f5f5;
+  font-weight: bold;
+}
+
+.spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #22c55e;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  animation: spin 0.8s linear infinite;
+  margin: 6px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Mobile Responsive */
 @media (max-width:768px) {
-  #spvHasilSection .hasil-container {
-    padding: 0 12px;
+  .form-card {
+    padding: 10px;
+    border-radius: 8px;
+  }
+
+  #spvTable th, #spvTable td {
+    padding: 6px;
+    font-size: 0.85rem;
   }
 }
 </style>
-
 
 
 <!-- ======================== Floating API Button ======================== -->
@@ -3259,5 +3303,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
 
