@@ -353,7 +353,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.8rem;">System 5.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -773,306 +773,306 @@ input[type=text], input[type=number], select{
     <button data-tab="spvHasilSection" onclick="showSPVTab('hasil', this)">Hasil</button>
   </div>
 
-<!-- ========== INPUTAN ========== -->
-<div id="spvInputSection" style="margin-top:10px;">
-  <form id="spvForm">
+  <!-- ========== INPUTAN ========== -->
+  <div id="spvInputSection" style="margin-top:10px;">
+    <form id="spvForm">
 
-    <style>
-      /* ===== Style Form QC SPV ===== */
-      #spvForm .form-group { margin-bottom: 10px; }
+      <style>
+        /* ===== Style Form QC SPV ===== */
+        #spvForm .form-group { margin-bottom: 10px; }
 
-      #spvForm input[type="text"],
-      #spvForm input[type="date"],
-      #spvForm input[type="time"],
-      #spvForm textarea,
-      #spvForm select {
-        width: 100%;
-        padding: 0.6rem;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        font-size: 0.95rem;
-        box-sizing: border-box;
+        #spvForm input[type="text"],
+        #spvForm input[type="date"],
+        #spvForm input[type="time"],
+        #spvForm textarea,
+        #spvForm select {
+          width: 100%;
+          padding: 0.6rem;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          font-size: 0.95rem;
+          box-sizing: border-box;
+        }
+
+        #spvForm button {
+          width: 100%;
+          padding: .6rem;
+          background: #00BCD4;
+          color: #fff;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 1rem;
+        }
+        #spvForm button:hover { background: #00BCD4; }
+
+        .tabs { display: flex; margin-bottom: 10px; }
+        .tabs button {
+          flex: 1;
+          padding: 8px;
+          border: none;
+          cursor: pointer;
+          background: #ddd;
+          font-weight: bold;
+        }
+        .tabs button.active {
+          background: #00BCD4;
+          color: white;
+        }
+
+        /* ===== Spinner ===== */
+        #spvSpinner {
+          display: none;
+          position: fixed;
+          top: 0; left: 0;
+          width: 100%; height: 100%;
+          background: rgba(0,0,0,0.4);
+          z-index: 9999;
+          align-items: center;
+          justify-content: center;
+        }
+
+        #spvSpinner div {
+          width: 50px;
+          height: 50px;
+          border: 6px solid #fff;
+          border-top-color: #00BCD4;
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+
+        /* ===== Label Foto ===== */
+        label {
+          font-weight: 600;
+          display: block;
+          margin-bottom: 4px;
+          color: #333;
+        }
+        input[type="file"] {
+          width: 100%;
+          padding: 6px 0;
+        }
+      </style>
+
+      <!-- SPINNER OVERLAY -->
+      <div id="spvSpinner"><div></div></div>
+
+      <!-- Input Nama Order -->
+      <div class="form-group">
+        <input type="text" id="spvOrder" placeholder="Nama Order" required>
+      </div>
+
+      <!-- Input No KS -->
+      <div class="form-group">
+        <input type="text" id="spvNoKS" placeholder="No KS" required>
+      </div>
+
+      <!-- Tanggal & Jam -->
+      <div class="form-group" style="display:flex; gap:10px;">
+        <input type="date" id="spvTanggal" required style="flex:1;">
+        <input type="time" id="spvJam" required style="flex:1;">
+      </div>
+
+      <!-- Foto Acuan -->
+      <div class="form-group">
+        <label for="spvFoto">📸 Foto Acuan:</label>
+        <input type="file" id="spvFoto" accept="image/*">
+      </div>
+
+      <div class="form-group">
+        <textarea id="spvKet" placeholder="Keterangan Acuan (opsional)" rows="3"></textarea>
+      </div>
+
+      <!-- Foto Temuan -->
+      <div class="form-group">
+        <label for="spvFoto1">📷 Foto Temuan:</label>
+        <input type="file" id="spvFoto1" accept="image/*">
+      </div>
+
+      <div class="form-group">
+        <textarea id="spvKet1" placeholder="Keterangan Temuan (opsional)" rows="3"></textarea>
+      </div>
+
+      <!-- Nama QC -->
+      <div class="form-group">
+        <select id="spvNama" required>
+          <option value="" disabled selected>Pilih Nama QC</option>
+          <option value="NANI">NANI</option>
+          <option value="ANJANI">ANJANI</option>
+          <option value="SUCI">SUCI</option>
+          <option value="ANOM">ANOM</option>
+          <option value="IRNA">IRNA</option>
+          <option value="MARWAN">MARWAN</option>
+          <option value="KIKI">KIKI</option>
+          <option value="MARTINI">MARTINI</option>
+          <option value="KRESTIN">KRESTIN</option>
+          <option value="ISMIE">ISMIE</option>
+        </select>
+      </div>
+
+      <!-- Pilih Proses -->
+      <div class="form-group">
+        <select id="spvProses" required>
+          <option value="" disabled selected>Pilih Proses</option>
+          <option value="QC BAPRO">QC BAPRO</option>
+          <option value="QC CETAK">QC CETAK</option>
+          <option value="QC FINISHING">QC FINISHING</option>
+          <option value="QC LEM">QC LEM</option>
+          <option value="RETUR">RETUR</option>
+        </select>
+      </div>
+
+      <!-- Tombol Submit -->
+      <div class="form-group">
+        <button type="button" onclick="submitSPV(event)">➕ Tambah</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ========== HASIL ========== -->
+  <div id="spvHasilSection" style="display:none;">
+    <div class="hasil-container">
+      
+      <!-- Kolom Pencarian -->
+      <div class="search-wrapper">
+        <input 
+          type="text" 
+          id="spvSearch" 
+          placeholder="🔍 Cari Order / No KS / QC / Proses">
+      </div>
+
+      <!-- Spinner Loading -->
+      <div id="spvLoading" style="display:none; text-align:center; padding:10px;">
+        <div class="spinner"></div>
+        <p style="font-size:0.9rem; color:#555;">Memuat Data SPV</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table id="spvTable" border="1">
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>Nama Order</th>
+              <th>No KS</th>
+              <th>Jam</th>
+              <th>Keterangan Acuan</th>
+              <th>Foto Acuan</th>
+              <th>Keterangan Temuan</th>
+              <th>Foto Temuan</th>
+              <th>Nama QC</th>
+              <th>Proses</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* ========== Spinner ========== */
+    .spinner {
+      width: 28px;
+      height: 28px;
+      border: 3px solid #ddd;
+      border-top: 3px solid #00BCD4;
+      border-radius: 50%;
+      margin: 0 auto;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* ========== Tabel Dasar (Desktop) ========== */
+    .table-wrapper { width:100%; overflow-x:auto; }
+    #spvTable {
+      width:100%;
+      border-collapse:collapse;
+      font-size:0.9rem;
+      background:#fff;
+    }
+    #spvTable th, #spvTable td {
+      border:1px solid #ddd;
+      padding:8px 10px;
+      text-align:left;
+    }
+    #spvTable thead {
+      background:#00BCD4;
+      color:#fff;
+    }
+
+    /* ========== Mode Mobile (Card Style) ========== */
+    @media (max-width:768px){
+      #spvTable, #spvTable thead, #spvTable tbody, #spvTable th, #spvTable td, #spvTable tr {
+        display:block;
       }
-
-      #spvForm button {
-        width: 100%;
-        padding: .6rem;
-        background: #00BCD4;
-        color: #fff;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 1rem;
-      }
-      #spvForm button:hover { background: #00BCD4; }
-
-      .tabs { display: flex; margin-bottom: 10px; }
-      .tabs button {
-        flex: 1;
-        padding: 8px;
-        border: none;
-        cursor: pointer;
-        background: #ddd;
-        font-weight: bold;
-      }
-      .tabs button.active {
-        background: #00BCD4;
-        color: white;
-      }
-
-      /* ===== Spinner ===== */
-      #spvSpinner {
-        display: none;
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: rgba(0,0,0,0.4);
-        z-index: 9999;
-        align-items: center;
-        justify-content: center;
-      }
-
-      #spvSpinner div {
-        width: 50px;
-        height: 50px;
-        border: 6px solid #fff;
-        border-top-color: #00BCD4;
-        border-radius: 50%;
-        animation: spin 0.8s linear infinite;
-      }
-
-      @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-      }
-
-      /* ===== Label Foto ===== */
-      label {
-        font-weight: 600;
-        display: block;
-        margin-bottom: 4px;
-        color: #333;
-      }
-      input[type="file"] {
-        width: 100%;
-        padding: 6px 0;
-      }
-    </style>
-
-    <!-- SPINNER OVERLAY -->
-    <div id="spvSpinner"><div></div></div>
-
-    <!-- Input Nama Order -->
-    <div class="form-group">
-      <input type="text" id="spvOrder" placeholder="Nama Order" required>
-    </div>
-
-    <!-- Input No KS -->
-    <div class="form-group">
-      <input type="text" id="spvNoKS" placeholder="No KS" required>
-    </div>
-
-    <!-- Tanggal & Jam -->
-    <div class="form-group" style="display:flex; gap:10px;">
-      <input type="date" id="spvTanggal" required style="flex:1;">
-      <input type="time" id="spvJam" required style="flex:1;">
-    </div>
-
-    <!-- Foto Acuan -->
-    <div class="form-group">
-      <label for="spvFoto">📸 Foto Acuan:</label>
-      <input type="file" id="spvFoto" accept="image/*"> <!-- kamera + galeri -->
-    </div>
-
-    <div class="form-group">
-      <textarea id="spvKet" placeholder="Keterangan Acuan (opsional)" rows="3"></textarea>
-    </div>
-
-    <!-- Foto Temuan -->
-    <div class="form-group">
-      <label for="spvFoto1">📷 Foto Temuan:</label>
-      <input type="file" id="spvFoto1" accept="image/*"> <!-- kamera + galeri -->
-    </div>
-
-    <div class="form-group">
-      <textarea id="spvKet1" placeholder="Keterangan Temuan (opsional)" rows="3"></textarea>
-    </div>
-
-    <!-- Nama QC (Dropdown) -->
-    <div class="form-group">
-      <select id="spvNama" required>
-        <option value="" disabled selected>Pilih Nama QC</option>
-        <option value="NANI">NANI</option>
-        <option value="ANJANI">ANJANI</option>
-        <option value="SUCI">SUCI</option>
-        <option value="ANOM">ANOM</option>
-        <option value="IRNA">IRNA</option>
-        <option value="MARWAN">MARWAN</option>
-        <option value="KIKI">KIKI</option>
-        <option value="MARTINI">MARTINI</option>
-        <option value="KRESTIN">KRESTIN</option>
-        <option value="ISMIE">ISMIE</option>
-      </select>
-    </div>
-
-    <!-- Pilih Proses -->
-    <div class="form-group">
-      <select id="spvProses" required>
-        <option value="" disabled selected>Pilih Proses</option>
-        <option value="QC BAPRO">QC BAPRO</option>
-        <option value="QC CETAK">QC CETAK</option>
-        <option value="QC FINISHING">QC FINISHING</option>
-        <option value="QC LEM">QC LEM</option>
-        <option value="RETUR">RETUR</option>
-      </select>
-    </div>
-
-    <!-- Tombol Submit -->
-    <div class="form-group">
-      <button type="button" onclick="submitSPV(event)">➕ Tambah</button>
-    </div>
-  </form>
-</div>
-
-
-<!-- ========== HASIL ========== -->
-<div id="spvHasilSection" style="display:none;">
-  
-  <!-- Kolom Pencarian (lebarnya sama seperti judul menu QC LEM) -->
-  <div style="width:320px; max-width:90%; margin:0 auto 16px; text-align:center;">
-    <input 
-      type="text" 
-      id="spvSearch" 
-      placeholder="🔍 Cari Order / No KS / QC / Proses" 
-      style="
-        width:100%;
-        padding:8px 12px;
-        border:1.5px solid #9c27b0;
+      #spvTable thead { display:none; }
+      #spvTable tr {
+        background:#fff;
+        border:1px solid #ddd;
         border-radius:8px;
-        font-size:0.95rem;
+        margin-bottom:10px;
+        box-shadow:0 1px 3px rgba(0,0,0,0.08);
+        padding:8px 10px;
+      }
+      #spvTable td {
+        border:none;
+        display:flex;
+        align-items:flex-start;
+        font-size:0.85rem;
+        border-bottom:1px solid #eee;
+        padding:6px 0;
+        text-align:left;
+        word-break:break-word;
+      }
+      #spvTable td::before {
+        content: attr(data-label) ": ";
+        flex:0 0 130px;
+        font-weight:600;
         color:#333;
-        outline:none;
-      ">
-  </div>
+      }
+      #spvTable td:last-child { border-bottom:none; }
+    }
 
-  <!-- Spinner Loading -->
-  <div id="spvLoading" style="display:none; text-align:center; padding:10px;">
-    <div class="spinner"></div>
-    <p style="font-size:0.9rem; color:#555;">Memuat Data SPV</p>
-  </div>
+    /* ========== Samakan frame tab hasil & input ========== */
+    .hasil-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0 10px 20px;
+      box-sizing: border-box;
+    }
+    .search-wrapper {
+      width: 100%;
+      margin-bottom: 16px;
+    }
+    .search-wrapper input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1.5px solid #9c27b0;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      color: #333;
+      outline: none;
+    }
+    @media (min-width: 769px) {
+      .hasil-container { max-width: 100%; padding: 0; }
+    }
 
-  <div class="table-wrapper">
-    <table id="spvTable" border="1">
-      <thead>
-        <tr>
-          <th>Tanggal</th>
-          <th>Nama Order</th>
-          <th>No KS</th>
-          <th>Jam</th>
-          <th>Keterangan Acuan</th>
-          <th>Foto Acuan</th>
-          <th>Keterangan Temuan</th>
-          <th>Foto Temuan</th>
-          <th>Nama QC</th>
-          <th>Proses</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-</div>
+    body {
+      background:#f5f7fa;
+      font-family:'Segoe UI', sans-serif;
+    }
+  </style>
 
-<style>
-/* ========== Spinner ========== */
-.spinner {
-  width: 28px;
-  height: 28px;
-  border: 3px solid #ddd;
-  border-top: 3px solid #00BCD4;
-  border-radius: 50%;
-  margin: 0 auto;
-  animation: spin 0.8s linear infinite;
-}
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+</section>
 
-/* ========== Tabel Dasar (Desktop) ========== */
-.table-wrapper { width:100%; overflow-x:auto; }
-#spvTable {
-  width:100%;
-  border-collapse:collapse;
-  font-size:0.9rem;
-  background:#fff;
-}
-#spvTable th, #spvTable td {
-  border:1px solid #ddd;
-  padding:8px 10px;
-  text-align:left;
-}
-#spvTable thead {
-  background:#00BCD4;
-  color:#fff;
-}
-
-/* ========== Mode Mobile (Card Style) ========== */
-@media (max-width:768px){
-  #spvTable, #spvTable thead, #spvTable tbody, #spvTable th, #spvTable td, #spvTable tr {
-    display:block;
-  }
-  #spvTable thead { display:none; }
-  #spvTable tr {
-    background:#fff;
-    border:1px solid #ddd;
-    border-radius:8px;
-    margin-bottom:10px;
-    box-shadow:0 1px 3px rgba(0,0,0,0.08);
-    padding:8px 10px;
-  }
-  #spvTable td {
-    border:none;
-    display:flex;
-    align-items:flex-start;
-    font-size:0.85rem;
-    border-bottom:1px solid #eee;
-    padding:6px 0;
-    text-align:left;
-    word-break:break-word;
-  }
-  #spvTable td::before {
-    content: attr(data-label) ": ";
-    flex:0 0 130px;
-    font-weight:600;
-    color:#333;
-  }
-  #spvTable td:last-child { border-bottom:none; }
-}
-
-/* ========== Gaya tambahan ========== */
-body {
-  background:#f5f7fa;
-  font-family:'Segoe UI', sans-serif;
-}
-
-/* ===== Fix lebar tab hasil agar sama dengan tab input (khusus HP) ===== */
-@media (max-width: 768px) {
-  #spvHasilSection {
-    padding: 0 10px; /* samakan padding kiri-kanan seperti form input */
-    box-sizing: border-box;
-  }
-
-  #spvHasilSection .table-wrapper {
-    width: 100%;
-    overflow-x: hidden; /* hilangkan geser horizontal berlebih */
-  }
-
-  #spvHasilSection input#spvSearch {
-    max-width: 100%;
-  }
-}
-
-</style>
 
 
 <!-- ======================== Floating API Button ======================== -->
@@ -3325,6 +3325,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
 
 
