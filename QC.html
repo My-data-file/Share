@@ -353,7 +353,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.8rem;">System v1.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System v2.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -3209,8 +3209,12 @@ async function submitSPV(e) {
 
 /* ====================== LOAD HASIL (PASTI MUNCUL) ====================== */
 function loadSPV() {
-  const tbody = document.querySelector('#spvTable tbody');
-  if (!tbody) return;
+  const hasilSection = document.getElementById("spvHasilSection");
+  const table = document.querySelector("#spvTable");
+  const tbody = table ? table.querySelector("tbody") : null;
+  const cardContainer = document.getElementById("spvCardContainer"); // jika pakai card layout
+
+  if (!hasilSection) return;
 
   let spinner = document.getElementById("spvLoadingSpinner");
   if (!spinner) {
@@ -3218,14 +3222,13 @@ function loadSPV() {
     spinner.id = "spvLoadingSpinner";
     spinner.innerHTML = `
       <div style="text-align:center;padding:10px;font-weight:bold;color:#00BCD4;">
-        ⏳ Memuat data QC 
-      </div>
-    `;
-    tbody.parentElement.insertAdjacentElement("beforebegin", spinner);
+        ⏳ Memuat Data QC
+      </div>`;
+    hasilSection.insertAdjacentElement("afterbegin", spinner);
   }
   spinner.style.display = "block";
 
-  fetch(WEBAPP_URL + '?action=get&sheet=SPV')
+  fetch(WEBAPP_URL + "?action=get&sheet=SPV")
     .then(res => res.text())
     .then(text => {
       let data;
@@ -3243,30 +3246,70 @@ function loadSPV() {
       }
 
       const list = data.data || data || [];
-      tbody.innerHTML = "";
 
-      list.forEach(item => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${formatTanggal(item.tanggal || item.Tanggal)}</td>
-          <td>${item.namaOrder || item['Nama Order'] || ''}</td>
-          <td>${item.noKS || item['No KS'] || ''}</td>
-          <td>${formatJam(item.jam || item.Jam)}</td>
-          <td>${item.ket || item['Keterangan Acuan'] || ''}</td>
-          <td>${item.fotoUrl || item['Foto Acuan'] ? `<a href="${item.fotoUrl || item['Foto Acuan']}" target="_blank">📷 Lihat Foto</a>` : '-'}</td>
-          <td>${item.ket1 || item['Keterangan Temuan'] || ''}</td>
-          <td>${item.fotoUrl1 || item['Foto Temuan'] ? `<a href="${item.fotoUrl1 || item['Foto Temuan']}" target="_blank">📷 Lihat Foto</a>` : '-'}</td>
-          <td>${item.namaQC || item['Nama QC'] || ''}</td>
-          <td>${item.proses || item['Proses'] || ''}</td>
-        `;
-        tbody.appendChild(tr);
-      });
+      // --- Jika tampilan tabel ---
+      if (tbody) {
+        tbody.innerHTML = "";
+        list.forEach(item => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${formatTanggal(item.tanggal || item.Tanggal)}</td>
+            <td>${item.namaOrder || item["Nama Order"] || ""}</td>
+            <td>${item.noKS || item["No KS"] || ""}</td>
+            <td>${formatJam(item.jam || item.Jam)}</td>
+            <td>${item.ket || item["Keterangan Acuan"] || ""}</td>
+            <td>${
+              item.fotoUrl || item["Foto Acuan"]
+                ? `<a href="${item.fotoUrl || item["Foto Acuan"]}" target="_blank">📷 Lihat Foto</a>`
+                : "-"
+            }</td>
+            <td>${item.ket1 || item["Keterangan Temuan"] || ""}</td>
+            <td>${
+              item.fotoUrl1 || item["Foto Temuan"]
+                ? `<a href="${item.fotoUrl1 || item["Foto Temuan"]}" target="_blank">📷 Lihat Foto</a>`
+                : "-"
+            }</td>
+            <td>${item.namaQC || item["Nama QC"] || ""}</td>
+            <td>${item.proses || item["Proses"] || ""}</td>`;
+          tbody.appendChild(tr);
+        });
+      }
+
+      // --- Jika tampilan card ---
+      if (cardContainer) {
+        cardContainer.innerHTML = "";
+        list.forEach(item => {
+          const card = document.createElement("div");
+          card.className = "spv-card";
+          card.style.cssText =
+            "background:#fff; margin:10px 0; padding:10px; border-radius:10px; box-shadow:0 0 6px rgba(0,0,0,0.1);";
+          card.innerHTML = `
+            <div><strong>Tanggal:</strong> ${formatTanggal(item.tanggal || item.Tanggal)}</div>
+            <div><strong>Nama Order:</strong> ${item.namaOrder || item["Nama Order"] || ""}</div>
+            <div><strong>No KS:</strong> ${item.noKS || item["No KS"] || ""}</div>
+            <div><strong>Jam:</strong> ${formatJam(item.jam || item.Jam)}</div>
+            <div><strong>QC:</strong> ${item.namaQC || item["Nama QC"] || ""}</div>
+            <div><strong>Proses:</strong> ${item.proses || item["Proses"] || ""}</div>
+            <div><strong>Keterangan Acuan:</strong> ${item.ket || item["Keterangan Acuan"] || ""}</div>
+            <div><strong>Keterangan Temuan:</strong> ${item.ket1 || item["Keterangan Temuan"] || ""}</div>
+            <div><strong>Foto Acuan:</strong> ${
+              item.fotoUrl || item["Foto Acuan"]
+                ? `<a href="${item.fotoUrl || item["Foto Acuan"]}" target="_blank">📷 Lihat</a>`
+                : "-"
+            }</div>
+            <div><strong>Foto Temuan:</strong> ${
+              item.fotoUrl1 || item["Foto Temuan"]
+                ? `<a href="${item.fotoUrl1 || item["Foto Temuan"]}" target="_blank">📷 Lihat</a>`
+                : "-"
+            }</div>`;
+          cardContainer.appendChild(card);
+        });
+      }
     })
     .catch(err => console.error("Gagal memuat data SPV:", err))
-    .finally(() => {
-      spinner.style.display = "none";
-    });
+    .finally(() => (spinner.style.display = "none"));
 }
+
 
 /* ====================== FORMAT ====================== */
 function formatTanggal(tgl) {
@@ -3338,6 +3381,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
 
 
