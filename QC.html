@@ -1075,38 +1075,209 @@ input[type=text], input[type=number], select{
 
 
 
-<!-- ======================== Floating API Button ======================== -->
-<a href="https://www.chatbase.co/chatbot-iframe/WQV6nYLIpvH1KdrwilMKh" 
-   target="_blank"
-   id="aiButton"
-   title="Buka API QC AI"
-   style="
-     position: fixed;
-     bottom: 22px;
-     right: 22px;
-     width: 64px;
-     height: 64px;
-     border-radius: 50%;
-     background: linear-gradient(135deg, #6a11cb, #2575fc);
-     color: #fff;
-     font-size: 22px;
-     font-weight: bold;
-     display: flex;
-     align-items: center;
-     justify-content: center;
-     box-shadow: 0 0 18px rgba(101, 80, 255, 0.6);
-     cursor: pointer;
-     text-decoration: none;
-     z-index: 9999;
-     transition: all 0.3s ease;
-   "
-   onmouseover="this.style.transform='scale(1.15)'; this.style.boxShadow='0 0 25px rgba(101, 80, 255, 0.8)'"
-   onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 0 18px rgba(101, 80, 255, 0.6)'">
-  AI
-</a>
+<!-- ======================== Floating Chatbot 3D Button ======================== -->
+<div class="chatbot-wrapper" onclick="window.open('https://www.chatbase.co/chatbot-iframe/WQV6nYLIpvH1KdrwilMKh','_blank')">
+  <div class="chatbot-bg">
+    <div class="bg-light"></div>
 
-  </main>
+    <!-- Robot -->
+    <div class="chatbot-body robot">
+      <div class="chatbot-face">
+        <div class="eye left"></div>
+        <div class="eye right"></div>
+        <div class="smile"></div>
+      </div>
+    </div>
+
+    <!-- Text AI + Flare -->
+    <div class="chatbot-text">
+      AI
+      <div class="flare"></div>
+    </div>
+  </div>
 </div>
+
+<style>
+/* ===== Wrapper ===== */
+.chatbot-wrapper {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #4b68ff, #1c2ca5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 35px rgba(80, 120, 255, 0.6);
+  cursor: pointer;
+  z-index: 9999;
+  overflow: hidden;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  animation: float 4s ease-in-out infinite;
+}
+.chatbot-wrapper:hover {
+  transform: scale(1.1) rotate(3deg);
+  box-shadow: 0 0 45px rgba(100, 150, 255, 0.9);
+}
+
+/* ===== Background Glow Layer ===== */
+.chatbot-bg {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bg-light {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, #6e8cff, #3b56ff, #6e8cff);
+  animation: rotateLight 8s linear infinite;
+  opacity: 0.25;
+}
+
+/* ===== Robot Body ===== */
+.chatbot-body {
+  position: relative;
+  width: 54px;
+  height: 58px;
+  background: linear-gradient(145deg, #f8faff, #cad3ff);
+  border-radius: 28px;
+  box-shadow:
+    inset 0 -5px 12px rgba(0,0,0,0.15),
+    0 4px 8px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeToggle 6s ease-in-out infinite;
+}
+
+/* ===== Face ===== */
+.chatbot-face {
+  width: 42px;
+  height: 28px;
+  background: linear-gradient(180deg, #193bff 0%, #132cad 100%);
+  border-radius: 14px;
+  position: relative;
+  box-shadow: inset 0 0 12px rgba(255,255,255,0.25);
+}
+
+/* ===== Eyes ===== */
+.eye {
+  position: absolute;
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, #8cd2ff 40%, #3d7eff 100%);
+  border-radius: 50%;
+  animation: blink 6s infinite, lookAround 5s ease-in-out infinite;
+}
+.eye.left { left: 9px; }
+.eye.right { right: 9px; }
+
+/* ===== Smile ===== */
+.smile {
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: 8px;
+  border-bottom: 2.5px solid #6cb0ff;
+  border-radius: 0 0 12px 12px;
+  transform-origin: center center;
+  animation: smileWiden 3s ease-in-out infinite;
+}
+
+/* ===== AI Text ===== */
+.chatbot-text {
+  position: absolute;
+  font-size: 26px;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 0 0 12px rgba(255,255,255,0.8);
+  opacity: 0;
+  animation: fadeTextToggle 6s ease-in-out infinite;
+}
+
+/* ===== Lens Flare Effect ===== */
+.flare {
+  position: absolute;
+  width: 140%;
+  height: 140%;
+  background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 70%);
+  border-radius: 50%;
+  top: -20%;
+  left: -20%;
+  transform: scale(0);
+  opacity: 0;
+  animation: flarePulse 6s ease-in-out infinite;
+}
+
+/* ===== Animations ===== */
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes rotateLight {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes blink {
+  0%, 94%, 100% { height: 8px; }
+  96% { height: 2px; }
+}
+@keyframes lookAround {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(2px); }
+  75% { transform: translateX(-2px); }
+}
+@keyframes smileWiden {
+  0%,100% { width: 16px; border-radius: 0 0 12px 12px; }
+  50% { width: 22px; border-radius: 0 0 18px 18px; }
+}
+
+/* === Fade between Robot and Text === */
+@keyframes fadeToggle {
+  0%,40% { opacity: 1; transform: scale(1); }
+  50%,90% { opacity: 0; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes fadeTextToggle {
+  0%,40% { opacity: 0; transform: scale(0.8); }
+  50%,90% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.8); }
+}
+
+/* === Flare Pulse (aktif saat AI muncul) === */
+@keyframes flarePulse {
+  0%,40% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.6;
+    filter: blur(4px);
+  }
+  70% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  90%,100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+</style>
+
+
 
 <!-- ======================== SPINNER GLOBAL ======================== -->
 <div id="loadingSpinner"
@@ -3325,9 +3496,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
-
-
-
-
-
 
