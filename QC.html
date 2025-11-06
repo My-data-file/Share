@@ -353,7 +353,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.8rem;">System v2.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System v1.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -3219,17 +3219,17 @@ function loadSPV() {
       tbody.innerHTML = "";
       list.forEach(item => {
         const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${formatTanggal(item.tanggal || item.Tanggal)}</td>
-          <td>${item.namaOrder || item['Nama Order'] || ''}</td>
-          <td>${item.noKS || item['No KS'] || ''}</td>
-          <td>${formatJam(item.jam || item.Jam)}</td>
-          <td>${item.ket || item['Keterangan Acuan'] || ''}</td>
-          <td>${item.fotoUrl || item['Foto Acuan'] ? `<a href="${item.fotoUrl || item['Foto Acuan']}" target="_blank">📷 Lihat Foto</a>` : '-'}</td>
-          <td>${item.ket1 || item['Keterangan Temuan'] || ''}</td>
-          <td>${item.fotoUrl1 || item['Foto Temuan'] ? `<a href="${item.fotoUrl1 || item['Foto Temuan']}" target="_blank">📷 Lihat Foto</a>` : '-'}</td>
-          <td>${item.namaQC || item['Nama QC'] || ''}</td>
-          <td>${item.proses || item['Proses'] || ''}</td>`;
+tr.innerHTML = `
+  <td data-label="Tanggal">${formatTanggal(item.tanggal || item.Tanggal)}</td>
+  <td data-label="Nama Order">${item.namaOrder || item['Nama Order'] || ''}</td>
+  <td data-label="No KS">${item.noKS || item['No KS'] || ''}</td>
+  <td data-label="Jam">${formatJam(item.jam || item.Jam)}</td>
+  <td data-label="Keterangan Acuan">${item.ket || item['Keterangan Acuan'] || ''}</td>
+  <td data-label="Foto Acuan">${item.fotoUrl || item['Foto Acuan'] ? `<a href="${item.fotoUrl || item['Foto Acuan']}" target="_blank">📷 Lihat Foto</a>` : '-'}</td>
+  <td data-label="Keterangan Temuan">${item.ket1 || item['Keterangan Temuan'] || ''}</td>
+  <td data-label="Foto Temuan">${item.fotoUrl1 || item['Foto Temuan'] ? `<a href="${item.fotoUrl1 || item['Foto Temuan']}" target="_blank">📷 Lihat Foto</a>` : '-'}</td>
+  <td data-label="Nama QC">${item.namaQC || item['Nama QC'] || ''}</td>
+  <td data-label="Proses">${item.proses || item['Proses'] || ''}</td>`;
         tbody.appendChild(tr);
       });
     })
@@ -3307,3 +3307,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
