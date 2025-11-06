@@ -353,7 +353,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 5.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -1054,6 +1054,24 @@ body {
   background:#f5f7fa;
   font-family:'Segoe UI', sans-serif;
 }
+
+/* ===== Fix lebar tab hasil agar sama dengan tab input (khusus HP) ===== */
+@media (max-width: 768px) {
+  #spvHasilSection {
+    padding: 0 10px; /* samakan padding kiri-kanan seperti form input */
+    box-sizing: border-box;
+  }
+
+  #spvHasilSection .table-wrapper {
+    width: 100%;
+    overflow-x: hidden; /* hilangkan geser horizontal berlebih */
+  }
+
+  #spvHasilSection input#spvSearch {
+    max-width: 100%;
+  }
+}
+
 </style>
 
 
@@ -3307,6 +3325,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
 
 
