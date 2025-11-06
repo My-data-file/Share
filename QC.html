@@ -353,7 +353,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.8rem;">System v2.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System v1.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -3068,10 +3068,10 @@ loadLemItems();
 </script>
 
 
-
-
 <script>
 /* ====================== TAB QC SPV ====================== */
+// Tidak pakai SPV_URL lagi — pakai WEBAPP_URL utama (dari Finishing)
+
 function showSPVTab(tab, btn) {
   document.getElementById('spvInputSection').style.display = (tab === 'input') ? 'block' : 'none';
   document.getElementById('spvHasilSection').style.display = (tab === 'hasil') ? 'block' : 'none';
@@ -3081,17 +3081,32 @@ function showSPVTab(tab, btn) {
 
   if (tab === 'input') {
     setupUppercaseInputs();
+
+    // === 🔹 Update waktu otomatis setiap detik ===
     updateSPVDateTime(); // isi langsung saat pertama buka
     if (window._spvTimer) clearInterval(window._spvTimer);
     window._spvTimer = setInterval(updateSPVDateTime, 1000);
-
-    // 🔒 Pastikan field tanggal & jam tidak bisa diedit
-    document.getElementById('spvTanggal').setAttribute('readonly', true);
-    document.getElementById('spvJam').setAttribute('readonly', true);
   } else {
+    // hentikan update jika bukan tab input
     if (window._spvTimer) clearInterval(window._spvTimer);
     loadSPV();
   }
+}
+
+// === Fungsi bantu untuk update tanggal dan jam real-time ===
+function updateSPVDateTime() {
+  const now = new Date();
+  const yyyy = now.getFullYear();
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+  const dd = String(now.getDate()).padStart(2, '0');
+  const hh = String(now.getHours()).padStart(2, '0');
+  const min = String(now.getMinutes()).padStart(2, '0');
+  const ss = String(now.getSeconds()).padStart(2, '0');
+
+  const tanggalInput = document.getElementById('spvTanggal');
+  const jamInput = document.getElementById('spvJam');
+  if (tanggalInput) tanggalInput.value = `${yyyy}-${mm}-${dd}`;
+  if (jamInput) jamInput.value = `${hh}:${min}:${ss}`;
 }
 
 /* ====================== UPDATE WAKTU REAL-TIME ====================== */
@@ -3307,3 +3322,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
