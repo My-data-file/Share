@@ -96,7 +96,6 @@ nav {
   z-index: 999;
 }
 
-
 nav button{
   display:block;
   width:100%;
@@ -117,6 +116,37 @@ nav button:hover{
 nav button.active{
   background:var(--accent-2);
   box-shadow:0 2px 6px rgba(0,0,0,.15);
+}
+
+/* Desktop */
+@media (min-width: 769px) {
+  nav {
+    width: 220px;
+    position: sticky;
+    top: 60px;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+    flex-direction: column;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  nav {
+    width: 100%;
+    height: auto;            /* jangan pakai 100vh - header */
+    position: relative;      /* sticky tidak perlu */
+    display: flex;
+    flex-direction: row;     /* horizontal menu */
+    overflow-x: auto;        /* scroll horizontal jika tombol banyak */
+    white-space: nowrap;     /* biar tombol tidak wrap ke baris baru */
+    padding: 0.5rem;
+  }
+
+  nav button {
+    flex: 0 0 auto;          /* ukuran tombol tetap */
+    margin: 0 4px 0 0;
+  }
 }
 
 /* ======================== Main & Card ======================== */
@@ -363,7 +393,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 5.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -3784,3 +3814,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
