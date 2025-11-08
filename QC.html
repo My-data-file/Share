@@ -80,20 +80,13 @@ header{
   min-height:100vh;
 }
 
-nav {
-  width: 220px;
-  background: #fff;
-  border-right: 1px solid #e5e7eb;
-  padding: 1rem;
-  box-shadow: 2px 0 6px rgba(0,0,0,0.05);
-  flex-shrink: 0;
-
-  /* 🔹 Tambahan supaya selalu terlihat */
-  position: sticky;
-  top: 60px; /* jarak dari header, sesuaikan tinggi header */
-  height: calc(100vh - 60px); /* agar mengisi tinggi viewport minus header */
-  overflow-y: auto; /* scroll jika isi menu lebih panjang */
-  z-index: 999;
+nav{
+  width:220px;
+  background:#fff;
+  border-right:1px solid #e5e7eb;
+  padding:1rem;
+  box-shadow:2px 0 6px rgba(0,0,0,0.05);
+  flex-shrink:0;
 }
 
 nav button{
@@ -116,37 +109,6 @@ nav button:hover{
 nav button.active{
   background:var(--accent-2);
   box-shadow:0 2px 6px rgba(0,0,0,.15);
-}
-
-/* Desktop */
-@media (min-width: 769px) {
-  nav {
-    width: 220px;
-    position: sticky;
-    top: 60px;
-    height: calc(100vh - 60px);
-    overflow-y: auto;
-    flex-direction: column;
-  }
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-  nav {
-    width: 100%;
-    height: auto;            /* jangan pakai 100vh - header */
-    position: relative;      /* sticky tidak perlu */
-    display: flex;
-    flex-direction: row;     /* horizontal menu */
-    overflow-x: auto;        /* scroll horizontal jika tombol banyak */
-    white-space: nowrap;     /* biar tombol tidak wrap ke baris baru */
-    padding: 0.5rem;
-  }
-
-  nav button {
-    flex: 0 0 auto;          /* ukuran tombol tetap */
-    margin: 0 4px 0 0;
-  }
 }
 
 /* ======================== Main & Card ======================== */
@@ -3814,4 +3776,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
+
 
