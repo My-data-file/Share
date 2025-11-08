@@ -50,7 +50,7 @@ header{
 #headerTitle {
   font-size: 1.2rem;
   font-weight: bold;
-  text-transform: uppercase;
+  text-transform: uppercase; /* Hanya judul kapital */
   text-align: center;
 }
 
@@ -58,72 +58,57 @@ header{
   font-size: 0.7rem;
   font-weight: normal;
   text-transform: none;
-  text-align: right;
+  text-align: right; /* atau center */
   margin-top: 2px;
-  line-height: 1.2;
+  line-height: 1.2; /* biar rapat sedikit */
 }
 
-#headerTime .tanggal { display: block; }
-#headerTime .jam { display: block; font-size: 0.7rem; }
+#headerTime .tanggal {
+  display: block;
+}
+
+#headerTime .jam {
+  display: block;
+  font-size: 0.7rem;
+}
   
 /* ======================== Layout Container & Nav ======================== */
-.container {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  min-height: 100vh;
+.container{
+  display:flex;
+  flex-direction:row;
+  width:100%;
+  min-height:100vh;
 }
 
-/* === SIDEBAR TETAP (FIXED) === */
-nav {
-  position: fixed;
-  top: 0; /* ✅ perbaiki dari 1 ke 0 */
-  left: 0;
-  height: 100vh;
-  width: 220px;
-  background: #fff;
-  border-right: 1px solid #e5e7eb;
-  padding: 1.5rem 1rem 1rem; /* ✅ tambah jarak atas sedikit */
-  box-shadow: 2px 0 6px rgba(0,0,0,0.05);
-  flex-shrink: 0;
-  overflow-y: auto;
-  z-index: 99;
+nav{
+  width:220px;
+  background:#fff;
+  border-right:1px solid #e5e7eb;
+  padding:1rem;
+  box-shadow:2px 0 6px rgba(0,0,0,0.05);
+  flex-shrink:0;
 }
 
-/* ✅ beri jarak kecil di tombol pertama */
-nav button:first-child {
-  margin-top: .5rem;
+nav button{
+  display:block;
+  width:100%;
+  padding:.8rem 1rem;
+  margin-bottom:.6rem;
+  border:none;
+  border-radius:var(--radius);
+  background:var(--accent);
+  color:#fff;
+  font-weight:500;
+  cursor:pointer;
+  transition:all .2s ease;
 }
-
-/* === KONTEN UTAMA === */
-main, .main-content {
-  margin-left: 240px;
-  padding: 1rem;
-  width: calc(100% - 240px);
-  box-sizing: border-box;
+nav button:hover{
+  background:var(--accent-2);
+  transform:translateY(-1px);
 }
-
-/* === TOMBOL NAV === */
-nav button {
-  display: block;
-  width: 100%;
-  padding: .8rem 1rem;
-  margin-bottom: .6rem;
-  border: none;
-  border-radius: var(--radius);
-  background: var(--accent);
-  color: #fff;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all .2s ease;
-}
-nav button:hover {
-  background: var(--accent-2);
-  transform: translateY(-1px);
-}
-nav button.active {
-  background: var(--accent-2);
-  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+nav button.active{
+  background:var(--accent-2);
+  box-shadow:0 2px 6px rgba(0,0,0,.15);
 }
 
 /* ======================== Main & Card ======================== */
@@ -234,6 +219,7 @@ input[type=text], input[type=number], select{
   min-width: 100px;
 }
 
+/* Khusus kolom Keterangan agar melebar penuh */
 .edit-grid textarea {
   flex: 1 1 100%;
   width: 100%;
@@ -242,13 +228,13 @@ input[type=text], input[type=number], select{
   border-radius: 6px;
   padding: 6px;
   font-family: inherit;
-  resize: vertical;
+  resize: vertical; /* bisa ubah tinggi tapi tidak lebar */
 }
 
 /* ======================== Status ======================== */
 .status-to {
-  background: #fee2e2;
-  color: #b91c1c;
+  background: #fee2e2;   /* merah muda lembut */
+  color: #b91c1c;        /* merah tua */
   font-weight: 600;
   padding: 2px 6px;
   border-radius: 6px;
@@ -271,65 +257,50 @@ input[type=text], input[type=number], select{
 
 .form-group { margin-bottom: 10px; }
 
-/* ======================== RESPONSIF ======================== */
-@media (max-width: 768px) {
-  .container {
-    flex-direction: column;
+/* ======================== Responsif ======================== */
+@media(max-width:768px){
+  .container{flex-direction:column;}
+  nav{
+    width:100%;
+    display:flex;
+    overflow-x:auto;
+    padding:.5rem;
   }
-
-  nav {
-    position: relative !important;
-    top: auto;
-    left: auto;
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: .5rem;
-    box-shadow: none;
-    border-right: none;
-    z-index: 10;
+  nav button{
+    flex:1;
+    min-width:120px;
+    margin:0 4px 0 0;
   }
-
-  nav button {
-    flex: 0 0 auto;
-    min-width: 120px;
-    margin: 0 6px 0 0;
-    border-radius: 10px;
-  }
-
-  .main-content {
-    margin-left: 0 !important;
-    width: 100% !important;
-    padding: 1rem;
-  }
+  main{padding:1rem;}
 }
 
 /* ================= GRID RESPONSIVE UNIVERSAL ================= */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Atur ukuran minimum per grid */
   gap: 10px;
   justify-items: stretch;
   align-items: stretch;
   width: 100%;
 }
 
+/* Konsistensi antar menu agar tinggi & padding card sama */
 .grid-container > div {
   background: #fff;
   border-radius: 10px;
   padding: 10px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
   min-height: 90px;
+
+  /* 🔧 ini bagian penting */
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  text-align: left;
+  justify-content: flex-start; /* ⬆️ teks mulai dari atas */
+  align-items: flex-start;     /* ⬅️ teks ke kiri */
+  text-align: left;            /* pastikan teks kiri juga */
 }
 
+/* Responsif di HP — biar tetap sejajar, tidak 1 kolom besar */
 @media (max-width: 768px) {
   .grid-container {
     grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -343,15 +314,19 @@ input[type=text], input[type=number], select{
   }
 }
 
+/* ==================== RATA KIRI UNTUK SEMUA DASHBOARD QC ==================== */
 [id^="dashboard"] .grid-card,
 [id^="dashboard"] .grid-card * {
   text-align: left !important;
   align-items: flex-start !important;
   justify-content: flex-start !important;
 }
+
+
 </style>
 </head>
 <body>
+
 
 
 <!-- ======================== Header ======================== -->
