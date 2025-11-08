@@ -327,6 +327,8 @@ input[type=text], input[type=number], select{
 </head>
 <body>
 
+
+
 <!-- ======================== Header ======================== -->
 <header style="
   display: flex;
@@ -353,7 +355,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.8rem;">System 2.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -380,7 +382,7 @@ input[type=text], input[type=number], select{
     <!-- ======================== Dashboard ======================== -->
     <section id="dashboard" class="card qc-section">
 
-<!-- ======================== QC Bapro ======================== -->
+<!-- ======================== QC BAPRO ======================== -->
 <h2 style="text-align:center; color:#fff; background:#dc2626; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
   QC BAPRO
 </h2>
@@ -401,28 +403,60 @@ input[type=text], input[type=number], select{
   </div>
 </div>
 
-<!-- Grid TO -->
-<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+<!-- ========== TO ========== -->
+<div style="text-align:center; margin-top:12px;">
   <h4 style="display:inline-block; margin:0;">TO</h4>
-  <button id="toggleBaproTO" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+  <button id="toggleBaproTO" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
 </div>
-<div id="dashboardBaproTO" class="grid-container" style="display:none;"></div>
+<div id="sectionBaproTO" style="display:none;">
+  <input id="filterTOBapro" type="text" placeholder="🔍 Filter TO" class="filter-input">
+  <div id="dashboardBaproTO" class="grid-container"></div>
+</div>
 
-<!-- Grid Proses -->
-<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+<!-- ========== PROSES ========== -->
+<div style="text-align:center; margin-top:12px;">
   <h4 style="display:inline-block; margin:0;">Proses</h4>
-  <button id="toggleBaproProses" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+  <button id="toggleBaproProses" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
 </div>
-<div id="dashboardBaproProses" class="grid-container" style="display:none;"></div>
+<div id="sectionBaproProses" style="display:none;">
+  <input id="filterProsesBapro" type="text" placeholder="🔍 Filter Proses" class="filter-input">
+  <div id="dashboardBaproProses" class="grid-container"></div>
+</div>
 
-<!-- Grid Selesai -->
-<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+<!-- ========== SELESAI ========== -->
+<div style="text-align:center; margin-top:12px;">
   <h4 style="display:inline-block; margin:0;">Selesai</h4>
-  <button id="toggleBaproSelesai" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+  <button id="toggleBaproSelesai" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
 </div>
-<div id="dashboardBaproSelesai" class="grid-container" style="display:none;"></div>
+<div id="sectionBaproSelesai" style="display:none;">
+  <input id="filterSelesaiBapro" type="text" placeholder="🔍 Filter Selesai" class="filter-input">
+  <div id="dashboardBaproSelesai" class="grid-container"></div>
+</div>
 
-    <!-- ======================== QC PA ======================== -->
+<style>
+.filter-input {
+  width: 100%;
+  max-width: 280px;
+  margin: 6px auto 10px;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  display: block;
+}
+.grid-container {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+.card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+</style>
+
+<!-- ======================== QC CETAK ======================== -->
 <h2 style="text-align:center; color:#fff; background:#ff9800; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
   QC CETAK
 </h2>
@@ -443,28 +477,61 @@ input[type=text], input[type=number], select{
   </div>
 </div>
 
-<!-- Grid TO -->
-<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+<!-- ========== TO ========== -->
+<div style="text-align:center; margin-top:12px;">
   <h4 style="display:inline-block; margin:0;">TO</h4>
-  <button id="togglePATO" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+  <button id="togglePATO" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
 </div>
-<div id="dashboardPATO" class="grid-container" style="display:none;"></div>
+<div id="sectionPATO" style="display:none;">
+  <input id="filterPATO" type="text" placeholder="🔍 Filter TO" class="filter-input">
+  <div id="dashboardPATO" class="grid-container"></div>
+</div>
 
-<!-- Grid Proses -->
-<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+<!-- ========== PROSES ========== -->
+<div style="text-align:center; margin-top:12px;">
   <h4 style="display:inline-block; margin:0;">Proses</h4>
-  <button id="togglePAProses" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+  <button id="togglePAProses" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
 </div>
-<div id="dashboardPAProses" class="grid-container" style="display:none;"></div>
+<div id="sectionPAProses" style="display:none;">
+  <input id="filterPAProses" type="text" placeholder="🔍 Filter Proses" class="filter-input">
+  <div id="dashboardPAProses" class="grid-container"></div>
+</div>
 
-<!-- Grid Selesai -->
-<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+<!-- ========== SELESAI ========== -->
+<div style="text-align:center; margin-top:12px;">
   <h4 style="display:inline-block; margin:0;">Selesai</h4>
-  <button id="togglePASelesai" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+  <button id="togglePASelesai" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
 </div>
-<div id="dashboardPASelesai" class="grid-container" style="display:none;"></div>
+<div id="sectionPASelesai" style="display:none;">
+  <input id="filterPASelesai" type="text" placeholder="🔍 Filter Selesai" class="filter-input">
+  <div id="dashboardPASelesai" class="grid-container"></div>
+</div>
 
-<!-- ======================== QC Finishing ======================== -->
+<style>
+.filter-input {
+  width: 100%;
+  max-width: 280px;
+  margin: 6px auto 10px;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  display: block;
+}
+.grid-container {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+.card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+</style>
+
+
+<!-- ======================== QC FINISHING ======================== -->
 <h2 style="text-align:center; color:#fff; background:#22c55e; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
   QC FINISHING
 </h2>
@@ -475,38 +542,70 @@ input[type=text], input[type=number], select{
     Total Order<br><strong id="countFinishing">0</strong>
   </div>
   <div style="flex:1; min-width:120px; background:rgba(34,197,94,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
-    Total TO<br><strong id="countTO">0</strong>
+    Total TO<br><strong id="countTOFinishing">0</strong>
   </div>
   <div style="flex:1; min-width:120px; background:rgba(34,197,94,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
-    Total Proses<br><strong id="countProses">0</strong>
+    Total Proses<br><strong id="countProsesFinishing">0</strong>
   </div>
   <div style="flex:1; min-width:120px; background:rgba(34,197,94,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
-    Total Selesai<br><strong id="countSelesai">0</strong>
+    Total Selesai<br><strong id="countSelesaiFinishing">0</strong>
   </div>
 </div>
 
-<!-- Grid TO -->
-<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+<!-- ========== TO ========== -->
+<div style="text-align:center; margin-top:12px;">
   <h4 style="display:inline-block; margin:0;">TO</h4>
-  <button id="toggleTO" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+  <button id="toggleFinishingTO" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
 </div>
-<div id="dashboardFinishingTO" class="grid-container" style="display:none;"></div>
+<div id="sectionFinishingTO" style="display:none;">
+  <input id="filterFinishingTO" type="text" placeholder="🔍 Filter TO" class="filter-input">
+  <div id="dashboardFinishingTO" class="grid-container"></div>
+</div>
 
-<!-- Grid Proses -->
-<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+<!-- ========== PROSES ========== -->
+<div style="text-align:center; margin-top:12px;">
   <h4 style="display:inline-block; margin:0;">Proses</h4>
-  <button id="toggleProses" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+  <button id="toggleFinishingProses" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
 </div>
-<div id="dashboardFinishingProses" class="grid-container" style="display:none;"></div>
+<div id="sectionFinishingProses" style="display:none;">
+  <input id="filterFinishingProses" type="text" placeholder="🔍 Filter Proses" class="filter-input">
+  <div id="dashboardFinishingProses" class="grid-container"></div>
+</div>
 
-<!-- Grid Selesai -->
-<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+<!-- ========== SELESAI ========== -->
+<div style="text-align:center; margin-top:12px;">
   <h4 style="display:inline-block; margin:0;">Selesai</h4>
-  <button id="toggleSelesai" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+  <button id="toggleFinishingSelesai" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
 </div>
-<div id="dashboardFinishingSelesai" class="grid-container" style="display:none;"></div>
+<div id="sectionFinishingSelesai" style="display:none;">
+  <input id="filterFinishingSelesai" type="text" placeholder="🔍 Filter Selesai" class="filter-input">
+  <div id="dashboardFinishingSelesai" class="grid-container"></div>
+</div>
 
-    <!-- ======================== QC Lem ======================== -->
+<style>
+.filter-input {
+  width: 100%;
+  max-width: 280px;
+  margin: 6px auto 10px;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  display: block;
+}
+.grid-container {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+.card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+</style>
+
+<!-- ======================== QC LEM ======================== -->
 <h2 style="text-align:center; color:#fff; background:#9c27b0; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
   QC LEM
 </h2>
@@ -527,26 +626,59 @@ input[type=text], input[type=number], select{
   </div>
 </div>
 
-<!-- Grid TO -->
-<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+<!-- ========== TO ========== -->
+<div style="text-align:center; margin-top:12px;">
   <h4 style="display:inline-block; margin:0;">TO</h4>
-  <button id="toggleLemTO" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+  <button id="toggleLemTO" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
 </div>
-<div id="dashboardLemTO" class="grid-container" style="display:none;"></div>
+<div id="sectionLemTO" style="display:none;">
+  <input id="filterTOLem" type="text" placeholder="🔍 Filter TO" class="filter-input">
+  <div id="dashboardLemTO" class="grid-container"></div>
+</div>
 
-<!-- Grid Proses -->
-<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+<!-- ========== PROSES ========== -->
+<div style="text-align:center; margin-top:12px;">
   <h4 style="display:inline-block; margin:0;">Proses</h4>
-  <button id="toggleLemProses" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+  <button id="toggleLemProses" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
 </div>
-<div id="dashboardLemProses" class="grid-container" style="display:none;"></div>
+<div id="sectionLemProses" style="display:none;">
+  <input id="filterProsesLem" type="text" placeholder="🔍 Filter Proses" class="filter-input">
+  <div id="dashboardLemProses" class="grid-container"></div>
+</div>
 
-<!-- Grid Selesai -->
-<div style="text-align:center; margin-top:12px; margin-bottom:4px;">
+<!-- ========== SELESAI ========== -->
+<div style="text-align:center; margin-top:12px;">
   <h4 style="display:inline-block; margin:0;">Selesai</h4>
-  <button id="toggleLemSelesai" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+  <button id="toggleLemSelesai" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
 </div>
-<div id="dashboardLemSelesai" class="grid-container" style="display:none;"></div>
+<div id="sectionLemSelesai" style="display:none;">
+  <input id="filterSelesaiLem" type="text" placeholder="🔍 Filter Selesai" class="filter-input">
+  <div id="dashboardLemSelesai" class="grid-container"></div>
+</div>
+
+<style>
+.filter-input {
+  width: 100%;
+  max-width: 280px;
+  margin: 6px auto 10px;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  display: block;
+}
+.grid-container {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+.card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+</style>
+
 
     </section>
 
@@ -565,7 +697,7 @@ input[type=text], input[type=number], select{
   <div id="inputBapro" class="tab-content active">
     <div class="form-group"><input type="text" id="baproNama" placeholder="Nama Order"></div>
     <div class="form-group">
-      <select id="baproNoKS">
+      <select id="baprocso">
         <option value="">CSO</option>
         <option value="Yati">Yati</option>
         <option value="Retni">Retni</option>
@@ -595,7 +727,7 @@ input[type=text], input[type=number], select{
       </select>
     </div>
     <div class="form-group">
-      <textarea id="baproKeterangan" placeholder="Keterangan (opsional)" rows="3" style="width:100%; padding:.6rem; border:1px solid #ccc; border-radius:8px;"></textarea>
+      <textarea id="baproKeterangan" placeholder="Resep Tinta" rows="3" style="width:100%; padding:.6rem; border:1px solid #ccc; border-radius:8px;"></textarea>
     </div>
     <div class="form-group"><button onclick="addBaproItem()">➕ Tambah</button></div>
   </div>
@@ -1751,8 +1883,20 @@ function postPayload(payloadObj){
   form.remove();
 }
 
-// ====================== FILTER ======================
-function filterFinishingGrid(query){ renderGridFinishing(query); }
+// ====================== FILTER BERDASARKAN ISI GRID (FINISHING) ======================
+function filterFinishingGrid(query){
+  const grid = document.getElementById('gridFinishing');
+  if (!grid) return;
+
+  const keyword = query.toLowerCase().trim();
+  const cards = grid.querySelectorAll('.grid-card');
+
+  cards.forEach(card => {
+    const text = card.textContent.toLowerCase();
+    card.style.display = text.includes(keyword) ? '' : 'none';
+  });
+}
+
 
 // ====================== CLEAR FORM ======================
 function clearFinishingForm() {
@@ -1832,42 +1976,67 @@ Update: ${item.update}
 Keterangan: ${item.keterangan || '-'}`);
 }
 
-// ====================== TOGGLE VIEW (UPDATE: TAMBAH TO) ======================
+// ====================== TOGGLE VIEW + FILTER FINISHING ======================
 document.addEventListener('DOMContentLoaded', () => {
-  const btnTO = document.getElementById('toggleTO');
-  const btnProses = document.getElementById('toggleProses');
-  const btnSelesai = document.getElementById('toggleSelesai');
+  // Tombol
+  const btnTO = document.getElementById('toggleFinishingTO');
+  const btnProses = document.getElementById('toggleFinishingProses');
+  const btnSelesai = document.getElementById('toggleFinishingSelesai');
 
+  // Section
+  const sectionTO = document.getElementById('sectionFinishingTO');
+  const sectionProses = document.getElementById('sectionFinishingProses');
+  const sectionSelesai = document.getElementById('sectionFinishingSelesai');
+
+  // Filter input
+  const filterTO = document.getElementById('filterFinishingTO');
+  const filterProses = document.getElementById('filterFinishingProses');
+  const filterSelesai = document.getElementById('filterFinishingSelesai');
+
+  // Grid container
   const gridTO = document.getElementById('dashboardFinishingTO');
   const gridProses = document.getElementById('dashboardFinishingProses');
   const gridSelesai = document.getElementById('dashboardFinishingSelesai');
 
-  // 🔹 Toggle untuk TO
-  if (btnTO && gridTO) {
-    btnTO.addEventListener('click', () => {
-      const visible = gridTO.style.display !== 'none';
-      gridTO.style.display = visible ? 'none' : 'grid';
-      btnTO.textContent = visible ? 'Show' : 'Hide';
+  // 🔍 Fungsi filter universal (per grid)
+  function filterCards(container, keyword) {
+    if (!container) return;
+    const cards = container.querySelectorAll('.grid-card'); 
+    const term = keyword.toLowerCase().trim();
+    cards.forEach(card => {
+      const text = card.textContent.toLowerCase();
+      card.style.display = text.includes(term) ? '' : 'none';
     });
   }
 
-  // 🔹 Toggle untuk Proses
-  if (btnProses && gridProses) {
-    btnProses.addEventListener('click', () => {
-      const visible = gridProses.style.display !== 'none';
-      gridProses.style.display = visible ? 'none' : 'grid';
-      btnProses.textContent = visible ? 'Show' : 'Hide';
-    });
+  // Event input untuk filter real-time
+  [
+    {input: filterTO, grid: gridTO},
+    {input: filterProses, grid: gridProses},
+    {input: filterSelesai, grid: gridSelesai}
+  ].forEach(({input, grid}) => {
+    if (input) {
+      input.addEventListener('input', () => filterCards(grid, input.value));
+    }
+  });
+
+  // Fungsi supaya filter tetap aktif setelah reload data
+  window.applyFinishingFilters = function() {
+    filterCards(gridTO, filterTO.value);
+    filterCards(gridProses, filterProses.value);
+    filterCards(gridSelesai, filterSelesai.value);
+  };
+
+  // Toggle show/hide tiap section
+  function toggleSection(section, btn) {
+    const visible = section.style.display !== 'none';
+    section.style.display = visible ? 'none' : 'block';
+    btn.textContent = visible ? 'Show' : 'Hide';
   }
 
-  // 🔹 Toggle untuk Selesai
-  if (btnSelesai && gridSelesai) {
-    btnSelesai.addEventListener('click', () => {
-      const visible = gridSelesai.style.display !== 'none';
-      gridSelesai.style.display = visible ? 'none' : 'grid';
-      btnSelesai.textContent = visible ? 'Show' : 'Hide';
-    });
-  }
+  if (btnTO) btnTO.addEventListener('click', () => toggleSection(sectionTO, btnTO));
+  if (btnProses) btnProses.addEventListener('click', () => toggleSection(sectionProses, btnProses));
+  if (btnSelesai) btnSelesai.addEventListener('click', () => toggleSection(sectionSelesai, btnSelesai));
 });
 
 // ====================== AUTO UPPERCASE ======================
@@ -1910,7 +2079,7 @@ loadFinishingItems();
 
 </script>
 
-<!-- ====== JS QC BAPRO (paste ini setelah script utama) ====== -->
+<!-- ====== JS QC BAPRO ====== -->
 <script>
 // ====================== GLOBAL STATE (BAPRO) ======================
 let baproItems = []; // array yang diambil dari sheet Bapro
@@ -1924,8 +2093,8 @@ function renderGridBapro(query = "") {
   const q = (query || '').toLowerCase();
 
   baproItems.forEach((item, i) => {
-    // Filter pencarian (nama atau noKS)
-    if (q && !(String(item.nama || '').toLowerCase().includes(q) || String(item.noKS || '').toLowerCase().includes(q))) return;
+    // Filter pencarian (nama atau cso)
+    if (q && !(String(item.nama || '').toLowerCase().includes(q) || String(item.cso || '').toLowerCase().includes(q))) return;
 
     const card = document.createElement('div');
     card.className = 'grid-card';
@@ -1942,7 +2111,7 @@ function renderGridBapro(query = "") {
       <div>
         ${tanggal}
         <span>Nama Order: ${escapeHtml(item.nama || '')}</span><br>
-        <span>No KS: ${escapeHtml(item.noKS || '')}</span><br>
+        <span>CSO: ${escapeHtml(item.cso || '')}</span><br>
         <span>Jenis: ${escapeHtml(item.jenisKertas || '')}</span><br>
         <span>GSM: ${escapeHtml(item.tebalKertas || '')}</span><br>
         <span>Nama Tinta: ${escapeHtml(item.NamaTinta || '')}</span><br>
@@ -1981,7 +2150,7 @@ async function loadBaproItems(){
 // ====================== TAMBAH DATA (BAPRO) ======================
 function addBaproItem() {
   const nama = document.getElementById('baproNama').value.trim();
-  const noKS = document.getElementById('baproNoKS').value.trim();
+  const cso = document.getElementById('baprocso').value.trim();
   const jenis = document.getElementById('baproJenis') ? document.getElementById('baproJenis').value.trim() : '';
   const kertas = document.getElementById('baproKertas') ? document.getElementById('baproKertas').value.trim() : '';
   const NamaTinta = document.getElementById('baproNamaTinta') ? document.getElementById('baproNamaTinta').value.trim() : '';
@@ -1993,10 +2162,10 @@ function addBaproItem() {
   const update = document.getElementById('baproUpdate') ? document.getElementById('baproUpdate').value.trim() : '';
   const keterangan = document.getElementById('baproKeterangan') ? document.getElementById('baproKeterangan').value.trim() : '';
 
-  if (!nama || !noKS) return alert('Nama dan No KS wajib diisi!');
+  if (!nama || !cso) return alert('Nama dan cso wajib diisi!');
 
 // === Tambah konfirmasi sederhana ===
-  const konfirmasi = confirm(`Yakin ingin menambah data baru?\n\nNama: ${nama}\nNo KS: ${noKS}`);
+  const konfirmasi = confirm(`Yakin ingin menambah data baru?\n\nNama: ${nama}\nCSO: ${cso}`);
   if (!konfirmasi) return; // jika tekan Cancel, berhenti di sini
 
   const tanggalFormatted = new Date().toLocaleString('id-ID', {
@@ -2005,7 +2174,7 @@ function addBaproItem() {
 
   // Kunci perubahan: gunakan key names sesuai header sheet Bapro
   const payload = { action:'add', sheet:'Bapro', tanggal: tanggalFormatted,
-    nama, noKS,
+    nama, cso,
     jenisKertas: jenis,
     tebalKertas: kertas,
     NamaTinta: NamaTinta,
@@ -2027,7 +2196,7 @@ function callBapro(index){
   const item = baproItems[index];
   if(!item) return;
   if (document.getElementById('baproNama')) document.getElementById('baproNama').value = item.nama || '';
-  if (document.getElementById('baproNoKS')) document.getElementById('baproNoKS').value = item.noKS || '';
+  if (document.getElementById('baprocso')) document.getElementById('baprocso').value = item.cso || '';
   if (document.getElementById('baproJenis')) document.getElementById('baproJenis').value = item.jenisKertas || '';
   if (document.getElementById('baproKertas')) document.getElementById('baproKertas').value = item.tebalKertas || '';
   if (document.getElementById('baproNamaTinta')) document.getElementById('baproNamaTinta').value = item.NamaTinta || '';
@@ -2094,7 +2263,12 @@ function editBaproInline(index){
   card.innerHTML = `
     <div class="edit-grid">
       <input type="text" class="edit-inline" value="${escapeHtml(item.nama||'')}" placeholder="Nama Order">
-      <input type="text" class="edit-inline" value="${escapeHtml(item.noKS||'')}" placeholder="No KS">
+      <select class="edit-inline">
+        <option value="Yati" ${item.cso==='Yati'? 'selected':''}>Yati</option>
+        <option value="Retni" ${item.cso==='Retni'? 'selected':''}>Retni</option>
+        <option value="Aulia" ${item.cso==='Aulia'? 'selected':''}>Aulia</option>
+        <option value="Yuli" ${item.cso==='Yuli'? 'selected':''}>Yuli</option>
+      </select>
       <input type="text" class="edit-inline" value="${escapeHtml(item.jenisKertas||'')}" placeholder="Jenis">
       <input type="number" class="edit-inline" value="${escapeHtml(item.tebalKertas||'')}" placeholder="GSM">
       <input type="text" class="edit-inline" value="${escapeHtml(item.NamaTinta||'')}" placeholder="Nama Tinta">
@@ -2154,7 +2328,7 @@ async function saveBaproInline(index) {
   const inputs = card.querySelectorAll('.edit-inline');
   const updated = {
     nama: inputs[0].value.trim(),
-    noKS: inputs[1].value.trim(),
+    cso: inputs[1].value.trim(),
     jenisKertas: inputs[2].value.trim(),
     tebalKertas: inputs[3].value.trim(),
     NamaTinta: inputs[4].value.trim(),
@@ -2238,12 +2412,24 @@ function postPayloadBapro(payloadObj) {
   form.remove();
 }
 
-// ====================== FILTER ======================
-function filterBaproGrid(query){ renderGridBapro(query); }
+// ====================== FILTER BERDASARKAN ISI GRID (BAPRO) ======================
+function filterBaproGrid(query){
+  const grid = document.getElementById('gridBapro');
+  if (!grid) return;
+
+  const keyword = query.toLowerCase().trim();
+  const cards = grid.querySelectorAll('.grid-card');
+
+  cards.forEach(card => {
+    const text = card.textContent.toLowerCase();
+    card.style.display = text.includes(keyword) ? '' : 'none';
+  });
+}
+
 
 // ====================== CLEAR FORM (BAPRO) ======================
 function clearBaproForm() {
-  ['baproNama','baproNoKS','baproJenis','baproKertas','baproNamaTinta','baproDmax','baproL','baproA','baproB','baproQC','baproUpdate','baproKeterangan']
+  ['baproNama','baprocso','baproJenis','baproKertas','baproNamaTinta','baproDmax','baproL','baproA','baproB','baproQC','baproUpdate','baproKeterangan']
     .forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
 }
 
@@ -2275,7 +2461,7 @@ function renderDashboardBaproCompact() {
 
     card.innerHTML = `
       <strong>${escapeHtml(item.nama || '')}</strong><br>
-      <strong>CSO: ${escapeHtml(item.noKS || '')}</strong><br>
+      <strong>CSO: ${escapeHtml(item.cso || '')}</strong><br>
       <strong>QC: ${escapeHtml(item.qc || '')}</strong><br>
       <strong>Tinta: ${escapeHtml(item.NamaTinta || '')}</strong><br>
       <span>📅 ${escapeHtml(tanggal)}</span><br>
@@ -2313,7 +2499,7 @@ function showDetailModalBapro(item) {
   alert(`Detail QC Bapro:
 Tanggal: ${item.tanggal || '-'}
 Nama: ${item.nama || '-'}
-Nama CSO: ${item.noKS || '-'}
+Nama CSO: ${item.cso || '-'}
 Jenis Kertas: ${item.jenisKertas || '-'}
 Tebal Kertas: ${item.tebalKertas || '-'}
 Nama Tinta: ${item.NamaTinta || '-'}
@@ -2326,42 +2512,67 @@ Update: ${item.update || '-'}
 Keterangan: ${item.keterangan || '-'}`);
 }
 
-// ====================== TOGGLE VIEW BAPRO (TO / PROSES / SELESAI) ======================
+// ====================== TOGGLE VIEW + FILTER BAPRO ======================
 document.addEventListener('DOMContentLoaded', () => {
-  const btnTOBapro = document.getElementById('toggleBaproTO');
-  const btnProsesBapro = document.getElementById('toggleBaproProses');
-  const btnSelesaiBapro = document.getElementById('toggleBaproSelesai');
+  // Tombol
+  const btnTO = document.getElementById('toggleBaproTO');
+  const btnProses = document.getElementById('toggleBaproProses');
+  const btnSelesai = document.getElementById('toggleBaproSelesai');
 
-  const gridTOBapro = document.getElementById('dashboardBaproTO');
-  const gridProsesBapro = document.getElementById('dashboardBaproProses');
-  const gridSelesaiBapro = document.getElementById('dashboardBaproSelesai');
+  // Section
+  const sectionTO = document.getElementById('sectionBaproTO');
+  const sectionProses = document.getElementById('sectionBaproProses');
+  const sectionSelesai = document.getElementById('sectionBaproSelesai');
 
-  // 🔹 Toggle untuk TO
-  if (btnTOBapro && gridTOBapro) {
-    btnTOBapro.addEventListener('click', () => {
-      const visible = gridTOBapro.style.display !== 'none';
-      gridTOBapro.style.display = visible ? 'none' : 'grid';
-      btnTOBapro.textContent = visible ? 'Show' : 'Hide';
+  // Filter input (1 kolom di dalam tiap grid)
+  const filterTO = document.getElementById('filterTOBapro');
+  const filterProses = document.getElementById('filterProsesBapro');
+  const filterSelesai = document.getElementById('filterSelesaiBapro');
+
+  // Grid container
+  const gridTO = document.getElementById('dashboardBaproTO');
+  const gridProses = document.getElementById('dashboardBaproProses');
+  const gridSelesai = document.getElementById('dashboardBaproSelesai');
+
+  // 🔍 Fungsi filter universal (per grid)
+  function filterCards(container, keyword) {
+    if (!container) return;
+    const cards = container.querySelectorAll('.grid-card'); // ✅ fix di sini
+    const term = keyword.toLowerCase().trim();
+    cards.forEach(card => {
+      const text = card.textContent.toLowerCase();
+      card.style.display = text.includes(term) ? '' : 'none';
     });
   }
 
-  // 🔹 Toggle untuk Proses
-  if (btnProsesBapro && gridProsesBapro) {
-    btnProsesBapro.addEventListener('click', () => {
-      const visible = gridProsesBapro.style.display !== 'none';
-      gridProsesBapro.style.display = visible ? 'none' : 'grid';
-      btnProsesBapro.textContent = visible ? 'Show' : 'Hide';
-    });
+  // Event input untuk filter real-time
+  [
+    {input: filterTO, grid: gridTO},
+    {input: filterProses, grid: gridProses},
+    {input: filterSelesai, grid: gridSelesai}
+  ].forEach(({input, grid}) => {
+    if (input) {
+      input.addEventListener('input', () => filterCards(grid, input.value));
+    }
+  });
+
+  // Fungsi supaya filter tetap aktif setelah reload data
+  window.applyBaproFilters = function() {
+    filterCards(gridTO, filterTO.value);
+    filterCards(gridProses, filterProses.value);
+    filterCards(gridSelesai, filterSelesai.value);
+  };
+
+  // Toggle show/hide tiap section
+  function toggleSection(section, btn) {
+    const visible = section.style.display !== 'none';
+    section.style.display = visible ? 'none' : 'block';
+    btn.textContent = visible ? 'Show' : 'Hide';
   }
 
-  // 🔹 Toggle untuk Selesai
-  if (btnSelesaiBapro && gridSelesaiBapro) {
-    btnSelesaiBapro.addEventListener('click', () => {
-      const visible = gridSelesaiBapro.style.display !== 'none';
-      gridSelesaiBapro.style.display = visible ? 'none' : 'grid';
-      btnSelesaiBapro.textContent = visible ? 'Show' : 'Hide';
-    });
-  }
+  if (btnTO) btnTO.addEventListener('click', () => toggleSection(sectionTO, btnTO));
+  if (btnProses) btnProses.addEventListener('click', () => toggleSection(sectionProses, btnProses));
+  if (btnSelesai) btnSelesai.addEventListener('click', () => toggleSection(sectionSelesai, btnSelesai));
 });
 
 // ====================== AUTO UPPERCASE KHUSUS BAPRO ======================
@@ -2401,10 +2612,10 @@ document.addEventListener('DOMContentLoaded', () => {
 loadBaproItems();
 </script>
 
-<!-- ====== JS QC PA (struktur match Bapro/Finishing) ====== -->
+<!-- ====== JS QC PA  ====== -->
 <script>
 // ====================== GLOBAL STATE (PA) ======================
-let paItems = []; // array yang diambil dari sheet PA
+let paItems = []; // array yang diambil dari sheet Cetak
 
 // ====================== RENDER GRID HASIL (PA) ======================
 function renderGridPA(query = "") {
@@ -2461,7 +2672,7 @@ function renderGridPA(query = "") {
 async function loadPAItems(){
   try{
     // PENTING: pakai WEBAPP_URL (sama seperti Bapro/Finishing)
-    const res = await jsonpGet(WEBAPP_URL, { action: 'get', sheet: 'PA' });
+    const res = await jsonpGet(WEBAPP_URL, { action: 'get', sheet: 'Cetak' });
     if(res && res.status === 'ok' && Array.isArray(res.data)){
       // sisipkan __index & id (baris)
       paItems = res.data.map((it, idx) => ({ __index: idx, id: (it.id||it._row||it.row||null), ...it }));
@@ -2495,7 +2706,7 @@ function addPAItem() {
 
   // gunakan key names sesuai header di sheet PA (sama pola seperti Bapro)
   const payload = {
-    action:'add', sheet:'PA', tanggal: tanggalFormatted,
+    action:'add', sheet:'Cetak', tanggal: tanggalFormatted,
     nama, noKS, order, bagus, sortir, problem, qc, mesin, update, keterangan
   };
 
@@ -2544,7 +2755,7 @@ function deletePA(index) {
   const identifier = item.id || item._row || item.row || item.__index;
   const payload = { 
     action: 'delete', 
-    sheet: 'PA', 
+    sheet: 'Cetak', 
     id: identifier, 
     index: item.__index 
   };
@@ -2662,7 +2873,7 @@ async function savePAInline(index) {
 
   const payload = {
     action: 'update',
-    sheet: 'PA',
+    sheet: 'Cetak',
     id: identifier,
     index: orig.__index,
     tanggal: tanggalFormatted,
@@ -2684,8 +2895,20 @@ async function savePAInline(index) {
   }
 }
 
-// ====================== FILTER ======================
-function filterPAGrid(query){ renderGridPA(query); }
+// ====================== FILTER BERDASARKAN ISI GRID (PA) ======================
+function filterPAGrid(query){
+  const grid = document.getElementById('gridPA');
+  if (!grid) return;
+
+  const keyword = query.toLowerCase().trim();
+  const cards = grid.querySelectorAll('.grid-card');
+
+  cards.forEach(card => {
+    const text = card.textContent.toLowerCase();
+    card.style.display = text.includes(keyword) ? '' : 'none';
+  });
+}
+
 
 // ====================== CLEAR FORM (PA) ======================
 function clearPAForm() {
@@ -2767,39 +2990,56 @@ Update: ${item.update || '-'}
 Keterangan: ${item.keterangan || '-'}`);
 }
 
-// ====================== TOGGLE VIEW PA (TO / PROSES / SELESAI) ======================
+// ====================== TOGGLE VIEW + FILTER QC CETAK ======================
 document.addEventListener('DOMContentLoaded', () => {
   const btnTO = document.getElementById('togglePATO');
   const btnProses = document.getElementById('togglePAProses');
   const btnSelesai = document.getElementById('togglePASelesai');
 
+  const sectionTO = document.getElementById('sectionPATO');
+  const sectionProses = document.getElementById('sectionPAProses');
+  const sectionSelesai = document.getElementById('sectionPASelesai');
+
+  const filterTO = document.getElementById('filterPATO');
+  const filterProses = document.getElementById('filterPAProses');
+  const filterSelesai = document.getElementById('filterPASelesai');
+
   const gridTO = document.getElementById('dashboardPATO');
   const gridProses = document.getElementById('dashboardPAProses');
   const gridSelesai = document.getElementById('dashboardPASelesai');
 
-  if (btnTO && gridTO) {
-    btnTO.addEventListener('click', () => {
-      const visible = gridTO.style.display !== 'none';
-      gridTO.style.display = visible ? 'none' : 'grid';
-      btnTO.textContent = visible ? 'Show' : 'Hide';
+  function filterCards(container, keyword) {
+    if (!container) return;
+    const cards = container.querySelectorAll('.grid-card');
+    const term = keyword.toLowerCase().trim();
+    cards.forEach(card => {
+      const text = card.textContent.toLowerCase();
+      card.style.display = text.includes(term) ? '' : 'none';
     });
   }
 
-  if (btnProses && gridProses) {
-    btnProses.addEventListener('click', () => {
-      const visible = gridProses.style.display !== 'none';
-      gridProses.style.display = visible ? 'none' : 'grid';
-      btnProses.textContent = visible ? 'Show' : 'Hide';
-    });
+  [{input:filterTO,grid:gridTO},{input:filterProses,grid:gridProses},{input:filterSelesai,grid:gridSelesai}]
+  .forEach(({input,grid})=>{
+    if(input){
+      input.addEventListener('input',()=>filterCards(grid,input.value));
+    }
+  });
+
+  window.applyCetakFilters = function(){
+    filterCards(gridTO,filterTO.value);
+    filterCards(gridProses,filterProses.value);
+    filterCards(gridSelesai,filterSelesai.value);
+  };
+
+  function toggleSection(section,btn){
+    const visible = section.style.display!=='none';
+    section.style.display=visible?'none':'block';
+    btn.textContent=visible?'Show':'Hide';
   }
 
-  if (btnSelesai && gridSelesai) {
-    btnSelesai.addEventListener('click', () => {
-      const visible = gridSelesai.style.display !== 'none';
-      gridSelesai.style.display = visible ? 'none' : 'grid';
-      btnSelesai.textContent = visible ? 'Show' : 'Hide';
-    });
-  }
+  if(btnTO)btnTO.addEventListener('click',()=>toggleSection(sectionTO,btnTO));
+  if(btnProses)btnProses.addEventListener('click',()=>toggleSection(sectionProses,btnProses));
+  if(btnSelesai)btnSelesai.addEventListener('click',()=>toggleSection(sectionSelesai,btnSelesai));
 });
 
 // ====================== AUTO UPPERCASE KHUSUS PA ======================
@@ -2822,7 +3062,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const originalOnClick = btn.getAttribute('onclick');
     btn.onclick = function(e) {
       e.preventDefault();
-      const input = prompt('Masukkan password untuk QC PA:');
+      const input = prompt('Masukkan password untuk QC CETAK:');
       if (input === null) return;
       if (input === QC_PA_PASSWORD) {
         eval(originalOnClick);
@@ -3101,8 +3341,20 @@ async function saveLemInline(index, btn) {
   }
 }
 
-// ====================== FILTER ======================
-function filterLemGrid(query){ renderGridLem(query); }
+// ====================== FILTER BERDASARKAN ISI GRID ======================
+function filterLemGrid(query){
+  const grid = document.getElementById('gridLem');
+  if (!grid) return;
+
+  const keyword = query.toLowerCase().trim();
+  const cards = grid.querySelectorAll('.grid-card');
+
+  cards.forEach(card => {
+    const text = card.textContent.toLowerCase();
+    card.style.display = text.includes(keyword) ? '' : 'none';
+  });
+}
+
 
 // ====================== CLEAR FORM (LEM) ======================
 function clearLemForm() {
@@ -3182,39 +3434,67 @@ Update: ${item.update || '-'}
 Keterangan: ${item.keterangan || '-'}`);
 }
 
-// ====================== TOGGLE VIEW LEM (TO / PROSES / SELESAI) ======================
+// ====================== TOGGLE VIEW + FILTER QC LEM ======================
 document.addEventListener('DOMContentLoaded', () => {
+  // Tombol
   const btnTO = document.getElementById('toggleLemTO');
   const btnProses = document.getElementById('toggleLemProses');
   const btnSelesai = document.getElementById('toggleLemSelesai');
 
+  // Section
+  const sectionTO = document.getElementById('sectionLemTO');
+  const sectionProses = document.getElementById('sectionLemProses');
+  const sectionSelesai = document.getElementById('sectionLemSelesai');
+
+  // Filter input
+  const filterTO = document.getElementById('filterTOLem');
+  const filterProses = document.getElementById('filterProsesLem');
+  const filterSelesai = document.getElementById('filterSelesaiLem');
+
+  // Grid container
   const gridTO = document.getElementById('dashboardLemTO');
   const gridProses = document.getElementById('dashboardLemProses');
   const gridSelesai = document.getElementById('dashboardLemSelesai');
 
-  if (btnTO && gridTO) {
-    btnTO.addEventListener('click', () => {
-      const visible = gridTO.style.display !== 'none';
-      gridTO.style.display = visible ? 'none' : 'grid';
-      btnTO.textContent = visible ? 'Show' : 'Hide';
+  // 🔍 Fungsi filter universal (per grid)
+  function filterCards(container, keyword) {
+    if (!container) return;
+    const cards = container.querySelectorAll('.grid-card');
+    const term = keyword.toLowerCase().trim();
+    cards.forEach(card => {
+      const text = card.textContent.toLowerCase();
+      card.style.display = text.includes(term) ? '' : 'none';
     });
   }
 
-  if (btnProses && gridProses) {
-    btnProses.addEventListener('click', () => {
-      const visible = gridProses.style.display !== 'none';
-      gridProses.style.display = visible ? 'none' : 'grid';
-      btnProses.textContent = visible ? 'Show' : 'Hide';
-    });
+  // Event input untuk filter real-time
+  [
+    {input: filterTO, grid: gridTO},
+    {input: filterProses, grid: gridProses},
+    {input: filterSelesai, grid: gridSelesai}
+  ].forEach(({input, grid}) => {
+    if (input) {
+      input.addEventListener('input', () => filterCards(grid, input.value));
+    }
+  });
+
+  // Fungsi supaya filter tetap aktif setelah reload data
+  window.applyLemFilters = function() {
+    filterCards(gridTO, filterTO.value);
+    filterCards(gridProses, filterProses.value);
+    filterCards(gridSelesai, filterSelesai.value);
+  };
+
+  // Toggle show/hide tiap section
+  function toggleSection(section, btn) {
+    const visible = section.style.display !== 'none';
+    section.style.display = visible ? 'none' : 'block';
+    btn.textContent = visible ? 'Show' : 'Hide';
   }
 
-  if (btnSelesai && gridSelesai) {
-    btnSelesai.addEventListener('click', () => {
-      const visible = gridSelesai.style.display !== 'none';
-      gridSelesai.style.display = visible ? 'none' : 'grid';
-      btnSelesai.textContent = visible ? 'Show' : 'Hide';
-    });
-  }
+  if (btnTO) btnTO.addEventListener('click', () => toggleSection(sectionTO, btnTO));
+  if (btnProses) btnProses.addEventListener('click', () => toggleSection(sectionProses, btnProses));
+  if (btnSelesai) btnSelesai.addEventListener('click', () => toggleSection(sectionSelesai, btnSelesai));
 });
 
 // ====================== AUTO UPPERCASE KHUSUS LEM ======================
@@ -3346,7 +3626,7 @@ async function submitSPV(e) {
   if (fotoFile1) base64Foto1 = await fileToBase64(fotoFile1);
 
   const payload = {
-    sheet: "SPV",
+    sheet: "Register",
     action: "add",
     tanggal,
     namaOrder,
@@ -3391,7 +3671,7 @@ function loadSPV() {
   }
   spinner.style.display = "block";
 
-  fetch(WEBAPP_URL + '?action=get&sheet=SPV')
+  fetch(WEBAPP_URL + '?action=get&sheet=Register')
     .then(res => res.text())
     .then(text => {
       let data;
@@ -3442,7 +3722,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const originalOnClick = menuBtn.getAttribute('onclick');
     menuBtn.onclick = function(e) {
       e.preventDefault();
-      const input = prompt('Masukkan password untuk QC Register:');
+      const input = prompt('Masukkan password untuk QC REGISTER:');
       if (input === null) return;
       if (input === QC_SPV_PASSWORD) eval(originalOnClick);
       else alert('Password salah!');
@@ -3492,4 +3772,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
-
