@@ -80,14 +80,22 @@ header{
   min-height:100vh;
 }
 
-nav{
-  width:220px;
-  background:#fff;
-  border-right:1px solid #e5e7eb;
-  padding:1rem;
-  box-shadow:2px 0 6px rgba(0,0,0,0.05);
-  flex-shrink:0;
+nav {
+  width: 220px;
+  background: #fff;
+  border-right: 1px solid #e5e7eb;
+  padding: 1rem;
+  box-shadow: 2px 0 6px rgba(0,0,0,0.05);
+  flex-shrink: 0;
+
+  /* 🔹 Tambahan supaya selalu terlihat */
+  position: sticky;
+  top: 60px; /* jarak dari header, sesuaikan tinggi header */
+  height: calc(100vh - 60px); /* agar mengisi tinggi viewport minus header */
+  overflow-y: auto; /* scroll jika isi menu lebih panjang */
+  z-index: 999;
 }
+
 
 nav button{
   display:block;
