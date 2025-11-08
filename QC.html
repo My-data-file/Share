@@ -347,14 +347,18 @@ input[type=text], input[type=number], select{
   border-bottom: 1px solid rgba(255,255,255,0.1);
 ">
   <div style="display: flex; align-items: center; gap: 10px;">
-    <div style="
+    <!-- Logo QC sekarang jadi tombol Home -->
+    <button onclick="goHome()" style="
       background: white;
       color: #0ea5a4;
       font-weight: 700;
       font-size: 1.2rem;
       padding: 6px 10px;
       border-radius: 10px;
-    ">QC</div>
+      border: none;
+      cursor: pointer;
+    ">QC</button>
+
     <div id="headerTitle" style="font-size: 0.8rem;">System 5.0</div>
   </div>
   <div id="headerTime">
@@ -375,6 +379,7 @@ input[type=text], input[type=number], select{
     <button onclick="showMenu('qcLem')">QC LEM</button>
     <button onclick="showMenu('qcSPV')">QC REGISTER</button>
   </nav>
+
 
   <!-- ======================== Main Section ======================== -->
   <main>
@@ -3773,8 +3778,18 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
+<script>
+/* ====================== HOME QC ====================== */
+function goHome() {
+  // Hanya scroll halaman ke atas, tidak ubah menu aktif
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+</script>
+
 
 </body>
 </html>
-
 
