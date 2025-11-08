@@ -353,7 +353,7 @@ input[type=text], input[type=number], select{
       padding: 6px 10px;
       border-radius: 10px;
     ">QC</div>
-    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 2.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -565,7 +565,7 @@ input[type=text], input[type=number], select{
   <div id="inputBapro" class="tab-content active">
     <div class="form-group"><input type="text" id="baproNama" placeholder="Nama Order"></div>
     <div class="form-group">
-      <select id="baproNoKS">
+      <select id="baprocso">
         <option value="">CSO</option>
         <option value="Yati">Yati</option>
         <option value="Retni">Retni</option>
@@ -595,7 +595,7 @@ input[type=text], input[type=number], select{
       </select>
     </div>
     <div class="form-group">
-      <textarea id="baproKeterangan" placeholder="Keterangan (opsional)" rows="3" style="width:100%; padding:.6rem; border:1px solid #ccc; border-radius:8px;"></textarea>
+      <textarea id="baproKeterangan" placeholder="Resep Tinta" rows="3" style="width:100%; padding:.6rem; border:1px solid #ccc; border-radius:8px;"></textarea>
     </div>
     <div class="form-group"><button onclick="addBaproItem()">➕ Tambah</button></div>
   </div>
@@ -1316,7 +1316,7 @@ input[type=text], input[type=number], select{
 
 <script>
 // ====================== KONFIGURASI ======================
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyaIMSy0uwZ3rFh_CeZ1OzaQ8CeTnLzCAjK_8afikr9D3P_QACF_wl0gm_8cDhO7lDC/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbziR5fhcjIXBxxOhvFxLquKQWi2Ppk3RykN8SJqfM5_20nnMhlPWgUFz3Lww70dJZMv/exec";
 
 // ====================== SPINNER GLOBAL JS ======================
 const spinner = document.getElementById('loadingSpinner');
@@ -1910,7 +1910,7 @@ loadFinishingItems();
 
 </script>
 
-<!-- ====== JS QC BAPRO (paste ini setelah script utama) ====== -->
+<!-- ====== JS QC BAPRO ====== -->
 <script>
 // ====================== GLOBAL STATE (BAPRO) ======================
 let baproItems = []; // array yang diambil dari sheet Bapro
@@ -1924,8 +1924,8 @@ function renderGridBapro(query = "") {
   const q = (query || '').toLowerCase();
 
   baproItems.forEach((item, i) => {
-    // Filter pencarian (nama atau noKS)
-    if (q && !(String(item.nama || '').toLowerCase().includes(q) || String(item.noKS || '').toLowerCase().includes(q))) return;
+    // Filter pencarian (nama atau cso)
+    if (q && !(String(item.nama || '').toLowerCase().includes(q) || String(item.cso || '').toLowerCase().includes(q))) return;
 
     const card = document.createElement('div');
     card.className = 'grid-card';
@@ -1942,7 +1942,7 @@ function renderGridBapro(query = "") {
       <div>
         ${tanggal}
         <span>Nama Order: ${escapeHtml(item.nama || '')}</span><br>
-        <span>No KS: ${escapeHtml(item.noKS || '')}</span><br>
+        <span>CSO: ${escapeHtml(item.cso || '')}</span><br>
         <span>Jenis: ${escapeHtml(item.jenisKertas || '')}</span><br>
         <span>GSM: ${escapeHtml(item.tebalKertas || '')}</span><br>
         <span>Nama Tinta: ${escapeHtml(item.NamaTinta || '')}</span><br>
@@ -1981,7 +1981,7 @@ async function loadBaproItems(){
 // ====================== TAMBAH DATA (BAPRO) ======================
 function addBaproItem() {
   const nama = document.getElementById('baproNama').value.trim();
-  const noKS = document.getElementById('baproNoKS').value.trim();
+  const cso = document.getElementById('baprocso').value.trim();
   const jenis = document.getElementById('baproJenis') ? document.getElementById('baproJenis').value.trim() : '';
   const kertas = document.getElementById('baproKertas') ? document.getElementById('baproKertas').value.trim() : '';
   const NamaTinta = document.getElementById('baproNamaTinta') ? document.getElementById('baproNamaTinta').value.trim() : '';
@@ -1993,10 +1993,10 @@ function addBaproItem() {
   const update = document.getElementById('baproUpdate') ? document.getElementById('baproUpdate').value.trim() : '';
   const keterangan = document.getElementById('baproKeterangan') ? document.getElementById('baproKeterangan').value.trim() : '';
 
-  if (!nama || !noKS) return alert('Nama dan No KS wajib diisi!');
+  if (!nama || !cso) return alert('Nama dan cso wajib diisi!');
 
 // === Tambah konfirmasi sederhana ===
-  const konfirmasi = confirm(`Yakin ingin menambah data baru?\n\nNama: ${nama}\nNo KS: ${noKS}`);
+  const konfirmasi = confirm(`Yakin ingin menambah data baru?\n\nNama: ${nama}\nCSO: ${cso}`);
   if (!konfirmasi) return; // jika tekan Cancel, berhenti di sini
 
   const tanggalFormatted = new Date().toLocaleString('id-ID', {
@@ -2005,7 +2005,7 @@ function addBaproItem() {
 
   // Kunci perubahan: gunakan key names sesuai header sheet Bapro
   const payload = { action:'add', sheet:'Bapro', tanggal: tanggalFormatted,
-    nama, noKS,
+    nama, cso,
     jenisKertas: jenis,
     tebalKertas: kertas,
     NamaTinta: NamaTinta,
@@ -2027,7 +2027,7 @@ function callBapro(index){
   const item = baproItems[index];
   if(!item) return;
   if (document.getElementById('baproNama')) document.getElementById('baproNama').value = item.nama || '';
-  if (document.getElementById('baproNoKS')) document.getElementById('baproNoKS').value = item.noKS || '';
+  if (document.getElementById('baprocso')) document.getElementById('baprocso').value = item.cso || '';
   if (document.getElementById('baproJenis')) document.getElementById('baproJenis').value = item.jenisKertas || '';
   if (document.getElementById('baproKertas')) document.getElementById('baproKertas').value = item.tebalKertas || '';
   if (document.getElementById('baproNamaTinta')) document.getElementById('baproNamaTinta').value = item.NamaTinta || '';
@@ -2094,7 +2094,12 @@ function editBaproInline(index){
   card.innerHTML = `
     <div class="edit-grid">
       <input type="text" class="edit-inline" value="${escapeHtml(item.nama||'')}" placeholder="Nama Order">
-      <input type="text" class="edit-inline" value="${escapeHtml(item.noKS||'')}" placeholder="No KS">
+      <select class="edit-inline">
+        <option value="Yati" ${item.cso==='Yati'? 'selected':''}>Yati</option>
+        <option value="Retni" ${item.cso==='Retni'? 'selected':''}>Retni</option>
+        <option value="Aulia" ${item.cso==='Aulia'? 'selected':''}>Aulia</option>
+        <option value="Yuli" ${item.cso==='Yuli'? 'selected':''}>Yuli</option>
+      </select>
       <input type="text" class="edit-inline" value="${escapeHtml(item.jenisKertas||'')}" placeholder="Jenis">
       <input type="number" class="edit-inline" value="${escapeHtml(item.tebalKertas||'')}" placeholder="GSM">
       <input type="text" class="edit-inline" value="${escapeHtml(item.NamaTinta||'')}" placeholder="Nama Tinta">
@@ -2154,7 +2159,7 @@ async function saveBaproInline(index) {
   const inputs = card.querySelectorAll('.edit-inline');
   const updated = {
     nama: inputs[0].value.trim(),
-    noKS: inputs[1].value.trim(),
+    cso: inputs[1].value.trim(),
     jenisKertas: inputs[2].value.trim(),
     tebalKertas: inputs[3].value.trim(),
     NamaTinta: inputs[4].value.trim(),
@@ -2243,7 +2248,7 @@ function filterBaproGrid(query){ renderGridBapro(query); }
 
 // ====================== CLEAR FORM (BAPRO) ======================
 function clearBaproForm() {
-  ['baproNama','baproNoKS','baproJenis','baproKertas','baproNamaTinta','baproDmax','baproL','baproA','baproB','baproQC','baproUpdate','baproKeterangan']
+  ['baproNama','baprocso','baproJenis','baproKertas','baproNamaTinta','baproDmax','baproL','baproA','baproB','baproQC','baproUpdate','baproKeterangan']
     .forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
 }
 
@@ -2275,7 +2280,7 @@ function renderDashboardBaproCompact() {
 
     card.innerHTML = `
       <strong>${escapeHtml(item.nama || '')}</strong><br>
-      <strong>CSO: ${escapeHtml(item.noKS || '')}</strong><br>
+      <strong>CSO: ${escapeHtml(item.cso || '')}</strong><br>
       <strong>QC: ${escapeHtml(item.qc || '')}</strong><br>
       <strong>Tinta: ${escapeHtml(item.NamaTinta || '')}</strong><br>
       <span>📅 ${escapeHtml(tanggal)}</span><br>
@@ -2313,7 +2318,7 @@ function showDetailModalBapro(item) {
   alert(`Detail QC Bapro:
 Tanggal: ${item.tanggal || '-'}
 Nama: ${item.nama || '-'}
-Nama CSO: ${item.noKS || '-'}
+Nama CSO: ${item.cso || '-'}
 Jenis Kertas: ${item.jenisKertas || '-'}
 Tebal Kertas: ${item.tebalKertas || '-'}
 Nama Tinta: ${item.NamaTinta || '-'}
@@ -2401,10 +2406,10 @@ document.addEventListener('DOMContentLoaded', () => {
 loadBaproItems();
 </script>
 
-<!-- ====== JS QC PA (struktur match Bapro/Finishing) ====== -->
+<!-- ====== JS QC PA  ====== -->
 <script>
 // ====================== GLOBAL STATE (PA) ======================
-let paItems = []; // array yang diambil dari sheet PA
+let paItems = []; // array yang diambil dari sheet Cetak
 
 // ====================== RENDER GRID HASIL (PA) ======================
 function renderGridPA(query = "") {
@@ -2461,7 +2466,7 @@ function renderGridPA(query = "") {
 async function loadPAItems(){
   try{
     // PENTING: pakai WEBAPP_URL (sama seperti Bapro/Finishing)
-    const res = await jsonpGet(WEBAPP_URL, { action: 'get', sheet: 'PA' });
+    const res = await jsonpGet(WEBAPP_URL, { action: 'get', sheet: 'Cetak' });
     if(res && res.status === 'ok' && Array.isArray(res.data)){
       // sisipkan __index & id (baris)
       paItems = res.data.map((it, idx) => ({ __index: idx, id: (it.id||it._row||it.row||null), ...it }));
@@ -2495,7 +2500,7 @@ function addPAItem() {
 
   // gunakan key names sesuai header di sheet PA (sama pola seperti Bapro)
   const payload = {
-    action:'add', sheet:'PA', tanggal: tanggalFormatted,
+    action:'add', sheet:'Cetak', tanggal: tanggalFormatted,
     nama, noKS, order, bagus, sortir, problem, qc, mesin, update, keterangan
   };
 
@@ -2544,7 +2549,7 @@ function deletePA(index) {
   const identifier = item.id || item._row || item.row || item.__index;
   const payload = { 
     action: 'delete', 
-    sheet: 'PA', 
+    sheet: 'Cetak', 
     id: identifier, 
     index: item.__index 
   };
@@ -2662,7 +2667,7 @@ async function savePAInline(index) {
 
   const payload = {
     action: 'update',
-    sheet: 'PA',
+    sheet: 'Cetak',
     id: identifier,
     index: orig.__index,
     tanggal: tanggalFormatted,
@@ -2822,7 +2827,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const originalOnClick = btn.getAttribute('onclick');
     btn.onclick = function(e) {
       e.preventDefault();
-      const input = prompt('Masukkan password untuk QC PA:');
+      const input = prompt('Masukkan password untuk QC CETAK:');
       if (input === null) return;
       if (input === QC_PA_PASSWORD) {
         eval(originalOnClick);
@@ -3346,7 +3351,7 @@ async function submitSPV(e) {
   if (fotoFile1) base64Foto1 = await fileToBase64(fotoFile1);
 
   const payload = {
-    sheet: "SPV",
+    sheet: "Register",
     action: "add",
     tanggal,
     namaOrder,
@@ -3391,7 +3396,7 @@ function loadSPV() {
   }
   spinner.style.display = "block";
 
-  fetch(WEBAPP_URL + '?action=get&sheet=SPV')
+  fetch(WEBAPP_URL + '?action=get&sheet=Register')
     .then(res => res.text())
     .then(text => {
       let data;
@@ -3442,7 +3447,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const originalOnClick = menuBtn.getAttribute('onclick');
     menuBtn.onclick = function(e) {
       e.preventDefault();
-      const input = prompt('Masukkan password untuk QC Register:');
+      const input = prompt('Masukkan password untuk QC REGISTER:');
       if (input === null) return;
       if (input === QC_SPV_PASSWORD) eval(originalOnClick);
       else alert('Password salah!');
@@ -3492,4 +3497,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
-
