@@ -50,7 +50,7 @@ header{
 #headerTitle {
   font-size: 1.2rem;
   font-weight: bold;
-  text-transform: uppercase;
+  text-transform: uppercase; /* Hanya judul kapital */
   text-align: center;
 }
 
@@ -58,14 +58,20 @@ header{
   font-size: 0.7rem;
   font-weight: normal;
   text-transform: none;
-  text-align: right;
+  text-align: right; /* atau center */
   margin-top: 2px;
-  line-height: 1.2;
+  line-height: 1.2; /* biar rapat sedikit */
 }
 
-#headerTime .tanggal { display:block; }
-#headerTime .jam { display:block; font-size:0.7rem; }
+#headerTime .tanggal {
+  display: block;
+}
 
+#headerTime .jam {
+  display: block;
+  font-size: 0.7rem;
+}
+  
 /* ======================== Layout Container & Nav ======================== */
 .container{
   display:flex;
@@ -75,22 +81,12 @@ header{
 }
 
 nav{
-  position:fixed;          /* 🧷 sidebar tidak ikut scroll */
-  top:0;
-  left:0;
-  height:100vh;
   width:220px;
   background:#fff;
   border-right:1px solid #e5e7eb;
-  padding:1.5rem 1rem 1rem; /* tambahkan sedikit jarak dari atas */
+  padding:1rem;
   box-shadow:2px 0 6px rgba(0,0,0,0.05);
   flex-shrink:0;
-  overflow-y:auto;
-  z-index:99;
-}
-
-nav button:first-child {
-  margin-top:0.5rem;
 }
 
 nav button{
@@ -121,7 +117,6 @@ main{
   padding:1.5rem;
   display:grid;
   gap:1rem;
-  margin-left:220px; /* 🧱 beri jarak sesuai lebar sidebar */
 }
 
 .card{
@@ -138,6 +133,7 @@ main{
   margin-bottom:.75rem;
   flex-wrap:wrap;
 }
+
 .tabs button{
   flex:1;
   padding:.6rem;
@@ -148,7 +144,11 @@ main{
   font-weight:500;
   transition:.2s;
 }
-.tabs button.active{background:var(--accent);color:#fff;}
+.tabs button.active{
+  background:var(--accent);
+  color:#fff;
+}
+
 .tab-content{display:none;}
 .tab-content.active{display:block;}
 
@@ -168,6 +168,7 @@ input[type=text], input[type=number], select{
   grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
   gap:0.8rem;
 }
+
 .grid-card{
   background:#fff;
   padding:.8rem;
@@ -177,6 +178,14 @@ input[type=text], input[type=number], select{
   flex-direction:column;
   gap:6px;
   position:relative;
+}
+
+.grid-card input{
+  padding:.4rem .6px;
+  border:1px solid #ccc;
+  border-radius:6px;
+  margin-bottom:4px;
+  width:100%;
 }
 
 /* ======================== Tombol Aksi di Grid ======================== */
@@ -197,14 +206,39 @@ input[type=text], input[type=number], select{
 .btn-save{background:var(--success);color:#fff;}
 .btn-icon:hover{opacity:.9;transform:translateY(-1px);}
 
+/* ======================== Edit Inline ======================== */
+.edit-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.edit-grid input,
+.edit-grid select {
+  flex: 1 1 48%;
+  min-width: 100px;
+}
+
+/* Khusus kolom Keterangan agar melebar penuh */
+.edit-grid textarea {
+  flex: 1 1 100%;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 6px;
+  font-family: inherit;
+  resize: vertical; /* bisa ubah tinggi tapi tidak lebar */
+}
+
 /* ======================== Status ======================== */
 .status-to {
-  background:#fee2e2;
-  color:#b91c1c;
-  font-weight:600;
-  padding:2px 6px;
-  border-radius:6px;
-  display:inline-block;
+  background: #fee2e2;   /* merah muda lembut */
+  color: #b91c1c;        /* merah tua */
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 6px;
+  display: inline-block;
 }
 .status-proses{
   background:var(--warning);
@@ -221,69 +255,71 @@ input[type=text], input[type=number], select{
   font-weight:600;
 }
 
-.form-group{margin-bottom:10px;}
+.form-group { margin-bottom: 10px; }
 
-/* ======================== RESPONSIF ======================== */
+/* ======================== Responsif ======================== */
 @media(max-width:768px){
   .container{flex-direction:column;}
   nav{
-    position:relative;       /* 🔁 nonaktifkan fixed di HP */
     width:100%;
-    height:auto;
     display:flex;
-    flex-wrap:nowrap;
     overflow-x:auto;
-    overflow-y:hidden;
     padding:.5rem;
-    box-shadow:none;
-    border-right:none;
-    z-index:10;
   }
   nav button{
-    flex:0 0 auto;
+    flex:1;
     min-width:120px;
     margin:0 4px 0 0;
   }
-  main{
-    margin-left:0;
-    padding:1rem;
-  }
+  main{padding:1rem;}
 }
 
 /* ================= GRID RESPONSIVE UNIVERSAL ================= */
-.grid-container{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-  gap:10px;
-  justify-items:stretch;
-  align-items:stretch;
-  width:100%;
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Atur ukuran minimum per grid */
+  gap: 10px;
+  justify-items: stretch;
+  align-items: stretch;
+  width: 100%;
 }
-.grid-container>div{
-  background:#fff;
-  border-radius:10px;
-  padding:10px;
-  box-shadow:0 2px 6px rgba(0,0,0,0.08);
-  min-height:90px;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-start;
-  align-items:flex-start;
-  text-align:left;
+
+/* Konsistensi antar menu agar tinggi & padding card sama */
+.grid-container > div {
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  min-height: 90px;
+
+  /* 🔧 ini bagian penting */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* ⬆️ teks mulai dari atas */
+  align-items: flex-start;     /* ⬅️ teks ke kiri */
+  text-align: left;            /* pastikan teks kiri juga */
 }
-@media(max-width:768px){
-  .grid-container{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;}
+
+/* Responsif di HP — biar tetap sejajar, tidak 1 kolom besar */
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 8px;
+  }
 }
-@media(max-width:480px){
-  .grid-container{grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px;}
+@media (max-width: 480px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 6px;
+  }
 }
 
 /* ==================== RATA KIRI UNTUK SEMUA DASHBOARD QC ==================== */
 [id^="dashboard"] .grid-card,
 [id^="dashboard"] .grid-card * {
-  text-align:left !important;
-  align-items:flex-start !important;
-  justify-content:flex-start !important;
+  text-align: left !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
 }
 
 
@@ -3736,6 +3772,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </body>
 </html>
-
-
-
