@@ -1075,7 +1075,7 @@ input[type=text], input[type=number], select{
         <input 
           type="text" 
           id="spvSearch" 
-          placeholder="🔍 Cari Order / No KS / QC / Proses">
+          placeholder="🔍 Tanggal / Order / No KS / QC / Proses">
       </div>
 
       <!-- Spinner Loading -->
@@ -1448,7 +1448,7 @@ input[type=text], input[type=number], select{
 
 <script>
 // ====================== KONFIGURASI ======================
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbziR5fhcjIXBxxOhvFxLquKQWi2Ppk3RykN8SJqfM5_20nnMhlPWgUFz3Lww70dJZMv/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbz6Fo8iU-srVO-2BmRawmmgUcSrAuXtBmA78PA1YCRzRamQ5PDyKDQd9Ta7EYTSIHzX/exec";
 
 // ====================== SPINNER GLOBAL JS ======================
 const spinner = document.getElementById('loadingSpinner');
@@ -3750,13 +3750,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const rows = document.querySelectorAll('#spvTable tbody tr');
 
     rows.forEach(row => {
+      const tanggal = (row.cells[0]?.textContent || '').toUpperCase();  // ✳️ tambah tanggal
       const namaOrder = (row.cells[1]?.textContent || '').toUpperCase();
       const noKS = (row.cells[2]?.textContent || '').toUpperCase();
       const namaQC = (row.cells[8]?.textContent || '').toUpperCase();
       const proses = (row.cells[9]?.textContent || '').toUpperCase();
 
-      // cocokkan jika ada kata kunci di salah satu kolom
+      // cocokkan jika ada kata kunci di salah satu kolom termasuk tanggal
       const match =
+        tanggal.includes(filter) ||     // ✳️ cek tanggal
         namaOrder.includes(filter) ||
         noKS.includes(filter) ||
         namaQC.includes(filter) ||
@@ -3766,6 +3768,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
 
 </script>
 
