@@ -1955,11 +1955,11 @@ function renderDashboardFinishingCompact() {
     card.addEventListener('click', () => showDetailModal(item));
   });
 
-  // 🧮 Update counter
-  document.getElementById('countFinishing').textContent = finishingItems.length;
-  document.getElementById('countTO').textContent = totalTO;
-  document.getElementById('countProses').textContent = totalProses;
-  document.getElementById('countSelesai').textContent = totalSelesai;
+// 🧮 Update counter
+document.getElementById('countFinishing').textContent = finishingItems.length; // total order
+document.getElementById('countTOFinishing').textContent = totalTO;
+document.getElementById('countProsesFinishing').textContent = totalProses;
+document.getElementById('countSelesaiFinishing').textContent = totalSelesai;
 }
 
 // ====================== DETAIL ======================
@@ -1976,7 +1976,7 @@ Update: ${item.update}
 Keterangan: ${item.keterangan || '-'}`);
 }
 
-// ====================== TOGGLE VIEW + FILTER FINISHING ======================
+// ====================== TOGGLE VIEW + FILTER QC FINISHING ======================
 document.addEventListener('DOMContentLoaded', () => {
   // Tombol
   const btnTO = document.getElementById('toggleFinishingTO');
@@ -2001,7 +2001,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 🔍 Fungsi filter universal (per grid)
   function filterCards(container, keyword) {
     if (!container) return;
-    const cards = container.querySelectorAll('.grid-card'); 
+    const cards = container.querySelectorAll('.grid-card');
     const term = keyword.toLowerCase().trim();
     cards.forEach(card => {
       const text = card.textContent.toLowerCase();
@@ -2038,6 +2038,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnProses) btnProses.addEventListener('click', () => toggleSection(sectionProses, btnProses));
   if (btnSelesai) btnSelesai.addEventListener('click', () => toggleSection(sectionSelesai, btnSelesai));
 });
+
 
 // ====================== AUTO UPPERCASE ======================
 document.addEventListener('input', (e) => {
