@@ -7,167 +7,176 @@
 
 <style>
 /* ======================== Variabel Warna & Radius ======================== */
-:root{
-  --bg:#f4f7fb; 
-  --card:#ffffff; 
-  --accent:#0ea5a4; 
-  --accent-2:#0369a1;
-  --muted:#6b7280; 
-  --danger:#dc2626; 
-  --success:#16a34a; 
-  --warning:#facc15;
-  --radius:12px;
+:root {
+  --bg: #f4f7fb;
+  --card: #ffffff;
+  --accent: #0ea5a4;
+  --accent-2: #0369a1;
+  --muted: #6b7280;
+  --danger: #dc2626;
+  --success: #16a34a;
+  --warning: #facc15;
+  --radius: 12px;
 }
 
 /* ======================== Reset & Body ======================== */
-*{box-sizing:border-box;}
-body{
-  margin:0;
-  font-family:'Segoe UI',sans-serif;
-  background:var(--bg);
-  color:#111;
-  min-height:100vh;
-  width:100%;
-  overflow-x:hidden;
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: #111;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  padding-bottom: 64px; /* beri ruang agar tidak tertutup footer */
 }
 
 /* ======================== Header ======================== */
-header{
-  background:var(--accent);
-  color:#fff;
-  padding:1rem 1.5rem;
-  font-size:1.4rem;
-  font-weight:bold;
-  box-shadow:0 2px 8px rgba(0,0,0,.1);
-  position:sticky;
-  top:0;
-  z-index:10;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+header {
+  background: var(--accent);
+  color: #fff;
+  padding: 1rem 1.5rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 #headerTitle {
   font-size: 1.2rem;
   font-weight: bold;
-  text-transform: uppercase; /* Hanya judul kapital */
+  text-transform: uppercase;
   text-align: center;
 }
 
 #headerTime {
   font-size: 0.7rem;
   font-weight: normal;
-  text-transform: none;
-  text-align: right; /* atau center */
+  text-align: right;
   margin-top: 2px;
-  line-height: 1.2; /* biar rapat sedikit */
+  line-height: 1.2;
 }
-
-#headerTime .tanggal {
-  display: block;
-}
-
-#headerTime .jam {
-  display: block;
-  font-size: 0.7rem;
-}
-  
-
+#headerTime .tanggal,
+#headerTime .jam { display: block; }
 
 /* ======================== Main & Card ======================== */
-main{
-  flex:1;
-  padding:1.5rem;
-  display:grid;
-  gap:1rem;
+main {
+  flex: 1;
+  padding: 1.5rem;
+  display: grid;
+  gap: 1rem;
 }
 
-.card{
-  background:var(--card);
-  padding:1.2rem;
-  border-radius:var(--radius);
-  box-shadow:0 2px 8px rgba(0,0,0,.06);
+.card {
+  background: var(--card);
+  padding: 1.2rem;
+  border-radius: var(--radius);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
 }
 
 /* ======================== Tabs ======================== */
-.tabs{
-  display:flex;
-  gap:.5rem;
-  margin-bottom:.75rem;
-  flex-wrap:wrap;
+.tabs {
+  display: flex;
+  gap: .5rem;
+  margin-bottom: .75rem;
+  flex-wrap: wrap;
+}
+.tabs button {
+  flex: 1;
+  padding: .6rem;
+  border: none;
+  border-radius: var(--radius);
+  background: #e5e7eb;
+  cursor: pointer;
+  font-weight: 500;
+  transition: .2s;
+}
+.tabs button.active {
+  background: var(--accent);
+  color: #fff;
 }
 
-.tabs button{
-  flex:1;
-  padding:.6rem;
-  border:none;
-  border-radius:var(--radius);
-  background:#e5e7eb;
-  cursor:pointer;
-  font-weight:500;
-  transition:.2s;
-}
-.tabs button.active{
-  background:var(--accent);
-  color:#fff;
-}
-
-.tab-content{display:none;}
-.tab-content.active{display:block;}
+.tab-content { display: none; }
+.tab-content.active { display: block; }
 
 /* ======================== Form Input ======================== */
-input[type=text], input[type=number], select{
-  padding:.5rem .7rem;
-  border:1px solid #ccc;
-  border-radius:8px;
-  margin-bottom:6px;
-  width:100%;
-  transition:border .2s, box-shadow .2s;
+input[type=text],
+input[type=number],
+select {
+  padding: .5rem .7rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  width: 100%;
+  transition: border .2s, box-shadow .2s;
 }
 
 /* ======================== Grid ======================== */
-.grid-container{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-  gap:0.8rem;
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+  justify-items: stretch;
+  align-items: stretch;
+  width: 100%;
 }
 
-.grid-card{
-  background:#fff;
-  padding:.8rem;
-  border-radius:var(--radius);
-  box-shadow:0 2px 6px rgba(0,0,0,.1);
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-  position:relative;
+.grid-container > div {
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: left;
 }
 
-.grid-card input{
-  padding:.4rem .6px;
-  border:1px solid #ccc;
-  border-radius:6px;
-  margin-bottom:4px;
-  width:100%;
+.grid-card {
+  background: #fff;
+  padding: .8rem;
+  border-radius: var(--radius);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .1);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+}
+
+.grid-card input {
+  padding: .4rem .6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  width: 100%;
 }
 
 /* ======================== Tombol Aksi di Grid ======================== */
-.grid-card .btn-icon{
-  border:none;
-  cursor:pointer;
-  border-radius:6px;
-  padding:4px 6px;
-  font-size:0.9rem;
-  transition:.2s;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
+.grid-card .btn-icon {
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 4px 6px;
+  font-size: 0.9rem;
+  transition: .2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
-.btn-call{background:var(--accent);color:#fff;}
-.btn-edit{background:#facc15;color:#111;}
-.btn-delete{background:var(--danger);color:#fff;}
-.btn-save{background:var(--success);color:#fff;}
-.btn-icon:hover{opacity:.9;transform:translateY(-1px);}
+.btn-call { background: var(--accent); color: #fff; }
+.btn-edit { background: #facc15; color: #111; }
+.btn-delete { background: var(--danger); color: #fff; }
+.btn-save { background: var(--success); color: #fff; }
+.btn-icon:hover { opacity: .9; transform: translateY(-1px); }
 
 /* ======================== Edit Inline ======================== */
 .edit-grid {
@@ -175,91 +184,46 @@ input[type=text], input[type=number], select{
   flex-wrap: wrap;
   gap: 4px;
 }
-
 .edit-grid input,
 .edit-grid select {
   flex: 1 1 48%;
   min-width: 100px;
 }
-
-/* Khusus kolom Keterangan agar melebar penuh */
 .edit-grid textarea {
   flex: 1 1 100%;
   width: 100%;
-  box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 6px;
   padding: 6px;
   font-family: inherit;
-  resize: vertical; /* bisa ubah tinggi tapi tidak lebar */
+  resize: vertical;
 }
 
 /* ======================== Status ======================== */
 .status-to {
-  background: #fee2e2;   /* merah muda lembut */
-  color: #b91c1c;        /* merah tua */
+  background: #fee2e2;
+  color: #b91c1c;
   font-weight: 600;
   padding: 2px 6px;
   border-radius: 6px;
   display: inline-block;
 }
-.status-proses{
-  background:var(--warning);
-  color:#111;
-  padding:2px 6px;
-  border-radius:6px;
-  font-weight:600;
+.status-proses {
+  background: var(--warning);
+  color: #111;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-weight: 600;
 }
-.status-selesai{
-  background:var(--success);
-  color:#fff;
-  padding:2px 6px;
-  border-radius:6px;
-  font-weight:600;
+.status-selesai {
+  background: var(--success);
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-weight: 600;
 }
 
 .form-group { margin-bottom: 10px; }
-
-
-/* ================= GRID RESPONSIVE UNIVERSAL ================= */
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Atur ukuran minimum per grid */
-  gap: 10px;
-  justify-items: stretch;
-  align-items: stretch;
-  width: 100%;
-}
-
-/* Konsistensi antar menu agar tinggi & padding card sama */
-.grid-container > div {
-  background: #fff;
-  border-radius: 10px;
-  padding: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  min-height: 90px;
-
-  /* 🔧 ini bagian penting */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; /* ⬆️ teks mulai dari atas */
-  align-items: flex-start;     /* ⬅️ teks ke kiri */
-  text-align: left;            /* pastikan teks kiri juga */
-}
-
-/* Responsif di HP — biar tetap sejajar, tidak 1 kolom besar */
-@media (max-width: 768px) {
-  .grid-container {
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-    gap: 8px;
-  }
-}
-@media (max-width: 480px) {
-  .grid-container {
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-    gap: 6px;
-  }
-}
 
 /* ==================== RATA KIRI UNTUK SEMUA DASHBOARD QC ==================== */
 [id^="dashboard"] .grid-card,
@@ -269,32 +233,30 @@ input[type=text], input[type=number], select{
   justify-content: flex-start !important;
 }
 
-
 /* ======================== Footer Nav ======================== */
 nav {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 64px; /* samakan tinggi header */
+  height: 64px;
   background: var(--accent);
   display: flex;
-  align-items: center; /* tombol di tengah vertikal */
+  align-items: center;
   justify-content: space-around;
-  box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
-  border-top: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
   z-index: 999;
 }
 
-/* tombol menu */
 nav button {
   flex: 1;
   background: var(--accent);
   color: #fff;
   border: none;
   border-radius: var(--radius);
-  height: 36px; /* fix tinggi tombol */
-  line-height: 36px; /* teks pas tengah */
+  height: 36px;
+  line-height: 36px;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
@@ -302,7 +264,7 @@ nav button {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0; /* hapus padding agar tidak ganggu posisi vertikal */
+  padding: 0;
 }
 
 nav button:hover,
@@ -311,14 +273,12 @@ nav button.active {
   transform: translateY(-1px);
 }
 
-/* beri ruang agar konten tidak tertutup footer */
-body {
-  padding-bottom: 64px; /* tinggi sama dengan nav */
-}
-
-
-/* ======================== Responsif (HP) ======================== */
+/* ======================== Responsif ======================== */
 @media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 8px;
+  }
   nav {
     padding: 0.4rem;
   }
@@ -327,11 +287,14 @@ body {
     padding: 0.6rem 0.3rem;
   }
 }
-
-
-
-
+@media (max-width: 480px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 6px;
+  }
+}
 </style>
+
 </head>
 <body>
 
@@ -367,7 +330,7 @@ body {
       cursor: pointer;
     ">QC</button>
 
-    <div id="headerTitle" style="font-size: 0.8rem;">System 5.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
