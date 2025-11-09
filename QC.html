@@ -307,25 +307,29 @@ input[type=text], input[type=number], select{
 }
 
 
-/* ======================== Footer Nav (Scroll Horizontal) ======================== */
+/* ======================== Footer Nav (Scroll Horizontal + Tidak Nabrak) ======================== */
 nav {
+  position: sticky;
+  bottom: 0;
+  left: 0;
   width: 100%;
   background: var(--accent);
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 6px;
-  padding: 0.4rem 0.6rem;
-  overflow-x: auto;           /* bisa di-scroll horizontal */
-  white-space: nowrap;        /* biar tombol sejajar ke samping */
-  box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+  padding: 0.45rem 0.6rem;
+  overflow-x: auto;           /* bisa scroll kanan kiri */
+  white-space: nowrap;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
   border-top: 1px solid rgba(255,255,255,0.15);
   scroll-behavior: smooth;
+  z-index: 9;
 }
 
 /* tombol menu */
 nav button {
-  flex: 0 0 auto;             /* biar tidak melar maksa */
+  flex: 0 0 auto;             /* biar tidak melar */
   background: var(--accent);
   color: #fff;
   border: none;
@@ -336,8 +340,8 @@ nav button {
   cursor: pointer;
   transition: background 0.25s ease, transform 0.2s ease;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: center;         /* tengah vertikal */
+  justify-content: center;     /* tengah horizontal */
 }
 
 nav button:hover,
@@ -346,9 +350,9 @@ nav button.active {
   transform: translateY(-1px);
 }
 
-/* beri ruang agar footer tidak terlalu rapat dengan bawah layar */
-body {
-  padding-bottom: 0.8rem;
+/* tambahkan ruang agar isi menu tidak ketimpa footer */
+main {
+  padding-bottom: 70px;
 }
 
 /* ======================== Responsif ======================== */
@@ -364,17 +368,6 @@ body {
   }
 }
 
-
-/* ======================== Responsif (HP) ======================== */
-@media (max-width: 768px) {
-  nav {
-    padding: 0.4rem;
-  }
-  nav button {
-    font-size: 0.8rem;
-    padding: 0.6rem 0.3rem;
-  }
-}
 
 
 </style>
@@ -3846,5 +3839,6 @@ function goHome() {
 
 </body>
 </html>
+
 
 
