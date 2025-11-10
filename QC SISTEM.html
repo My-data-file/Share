@@ -1073,24 +1073,6 @@ nav button.active {
       <p style="font-size:0.9rem; color:#555;">Memuat Data SPV</p>
     </div>
 
-<!-- ========== HASIL ========== -->
-<div id="spvHasilSection" style="display:none;">
-  <div class="hasil-container">
-    
-    <!-- Kolom Pencarian -->
-    <div class="search-wrapper">
-      <input 
-        type="text" 
-        id="spvSearch" 
-        placeholder="🔍 Tanggal / Order / No KS / QC / Proses">
-    </div>
-
-    <!-- Spinner Loading -->
-    <div id="spvLoading" style="display:none; text-align:center; padding:10px;">
-      <div class="spinner"></div>
-      <p style="font-size:0.9rem; color:#555;">Memuat Data SPV</p>
-    </div>
-
     <!-- Tabel Hasil -->
     <div class="table-wrapper">
       <table id="spvTable" border="1">
@@ -1171,29 +1153,31 @@ nav button.active {
 
 /* Tombol umum */
 #spvTable button {
-  padding:6px 12px;
+  padding:5px 10px;
   border:none;
   border-radius:6px;
   cursor:pointer;
   font-size:0.85rem;
   transition:0.25s;
-  margin:4px;
+  margin:3px;
   color:#fff;
   box-shadow:0 2px 4px rgba(0,0,0,0.15);
 }
-
-/* Warna tombol modern */
+/* Warna tombol */
 #spvTable .btn-edit {
   background: linear-gradient(135deg, #00BCD4, #0097A7);
+  color: #fff;
 }
 #spvTable .btn-save {
   background: linear-gradient(135deg, #4CAF50, #2E7D32);
+  color: #fff;
 }
 #spvTable .btn-cancel {
   background: linear-gradient(135deg, #F44336, #D32F2F);
+  color: #fff;
 }
 
-/* Hover efek lembut */
+/* Efek hover */
 #spvTable .btn-edit:hover {
   transform: translateY(-2px);
   box-shadow: 0 3px 6px rgba(0, 188, 212, 0.4);
@@ -1207,15 +1191,13 @@ nav button.active {
   box-shadow: 0 3px 6px rgba(244, 67, 54, 0.4);
 }
 
-/* Tombol center di kolom terakhir */
+/* Kolom tombol (desktop & mobile) center */
 #spvTable td:nth-child(10) {
   text-align: center;
   justify-content: center;
   align-items: center;
 }
 
-/* Rata tengah semua kolom */
-#spvTable th, #spvTable td { text-align:center; }
 
 /* ========== Mode Mobile (Grid Card) ========== */
 @media (max-width:768px){
@@ -1269,7 +1251,7 @@ nav button.active {
     max-width:100%;
   }
 
-  /* Kolom tombol rapi & di tengah */
+  /* Tombol rapi & di tengah */
   #spvTable td:nth-child(10) {
     justify-content:center;
     flex-direction:column;
@@ -1278,7 +1260,6 @@ nav button.active {
     margin-top:6px;
     padding-top:8px;
     gap:6px;
-    text-align:center;
   }
 
   #spvTable td:nth-child(10)::before {
@@ -1289,7 +1270,7 @@ nav button.active {
     align-self:flex-start;
   }
 
-  /* Tombol di HP rapi dan sama ukuran */
+  /* Tombol berjarak dan center */
   #spvTable td:nth-child(10) button {
     width:80%;
     max-width:160px;
@@ -1329,6 +1310,7 @@ body {
   font-family:'Segoe UI', sans-serif;
 }
 </style>
+
 
 
 
