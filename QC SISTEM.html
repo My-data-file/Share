@@ -343,7 +343,7 @@ nav button.active {
       cursor: pointer;
     ">QC</button>
 
-    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 5.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -1073,7 +1073,7 @@ nav button.active {
       <p style="font-size:0.9rem; color:#555;">Memuat Data SPV</p>
     </div>
 
-    <!-- Tabel -->
+    <!-- Tabel Hasil -->
     <div class="table-wrapper">
       <table id="spvTable" border="1">
         <thead>
@@ -1090,20 +1090,142 @@ nav button.active {
             <th>Proses</th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+          <!-- Data diisi lewat JS -->
+        </tbody>
       </table>
     </div>
   </div>
 </div>
 
 <style>
-/* ========== BODY ========== */
-body {
-  background:#f5f7fa;
-  font-family:'Segoe UI', sans-serif;
+/* ========== Spinner ========== */
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid #ddd;
+  border-top: 3px solid #00BCD4;
+  border-radius: 50%;
+  margin: 0 auto;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-/* ========== KONTAINER ========== */
+/* ========== Tabel Dasar (Desktop) ========== */
+.table-wrapper { width:100%; overflow-x:auto; }
+#spvTable {
+  width:100%;
+  border-collapse:collapse;
+  font-size:0.9rem;
+  background:#fff;
+}
+#spvTable th, #spvTable td {
+  border:1px solid #ddd;
+  padding:8px 10px;
+  text-align:center;
+  vertical-align:middle;
+}
+#spvTable thead {
+  background:#00BCD4;
+  color:#fff;
+}
+
+/* Kolom foto agar tidak terpotong */
+#spvTable th:nth-child(6),
+#spvTable td:nth-child(6),
+#spvTable th:nth-child(8),
+#spvTable td:nth-child(8) {
+  min-width:160px;
+}
+#spvTable input[type="file"] {
+  width:100%;
+  max-width:160px;
+  font-size:0.85rem;
+  padding:4px;
+  box-sizing:border-box;
+  cursor:pointer;
+}
+
+/* Tombol di tabel */
+#spvTable button {
+  padding:4px 10px;
+  border:none;
+  border-radius:6px;
+  background:#00BCD4;
+  color:#fff;
+  cursor:pointer;
+  font-size:0.85rem;
+  transition:0.2s;
+  margin:2px 4px; /* beri jarak antar tombol */
+}
+#spvTable button:hover {
+  background:#0097a7;
+}
+
+/* Warna khusus untuk tombol batal */
+#spvTable .btn-cancel {
+  background:#f44336;
+}
+#spvTable .btn-cancel:hover {
+  background:#d32f2f;
+}
+
+/* ========== Mode Mobile (Card Style) ========== */
+@media (max-width:768px){
+  #spvTable, #spvTable thead, #spvTable tbody, #spvTable th, #spvTable td, #spvTable tr {
+    display:block;
+  }
+  #spvTable thead { display:none; }
+  #spvTable tr {
+    background:#fff;
+    border:1px solid #ddd;
+    border-radius:8px;
+    margin-bottom:10px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+    padding:8px 10px;
+  }
+  #spvTable td {
+    border:none;
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    font-size:0.85rem;
+    border-bottom:1px solid #eee;
+    padding:6px 0;
+    text-align:left;
+    word-break:break-word;
+  }
+  #spvTable td::before {
+    content: attr(data-label) ": ";
+    font-weight:600;
+    color:#333;
+    flex:0 0 45%;
+    max-width:150px;
+  }
+  #spvTable td:last-child { border-bottom:none; }
+
+  /* File input di mobile full width */
+  #spvTable td input[type="file"] {
+    max-width:100%;
+  }
+
+  /* Tombol di mobile penuh tapi tetap jarak */
+  #spvTable td button {
+    width:48%;
+    margin:4px 1%;
+  }
+
+  /* Tombol simpan dan batal berdampingan */
+  #spvTable td button.btn-save,
+  #spvTable td button.btn-cancel {
+    display:inline-block;
+  }
+}
+
+/* ========== Frame & Search ========== */
 .hasil-container {
   max-width: 600px;
   margin: 0 auto;
@@ -1127,82 +1249,11 @@ body {
   .hasil-container { max-width: 100%; padding: 0; }
 }
 
-/* ========== SPINNER ========== */
-.spinner {
-  width: 28px;
-  height: 28px;
-  border: 3px solid #ddd;
-  border-top: 3px solid #00BCD4;
-  border-radius: 50%;
-  margin: 0 auto;
-  animation: spin 0.8s linear infinite;
-}
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* ========== TABEL DESKTOP ========== */
-.table-wrapper { width:100%; overflow-x:auto; }
-#spvTable {
-  width:100%;
-  border-collapse:collapse;
-  font-size:0.9rem;
-  background:#fff;
-}
-#spvTable th, #spvTable td {
-  border:1px solid #ddd;
-  padding:8px 10px;
-  text-align:left;
-}
-#spvTable thead {
-  background:#00BCD4;
-  color:#fff;
-}
-
-/* ========== MOBILE (CARD GRID) ========== */
-@media (max-width:768px){
-  #spvTable, #spvTable thead, #spvTable tbody, #spvTable th, #spvTable td, #spvTable tr {
-    display:block;
-  }
-  #spvTable thead { display:none; }
-
-  #spvTable tbody {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  #spvTable tr {
-    background:#fff;
-    border:1px solid #ddd;
-    border-radius:10px;
-    box-shadow:0 1px 3px rgba(0,0,0,0.08);
-    padding:10px 12px;
-  }
-
-  #spvTable td {
-    border:none;
-    display:flex;
-    flex-direction:column;
-    font-size:0.85rem;
-    border-bottom:1px solid #eee;
-    padding:6px 0;
-    text-align:left;
-    word-break:break-word;
-  }
-
-  #spvTable td::before {
-    content: attr(data-label);
-    font-weight:600;
-    color:#333;
-    margin-bottom:3px;
-  }
-
-  #spvTable td:last-child { border-bottom:none; }
+body {
+  background:#f5f7fa;
+  font-family:'Segoe UI', sans-serif;
 }
 </style>
-
 
 
 
