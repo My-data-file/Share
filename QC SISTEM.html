@@ -343,7 +343,7 @@ nav button.active {
       cursor: pointer;
     ">QC</button>
 
-    <div id="headerTitle" style="font-size: 0.8rem;">System 3.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 5.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -1151,53 +1151,52 @@ nav button.active {
   cursor:pointer;
 }
 
-/* Tombol umum */
+/* Tombol umum (semua tombol) */
 #spvTable button {
-  padding:5px 10px;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-  font-size:0.85rem;
-  transition:0.25s;
-  margin:3px;
-  color:#fff;
-  box-shadow:0 2px 4px rgba(0,0,0,0.15);
-}
-/* Warna tombol */
-#spvTable .btn-edit {
-  background: linear-gradient(135deg, #00BCD4, #0097A7);
-  color: #fff;
-}
-#spvTable .btn-save {
-  background: linear-gradient(135deg, #4CAF50, #2E7D32);
-  color: #fff;
-}
-#spvTable .btn-cancel {
-  background: linear-gradient(135deg, #F44336, #D32F2F);
-  color: #fff;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin: 4px;
+  color: #fff !important;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: 0.25s;
 }
 
-/* Efek hover */
-#spvTable .btn-edit:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 3px 6px rgba(0, 188, 212, 0.4);
+/* ======== Warna Tombol Edit / Simpan / Batal ======== */
+
+/* Tombol Edit */
+#spvTable .edit-btn {
+  background: linear-gradient(135deg, #FFD740, #FFC400);
+  color: #000 !important;
 }
-#spvTable .btn-save:hover {
+#spvTable .edit-btn:hover {
+  background: linear-gradient(135deg, #FFEE58, #FFD740);
   transform: translateY(-2px);
-  box-shadow: 0 3px 6px rgba(76, 175, 80, 0.4);
-}
-#spvTable .btn-cancel:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 3px 6px rgba(244, 67, 54, 0.4);
 }
 
-/* Kolom tombol (desktop & mobile) center */
-#spvTable td:nth-child(10) {
-  text-align: center;
-  justify-content: center;
-  align-items: center;
+/* Tombol Simpan */
+#spvTable .save-btn {
+  background: linear-gradient(135deg, #43A047, #66BB6A);
+}
+#spvTable .save-btn:hover {
+  background: linear-gradient(135deg, #66BB6A, #81C784);
+  transform: translateY(-2px);
 }
 
+/* Tombol Batal */
+#spvTable .cancel-btn {
+  background: linear-gradient(135deg, #E53935, #EF5350);
+}
+#spvTable .cancel-btn:hover {
+  background: linear-gradient(135deg, #F44336, #E57373);
+  transform: translateY(-2px);
+}
+
+/* Rata tengah semua kolom */
+#spvTable th, #spvTable td { text-align:center; }
 
 /* ========== Mode Mobile (Grid Card) ========== */
 @media (max-width:768px){
@@ -1247,11 +1246,9 @@ nav button.active {
   #spvTable td:nth-child(10)::before { content:"Proses:"; }
 
   /* Input file menyesuaikan */
-  #spvTable td input[type="file"] {
-    max-width:100%;
-  }
+  #spvTable td input[type="file"] { max-width:100%; }
 
-  /* Tombol rapi & di tengah */
+  /* Kolom tombol di tengah dan rapi */
   #spvTable td:nth-child(10) {
     justify-content:center;
     flex-direction:column;
@@ -1260,8 +1257,8 @@ nav button.active {
     margin-top:6px;
     padding-top:8px;
     gap:6px;
+    text-align:center;
   }
-
   #spvTable td:nth-child(10)::before {
     content:"Proses:";
     font-weight:600;
@@ -1270,7 +1267,7 @@ nav button.active {
     align-self:flex-start;
   }
 
-  /* Tombol berjarak dan center */
+  /* Tombol di HP rapi dan sama ukuran */
   #spvTable td:nth-child(10) button {
     width:80%;
     max-width:160px;
@@ -1310,7 +1307,6 @@ body {
   font-family:'Segoe UI', sans-serif;
 }
 </style>
-
 
 
 
