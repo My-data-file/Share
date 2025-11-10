@@ -343,7 +343,7 @@ nav button.active {
       cursor: pointer;
     ">QC</button>
 
-    <div id="headerTitle" style="font-size: 0.8rem;">System 5.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -1055,49 +1055,6 @@ nav button.active {
     </form>
   </div>
 
-<!-- ========== HASIL ========== -->
-<div id="spvHasilSection" style="display:none;">
-  <div class="hasil-container">
-    
-    <!-- Kolom Pencarian -->
-    <div class="search-wrapper">
-      <input 
-        type="text" 
-        id="spvSearch" 
-        placeholder="🔍 Tanggal / Order / No KS / QC / Proses">
-    </div>
-
-    <!-- Spinner Loading -->
-    <div id="spvLoading" style="display:none; text-align:center; padding:10px;">
-      <div class="spinner"></div>
-      <p style="font-size:0.9rem; color:#555;">Memuat Data SPV</p>
-    </div>
-
-    <!-- Tabel Hasil -->
-    <div class="table-wrapper">
-      <table id="spvTable" border="1">
-        <thead>
-          <tr>
-            <th>Tanggal</th>
-            <th>Nama Order</th>
-            <th>No KS</th>
-            <th>Jam</th>
-            <th>Keterangan Acuan</th>
-            <th>Foto Acuan</th>
-            <th>Keterangan Temuan</th>
-            <th>Foto Temuan</th>
-            <th>Nama QC</th>
-            <th>Proses</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Data diisi melalui JS -->
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
 <style>
 /* ========== Spinner ========== */
 .spinner {
@@ -1158,42 +1115,46 @@ nav button.active {
   border-radius:6px;
   cursor:pointer;
   font-size:0.85rem;
-  transition:all 0.25s ease;
-  margin:3px;
+  transition:0.25s;
+  margin:4px;
   color:#fff;
-  font-weight:600;
+  box-shadow:0 2px 4px rgba(0,0,0,0.15);
 }
 
-/* Warna tombol */
+/* Warna tombol modern */
 #spvTable .btn-edit {
-  background:linear-gradient(135deg,#FFD54F,#FFC107);
-  color:#222;
+  background: linear-gradient(135deg, #00BCD4, #0097A7);
 }
 #spvTable .btn-save {
-  background:linear-gradient(135deg,#4CAF50,#2E7D32);
+  background: linear-gradient(135deg, #4CAF50, #2E7D32);
 }
 #spvTable .btn-cancel {
-  background:linear-gradient(135deg,#F44336,#D32F2F);
+  background: linear-gradient(135deg, #F44336, #D32F2F);
 }
 
 /* Hover efek lembut */
 #spvTable .btn-edit:hover {
-  transform:translateY(-2px);
-  box-shadow:0 3px 6px rgba(255,193,7,0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(0, 188, 212, 0.4);
 }
 #spvTable .btn-save:hover {
-  transform:translateY(-2px);
-  box-shadow:0 3px 6px rgba(76,175,80,0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(76, 175, 80, 0.4);
 }
 #spvTable .btn-cancel:hover {
-  transform:translateY(-2px);
-  box-shadow:0 3px 6px rgba(244,67,54,0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(244, 67, 54, 0.4);
 }
 
-/* Kolom Proses rata tengah */
+/* Tombol center di kolom terakhir */
 #spvTable td:nth-child(10) {
-  text-align:center;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
 }
+
+/* Rata tengah semua kolom */
+#spvTable th, #spvTable td { text-align:center; }
 
 /* ========== Mode Mobile (Grid Card) ========== */
 @media (max-width:768px){
@@ -1247,7 +1208,7 @@ nav button.active {
     max-width:100%;
   }
 
-  /* Tombol rapi & di tengah */
+  /* Kolom tombol rapi & di tengah */
   #spvTable td:nth-child(10) {
     justify-content:center;
     flex-direction:column;
@@ -1256,6 +1217,7 @@ nav button.active {
     margin-top:6px;
     padding-top:8px;
     gap:6px;
+    text-align:center;
   }
 
   #spvTable td:nth-child(10)::before {
@@ -1266,7 +1228,7 @@ nav button.active {
     align-self:flex-start;
   }
 
-  /* Tombol berjarak dan center */
+  /* Tombol di HP rapi dan sama ukuran */
   #spvTable td:nth-child(10) button {
     width:80%;
     max-width:160px;
@@ -1306,6 +1268,7 @@ body {
   font-family:'Segoe UI', sans-serif;
 }
 </style>
+
 
 
 </section>
@@ -4074,6 +4037,7 @@ function goHome() {
 
 </body>
 </html>
+
 
 
 
