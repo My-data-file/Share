@@ -343,7 +343,7 @@ nav button.active {
       cursor: pointer;
     ">QC</button>
 
-    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 2.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -1098,191 +1098,11 @@ nav button.active {
 </div>
 
 <style>
-/* ========== Spinner ========== */
-.spinner {
-  width: 28px;
-  height: 28px;
-  border: 3px solid #ddd;
-  border-top: 3px solid #00BCD4;
-  border-radius: 50%;
-  margin: 0 auto;
-  animation: spin 0.8s linear infinite;
+/* ========== BODY & CONTAINER ========== */
+body {
+  background:#f5f7fa;
+  font-family:'Segoe UI', sans-serif;
 }
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* ========== Tabel Dasar (Desktop) ========== */
-.table-wrapper { width:100%; overflow-x:auto; }
-#spvTable {
-  width:100%;
-  border-collapse:collapse;
-  font-size:0.9rem;
-  background:#fff;
-}
-#spvTable th, #spvTable td {
-  border:1px solid #ddd;
-  padding:8px 10px;
-  text-align:center;
-  vertical-align:middle;
-}
-#spvTable thead {
-  background:#00BCD4;
-  color:#fff;
-}
-#spvTable button {
-  padding:6px 10px;
-  margin:2px;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-  font-size:0.85rem;
-  transition:0.2s;
-}
-.edit-btn { background:#FFC107; color:#000; }
-.save-btn { background:#4CAF50; color:#fff; }
-.cancel-btn { background:#F44336; color:#fff; }
-.save-btn:hover { background:#43a047; }
-.cancel-btn:hover { background:#e53935; }
-
-/* ========== RAPIKAN MODE EDIT INLINE ========== */
-#spvTable input[type="text"],
-#spvTable textarea,
-#spvTable select {
-  width: 95%;
-  max-width: 220px;
-  font-size: 13px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 5px 6px;
-  box-sizing: border-box;
-  text-align: center;
-}
-
-/* ==== RAPIKAN INPUT FILE ==== */
-#spvTable input[type="file"] {
-  position: relative;
-  width: 90px;
-  height: 28px;
-  border: none;
-  border-radius: 6px;
-  background: #00BCD4;
-  color: transparent;
-  cursor: pointer;
-  overflow: hidden;
-  appearance: none;
-  -webkit-appearance: none;
-  text-align: center;
-  vertical-align: middle;
-}
-
-/* Hilangkan tombol bawaan browser (Choose File) */
-#spvTable input[type="file"]::-webkit-file-upload-button {
-  visibility: hidden;
-}
-
-/* Ganti teks default jadi "File" */
-#spvTable input[type="file"]::before {
-  content: "File";
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  inset: 0;
-  color: #fff;
-  font-size: 13px;
-  font-weight: 500;
-  background: #00BCD4;
-  border-radius: 6px;
-  transition: background 0.2s ease;
-}
-
-/* Hover efek */
-#spvTable input[type="file"]:hover::before {
-  background: #0097a7;
-}
-
-/* Supaya tidak nabrak tabel */
-#spvTable td {
-  vertical-align: middle;
-}
-#spvTable tr {
-  height: 45px;
-}
-
-/* Preview gambar jika ada */
-#spvTable td div.preview {
-  margin-top: 4px;
-  font-size: 12px;
-  color: #555;
-}
-
-/* Tombol aksi edit/save/cancel sejajar */
-#spvTable td.action-cell {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-  min-width: 130px;
-}
-#spvTable td.action-cell button {
-  flex: 1 1 auto;
-  min-width: 60px;
-}
-
-/* Baris yang sedang diedit */
-#spvTable tr.editing {
-  background-color: #f1f8ff !important;
-  transition: background-color 0.3s ease;
-}
-
-/* ========== Mode Mobile (Card Style) ========== */
-@media (max-width:768px){
-  #spvTable, #spvTable thead, #spvTable tbody, #spvTable th, #spvTable td, #spvTable tr {
-    display:block;
-  }
-  #spvTable thead { display:none; }
-  #spvTable tr {
-    background:#fff;
-    border:1px solid #ddd;
-    border-radius:8px;
-    margin-bottom:10px;
-    box-shadow:0 1px 3px rgba(0,0,0,0.08);
-    padding:8px 10px;
-  }
-  #spvTable td {
-    border:none;
-    display:flex;
-    align-items:flex-start;
-    font-size:0.85rem;
-    border-bottom:1px solid #eee;
-    padding:6px 0;
-    text-align:left;
-    word-break:break-word;
-  }
-  #spvTable td::before {
-    content: attr(data-label) ": ";
-    flex:0 0 130px;
-    font-weight:600;
-    color:#333;
-  }
-  #spvTable td:last-child { border-bottom:none; }
-  #spvTable button {
-    font-size:0.8rem;
-    padding:4px 8px;
-  }
-
-  /* Tombol simpan & batal rapat di mobile */
-  #spvTable td.action-cell {
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 8px;
-  }
-}
-
-/* ========== Samakan frame tab hasil & input ========== */
 .hasil-container {
   max-width: 800px;
   margin: 0 auto;
@@ -1306,11 +1126,162 @@ nav button.active {
   .hasil-container { max-width: 100%; padding: 0; }
 }
 
-/* ========== Tampilan dasar body ========== */
-body {
-  background:#f5f7fa;
-  font-family:'Segoe UI', sans-serif;
+/* ========== SPINNER ========== */
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid #ddd;
+  border-top: 3px solid #00BCD4;
+  border-radius: 50%;
+  margin: 0 auto;
+  animation: spin 0.8s linear infinite;
 }
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ========== TABEL DASAR (DESKTOP) ========== */
+.table-wrapper { width:100%; overflow-x:auto; }
+#spvTable {
+  width:100%;
+  border-collapse:collapse;
+  font-size:0.9rem;
+  background:#fff;
+}
+#spvTable th, #spvTable td {
+  border:1px solid #ddd;
+  padding:8px 10px;
+  text-align:center;
+  vertical-align:middle;
+}
+#spvTable thead { background:#00BCD4; color:#fff; }
+#spvTable button {
+  padding:6px 10px;
+  margin:2px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:0.85rem;
+  transition:0.2s;
+}
+.edit-btn { background:#FFC107; color:#000; }
+.save-btn { background:#4CAF50; color:#fff; }
+.cancel-btn { background:#F44336; color:#fff; }
+.save-btn:hover { background:#43a047; }
+.cancel-btn:hover { background:#e53935; }
+
+/* ========== EDIT INLINE ========== */
+#spvTable input[type="text"],
+#spvTable textarea,
+#spvTable select {
+  width: 95%;
+  max-width: 220px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 5px 6px;
+  box-sizing: border-box;
+  text-align: center;
+}
+#spvTable input[type="file"] {
+  position: relative;
+  width: 90px;
+  height: 28px;
+  border: none;
+  border-radius: 6px;
+  background: #00BCD4;
+  color: transparent;
+  cursor: pointer;
+  overflow: hidden;
+  appearance: none;
+  -webkit-appearance: none;
+  text-align: center;
+  vertical-align: middle;
+}
+#spvTable input[type="file"]::-webkit-file-upload-button { visibility: hidden; }
+#spvTable input[type="file"]::before {
+  content: "File";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  inset: 0;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  background: #00BCD4;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+#spvTable input[type="file"]:hover::before { background: #0097a7; }
+
+#spvTable td div.preview { margin-top: 4px; font-size: 12px; color: #555; }
+#spvTable td.action-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  min-width: 130px;
+}
+#spvTable td.action-cell button {
+  flex: 1 1 auto;
+  min-width: 60px;
+}
+#spvTable tr.editing { background-color: #f1f8ff !important; transition: background-color 0.3s ease; }
+#spvTable td { vertical-align: middle; }
+#spvTable tr { height: 45px; }
+
+/* ========== MOBILE / CARD STYLE ========== */
+@media (max-width:768px){
+  #spvTable, #spvTable thead, #spvTable tbody, #spvTable th, #spvTable td, #spvTable tr { display:block; }
+  #spvTable thead { display:none; }
+  #spvTable tr {
+    background:#fff;
+    border:1px solid #ddd;
+    border-radius:8px;
+    margin-bottom:12px;
+    box-shadow:0 1px 4px rgba(0,0,0,0.08);
+    padding:10px;
+  }
+  #spvTable td {
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    border:none;
+    border-bottom:1px solid #eee;
+    padding:6px 8px;
+    font-size:0.85rem;
+    word-break:break-word;
+  }
+  #spvTable td::before {
+    content: attr(data-label);
+    font-weight:600;
+    margin-bottom:4px;
+    color:#333;
+  }
+  #spvTable td:last-child { border-bottom:none; }
+  #spvTable td.action-cell {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap:6px;
+    flex-wrap:wrap;
+  }
+  #spvTable td.action-cell button {
+    flex:none;
+    min-width:60px;
+    font-size:0.8rem;
+    padding:4px 6px;
+  }
+  #spvTable td input,
+  #spvTable td textarea,
+  #spvTable td select { width: 100%; max-width:100%; font-size:0.85rem; }
+  #spvTable td input[type="file"] { width: 100%; max-width:120px; height:32px; font-size:0.85rem; }
+  #spvTable td img,
+  #spvTable td div.preview img { max-width:100%; height:auto; margin-top:4px; border-radius:4px; }
+}
+
 </style>
 
 
