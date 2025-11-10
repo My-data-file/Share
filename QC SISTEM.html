@@ -1122,9 +1122,6 @@ body {
   color: #333;
   outline: none;
 }
-@media (min-width: 769px) {
-  .hasil-container { max-width: 100%; padding: 0; }
-}
 
 /* ========== SPINNER ========== */
 .spinner {
@@ -1141,7 +1138,7 @@ body {
   100% { transform: rotate(360deg); }
 }
 
-/* ========== TABEL DASAR (DESKTOP) ========== */
+/* ========== TABEL (DESKTOP) ========== */
 .table-wrapper { width:100%; overflow-x:auto; }
 #spvTable {
   width:100%;
@@ -1171,7 +1168,6 @@ body {
 .save-btn:hover { background:#43a047; }
 .cancel-btn:hover { background:#e53935; }
 
-/* ========== EDIT INLINE ========== */
 #spvTable input[type="text"],
 #spvTable textarea,
 #spvTable select {
@@ -1233,56 +1229,78 @@ body {
 #spvTable td { vertical-align: middle; }
 #spvTable tr { height: 45px; }
 
-/* ========== MOBILE / CARD STYLE ========== */
-@media (max-width:768px){
-  #spvTable, #spvTable thead, #spvTable tbody, #spvTable th, #spvTable td, #spvTable tr { display:block; }
-  #spvTable thead { display:none; }
+/* ========== MOBILE / GRID CARD ========== */
+@media (max-width: 768px) {
+  #spvTable, #spvTable thead, #spvTable tbody, #spvTable th, #spvTable td, #spvTable tr {
+    display: block;
+  }
+  #spvTable thead { display: none; }
+
+  #spvTable tbody {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
   #spvTable tr {
-    background:#fff;
-    border:1px solid #ddd;
-    border-radius:8px;
-    margin-bottom:12px;
-    box-shadow:0 1px 4px rgba(0,0,0,0.08);
-    padding:10px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    padding: 10px 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-row-gap: 6px;
   }
+
   #spvTable td {
-    display:flex;
-    flex-direction:column;
-    align-items:flex-start;
-    border:none;
-    border-bottom:1px solid #eee;
-    padding:6px 8px;
-    font-size:0.85rem;
-    word-break:break-word;
+    border: none;
+    text-align: left;
+    font-size: 0.85rem;
+    padding: 4px 6px;
+    word-break: break-word;
   }
-  #spvTable td::before {
-    content: attr(data-label);
-    font-weight:600;
-    margin-bottom:4px;
-    color:#333;
+
+  #spvTable td:nth-child(odd) {
+    font-weight: 600;
+    color: #555;
   }
-  #spvTable td:last-child { border-bottom:none; }
+
+  #spvTable td:nth-child(even) {
+    color: #222;
+  }
+
   #spvTable td.action-cell {
-    flex-direction: row;
+    grid-column: span 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
     justify-content: flex-start;
-    gap:6px;
-    flex-wrap:wrap;
   }
+
   #spvTable td.action-cell button {
-    flex:none;
-    min-width:60px;
-    font-size:0.8rem;
-    padding:4px 6px;
+    flex: none;
+    min-width: 70px;
+    font-size: 0.8rem;
+    padding: 5px 8px;
   }
+
   #spvTable td input,
   #spvTable td textarea,
-  #spvTable td select { width: 100%; max-width:100%; font-size:0.85rem; }
-  #spvTable td input[type="file"] { width: 100%; max-width:120px; height:32px; font-size:0.85rem; }
-  #spvTable td img,
-  #spvTable td div.preview img { max-width:100%; height:auto; margin-top:4px; border-radius:4px; }
-}
+  #spvTable td select {
+    width: 100%;
+    max-width: 100%;
+    font-size: 0.85rem;
+  }
 
+  #spvTable td input[type="file"] {
+    width: 100%;
+    max-width: 140px;
+    height: 32px;
+  }
+}
 </style>
+
 
 
 
@@ -4053,3 +4071,4 @@ function goHome() {
 
 </body>
 </html>
+
