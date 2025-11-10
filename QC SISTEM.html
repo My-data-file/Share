@@ -343,7 +343,7 @@ nav button.active {
       cursor: pointer;
     ">QC</button>
 
-    <div id="headerTitle" style="font-size: 0.8rem;">System 5.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -1091,7 +1091,7 @@ nav button.active {
           </tr>
         </thead>
         <tbody>
-          <!-- Data diisi lewat JS -->
+          <!-- Data akan diisi melalui JS -->
         </tbody>
       </table>
     </div>
@@ -1133,13 +1133,15 @@ nav button.active {
   color:#fff;
 }
 
-/* Kolom foto agar tidak terpotong */
+/* Lebar kolom foto */
 #spvTable th:nth-child(6),
 #spvTable td:nth-child(6),
 #spvTable th:nth-child(8),
 #spvTable td:nth-child(8) {
   min-width:160px;
 }
+
+/* Input file */
 #spvTable input[type="file"] {
   width:100%;
   max-width:160px;
@@ -1149,29 +1151,27 @@ nav button.active {
   cursor:pointer;
 }
 
-/* Tombol di tabel */
+/* Tombol umum */
 #spvTable button {
   padding:4px 10px;
   border:none;
   border-radius:6px;
-  background:#00BCD4;
-  color:#fff;
   cursor:pointer;
   font-size:0.85rem;
   transition:0.2s;
-  margin:2px 4px; /* beri jarak antar tombol */
+  margin:2px 4px;
+  color:#fff;
 }
-#spvTable button:hover {
-  background:#0097a7;
-}
+#spvTable .btn-edit { background:#FFC107; color:#000; }
+#spvTable .btn-save { background:#4CAF50; }
+#spvTable .btn-cancel { background:#F44336; }
 
-/* Warna khusus untuk tombol batal */
-#spvTable .btn-cancel {
-  background:#f44336;
-}
-#spvTable .btn-cancel:hover {
-  background:#d32f2f;
-}
+#spvTable .btn-edit:hover { background:#ffb300; }
+#spvTable .btn-save:hover { background:#43a047; }
+#spvTable .btn-cancel:hover { background:#d32f2f; }
+
+/* Rata tengah semua kolom */
+#spvTable th, #spvTable td { text-align:center; }
 
 /* ========== Mode Mobile (Card Style) ========== */
 @media (max-width:768px){
@@ -1182,46 +1182,57 @@ nav button.active {
   #spvTable tr {
     background:#fff;
     border:1px solid #ddd;
-    border-radius:8px;
-    margin-bottom:10px;
-    box-shadow:0 1px 3px rgba(0,0,0,0.08);
-    padding:8px 10px;
+    border-radius:10px;
+    margin-bottom:12px;
+    box-shadow:0 1px 4px rgba(0,0,0,0.08);
+    padding:10px;
   }
   #spvTable td {
     border:none;
     display:flex;
+    flex-direction:column;
     align-items:flex-start;
-    justify-content:space-between;
-    font-size:0.85rem;
+    text-align:left;
     border-bottom:1px solid #eee;
     padding:6px 0;
-    text-align:left;
+    font-size:0.9rem;
     word-break:break-word;
-  }
-  #spvTable td::before {
-    content: attr(data-label) ": ";
-    font-weight:600;
-    color:#333;
-    flex:0 0 45%;
-    max-width:150px;
   }
   #spvTable td:last-child { border-bottom:none; }
 
-  /* File input di mobile full width */
+  /* Tambahkan label otomatis */
+  #spvTable td:nth-child(1)::before { content:"Tanggal:"; font-weight:600; color:#333; margin-bottom:3px; }
+  #spvTable td:nth-child(2)::before { content:"Nama Order:"; font-weight:600; color:#333; margin-bottom:3px; }
+  #spvTable td:nth-child(3)::before { content:"No KS:"; font-weight:600; color:#333; margin-bottom:3px; }
+  #spvTable td:nth-child(4)::before { content:"Jam:"; font-weight:600; color:#333; margin-bottom:3px; }
+  #spvTable td:nth-child(5)::before { content:"Keterangan Acuan:"; font-weight:600; color:#333; margin-bottom:3px; }
+  #spvTable td:nth-child(6)::before { content:"Foto Acuan:"; font-weight:600; color:#333; margin-bottom:3px; }
+  #spvTable td:nth-child(7)::before { content:"Keterangan Temuan:"; font-weight:600; color:#333; margin-bottom:3px; }
+  #spvTable td:nth-child(8)::before { content:"Foto Temuan:"; font-weight:600; color:#333; margin-bottom:3px; }
+  #spvTable td:nth-child(9)::before { content:"Nama QC:"; font-weight:600; color:#333; margin-bottom:3px; }
+  #spvTable td:nth-child(10)::before { content:"Proses:"; font-weight:600; color:#333; margin-bottom:3px; }
+
+  /* Input file menyesuaikan */
   #spvTable td input[type="file"] {
     max-width:100%;
+    height:auto;
   }
 
-  /* Tombol di mobile penuh tapi tetap jarak */
+  /* Tombol rapi di mobile */
   #spvTable td button {
     width:48%;
+    font-size:0.85rem;
+    padding:5px 8px;
     margin:4px 1%;
+    border-radius:6px;
   }
 
-  /* Tombol simpan dan batal berdampingan */
-  #spvTable td button.btn-save,
-  #spvTable td button.btn-cancel {
-    display:inline-block;
+  /* Rata tengah tombol Proses */
+  #spvTable td:nth-child(10) {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:6px;
   }
 }
 
@@ -1254,6 +1265,7 @@ body {
   font-family:'Segoe UI', sans-serif;
 }
 </style>
+
 
 
 
