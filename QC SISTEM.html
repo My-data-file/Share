@@ -343,7 +343,7 @@ nav button.active {
       cursor: pointer;
     ">QC</button>
 
-    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 3.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -1091,7 +1091,7 @@ nav button.active {
           </tr>
         </thead>
         <tbody>
-          <!-- Data akan diisi melalui JS -->
+          <!-- Data diisi melalui JS -->
         </tbody>
       </table>
     </div>
@@ -1161,14 +1161,15 @@ nav button.active {
   transition:0.25s;
   margin:3px;
   color:#fff;
+  box-shadow:0 2px 4px rgba(0,0,0,0.15);
 }
-#spvTable .btn-edit { background:#FFC107; color:#000; }
-#spvTable .btn-save { background:#4CAF50; }
-#spvTable .btn-cancel { background:#F44336; }
+#spvTable .btn-edit { background:linear-gradient(135deg,#FFC107,#FFD54F); color:#000; }
+#spvTable .btn-save { background:linear-gradient(135deg,#4CAF50,#66BB6A); }
+#spvTable .btn-cancel { background:linear-gradient(135deg,#F44336,#E57373); }
 
-#spvTable .btn-edit:hover { background:#ffb300; transform:translateY(-1px); }
-#spvTable .btn-save:hover { background:#43a047; transform:translateY(-1px); }
-#spvTable .btn-cancel:hover { background:#d32f2f; transform:translateY(-1px); }
+#spvTable .btn-edit:hover { transform:translateY(-1px); filter:brightness(1.1); }
+#spvTable .btn-save:hover { transform:translateY(-1px); filter:brightness(1.1); }
+#spvTable .btn-cancel:hover { transform:translateY(-1px); filter:brightness(1.1); }
 
 /* Rata tengah semua kolom */
 #spvTable th, #spvTable td { text-align:center; }
@@ -1205,7 +1206,7 @@ nav button.active {
   #spvTable td::before {
     font-weight:600;
     color:#333;
-    flex:0 0 45%;
+    flex:0 0 42%;
     text-align:left;
     padding-right:6px;
   }
@@ -1225,33 +1226,34 @@ nav button.active {
     max-width:100%;
   }
 
-  /* Ratakan isi kolom proses di tengah */
+  /* Tombol rapi & di tengah */
   #spvTable td:nth-child(10) {
-    display:flex;
     justify-content:center;
+    flex-direction:column;
     align-items:center;
-    flex-wrap:wrap;
-    gap:8px;
-    border:none;
+    border-top:1px dashed #ddd;
+    margin-top:6px;
+    padding-top:8px;
+    gap:6px;
   }
 
-  /* Tombol menarik & seimbang */
-  #spvTable td button {
-    min-width:70px;
-    padding:6px 10px;
-    margin:3px;
-    font-weight:500;
-    border-radius:8px;
-    box-shadow:0 2px 4px rgba(0,0,0,0.1);
+  #spvTable td:nth-child(10)::before {
+    content:"Proses:";
+    font-weight:600;
+    color:#333;
+    margin-bottom:6px;
+    align-self:flex-start;
   }
 
-  #spvTable .btn-edit { background:#FFC107; color:#000; }
-  #spvTable .btn-save { background:#4CAF50; color:#fff; }
-  #spvTable .btn-cancel { background:#F44336; color:#fff; }
-
-  #spvTable .btn-edit:hover { background:#ffb300; }
-  #spvTable .btn-save:hover { background:#43a047; }
-  #spvTable .btn-cancel:hover { background:#d32f2f; }
+  /* Tombol berjarak dan center */
+  #spvTable td:nth-child(10) button {
+    width:80%;
+    max-width:160px;
+    padding:6px 0;
+    font-size:0.9rem;
+    margin:4px auto;
+    display:block;
+  }
 }
 
 /* ========== Frame & Search ========== */
@@ -1283,6 +1285,7 @@ body {
   font-family:'Segoe UI', sans-serif;
 }
 </style>
+
 
 
 
@@ -4052,6 +4055,7 @@ function goHome() {
 
 </body>
 </html>
+
 
 
 
