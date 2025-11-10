@@ -343,7 +343,7 @@ nav button.active {
       cursor: pointer;
     ">QC</button>
 
-    <div id="headerTitle" style="font-size: 0.8rem;">System 5.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -1163,6 +1163,11 @@ nav button.active {
   font-weight: 600;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   transition: 0.25s;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 90px;
+  height: 36px;
 }
 
 /* ======== Warna Tombol Edit / Simpan / Batal ======== */
@@ -1193,6 +1198,20 @@ nav button.active {
 #spvTable .cancel-btn:hover {
   background: linear-gradient(135deg, #F44336, #E57373);
   transform: translateY(-2px);
+}
+
+/* ======== Tombol Center Presisi di Kolom Proses ======== */
+#spvTable td:last-child {
+  text-align: center;
+  vertical-align: middle;
+}
+#spvTable td:last-child button {
+  margin: 6px 8px;
+  transition: all 0.25s ease;
+}
+#spvTable td:last-child button:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 8px rgba(0,0,0,0.15);
 }
 
 /* Rata tengah semua kolom */
@@ -1256,7 +1275,7 @@ nav button.active {
     border-top:1px dashed #ddd;
     margin-top:6px;
     padding-top:8px;
-    gap:6px;
+    gap:8px;
     text-align:center;
   }
   #spvTable td:nth-child(10)::before {
@@ -1270,8 +1289,8 @@ nav button.active {
   /* Tombol di HP rapi dan sama ukuran */
   #spvTable td:nth-child(10) button {
     width:80%;
-    max-width:160px;
-    padding:6px 0;
+    max-width:180px;
+    height:38px;
     font-size:0.9rem;
     margin:4px auto;
     display:block;
@@ -1307,6 +1326,7 @@ body {
   font-family:'Segoe UI', sans-serif;
 }
 </style>
+
 
 
 
@@ -4076,6 +4096,7 @@ function goHome() {
 
 </body>
 </html>
+
 
 
 
