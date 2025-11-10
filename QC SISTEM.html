@@ -343,7 +343,7 @@ nav button.active {
       cursor: pointer;
     ">QC</button>
 
-    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System v1.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -1073,7 +1073,7 @@ nav button.active {
       <p style="font-size:0.9rem; color:#555;">Memuat Data SPV</p>
     </div>
 
-    <!-- Tabel Hasil -->
+    <!-- Tabel -->
     <div class="table-wrapper">
       <table id="spvTable" border="1">
         <thead>
@@ -1090,184 +1090,153 @@ nav button.active {
             <th>Proses</th>
           </tr>
         </thead>
-        <tbody>
-          <!-- Data akan diisi melalui JS -->
-        </tbody>
+        <tbody></tbody>
       </table>
     </div>
   </div>
 </div>
 
 <style>
-/* ========== Spinner ========== */
-.spinner {
-  width: 28px;
-  height: 28px;
-  border: 3px solid #ddd;
-  border-top: 3px solid #00BCD4;
-  border-radius: 50%;
-  margin: 0 auto;
-  animation: spin 0.8s linear infinite;
-}
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* ========== Tabel Dasar (Desktop) ========== */
-.table-wrapper { width:100%; overflow-x:auto; }
-#spvTable {
-  width:100%;
-  border-collapse:collapse;
-  font-size:0.9rem;
-  background:#fff;
-}
-#spvTable th, #spvTable td {
-  border:1px solid #ddd;
-  padding:8px 10px;
-  text-align:center;
-  vertical-align:middle;
-}
-#spvTable thead {
-  background:#00BCD4;
-  color:#fff;
-}
-
-/* Lebar kolom foto */
-#spvTable th:nth-child(6),
-#spvTable td:nth-child(6),
-#spvTable th:nth-child(8),
-#spvTable td:nth-child(8) {
-  min-width:160px;
-}
-
-/* Input file */
-#spvTable input[type="file"] {
-  width:100%;
-  max-width:160px;
-  font-size:0.85rem;
-  padding:4px;
-  box-sizing:border-box;
-  cursor:pointer;
-}
-
-/* Tombol umum */
-#spvTable button {
-  padding:4px 10px;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-  font-size:0.85rem;
-  transition:0.2s;
-  margin:2px 4px;
-  color:#fff;
-}
-#spvTable .btn-edit { background:#FFC107; color:#000; }
-#spvTable .btn-save { background:#4CAF50; }
-#spvTable .btn-cancel { background:#F44336; }
-
-#spvTable .btn-edit:hover { background:#ffb300; }
-#spvTable .btn-save:hover { background:#43a047; }
-#spvTable .btn-cancel:hover { background:#d32f2f; }
-
-/* Rata tengah semua kolom */
-#spvTable th, #spvTable td { text-align:center; }
-
-/* ========== Mode Mobile (Card Style) ========== */
-@media (max-width:768px){
-  #spvTable, #spvTable thead, #spvTable tbody, #spvTable th, #spvTable td, #spvTable tr {
-    display:block;
+  /* ========== Spinner ========== */
+  .spinner {
+    width: 28px;
+    height: 28px;
+    border: 3px solid #ddd;
+    border-top: 3px solid #00BCD4;
+    border-radius: 50%;
+    margin: 0 auto;
+    animation: spin 0.8s linear infinite;
   }
-  #spvTable thead { display:none; }
-  #spvTable tr {
-    background:#fff;
-    border:1px solid #ddd;
-    border-radius:10px;
-    margin-bottom:12px;
-    box-shadow:0 1px 4px rgba(0,0,0,0.08);
-    padding:10px;
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
-  #spvTable td {
-    border:none;
-    display:flex;
-    flex-direction:column;
-    align-items:flex-start;
-    text-align:left;
-    border-bottom:1px solid #eee;
-    padding:6px 0;
+
+  /* ========== Tabel (Desktop) ========== */
+  .table-wrapper { width:100%; overflow-x:auto; }
+  #spvTable {
+    width:100%;
+    border-collapse:collapse;
     font-size:0.9rem;
-    word-break:break-word;
+    background:#fff;
   }
-  #spvTable td:last-child { border-bottom:none; }
-
-  /* Tambahkan label otomatis */
-  #spvTable td:nth-child(1)::before { content:"Tanggal:"; font-weight:600; color:#333; margin-bottom:3px; }
-  #spvTable td:nth-child(2)::before { content:"Nama Order:"; font-weight:600; color:#333; margin-bottom:3px; }
-  #spvTable td:nth-child(3)::before { content:"No KS:"; font-weight:600; color:#333; margin-bottom:3px; }
-  #spvTable td:nth-child(4)::before { content:"Jam:"; font-weight:600; color:#333; margin-bottom:3px; }
-  #spvTable td:nth-child(5)::before { content:"Keterangan Acuan:"; font-weight:600; color:#333; margin-bottom:3px; }
-  #spvTable td:nth-child(6)::before { content:"Foto Acuan:"; font-weight:600; color:#333; margin-bottom:3px; }
-  #spvTable td:nth-child(7)::before { content:"Keterangan Temuan:"; font-weight:600; color:#333; margin-bottom:3px; }
-  #spvTable td:nth-child(8)::before { content:"Foto Temuan:"; font-weight:600; color:#333; margin-bottom:3px; }
-  #spvTable td:nth-child(9)::before { content:"Nama QC:"; font-weight:600; color:#333; margin-bottom:3px; }
-  #spvTable td:nth-child(10)::before { content:"Proses:"; font-weight:600; color:#333; margin-bottom:3px; }
-
-  /* Input file menyesuaikan */
-  #spvTable td input[type="file"] {
-    max-width:100%;
-    height:auto;
+  #spvTable th, #spvTable td {
+    border:1px solid #ddd;
+    padding:8px 10px;
+    text-align:center;
+    vertical-align:middle;
+  }
+  #spvTable thead {
+    background:#00BCD4;
+    color:#fff;
   }
 
-  /* Tombol rapi di mobile */
-  #spvTable td button {
-    width:48%;
+  /* Lebar kolom foto */
+  #spvTable th:nth-child(6),
+  #spvTable td:nth-child(6),
+  #spvTable th:nth-child(8),
+  #spvTable td:nth-child(8) {
+    width: 160px;
+  }
+
+  /* Tombol */
+  .btn {
+    padding:6px 10px;
     font-size:0.85rem;
-    padding:5px 8px;
-    margin:4px 1%;
+    border:none;
     border-radius:6px;
+    color:#fff;
+    cursor:pointer;
+    margin:0 3px;
+    transition:0.2s;
+  }
+  .btn-edit { background:#2196F3; }
+  .btn-edit:hover { background:#1976D2; }
+  .btn-save { background:#4CAF50; }
+  .btn-save:hover { background:#388E3C; }
+  .btn-cancel { background:#f44336; }
+  .btn-cancel:hover { background:#d32f2f; }
+
+  /* ========== Mode Mobile (Grid Card) ========== */
+  @media (max-width:768px){
+    #spvTable, #spvTable thead, #spvTable tbody, #spvTable th, #spvTable td, #spvTable tr {
+      display:block;
+    }
+    #spvTable thead { display:none; }
+    #spvTable tr {
+      background:#fff;
+      border:1px solid #ddd;
+      border-radius:10px;
+      margin-bottom:14px;
+      box-shadow:0 1px 4px rgba(0,0,0,0.08);
+      padding:12px 14px;
+    }
+    #spvTable td {
+      border:none;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:0.9rem;
+      padding:6px 0;
+      border-bottom:1px solid #eee;
+    }
+    #spvTable td::before {
+      content: attr(data-label);
+      font-weight:600;
+      color:#333;
+      margin-right:10px;
+      flex:0 0 120px;
+      text-align:left;
+    }
+    #spvTable td:last-child { border-bottom:none; }
+
+    /* Tombol dalam card */
+    .btn {
+      flex:1;
+      margin:4px 2px;
+      padding:6px 0;
+      font-size:0.8rem;
+      border-radius:6px;
+      text-align:center;
+    }
+    .btn-group {
+      display:flex;
+      justify-content:center;
+      gap:6px;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
   }
 
-  /* Rata tengah tombol Proses */
-  #spvTable td:nth-child(10) {
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:6px;
+  /* ========== Container & Search ========== */
+  .hasil-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 10px 20px;
+    box-sizing: border-box;
   }
-}
+  .search-wrapper {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  .search-wrapper input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1.5px solid #9c27b0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #333;
+    outline: none;
+  }
+  @media (min-width: 769px) {
+    .hasil-container { max-width: 100%; padding: 0; }
+  }
 
-/* ========== Frame & Search ========== */
-.hasil-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 0 10px 20px;
-  box-sizing: border-box;
-}
-.search-wrapper {
-  width: 100%;
-  margin-bottom: 16px;
-}
-.search-wrapper input {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1.5px solid #9c27b0;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  color: #333;
-  outline: none;
-}
-@media (min-width: 769px) {
-  .hasil-container { max-width: 100%; padding: 0; }
-}
-
-body {
-  background:#f5f7fa;
-  font-family:'Segoe UI', sans-serif;
-}
+  body {
+    background:#f5f7fa;
+    font-family:'Segoe UI', sans-serif;
+  }
 </style>
-
-
-
 
 
 
@@ -4037,3 +4006,4 @@ function goHome() {
 
 </body>
 </html>
+
