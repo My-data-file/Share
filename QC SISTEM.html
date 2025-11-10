@@ -343,7 +343,7 @@ nav button.active {
       cursor: pointer;
     ">QC</button>
 
-    <div id="headerTitle" style="font-size: 0.8rem;">System 3.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 5.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -1153,26 +1153,47 @@ nav button.active {
 
 /* Tombol umum */
 #spvTable button {
-  padding:5px 10px;
+  padding:6px 12px;
   border:none;
   border-radius:6px;
   cursor:pointer;
   font-size:0.85rem;
-  transition:0.25s;
+  transition:all 0.25s ease;
   margin:3px;
   color:#fff;
-  box-shadow:0 2px 4px rgba(0,0,0,0.15);
+  font-weight:600;
 }
-#spvTable .btn-edit { background:linear-gradient(135deg,#FFC107,#FFD54F); color:#000; }
-#spvTable .btn-save { background:linear-gradient(135deg,#4CAF50,#66BB6A); }
-#spvTable .btn-cancel { background:linear-gradient(135deg,#F44336,#E57373); }
 
-#spvTable .btn-edit:hover { transform:translateY(-1px); filter:brightness(1.1); }
-#spvTable .btn-save:hover { transform:translateY(-1px); filter:brightness(1.1); }
-#spvTable .btn-cancel:hover { transform:translateY(-1px); filter:brightness(1.1); }
+/* Warna tombol */
+#spvTable .btn-edit {
+  background:linear-gradient(135deg,#FFD54F,#FFC107);
+  color:#222;
+}
+#spvTable .btn-save {
+  background:linear-gradient(135deg,#4CAF50,#2E7D32);
+}
+#spvTable .btn-cancel {
+  background:linear-gradient(135deg,#F44336,#D32F2F);
+}
 
-/* Rata tengah semua kolom */
-#spvTable th, #spvTable td { text-align:center; }
+/* Hover efek lembut */
+#spvTable .btn-edit:hover {
+  transform:translateY(-2px);
+  box-shadow:0 3px 6px rgba(255,193,7,0.4);
+}
+#spvTable .btn-save:hover {
+  transform:translateY(-2px);
+  box-shadow:0 3px 6px rgba(76,175,80,0.4);
+}
+#spvTable .btn-cancel:hover {
+  transform:translateY(-2px);
+  box-shadow:0 3px 6px rgba(244,67,54,0.4);
+}
+
+/* Kolom Proses rata tengah */
+#spvTable td:nth-child(10) {
+  text-align:center;
+}
 
 /* ========== Mode Mobile (Grid Card) ========== */
 @media (max-width:768px){
@@ -1285,8 +1306,6 @@ body {
   font-family:'Segoe UI', sans-serif;
 }
 </style>
-
-
 
 
 </section>
@@ -4055,6 +4074,7 @@ function goHome() {
 
 </body>
 </html>
+
 
 
 
