@@ -343,7 +343,7 @@ nav button.active {
       cursor: pointer;
     ">QC</button>
 
-    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 3.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -1054,6 +1054,67 @@ nav button.active {
       </div>
     </form>
   </div>
+
+<!-- ========== HASIL ========== -->
+<div id="spvHasilSection" style="display:none;">
+  <div class="hasil-container">
+    
+    <!-- Kolom Pencarian -->
+    <div class="search-wrapper">
+      <input 
+        type="text" 
+        id="spvSearch" 
+        placeholder="🔍 Tanggal / Order / No KS / QC / Proses">
+    </div>
+
+    <!-- Spinner Loading -->
+    <div id="spvLoading" style="display:none; text-align:center; padding:10px;">
+      <div class="spinner"></div>
+      <p style="font-size:0.9rem; color:#555;">Memuat Data SPV</p>
+    </div>
+
+<!-- ========== HASIL ========== -->
+<div id="spvHasilSection" style="display:none;">
+  <div class="hasil-container">
+    
+    <!-- Kolom Pencarian -->
+    <div class="search-wrapper">
+      <input 
+        type="text" 
+        id="spvSearch" 
+        placeholder="🔍 Tanggal / Order / No KS / QC / Proses">
+    </div>
+
+    <!-- Spinner Loading -->
+    <div id="spvLoading" style="display:none; text-align:center; padding:10px;">
+      <div class="spinner"></div>
+      <p style="font-size:0.9rem; color:#555;">Memuat Data SPV</p>
+    </div>
+
+    <!-- Tabel Hasil -->
+    <div class="table-wrapper">
+      <table id="spvTable" border="1">
+        <thead>
+          <tr>
+            <th>Tanggal</th>
+            <th>Nama Order</th>
+            <th>No KS</th>
+            <th>Jam</th>
+            <th>Keterangan Acuan</th>
+            <th>Foto Acuan</th>
+            <th>Keterangan Temuan</th>
+            <th>Foto Temuan</th>
+            <th>Nama QC</th>
+            <th>Proses</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Data diisi melalui JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
 <style>
 /* ========== Spinner ========== */
@@ -4037,9 +4098,6 @@ function goHome() {
 
 </body>
 </html>
-
-
-
 
 
 
