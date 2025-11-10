@@ -1585,6 +1585,67 @@ function jsonpGet(url, params = {}) {
   });
 }
 
+ // ===== SCROLL OTOMATIS SETELAH DASHBOARD DIBUKA =====
+function autoScrollDashboardMenu(menu) {
+  const sections = [
+    `section${menu}TO`,
+    `section${menu}Proses`,
+    `section${menu}Selesai`
+  ];
+
+  sections.forEach(id => {
+    const section = document.getElementById(id);
+    if (!section) return;
+
+    const observer = new MutationObserver(() => {
+      if (section.style.display !== 'none') {
+        const cards = section.querySelectorAll('.grid-card');
+        if (cards.length > 0) {
+          cards[cards.length - 1].scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+      }
+    });
+
+    observer.observe(section, { attributes: true, attributeFilter: ['style'] });
+  });
+}
+
+// panggil setelah DOM siap
+document.addEventListener('DOMContentLoaded', () => {
+  ['Finishing','Bapro','PA','Lem'].forEach(menu => autoScrollDashboardMenu(menu));
+});
+
+// ===== SCROLL OTOMATIS KE BAWAH SAAT TAB HASIL DIBUKA =====
+function scrollGridToBottom(menu) {
+  const container = document.getElementById(`grid${menu}`);
+  if (!container) return;
+  const cards = container.querySelectorAll('.grid-card');
+  if (cards.length === 0) return;
+  cards[cards.length - 1].scrollIntoView({ behavior: 'smooth', block: 'end' });
+}
+
+// Tambahkan di fungsi switchTab
+function switchTab(btn) {
+  const tabName = btn.dataset.tab;
+  if (!tabName) return;
+
+  // Hapus active class dari semua tab
+  btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  // Tampilkan konten tab
+  btn.parentElement.parentElement.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+  const content = document.getElementById(tabName);
+  if (content) content.classList.add('active');
+
+  // 🔹 Scroll otomatis jika tab hasil terbuka
+  ['Finishing','Bapro','PA','Lem'].forEach(menu => {
+    if (tabName === `hasil${menu}`) {
+      setTimeout(() => scrollGridToBottom(menu), 100);
+    }
+  });
+}
+  
 // ====================== GLOBAL STATE ======================
 let finishingItems = []; // array yang diambil dari sheet
 
@@ -3759,7 +3820,22 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// ====================== SCROLL OTOMATIS QC REGISTER ======================
+document.addEventListener('DOMContentLoaded', () => {
+  const tbody = document.querySelector('#spvTable tbody');
+  if (!tbody) return;
 
+  // Observer untuk scroll otomatis saat baris pertama muncul
+  const observer = new MutationObserver(() => {
+    const rows = tbody.querySelectorAll('tr');
+    if (rows.length) {
+      rows[rows.length - 1].scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+  });
+
+  observer.observe(tbody, { childList: true });
+});
+  
 </script>
 
 
@@ -3777,4 +3853,5 @@ function goHome() {
 
 </body>
 </html>
+
 
