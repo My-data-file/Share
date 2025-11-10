@@ -343,7 +343,7 @@ nav button.active {
       cursor: pointer;
     ">QC</button>
 
-    <div id="headerTitle" style="font-size: 0.8rem;">System v1.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -1091,7 +1091,7 @@ nav button.active {
           </tr>
         </thead>
         <tbody>
-          <!-- Data diisi dari JS -->
+          <!-- Data akan diisi melalui JS -->
         </tbody>
       </table>
     </div>
@@ -1166,9 +1166,9 @@ nav button.active {
 #spvTable .btn-save { background:#4CAF50; }
 #spvTable .btn-cancel { background:#F44336; }
 
-#spvTable .btn-edit:hover { background:#ffb300; transform:scale(1.05); }
-#spvTable .btn-save:hover { background:#43a047; transform:scale(1.05); }
-#spvTable .btn-cancel:hover { background:#d32f2f; transform:scale(1.05); }
+#spvTable .btn-edit:hover { background:#ffb300; transform:translateY(-1px); }
+#spvTable .btn-save:hover { background:#43a047; transform:translateY(-1px); }
+#spvTable .btn-cancel:hover { background:#d32f2f; transform:translateY(-1px); }
 
 /* Rata tengah semua kolom */
 #spvTable th, #spvTable td { text-align:center; }
@@ -1179,7 +1179,6 @@ nav button.active {
     display:block;
   }
   #spvTable thead { display:none; }
-
   #spvTable tr {
     background:#fff;
     border:1px solid #ddd;
@@ -1206,7 +1205,7 @@ nav button.active {
   #spvTable td::before {
     font-weight:600;
     color:#333;
-    flex:0 0 42%;
+    flex:0 0 45%;
     text-align:left;
     padding-right:6px;
   }
@@ -1226,28 +1225,33 @@ nav button.active {
     max-width:100%;
   }
 
-  /* Tombol di tengah dan rapi */
+  /* Ratakan isi kolom proses di tengah */
   #spvTable td:nth-child(10) {
-    justify-content:center !important;
+    display:flex;
+    justify-content:center;
+    align-items:center;
     flex-wrap:wrap;
     gap:8px;
-  }
-  #spvTable td:nth-child(10)::before {
-    text-align:center;
-    width:100%;
-    display:block;
-    margin-bottom:6px;
+    border:none;
   }
 
+  /* Tombol menarik & seimbang */
   #spvTable td button {
-    width:90px;
-    text-align:center;
-    font-size:0.85rem;
-    padding:6px 8px;
+    min-width:70px;
+    padding:6px 10px;
+    margin:3px;
+    font-weight:500;
     border-radius:8px;
-    font-weight:600;
-    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+    box-shadow:0 2px 4px rgba(0,0,0,0.1);
   }
+
+  #spvTable .btn-edit { background:#FFC107; color:#000; }
+  #spvTable .btn-save { background:#4CAF50; color:#fff; }
+  #spvTable .btn-cancel { background:#F44336; color:#fff; }
+
+  #spvTable .btn-edit:hover { background:#ffb300; }
+  #spvTable .btn-save:hover { background:#43a047; }
+  #spvTable .btn-cancel:hover { background:#d32f2f; }
 }
 
 /* ========== Frame & Search ========== */
@@ -1279,6 +1283,7 @@ body {
   font-family:'Segoe UI', sans-serif;
 }
 </style>
+
 
 
 </section>
@@ -4047,6 +4052,7 @@ function goHome() {
 
 </body>
 </html>
+
 
 
 
