@@ -343,7 +343,7 @@ nav button.active {
       cursor: pointer;
     ">QC</button>
 
-    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
+    <div id="headerTitle" style="font-size: 0.8rem;">System 5.0</div>
   </div>
   <div id="headerTime">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -1163,11 +1163,6 @@ nav button.active {
   font-weight: 600;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   transition: 0.25s;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 90px;
-  height: 36px;
 }
 
 /* ======== Warna Tombol Edit / Simpan / Batal ======== */
@@ -1198,20 +1193,6 @@ nav button.active {
 #spvTable .cancel-btn:hover {
   background: linear-gradient(135deg, #F44336, #E57373);
   transform: translateY(-2px);
-}
-
-/* ======== Tombol Center Presisi di Kolom Proses ======== */
-#spvTable td:last-child {
-  text-align: center;
-  vertical-align: middle;
-}
-#spvTable td:last-child button {
-  margin: 6px 8px;
-  transition: all 0.25s ease;
-}
-#spvTable td:last-child button:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 0 8px rgba(0,0,0,0.15);
 }
 
 /* Rata tengah semua kolom */
@@ -1275,7 +1256,7 @@ nav button.active {
     border-top:1px dashed #ddd;
     margin-top:6px;
     padding-top:8px;
-    gap:8px;
+    gap:6px;
     text-align:center;
   }
   #spvTable td:nth-child(10)::before {
@@ -1289,8 +1270,8 @@ nav button.active {
   /* Tombol di HP rapi dan sama ukuran */
   #spvTable td:nth-child(10) button {
     width:80%;
-    max-width:180px;
-    height:38px;
+    max-width:160px;
+    padding:6px 0;
     font-size:0.9rem;
     margin:4px auto;
     display:block;
@@ -1326,7 +1307,6 @@ body {
   font-family:'Segoe UI', sans-serif;
 }
 </style>
-
 
 
 
@@ -3903,32 +3883,65 @@ function enableSPVEdit() {
         const cell = row.cells[i];
         const value = cell.textContent.trim();
 
+        // ===== Foto Acuan & Foto Temuan =====
         if (i === 5 || i === 7) {
+          // Bungkus input + nama file
+          const wrapper = document.createElement("div");
+          wrapper.style.display = "flex";
+          wrapper.style.flexDirection = "column";
+          wrapper.style.alignItems = "center";
+
+          // Custom input file
+          const label = document.createElement("label");
+          label.textContent = "📁 Pilih File";
+          label.style.display = "inline-block";
+          label.style.background = "#00bcd4";
+          label.style.color = "#fff";
+          label.style.padding = "6px 10px";
+          label.style.borderRadius = "6px";
+          label.style.cursor = "pointer";
+          label.style.fontSize = "13px";
+          label.style.textAlign = "center";
+          label.style.width = "fit-content";
+
           const fileInput = document.createElement("input");
           fileInput.type = "file";
           fileInput.accept = "image/*";
-          fileInput.style.width = "100%";
+          fileInput.style.display = "none";
 
-          const preview = document.createElement("div");
-          preview.style.marginTop = "4px";
-          preview.innerHTML = cell.innerHTML;
+          // Nama file di bawah tombol
+          const fileName = document.createElement("div");
+          fileName.style.fontSize = "12px";
+          fileName.style.color = "#555";
+          fileName.style.marginTop = "6px";
+          fileName.style.wordBreak = "break-word";
+          fileName.style.textAlign = "center";
 
-          fileInput.onchange = e => {
+          fileInput.addEventListener("change", (e) => {
             const file = e.target.files[0];
-            if (file) preview.innerHTML = `📷 ${file.name}`;
-          };
+            fileName.textContent = file ? file.name : "";
+          });
+
+          label.onclick = () => fileInput.click();
+
+          wrapper.appendChild(label);
+          wrapper.appendChild(fileInput);
+          wrapper.appendChild(fileName);
 
           cell.innerHTML = "";
-          cell.appendChild(fileInput);
-          cell.appendChild(preview);
-        } else if (i === 4 || i === 6) {
+          cell.appendChild(wrapper);
+        } 
+        // ===== Keterangan =====
+        else if (i === 4 || i === 6) {
           const textarea = document.createElement("textarea");
           textarea.value = value;
           textarea.rows = 2;
           textarea.style.width = "100%";
           cell.innerHTML = "";
           cell.appendChild(textarea);
-        } else {
+        } 
+        // ===== Input teks biasa =====
+        else {
           const input = document.createElement("input");
           input.type = "text";
           input.value = value;
@@ -3938,14 +3951,19 @@ function enableSPVEdit() {
         }
       }
 
+      // ===== Tombol aksi =====
       const aksiCell = row.cells[10];
-      aksiCell.innerHTML = `<button class="save-btn">💾 Simpan</button> <button class="cancel-btn">❌ Batal</button>`;
+      aksiCell.innerHTML = `
+        <button class="save-btn">💾 Simpan</button>
+        <button class="cancel-btn">❌ Batal</button>
+      `;
 
       const spinner = document.createElement("span");
       spinner.innerHTML = " ⏳ Menyimpan...";
       spinner.style.display = "none";
       aksiCell.appendChild(spinner);
 
+      // ===== Simpan perubahan =====
       aksiCell.querySelector(".save-btn").onclick = async () => {
         if (!confirm("Apakah yakin ingin menyimpan perubahan ini?")) return;
 
@@ -3959,22 +3977,25 @@ function enableSPVEdit() {
           ket1: row.cells[6].querySelector("textarea")?.value || row.cells[6].textContent,
           namaQC: row.cells[8].querySelector("input")?.value || row.cells[8].textContent,
           proses: row.cells[9].querySelector("input")?.value || row.cells[9].textContent,
-          foto: row.cells[5].querySelector("input")?.files[0] ? await fileToBase64(row.cells[5].querySelector("input").files[0]) : null,
-          foto1: row.cells[7].querySelector("input")?.files[0] ? await fileToBase64(row.cells[7].querySelector("input").files[0]) : null
+          foto: row.cells[5].querySelector("input")?.files[0]
+            ? await fileToBase64(row.cells[5].querySelector("input").files[0])
+            : null,
+          foto1: row.cells[7].querySelector("input")?.files[0]
+            ? await fileToBase64(row.cells[7].querySelector("input").files[0])
+            : null
         };
 
         fetch(WEBAPP_URL, {
           method: "POST",
-          body: new URLSearchParams({ payload: JSON.stringify({ sheet: "Register", action: "update", index: rowIndex, data: updated }) })
+          body: new URLSearchParams({
+            payload: JSON.stringify({ sheet: "Register", action: "update", index: rowIndex, data: updated })
+          })
         })
         .then(res => res.text())
         .then(() => {
           alert("✅ Data berhasil diperbarui!");
-    // ✅ Kembalikan tampilan ke semula tanpa nunggu reload
-    row._original.forEach((html, i) => (row.cells[i].innerHTML = html));
-
-    // ✅ Reaktifkan tombol edit agar bisa digunakan lagi
-    enableSPVEdit();
+          row._original.forEach((html, i) => (row.cells[i].innerHTML = html));
+          enableSPVEdit();
           loadSPV();
         })
         .catch(err => {
@@ -3984,14 +4005,12 @@ function enableSPVEdit() {
         .finally(() => spinner.style.display = "none");
       };
 
-aksiCell.querySelector(".cancel-btn").onclick = () => {
-  if (!confirm("Batalkan edit? Semua perubahan akan hilang!")) return;
-  row._original.forEach((html, i) => (row.cells[i].innerHTML = html));
-
-  // ✅ Re-aktifkan tombol edit lagi
-  enableSPVEdit();
-};
-
+      // ===== Batal edit =====
+      aksiCell.querySelector(".cancel-btn").onclick = () => {
+        if (!confirm("Batalkan edit? Semua perubahan akan hilang!")) return;
+        row._original.forEach((html, i) => (row.cells[i].innerHTML = html));
+        enableSPVEdit();
+      };
     };
   });
 }
@@ -4096,7 +4115,6 @@ function goHome() {
 
 </body>
 </html>
-
 
 
 
