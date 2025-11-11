@@ -3886,13 +3886,11 @@ function enableSPVEdit() {
 
         // ===== Foto Acuan & Foto Temuan =====
         if (i === 5 || i === 7) {
-          // Bungkus input + nama file
           const wrapper = document.createElement("div");
           wrapper.style.display = "flex";
           wrapper.style.flexDirection = "column";
           wrapper.style.alignItems = "center";
 
-          // Custom input file
           const label = document.createElement("label");
           label.textContent = "📁 Pilih File";
           label.style.display = "inline-block";
@@ -3910,7 +3908,6 @@ function enableSPVEdit() {
           fileInput.accept = "image/*";
           fileInput.style.display = "none";
 
-          // Nama file di bawah tombol
           const fileName = document.createElement("div");
           fileName.style.fontSize = "12px";
           fileName.style.color = "#555";
@@ -3932,6 +3929,7 @@ function enableSPVEdit() {
           cell.innerHTML = "";
           cell.appendChild(wrapper);
         } 
+        
         // ===== Keterangan =====
         else if (i === 4 || i === 6) {
           const textarea = document.createElement("textarea");
@@ -3941,6 +3939,58 @@ function enableSPVEdit() {
           cell.innerHTML = "";
           cell.appendChild(textarea);
         } 
+
+        // ===== Nama QC (Dropdown) =====
+        else if (i === 8) {
+          const select = document.createElement("select");
+          select.style.width = "100%";
+          select.style.padding = "6px";
+          select.style.borderRadius = "6px";
+          select.style.border = "1px solid #ccc";
+          select.style.fontSize = "13px";
+
+          const options = [
+            "NANI", "ANJANI", "SUCI", "ANOM", "IRNA", "MARWAN",
+            "KIKI", "MARTINI", "KRESTIN", "ISMIE"
+          ];
+
+          options.forEach(opt => {
+            const option = document.createElement("option");
+            option.value = opt;
+            option.textContent = opt;
+            if (opt === value) option.selected = true;
+            select.appendChild(option);
+          });
+
+          cell.innerHTML = "";
+          cell.appendChild(select);
+        }
+
+        // ===== Proses (Dropdown) =====
+        else if (i === 9) {
+          const select = document.createElement("select");
+          select.style.width = "100%";
+          select.style.padding = "6px";
+          select.style.borderRadius = "6px";
+          select.style.border = "1px solid #ccc";
+          select.style.fontSize = "13px";
+
+          const options = [
+            "QC BAPRO", "QC CETAK", "QC FINISHING", "QC LEM", "RETUR"
+          ];
+
+          options.forEach(opt => {
+            const option = document.createElement("option");
+            option.value = opt;
+            option.textContent = opt;
+            if (opt === value) option.selected = true;
+            select.appendChild(option);
+          });
+
+          cell.innerHTML = "";
+          cell.appendChild(select);
+        }
+
         // ===== Input teks biasa =====
         else {
           const input = document.createElement("input");
@@ -3976,8 +4026,8 @@ function enableSPVEdit() {
           jam: row.cells[3].querySelector("input")?.value || row.cells[3].textContent,
           ket: row.cells[4].querySelector("textarea")?.value || row.cells[4].textContent,
           ket1: row.cells[6].querySelector("textarea")?.value || row.cells[6].textContent,
-          namaQC: row.cells[8].querySelector("input")?.value || row.cells[8].textContent,
-          proses: row.cells[9].querySelector("input")?.value || row.cells[9].textContent,
+          namaQC: row.cells[8].querySelector("select")?.value || row.cells[8].textContent,
+          proses: row.cells[9].querySelector("select")?.value || row.cells[9].textContent,
           foto: row.cells[5].querySelector("input")?.files[0]
             ? await fileToBase64(row.cells[5].querySelector("input").files[0])
             : null,
