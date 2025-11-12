@@ -321,8 +321,17 @@ select {
   overflow-x: auto;
   white-space: nowrap;
   scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch; /* efek geser halus iOS */
   width: 100%;
+}
+
+/* 🔽 Sembunyikan scrollbar di semua browser */
+.nav-inner {
+  scrollbar-width: none;          /* Firefox */
+  -ms-overflow-style: none;       /* IE & Edge lama */
+}
+.nav-inner::-webkit-scrollbar {   /* Chrome, Safari, Opera */
+  display: none;
 }
 
 /* ======================== Tombol Putih HD Modern ======================== */
@@ -388,7 +397,6 @@ select {
   }
 }
 </style>
-
 
 <!-- ======================== Main Section ======================== -->
 <main>
@@ -5004,6 +5012,7 @@ function goHome() {
 
 </body>
 </html>
+
 
 
 
