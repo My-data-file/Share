@@ -274,7 +274,7 @@ select {
     " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
       QC
     </button>
-    <div id="headerTitle" style="font-size: 0.85rem; color: #e0f7fa;">System 3.0</div>
+    <div id="headerTitle" style="font-size: 0.85rem; color: #e0f7fa;">System 1.0</div>
   </div>
   <div id="headerTime" style="text-align:right; font-size:0.8rem; color:#e0f7fa;">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -302,15 +302,16 @@ select {
   width: 100%;
   background: linear-gradient(to right, #0078D7, #1A86D1);
   display: flex;
-  justify-content: center;
+  justify-content: flex-start; /* ubah jadi flex-start supaya bisa scroll dari kiri */
   align-items: center;
   gap: 12px;
   height: 64px;
   z-index: 999;
-  padding: 0 10px;
-  overflow-x: auto;          /* bisa scroll di HP */
-  white-space: nowrap;       /* biar tombol tidak turun ke bawah */
+  padding: 0 14px;            /* tambah padding kiri-kanan biar tidak kepotong */
+  overflow-x: auto;           /* bisa scroll di HP */
+  white-space: nowrap;
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 .footer-nav::-webkit-scrollbar {
   display: none; /* sembunyikan scrollbar di mobile */
@@ -321,14 +322,14 @@ select {
 .toggle-btn {
   color: black;
   font-weight: 600;
-  padding: 10px 18px;        /* ukuran default */
+  padding: 10px 18px;
   border-radius: 8px;
   border: 1px solid #555;
   cursor: pointer;
   background: white;
   box-shadow: none;
   transition: all 0.25s ease;
-  flex-shrink: 0;            /* jangan mengecil saat layar sempit */
+  flex-shrink: 0;            /* biar tidak mengecil di layar sempit */
 }
 
 /* Hover efek */
@@ -351,18 +352,17 @@ select {
 /* ======================== Responsif ======================== */
 @media (max-width: 768px) {
   .nav-btn {
-    padding: 10px 14px;     /* sedikit kecil di HP */
+    padding: 10px 14px;
     font-size: 14px;
   }
 }
 @media (min-width: 1024px) {
   .nav-btn {
-    padding: 12px 22px;     /* lebih besar di laptop */
+    padding: 12px 22px;
     font-size: 15px;
   }
 }
 </style>
-
 
 
 <!-- ======================== Main Section ======================== -->
@@ -4979,6 +4979,7 @@ function goHome() {
 
 </body>
 </html>
+
 
 
 
