@@ -2169,8 +2169,8 @@ body {
 </section>
 
 
-<!-- ======================== Floating Chatbot 3D Button (Smaller Version) ======================== -->
-<div class="chatbot-wrapper" onclick="window.open('https://www.chatbase.co/chatbot-iframe/WQV6nYLIpvH1KdrwilMKh')">
+<!-- ======================== Floating Chatbot 3D Button (Password Protected) ======================== -->
+<div class="chatbot-wrapper" onclick="openChatbot()">
   <div class="chatbot-bg">
     <div class="bg-light"></div>
 
@@ -2190,6 +2190,17 @@ body {
     </div>
   </div>
 </div>
+
+<script>
+function openChatbot() {
+  const pass = prompt("Masukkan password untuk membuka Chatbot:");
+  if (pass === "spv123") {
+    window.open("https://www.chatbase.co/chatbot-iframe/WQV6nYLIpvH1KdrwilMKh", "_blank");
+  } else if (pass !== null) {
+    alert("Password salah! Akses ditolak.");
+  }
+}
+</script>
 
 <style>
 /* ===== Wrapper (diperkecil) ===== */
