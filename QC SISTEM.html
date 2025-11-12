@@ -1083,16 +1083,7 @@ select {
       pointer-events: none;
     "></span>
   </h4>
-  <button id="toggleLemTO" class="toggle-btn"
-    onclick="toggleSection('sectionLemTO', this)"
-    style="padding:2px 6px; font-size:0.8rem; height:32px;
-    background: linear-gradient(to bottom, #D8B4FE, #C084FC);
-    color:#000; border:none; border-radius:4px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    cursor:pointer;
-    transition: all 0.2s;">
-    Show
-  </button>
+  <button id="toggleLemTO" class="toggle-btn">Show</button>
 </div>
 <div id="sectionLemTO" style="display:none;">
   <input id="filterTOLem" type="text" placeholder="🔍 Filter TO" class="filter-input">
@@ -1119,16 +1110,7 @@ select {
       pointer-events: none;
     "></span>
   </h4>
-  <button id="toggleLemProses" class="toggle-btn"
-    onclick="toggleSection('sectionLemProses', this)"
-    style="padding:2px 6px; font-size:0.8rem; height:32px;
-    background: linear-gradient(to bottom, #E9D5FF, #BA68C8);
-    color:#000; border:none; border-radius:4px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    cursor:pointer;
-    transition: all 0.2s;">
-    Show
-  </button>
+  <button id="toggleLemProses" class="toggle-btn">Show</button>
 </div>
 <div id="sectionLemProses" style="display:none;">
   <input id="filterProsesLem" type="text" placeholder="🔍 Filter Proses" class="filter-input">
@@ -1155,16 +1137,7 @@ select {
       pointer-events: none;
     "></span>
   </h4>
-  <button id="toggleLemSelesai" class="toggle-btn"
-    onclick="toggleSection('sectionLemSelesai', this)"
-    style="padding:2px 6px; font-size:0.8rem; height:32px;
-    background: linear-gradient(to bottom, #F3E8FF, #C084FC);
-    color:#000; border:none; border-radius:4px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    cursor:pointer;
-    transition: all 0.2s;">
-    Show
-  </button>
+  <button id="toggleLemSelesai" class="toggle-btn">Show</button>
 </div>
 <div id="sectionLemSelesai" style="display:none;">
   <input id="filterSelesaiLem" type="text" placeholder="🔍 Filter Selesai" class="filter-input">
@@ -1172,6 +1145,7 @@ select {
 </div>
 
 <style>
+/* ===== Input & Grid ===== */
 .filter-input {
   width: 100%;
   max-width: 280px;
@@ -1193,22 +1167,27 @@ select {
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
   color: #000;
 }
+
+/* ===== Tombol Show/Hide Abu-abu Metalik Modern (Sama Finishing) ===== */
+.toggle-btn {
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  height: 32px;
+  background: linear-gradient(to bottom, #f0f0f0, #bdbdbd) !important;
+  color: #000 !important;
+  border: 1px solid #000 !important;
+  border-radius: 4px !important;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.25) !important;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s !important;
+}
+.toggle-btn:hover {
+  background: linear-gradient(to bottom, #ffffff, #d6d6d6) !important;
+  transform: translateY(-2px);
+}
 </style>
 
-<script>
-function toggleSection(id, btn) {
-  const section = document.getElementById(id);
-  if (section.style.display === "none" || section.style.display === "") {
-    section.style.display = "block";
-    btn.style.background = "linear-gradient(to bottom, #22c55e, #16a34a)"; // hijau
-    btn.style.color = "white";
-  } else {
-    section.style.display = "none";
-    btn.style.background = "linear-gradient(to bottom, #ef4444, #dc2626)"; // merah
-    btn.style.color = "white";
-  }
-}
-</script>
+
 
 
 
@@ -1572,7 +1551,7 @@ function toggleSection(id, btn) {
   <!-- Judul -->
   <h2 style="
     text-align:center; 
-    color:#fff; 
+    color:#000; 
     background: linear-gradient(to right, #9C27B0, #BA68C8); 
     font-size:1.2rem; 
     padding:6px 12px; 
@@ -1581,7 +1560,8 @@ function toggleSection(id, btn) {
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     border: 1px solid #000;
     position: relative;
-    overflow: hidden;">
+    overflow: hidden;
+  ">
     MENU QC LEM
     <span style="
       position: absolute;
@@ -1591,7 +1571,8 @@ function toggleSection(id, btn) {
       height: 50%;
       background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
       border-radius: 8px 8px 0 0;
-      pointer-events: none;"></span>
+      pointer-events: none;
+    "></span>
   </h2>
 
   <!-- Tabs -->
@@ -1634,48 +1615,49 @@ function toggleSection(id, btn) {
     <input type="text" placeholder="Cari..." oninput="filterLemGrid(this.value)">
     <div id="gridLem" class="grid-container"></div>
   </div>
-
 </section>
 
-<!-- ===== CSS Tab dan Style QC LEM ===== -->
+<!-- ===== CSS Tab dan Style QC LEM (Fix Ungu) ===== -->
 <style>
-/* Tab tombol */
+/* Tombol tab */
 .tab-btn {
   flex: 1;
   padding: 6px 0;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
-  border: 1px solid #000; /* outline hitam */
-  background: #e0e0e0 !important; /* tombol tidak aktif */
+  border: 1px solid #000 !important;
+  background: #e0e0e0 !important; /* default abu */
   color: #000 !important;
   transition: all 0.2s;
   text-align: center;
-  margin-right: 4px;
 }
 
 /* Tab aktif */
-.tab-btn.active {
-  background: linear-gradient(to right, #9C27B0, #BA68C8) !important; /* sama dengan judul */
+#qcLem .tab-btn.active {
+  background: linear-gradient(to right, #9C27B0, #BA68C8) !important;
   color: #fff !important;
-  border: 1px solid #000 !important; /* outline hitam */
+  border: 1px solid #000 !important;
+  background-color: #9C27B0 !important;
 }
 
 /* Hover tab tidak aktif */
-.tab-btn:not(.active):hover {
+#qcLem .tab-btn:not(.active):hover {
   background: #D18FE0 !important; /* ungu muda */
   color: #000 !important;
-  border: 1px solid #000 !important; /* outline hitam saat hover */
+  border: 1px solid #000 !important;
   transform: translateY(-1px);
   box-shadow: 0 2px 6px rgba(156,39,176,0.3);
 }
 
 /* Hilangkan outline default saat klik/fokus */
-.tab-btn:focus {
-  outline: none;
-  box-shadow: none;
+#qcLem .tab-btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }
 </style>
+
+
 
 
 
