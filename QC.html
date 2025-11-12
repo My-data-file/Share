@@ -233,75 +233,46 @@ select {
   justify-content: flex-start !important;
 }
 
-/* ======================== Footer Nav ======================== */
-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 64px;
-  background: var(--accent);
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  z-index: 999;
-  overflow-x: hidden; /* default: tidak scroll di desktop */
-}
-
-/* tombol menu */
-nav button {
-  flex: 1;
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius);
-  height: 36px;
-  line-height: 36px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.25s ease, transform 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-}
-
-nav button:hover,
-nav button.active {
-  background: var(--accent-2);
-  transform: translateY(-1px);
-}
-
-/* ======================== Responsif ======================== */
+/* ======================== Responsif Nav ======================== */
 @media (max-width: 768px) {
   nav {
-    justify-content: flex-start;     /* biar tombol ke kiri */
-    overflow-x: auto;                /* ✅ bisa scroll kanan kiri */
+    justify-content: flex-start;       /* tombol mulai dari kiri */
+    overflow-x: auto;                  /* bisa geser kanan kiri */
     overflow-y: hidden;
-    white-space: nowrap;             /* tombol sejajar */
+    white-space: nowrap;               /* tombol sejajar, tidak turun */
     gap: 8px;
     padding: 0 8px;
-    scrollbar-width: none;           /* hilangkan scrollbar Firefox */
+    scrollbar-width: none;             /* hilangkan scrollbar Firefox */
+    background: linear-gradient(to right, #0078D7, #1A86D1); /* tetap sesuai desktop */
   }
-  nav::-webkit-scrollbar { display: none; } /* hilangkan scrollbar Chrome */
+  nav::-webkit-scrollbar {
+    display: none;                     /* hilangkan scrollbar Chrome/Safari */
+  }
 
-  nav button {
-    flex: 0 0 auto;                 /* ✅ tombol tidak dipaksa sama lebar */
-    font-size: 0.8rem;
-    height: 34px;
-    min-width: 90px;                /* biar tetap enak dilihat */
-    padding: 0 12px;                /* sedikit ruang kiri-kanan */
-    white-space: nowrap;            /* teks tidak turun ke bawah */
+  nav button,
+  .nav-btn {
+    flex: 0 0 auto;                    /* tombol tidak dipaksa sama lebar */
+    font-size: 0.8rem;                 /* ukuran teks lebih kecil */
+    height: 38px;                      /* sedikit lebih tinggi agar mudah diklik */
+    min-width: 100px;                  /* ukuran minimum agar enak dilihat */
+    padding: 0 14px;                   /* ruang kiri-kanan */
+    white-space: nowrap;               /* teks tetap satu baris */
+    border-radius: 6px;
   }
 }
 
+/* Untuk layar sangat kecil (misal HP mini) */
 @media (max-width: 480px) {
   .grid-container {
     grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
     gap: 6px;
+  }
+
+  nav button,
+  .nav-btn {
+    font-size: 0.75rem;
+    min-width: 85px;
+    height: 34px;
   }
 }
 
@@ -345,7 +316,7 @@ nav button.active {
     " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
       QC
     </button>
-    <div id="headerTitle" style="font-size: 0.85rem; color: #e0f7fa;">System 3.0</div>
+    <div id="headerTitle" style="font-size: 0.85rem; color: #e0f7fa;">System 5.0</div>
   </div>
   <div id="headerTime" style="text-align:right; font-size:0.8rem; color:#e0f7fa;">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -1688,20 +1659,72 @@ nav button.active {
 <section id="qcSPV" class="card qc-section" style="display:none;">
 
   <h2 style="
-    text-align:center;
-    color:#fff;
-    background:#00BCD4;
-    font-size:1.2rem;
-    padding:6px 12px;
-    border-radius:8px;
-    margin-bottom:12px;">
+    text-align:center; 
+    color:#000; 
+    background: linear-gradient(to right, #00BCD4, #4DD0E1); 
+    font-size:1.2rem; 
+    padding:6px 12px; 
+    border-radius:8px; 
+    margin-bottom:12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: 1px solid #000;
+    position: relative;
+    overflow: hidden;
+  ">
     MENU QC REGISTER
+    <span style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius: 8px 8px 0 0;
+      pointer-events: none;
+    "></span>
   </h2>
 
-  <div class="tabs">
-    <button class="active" data-tab="spvInputSection" onclick="showSPVTab('input', this)">Inputan</button>
-    <button data-tab="spvHasilSection" onclick="showSPVTab('hasil', this)">Hasil</button>
+  <div class="tabs" style="display:flex; gap:8px; margin-bottom:10px;">
+    <button class="tab-btn active" data-tab="spvInputSection" onclick="showSPVTab('input', this)">Inputan</button>
+    <button class="tab-btn" data-tab="spvHasilSection" onclick="showSPVTab('hasil', this)">Hasil</button>
   </div>
+
+
+
+<style>
+/* ========== Tab Button QC SPV (Cyan) ========== */
+.tab-btn {
+  flex: 1;
+  padding: 6px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #000 !important; /* ✅ outline hitam muncul juga di nonaktif */
+  background: #e0e0e0 !important; /* tombol nonaktif abu */
+  color: #000 !important;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.tab-btn.active {
+  background: linear-gradient(to right, #00BCD4, #4DD0E1) !important;
+  color: #fff !important;
+  border: 1px solid #000 !important;
+}
+
+.tab-btn:not(.active):hover {
+  background: #B2EBF2 !important;
+  color: #000 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0,188,212,0.3);
+}
+
+.tab-btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+</style>
+
 
   <!-- ========== INPUTAN ========== -->
   <div id="spvInputSection" style="margin-top:10px;">
