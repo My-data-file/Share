@@ -305,7 +305,6 @@ nav button.active {
   }
 }
 
-
   
 </style>
 
@@ -320,104 +319,273 @@ nav button.active {
   justify-content: space-between;
   align-items: center;
   padding: 14px 24px;
-  background: linear-gradient(90deg, #0ea5a4, #0369a1);
+  background: linear-gradient(to right, #0078D7, #1A86D1);
   color: white;
   font-family: 'Inter', sans-serif;
   font-weight: 500;
   letter-spacing: 0.3px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   position: sticky;
   top: 0;
   z-index: 1000;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.15);
 ">
   <div style="display: flex; align-items: center; gap: 10px;">
-    <!-- Logo QC sekarang jadi tombol Home -->
     <button onclick="goHome()" style="
-      background: white;
-      color: #0ea5a4;
+      background: linear-gradient(to bottom, #ffffff, #d1faff);
+      color: #0078D7;
       font-weight: 700;
       font-size: 1.2rem;
-      padding: 6px 10px;
+      padding: 6px 12px;
       border-radius: 10px;
       border: none;
       cursor: pointer;
-    ">QC</button>
-
-    <div id="headerTitle" style="font-size: 0.8rem;">System 1.0</div>
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+      QC
+    </button>
+    <div id="headerTitle" style="font-size: 0.85rem; color: #e0f7fa;">System 3.0</div>
   </div>
-  <div id="headerTime">
+  <div id="headerTime" style="text-align:right; font-size:0.8rem; color:#e0f7fa;">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
     <div class="jam">14:30</div>
   </div>
 </header>
 
-<!-- ======================== Container ======================== -->
-<div class="container">
 
-<!-- ======================== FOOTER NAV ======================== -->
-  <nav>
-    <button onclick="showMenu('dashboard')" class="active">DASBOARD</button>
-    <button onclick="showMenu('qcBapro')">QC BAPRO</button>
-    <button onclick="showMenu('qcPA')">QC CETAK</button>
-    <button onclick="showMenu('qcFinishing')">QC FINISHING</button>
-    <button onclick="showMenu('qcLem')">QC LEM</button>
-    <button onclick="showMenu('qcSPV')">QC REGISTER</button>
-  </nav>
+<!-- ======================== Footer Nav ======================== -->
+<nav style="
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(to right, #0078D7, #1A86D1);
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  align-items: center;
+  height: 64px;
+  z-index: 999;
+  padding: 0 10px;
+">
+  <button onclick="showMenu('dashboard')" class="nav-btn active">DASHBOARD</button>
+  <button onclick="showMenu('qcBapro')" class="nav-btn">QC BAPRO</button>
+  <button onclick="showMenu('qcPA')" class="nav-btn">QC CETAK</button>
+  <button onclick="showMenu('qcFinishing')" class="nav-btn">QC FINISHING</button>
+  <button onclick="showMenu('qcLem')" class="nav-btn">QC LEM</button>
+  <button onclick="showMenu('qcSPV')" class="nav-btn">QC REGISTER</button>
+</nav>
+
+<style>
+/* Tombol modern konsisten */
+.nav-btn,
+.toggle-btn {
+  color: black;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #555;
+  cursor: pointer;
+  background: white;
+  box-shadow: none;
+  transition: all 0.25s ease;
+}
+
+/* Hover efek */
+.nav-btn:hover,
+.toggle-btn:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+}
+
+/* Tombol aktif/terpilih (hijau halus) */
+.nav-btn.active,
+.toggle-btn.active {
+  background: linear-gradient(to bottom, #22c55e, #1fb05c);
+  color: white;
+  border: 1px solid #1aa34a;
+  box-shadow: 0 2px 6px rgba(34,197,94,0.25);
+}
+</style>
 
 
-  <!-- ======================== Main Section ======================== -->
-  <main>
+<!-- ======================== Main Section ======================== -->
+<main>
 
-    <!-- ======================== Dashboard ======================== -->
-    <section id="dashboard" class="card qc-section">
+
+<!-- ======================== Dashboard ======================== -->
+<section id="dashboard" class="card qc-section">
 
 <!-- ======================== QC BAPRO ======================== -->
-<h2 style="text-align:center; color:#fff; background:#dc2626; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
+<h2 style="
+  text-align:center; 
+  color:#000; 
+  background: linear-gradient(to right, #D32F2F, #F44336); 
+  font-size:1.2rem; 
+  padding:6px 12px; 
+  border-radius:8px; 
+  margin-bottom:12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
+">
   QC BAPRO
+  <span style="
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+    border-radius: 8px 8px 0 0;
+    pointer-events: none;
+  "></span>
 </h2>
 
 <!-- Info Total -->
 <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
-  <div style="flex:1; min-width:120px; background:rgba(220,38,38,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #FF5252, #FF1744); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Order<br><strong id="countBapro">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(220,38,38,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #FF6677, #FF3D5A); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total TO<br><strong id="countTOBapro">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(220,38,38,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #FF6F61, #FF3B30); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Proses<br><strong id="countProsesBapro">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(220,38,38,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #FF7F7F, #FF4444); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Selesai<br><strong id="countSelesaiBapro">0</strong>
   </div>
 </div>
 
-<!-- ========== TO ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">TO</h4>
-  <button id="toggleBaproTO" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<!-- ========== TO / Proses / Selesai Buttons ========== -->
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #FF5252, #FF1744); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    TO
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="toggleBaproTO" class="toggle-btn" style="
+    padding:2px 6px; font-size:0.8rem; height:32px;
+    background: linear-gradient(to bottom, #FF7F7F, #FF3B3B);
+    color:#000; border:none; border-radius:4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    cursor:pointer;
+    transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
 </div>
+
 <div id="sectionBaproTO" style="display:none;">
   <input id="filterTOBapro" type="text" placeholder="🔍 Filter TO" class="filter-input">
   <div id="dashboardBaproTO" class="grid-container"></div>
 </div>
 
-<!-- ========== PROSES ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">Proses</h4>
-  <button id="toggleBaproProses" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #FF6F61, #FF3B30); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    Proses
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="toggleBaproProses" class="toggle-btn" style="
+    padding:2px 6px; font-size:0.8rem; height:32px;
+    background: linear-gradient(to bottom, #FF8C8C, #FF4C4C);
+    color:#000; border:none; border-radius:4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    cursor:pointer;
+    transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
 </div>
+
 <div id="sectionBaproProses" style="display:none;">
   <input id="filterProsesBapro" type="text" placeholder="🔍 Filter Proses" class="filter-input">
   <div id="dashboardBaproProses" class="grid-container"></div>
 </div>
 
-<!-- ========== SELESAI ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">Selesai</h4>
-  <button id="toggleBaproSelesai" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #FF7F7F, #FF4444); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    Selesai
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="toggleBaproSelesai" class="toggle-btn" style="
+    padding:2px 6px; font-size:0.8rem; height:32px;
+    background: linear-gradient(to bottom, #FF9A9A, #FF5555);
+    color:#000; border:none; border-radius:4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    cursor:pointer;
+    transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
 </div>
+
 <div id="sectionBaproSelesai" style="display:none;">
   <input id="filterSelesaiBapro" type="text" placeholder="🔍 Filter Selesai" class="filter-input">
   <div id="dashboardBaproSelesai" class="grid-container"></div>
@@ -443,34 +611,116 @@ nav button.active {
   border-radius: 8px;
   padding: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  color: #000; /* teks card hitam agar seragam */
+}
+.toggle-btn.active {
+  background: linear-gradient(to bottom, #22c55e, #1fb05c);
+  color: white;
+  border: 1px solid #1aa34a;
+  box-shadow: 0 2px 6px rgba(34,197,94,0.25);
 }
 </style>
 
+
+
 <!-- ======================== QC CETAK ======================== -->
-<h2 style="text-align:center; color:#fff; background:#ff9800; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
+<h2 style="
+  text-align:center; 
+  color:#000; 
+  background: linear-gradient(to right, #FF9800, #FFB74D); 
+  font-size:1.2rem; 
+  padding:6px 12px; 
+  border-radius:8px; 
+  margin-bottom:12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
+">
   QC CETAK
+  <span style="
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+    border-radius: 8px 8px 0 0;
+    pointer-events: none;
+  "></span>
 </h2>
 
 <!-- Info Total -->
 <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
-  <div style="flex:1; min-width:120px; background:rgba(255,152,0,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #FFC870, #FFB74D); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Order<br><strong id="countPA">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(255,152,0,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #FFD187, #FFB85C); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total TO<br><strong id="countTOPA">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(255,152,0,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #FFC080, #FFB266); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Proses<br><strong id="countProsesPA">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(255,152,0,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #FFD090, #FFBF70); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Selesai<br><strong id="countSelesaiPA">0</strong>
   </div>
 </div>
 
 <!-- ========== TO ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">TO</h4>
-  <button id="togglePATO" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #FFB74D, #FF9800); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    TO
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="togglePATO" class="toggle-btn" style="
+    padding:2px 6px; font-size:0.8rem; height:32px;
+    background: linear-gradient(to bottom, #FFCC80, #FFA726);
+    color:#000; border:none; border-radius:4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    cursor:pointer;
+    transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
 </div>
 <div id="sectionPATO" style="display:none;">
   <input id="filterPATO" type="text" placeholder="🔍 Filter TO" class="filter-input">
@@ -478,9 +728,33 @@ nav button.active {
 </div>
 
 <!-- ========== PROSES ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">Proses</h4>
-  <button id="togglePAProses" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #FFB266, #FF9933); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    Proses
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="togglePAProses" class="toggle-btn" style="
+    padding:2px 6px; font-size:0.8rem; height:32px;
+    background: linear-gradient(to bottom, #FFD090, #FFB266);
+    color:#000; border:none; border-radius:4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    cursor:pointer;
+    transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
 </div>
 <div id="sectionPAProses" style="display:none;">
   <input id="filterPAProses" type="text" placeholder="🔍 Filter Proses" class="filter-input">
@@ -488,9 +762,33 @@ nav button.active {
 </div>
 
 <!-- ========== SELESAI ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">Selesai</h4>
-  <button id="togglePASelesai" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #FFD090, #FFB266); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    Selesai
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="togglePASelesai" class="toggle-btn" style="
+    padding:2px 6px; font-size:0.8rem; height:32px;
+    background: linear-gradient(to bottom, #FFE0B0, #FFCC80);
+    color:#000; border:none; border-radius:4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    cursor:pointer;
+    transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
 </div>
 <div id="sectionPASelesai" style="display:none;">
   <input id="filterPASelesai" type="text" placeholder="🔍 Filter Selesai" class="filter-input">
@@ -517,35 +815,111 @@ nav button.active {
   border-radius: 8px;
   padding: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  color: #000; /* teks card hitam agar seragam */
 }
 </style>
 
 
+
+
 <!-- ======================== QC FINISHING ======================== -->
-<h2 style="text-align:center; color:#fff; background:#22c55e; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
+<h2 style="
+  text-align:center; 
+  color:#000; 
+  background: linear-gradient(to right, #22C55E, #4ADE80); 
+  font-size:1.2rem; 
+  padding:6px 12px; 
+  border-radius:8px; 
+  margin-bottom:12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
+">
   QC FINISHING
+  <span style="
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+    border-radius: 8px 8px 0 0;
+    pointer-events: none;
+  "></span>
 </h2>
 
 <!-- Info Total -->
 <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
-  <div style="flex:1; min-width:120px; background:rgba(34,197,94,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #4ADE80, #22C55E); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Order<br><strong id="countFinishing">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(34,197,94,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #38D39F, #22C55E); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total TO<br><strong id="countTOFinishing">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(34,197,94,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #4EEA8C, #22C55E); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Proses<br><strong id="countProsesFinishing">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(34,197,94,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #6EE7B7, #22C55E); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Selesai<br><strong id="countSelesaiFinishing">0</strong>
   </div>
 </div>
 
 <!-- ========== TO ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">TO</h4>
-  <button id="toggleFinishingTO" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #4ADE80, #22C55E); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    TO
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="toggleFinishingTO" class="toggle-btn" style="
+    padding:2px 6px; font-size:0.8rem; height:32px;
+    background: linear-gradient(to bottom, #6EE7B7, #34D399);
+    color:#000; border:none; border-radius:4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    cursor:pointer;
+    transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
 </div>
 <div id="sectionFinishingTO" style="display:none;">
   <input id="filterFinishingTO" type="text" placeholder="🔍 Filter TO" class="filter-input">
@@ -553,9 +927,33 @@ nav button.active {
 </div>
 
 <!-- ========== PROSES ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">Proses</h4>
-  <button id="toggleFinishingProses" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #38D39F, #22C55E); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    Proses
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="toggleFinishingProses" class="toggle-btn" style="
+    padding:2px 6px; font-size:0.8rem; height:32px;
+    background: linear-gradient(to bottom, #4EEA8C, #22C55E);
+    color:#000; border:none; border-radius:4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    cursor:pointer;
+    transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
 </div>
 <div id="sectionFinishingProses" style="display:none;">
   <input id="filterFinishingProses" type="text" placeholder="🔍 Filter Proses" class="filter-input">
@@ -563,9 +961,33 @@ nav button.active {
 </div>
 
 <!-- ========== SELESAI ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">Selesai</h4>
-  <button id="toggleFinishingSelesai" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #6EE7B7, #22C55E); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    Selesai
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="toggleFinishingSelesai" class="toggle-btn" style="
+    padding:2px 6px; font-size:0.8rem; height:32px;
+    background: linear-gradient(to bottom, #86F2B0, #34D399);
+    color:#000; border:none; border-radius:4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    cursor:pointer;
+    transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
 </div>
 <div id="sectionFinishingSelesai" style="display:none;">
   <input id="filterFinishingSelesai" type="text" placeholder="🔍 Filter Selesai" class="filter-input">
@@ -592,34 +1014,110 @@ nav button.active {
   border-radius: 8px;
   padding: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  color: #000; /* teks card hitam agar seragam */
 }
 </style>
 
+
+
 <!-- ======================== QC LEM ======================== -->
-<h2 style="text-align:center; color:#fff; background:#9c27b0; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
+<h2 style="
+  text-align:center; 
+  color:#000; 
+  background: linear-gradient(to right, #9C27B0, #BA68C8); 
+  font-size:1.2rem; 
+  padding:6px 12px; 
+  border-radius:8px; 
+  margin-bottom:12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
+">
   QC LEM
+  <span style="
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+    border-radius: 8px 8px 0 0;
+    pointer-events: none;
+  "></span>
 </h2>
 
 <!-- Info Total -->
 <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
-  <div style="flex:1; min-width:120px; background:rgba(156,39,176,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #BA68C8, #9C27B0); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Order<br><strong id="countLem">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(156,39,176,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #C084FC, #9C27B0); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total TO<br><strong id="countTOLem">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(156,39,176,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #D8B4FE, #9C27B0); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Proses<br><strong id="countProsesLem">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(156,39,176,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #E9D5FF, #9C27B0); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Selesai<br><strong id="countSelesaiLem">0</strong>
   </div>
 </div>
 
 <!-- ========== TO ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">TO</h4>
-  <button id="toggleLemTO" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #C084FC, #9C27B0); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    TO
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="toggleLemTO" class="toggle-btn" style="
+    padding:2px 6px; font-size:0.8rem; height:32px;
+    background: linear-gradient(to bottom, #D8B4FE, #C084FC);
+    color:#000; border:none; border-radius:4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    cursor:pointer;
+    transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
 </div>
 <div id="sectionLemTO" style="display:none;">
   <input id="filterTOLem" type="text" placeholder="🔍 Filter TO" class="filter-input">
@@ -627,9 +1125,33 @@ nav button.active {
 </div>
 
 <!-- ========== PROSES ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">Proses</h4>
-  <button id="toggleLemProses" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #D8B4FE, #9C27B0); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    Proses
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="toggleLemProses" class="toggle-btn" style="
+    padding:2px 6px; font-size:0.8rem; height:32px;
+    background: linear-gradient(to bottom, #E9D5FF, #BA68C8);
+    color:#000; border:none; border-radius:4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    cursor:pointer;
+    transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
 </div>
 <div id="sectionLemProses" style="display:none;">
   <input id="filterProsesLem" type="text" placeholder="🔍 Filter Proses" class="filter-input">
@@ -637,9 +1159,33 @@ nav button.active {
 </div>
 
 <!-- ========== SELESAI ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">Selesai</h4>
-  <button id="toggleLemSelesai" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #E9D5FF, #BA68C8); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    Selesai
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="toggleLemSelesai" class="toggle-btn" style="
+    padding:2px 6px; font-size:0.8rem; height:32px;
+    background: linear-gradient(to bottom, #F3E8FF, #C084FC);
+    color:#000; border:none; border-radius:4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    cursor:pointer;
+    transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
 </div>
 <div id="sectionLemSelesai" style="display:none;">
   <input id="filterSelesaiLem" type="text" placeholder="🔍 Filter Selesai" class="filter-input">
@@ -666,24 +1212,48 @@ nav button.active {
   border-radius: 8px;
   padding: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  color: #000; /* teks card hitam agar seragam */
 }
 </style>
 
 
-    </section>
+
+</section>
 
 <!-- ======================== QC BAPRO ======================== -->
 <section id="qcBapro" class="card qc-section" style="display:none;">
 
-  <h2 style="text-align:center; color:#fff; background:#dc2626; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
+  <h2 style="
+    text-align:center; 
+    color:#fff; 
+    background: linear-gradient(to right, #D32F2F, #F44336); 
+    font-size:1.2rem; 
+    padding:6px 12px; 
+    border-radius:8px; 
+    margin-bottom:12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #000;">
     MENU QC BAPRO
+    <span style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius: 8px 8px 0 0;
+      pointer-events: none;"></span>
   </h2>
 
-  <div class="tabs">
-    <button class="active" data-tab="inputBapro" onclick="switchTab(this)">Inputan</button>
-    <button data-tab="hasilBapro" onclick="switchTab(this)">Hasil</button>
+  <!-- ===== Tabs ===== -->
+  <div class="tabs" style="display:flex; gap:8px; margin-bottom:10px;">
+    <button class="tab-btn bapro active" data-tab="inputBapro" onclick="switchTab(this)">Inputan</button>
+    <button class="tab-btn bapro" data-tab="hasilBapro" onclick="switchTab(this)">Hasil</button>
   </div>
 
+  <!-- ===== Inputan ===== -->
   <div id="inputBapro" class="tab-content active">
     <div class="form-group"><input type="text" id="baproNama" placeholder="Nama Order"></div>
     <div class="form-group">
@@ -711,9 +1281,9 @@ nav button.active {
     </div>
     <div class="form-group">
       <select id="baproUpdate">
-  <option value="Proses">Proses</option>
-  <option value="Selesai">Selesai</option>
-  <option value="TO">TO</option>
+        <option value="Proses">Proses</option>
+        <option value="Selesai">Selesai</option>
+        <option value="TO">TO</option>
       </select>
     </div>
     <div class="form-group">
@@ -722,24 +1292,89 @@ nav button.active {
     <div class="form-group"><button onclick="addBaproItem()">➕ Tambah</button></div>
   </div>
 
+  <!-- ===== Hasil ===== -->
   <div id="hasilBapro" class="tab-content">
     <input type="text" placeholder="Cari..." oninput="filterBaproGrid(this.value)">
     <div id="gridBapro" class="grid-container"></div>
   </div>
+
 </section>
 
-<!-- ======================== QC PA ======================== -->
+<!-- ===== CSS Tab dan Style QC BAPRO ===== -->
+<style>
+.tab-btn.bapro {
+  flex: 1;
+  padding: 6px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #000; /* outline hitam */
+  background: #e0e0e0 !important; /* tombol tidak aktif */
+  color: #000 !important;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+/* Tab aktif */
+.tab-btn.bapro.active {
+  background: #FF5252 !important; /* merah aktif */
+  color: #fff !important;
+  border: 1px solid #000 !important; /* outline hitam */
+}
+
+/* Hover tab tidak aktif */
+.tab-btn.bapro:not(.active):hover {
+  background: #FFB3B3 !important; /* merah muda */
+  color: #000 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(255,82,82,0.3);
+}
+
+/* Hilangkan outline default saat klik/fokus */
+.tab-btn.bapro:focus {
+  outline: none;
+  box-shadow: none;
+}
+</style>
+
+
+
+
+<!-- ======================== QC CETAK ======================== -->
 <section id="qcPA" class="card qc-section" style="display:none;">
 
-  <h2 style="text-align:center; color:#fff; background:#ff9800; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
+  <!-- Judul -->
+  <h2 style="
+    text-align:center; 
+    color:#000; 
+    background: linear-gradient(to right, #FF9800, #FFB74D); 
+    font-size:1.2rem; 
+    padding:6px 12px; 
+    border-radius:8px; 
+    margin-bottom:12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: 1px solid #000;
+    position: relative;
+    overflow: hidden;">
     MENU QC CETAK
+    <span style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius: 8px 8px 0 0;
+      pointer-events: none;"></span>
   </h2>
 
-  <div class="tabs">
-    <button class="active" data-tab="inputPA" onclick="switchTab(this)">Inputan</button>
-    <button data-tab="hasilPA" onclick="switchTab(this)">Hasil</button>
+  <!-- Tabs -->
+  <div class="tabs" style="display:flex; gap:8px; margin-bottom:10px;">
+    <button class="tab-btn cetak active" data-tab="inputPA" onclick="switchTab(this)">Inputan</button>
+    <button class="tab-btn cetak" data-tab="hasilPA" onclick="switchTab(this)">Hasil</button>
   </div>
 
+  <!-- Inputan -->
   <div id="inputPA" class="tab-content active">
     <div class="form-group"><input type="text" id="paNama" placeholder="Nama Order"></div>
     <div class="form-group"><input type="text" id="paNoKS" placeholder="No KS"></div>
@@ -768,9 +1403,9 @@ nav button.active {
     <div class="form-group">
       <select id="paUpdate">
         <option value="">Update</option>
-  <option value="Proses">Proses</option>
-  <option value="Selesai">Selesai</option>
-  <option value="TO">TO</option>
+        <option value="Proses">Proses</option>
+        <option value="Selesai">Selesai</option>
+        <option value="TO">TO</option>
       </select>
     </div>
     <div class="form-group">
@@ -779,24 +1414,88 @@ nav button.active {
     <div class="form-group"><button onclick="addPAItem()">➕ Tambah</button></div>
   </div>
 
+  <!-- Hasil -->
   <div id="hasilPA" class="tab-content">
     <input type="text" placeholder="Cari..." oninput="filterPAGrid(this.value)">
     <div id="gridPA" class="grid-container"></div>
   </div>
+
 </section>
+
+<!-- ===== CSS Tab dan Style QC CETAK ===== -->
+<style>
+.tab-btn.cetak {
+  flex: 1;
+  padding: 6px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #000; /* outline hitam */
+  background: #e0e0e0 !important; /* tombol tidak aktif */
+  color: #000 !important;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+/* Tab aktif */
+.tab-btn.cetak.active {
+  background: linear-gradient(to right, #FF9800, #FFB74D) !important;
+  color: #fff !important;
+  border: 1px solid #000 !important; /* outline hitam */
+}
+
+/* Hover tab tidak aktif */
+.tab-btn.cetak:not(.active):hover {
+  background: #FFD180 !important; /* orange muda */
+  color: #000 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(255,152,0,0.3);
+}
+
+/* Hilangkan outline default saat klik/fokus */
+.tab-btn.cetak:focus {
+  outline: none;
+  box-shadow: none;
+}
+</style>
+
+
 
 <!-- ======================== QC FINISHING ======================== -->
 <section id="qcFinishing" class="card qc-section" style="display:none;">
 
-  <h2 style="text-align:center; color:#fff; background:#22c55e; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
+  <!-- Judul -->
+  <h2 style="
+    text-align:center; 
+    color:#000; 
+    background: linear-gradient(to right, #22C55E, #4ADE80); 
+    font-size:1.2rem; 
+    padding:6px 12px; 
+    border-radius:8px; 
+    margin-bottom:12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: 1px solid #000;
+    position: relative;
+    overflow: hidden;">
     MENU QC FINISHING
+    <span style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius: 8px 8px 0 0;
+      pointer-events: none;"></span>
   </h2>
 
-  <div class="tabs">
-    <button class="active" data-tab="inputFinishing" onclick="switchTab(this)">Inputan</button>
-    <button data-tab="hasilFinishing" onclick="switchTab(this)">Hasil</button>
+  <!-- Tabs -->
+  <div class="tabs" style="display:flex; gap:8px; margin-bottom:10px;">
+    <button class="tab-btn finishing active" data-tab="inputFinishing" onclick="switchTab(this)">Inputan</button>
+    <button class="tab-btn finishing" data-tab="hasilFinishing" onclick="switchTab(this)">Hasil</button>
   </div>
 
+  <!-- Inputan -->
   <div id="inputFinishing" class="tab-content active">
     <div class="form-group"><input type="text" id="finishingNama" placeholder="Nama Order"></div>
     <div class="form-group"><input type="text" id="finishingNoKS" placeholder="No KS"></div>
@@ -813,9 +1512,9 @@ nav button.active {
     </div>
     <div class="form-group">
       <select id="finishingUpdate">
-  <option value="Proses">Proses</option>
-  <option value="Selesai">Selesai</option>
-  <option value="TO">TO</option>
+        <option value="Proses">Proses</option>
+        <option value="Selesai">Selesai</option>
+        <option value="TO">TO</option>
       </select>
     </div>
     <div class="form-group">
@@ -824,24 +1523,89 @@ nav button.active {
     <div class="form-group"><button onclick="addFinishingItem()">➕ Tambah</button></div>
   </div>
 
+  <!-- Hasil -->
   <div id="hasilFinishing" class="tab-content">
     <input type="text" placeholder="Cari..." oninput="filterFinishingGrid(this.value)">
     <div id="gridFinishing" class="grid-container"></div>
   </div>
+
 </section>
+
+<!-- ===== CSS Tab dan Style QC FINISHING ===== -->
+<style>
+.tab-btn.finishing {
+  flex: 1;
+  padding: 6px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #000; /* outline hitam */
+  background: #e0e0e0 !important; /* tombol tidak aktif */
+  color: #000 !important;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+/* Tab aktif FINISHING */
+.tab-btn.finishing.active {
+  background: linear-gradient(to right, #22C55E, #4ADE80) !important; /* hijau */
+  color: #fff !important;
+  border: 1px solid #000 !important; /* outline hitam */
+}
+
+/* Hover tab tidak aktif FINISHING */
+.tab-btn.finishing:not(.active):hover {
+  background: #86efac !important; /* hijau muda */
+  color: #000 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(34,197,94,0.3);
+}
+
+/* Hilangkan outline default saat klik/fokus */
+.tab-btn.finishing:focus {
+  outline: none;
+  box-shadow: none;
+}
+</style>
+
+
+
 
 <!-- ======================== QC LEM ======================== -->
 <section id="qcLem" class="card qc-section" style="display:none;">
 
-  <h2 style="text-align:center; color:#fff; background:#9c27b0; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
+  <!-- Judul -->
+  <h2 style="
+    text-align:center; 
+    color:#fff; 
+    background: linear-gradient(to right, #9C27B0, #BA68C8); 
+    font-size:1.2rem; 
+    padding:6px 12px; 
+    border-radius:8px; 
+    margin-bottom:12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: 1px solid #000;
+    position: relative;
+    overflow: hidden;">
     MENU QC LEM
+    <span style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius: 8px 8px 0 0;
+      pointer-events: none;"></span>
   </h2>
 
-  <div class="tabs">
-    <button class="active" data-tab="inputLem" onclick="switchTab(this)">Inputan</button>
-    <button data-tab="hasilLem" onclick="switchTab(this)">Hasil</button>
+  <!-- Tabs -->
+  <div class="tabs" style="display:flex; gap:8px; margin-bottom:10px;">
+    <button class="tab-btn active" data-tab="inputLem" onclick="switchTab(this)">Inputan</button>
+    <button class="tab-btn" data-tab="hasilLem" onclick="switchTab(this)">Hasil</button>
   </div>
 
+  <!-- Inputan -->
   <div id="inputLem" class="tab-content active">
     <div class="form-group"><input type="text" id="lemNama" placeholder="Nama Order"></div>
     <div class="form-group"><input type="text" id="lemNoKS" placeholder="No KS"></div>
@@ -859,9 +1623,9 @@ nav button.active {
     </div>
     <div class="form-group">
       <select id="lemUpdate">
-  <option value="Proses">Proses</option>
-  <option value="Selesai">Selesai</option>
-  <option value="TO">TO</option>
+        <option value="Proses">Proses</option>
+        <option value="Selesai">Selesai</option>
+        <option value="TO">TO</option>
       </select>
     </div>
     <div class="form-group">
@@ -870,11 +1634,55 @@ nav button.active {
     <div class="form-group"><button onclick="addLemItem()">➕ Tambah</button></div>
   </div>
 
+  <!-- Hasil -->
   <div id="hasilLem" class="tab-content">
     <input type="text" placeholder="Cari..." oninput="filterLemGrid(this.value)">
     <div id="gridLem" class="grid-container"></div>
   </div>
+
 </section>
+
+<!-- ===== CSS Tab dan Style QC LEM ===== -->
+<style>
+/* Tab tombol */
+.tab-btn {
+  flex: 1;
+  padding: 6px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #000; /* outline hitam */
+  background: #e0e0e0 !important; /* tombol tidak aktif */
+  color: #000 !important;
+  transition: all 0.2s;
+  text-align: center;
+  margin-right: 4px;
+}
+
+/* Tab aktif */
+.tab-btn.active {
+  background: linear-gradient(to right, #9C27B0, #BA68C8) !important; /* sama dengan judul */
+  color: #fff !important;
+  border: 1px solid #000 !important; /* outline hitam */
+}
+
+/* Hover tab tidak aktif */
+.tab-btn:not(.active):hover {
+  background: #D18FE0 !important; /* ungu muda */
+  color: #000 !important;
+  border: 1px solid #000 !important; /* outline hitam saat hover */
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(156,39,176,0.3);
+}
+
+/* Hilangkan outline default saat klik/fokus */
+.tab-btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+</style>
+
+
 
 <!-- ======================== QC SPV ======================== -->
 <section id="qcSPV" class="card qc-section" style="display:none;">
@@ -1056,149 +1864,266 @@ nav button.active {
     </form>
   </div>
 
-  <!-- ========== HASIL ========== -->
-  <div id="spvHasilSection" style="display:none;">
-    <div class="hasil-container">
-      
-      <!-- Kolom Pencarian -->
-      <div class="search-wrapper">
-        <input 
-          type="text" 
-          id="spvSearch" 
-          placeholder="🔍 Tanggal / Order / No KS / QC / Proses">
-      </div>
+<!-- ========== HASIL ========== -->
+<div id="spvHasilSection" style="display:none;">
+  <div class="hasil-container">
+    
+    <!-- Kolom Pencarian -->
+    <div class="search-wrapper">
+      <input 
+        type="text" 
+        id="spvSearch" 
+        placeholder="🔍 Tanggal / Order / No KS / QC / Proses">
+    </div>
 
-      <!-- Spinner Loading -->
-      <div id="spvLoading" style="display:none; text-align:center; padding:10px;">
-        <div class="spinner"></div>
-        <p style="font-size:0.9rem; color:#555;">Memuat Data SPV</p>
-      </div>
+    <!-- Spinner Loading -->
+    <div id="spvLoading" style="display:none; text-align:center; padding:10px;">
+      <div class="spinner"></div>
+      <p style="font-size:0.9rem; color:#555;">Memuat Data SPV</p>
+    </div>
 
-      <div class="table-wrapper">
-        <table id="spvTable" border="1">
-          <thead>
-            <tr>
-              <th>Tanggal</th>
-              <th>Nama Order</th>
-              <th>No KS</th>
-              <th>Jam</th>
-              <th>Keterangan Acuan</th>
-              <th>Foto Acuan</th>
-              <th>Keterangan Temuan</th>
-              <th>Foto Temuan</th>
-              <th>Nama QC</th>
-              <th>Proses</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
+    <!-- Tabel Hasil -->
+    <div class="table-wrapper">
+      <table id="spvTable" border="1">
+        <thead>
+          <tr>
+            <th>Tanggal</th>
+            <th>Nama Order</th>
+            <th>No KS</th>
+            <th>Jam</th>
+            <th>Keterangan Acuan</th>
+            <th>Foto Acuan</th>
+            <th>Keterangan Temuan</th>
+            <th>Foto Temuan</th>
+            <th>Nama QC</th>
+            <th>Proses</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Data diisi melalui JS -->
+        </tbody>
+      </table>
     </div>
   </div>
+</div>
 
-  <style>
-    /* ========== Spinner ========== */
-    .spinner {
-      width: 28px;
-      height: 28px;
-      border: 3px solid #ddd;
-      border-top: 3px solid #00BCD4;
-      border-radius: 50%;
-      margin: 0 auto;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+<style>
+/* ========== Spinner ========== */
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid #ddd;
+  border-top: 3px solid #00BCD4;
+  border-radius: 50%;
+  margin: 0 auto;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
-    /* ========== Tabel Dasar (Desktop) ========== */
-    .table-wrapper { width:100%; overflow-x:auto; }
-    #spvTable {
-      width:100%;
-      border-collapse:collapse;
-      font-size:0.9rem;
-      background:#fff;
-    }
-    #spvTable th, #spvTable td {
-      border:1px solid #ddd;
-      padding:8px 10px;
-      text-align:left;
-    }
-    #spvTable thead {
-      background:#00BCD4;
-      color:#fff;
-    }
+/* ========== Tabel Dasar (Desktop) ========== */
+.table-wrapper { width:100%; overflow-x:auto; }
+#spvTable {
+  width:100%;
+  border-collapse:collapse;
+  font-size:0.9rem;
+  background:#fff;
+}
+#spvTable th, #spvTable td {
+  border:1px solid #ddd;
+  padding:8px 10px;
+  text-align:center;
+  vertical-align:middle;
+}
+#spvTable thead {
+  background:#00BCD4;
+  color:#fff;
+}
 
-    /* ========== Mode Mobile (Card Style) ========== */
-    @media (max-width:768px){
-      #spvTable, #spvTable thead, #spvTable tbody, #spvTable th, #spvTable td, #spvTable tr {
-        display:block;
-      }
-      #spvTable thead { display:none; }
-      #spvTable tr {
-        background:#fff;
-        border:1px solid #ddd;
-        border-radius:8px;
-        margin-bottom:10px;
-        box-shadow:0 1px 3px rgba(0,0,0,0.08);
-        padding:8px 10px;
-      }
-      #spvTable td {
-        border:none;
-        display:flex;
-        align-items:flex-start;
-        font-size:0.85rem;
-        border-bottom:1px solid #eee;
-        padding:6px 0;
-        text-align:left;
-        word-break:break-word;
-      }
-      #spvTable td::before {
-        content: attr(data-label) ": ";
-        flex:0 0 130px;
-        font-weight:600;
-        color:#333;
-      }
-      #spvTable td:last-child { border-bottom:none; }
-    }
+/* Lebar kolom foto */
+#spvTable th:nth-child(6),
+#spvTable td:nth-child(6),
+#spvTable th:nth-child(8),
+#spvTable td:nth-child(8) {
+  min-width:160px;
+}
 
-    /* ========== Samakan frame tab hasil & input ========== */
-    .hasil-container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 0 10px 20px;
-      box-sizing: border-box;
-    }
-    .search-wrapper {
-      width: 100%;
-      margin-bottom: 16px;
-    }
-    .search-wrapper input {
-      width: 100%;
-      padding: 8px 12px;
-      border: 1.5px solid #9c27b0;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      color: #333;
-      outline: none;
-    }
-    @media (min-width: 769px) {
-      .hasil-container { max-width: 100%; padding: 0; }
-    }
+/* Input file */
+#spvTable input[type="file"] {
+  width:100%;
+  max-width:160px;
+  font-size:0.85rem;
+  padding:4px;
+  box-sizing:border-box;
+  cursor:pointer;
+}
 
-    body {
-      background:#f5f7fa;
-      font-family:'Segoe UI', sans-serif;
-    }
-  </style>
+/* Tombol umum (semua tombol) */
+#spvTable button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin: 4px;
+  color: #fff !important;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: 0.25s;
+}
+
+/* ======== Warna Tombol Edit / Simpan / Batal ======== */
+
+/* Tombol Edit */
+#spvTable .edit-btn {
+  background: linear-gradient(135deg, #FFD740, #FFC400);
+  color: #000 !important;
+}
+#spvTable .edit-btn:hover {
+  background: linear-gradient(135deg, #FFEE58, #FFD740);
+  transform: translateY(-2px);
+}
+
+/* Tombol Simpan */
+#spvTable .save-btn {
+  background: linear-gradient(135deg, #43A047, #66BB6A);
+}
+#spvTable .save-btn:hover {
+  background: linear-gradient(135deg, #66BB6A, #81C784);
+  transform: translateY(-2px);
+}
+
+/* Tombol Batal */
+#spvTable .cancel-btn {
+  background: linear-gradient(135deg, #E53935, #EF5350);
+}
+#spvTable .cancel-btn:hover {
+  background: linear-gradient(135deg, #F44336, #E57373);
+  transform: translateY(-2px);
+}
+
+/* Rata tengah semua kolom */
+#spvTable th, #spvTable td { text-align:center; }
+
+/* ========== Mode Mobile (Grid Card) ========== */
+@media (max-width:768px){
+  #spvTable, #spvTable thead, #spvTable tbody, #spvTable th, #spvTable td, #spvTable tr {
+    display:block;
+  }
+  #spvTable thead { display:none; }
+  #spvTable tr {
+    background:#fff;
+    border:1px solid #ddd;
+    border-radius:10px;
+    margin-bottom:14px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.08);
+    padding:10px 12px;
+  }
+
+  #spvTable td {
+    border:none;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:6px 0;
+    border-bottom:1px solid #eee;
+    font-size:0.9rem;
+    text-align:left;
+    word-break:break-word;
+  }
+  #spvTable td:last-child { border-bottom:none; }
+
+  /* Label di samping isi */
+  #spvTable td::before {
+    font-weight:600;
+    color:#333;
+    flex:0 0 42%;
+    text-align:left;
+    padding-right:6px;
+  }
+  #spvTable td:nth-child(1)::before { content:"Tanggal:"; }
+  #spvTable td:nth-child(2)::before { content:"Nama Order:"; }
+  #spvTable td:nth-child(3)::before { content:"No KS:"; }
+  #spvTable td:nth-child(4)::before { content:"Jam:"; }
+  #spvTable td:nth-child(5)::before { content:"Keterangan Acuan:"; }
+  #spvTable td:nth-child(6)::before { content:"Foto Acuan:"; }
+  #spvTable td:nth-child(7)::before { content:"Keterangan Temuan:"; }
+  #spvTable td:nth-child(8)::before { content:"Foto Temuan:"; }
+  #spvTable td:nth-child(9)::before { content:"Nama QC:"; }
+  #spvTable td:nth-child(10)::before { content:"Proses:"; }
+
+  /* Input file menyesuaikan */
+  #spvTable td input[type="file"] { max-width:100%; }
+
+  /* Kolom tombol di tengah dan rapi */
+  #spvTable td:nth-child(10) {
+    justify-content:center;
+    flex-direction:column;
+    align-items:center;
+    border-top:1px dashed #ddd;
+    margin-top:6px;
+    padding-top:8px;
+    gap:6px;
+    text-align:center;
+  }
+  #spvTable td:nth-child(10)::before {
+    content:"Proses:";
+    font-weight:600;
+    color:#333;
+    margin-bottom:6px;
+    align-self:flex-start;
+  }
+
+  /* Tombol di HP rapi dan sama ukuran */
+  #spvTable td:nth-child(10) button {
+    width:80%;
+    max-width:160px;
+    padding:6px 0;
+    font-size:0.9rem;
+    margin:4px auto;
+    display:block;
+  }
+}
+
+/* ========== Frame & Search ========== */
+.hasil-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 0 10px 20px;
+  box-sizing: border-box;
+}
+.search-wrapper {
+  width: 100%;
+  margin-bottom: 16px;
+}
+.search-wrapper input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1.5px solid #9c27b0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #333;
+  outline: none;
+}
+@media (min-width: 769px) {
+  .hasil-container { max-width: 100%; padding: 0; }
+}
+
+body {
+  background:#f5f7fa;
+  font-family:'Segoe UI', sans-serif;
+}
+</style>
+
 
 </section>
 
 
-
 <!-- ======================== Floating Chatbot 3D Button (Smaller Version) ======================== -->
-<div class="chatbot-wrapper" onclick="window.open('https://www.chatbase.co/chatbot-iframe/Bg84DJJ43GDzYAbU9o30O')">
+<div class="chatbot-wrapper" onclick="window.open('https://www.chatbase.co/chatbot-iframe/WQV6nYLIpvH1KdrwilMKh')">
   <div class="chatbot-bg">
     <div class="bg-light"></div>
 
@@ -1438,7 +2363,7 @@ nav button.active {
 
 <script>
 // ====================== KONFIGURASI ======================
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbz6Fo8iU-srVO-2BmRawmmgUcSrAuXtBmA78PA1YCRzRamQ5PDyKDQd9Ta7EYTSIHzX/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzTmedmqfaqEoMVw8EOrEq9KCogS49EcEzDiurxr45nV3VhkKrBIqYKmjI8VrB9PfJu/exec";
 
 // ====================== SPINNER GLOBAL JS ======================
 const spinner = document.getElementById('loadingSpinner');
@@ -1585,7 +2510,7 @@ function jsonpGet(url, params = {}) {
   });
 }
 
- // ===== SCROLL OTOMATIS SETELAH DASHBOARD DIBUKA =====
+// ===== SCROLL OTOMATIS SETELAH DASHBOARD DIBUKA =====
 function autoScrollDashboardMenu(menu) {
   const sections = [
     `section${menu}TO`,
@@ -1645,7 +2570,7 @@ function switchTab(btn) {
     }
   });
 }
-  
+
 // ====================== GLOBAL STATE ======================
 let finishingItems = []; // array yang diambil dari sheet
 
@@ -1694,8 +2619,12 @@ function renderGridFinishing(query = "") {
     container.appendChild(card);
   });
 
-  // Render ulang dashboard setelah daftar hasil berubah
+// Render ulang dashboard setelah daftar hasil berubah
   renderDashboardFinishingCompact();
+
+  // ✅ Scroll otomatis ke item terakhir jika ada
+  const lastCard = container.querySelector('.grid-card:last-child');
+  if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
 
 function escapeHtml(s) {
@@ -2123,6 +3052,9 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 });
+
+
+
 
 // ====================== INISIALISASI ======================
 showMenu('dashboard');
@@ -3598,11 +4530,10 @@ function showSPVTab(tab, btn) {
 
   if (tab === 'input') {
     setupUppercaseInputs();
-    updateSPVDateTime(); // isi langsung saat pertama buka
+    updateSPVDateTime();
     if (window._spvTimer) clearInterval(window._spvTimer);
     window._spvTimer = setInterval(updateSPVDateTime, 1000);
 
-    // 🔒 Pastikan field tanggal & jam tidak bisa diedit
     document.getElementById('spvTanggal').setAttribute('readonly', true);
     document.getElementById('spvJam').setAttribute('readonly', true);
   } else {
@@ -3621,10 +4552,8 @@ function updateSPVDateTime() {
   const min = String(now.getMinutes()).padStart(2, '0');
   const ss = String(now.getSeconds()).padStart(2, '0');
 
-  const tanggalInput = document.getElementById('spvTanggal');
-  const jamInput = document.getElementById('spvJam');
-  if (tanggalInput) tanggalInput.value = `${yyyy}-${mm}-${dd}`;
-  if (jamInput) jamInput.value = `${hh}:${min}:${ss}`;
+  document.getElementById('spvTanggal').value = `${yyyy}-${mm}-${dd}`;
+  document.getElementById('spvJam').value = `${hh}:${min}:${ss}`;
 }
 
 /* ====================== UPPERCASE INPUT ====================== */
@@ -3652,18 +4581,23 @@ function fileToBase64(file) {
 async function submitSPV(e) {
   e.preventDefault();
   const spinner = document.getElementById("spvSpinner");
-  const namaOrder = document.getElementById('spvOrder').value.trim().toUpperCase();
-  const noKS = document.getElementById('spvNoKS').value.trim().toUpperCase();
-  const tanggal = document.getElementById('spvTanggal').value;
-  const jam = document.getElementById('spvJam').value;
-  const ket = document.getElementById('spvKet').value.trim().toUpperCase();
-  const ket1 = document.getElementById('spvKet1').value.trim().toUpperCase();
-  const namaQC = document.getElementById('spvNama').value;
-  const proses = document.getElementById('spvProses').value;
-  const fotoFile = document.getElementById('spvFoto').files[0];
-  const fotoFile1 = document.getElementById('spvFoto1').files[0];
 
-  if (!namaOrder || !noKS || !tanggal || !jam || !namaQC || !proses) {
+  const payload = {
+    sheet: "Register",
+    action: "add",
+    tanggal: document.getElementById('spvTanggal').value,
+    jam: document.getElementById('spvJam').value,
+    namaOrder: document.getElementById('spvOrder').value.trim().toUpperCase(),
+    noKS: document.getElementById('spvNoKS').value.trim().toUpperCase(),
+    ket: document.getElementById('spvKet').value.trim().toUpperCase(),
+    ket1: document.getElementById('spvKet1').value.trim().toUpperCase(),
+    namaQC: document.getElementById('spvNama').value,
+    proses: document.getElementById('spvProses').value,
+    foto: document.getElementById('spvFoto').files[0] ? await fileToBase64(document.getElementById('spvFoto').files[0]) : "",
+    foto1: document.getElementById('spvFoto1').files[0] ? await fileToBase64(document.getElementById('spvFoto1').files[0]) : ""
+  };
+
+  if (!payload.namaOrder || !payload.noKS || !payload.tanggal || !payload.jam || !payload.namaQC || !payload.proses) {
     alert('⚠️ Harap lengkapi semua field termasuk Proses.');
     return;
   }
@@ -3672,25 +4606,6 @@ async function submitSPV(e) {
 
   document.getElementById('spvForm').reset();
   spinner.style.display = "flex";
-
-  let base64Foto = "", base64Foto1 = "";
-  if (fotoFile) base64Foto = await fileToBase64(fotoFile);
-  if (fotoFile1) base64Foto1 = await fileToBase64(fotoFile1);
-
-  const payload = {
-    sheet: "Register",
-    action: "add",
-    tanggal,
-    namaOrder,
-    noKS,
-    jam,
-    ket,
-    foto: base64Foto,
-    ket1,
-    foto1: base64Foto1,
-    namaQC,
-    proses
-  };
 
   fetch(WEBAPP_URL, {
     method: "POST",
@@ -3709,7 +4624,7 @@ async function submitSPV(e) {
   });
 }
 
-/* ====================== LOAD DATA HASIL ====================== */
+/* ====================== LOAD DATA HASIL + EDIT ====================== */
 function loadSPV() {
   const tbody = document.querySelector('#spvTable tbody');
   if (!tbody) return;
@@ -3734,36 +4649,234 @@ function loadSPV() {
 
       const list = data.data || data || [];
       tbody.innerHTML = "";
-      list.forEach(item => {
+
+      list.forEach((item, index) => {
         const tr = document.createElement('tr');
-tr.innerHTML = `
-  <td data-label="Tanggal">${formatTanggal(item.tanggal || item.Tanggal)}</td>
-  <td data-label="Nama Order">${item.namaOrder || item['Nama Order'] || ''}</td>
-  <td data-label="No KS">${item.noKS || item['No KS'] || ''}</td>
-  <td data-label="Jam">${formatJam(item.jam || item.Jam)}</td>
-  <td data-label="Keterangan Acuan">${item.ket || item['Keterangan Acuan'] || ''}</td>
-  <td data-label="Foto Acuan">${item.fotoUrl || item['Foto Acuan'] ? `<a href="${item.fotoUrl || item['Foto Acuan']}" target="_blank">📷 Lihat Foto</a>` : '-'}</td>
-  <td data-label="Keterangan Temuan">${item.ket1 || item['Keterangan Temuan'] || ''}</td>
-  <td data-label="Foto Temuan">${item.fotoUrl1 || item['Foto Temuan'] ? `<a href="${item.fotoUrl1 || item['Foto Temuan']}" target="_blank">📷 Lihat Foto</a>` : '-'}</td>
-  <td data-label="Nama QC">${item.namaQC || item['Nama QC'] || ''}</td>
-  <td data-label="Proses">${item.proses || item['Proses'] || ''}</td>`;
+        tr.dataset.index = index;
+        tr.innerHTML = `
+          <td>${formatTanggal(item.tanggal || item.Tanggal)}</td>
+          <td>${item.namaOrder || item['Nama Order'] || ''}</td>
+          <td>${item.noKS || item['No KS'] || ''}</td>
+          <td>${formatJam(item.jam || item.Jam)}</td>
+          <td>${item.ket || item['Keterangan Acuan'] || ''}</td>
+          <td>${item.fotoUrl ? `<a href="${item.fotoUrl}" target="_blank">📷 Lihat Foto</a>` : '-'}</td>
+          <td>${item.ket1 || item['Keterangan Temuan'] || ''}</td>
+          <td>${item.fotoUrl1 ? `<a href="${item.fotoUrl1}" target="_blank">📷 Lihat Foto</a>` : '-'}</td>
+          <td>${item.namaQC || item['Nama QC'] || ''}</td>
+          <td>${item.proses || item['Proses'] || ''}</td>
+          <td class="action-cell"><button class="edit-btn">✏️ Edit</button></td>
+
+        `;
         tbody.appendChild(tr);
       });
+
+      enableSPVEdit();
     })
     .catch(err => console.error("Gagal memuat data SPV:", err))
     .finally(() => spinner.style.display = "none");
 }
 
+/* ====================== ENABLE EDIT ====================== */
+function enableSPVEdit() {
+  document.querySelectorAll("#spvTable tbody tr").forEach((row, rowIndex) => {
+    const editBtn = row.querySelector(".edit-btn");
+    if (!editBtn) return;
+
+    editBtn.onclick = () => {
+      if (!confirm("Apakah Anda ingin mengedit data ini?")) return;
+
+      row._original = [...row.children].map(td => td.innerHTML);
+
+      for (let i = 0; i < 10; i++) {
+        const cell = row.cells[i];
+        const value = cell.textContent.trim();
+
+        // ===== Foto Acuan & Foto Temuan =====
+        if (i === 5 || i === 7) {
+          const wrapper = document.createElement("div");
+          wrapper.style.display = "flex";
+          wrapper.style.flexDirection = "column";
+          wrapper.style.alignItems = "center";
+
+          const label = document.createElement("label");
+          label.textContent = "📁 Pilih File";
+          label.style.display = "inline-block";
+          label.style.background = "#00bcd4";
+          label.style.color = "#fff";
+          label.style.padding = "6px 10px";
+          label.style.borderRadius = "6px";
+          label.style.cursor = "pointer";
+          label.style.fontSize = "13px";
+          label.style.textAlign = "center";
+          label.style.width = "fit-content";
+
+          const fileInput = document.createElement("input");
+          fileInput.type = "file";
+          fileInput.accept = "image/*";
+          fileInput.style.display = "none";
+
+          const fileName = document.createElement("div");
+          fileName.style.fontSize = "12px";
+          fileName.style.color = "#555";
+          fileName.style.marginTop = "6px";
+          fileName.style.wordBreak = "break-word";
+          fileName.style.textAlign = "center";
+
+          fileInput.addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            fileName.textContent = file ? file.name : "";
+          });
+
+          label.onclick = () => fileInput.click();
+
+          wrapper.appendChild(label);
+          wrapper.appendChild(fileInput);
+          wrapper.appendChild(fileName);
+
+          cell.innerHTML = "";
+          cell.appendChild(wrapper);
+        } 
+        
+        // ===== Keterangan =====
+        else if (i === 4 || i === 6) {
+          const textarea = document.createElement("textarea");
+          textarea.value = value;
+          textarea.rows = 2;
+          textarea.style.width = "100%";
+          cell.innerHTML = "";
+          cell.appendChild(textarea);
+        } 
+
+        // ===== Nama QC (Dropdown) =====
+        else if (i === 8) {
+          const select = document.createElement("select");
+          select.style.width = "100%";
+          select.style.padding = "6px";
+          select.style.borderRadius = "6px";
+          select.style.border = "1px solid #ccc";
+          select.style.fontSize = "13px";
+
+          const options = [
+            "NANI", "ANJANI", "SUCI", "ANOM", "IRNA", "MARWAN",
+            "KIKI", "MARTINI", "KRESTIN", "ISMIE"
+          ];
+
+          options.forEach(opt => {
+            const option = document.createElement("option");
+            option.value = opt;
+            option.textContent = opt;
+            if (opt === value) option.selected = true;
+            select.appendChild(option);
+          });
+
+          cell.innerHTML = "";
+          cell.appendChild(select);
+        }
+
+        // ===== Proses (Dropdown) =====
+        else if (i === 9) {
+          const select = document.createElement("select");
+          select.style.width = "100%";
+          select.style.padding = "6px";
+          select.style.borderRadius = "6px";
+          select.style.border = "1px solid #ccc";
+          select.style.fontSize = "13px";
+
+          const options = [
+            "QC BAPRO", "QC CETAK", "QC FINISHING", "QC LEM", "RETUR"
+          ];
+
+          options.forEach(opt => {
+            const option = document.createElement("option");
+            option.value = opt;
+            option.textContent = opt;
+            if (opt === value) option.selected = true;
+            select.appendChild(option);
+          });
+
+          cell.innerHTML = "";
+          cell.appendChild(select);
+        }
+
+        // ===== Input teks biasa =====
+        else {
+          const input = document.createElement("input");
+          input.type = "text";
+          input.value = value;
+          input.style.width = "100%";
+          cell.innerHTML = "";
+          cell.appendChild(input);
+        }
+      }
+
+      // ===== Tombol aksi =====
+      const aksiCell = row.cells[10];
+      aksiCell.innerHTML = `
+        <button class="save-btn">💾 Simpan</button>
+        <button class="cancel-btn">❌ Batal</button>
+      `;
+
+      const spinner = document.createElement("span");
+      spinner.innerHTML = " ⏳ Menyimpan...";
+      spinner.style.display = "none";
+      aksiCell.appendChild(spinner);
+
+      // ===== Simpan perubahan =====
+      aksiCell.querySelector(".save-btn").onclick = async () => {
+        if (!confirm("Apakah yakin ingin menyimpan perubahan ini?")) return;
+
+        spinner.style.display = "inline";
+        const updated = {
+          tanggal: row.cells[0].querySelector("input")?.value || row.cells[0].textContent,
+          namaOrder: row.cells[1].querySelector("input")?.value || row.cells[1].textContent,
+          noKS: row.cells[2].querySelector("input")?.value || row.cells[2].textContent,
+          jam: row.cells[3].querySelector("input")?.value || row.cells[3].textContent,
+          ket: row.cells[4].querySelector("textarea")?.value || row.cells[4].textContent,
+          ket1: row.cells[6].querySelector("textarea")?.value || row.cells[6].textContent,
+          namaQC: row.cells[8].querySelector("select")?.value || row.cells[8].textContent,
+          proses: row.cells[9].querySelector("select")?.value || row.cells[9].textContent,
+          foto: row.cells[5].querySelector("input")?.files[0]
+            ? await fileToBase64(row.cells[5].querySelector("input").files[0])
+            : null,
+          foto1: row.cells[7].querySelector("input")?.files[0]
+            ? await fileToBase64(row.cells[7].querySelector("input").files[0])
+            : null
+        };
+
+        fetch(WEBAPP_URL, {
+          method: "POST",
+          body: new URLSearchParams({
+            payload: JSON.stringify({ sheet: "Register", action: "update", index: rowIndex, data: updated })
+          })
+        })
+        .then(res => res.text())
+        .then(() => {
+          alert("✅ Data berhasil diperbarui!");
+          row._original.forEach((html, i) => (row.cells[i].innerHTML = html));
+          enableSPVEdit();
+          loadSPV();
+        })
+        .catch(err => {
+          console.error(err);
+          alert("❌ Gagal memperbarui data!");
+        })
+        .finally(() => spinner.style.display = "none");
+      };
+
+      // ===== Batal edit =====
+      aksiCell.querySelector(".cancel-btn").onclick = () => {
+        if (!confirm("Batalkan edit? Semua perubahan akan hilang!")) return;
+        row._original.forEach((html, i) => (row.cells[i].innerHTML = html));
+        enableSPVEdit();
+      };
+    };
+  });
+}
+
+
 /* ====================== FORMAT ====================== */
-function formatTanggal(tgl) {
-  if (!tgl) return "";
-  const parts = tgl.split("-");
-  return parts.length === 3 ? `${parts[2]}-${parts[1]}-${parts[0]}` : tgl;
-}
-function formatJam(jam) {
-  if (!jam) return "";
-  return jam.length >= 5 ? jam.slice(0, 5) : jam;
-}
+function formatTanggal(tgl) { if (!tgl) return ""; const parts = tgl.split("-"); return parts.length === 3 ? `${parts[2]}-${parts[1]}-${parts[0]}` : tgl; }
+function formatJam(jam) { if (!jam) return ""; return jam.length >= 5 ? jam.slice(0, 5) : jam; }
 
 /* ====================== PASSWORD ====================== */
 const QC_SPV_PASSWORD = 'spv123';
@@ -3780,8 +4893,6 @@ document.addEventListener('DOMContentLoaded', () => {
       else alert('Password salah!');
     };
   }
-
-  // update waktu otomatis jika tab input aktif
   const inputSection = document.getElementById('spvInputSection');
   if (inputSection && inputSection.style.display !== 'none') {
     updateSPVDateTime();
@@ -3795,26 +4906,15 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('spvSearch');
   if (!searchInput) return;
-
   searchInput.addEventListener('keyup', () => {
     const filter = searchInput.value.toUpperCase();
-    const rows = document.querySelectorAll('#spvTable tbody tr');
-
-    rows.forEach(row => {
-      const tanggal = (row.cells[0]?.textContent || '').toUpperCase();  // ✳️ tambah tanggal
+    document.querySelectorAll('#spvTable tbody tr').forEach(row => {
+      const tanggal = (row.cells[0]?.textContent || '').toUpperCase();
       const namaOrder = (row.cells[1]?.textContent || '').toUpperCase();
       const noKS = (row.cells[2]?.textContent || '').toUpperCase();
       const namaQC = (row.cells[8]?.textContent || '').toUpperCase();
       const proses = (row.cells[9]?.textContent || '').toUpperCase();
-
-      // cocokkan jika ada kata kunci di salah satu kolom termasuk tanggal
-      const match =
-        tanggal.includes(filter) ||     // ✳️ cek tanggal
-        namaOrder.includes(filter) ||
-        noKS.includes(filter) ||
-        namaQC.includes(filter) ||
-        proses.includes(filter);
-
+      const match = tanggal.includes(filter) || namaOrder.includes(filter) || noKS.includes(filter) || namaQC.includes(filter) || proses.includes(filter);
       row.style.display = match ? '' : 'none';
     });
   });
@@ -3835,7 +4935,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
   observer.observe(tbody, { childList: true });
 });
-  
+
+// ===== Patch rapi otomatis tinggi row saat edit inline =====
+function adjustSPVRowHeight(row) {
+  const tds = Array.from(row.cells).slice(0, 10); // hanya kolom data
+  let maxHeight = 0;
+
+  // Hitung tinggi maksimal
+  tds.forEach(td => {
+    td.style.height = 'auto'; // reset dulu
+    const el = td.querySelector('input, textarea, div');
+    if (el) {
+      const h = el.scrollHeight;
+      if (h > maxHeight) maxHeight = h;
+    }
+  });
+
+  // Terapkan tinggi ke semua td
+  tds.forEach(td => td.style.height = maxHeight + 'px');
+}
+
+
 </script>
 
 
@@ -3853,5 +4973,7 @@ function goHome() {
 
 </body>
 </html>
+
+
 
 
