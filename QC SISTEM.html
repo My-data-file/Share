@@ -233,77 +233,6 @@ select {
   justify-content: flex-start !important;
 }
 
-/* ======================== Footer Nav ======================== */
-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 64px;
-  background: var(--accent);
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  z-index: 999;
-  overflow-x: hidden; /* default: tidak scroll di desktop */
-}
-
-/* tombol menu */
-nav button {
-  flex: 1;
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius);
-  height: 36px;
-  line-height: 36px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.25s ease, transform 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-}
-
-nav button:hover,
-nav button.active {
-  background: var(--accent-2);
-  transform: translateY(-1px);
-}
-
-/* ======================== Responsif ======================== */
-@media (max-width: 768px) {
-  nav {
-    justify-content: flex-start;     /* biar tombol ke kiri */
-    overflow-x: auto;                /* ✅ bisa scroll kanan kiri */
-    overflow-y: hidden;
-    white-space: nowrap;             /* tombol sejajar */
-    gap: 8px;
-    padding: 0 8px;
-    scrollbar-width: none;           /* hilangkan scrollbar Firefox */
-  }
-  nav::-webkit-scrollbar { display: none; } /* hilangkan scrollbar Chrome */
-
-  nav button {
-    flex: 0 0 auto;                 /* ✅ tombol tidak dipaksa sama lebar */
-    font-size: 0.8rem;
-    height: 34px;
-    min-width: 90px;                /* biar tetap enak dilihat */
-    padding: 0 12px;                /* sedikit ruang kiri-kanan */
-    white-space: nowrap;            /* teks tidak turun ke bawah */
-  }
-}
-
-@media (max-width: 480px) {
-  .grid-container {
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-    gap: 6px;
-  }
-}
 
   
 </style>
@@ -319,104 +248,310 @@ nav button.active {
   justify-content: space-between;
   align-items: center;
   padding: 14px 24px;
-  background: linear-gradient(90deg, #0ea5a4, #0369a1);
+  background: linear-gradient(to right, #0078D7, #1A86D1);
   color: white;
   font-family: 'Inter', sans-serif;
   font-weight: 500;
   letter-spacing: 0.3px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   position: sticky;
   top: 0;
   z-index: 1000;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.15);
 ">
   <div style="display: flex; align-items: center; gap: 10px;">
-    <!-- Logo QC sekarang jadi tombol Home -->
     <button onclick="goHome()" style="
-      background: white;
-      color: #0ea5a4;
+      background: linear-gradient(to bottom, #ffffff, #d1faff);
+      color: #0078D7;
       font-weight: 700;
       font-size: 1.2rem;
-      padding: 6px 10px;
+      padding: 6px 12px;
       border-radius: 10px;
       border: none;
       cursor: pointer;
-    ">QC</button>
-
-    <div id="headerTitle" style="font-size: 0.8rem;">System 3.0</div>
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+      QC
+    </button>
+    <div id="headerTitle" style="font-size: 0.85rem; color: #e0f7fa;">System 5.0</div>
   </div>
-  <div id="headerTime">
+  <div id="headerTime" style="text-align:right; font-size:0.8rem; color:#e0f7fa;">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
     <div class="jam">14:30</div>
   </div>
 </header>
 
-<!-- ======================== Container ======================== -->
-<div class="container">
 
-<!-- ======================== FOOTER NAV ======================== -->
-  <nav>
-    <button onclick="showMenu('dashboard')" class="active">DASBOARD</button>
-    <button onclick="showMenu('qcBapro')">QC BAPRO</button>
-    <button onclick="showMenu('qcPA')">QC CETAK</button>
-    <button onclick="showMenu('qcFinishing')">QC FINISHING</button>
-    <button onclick="showMenu('qcLem')">QC LEM</button>
-    <button onclick="showMenu('qcSPV')">QC REGISTER</button>
-  </nav>
+<!-- ======================== Footer Nav ======================== -->
+<nav class="footer-nav">
+  <div class="nav-inner">
+    <button onclick="showMenu('dashboard')" class="nav-btn active">DASHBOARD</button>
+    <button onclick="showMenu('qcBapro')" class="nav-btn">QC BAPRO</button>
+    <button onclick="showMenu('qcPA')" class="nav-btn">QC CETAK</button>
+    <button onclick="showMenu('qcFinishing')" class="nav-btn">QC FINISHING</button>
+    <button onclick="showMenu('qcLem')" class="nav-btn">QC LEM</button>
+    <button onclick="showMenu('qcSPV')" class="nav-btn">QC REGISTER</button>
+  </div>
+</nav>
+
+<style>
+/* ======================== Footer Nav Wrapper ======================== */
+.footer-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(to right, #0078D7, #1A86D1);
+  height: 64px;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px;
+  overflow: hidden;
+}
+
+/* ======================== Kontainer tombol ======================== */
+.nav-inner {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  overflow-x: auto;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch; /* efek geser halus iOS */
+  width: 100%;
+}
+
+/* 🔽 Sembunyikan scrollbar di semua browser */
+.nav-inner {
+  scrollbar-width: none;          /* Firefox */
+  -ms-overflow-style: none;       /* IE & Edge lama */
+}
+.nav-inner::-webkit-scrollbar {   /* Chrome, Safari, Opera */
+  display: none;
+}
+
+/* ======================== Tombol Putih HD Modern ======================== */
+.nav-btn {
+  flex-shrink: 0;
+  color: #0f172a;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.7);
+  background: #ffffff;
+  text-shadow: none;
+  box-shadow:
+    0 2px 6px rgba(0,0,0,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.3);
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+/* Hover efek lembut */
+.nav-btn:hover {
+  background: #f5f9ff;
+  transform: translateY(-2px);
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.4);
+}
+
+/* Aktif: glow hijau elegan */
+.nav-btn.active {
+  color: #fff;
+  background: linear-gradient(145deg, #22c55e, #16a34a);
+  border-color: rgba(34,197,94,0.6);
+  box-shadow:
+    0 0 15px rgba(34,197,94,0.6),
+    0 0 30px rgba(34,197,94,0.4);
+}
+
+/* Klik efek */
+.nav-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 6px rgba(0,0,0,0.3);
+}
+
+/* ======================== Responsif ======================== */
+@media (max-width: 768px) {
+  .nav-inner {
+    justify-content: flex-start;
+  }
+  .nav-btn {
+    font-size: 14px;
+    padding: 9px 16px;
+  }
+}
+@media (min-width: 1024px) {
+  .nav-inner {
+    justify-content: center;
+  }
+  .nav-btn {
+    font-size: 15px;
+    padding: 11px 22px;
+  }
+}
+</style>
+
+<!-- ======================== Main Section ======================== -->
+<main>
 
 
-  <!-- ======================== Main Section ======================== -->
-  <main>
+<!-- ======================== Dashboard ======================== -->
+<section id="dashboard" class="card qc-section">
 
-    <!-- ======================== Dashboard ======================== -->
-    <section id="dashboard" class="card qc-section">
-
-<!-- ======================== QC BAPRO ======================== -->
-<h2 style="text-align:center; color:#fff; background:#dc2626; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
+<!-- ======================== QC BAPRO ======================== -->  
+<h2 style="
+  text-align:center; 
+  color:#000; 
+  background: linear-gradient(to right, #D32F2F, #F44336); 
+  font-size:1.2rem; 
+  padding:6px 12px; 
+  border-radius:8px; 
+  margin-bottom:12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
+">
   QC BAPRO
+  <span style="
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+    border-radius: 8px 8px 0 0;
+    pointer-events: none;
+  "></span>
 </h2>
 
 <!-- Info Total -->
 <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
-  <div style="flex:1; min-width:120px; background:rgba(220,38,38,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #FF5252, #FF1744); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Order<br><strong id="countBapro">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(220,38,38,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #FF6677, #FF3D5A); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total TO<br><strong id="countTOBapro">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(220,38,38,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #FF6F61, #FF3B30); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Proses<br><strong id="countProsesBapro">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(220,38,38,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #FF7F7F, #FF4444); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Selesai<br><strong id="countSelesaiBapro">0</strong>
   </div>
 </div>
 
-<!-- ========== TO ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">TO</h4>
-  <button id="toggleBaproTO" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<!-- ========== TO / Proses / Selesai Buttons ========== -->
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #FF5252, #FF1744); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    TO
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="toggleBaproTO" class="toggle-btn">Show</button>
 </div>
+
 <div id="sectionBaproTO" style="display:none;">
   <input id="filterTOBapro" type="text" placeholder="🔍 Filter TO" class="filter-input">
   <div id="dashboardBaproTO" class="grid-container"></div>
 </div>
 
-<!-- ========== PROSES ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">Proses</h4>
-  <button id="toggleBaproProses" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #FF6F61, #FF3B30); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    Proses
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="toggleBaproProses" class="toggle-btn">Show</button>
 </div>
+
 <div id="sectionBaproProses" style="display:none;">
   <input id="filterProsesBapro" type="text" placeholder="🔍 Filter Proses" class="filter-input">
   <div id="dashboardBaproProses" class="grid-container"></div>
 </div>
 
-<!-- ========== SELESAI ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">Selesai</h4>
-  <button id="toggleBaproSelesai" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #FF7F7F, #FF4444); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    Selesai
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="toggleBaproSelesai" class="toggle-btn">Show</button>
 </div>
+
 <div id="sectionBaproSelesai" style="display:none;">
   <input id="filterSelesaiBapro" type="text" placeholder="🔍 Filter Selesai" class="filter-input">
   <div id="dashboardBaproSelesai" class="grid-container"></div>
@@ -442,34 +577,120 @@ nav button.active {
   border-radius: 8px;
   padding: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  color: #000;
+}
+
+/* ========== Tombol Show/Hide Abu-abu Elegan ========== */
+.toggle-btn {
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  height: 32px;
+  background: linear-gradient(to bottom, #f0f0f0, #bdbdbd);
+  color: #000;
+  border: 1px solid #000;
+  border-radius: 4px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+.toggle-btn:hover {
+  background: linear-gradient(to bottom, #ffffff, #cfcfcf);
+  transform: translateY(-2px);
 }
 </style>
 
+
 <!-- ======================== QC CETAK ======================== -->
-<h2 style="text-align:center; color:#fff; background:#ff9800; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
+<h2 style="
+  text-align:center; 
+  color:#000; 
+  background: linear-gradient(to right, #FF9800, #FFB74D); 
+  font-size:1.2rem; 
+  padding:6px 12px; 
+  border-radius:8px; 
+  margin-bottom:12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
+">
   QC CETAK
+  <span style="
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+    border-radius: 8px 8px 0 0;
+    pointer-events: none;
+  "></span>
 </h2>
 
 <!-- Info Total -->
 <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
-  <div style="flex:1; min-width:120px; background:rgba(255,152,0,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #FFC870, #FFB74D); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Order<br><strong id="countPA">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(255,152,0,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #FFD187, #FFB85C); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total TO<br><strong id="countTOPA">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(255,152,0,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #FFC080, #FFB266); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Proses<br><strong id="countProsesPA">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(255,152,0,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #FFD090, #FFBF70); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Selesai<br><strong id="countSelesaiPA">0</strong>
   </div>
 </div>
 
 <!-- ========== TO ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">TO</h4>
-  <button id="togglePATO" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #FFB74D, #FF9800); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    TO
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="togglePATO" class="toggle-btn">Show</button>
 </div>
 <div id="sectionPATO" style="display:none;">
   <input id="filterPATO" type="text" placeholder="🔍 Filter TO" class="filter-input">
@@ -477,9 +698,26 @@ nav button.active {
 </div>
 
 <!-- ========== PROSES ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">Proses</h4>
-  <button id="togglePAProses" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #FFB266, #FF9933); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    Proses
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="togglePAProses" class="toggle-btn">Show</button>
 </div>
 <div id="sectionPAProses" style="display:none;">
   <input id="filterPAProses" type="text" placeholder="🔍 Filter Proses" class="filter-input">
@@ -487,9 +725,26 @@ nav button.active {
 </div>
 
 <!-- ========== SELESAI ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">Selesai</h4>
-  <button id="togglePASelesai" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #FFD090, #FFB266); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    Selesai
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="togglePASelesai" class="toggle-btn">Show</button>
 </div>
 <div id="sectionPASelesai" style="display:none;">
   <input id="filterPASelesai" type="text" placeholder="🔍 Filter Selesai" class="filter-input">
@@ -516,35 +771,123 @@ nav button.active {
   border-radius: 8px;
   padding: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  color: #000;
+}
+
+/* ===== Tombol Show/Hide Abu-abu Metalik Modern ===== */
+.toggle-btn {
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  height: 32px;
+  background: linear-gradient(to bottom, #f0f0f0, #bdbdbd) !important;
+  color: #000 !important;
+  border: 1px solid #000 !important;
+  border-radius: 4px !important;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.25) !important;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s !important;
+}
+.toggle-btn:hover {
+  background: linear-gradient(to bottom, #ffffff, #d6d6d6) !important;
+  transform: translateY(-2px);
 }
 </style>
 
 
+
+
+
 <!-- ======================== QC FINISHING ======================== -->
-<h2 style="text-align:center; color:#fff; background:#22c55e; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
+<h2 style="
+  text-align:center; 
+  color:#000; 
+  background: linear-gradient(to right, #22C55E, #4ADE80); 
+  font-size:1.2rem; 
+  padding:6px 12px; 
+  border-radius:8px; 
+  margin-bottom:12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
+">
   QC FINISHING
+  <span style="
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+    border-radius: 8px 8px 0 0;
+    pointer-events: none;
+  "></span>
 </h2>
 
 <!-- Info Total -->
 <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
-  <div style="flex:1; min-width:120px; background:rgba(34,197,94,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #4ADE80, #22C55E); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Order<br><strong id="countFinishing">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(34,197,94,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #38D39F, #22C55E); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total TO<br><strong id="countTOFinishing">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(34,197,94,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #4EEA8C, #22C55E); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Proses<br><strong id="countProsesFinishing">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(34,197,94,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #6EE7B7, #22C55E); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Selesai<br><strong id="countSelesaiFinishing">0</strong>
   </div>
 </div>
 
 <!-- ========== TO ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">TO</h4>
-  <button id="toggleFinishingTO" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #4ADE80, #22C55E); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    TO
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="toggleFinishingTO" class="toggle-btn">Show</button>
 </div>
 <div id="sectionFinishingTO" style="display:none;">
   <input id="filterFinishingTO" type="text" placeholder="🔍 Filter TO" class="filter-input">
@@ -552,9 +895,26 @@ nav button.active {
 </div>
 
 <!-- ========== PROSES ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">Proses</h4>
-  <button id="toggleFinishingProses" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #38D39F, #22C55E); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    Proses
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="toggleFinishingProses" class="toggle-btn">Show</button>
 </div>
 <div id="sectionFinishingProses" style="display:none;">
   <input id="filterFinishingProses" type="text" placeholder="🔍 Filter Proses" class="filter-input">
@@ -562,9 +922,26 @@ nav button.active {
 </div>
 
 <!-- ========== SELESAI ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">Selesai</h4>
-  <button id="toggleFinishingSelesai" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #6EE7B7, #22C55E); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    Selesai
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="toggleFinishingSelesai" class="toggle-btn">Show</button>
 </div>
 <div id="sectionFinishingSelesai" style="display:none;">
   <input id="filterFinishingSelesai" type="text" placeholder="🔍 Filter Selesai" class="filter-input">
@@ -591,34 +968,131 @@ nav button.active {
   border-radius: 8px;
   padding: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  color: #000;
+}
+
+/* ===== Tombol Show/Hide Abu-abu Metalik Modern ===== */
+.toggle-btn {
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  height: 32px;
+  background: linear-gradient(to bottom, #f0f0f0, #bdbdbd) !important;
+  color: #000 !important;
+  border: 1px solid #000 !important;
+  border-radius: 4px !important;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.25) !important;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s !important;
+}
+.toggle-btn:hover {
+  background: linear-gradient(to bottom, #ffffff, #d6d6d6) !important;
+  transform: translateY(-2px);
 }
 </style>
 
+
+
+
 <!-- ======================== QC LEM ======================== -->
-<h2 style="text-align:center; color:#fff; background:#9c27b0; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
+<h2 style="
+  text-align:center; 
+  color:#000; 
+  background: linear-gradient(to right, #9C27B0, #BA68C8); 
+  font-size:1.2rem; 
+  padding:6px 12px; 
+  border-radius:8px; 
+  margin-bottom:12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
+">
   QC LEM
+  <span style="
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+    border-radius: 8px 8px 0 0;
+    pointer-events: none;
+  "></span>
 </h2>
 
 <!-- Info Total -->
 <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
-  <div style="flex:1; min-width:120px; background:rgba(156,39,176,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #BA68C8, #9C27B0); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Order<br><strong id="countLem">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(156,39,176,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #C084FC, #9C27B0); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total TO<br><strong id="countTOLem">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(156,39,176,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #D8B4FE, #9C27B0); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Proses<br><strong id="countProsesLem">0</strong>
   </div>
-  <div style="flex:1; min-width:120px; background:rgba(156,39,176,0.75); padding:6px 10px; border-radius:8px; text-align:center;">
+  <div style="
+      flex:1; min-width:120px; 
+      background: linear-gradient(to bottom, #E9D5FF, #9C27B0); 
+      padding:6px 10px; border-radius:8px; 
+      text-align:center; color:#000; font-weight:500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Selesai<br><strong id="countSelesaiLem">0</strong>
   </div>
 </div>
 
 <!-- ========== TO ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">TO</h4>
-  <button id="toggleLemTO" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #C084FC, #9C27B0); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    TO
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="toggleLemTO" class="toggle-btn"
+    onclick="toggleSection('sectionLemTO', this)"
+    style="padding:2px 6px; font-size:0.8rem; height:32px;
+    background: linear-gradient(to bottom, #D8B4FE, #C084FC);
+    color:#000; border:none; border-radius:4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    cursor:pointer;
+    transition: all 0.2s;">
+    Show
+  </button>
 </div>
 <div id="sectionLemTO" style="display:none;">
   <input id="filterTOLem" type="text" placeholder="🔍 Filter TO" class="filter-input">
@@ -626,9 +1100,35 @@ nav button.active {
 </div>
 
 <!-- ========== PROSES ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">Proses</h4>
-  <button id="toggleLemProses" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #D8B4FE, #9C27B0); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    Proses
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="toggleLemProses" class="toggle-btn"
+    onclick="toggleSection('sectionLemProses', this)"
+    style="padding:2px 6px; font-size:0.8rem; height:32px;
+    background: linear-gradient(to bottom, #E9D5FF, #BA68C8);
+    color:#000; border:none; border-radius:4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    cursor:pointer;
+    transition: all 0.2s;">
+    Show
+  </button>
 </div>
 <div id="sectionLemProses" style="display:none;">
   <input id="filterProsesLem" type="text" placeholder="🔍 Filter Proses" class="filter-input">
@@ -636,9 +1136,35 @@ nav button.active {
 </div>
 
 <!-- ========== SELESAI ========== -->
-<div style="text-align:center; margin-top:12px;">
-  <h4 style="display:inline-block; margin:0;">Selesai</h4>
-  <button id="toggleLemSelesai" class="toggle-btn" style="margin-left:8px; padding:2px 6px; font-size:0.8rem;">Show</button>
+<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
+  <h4 style="
+    margin:0; 
+    color:#000; 
+    background: linear-gradient(to right, #E9D5FF, #BA68C8); 
+    padding:4px 10px; border-radius:6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    position: relative;
+    overflow: hidden;
+  ">
+    Selesai
+    <span style="
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:6px 6px 0 0;
+      pointer-events: none;
+    "></span>
+  </h4>
+  <button id="toggleLemSelesai" class="toggle-btn"
+    onclick="toggleSection('sectionLemSelesai', this)"
+    style="padding:2px 6px; font-size:0.8rem; height:32px;
+    background: linear-gradient(to bottom, #F3E8FF, #C084FC);
+    color:#000; border:none; border-radius:4px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+    cursor:pointer;
+    transition: all 0.2s;">
+    Show
+  </button>
 </div>
 <div id="sectionLemSelesai" style="display:none;">
   <input id="filterSelesaiLem" type="text" placeholder="🔍 Filter Selesai" class="filter-input">
@@ -665,24 +1191,64 @@ nav button.active {
   border-radius: 8px;
   padding: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  color: #000;
 }
 </style>
 
+<script>
+function toggleSection(id, btn) {
+  const section = document.getElementById(id);
+  if (section.style.display === "none" || section.style.display === "") {
+    section.style.display = "block";
+    btn.style.background = "linear-gradient(to bottom, #22c55e, #16a34a)"; // hijau
+    btn.style.color = "white";
+  } else {
+    section.style.display = "none";
+    btn.style.background = "linear-gradient(to bottom, #ef4444, #dc2626)"; // merah
+    btn.style.color = "white";
+  }
+}
+</script>
 
-    </section>
+
+
+
+</section>
 
 <!-- ======================== QC BAPRO ======================== -->
 <section id="qcBapro" class="card qc-section" style="display:none;">
 
-  <h2 style="text-align:center; color:#fff; background:#dc2626; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
+  <h2 style="
+    text-align:center; 
+    color:#fff; 
+    background: linear-gradient(to right, #D32F2F, #F44336); 
+    font-size:1.2rem; 
+    padding:6px 12px; 
+    border-radius:8px; 
+    margin-bottom:12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #000;">
     MENU QC BAPRO
+    <span style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius: 8px 8px 0 0;
+      pointer-events: none;"></span>
   </h2>
 
-  <div class="tabs">
-    <button class="active" data-tab="inputBapro" onclick="switchTab(this)">Inputan</button>
-    <button data-tab="hasilBapro" onclick="switchTab(this)">Hasil</button>
+  <!-- ===== Tabs ===== -->
+  <div class="tabs" style="display:flex; gap:8px; margin-bottom:10px;">
+    <button class="tab-btn bapro active" data-tab="inputBapro" onclick="switchTab(this)">Inputan</button>
+    <button class="tab-btn bapro" data-tab="hasilBapro" onclick="switchTab(this)">Hasil</button>
   </div>
 
+  <!-- ===== Inputan ===== -->
   <div id="inputBapro" class="tab-content active">
     <div class="form-group"><input type="text" id="baproNama" placeholder="Nama Order"></div>
     <div class="form-group">
@@ -710,9 +1276,9 @@ nav button.active {
     </div>
     <div class="form-group">
       <select id="baproUpdate">
-  <option value="Proses">Proses</option>
-  <option value="Selesai">Selesai</option>
-  <option value="TO">TO</option>
+        <option value="Proses">Proses</option>
+        <option value="Selesai">Selesai</option>
+        <option value="TO">TO</option>
       </select>
     </div>
     <div class="form-group">
@@ -721,24 +1287,89 @@ nav button.active {
     <div class="form-group"><button onclick="addBaproItem()">➕ Tambah</button></div>
   </div>
 
+  <!-- ===== Hasil ===== -->
   <div id="hasilBapro" class="tab-content">
     <input type="text" placeholder="Cari..." oninput="filterBaproGrid(this.value)">
     <div id="gridBapro" class="grid-container"></div>
   </div>
+
 </section>
 
-<!-- ======================== QC PA ======================== -->
+<!-- ===== CSS Tab dan Style QC BAPRO ===== -->
+<style>
+.tab-btn.bapro {
+  flex: 1;
+  padding: 6px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #000; /* outline hitam */
+  background: #e0e0e0 !important; /* tombol tidak aktif */
+  color: #000 !important;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+/* Tab aktif */
+.tab-btn.bapro.active {
+  background: #FF5252 !important; /* merah aktif */
+  color: #fff !important;
+  border: 1px solid #000 !important; /* outline hitam */
+}
+
+/* Hover tab tidak aktif */
+.tab-btn.bapro:not(.active):hover {
+  background: #FFB3B3 !important; /* merah muda */
+  color: #000 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(255,82,82,0.3);
+}
+
+/* Hilangkan outline default saat klik/fokus */
+.tab-btn.bapro:focus {
+  outline: none;
+  box-shadow: none;
+}
+</style>
+
+
+
+
+<!-- ======================== QC CETAK ======================== -->
 <section id="qcPA" class="card qc-section" style="display:none;">
 
-  <h2 style="text-align:center; color:#fff; background:#ff9800; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
+  <!-- Judul -->
+  <h2 style="
+    text-align:center; 
+    color:#000; 
+    background: linear-gradient(to right, #FF9800, #FFB74D); 
+    font-size:1.2rem; 
+    padding:6px 12px; 
+    border-radius:8px; 
+    margin-bottom:12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: 1px solid #000;
+    position: relative;
+    overflow: hidden;">
     MENU QC CETAK
+    <span style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius: 8px 8px 0 0;
+      pointer-events: none;"></span>
   </h2>
 
-  <div class="tabs">
-    <button class="active" data-tab="inputPA" onclick="switchTab(this)">Inputan</button>
-    <button data-tab="hasilPA" onclick="switchTab(this)">Hasil</button>
+  <!-- Tabs -->
+  <div class="tabs" style="display:flex; gap:8px; margin-bottom:10px;">
+    <button class="tab-btn cetak active" data-tab="inputPA" onclick="switchTab(this)">Inputan</button>
+    <button class="tab-btn cetak" data-tab="hasilPA" onclick="switchTab(this)">Hasil</button>
   </div>
 
+  <!-- Inputan -->
   <div id="inputPA" class="tab-content active">
     <div class="form-group"><input type="text" id="paNama" placeholder="Nama Order"></div>
     <div class="form-group"><input type="text" id="paNoKS" placeholder="No KS"></div>
@@ -767,9 +1398,9 @@ nav button.active {
     <div class="form-group">
       <select id="paUpdate">
         <option value="">Update</option>
-  <option value="Proses">Proses</option>
-  <option value="Selesai">Selesai</option>
-  <option value="TO">TO</option>
+        <option value="Proses">Proses</option>
+        <option value="Selesai">Selesai</option>
+        <option value="TO">TO</option>
       </select>
     </div>
     <div class="form-group">
@@ -778,24 +1409,88 @@ nav button.active {
     <div class="form-group"><button onclick="addPAItem()">➕ Tambah</button></div>
   </div>
 
+  <!-- Hasil -->
   <div id="hasilPA" class="tab-content">
     <input type="text" placeholder="Cari..." oninput="filterPAGrid(this.value)">
     <div id="gridPA" class="grid-container"></div>
   </div>
+
 </section>
+
+<!-- ===== CSS Tab dan Style QC CETAK ===== -->
+<style>
+.tab-btn.cetak {
+  flex: 1;
+  padding: 6px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #000; /* outline hitam */
+  background: #e0e0e0 !important; /* tombol tidak aktif */
+  color: #000 !important;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+/* Tab aktif */
+.tab-btn.cetak.active {
+  background: linear-gradient(to right, #FF9800, #FFB74D) !important;
+  color: #fff !important;
+  border: 1px solid #000 !important; /* outline hitam */
+}
+
+/* Hover tab tidak aktif */
+.tab-btn.cetak:not(.active):hover {
+  background: #FFD180 !important; /* orange muda */
+  color: #000 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(255,152,0,0.3);
+}
+
+/* Hilangkan outline default saat klik/fokus */
+.tab-btn.cetak:focus {
+  outline: none;
+  box-shadow: none;
+}
+</style>
+
+
 
 <!-- ======================== QC FINISHING ======================== -->
 <section id="qcFinishing" class="card qc-section" style="display:none;">
 
-  <h2 style="text-align:center; color:#fff; background:#22c55e; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
+  <!-- Judul -->
+  <h2 style="
+    text-align:center; 
+    color:#000; 
+    background: linear-gradient(to right, #22C55E, #4ADE80); 
+    font-size:1.2rem; 
+    padding:6px 12px; 
+    border-radius:8px; 
+    margin-bottom:12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: 1px solid #000;
+    position: relative;
+    overflow: hidden;">
     MENU QC FINISHING
+    <span style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius: 8px 8px 0 0;
+      pointer-events: none;"></span>
   </h2>
 
-  <div class="tabs">
-    <button class="active" data-tab="inputFinishing" onclick="switchTab(this)">Inputan</button>
-    <button data-tab="hasilFinishing" onclick="switchTab(this)">Hasil</button>
+  <!-- Tabs -->
+  <div class="tabs" style="display:flex; gap:8px; margin-bottom:10px;">
+    <button class="tab-btn finishing active" data-tab="inputFinishing" onclick="switchTab(this)">Inputan</button>
+    <button class="tab-btn finishing" data-tab="hasilFinishing" onclick="switchTab(this)">Hasil</button>
   </div>
 
+  <!-- Inputan -->
   <div id="inputFinishing" class="tab-content active">
     <div class="form-group"><input type="text" id="finishingNama" placeholder="Nama Order"></div>
     <div class="form-group"><input type="text" id="finishingNoKS" placeholder="No KS"></div>
@@ -812,9 +1507,9 @@ nav button.active {
     </div>
     <div class="form-group">
       <select id="finishingUpdate">
-  <option value="Proses">Proses</option>
-  <option value="Selesai">Selesai</option>
-  <option value="TO">TO</option>
+        <option value="Proses">Proses</option>
+        <option value="Selesai">Selesai</option>
+        <option value="TO">TO</option>
       </select>
     </div>
     <div class="form-group">
@@ -823,24 +1518,89 @@ nav button.active {
     <div class="form-group"><button onclick="addFinishingItem()">➕ Tambah</button></div>
   </div>
 
+  <!-- Hasil -->
   <div id="hasilFinishing" class="tab-content">
     <input type="text" placeholder="Cari..." oninput="filterFinishingGrid(this.value)">
     <div id="gridFinishing" class="grid-container"></div>
   </div>
+
 </section>
+
+<!-- ===== CSS Tab dan Style QC FINISHING ===== -->
+<style>
+.tab-btn.finishing {
+  flex: 1;
+  padding: 6px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #000; /* outline hitam */
+  background: #e0e0e0 !important; /* tombol tidak aktif */
+  color: #000 !important;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+/* Tab aktif FINISHING */
+.tab-btn.finishing.active {
+  background: linear-gradient(to right, #22C55E, #4ADE80) !important; /* hijau */
+  color: #fff !important;
+  border: 1px solid #000 !important; /* outline hitam */
+}
+
+/* Hover tab tidak aktif FINISHING */
+.tab-btn.finishing:not(.active):hover {
+  background: #86efac !important; /* hijau muda */
+  color: #000 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(34,197,94,0.3);
+}
+
+/* Hilangkan outline default saat klik/fokus */
+.tab-btn.finishing:focus {
+  outline: none;
+  box-shadow: none;
+}
+</style>
+
+
+
 
 <!-- ======================== QC LEM ======================== -->
 <section id="qcLem" class="card qc-section" style="display:none;">
 
-  <h2 style="text-align:center; color:#fff; background:#9c27b0; font-size:1.2rem; padding:6px 12px; border-radius:8px; margin-bottom:12px;">
+  <!-- Judul -->
+  <h2 style="
+    text-align:center; 
+    color:#fff; 
+    background: linear-gradient(to right, #9C27B0, #BA68C8); 
+    font-size:1.2rem; 
+    padding:6px 12px; 
+    border-radius:8px; 
+    margin-bottom:12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: 1px solid #000;
+    position: relative;
+    overflow: hidden;">
     MENU QC LEM
+    <span style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius: 8px 8px 0 0;
+      pointer-events: none;"></span>
   </h2>
 
-  <div class="tabs">
-    <button class="active" data-tab="inputLem" onclick="switchTab(this)">Inputan</button>
-    <button data-tab="hasilLem" onclick="switchTab(this)">Hasil</button>
+  <!-- Tabs -->
+  <div class="tabs" style="display:flex; gap:8px; margin-bottom:10px;">
+    <button class="tab-btn active" data-tab="inputLem" onclick="switchTab(this)">Inputan</button>
+    <button class="tab-btn" data-tab="hasilLem" onclick="switchTab(this)">Hasil</button>
   </div>
 
+  <!-- Inputan -->
   <div id="inputLem" class="tab-content active">
     <div class="form-group"><input type="text" id="lemNama" placeholder="Nama Order"></div>
     <div class="form-group"><input type="text" id="lemNoKS" placeholder="No KS"></div>
@@ -858,9 +1618,9 @@ nav button.active {
     </div>
     <div class="form-group">
       <select id="lemUpdate">
-  <option value="Proses">Proses</option>
-  <option value="Selesai">Selesai</option>
-  <option value="TO">TO</option>
+        <option value="Proses">Proses</option>
+        <option value="Selesai">Selesai</option>
+        <option value="TO">TO</option>
       </select>
     </div>
     <div class="form-group">
@@ -869,30 +1629,126 @@ nav button.active {
     <div class="form-group"><button onclick="addLemItem()">➕ Tambah</button></div>
   </div>
 
+  <!-- Hasil -->
   <div id="hasilLem" class="tab-content">
     <input type="text" placeholder="Cari..." oninput="filterLemGrid(this.value)">
     <div id="gridLem" class="grid-container"></div>
   </div>
+
 </section>
+
+<!-- ===== CSS Tab dan Style QC LEM ===== -->
+<style>
+/* Tab tombol */
+.tab-btn {
+  flex: 1;
+  padding: 6px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #000; /* outline hitam */
+  background: #e0e0e0 !important; /* tombol tidak aktif */
+  color: #000 !important;
+  transition: all 0.2s;
+  text-align: center;
+  margin-right: 4px;
+}
+
+/* Tab aktif */
+.tab-btn.active {
+  background: linear-gradient(to right, #9C27B0, #BA68C8) !important; /* sama dengan judul */
+  color: #fff !important;
+  border: 1px solid #000 !important; /* outline hitam */
+}
+
+/* Hover tab tidak aktif */
+.tab-btn:not(.active):hover {
+  background: #D18FE0 !important; /* ungu muda */
+  color: #000 !important;
+  border: 1px solid #000 !important; /* outline hitam saat hover */
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(156,39,176,0.3);
+}
+
+/* Hilangkan outline default saat klik/fokus */
+.tab-btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+</style>
+
+
 
 <!-- ======================== QC SPV ======================== -->
 <section id="qcSPV" class="card qc-section" style="display:none;">
 
   <h2 style="
-    text-align:center;
-    color:#fff;
-    background:#00BCD4;
-    font-size:1.2rem;
-    padding:6px 12px;
-    border-radius:8px;
-    margin-bottom:12px;">
+    text-align:center; 
+    color:#000; 
+    background: linear-gradient(to right, #00BCD4, #4DD0E1); 
+    font-size:1.2rem; 
+    padding:6px 12px; 
+    border-radius:8px; 
+    margin-bottom:12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: 1px solid #000;
+    position: relative;
+    overflow: hidden;
+  ">
     MENU QC REGISTER
+    <span style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius: 8px 8px 0 0;
+      pointer-events: none;
+    "></span>
   </h2>
 
-  <div class="tabs">
-    <button class="active" data-tab="spvInputSection" onclick="showSPVTab('input', this)">Inputan</button>
-    <button data-tab="spvHasilSection" onclick="showSPVTab('hasil', this)">Hasil</button>
+  <div class="tabs" style="display:flex; gap:8px; margin-bottom:10px;">
+    <button class="tab-btn active" data-tab="spvInputSection" onclick="showSPVTab('input', this)">Inputan</button>
+    <button class="tab-btn" data-tab="spvHasilSection" onclick="showSPVTab('hasil', this)">Hasil</button>
   </div>
+
+
+
+<style>
+/* ========== Tab Button QC SPV (Cyan) ========== */
+.tab-btn {
+  flex: 1;
+  padding: 6px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #000 !important; /* ✅ outline hitam muncul juga di nonaktif */
+  background: #e0e0e0 !important; /* tombol nonaktif abu */
+  color: #000 !important;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.tab-btn.active {
+  background: linear-gradient(to right, #00BCD4, #4DD0E1) !important;
+  color: #fff !important;
+  border: 1px solid #000 !important;
+}
+
+.tab-btn:not(.active):hover {
+  background: #B2EBF2 !important;
+  color: #000 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0,188,212,0.3);
+}
+
+.tab-btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+</style>
+
 
   <!-- ========== INPUTAN ========== -->
   <div id="spvInputSection" style="margin-top:10px;">
@@ -1310,9 +2166,7 @@ body {
 </style>
 
 
-
 </section>
-
 
 
 <!-- ======================== Floating Chatbot 3D Button (Smaller Version) ======================== -->
@@ -4166,7 +5020,6 @@ function goHome() {
 
 </body>
 </html>
-
 
 
 
