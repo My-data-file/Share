@@ -274,7 +274,7 @@ select {
     " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
       QC
     </button>
-    <div id="headerTitle" style="font-size: 0.85rem; color: #e0f7fa;">System 1.0</div>
+    <div id="headerTitle" style="font-size: 0.85rem; color: #e0f7fa;">System 5.0</div>
   </div>
   <div id="headerTime" style="text-align:right; font-size:0.8rem; color:#e0f7fa;">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -285,81 +285,106 @@ select {
 
 <!-- ======================== Footer Nav ======================== -->
 <nav class="footer-nav">
-  <button onclick="showMenu('dashboard')" class="nav-btn active">DASHBOARD</button>
-  <button onclick="showMenu('qcBapro')" class="nav-btn">QC BAPRO</button>
-  <button onclick="showMenu('qcPA')" class="nav-btn">QC CETAK</button>
-  <button onclick="showMenu('qcFinishing')" class="nav-btn">QC FINISHING</button>
-  <button onclick="showMenu('qcLem')" class="nav-btn">QC LEM</button>
-  <button onclick="showMenu('qcSPV')" class="nav-btn">QC REGISTER</button>
+  <div class="nav-inner">
+    <button onclick="showMenu('dashboard')" class="nav-btn active">DASHBOARD</button>
+    <button onclick="showMenu('qcBapro')" class="nav-btn">QC BAPRO</button>
+    <button onclick="showMenu('qcPA')" class="nav-btn">QC CETAK</button>
+    <button onclick="showMenu('qcFinishing')" class="nav-btn">QC FINISHING</button>
+    <button onclick="showMenu('qcLem')" class="nav-btn">QC LEM</button>
+    <button onclick="showMenu('qcSPV')" class="nav-btn">QC REGISTER</button>
+  </div>
 </nav>
 
 <style>
-/* ======================== Footer Nav ======================== */
+/* ======================== Footer Nav Wrapper ======================== */
 .footer-nav {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
   background: linear-gradient(to right, #0078D7, #1A86D1);
-  display: flex;
-  justify-content: flex-start; /* ubah jadi flex-start supaya bisa scroll dari kiri */
-  align-items: center;
-  gap: 12px;
   height: 64px;
   z-index: 999;
-  padding: 0 14px;            /* tambah padding kiri-kanan biar tidak kepotong */
-  overflow-x: auto;           /* bisa scroll di HP */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px;
+  overflow: hidden;
+}
+
+/* ======================== Kontainer tombol ======================== */
+.nav-inner {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  overflow-x: auto;
   white-space: nowrap;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-}
-.footer-nav::-webkit-scrollbar {
-  display: none; /* sembunyikan scrollbar di mobile */
+  width: 100%;
 }
 
-/* ======================== Tombol Modern ======================== */
-.nav-btn,
-.toggle-btn {
-  color: black;
+/* ======================== Tombol Putih HD Modern ======================== */
+.nav-btn {
+  flex-shrink: 0;
+  color: #0f172a;
   font-weight: 600;
-  padding: 10px 18px;
-  border-radius: 8px;
-  border: 1px solid #555;
-  cursor: pointer;
-  background: white;
-  box-shadow: none;
+  font-size: 15px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.7);
+  background: #ffffff;
+  text-shadow: none;
+  box-shadow:
+    0 2px 6px rgba(0,0,0,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.3);
   transition: all 0.25s ease;
-  flex-shrink: 0;            /* biar tidak mengecil di layar sempit */
+  cursor: pointer;
 }
 
-/* Hover efek */
-.nav-btn:hover,
-.toggle-btn:hover {
-  background: #f0f0f0;
+/* Hover efek lembut */
+.nav-btn:hover {
+  background: #f5f9ff;
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.4);
 }
 
-/* Tombol aktif */
-.nav-btn.active,
-.toggle-btn.active {
-  background: linear-gradient(to bottom, #22c55e, #1fb05c);
-  color: white;
-  border: 1px solid #1aa34a;
-  box-shadow: 0 2px 6px rgba(34,197,94,0.25);
+/* Aktif: glow hijau elegan */
+.nav-btn.active {
+  color: #fff;
+  background: linear-gradient(145deg, #22c55e, #16a34a);
+  border-color: rgba(34,197,94,0.6);
+  box-shadow:
+    0 0 15px rgba(34,197,94,0.6),
+    0 0 30px rgba(34,197,94,0.4);
+}
+
+/* Klik efek */
+.nav-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 6px rgba(0,0,0,0.3);
 }
 
 /* ======================== Responsif ======================== */
 @media (max-width: 768px) {
+  .nav-inner {
+    justify-content: flex-start;
+  }
   .nav-btn {
-    padding: 10px 14px;
     font-size: 14px;
+    padding: 9px 16px;
   }
 }
 @media (min-width: 1024px) {
+  .nav-inner {
+    justify-content: center;
+  }
   .nav-btn {
-    padding: 12px 22px;
     font-size: 15px;
+    padding: 11px 22px;
   }
 }
 </style>
@@ -4979,7 +5004,6 @@ function goHome() {
 
 </body>
 </html>
-
 
 
 
