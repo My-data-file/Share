@@ -1660,7 +1660,7 @@ select {
 
 
 
-<!-- ======================== MENU MANUAL ======================== -->
+<!-- ======================== MENU MANUAL ======================== --> 
 <section id="manualSection" class="card qc-section" style="display:none;">
 
   <!-- Judul -->
@@ -1729,7 +1729,6 @@ select {
 
 <!-- ===== CSS Tab dan Style untuk MENU MANUAL ===== -->
 <style>
-/* ===== Tabs Container ===== */
 #manualSection .tabs {
   display: flex;
   gap: 8px;
@@ -1737,8 +1736,6 @@ select {
   flex-wrap: wrap;
   justify-content: center;
 }
-
-/* ===== Tab Buttons ===== */
 #manualSection .tab-btn {
   flex: 1;
   min-width: 120px;
@@ -1762,8 +1759,6 @@ select {
   transform: translateY(-1px);
   box-shadow: 0 2px 6px rgba(0,120,215,0.3);
 }
-
-/* ===== List Folder ===== */
 .manual-list {
   list-style: none;
   padding: 0;
@@ -1788,8 +1783,6 @@ select {
   font-weight: 600;
   display: block;
 }
-
-/* ===== Filter Input ===== */
 .filter-input {
   width: 100%;
   padding: 8px 10px;
@@ -1805,8 +1798,6 @@ select {
   border-color: #0078D7;
   box-shadow: 0 0 6px rgba(0,120,215,0.4);
 }
-
-/* ===== Responsif ===== */
 @media (max-width: 768px) {
   #manualSection h2 {
     font-size: 1rem;
@@ -1833,9 +1824,10 @@ select {
 
 <!-- ===== Script Password + Filter ===== -->
 <script>
-const QC_SPV_PASSWORD = 'spv123';
+// 🔐 Password khusus MENU MANUAL agar tidak bentrok dengan menu lain
+const MANUAL_PASSWORD = 'qc123';
 
-// 🔐 Password untuk akses MENU MANUAL
+// 🔐 Proteksi akses MENU MANUAL
 document.addEventListener('DOMContentLoaded', () => {
   const manualBtn = document.querySelector(`nav button[onclick="showMenu('manualSection')"]`);
   if (manualBtn) {
@@ -1844,7 +1836,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const input = prompt('Masukkan password untuk MENU MANUAL:');
       if (input === null) return;
-      if (input === QC_SPV_PASSWORD) eval(originalOnClick);
+      if (input === MANUAL_PASSWORD) eval(originalOnClick);
       else alert('❌ Password salah!');
     };
   }
@@ -1868,6 +1860,7 @@ function filterManualList(input, tabId) {
   });
 }
 </script>
+
 
 
 
