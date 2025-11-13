@@ -292,6 +292,7 @@ select {
     <button onclick="showMenu('qcFinishing')" class="nav-btn">QC FINISHING</button>
     <button onclick="showMenu('qcLem')" class="nav-btn">QC LEM</button>
     <button onclick="showMenu('qcSPV')" class="nav-btn">QC REGISTER</button>
+    <button onclick="showMenu('manualSection')" class="nav-btn">MANUAL</button>
   </div>
 </nav>
 
@@ -1656,6 +1657,217 @@ select {
   box-shadow: none !important;
 }
 </style>
+
+
+
+<!-- ======================== MENU MANUAL ======================== -->
+<section id="manualSection" class="card qc-section" style="display:none;">
+
+  <!-- Judul -->
+  <h2 style="
+    text-align:center; 
+    color:#000; 
+    background: linear-gradient(to right, #0078D7, #1A86D1);
+    font-size:1.2rem; 
+    padding:6px 12px; 
+    border-radius:8px; 
+    margin-bottom:12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: 1px solid #000;
+    position: relative;
+    overflow: hidden;
+  ">
+    MENU MANUAL
+    <span style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius: 8px 8px 0 0;
+      pointer-events: none;
+    "></span>
+  </h2>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="manualQC" onclick="switchTab(this)">Manual QC</button>
+    <button class="tab-btn" data-tab="manualProduksi" onclick="switchTab(this)">Manual Produksi</button>
+    <button class="tab-btn" data-tab="manualUmum" onclick="switchTab(this)">Manual Umum</button>
+  </div>
+
+  <!-- Konten Manual QC -->
+  <div id="manualQC" class="tab-content active">
+    <input type="text" class="filter-input" placeholder="🔍 Cari panduan QC..." onkeyup="filterManualList(this, 'manualQC')">
+    <ul class="manual-list">
+      <li><a href="https://drive.google.com/drive/folders/1abcManualQC" target="_blank">📘 Panduan QC Bapro</a></li>
+      <li><a href="https://drive.google.com/drive/folders/1defManualQC" target="_blank">📘 Panduan QC Cetak</a></li>
+      <li><a href="https://drive.google.com/drive/folders/1ghiManualQC" target="_blank">📘 Panduan QC Finishing</a></li>
+      <li><a href="https://drive.google.com/drive/folders/1jklManualQC" target="_blank">📘 Panduan QC Lem</a></li>
+    </ul>
+  </div>
+
+  <!-- Konten Manual Produksi -->
+  <div id="manualProduksi" class="tab-content">
+    <input type="text" class="filter-input" placeholder="🔍 Cari panduan Produksi..." onkeyup="filterManualList(this, 'manualProduksi')">
+    <ul class="manual-list">
+      <li><a href="https://drive.google.com/drive/folders/1abcManualProduksi" target="_blank">📗 Panduan Mesin</a></li>
+      <li><a href="https://drive.google.com/drive/folders/1defManualProduksi" target="_blank">📗 SOP Operator</a></li>
+    </ul>
+  </div>
+
+  <!-- Konten Manual Umum -->
+  <div id="manualUmum" class="tab-content">
+    <input type="text" class="filter-input" placeholder="🔍 Cari panduan Umum..." onkeyup="filterManualList(this, 'manualUmum')">
+    <ul class="manual-list">
+      <li><a href="https://drive.google.com/drive/folders/1abcManualUmum" target="_blank">📙 Kebijakan Umum</a></li>
+      <li><a href="https://drive.google.com/drive/folders/1defManualUmum" target="_blank">📙 Form Template</a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== CSS Tab dan Style untuk MENU MANUAL ===== -->
+<style>
+/* ===== Tabs Container ===== */
+#manualSection .tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ===== Tab Buttons ===== */
+#manualSection .tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 8px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #000 !important;
+  background: #eaf4ff !important;
+  color: #003366 !important;
+  transition: all 0.2s;
+  text-align: center;
+}
+#manualSection .tab-btn.active {
+  background: linear-gradient(to right, #0078D7, #1A86D1) !important;
+  color: #fff !important;
+  border: 1px solid #000 !important;
+}
+#manualSection .tab-btn:not(.active):hover {
+  background: #d5e9ff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0,120,215,0.3);
+}
+
+/* ===== List Folder ===== */
+.manual-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.manual-list li {
+  background: #f5faff;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  padding: 10px 12px;
+  border: 1px solid #c2e0ff;
+  transition: all 0.2s;
+}
+.manual-list li:hover {
+  background: #e0f0ff;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0,120,215,0.2);
+}
+.manual-list a {
+  text-decoration: none;
+  color: #004a99;
+  font-weight: 600;
+  display: block;
+}
+
+/* ===== Filter Input ===== */
+.filter-input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #bcdfff;
+  margin-bottom: 10px;
+  font-size: 14px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  transition: all 0.2s;
+}
+.filter-input:focus {
+  outline: none;
+  border-color: #0078D7;
+  box-shadow: 0 0 6px rgba(0,120,215,0.4);
+}
+
+/* ===== Responsif ===== */
+@media (max-width: 768px) {
+  #manualSection h2 {
+    font-size: 1rem;
+  }
+  #manualSection .tab-btn {
+    flex: 1 1 100%;
+    font-size: 14px;
+    padding: 7px 0;
+  }
+  .manual-list li {
+    padding: 8px 10px;
+  }
+  .filter-input {
+    font-size: 13px;
+  }
+}
+@media (min-width: 1024px) {
+  #manualSection .tab-btn {
+    flex: 1;
+    font-size: 15px;
+  }
+}
+</style>
+
+<!-- ===== Script Password + Filter ===== -->
+<script>
+const QC_SPV_PASSWORD = 'spv123';
+
+// 🔐 Password untuk akses MENU MANUAL
+document.addEventListener('DOMContentLoaded', () => {
+  const manualBtn = document.querySelector(`nav button[onclick="showMenu('manualSection')"]`);
+  if (manualBtn) {
+    const originalOnClick = manualBtn.getAttribute('onclick');
+    manualBtn.onclick = function(e) {
+      e.preventDefault();
+      const input = prompt('Masukkan password untuk MENU MANUAL:');
+      if (input === null) return;
+      if (input === QC_SPV_PASSWORD) eval(originalOnClick);
+      else alert('❌ Password salah!');
+    };
+  }
+});
+
+// 🔄 Ganti tab
+function switchTab(btn) {
+  document.querySelectorAll('#manualSection .tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#manualSection .tab-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(btn.dataset.tab).classList.add('active');
+}
+
+// 🔍 Filter daftar manual
+function filterManualList(input, tabId) {
+  const filter = input.value.toLowerCase();
+  const items = document.querySelectorAll(`#${tabId} .manual-list li`);
+  items.forEach(li => {
+    const text = li.textContent.toLowerCase();
+    li.style.display = text.includes(filter) ? '' : 'none';
+  });
+}
+</script>
 
 
 
@@ -5013,7 +5225,6 @@ function goHome() {
 
 </body>
 </html>
-
 
 
 
