@@ -274,7 +274,7 @@ select {
     " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
       QC
     </button>
-    <div id="headerTitle" style="font-size: 0.85rem; color: #e0f7fa;">System 5.0</div>
+    <div id="headerTitle" style="font-size: 0.85rem; color: #e0f7fa;">System</div>
   </div>
   <div id="headerTime" style="text-align:right; font-size:0.8rem; color:#e0f7fa;">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -292,6 +292,8 @@ select {
     <button onclick="showMenu('qcFinishing')" class="nav-btn">QC FINISHING</button>
     <button onclick="showMenu('qcLem')" class="nav-btn">QC LEM</button>
     <button onclick="showMenu('qcSPV')" class="nav-btn">QC REGISTER</button>
+    <button onclick="showMenu('qcMeeting')" class="nav-btn">MEETING</button>
+    <button onclick="showMenu('manualSection')" class="nav-btn">MANUAL</button>
   </div>
 </nav>
 
@@ -405,7 +407,7 @@ select {
 <!-- ======================== Dashboard ======================== -->
 <section id="dashboard" class="card qc-section">
 
-<!-- ======================== QC BAPRO ======================== -->
+<!-- ======================== QC BAPRO ======================== -->  
 <h2 style="
   text-align:center; 
   color:#000; 
@@ -495,14 +497,7 @@ select {
       pointer-events: none;
     "></span>
   </h4>
-  <button id="toggleBaproTO" class="toggle-btn" style="
-    padding:2px 6px; font-size:0.8rem; height:32px;
-    background: linear-gradient(to bottom, #FF7F7F, #FF3B3B);
-    color:#000; border:none; border-radius:4px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    cursor:pointer;
-    transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
+  <button id="toggleBaproTO" class="toggle-btn">Show</button>
 </div>
 
 <div id="sectionBaproTO" style="display:none;">
@@ -529,14 +524,7 @@ select {
       pointer-events: none;
     "></span>
   </h4>
-  <button id="toggleBaproProses" class="toggle-btn" style="
-    padding:2px 6px; font-size:0.8rem; height:32px;
-    background: linear-gradient(to bottom, #FF8C8C, #FF4C4C);
-    color:#000; border:none; border-radius:4px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    cursor:pointer;
-    transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
+  <button id="toggleBaproProses" class="toggle-btn">Show</button>
 </div>
 
 <div id="sectionBaproProses" style="display:none;">
@@ -563,14 +551,7 @@ select {
       pointer-events: none;
     "></span>
   </h4>
-  <button id="toggleBaproSelesai" class="toggle-btn" style="
-    padding:2px 6px; font-size:0.8rem; height:32px;
-    background: linear-gradient(to bottom, #FF9A9A, #FF5555);
-    color:#000; border:none; border-radius:4px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    cursor:pointer;
-    transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
+  <button id="toggleBaproSelesai" class="toggle-btn">Show</button>
 </div>
 
 <div id="sectionBaproSelesai" style="display:none;">
@@ -598,16 +579,27 @@ select {
   border-radius: 8px;
   padding: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-  color: #000; /* teks card hitam agar seragam */
+  color: #000;
 }
-.toggle-btn.active {
-  background: linear-gradient(to bottom, #22c55e, #1fb05c);
-  color: white;
-  border: 1px solid #1aa34a;
-  box-shadow: 0 2px 6px rgba(34,197,94,0.25);
+
+/* ========== Tombol Show/Hide Abu-abu Elegan ========== */
+.toggle-btn {
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  height: 32px;
+  background: linear-gradient(to bottom, #f0f0f0, #bdbdbd);
+  color: #000;
+  border: 1px solid #000;
+  border-radius: 4px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+.toggle-btn:hover {
+  background: linear-gradient(to bottom, #ffffff, #cfcfcf);
+  transform: translateY(-2px);
 }
 </style>
-
 
 
 <!-- ======================== QC CETAK ======================== -->
@@ -700,14 +692,7 @@ select {
       pointer-events: none;
     "></span>
   </h4>
-  <button id="togglePATO" class="toggle-btn" style="
-    padding:2px 6px; font-size:0.8rem; height:32px;
-    background: linear-gradient(to bottom, #FFCC80, #FFA726);
-    color:#000; border:none; border-radius:4px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    cursor:pointer;
-    transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
+  <button id="togglePATO" class="toggle-btn">Show</button>
 </div>
 <div id="sectionPATO" style="display:none;">
   <input id="filterPATO" type="text" placeholder="🔍 Filter TO" class="filter-input">
@@ -734,14 +719,7 @@ select {
       pointer-events: none;
     "></span>
   </h4>
-  <button id="togglePAProses" class="toggle-btn" style="
-    padding:2px 6px; font-size:0.8rem; height:32px;
-    background: linear-gradient(to bottom, #FFD090, #FFB266);
-    color:#000; border:none; border-radius:4px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    cursor:pointer;
-    transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
+  <button id="togglePAProses" class="toggle-btn">Show</button>
 </div>
 <div id="sectionPAProses" style="display:none;">
   <input id="filterPAProses" type="text" placeholder="🔍 Filter Proses" class="filter-input">
@@ -768,14 +746,7 @@ select {
       pointer-events: none;
     "></span>
   </h4>
-  <button id="togglePASelesai" class="toggle-btn" style="
-    padding:2px 6px; font-size:0.8rem; height:32px;
-    background: linear-gradient(to bottom, #FFE0B0, #FFCC80);
-    color:#000; border:none; border-radius:4px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    cursor:pointer;
-    transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
+  <button id="togglePASelesai" class="toggle-btn">Show</button>
 </div>
 <div id="sectionPASelesai" style="display:none;">
   <input id="filterPASelesai" type="text" placeholder="🔍 Filter Selesai" class="filter-input">
@@ -802,9 +773,28 @@ select {
   border-radius: 8px;
   padding: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-  color: #000; /* teks card hitam agar seragam */
+  color: #000;
+}
+
+/* ===== Tombol Show/Hide Abu-abu Metalik Modern ===== */
+.toggle-btn {
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  height: 32px;
+  background: linear-gradient(to bottom, #f0f0f0, #bdbdbd) !important;
+  color: #000 !important;
+  border: 1px solid #000 !important;
+  border-radius: 4px !important;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.25) !important;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s !important;
+}
+.toggle-btn:hover {
+  background: linear-gradient(to bottom, #ffffff, #d6d6d6) !important;
+  transform: translateY(-2px);
 }
 </style>
+
 
 
 
@@ -899,14 +889,7 @@ select {
       pointer-events: none;
     "></span>
   </h4>
-  <button id="toggleFinishingTO" class="toggle-btn" style="
-    padding:2px 6px; font-size:0.8rem; height:32px;
-    background: linear-gradient(to bottom, #6EE7B7, #34D399);
-    color:#000; border:none; border-radius:4px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    cursor:pointer;
-    transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
+  <button id="toggleFinishingTO" class="toggle-btn">Show</button>
 </div>
 <div id="sectionFinishingTO" style="display:none;">
   <input id="filterFinishingTO" type="text" placeholder="🔍 Filter TO" class="filter-input">
@@ -933,14 +916,7 @@ select {
       pointer-events: none;
     "></span>
   </h4>
-  <button id="toggleFinishingProses" class="toggle-btn" style="
-    padding:2px 6px; font-size:0.8rem; height:32px;
-    background: linear-gradient(to bottom, #4EEA8C, #22C55E);
-    color:#000; border:none; border-radius:4px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    cursor:pointer;
-    transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
+  <button id="toggleFinishingProses" class="toggle-btn">Show</button>
 </div>
 <div id="sectionFinishingProses" style="display:none;">
   <input id="filterFinishingProses" type="text" placeholder="🔍 Filter Proses" class="filter-input">
@@ -967,14 +943,7 @@ select {
       pointer-events: none;
     "></span>
   </h4>
-  <button id="toggleFinishingSelesai" class="toggle-btn" style="
-    padding:2px 6px; font-size:0.8rem; height:32px;
-    background: linear-gradient(to bottom, #86F2B0, #34D399);
-    color:#000; border:none; border-radius:4px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    cursor:pointer;
-    transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
+  <button id="toggleFinishingSelesai" class="toggle-btn">Show</button>
 </div>
 <div id="sectionFinishingSelesai" style="display:none;">
   <input id="filterFinishingSelesai" type="text" placeholder="🔍 Filter Selesai" class="filter-input">
@@ -1001,9 +970,28 @@ select {
   border-radius: 8px;
   padding: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-  color: #000; /* teks card hitam agar seragam */
+  color: #000;
+}
+
+/* ===== Tombol Show/Hide Abu-abu Metalik Modern ===== */
+.toggle-btn {
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  height: 32px;
+  background: linear-gradient(to bottom, #f0f0f0, #bdbdbd) !important;
+  color: #000 !important;
+  border: 1px solid #000 !important;
+  border-radius: 4px !important;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.25) !important;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s !important;
+}
+.toggle-btn:hover {
+  background: linear-gradient(to bottom, #ffffff, #d6d6d6) !important;
+  transform: translateY(-2px);
 }
 </style>
+
 
 
 
@@ -1097,14 +1085,7 @@ select {
       pointer-events: none;
     "></span>
   </h4>
-  <button id="toggleLemTO" class="toggle-btn" style="
-    padding:2px 6px; font-size:0.8rem; height:32px;
-    background: linear-gradient(to bottom, #D8B4FE, #C084FC);
-    color:#000; border:none; border-radius:4px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    cursor:pointer;
-    transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
+  <button id="toggleLemTO" class="toggle-btn">Show</button>
 </div>
 <div id="sectionLemTO" style="display:none;">
   <input id="filterTOLem" type="text" placeholder="🔍 Filter TO" class="filter-input">
@@ -1131,14 +1112,7 @@ select {
       pointer-events: none;
     "></span>
   </h4>
-  <button id="toggleLemProses" class="toggle-btn" style="
-    padding:2px 6px; font-size:0.8rem; height:32px;
-    background: linear-gradient(to bottom, #E9D5FF, #BA68C8);
-    color:#000; border:none; border-radius:4px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    cursor:pointer;
-    transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
+  <button id="toggleLemProses" class="toggle-btn">Show</button>
 </div>
 <div id="sectionLemProses" style="display:none;">
   <input id="filterProsesLem" type="text" placeholder="🔍 Filter Proses" class="filter-input">
@@ -1165,14 +1139,7 @@ select {
       pointer-events: none;
     "></span>
   </h4>
-  <button id="toggleLemSelesai" class="toggle-btn" style="
-    padding:2px 6px; font-size:0.8rem; height:32px;
-    background: linear-gradient(to bottom, #F3E8FF, #C084FC);
-    color:#000; border:none; border-radius:4px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    cursor:pointer;
-    transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Show</button>
+  <button id="toggleLemSelesai" class="toggle-btn">Show</button>
 </div>
 <div id="sectionLemSelesai" style="display:none;">
   <input id="filterSelesaiLem" type="text" placeholder="🔍 Filter Selesai" class="filter-input">
@@ -1180,6 +1147,7 @@ select {
 </div>
 
 <style>
+/* ===== Input & Grid ===== */
 .filter-input {
   width: 100%;
   max-width: 280px;
@@ -1199,9 +1167,30 @@ select {
   border-radius: 8px;
   padding: 8px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-  color: #000; /* teks card hitam agar seragam */
+  color: #000;
+}
+
+/* ===== Tombol Show/Hide Abu-abu Metalik Modern (Sama Finishing) ===== */
+.toggle-btn {
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  height: 32px;
+  background: linear-gradient(to bottom, #f0f0f0, #bdbdbd) !important;
+  color: #000 !important;
+  border: 1px solid #000 !important;
+  border-radius: 4px !important;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.25) !important;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s !important;
+}
+.toggle-btn:hover {
+  background: linear-gradient(to bottom, #ffffff, #d6d6d6) !important;
+  transform: translateY(-2px);
 }
 </style>
+
+
+
 
 
 
@@ -1322,6 +1311,44 @@ select {
   outline: none;
   box-shadow: none;
 }
+
+/* Agar seluruh section punya layout kolom */
+#qcBapro {
+  display: flex;
+  flex-direction: column;
+  max-height: none;
+}
+
+
+/* ===== BAGIAN TAB DIBUAT FIX DI ATAS ===== */
+#qcBapro .tabs {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #fff;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+/* ===== AREA INPUT & HASIL MEMPUNYAI SCROLL SENDIRI ===== */
+#inputBapro,
+#hasilBapro {
+  overflow-y: auto;
+  max-height: calc(80vh - 120px); /* agar tidak melewati bawah layar */
+  padding-right: 4px;
+}
+
+/* ===== FILTER HASIL BAPRO TETAP DI ATAS ===== */
+#hasilBapro input[type="text"] {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: #fff;
+  padding: 6px;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+}
+
 </style>
 
 
@@ -1444,6 +1471,43 @@ select {
   outline: none;
   box-shadow: none;
 }
+
+/* Layout utama section QC CETAK */
+#qcPA {
+  display: flex;
+  flex-direction: column;
+  max-height: none;
+}
+
+/* ===== BAGIAN TAB TETAP DI ATAS ===== */
+#qcPA .tabs {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #fff;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+/* ===== AREA INPUT / HASIL BISA SCROLL SENDIRI ===== */
+#inputPA,
+#hasilPA {
+  overflow-y: auto;
+  max-height: calc(80vh - 120px);
+  padding-right: 4px;
+}
+
+/* ===== FILTER HASIL TETAP DI ATAS ===== */
+#hasilPA input[type="text"] {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: #fff;
+  padding: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 8px;
+}
+
 </style>
 
 
@@ -1553,6 +1617,43 @@ select {
   outline: none;
   box-shadow: none;
 }
+
+/* Layout utama section QC FINISHING */
+#qcFinishing {
+  display: flex;
+  flex-direction: column;
+  max-height: none;
+}
+
+/* ===== TAB TETAP DI ATAS ===== */
+#qcFinishing .tabs {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #fff;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+/* ===== AREA INPUT & HASIL SCROLL SENDIRI ===== */
+#inputFinishing,
+#hasilFinishing {
+  overflow-y: auto;
+  max-height: calc(80vh - 120px);
+  padding-right: 4px;
+}
+
+/* ===== FILTER HASIL TETAP DI ATAS ===== */
+#hasilFinishing input[type="text"] {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: #fff;
+  padding: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 8px;
+}
+
 </style>
 
 
@@ -1564,7 +1665,7 @@ select {
   <!-- Judul -->
   <h2 style="
     text-align:center; 
-    color:#fff; 
+    color:#000; 
     background: linear-gradient(to right, #9C27B0, #BA68C8); 
     font-size:1.2rem; 
     padding:6px 12px; 
@@ -1573,7 +1674,8 @@ select {
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     border: 1px solid #000;
     position: relative;
-    overflow: hidden;">
+    overflow: hidden;
+  ">
     MENU QC LEM
     <span style="
       position: absolute;
@@ -1583,7 +1685,8 @@ select {
       height: 50%;
       background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
       border-radius: 8px 8px 0 0;
-      pointer-events: none;"></span>
+      pointer-events: none;
+    "></span>
   </h2>
 
   <!-- Tabs -->
@@ -1626,48 +1729,293 @@ select {
     <input type="text" placeholder="Cari..." oninput="filterLemGrid(this.value)">
     <div id="gridLem" class="grid-container"></div>
   </div>
-
 </section>
 
-<!-- ===== CSS Tab dan Style QC LEM ===== -->
+<!-- ===== CSS Tab dan Style QC LEM (Fix Ungu) ===== -->
 <style>
-/* Tab tombol */
+/* Tombol tab */
 .tab-btn {
   flex: 1;
   padding: 6px 0;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
-  border: 1px solid #000; /* outline hitam */
-  background: #e0e0e0 !important; /* tombol tidak aktif */
+  border: 1px solid #000 !important;
+  background: #e0e0e0 !important; /* default abu */
   color: #000 !important;
   transition: all 0.2s;
   text-align: center;
-  margin-right: 4px;
 }
 
 /* Tab aktif */
-.tab-btn.active {
-  background: linear-gradient(to right, #9C27B0, #BA68C8) !important; /* sama dengan judul */
+#qcLem .tab-btn.active {
+  background: linear-gradient(to right, #9C27B0, #BA68C8) !important;
   color: #fff !important;
-  border: 1px solid #000 !important; /* outline hitam */
+  border: 1px solid #000 !important;
+  background-color: #9C27B0 !important;
 }
 
 /* Hover tab tidak aktif */
-.tab-btn:not(.active):hover {
+#qcLem .tab-btn:not(.active):hover {
   background: #D18FE0 !important; /* ungu muda */
   color: #000 !important;
-  border: 1px solid #000 !important; /* outline hitam saat hover */
+  border: 1px solid #000 !important;
   transform: translateY(-1px);
   box-shadow: 0 2px 6px rgba(156,39,176,0.3);
 }
 
 /* Hilangkan outline default saat klik/fokus */
-.tab-btn:focus {
+#qcLem .tab-btn:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Layout utama section QC LEM */
+#qcLem {
+  display: flex;
+  flex-direction: column;
+  max-height: none;
+}
+
+/* ===== TAB TETAP DI ATAS ===== */
+#qcLem .tabs {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #fff;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+/* ===== AREA INPUT & HASIL BISA SCROLL SENDIRI ===== */
+#inputLem,
+#hasilLem {
+  overflow-y: auto;
+  max-height: calc(80vh - 120px); /* aman untuk laptop & HP */
+  padding-right: 4px;
+}
+
+/* ===== FILTER HASIL TETAP DI ATAS ===== */
+#hasilLem input[type="text"] {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: #fff;
+  padding: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 8px;
+}
+
+</style>
+
+
+
+<!-- ======================== MENU MANUAL ======================== --> 
+<section id="manualSection" class="card qc-section" style="display:none;">
+
+  <!-- Judul -->
+  <h2 style="
+    text-align:center; 
+    color:#000; 
+    background: linear-gradient(to right, #0078D7, #1A86D1);
+    font-size:1.2rem; 
+    padding:6px 12px; 
+    border-radius:8px; 
+    margin-bottom:12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: 1px solid #000;
+    position: relative;
+    overflow: hidden;
+  ">
+    MENU MANUAL
+    <span style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius: 8px 8px 0 0;
+      pointer-events: none;
+    "></span>
+  </h2>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="manualQC" onclick="switchTab(this)">Manual QC</button>
+    <button class="tab-btn" data-tab="manualProduksi" onclick="switchTab(this)">Form QC</button>
+    <button class="tab-btn" data-tab="manualUmum" onclick="switchTab(this)">Jobdes QC</button>
+  </div>
+
+  <!-- Konten Manual QC -->
+  <div id="manualQC" class="tab-content active">
+    <input type="text" class="filter-input" placeholder="🔍 Cari panduan QC..." onkeyup="filterManualList(this, 'manualQC')">
+    <ul class="manual-list">
+      <li><a href="https://drive.google.com/drive/folders/1oViZSpiSc4aRF-OxVQSZ6nMN0FbdD_y-?usp=drive_link">📘 307900_QC -COA</a></li>
+      <li><a href="https://drive.google.com/drive/folders/1xctN1tpbmLZ1tCQF-4-YLJXIBOA_HDr6?usp=drive_link">📘 307700_QC -InProses</a></li>
+      <li><a href="https://drive.google.com/drive/folders/1KweOfFN36PeKC9AiYpbxAJ2YtG7UKJbU?usp=drive_link">📘 307800_QC -Barang Jadi</a></li>
+      <li><a href="https://drive.google.com/drive/folders/1VlgxLLagD79zxuSZWYPVdUEgdbS1X2Uo?usp=drive_link">📘 307600_QC -Produksi POP</a></li>
+      <li><a href="https://drive.google.com/drive/folders/1utMIrQZsvTZ1aTyzGfWE00iaMJw8jIcU?usp=drive_link">📘 307500_QC -Acuan</a></li>
+      <li><a href="https://drive.google.com/drive/folders/1tGhpcUL4YEB4RNdBW4UozAdryLdTPDAB?usp=drive_link">📘 307400_QC -Roll & Blanket Cetak</a></li>
+      <li><a href="https://drive.google.com/drive/folders/1Z4atGWZUMgZhNfuseImbSlPMXSsQBFnO?usp=drive_link">📘 307200_QC -Batek & Solar</a></li>
+      <li><a href="https://drive.google.com/drive/folders/1zATvzsfhBneNYHSS9zLkvm9U7gN3Obnm?usp=drive_link">📘 307100_QC -Bapro</a></li>
+      <li><a href="https://drive.google.com/drive/folders/1sAsUUZf7bc2YFxMeAFJo9BdWzQ5VSlxz?usp=drive_link">📘 307000_QC -System Mgn</a></li>
+    </ul>
+  </div>
+
+  <!-- Konten Form QC -->
+  <div id="manualProduksi" class="tab-content">
+    <input type="text" class="filter-input" placeholder="🔍 Cari panduan Produksi..." onkeyup="filterManualList(this, 'manualProduksi')">
+    <ul class="manual-list">
+      <li><a href="https://drive.google.com/drive/folders/1kQFXtEc9AfMuihyoPwKgQiBfj9CBy6Cv?usp=drive_link">📗 Form QC Cetak</a></li>
+    </ul>
+  </div>
+
+  <!-- Konten Jobdes QC -->
+  <div id="manualUmum" class="tab-content">
+    <input type="text" class="filter-input" placeholder="🔍 Cari panduan Umum..." onkeyup="filterManualList(this, 'manualUmum')">
+    <ul class="manual-list">
+      <li><a href="https://docs.google.com/document/d/1ZMUH69lKTdmZSqiU4ENonEWkz2mU-jEZ/edit?usp=drive_link&ouid=106732294145329226246&rtpof=true&sd=true">📙 Jobdes SPV</a></li>
+      <li><a href="https://drive.google.com/drive/folders/13KqNsG7lKYIdr_ouVYtyNMQB38j5kpoO?usp=drive_link">📙 Jobdes QC Bapro</a></li>
+      <li><a href="https://docs.google.com/document/d/1I5eMeL5lQBXrugCec3PwDknSgrs4G2wg/edit?usp=drive_link&ouid=106732294145329226246&rtpof=true&sd=true">📙 Jobdes QC Cetak</a></li>
+      <li><a href="https://drive.google.com/drive/folders/11KbszhyIqDsvoIj66-rEOP4UgTMveOUS?usp=drive_link">📙 Jobdes QC Barang Jadi</a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== CSS Tab dan Style untuk MENU MANUAL ===== -->
+<style>
+#manualSection .tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+#manualSection .tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 8px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #000 !important;
+  background: #eaf4ff !important;
+  color: #003366 !important;
+  transition: all 0.2s;
+  text-align: center;
+}
+#manualSection .tab-btn.active {
+  background: linear-gradient(to right, #0078D7, #1A86D1) !important;
+  color: #fff !important;
+  border: 1px solid #000 !important;
+}
+#manualSection .tab-btn:not(.active):hover {
+  background: #d5e9ff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0,120,215,0.3);
+}
+.manual-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.manual-list li {
+  background: #f5faff;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  padding: 10px 12px;
+  border: 1px solid #c2e0ff;
+  transition: all 0.2s;
+}
+.manual-list li:hover {
+  background: #e0f0ff;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0,120,215,0.2);
+}
+.manual-list a {
+  text-decoration: none;
+  color: #004a99;
+  font-weight: 600;
+  display: block;
+}
+.filter-input {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #bcdfff;
+  margin-bottom: 10px;
+  font-size: 14px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  transition: all 0.2s;
+}
+.filter-input:focus {
   outline: none;
-  box-shadow: none;
+  border-color: #0078D7;
+  box-shadow: 0 0 6px rgba(0,120,215,0.4);
+}
+@media (max-width: 768px) {
+  #manualSection h2 {
+    font-size: 1rem;
+  }
+  #manualSection .tab-btn {
+    flex: 1 1 100%;
+    font-size: 14px;
+    padding: 7px 0;
+  }
+  .manual-list li {
+    padding: 8px 10px;
+  }
+  .filter-input {
+    font-size: 13px;
+  }
+}
+@media (min-width: 1024px) {
+  #manualSection .tab-btn {
+    flex: 1;
+    font-size: 15px;
+  }
 }
 </style>
+
+<!-- ===== Script Password + Filter ===== -->
+<script>
+// 🔐 Password khusus MENU MANUAL agar tidak bentrok dengan menu lain
+const MANUAL_PASSWORD = 'qc123';
+
+// 🔐 Proteksi akses MENU MANUAL
+document.addEventListener('DOMContentLoaded', () => {
+  const manualBtn = document.querySelector(`nav button[onclick="showMenu('manualSection')"]`);
+  if (manualBtn) {
+    const originalOnClick = manualBtn.getAttribute('onclick');
+    manualBtn.onclick = function(e) {
+      e.preventDefault();
+      const input = prompt('Masukkan password untuk MENU MANUAL:');
+      if (input === null) return;
+      if (input === MANUAL_PASSWORD) eval(originalOnClick);
+      else alert('❌ Password salah!');
+    };
+  }
+});
+
+// 🔄 Ganti tab
+function switchTab(btn) {
+  document.querySelectorAll('#manualSection .tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#manualSection .tab-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(btn.dataset.tab).classList.add('active');
+}
+
+// 🔍 Filter daftar manual
+function filterManualList(input, tabId) {
+  const filter = input.value.toLowerCase();
+  const items = document.querySelectorAll(`#${tabId} .manual-list li`);
+  items.forEach(li => {
+    const text = li.textContent.toLowerCase();
+    li.style.display = text.includes(filter) ? '' : 'none';
+  });
+}
+</script>
 
 
 
@@ -1947,6 +2295,8 @@ select {
   </div>
 </div>
 
+</section>
+
 <style>
 /* ========== Spinner ========== */
 .spinner {
@@ -2155,14 +2505,368 @@ body {
   background:#f5f7fa;
   font-family:'Segoe UI', sans-serif;
 }
+
+/* ================================ */
+/* QC SPV — Layout utama */
+/* ================================ */
+#qcSPV {
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh; /* sama seperti QC LEM */
+  overflow: hidden;
+}
+
+
+/* ================================ */
+/* JUDUL TETAP DI ATAS */
+/* ================================ */
+#qcSPV > h2 {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: inherit;
+  margin-top: 0;
+}
+
+
+/* ================================ */
+/* TAB INPUTAN / HASIL */
+/* ================================ */
+#qcSPV .tabs {
+  position: sticky;
+  top: 50px; /* pas di bawah judul */
+  z-index: 99;
+  background: #fff;
+  padding: 6px 0;
+  margin-bottom: 6px !important;
+}
+
+
+/* ================================ */
+/* INPUT & HASIL — dapat scroll sendiri */
+/* ================================ */
+#spvInputSection,
+#spvHasilSection {
+  overflow-y: auto;
+  max-height: calc(80vh - 120px);
+  padding-right: 4px;
+}
+
+
+/* ================================ */
+/* FILTER HASIL TETAP DI ATAS */
+/* ================================ */
+#spvHasilSection .search-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  background: #fff;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+}
+
+
+/* ================================ */
+/* TABEL WRAPPER */
+/* ================================ */
+#spvHasilSection .table-wrapper {
+  overflow-y: auto;
+  max-height: calc(80vh - 180px);
+  border: 1px solid #ddd;
+}
+
+
+/* HEADER TABEL IKUT STICKY */
+#spvHasilSection table thead th {
+  position: sticky;
+  top: 0;
+  background: #00BCD4;
+  color: #fff;
+  z-index: 89;
+}
+
 </style>
 
 
+
+
+
+<!-- ======================== QC MEETING ======================== -->
+<section id="qcMeeting" class="card qc-section" style="display:none;">
+
+  <h2 style="
+    text-align:center; 
+    color:#000; 
+    background: linear-gradient(to right, #00BCD4, #4DD0E1); 
+    font-size:1.2rem; 
+    padding:6px 12px; 
+    border-radius:8px;
+    margin-bottom:12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: 1px solid #000;
+    position: relative;
+    overflow: hidden;
+  ">
+    MENU MEETING QC
+    <span style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius: 8px 8px 0 0;
+      pointer-events: none;
+    "></span>
+  </h2>
+
+  <div class="tabs" style="display:flex; gap:8px; margin-bottom:10px;">
+    <button class="tab-btn active" data-tab="meetingInputSection" onclick="showMeetingTab('input', this)">Inputan</button>
+    <button class="tab-btn" data-tab="meetingHasilSection" onclick="showMeetingTab('hasil', this)">Hasil</button>
+  </div>
+
+  <!-- ========== INPUTAN ========== -->
+  <div id="meetingInputSection" style="margin-top:10px;">
+    <form id="meetingForm">
+
+      <style>
+        /* ===== Style Form QC Meeting ===== */
+        #meetingForm .form-group { margin-bottom: 10px; }
+
+        #meetingForm input[type="text"],
+        #meetingForm input[type="date"],
+        #meetingForm input[type="time"],
+        #meetingForm textarea {
+          width: 100%;
+          padding: 0.6rem;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          font-size: 0.95rem;
+          box-sizing: border-box;
+        }
+
+        #meetingForm button {
+          width: 100%;
+          padding: .6rem;
+          background: #00BCD4;
+          color: #fff;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 1rem;
+        }
+        #meetingForm button:hover { background: #00BCD4; }
+
+        /* Tab Button */
+        .tab-btn {
+          flex: 1;
+          padding: 6px 0;
+          border-radius: 6px;
+          font-weight: 600;
+          cursor: pointer;
+          border: 1px solid #000 !important;
+          background: #e0e0e0 !important;
+          color: #000 !important;
+          transition: all 0.2s;
+          text-align: center;
+        }
+        .tab-btn.active {
+          background: linear-gradient(to right, #00BCD4, #4DD0E1) !important;
+          color: #fff !important;
+          border: 1px solid #000 !important;
+        }
+        .tab-btn:not(.active):hover {
+          background: #B2EBF2 !important;
+          color: #000 !important;
+          transform: translateY(-1px);
+          box-shadow: 0 2px 6px rgba(0,188,212,0.3);
+        }
+        .tab-btn:focus { outline:none; box-shadow:none; }
+
+        /* Spinner overlay */
+        #meetingSpinner {
+          display: none;
+          position: fixed;
+          top: 0; left: 0;
+          width: 100%; height: 100%;
+          background: rgba(0,0,0,0.4);
+          z-index: 9999;
+          align-items: center;
+          justify-content: center;
+        }
+        #meetingSpinner div {
+          width: 50px;
+          height: 50px;
+          border: 6px solid #fff;
+          border-top-color: #00BCD4;
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+      </style>
+
+      <!-- SPINNER -->
+      <div id="meetingSpinner"><div></div></div>
+
+      <!-- Nama Meeting -->
+      <div class="form-group">
+        <input type="text" id="meetingNama" placeholder="Nama Meeting" required>
+      </div>
+
+      <!-- Tanggal & Jam -->
+      <div class="form-group" style="display:flex; gap:10px;">
+        <input type="date" id="meetingTanggal" required style="flex:1;">
+        <input type="time" id="meetingJam" required style="flex:1;">
+      </div>
+
+      <!-- Foto Permasalahan -->
+      <div class="form-group">
+        <label for="meetingFoto">📷 Foto Permasalahan:</label>
+        <input type="file" id="meetingFoto" accept="image/*">
+      </div>
+
+      <!-- Keterangan Foto -->
+      <div class="form-group">
+        <textarea id="meetingKet" placeholder="Keterangan Foto (opsional)" rows="3"></textarea>
+      </div>
+
+      <!-- Akar Masalah -->
+      <div class="form-group">
+        <textarea id="meetingAkar" placeholder="Akar Masalah" rows="2"></textarea>
+      </div>
+
+      <!-- Tindakan Perbaikan -->
+      <div class="form-group">
+        <textarea id="meetingTindakan" placeholder="Tindakan Perbaikan" rows="2"></textarea>
+      </div>
+
+      <!-- Catatan Tambahan -->
+      <div class="form-group">
+        <textarea id="meetingCatatan" placeholder="Catatan Tambahan (opsional)" rows="2"></textarea>
+      </div>
+
+      <!-- Peserta (checkbox, rapi) -->
+      <div class="form-group">
+        <label>Peserta:</label>
+        <div style="display:flex; flex-wrap:wrap; gap:10px;">
+          <label><input type="checkbox" value="NANI"> NANI</label>
+          <label><input type="checkbox" value="ANJANI"> ANJANI</label>
+          <label><input type="checkbox" value="SUCI"> SUCI</label>
+          <label><input type="checkbox" value="ANOM"> ANOM</label>
+          <label><input type="checkbox" value="IRNA"> IRNA</label>
+          <label><input type="checkbox" value="MARWAN"> MARWAN</label>
+          <label><input type="checkbox" value="KIKI"> KIKI</label>
+          <label><input type="checkbox" value="MARTINI"> MARTINI</label>
+          <label><input type="checkbox" value="KRESTIN"> KRESTIN</label>
+          <label><input type="checkbox" value="ISMIE"> ISMIE</label>
+        </div>
+      </div>
+
+      <!-- Tombol Submit -->
+      <div class="form-group">
+        <button type="button" onclick="submitMeeting(event)">➕ Tambah Meeting</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ========== HASIL ========== -->
+  <div id="meetingHasilSection" style="display:none;">
+    <div class="hasil-container">
+      <div class="search-wrapper">
+        <input type="text" id="meetingSearch" placeholder="🔍 Tanggal / Meeting / Peserta">
+      </div>
+
+      <div id="meetingLoading" style="display:none; text-align:center; padding:10px;">
+        <div class="spinner"></div>
+        <p style="font-size:0.9rem; color:#555;">Memuat Data Meeting</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table id="meetingTable" border="1">
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>Nama Meeting</th>
+              <th>Jam</th>
+              <th>Keterangan Foto</th>
+              <th>Foto Permasalahan</th>
+              <th>Akar Masalah</th>
+              <th>Tindakan Perbaikan</th>
+              <th>Catatan Tambahan</th>
+              <th>Peserta</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Data diisi melalui JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* ===== Spinner ===== */
+    .spinner { width:28px; height:28px; border:3px solid #ddd; border-top:3px solid #00BCD4; border-radius:50%; margin:0 auto; animation:spin 0.8s linear infinite;}
+    @keyframes spin {0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+
+    /* Table dasar */
+    .table-wrapper { width:100%; overflow-x:auto; }
+    #meetingTable { width:100%; border-collapse:collapse; font-size:0.9rem; background:#fff; }
+    #meetingTable th, #meetingTable td { border:1px solid #ddd; padding:8px; text-align:center; vertical-align:middle; }
+    #meetingTable thead { background:#00BCD4; color:#fff; }
+    #meetingTable th:nth-child(5), #meetingTable td:nth-child(5) { min-width:160px; } /* Foto */
+    #meetingTable input[type="file"] { width:100%; max-width:160px; font-size:0.85rem; padding:4px; cursor:pointer; }
+
+    /* Tombol */
+    #meetingTable button { padding:6px 12px; border:none; border-radius:8px; cursor:pointer; font-size:0.9rem; margin:4px; color:#fff; font-weight:600; box-shadow:0 2px 6px rgba(0,0,0,0.15); transition:0.25s; }
+    #meetingTable .edit-btn { background: linear-gradient(135deg, #FFD740, #FFC400); color:#000 !important; }
+    #meetingTable .edit-btn:hover { background: linear-gradient(135deg, #FFEE58, #FFD740); transform: translateY(-2px); }
+    #meetingTable .save-btn { background: linear-gradient(135deg, #43A047, #66BB6A); }
+    #meetingTable .save-btn:hover { background: linear-gradient(135deg, #66BB6A, #81C784); transform: translateY(-2px); }
+    #meetingTable .cancel-btn { background: linear-gradient(135deg, #E53935, #EF5350); }
+    #meetingTable .cancel-btn:hover { background: linear-gradient(135deg, #F44336, #E57373); transform: translateY(-2px); }
+
+    /* Mobile responsive */
+    @media (max-width:768px){
+      #meetingTable, #meetingTable thead, #meetingTable tbody, #meetingTable th, #meetingTable td, #meetingTable tr { display:block; }
+      #meetingTable thead { display:none; }
+      #meetingTable tr { background:#fff; border:1px solid #ddd; border-radius:10px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.08); padding:10px 12px; }
+      #meetingTable td { border:none; display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid #eee; font-size:0.9rem; text-align:left; word-break:break-word; }
+      #meetingTable td:last-child { border-bottom:none; }
+      #meetingTable td::before { font-weight:600; color:#333; flex:0 0 42%; text-align:left; padding-right:6px; }
+      #meetingTable td:nth-child(1)::before{content:"Tanggal:";} 
+      #meetingTable td:nth-child(2)::before{content:"Nama Meeting:";} 
+      #meetingTable td:nth-child(3)::before{content:"Jam:";} 
+      #meetingTable td:nth-child(4)::before{content:"Keterangan Foto:";} 
+      #meetingTable td:nth-child(5)::before{content:"Foto Permasalahan:";} 
+      #meetingTable td:nth-child(6)::before{content:"Akar Masalah:";} 
+      #meetingTable td:nth-child(7)::before{content:"Tindakan Perbaikan:";} 
+      #meetingTable td:nth-child(8)::before{content:"Catatan Tambahan:";} 
+      #meetingTable td:nth-child(9)::before{content:"Peserta:";} 
+      #meetingTable td:nth-child(10)::before{content:"Aksi:";} 
+    }
+
+    /* Sticky judul & tab */
+    #qcMeeting > h2 { position: sticky; top: 0; z-index: 100; background: inherit; margin-top:0; }
+    #qcMeeting .tabs { position: sticky; top: 50px; z-index: 99; background:#fff; padding:6px 0; margin-bottom:6px !important; }
+
+    /* Scroll input & hasil */
+    #meetingInputSection, #meetingHasilSection { overflow-y:auto; max-height:calc(80vh - 120px); padding-right:4px; }
+    #meetingHasilSection .search-wrapper { position:sticky; top:0; z-index:90; background:#fff; padding-top:4px; padding-bottom:4px; margin-bottom:8px; }
+    #meetingHasilSection .table-wrapper { overflow-y:auto; max-height:calc(80vh - 180px); border:1px solid #ddd; }
+    #meetingHasilSection table thead th { position:sticky; top:0; background:#00BCD4; color:#fff; z-index:89; }
+  </style>
 </section>
 
 
-<!-- ======================== Floating Chatbot 3D Button (Smaller Version) ======================== -->
-<div class="chatbot-wrapper" onclick="window.open('https://www.chatbase.co/chatbot-iframe/WQV6nYLIpvH1KdrwilMKh')">
+
+
+
+
+<!-- ======================== Floating Chatbot 3D Button (Password Protected) ======================== -->
+<div class="chatbot-wrapper" onclick="openChatbot()">
   <div class="chatbot-bg">
     <div class="bg-light"></div>
 
@@ -2182,6 +2886,17 @@ body {
     </div>
   </div>
 </div>
+
+<script>
+function openChatbot() {
+  const pass = prompt("Masukkan password untuk membuka Chatbot:");
+  if (pass === "spv123") {
+    window.open("https://www.chatbase.co/chatbot-iframe/WQV6nYLIpvH1KdrwilMKh", "_blank");
+  } else if (pass !== null) {
+    alert("Password salah! Akses ditolak.");
+  }
+}
+</script>
 
 <style>
 /* ===== Wrapper (diperkecil) ===== */
@@ -2402,7 +3117,7 @@ body {
 
 <script>
 // ====================== KONFIGURASI ======================
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzTmedmqfaqEoMVw8EOrEq9KCogS49EcEzDiurxr45nV3VhkKrBIqYKmjI8VrB9PfJu/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwlIREYeR8016TOBmMZVc1yRU5i_Elbc3EOrEI98QWZGFyGQoiQPuLZTm6a4X4odCrM/exec";
 
 // ====================== SPINNER GLOBAL JS ======================
 const spinner = document.getElementById('loadingSpinner');
@@ -4998,6 +5713,308 @@ function adjustSPVRowHeight(row) {
 </script>
 
 
+
+
+<script>
+// ====================== QC MEETING ======================
+
+/* ====================== PASSWORD ====================== */
+const QC_MEETING_PASSWORD = 'qc123'; // ganti sesuai kebutuhan
+
+/* ====================== FORMAT TANGGAL & JAM ====================== */
+function formatTanggal(tgl){
+  if(!tgl) return "";
+  const d = new Date(tgl);
+  if(isNaN(d)) return tgl;
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth()+1).padStart(2,"0");
+  const dd = String(d.getDate()).padStart(2,"0");
+  return `${dd}-${mm}-${yyyy}`;
+}
+function formatJam(jam){
+  if(!jam) return "";
+  const d = new Date(jam);
+  if(isNaN(d)) return jam;
+  const hh = String(d.getHours()).padStart(2,"0");
+  const min = String(d.getMinutes()).padStart(2,"0");
+  return `${hh}:${min}`;
+}
+
+/* ====================== FILE TO BASE64 ====================== */
+function fileToBase64(file){
+  return new Promise((resolve,reject)=>{
+    if(!file) return resolve("");
+    const reader = new FileReader();
+    reader.onload = ()=>resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ====================== UPPERCASE INPUT ====================== */
+function setupMeetingUppercase(){
+  const inputs = document.querySelectorAll('#meetingForm input[type="text"], #meetingForm textarea');
+  inputs.forEach(el=>{
+    el.removeEventListener('input', el._uppercaseListener);
+    const listener = ()=> el.value = el.value.toUpperCase();
+    el.addEventListener('input', listener);
+    el._uppercaseListener = listener;
+  });
+}
+
+/* ====================== TANGGAL & JAM OTOMATIS ====================== */
+function setMeetingDateTime(){
+  const now = new Date();
+  const yyyy = now.getFullYear();
+  const mm = String(now.getMonth()+1).padStart(2,'0');
+  const dd = String(now.getDate()).padStart(2,'0');
+  const hh = String(now.getHours()).padStart(2,'0');
+  const min = String(now.getMinutes()).padStart(2,'0');
+  const ss = String(now.getSeconds()).padStart(2,'0');
+
+  const tglInput = document.getElementById('meetingTanggal');
+  const jamInput = document.getElementById('meetingJam');
+  if(tglInput) tglInput.value = `${yyyy}-${mm}-${dd}`;
+  if(jamInput) jamInput.value = `${hh}:${min}:${ss}`;
+  if(tglInput) tglInput.setAttribute('readonly',true);
+  if(jamInput) jamInput.setAttribute('readonly',true);
+}
+
+/* ====================== TAB QC MEETING ====================== */
+function showMeetingTab(tab, btn){
+  document.getElementById('meetingInputSection').style.display = (tab==='input')?'block':'none';
+  document.getElementById('meetingHasilSection').style.display = (tab==='hasil')?'block':'none';
+
+  document.querySelectorAll('#qcMeeting .tabs button').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+
+  if(tab==='input'){
+    setupMeetingUppercase();
+    setMeetingDateTime();
+    if(window._meetingTimer) clearInterval(window._meetingTimer);
+    window._meetingTimer = setInterval(setMeetingDateTime,1000);
+  }else{
+    if(window._meetingTimer) clearInterval(window._meetingTimer);
+    loadMeeting();
+  }
+}
+
+/* ====================== SUBMIT FORM ====================== */
+async function submitMeeting(e){
+  e.preventDefault();
+  const spinner = document.getElementById("meetingSpinner");
+
+  const pesertaChecked = Array.from(document.querySelectorAll('#meetingForm input[type="checkbox"]:checked')).map(cb=>cb.value);
+
+  const payload = {
+    sheet:"Meeting",
+    action:"add",
+    tanggal: document.getElementById('meetingTanggal').value || '',
+    jam: document.getElementById('meetingJam').value || '',
+    namaMeeting: (document.getElementById('meetingNama').value || '').trim().toUpperCase(),
+    ket: (document.getElementById('meetingKet').value || '').trim().toUpperCase(),
+    akar: (document.getElementById('meetingAkar').value || '').trim().toUpperCase(),
+    tindakan: (document.getElementById('meetingTindakan').value || '').trim().toUpperCase(),
+    catatan: (document.getElementById('meetingCatatan').value || '').trim().toUpperCase(),
+    peserta: pesertaChecked.join(", "),
+    foto: await fileToBase64(document.getElementById('meetingFoto').files[0])
+  };
+
+  if(!payload.namaMeeting || !payload.tanggal || !payload.jam || pesertaChecked.length===0){
+    alert('⚠️ Harap lengkapi semua field termasuk Peserta.');
+    return;
+  }
+
+  if(!confirm('Kirim data Meeting ini?')) return;
+
+  document.getElementById('meetingForm').reset();
+  spinner.style.display="flex";
+
+  try{
+    await fetch(WEBAPP_URL,{
+      method:"POST",
+      body: new URLSearchParams({payload:JSON.stringify(payload)})
+    });
+    alert("✅ Data Meeting berhasil dikirim!");
+    loadMeeting();
+  }catch(err){
+    console.error(err);
+    alert("❌ Gagal mengirim data Meeting!");
+  }finally{
+    spinner.style.display="none";
+  }
+}
+
+/* ====================== LOAD DATA HASIL ====================== */
+async function loadMeeting(){
+  const tbody = document.querySelector('#meetingTable tbody');
+  if(!tbody) return;
+  const spinner = document.getElementById("meetingLoading");
+  if(spinner) spinner.style.display="block";
+
+  try{
+    const res = await fetch(`${WEBAPP_URL}?action=get&sheet=Meeting`);
+    let text = await res.text();
+    let data;
+    try{ data = JSON.parse(text); } 
+    catch{ const match = text.match(/\((.*)\)/); if(match) data = JSON.parse(match[1]); }
+    if(!data) return;
+
+    const list = data.data || data || [];
+    tbody.innerHTML="";
+
+    list.forEach((item,index)=>{
+      const tr = document.createElement('tr');
+      tr.dataset.index = index;
+      tr.innerHTML = `
+        <td>${formatTanggal(item.tanggal)}</td>
+        <td>${item.namaMeeting || ''}</td>
+        <td>${formatJam(item.jam)}</td>
+        <td>${item.ket || ''}</td>
+        <td>${item.fotoUrl?`<a href="${item.fotoUrl}" target="_blank">📷 Lihat Foto</a>`:'-'}</td>
+        <td>${item.akar || ''}</td>
+        <td>${item.tindakan || ''}</td>
+        <td>${item.catatan || ''}</td>
+        <td>${item.peserta || ''}</td>
+        <td class="action-cell"><button class="edit-btn">✏️ Edit</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    enableMeetingEdit();
+  }catch(err){ console.error(err); }
+  finally{ if(spinner) spinner.style.display="none"; }
+}
+
+/* ====================== ENABLE EDIT ====================== */
+function enableMeetingEdit(){
+  document.querySelectorAll("#meetingTable tbody tr").forEach((row,rowIndex)=>{
+    const editBtn = row.querySelector(".edit-btn");
+    if(!editBtn) return;
+
+    editBtn.onclick = ()=>{
+      if(!confirm("Apakah Anda ingin mengedit data ini?")) return;
+      row._original = [...row.children].map(td=>td.innerHTML);
+
+      const fieldIndices = { tanggal:0, namaMeeting:1, jam:2, ket:3, foto:4, akar:5, tindakan:6, catatan:7, peserta:8 };
+
+      for(const key in fieldIndices){
+        const idx = fieldIndices[key];
+        const cell = row.cells[idx];
+        const value = cell.textContent.trim();
+
+        if(key==='peserta'){
+          const wrapper = document.createElement("div");
+          wrapper.style.display="flex"; wrapper.style.flexWrap="wrap"; wrapper.style.gap="6px";
+          const pesertaList = ["NANI","ANJANI","SUCI","ANOM","IRNA","MARWAN","KIKI","MARTINI","KRESTIN","ISMIE"];
+          pesertaList.forEach(name=>{
+            const label = document.createElement("label");
+            label.style.fontSize="12px"; label.style.cursor="pointer";
+            const cb = document.createElement("input");
+            cb.type="checkbox"; cb.value=name;
+            if(value.includes(name)) cb.checked = true;
+            label.appendChild(cb); label.appendChild(document.createTextNode(" "+name));
+            wrapper.appendChild(label);
+          });
+          cell.innerHTML=""; cell.appendChild(wrapper);
+
+        }else if(key==='foto'){
+          const wrapper = document.createElement("div");
+          wrapper.style.display="flex"; wrapper.style.flexDirection="column"; wrapper.style.alignItems="center";
+          const label = document.createElement("label"); 
+          label.textContent="📁 Pilih File"; 
+          label.style.cursor="pointer"; label.style.background="#00BCD4"; label.style.color="#fff"; 
+          label.style.padding="6px 10px"; label.style.borderRadius="6px"; label.style.fontSize="13px";
+          const fileInput = document.createElement("input"); fileInput.type="file"; fileInput.accept="image/*"; fileInput.style.display="none";
+          const fileName = document.createElement("div"); fileName.style.fontSize="12px"; fileName.style.color="#555"; fileName.style.marginTop="6px";
+          fileInput.addEventListener("change",e=>{ fileName.textContent = e.target.files[0]?.name || ""; });
+          label.onclick = ()=>fileInput.click();
+          wrapper.appendChild(label); wrapper.appendChild(fileInput); wrapper.appendChild(fileName);
+          cell.innerHTML=""; cell.appendChild(wrapper);
+
+        }else if(key==='tanggal' || key==='jam'){
+          const input = document.createElement("input");
+          input.type = "text"; 
+          input.value = value;
+          input.setAttribute('readonly',true);
+          cell.innerHTML=""; cell.appendChild(input);
+
+        }else if(key==='namaMeeting'){
+          const input = document.createElement("input");
+          input.type="text"; input.value=value.toUpperCase(); input.style.width="100%";
+          cell.innerHTML=""; cell.appendChild(input);
+
+        }else{
+          const textarea = document.createElement("textarea");
+          textarea.value=value; textarea.rows=2; textarea.style.width="100%";
+          cell.innerHTML=""; cell.appendChild(textarea);
+        }
+      }
+
+      const aksiCell = row.cells[9];
+      aksiCell.innerHTML=`<button class="save-btn">💾 Simpan</button> <button class="cancel-btn">❌ Batal</button>`;
+      const spinner = document.createElement("span"); spinner.style.display="none"; spinner.textContent=" ⏳ Menyimpan..."; aksiCell.appendChild(spinner);
+
+      aksiCell.querySelector(".save-btn").onclick=async()=>{
+        if(!confirm("Apakah yakin ingin menyimpan perubahan ini?")) return;
+        spinner.style.display="inline";
+
+        const pesertaChecked = Array.from(row.cells[8].querySelectorAll("input[type='checkbox']:checked")).map(cb=>cb.value);
+
+        const updated={
+          tanggal: row.cells[0].querySelector("input")?.value,
+          namaMeeting: row.cells[1].querySelector("input")?.value.toUpperCase(),
+          jam: row.cells[2].querySelector("input")?.value,
+          ket: row.cells[3].querySelector("textarea")?.value || "",
+          akar: row.cells[5].querySelector("textarea")?.value || "",
+          tindakan: row.cells[6].querySelector("textarea")?.value || "",
+          catatan: row.cells[7].querySelector("textarea")?.value || "",
+          peserta: pesertaChecked.join(", "),
+          foto: await fileToBase64(row.cells[4].querySelector("input")?.files[0])
+        };
+
+        try{
+          await fetch(WEBAPP_URL,{
+            method:"POST",
+            body:new URLSearchParams({payload:JSON.stringify({sheet:"Meeting",action:"update",index:rowIndex,data:updated})})
+          });
+          alert("✅ Data berhasil diperbarui!");
+          row._original.forEach((html,i)=>row.cells[i].innerHTML=html);
+          enableMeetingEdit();
+          loadMeeting();
+        }catch(err){ console.error(err); alert("❌ Gagal memperbarui data!"); }
+        finally{ spinner.style.display="none"; }
+      };
+
+      aksiCell.querySelector(".cancel-btn").onclick=()=>{ 
+        if(!confirm("Batalkan edit? Semua perubahan akan hilang!")) return;
+        row._original.forEach((html,i)=>row.cells[i].innerHTML=html);
+        enableMeetingEdit();
+      };
+    };
+  });
+}
+
+/* ====================== PASSWORD OTOMATIS TAB ====================== */
+document.addEventListener('DOMContentLoaded',()=>{
+  const menuBtn = document.querySelector(`nav button[onclick="showMenu('qcMeeting')"]`);
+  if(menuBtn){
+    const originalOnClick = menuBtn.getAttribute('onclick');
+    menuBtn.onclick=function(e){
+      e.preventDefault();
+      const input = prompt('Masukkan password untuk QC MEETING:');
+      if(input===null) return;
+      if(input===QC_MEETING_PASSWORD) eval(originalOnClick);
+      else alert('Password salah!');
+    };
+  }
+  setMeetingDateTime();
+});
+</script>
+
+
+
+
 <script>
 /* ====================== HOME QC ====================== */
 function goHome() {
@@ -5012,8 +6029,6 @@ function goHome() {
 
 </body>
 </html>
-
-
 
 
 
