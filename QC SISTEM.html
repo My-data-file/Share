@@ -274,7 +274,7 @@ select {
     " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
       QC
     </button>
-    <div id="headerTitle" style="font-size: 0.85rem; color: #e0f7fa;">System</div>
+    <div id="headerTitle" style="font-size: 0.85rem; color: #e0f7fa;">System 5.0</div>
   </div>
   <div id="headerTime" style="text-align:right; font-size:0.8rem; color:#e0f7fa;">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -1310,6 +1310,43 @@ select {
   outline: none;
   box-shadow: none;
 }
+
+/* Agar seluruh section punya layout kolom */
+#qcBapro {
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+}
+
+/* ===== BAGIAN TAB DIBUAT FIX DI ATAS ===== */
+#qcBapro .tabs {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #fff;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+/* ===== AREA INPUT & HASIL MEMPUNYAI SCROLL SENDIRI ===== */
+#inputBapro,
+#hasilBapro {
+  overflow-y: auto;
+  max-height: calc(80vh - 120px); /* agar tidak melewati bawah layar */
+  padding-right: 4px;
+}
+
+/* ===== FILTER HASIL BAPRO TETAP DI ATAS ===== */
+#hasilBapro input[type="text"] {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: #fff;
+  padding: 6px;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+}
+
 </style>
 
 
@@ -1432,6 +1469,43 @@ select {
   outline: none;
   box-shadow: none;
 }
+
+/* Layout utama section QC CETAK */
+#qcPA {
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh; /* agar tidak turun ke bawah layar */
+}
+
+/* ===== BAGIAN TAB TETAP DI ATAS ===== */
+#qcPA .tabs {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #fff;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+/* ===== AREA INPUT / HASIL BISA SCROLL SENDIRI ===== */
+#inputPA,
+#hasilPA {
+  overflow-y: auto;
+  max-height: calc(80vh - 120px);
+  padding-right: 4px;
+}
+
+/* ===== FILTER HASIL TETAP DI ATAS ===== */
+#hasilPA input[type="text"] {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: #fff;
+  padding: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 8px;
+}
+
 </style>
 
 
@@ -1541,6 +1615,43 @@ select {
   outline: none;
   box-shadow: none;
 }
+
+/* Layout utama section QC FINISHING */
+#qcFinishing {
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh; /* agar tidak turun melewati layar */
+}
+
+/* ===== TAB TETAP DI ATAS ===== */
+#qcFinishing .tabs {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #fff;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+/* ===== AREA INPUT & HASIL SCROLL SENDIRI ===== */
+#inputFinishing,
+#hasilFinishing {
+  overflow-y: auto;
+  max-height: calc(80vh - 120px);
+  padding-right: 4px;
+}
+
+/* ===== FILTER HASIL TETAP DI ATAS ===== */
+#hasilFinishing input[type="text"] {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: #fff;
+  padding: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 8px;
+}
+
 </style>
 
 
@@ -1656,6 +1767,43 @@ select {
   outline: none !important;
   box-shadow: none !important;
 }
+
+/* Layout utama section QC LEM */
+#qcLem {
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh; /* agar tidak turun ke bawah layar */
+}
+
+/* ===== TAB TETAP DI ATAS ===== */
+#qcLem .tabs {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #fff;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+/* ===== AREA INPUT & HASIL BISA SCROLL SENDIRI ===== */
+#inputLem,
+#hasilLem {
+  overflow-y: auto;
+  max-height: calc(80vh - 120px); /* aman untuk laptop & HP */
+  padding-right: 4px;
+}
+
+/* ===== FILTER HASIL TETAP DI ATAS ===== */
+#hasilLem input[type="text"] {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: #fff;
+  padding: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 8px;
+}
+
 </style>
 
 
@@ -1693,8 +1841,8 @@ select {
   <!-- Tabs -->
   <div class="tabs">
     <button class="tab-btn active" data-tab="manualQC" onclick="switchTab(this)">Manual QC</button>
-    <button class="tab-btn" data-tab="manualProduksi" onclick="switchTab(this)">Manual Produksi</button>
-    <button class="tab-btn" data-tab="manualUmum" onclick="switchTab(this)">Manual Umum</button>
+    <button class="tab-btn" data-tab="manualProduksi" onclick="switchTab(this)">Form QC</button>
+    <button class="tab-btn" data-tab="manualUmum" onclick="switchTab(this)">Jobdes QC</button>
   </div>
 
   <!-- Konten Manual QC -->
@@ -1708,21 +1856,23 @@ select {
     </ul>
   </div>
 
-  <!-- Konten Manual Produksi -->
+  <!-- Konten Form QC -->
   <div id="manualProduksi" class="tab-content">
     <input type="text" class="filter-input" placeholder="🔍 Cari panduan Produksi..." onkeyup="filterManualList(this, 'manualProduksi')">
     <ul class="manual-list">
-      <li><a href="https://drive.google.com/drive/folders/1abcManualProduksi" target="_blank">📗 Panduan Mesin</a></li>
-      <li><a href="https://drive.google.com/drive/folders/1defManualProduksi" target="_blank">📗 SOP Operator</a></li>
+      <li><a href="https://drive.google.com/drive/folders/1abcManualProduksi" target="_blank">📗 Form QC Cetak</a></li>
     </ul>
   </div>
 
-  <!-- Konten Manual Umum -->
+  <!-- Konten Jobdes QC -->
   <div id="manualUmum" class="tab-content">
     <input type="text" class="filter-input" placeholder="🔍 Cari panduan Umum..." onkeyup="filterManualList(this, 'manualUmum')">
     <ul class="manual-list">
-      <li><a href="https://drive.google.com/drive/folders/1abcManualUmum" target="_blank">📙 Kebijakan Umum</a></li>
-      <li><a href="https://drive.google.com/drive/folders/1defManualUmum" target="_blank">📙 Form Template</a></li>
+      <li><a href="https://drive.google.com/drive/folders/1abcManualUmum" target="_blank">📙 Jobdes SPV</a></li>
+      <li><a href="https://drive.google.com/drive/folders/1defManualUmum" target="_blank">📙 Jobdes QC Bapro</a></li>
+      <li><a href="https://drive.google.com/drive/folders/1defManualUmum" target="_blank">📙 Jobdes QC Cetak</a></li>
+      <li><a href="https://drive.google.com/drive/folders/1defManualUmum" target="_blank">📙 Jobdes QC Finishing</a></li>
+      <li><a href="https://drive.google.com/drive/folders/1defManualUmum" target="_blank">📙 Jobdes QC Lem</a></li>
     </ul>
   </div>
 </section>
@@ -2350,6 +2500,87 @@ body {
   background:#f5f7fa;
   font-family:'Segoe UI', sans-serif;
 }
+
+/* ================================ */
+/* QC SPV — Layout utama */
+/* ================================ */
+#qcSPV {
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh; /* sama seperti QC LEM */
+  overflow: hidden;
+}
+
+
+/* ================================ */
+/* JUDUL TETAP DI ATAS */
+/* ================================ */
+#qcSPV > h2 {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: inherit;
+  margin-top: 0;
+}
+
+
+/* ================================ */
+/* TAB INPUTAN / HASIL */
+/* ================================ */
+#qcSPV .tabs {
+  position: sticky;
+  top: 50px; /* pas di bawah judul */
+  z-index: 99;
+  background: #fff;
+  padding: 6px 0;
+  margin-bottom: 6px !important;
+}
+
+
+/* ================================ */
+/* INPUT & HASIL — dapat scroll sendiri */
+/* ================================ */
+#spvInputSection,
+#spvHasilSection {
+  overflow-y: auto;
+  max-height: calc(80vh - 120px);
+  padding-right: 4px;
+}
+
+
+/* ================================ */
+/* FILTER HASIL TETAP DI ATAS */
+/* ================================ */
+#spvHasilSection .search-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  background: #fff;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+}
+
+
+/* ================================ */
+/* TABEL WRAPPER */
+/* ================================ */
+#spvHasilSection .table-wrapper {
+  overflow-y: auto;
+  max-height: calc(80vh - 180px);
+  border: 1px solid #ddd;
+}
+
+
+/* HEADER TABEL IKUT STICKY */
+#spvHasilSection table thead th {
+  position: sticky;
+  top: 0;
+  background: #00BCD4;
+  color: #fff;
+  z-index: 89;
+}
+
 </style>
 
 
@@ -5218,7 +5449,6 @@ function goHome() {
 
 </body>
 </html>
-
 
 
 
