@@ -199,6 +199,7 @@ select {
   resize: vertical;
 }
 
+
 /* ======================== Status ======================== */
 .status-to {
   background: #fee2e2;
@@ -292,6 +293,7 @@ select {
     <button onclick="showMenu('qcFinishing')" class="nav-btn">QC FINISHING</button>
     <button onclick="showMenu('qcLem')" class="nav-btn">QC LEM</button>
     <button onclick="showMenu('qcSPV')" class="nav-btn">QC REGISTER</button>
+    <button onclick="showMenu('qcMeeting')" class="nav-btn">MEETING</button>
     <button onclick="showMenu('manualSection')" class="nav-btn">MANUAL</button>
   </div>
 </nav>
@@ -1348,6 +1350,26 @@ select {
   border: 1px solid #ccc;
 }
 
+/* ==== FIX FILTER TERTIMPA SAAT EDIT ==== */
+
+/* Filter harus paling atas */
+#hasilBapro input[type="text"] {
+    position: sticky;
+    top: 0;
+    z-index: 999 !important;
+}
+
+/* Card grid (termasuk mode edit) harus di bawah filter */
+#gridBapro .grid-card {
+    position: relative;
+    z-index: 1 !important;
+}
+
+/* Elemen dalam edit jangan sampai naik z-index */
+#gridBapro .grid-card * {
+    z-index: 1 !important;
+}
+
 </style>
 
 
@@ -1507,6 +1529,26 @@ select {
   margin-bottom: 8px;
 }
 
+/* ==== FIX FILTER QC CETAK TERTIMPA SAAT EDIT ==== */
+
+/* Filter harus paling atas */
+#hasilPA input[type="text"] {
+    position: sticky;
+    top: 0;
+    z-index: 999 !important;
+}
+
+/* Card grid (termasuk mode edit) harus di bawah filter */
+#gridPA .grid-card {
+    position: relative;
+    z-index: 1 !important;
+}
+
+/* Elemen di dalam edit jangan naik z-index */
+#gridPA .grid-card * {
+    z-index: 1 !important;
+}
+
 </style>
 
 
@@ -1651,6 +1693,26 @@ select {
   padding: 6px;
   border: 1px solid #ccc;
   margin-bottom: 8px;
+}
+
+/* ==== FIX FILTER QC FINISHING TERTUTUP SAAT EDIT ==== */
+
+/* Filter harus paling atas */
+#hasilFinishing input[type="text"] {
+    position: sticky;
+    top: 0;
+    z-index: 999 !important;
+}
+
+/* Semua card grid (termasuk mode edit) harus lebih rendah */
+#gridFinishing .grid-card {
+    position: relative;
+    z-index: 1 !important;
+}
+
+/* Elemen dalam mode edit jangan melompat ke atas */
+#gridFinishing .grid-card * {
+    z-index: 1 !important;
 }
 
 </style>
@@ -1803,6 +1865,26 @@ select {
   padding: 6px;
   border: 1px solid #ccc;
   margin-bottom: 8px;
+}
+
+/* ==== FIX FILTER QC LEM TERTUTUP SAAT EDIT ==== */
+
+/* Filter harus paling atas */
+#hasilLem input[type="text"] {
+    position: sticky;
+    top: 0;
+    z-index: 999 !important;
+}
+
+/* Semua card grid (termasuk mode edit) tetap lebih rendah */
+#gridLem .grid-card {
+    position: relative;
+    z-index: 1 !important;
+}
+
+/* Elemen dalam card edit juga tidak boleh naik ke atas */
+#gridLem .grid-card * {
+    z-index: 1 !important;
 }
 
 </style>
@@ -2015,9 +2097,6 @@ function filterManualList(input, tabId) {
   });
 }
 </script>
-
-
-
 
 
 
@@ -2296,6 +2375,10 @@ function filterManualList(input, tabId) {
     </div>
   </div>
 </div>
+
+
+
+</section>
 
 <style>
 /* ========== Spinner ========== */
@@ -2586,10 +2669,351 @@ body {
   z-index: 89;
 }
 
+/* QC SPV — Agar hasil tetap rapi mengikuti enter + rata kiri */
+#spvTable td {
+  white-space: pre-line !important;
+  text-align: left !important;
+}
+
+/* === Perbesar area edit SPV (input & textarea) === */
+#spvTable tbody td input,
+#spvTable tbody td textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #999;
+  font-size: 14px;
+  resize: vertical;     /* bisa ditarik ke bawah */
+  min-height: 60px;      /* area edit jadi BESAR */
+  max-height: 200px;     /* tetap tidak melebihi tabel */
+  overflow-y: auto;      /* scroll di dalam, bukan scroll kanan tabel */
+}
+
 </style>
 
 
-</section>
+
+
+
+<!-- ======================== QC MEETING ======================== -->
+<section id="qcMeeting" class="card qc-section" style="display:none;">
+
+  <h2 style="
+    text-align:center; 
+    color:#000; 
+    background: linear-gradient(to right, #00BCD4, #4DD0E1); 
+    font-size:1.2rem; 
+    padding:6px 12px; 
+    border-radius:8px;
+    margin-bottom:12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: 1px solid #000;
+    position: relative;
+    overflow: hidden;
+  ">
+    MENU MEETING QC
+    <span style="
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius: 8px 8px 0 0;
+      pointer-events: none;
+    "></span>
+  </h2>
+
+  <div class="tabs" style="display:flex; gap:8px; margin-bottom:10px;">
+    <button class="tab-btn active" data-tab="meetingInputSection" onclick="showMeetingTab('input', this)">Inputan</button>
+    <button class="tab-btn" data-tab="meetingHasilSection" onclick="showMeetingTab('hasil', this)">Hasil</button>
+  </div>
+
+  <!-- ========== INPUTAN ========== -->
+  <div id="meetingInputSection" style="margin-top:10px;">
+    <form id="meetingForm">
+
+      <style>
+        /* ===== Style Form QC Meeting ===== */
+        #meetingForm .form-group { margin-bottom: 10px; }
+
+        #meetingForm input[type="text"],
+        #meetingForm input[type="date"],
+        #meetingForm input[type="time"],
+        #meetingForm textarea {
+          width: 100%;
+          padding: 0.6rem;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          font-size: 0.95rem;
+          box-sizing: border-box;
+        }
+
+        #meetingForm button {
+          width: 100%;
+          padding: .6rem;
+          background: #00BCD4;
+          color: #fff;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 1rem;
+        }
+        #meetingForm button:hover { background: #00BCD4; }
+
+        /* Tab Button */
+        .tab-btn {
+          flex: 1;
+          padding: 6px 0;
+          border-radius: 6px;
+          font-weight: 600;
+          cursor: pointer;
+          border: 1px solid #000 !important;
+          background: #e0e0e0 !important;
+          color: #000 !important;
+          transition: all 0.2s;
+          text-align: center;
+        }
+        .tab-btn.active {
+          background: linear-gradient(to right, #00BCD4, #4DD0E1) !important;
+          color: #fff !important;
+          border: 1px solid #000 !important;
+        }
+        .tab-btn:not(.active):hover {
+          background: #B2EBF2 !important;
+          color: #000 !important;
+          transform: translateY(-1px);
+          box-shadow: 0 2px 6px rgba(0,188,212,0.3);
+        }
+        .tab-btn:focus { outline:none; box-shadow:none; }
+
+        /* Spinner overlay */
+        #meetingSpinner {
+          display: none;
+          position: fixed;
+          top: 0; left: 0;
+          width: 100%; height: 100%;
+          background: rgba(0,0,0,0.4);
+          z-index: 9999;
+          align-items: center;
+          justify-content: center;
+        }
+        #meetingSpinner div {
+          width: 50px;
+          height: 50px;
+          border: 6px solid #fff;
+          border-top-color: #00BCD4;
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+      </style>
+
+      <!-- SPINNER -->
+      <div id="meetingSpinner"><div></div></div>
+
+      <!-- Nama Meeting -->
+      <div class="form-group">
+        <input type="text" id="meetingNama" placeholder="Nama Meeting" required>
+      </div>
+
+      <!-- Tanggal & Jam -->
+      <div class="form-group" style="display:flex; gap:10px;">
+        <input type="date" id="meetingTanggal" required style="flex:1;">
+        <input type="time" id="meetingJam" required style="flex:1;">
+      </div>
+
+      <!-- Foto Permasalahan -->
+      <div class="form-group">
+        <label for="meetingFoto">📷 Foto Permasalahan:</label>
+        <input type="file" id="meetingFoto" accept="image/*">
+      </div>
+
+      <!-- Keterangan Foto -->
+      <div class="form-group">
+        <textarea id="meetingKet" placeholder="Keterangan Foto (opsional)" rows="3"></textarea>
+      </div>
+
+      <!-- Akar Masalah -->
+      <div class="form-group">
+        <textarea id="meetingAkar" placeholder="Akar Masalah" rows="2"></textarea>
+      </div>
+
+      <!-- Tindakan Perbaikan -->
+      <div class="form-group">
+        <textarea id="meetingTindakan" placeholder="Tindakan Perbaikan" rows="2"></textarea>
+      </div>
+
+      <!-- Catatan Tambahan -->
+      <div class="form-group">
+        <textarea id="meetingCatatan" placeholder="Catatan Tambahan (opsional)" rows="2"></textarea>
+      </div>
+
+      <!-- Peserta (checkbox, rapi) -->
+      <div class="form-group">
+        <label>Peserta:</label>
+        <div style="display:flex; flex-wrap:wrap; gap:10px;">
+          <label><input type="checkbox" value="NANI"> NANI</label>
+          <label><input type="checkbox" value="ANJANI"> ANJANI</label>
+          <label><input type="checkbox" value="SUCI"> SUCI</label>
+          <label><input type="checkbox" value="ANOM"> ANOM</label>
+          <label><input type="checkbox" value="IRNA"> IRNA</label>
+          <label><input type="checkbox" value="MARWAN"> MARWAN</label>
+          <label><input type="checkbox" value="KIKI"> KIKI</label>
+          <label><input type="checkbox" value="MARTINI"> MARTINI</label>
+          <label><input type="checkbox" value="KRESTIN"> KRESTIN</label>
+          <label><input type="checkbox" value="ISMIE"> ISMIE</label>
+        </div>
+      </div>
+
+      <!-- Tombol Submit -->
+      <div class="form-group">
+        <button type="button" onclick="submitMeeting(event)">➕ Tambah Meeting</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ========== HASIL ========== -->
+  <div id="meetingHasilSection" style="display:none;">
+    <div class="hasil-container">
+      <div class="search-wrapper">
+        <input type="text" id="meetingSearch" placeholder="🔍 Tanggal / Meeting / Peserta">
+      </div>
+
+      <div id="meetingLoading" style="display:none; text-align:center; padding:10px;">
+        <div class="spinner"></div>
+        <p style="font-size:0.9rem; color:#555;">Memuat Data Meeting</p>
+      </div>
+
+      <div class="table-wrapper">
+        <table id="meetingTable" border="1">
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>Nama Meeting</th>
+              <th>Jam</th>
+              <th>Keterangan Foto</th>
+              <th>Foto Permasalahan</th>
+              <th>Akar Masalah</th>
+              <th>Tindakan Perbaikan</th>
+              <th>Catatan Tambahan</th>
+              <th>Peserta</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Data diisi melalui JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* ===== Spinner ===== */
+    .spinner { width:28px; height:28px; border:3px solid #ddd; border-top:3px solid #00BCD4; border-radius:50%; margin:0 auto; animation:spin 0.8s linear infinite;}
+    @keyframes spin {0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+
+    /* Table dasar */
+    .table-wrapper { width:100%; overflow-x:auto; }
+    #meetingTable { width:100%; border-collapse:collapse; font-size:0.9rem; background:#fff; }
+    #meetingTable th, #meetingTable td { border:1px solid #ddd; padding:8px; text-align:center; vertical-align:middle; }
+    #meetingTable thead { background:#00BCD4; color:#fff; }
+    #meetingTable th:nth-child(5), #meetingTable td:nth-child(5) { min-width:160px; } /* Foto */
+    #meetingTable input[type="file"] { width:100%; max-width:160px; font-size:0.85rem; padding:4px; cursor:pointer; }
+
+    /* Tombol */
+    #meetingTable button { padding:6px 12px; border:none; border-radius:8px; cursor:pointer; font-size:0.9rem; margin:4px; color:#fff; font-weight:600; box-shadow:0 2px 6px rgba(0,0,0,0.15); transition:0.25s; }
+    #meetingTable .edit-btn { background: linear-gradient(135deg, #FFD740, #FFC400); color:#000 !important; }
+    #meetingTable .edit-btn:hover { background: linear-gradient(135deg, #FFEE58, #FFD740); transform: translateY(-2px); }
+    #meetingTable .save-btn { background: linear-gradient(135deg, #43A047, #66BB6A); }
+    #meetingTable .save-btn:hover { background: linear-gradient(135deg, #66BB6A, #81C784); transform: translateY(-2px); }
+    #meetingTable .cancel-btn { background: linear-gradient(135deg, #E53935, #EF5350); }
+    #meetingTable .cancel-btn:hover { background: linear-gradient(135deg, #F44336, #E57373); transform: translateY(-2px); }
+
+    /* Mobile responsive */
+    @media (max-width:768px){
+      #meetingTable, #meetingTable thead, #meetingTable tbody, #meetingTable th, #meetingTable td, #meetingTable tr { display:block; }
+      #meetingTable thead { display:none; }
+      #meetingTable tr { background:#fff; border:1px solid #ddd; border-radius:10px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.08); padding:10px 12px; }
+      #meetingTable td { border:none; display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid #eee; font-size:0.9rem; text-align:left; word-break:break-word; }
+      #meetingTable td:last-child { border-bottom:none; }
+      #meetingTable td::before { font-weight:600; color:#333; flex:0 0 42%; text-align:left; padding-right:6px; }
+      #meetingTable td:nth-child(1)::before{content:"Tanggal:";} 
+      #meetingTable td:nth-child(2)::before{content:"Nama Meeting:";} 
+      #meetingTable td:nth-child(3)::before{content:"Jam:";} 
+      #meetingTable td:nth-child(4)::before{content:"Keterangan Foto:";} 
+      #meetingTable td:nth-child(5)::before{content:"Foto Permasalahan:";} 
+      #meetingTable td:nth-child(6)::before{content:"Akar Masalah:";} 
+      #meetingTable td:nth-child(7)::before{content:"Tindakan Perbaikan:";} 
+      #meetingTable td:nth-child(8)::before{content:"Catatan Tambahan:";} 
+      #meetingTable td:nth-child(9)::before{content:"Peserta:";} 
+      #meetingTable td:nth-child(10)::before{content:"Aksi:";} 
+    }
+
+    /* Sticky judul & tab */
+    #qcMeeting > h2 { position: sticky; top: 0; z-index: 100; background: inherit; margin-top:0; }
+    #qcMeeting .tabs { position: sticky; top: 50px; z-index: 99; background:#fff; padding:6px 0; margin-bottom:6px !important; }
+
+    /* Scroll input & hasil */
+    #meetingInputSection, #meetingHasilSection { overflow-y:auto; max-height:calc(80vh - 120px); padding-right:4px; }
+    #meetingHasilSection .search-wrapper { position:sticky; top:0; z-index:90; background:#fff; padding-top:4px; padding-bottom:4px; margin-bottom:8px; }
+    #meetingHasilSection .table-wrapper { overflow-y:auto; max-height:calc(80vh - 180px); border:1px solid #ddd; }
+    #meetingHasilSection table thead th { position:sticky; top:0; background:#00BCD4; color:#fff; z-index:89; }
+
+/* Agar hasil meeting tetap rapi dan rata kiri */
+#meetingTable td {
+  white-space: pre-line !important;
+  text-align: left !important;
+}
+
+/* === Perbesar area edit di QC MEETING === */
+#meetingTable tbody td input[type="text"],
+#meetingTable tbody td input[type="time"],
+#meetingTable tbody td input[type="date"],
+#meetingTable tbody td textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #999;
+  font-size: 14px;
+  resize: vertical;
+  min-height: 60px;
+  max-height: 200px;
+  overflow-y: auto;
+  text-align: left !important;
+}
+
+/* Foto input */
+#meetingTable tbody td input[type="file"] {
+  width: 100%;
+  max-width: 180px;
+  padding: 6px;
+  font-size: 13px;
+  border-radius: 6px;
+}
+
+/* Kolom Peserta — dibuat lebar & rapi */
+#meetingTable tbody td:nth-child(9) {
+  min-width: 200px !important;
+  white-space: pre-line !important;
+  text-align: left !important;
+}
+
+/* Kolom Aksi — pusat & ukuran tetap */
+#meetingTable tbody td:nth-child(10) {
+  min-width: 130px !important;
+  text-align: center !important;
+}
+
+
+  </style>
+
+
+  </section>
+
 
 
 <!-- ======================== Floating Chatbot 3D Button (Password Protected) ======================== -->
@@ -2844,7 +3268,7 @@ function openChatbot() {
 
 <script>
 // ====================== KONFIGURASI ======================
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzTmedmqfaqEoMVw8EOrEq9KCogS49EcEzDiurxr45nV3VhkKrBIqYKmjI8VrB9PfJu/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxYIHmoNT_Zv4hqZmV2oiPLv22xJdPBgWCtbUsT1f6SuDjrjEbRIbmCCiScAAqC9SQ/exec";
 
 // ====================== SPINNER GLOBAL JS ======================
 const spinner = document.getElementById('loadingSpinner');
@@ -5440,6 +5864,316 @@ function adjustSPVRowHeight(row) {
 </script>
 
 
+
+
+<script>
+// ====================== QC MEETING ======================
+
+/* ====================== PASSWORD ====================== */
+const QC_MEETING_PASSWORD = 'qc123'; // ganti sesuai kebutuhan
+
+/* ====================== FORMAT TANGGAL & JAM ====================== */
+function formatTanggal(tgl){
+  if(!tgl) return "";
+  const d = new Date(tgl);
+  if(isNaN(d)) return tgl;
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth()+1).padStart(2,"0");
+  const dd = String(d.getDate()).padStart(2,"0");
+  return `${dd}-${mm}-${yyyy}`;
+}
+function formatJam(jam){
+  if(!jam) return "";
+  const d = new Date(jam);
+  if(isNaN(d)) return jam;
+  const hh = String(d.getHours()).padStart(2,"0");
+  const min = String(d.getMinutes()).padStart(2,"0");
+  return `${hh}:${min}`;
+}
+
+/* ====================== FILE TO BASE64 ====================== */
+function fileToBase64(file){
+  return new Promise((resolve,reject)=>{
+    if(!file) return resolve("");
+    const reader = new FileReader();
+    reader.onload = ()=>resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ====================== UPPERCASE INPUT ====================== */
+function setupMeetingUppercase(){
+  const inputs = document.querySelectorAll('#meetingForm input[type="text"], #meetingForm textarea');
+  inputs.forEach(el=>{
+    el.removeEventListener('input', el._uppercaseListener);
+    const listener = ()=> el.value = el.value.toUpperCase();
+    el.addEventListener('input', listener);
+    el._uppercaseListener = listener;
+  });
+}
+
+/* ====================== TANGGAL & JAM OTOMATIS ====================== */
+function setMeetingDateTime(){
+  const now = new Date();
+  const yyyy = now.getFullYear();
+  const mm = String(now.getMonth()+1).padStart(2,'0');
+  const dd = String(now.getDate()).padStart(2,'0');
+  const hh = String(now.getHours()).padStart(2,'0');
+  const min = String(now.getMinutes()).padStart(2,'0');
+  const ss = String(now.getSeconds()).padStart(2,'0');
+
+  const tglInput = document.getElementById('meetingTanggal');
+  const jamInput = document.getElementById('meetingJam');
+  if(tglInput) tglInput.value = `${yyyy}-${mm}-${dd}`;
+  if(jamInput) jamInput.value = `${hh}:${min}:${ss}`;
+  if(tglInput) tglInput.setAttribute('readonly',true);
+  if(jamInput) jamInput.setAttribute('readonly',true);
+}
+
+/* ====================== TAB QC MEETING ====================== */
+function showMeetingTab(tab, btn){
+  document.getElementById('meetingInputSection').style.display = (tab==='input')?'block':'none';
+  document.getElementById('meetingHasilSection').style.display = (tab==='hasil')?'block':'none';
+
+  document.querySelectorAll('#qcMeeting .tabs button').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+
+  if(tab==='input'){
+    setupMeetingUppercase();
+    setMeetingDateTime();
+    if(window._meetingTimer) clearInterval(window._meetingTimer);
+    window._meetingTimer = setInterval(setMeetingDateTime,1000);
+  }else{
+    if(window._meetingTimer) clearInterval(window._meetingTimer);
+    loadMeeting();
+  }
+}
+
+/* ====================== SUBMIT FORM ====================== */
+async function submitMeeting(e){
+  e.preventDefault();
+  const spinner = document.getElementById("meetingSpinner");
+
+  const pesertaChecked = Array.from(document.querySelectorAll('#meetingForm input[type="checkbox"]:checked')).map(cb=>cb.value);
+
+  const payload = {
+    sheet:"Meeting",
+    action:"add",
+    tanggal: document.getElementById('meetingTanggal').value || '',
+    jam: document.getElementById('meetingJam').value || '',
+    namaMeeting: (document.getElementById('meetingNama').value || '').trim().toUpperCase(),
+    ket: (document.getElementById('meetingKet').value || '').trim().toUpperCase(),
+    akar: (document.getElementById('meetingAkar').value || '').trim().toUpperCase(),
+    tindakan: (document.getElementById('meetingTindakan').value || '').trim().toUpperCase(),
+    catatan: (document.getElementById('meetingCatatan').value || '').trim().toUpperCase(),
+    peserta: pesertaChecked.join(", "),
+    foto: await fileToBase64(document.getElementById('meetingFoto').files[0])
+  };
+
+  if(!payload.namaMeeting || !payload.tanggal || !payload.jam || pesertaChecked.length===0){
+    alert('⚠️ Harap lengkapi semua field termasuk Peserta.');
+    return;
+  }
+
+  if(!confirm('Kirim data Meeting ini?')) return;
+
+  document.getElementById('meetingForm').reset();
+  spinner.style.display="flex";
+
+  try{
+    await fetch(WEBAPP_URL,{
+      method:"POST",
+      body: new URLSearchParams({payload:JSON.stringify(payload)})
+    });
+    alert("✅ Data Meeting berhasil dikirim!");
+    loadMeeting();
+  }catch(err){
+    console.error(err);
+    alert("❌ Gagal mengirim data Meeting!");
+  }finally{
+    spinner.style.display="none";
+  }
+}
+
+/* ====================== LOAD DATA HASIL ====================== */
+async function loadMeeting(){
+  const tbody = document.querySelector('#meetingTable tbody');
+  if(!tbody) return;
+  const spinner = document.getElementById("meetingLoading");
+  if(spinner) spinner.style.display="block";
+
+  try{
+    const res = await fetch(`${WEBAPP_URL}?action=get&sheet=Meeting`);
+    let text = await res.text();
+    let data;
+    try{ data = JSON.parse(text); } 
+    catch{ const match = text.match(/\((.*)\)/); if(match) data = JSON.parse(match[1]); }
+    if(!data) return;
+
+    const list = data.data || data || [];
+    tbody.innerHTML="";
+
+    list.forEach((item,index)=>{
+      const tr = document.createElement('tr');
+      tr.dataset.index = index;
+      tr.innerHTML = `
+        <td>${formatTanggal(item.tanggal)}</td>
+        <td>${item.namaMeeting || ''}</td>
+        <td>${formatJam(item.jam)}</td>
+        <td>${item.ket || ''}</td>
+        <td>${item.fotoUrl?`<a href="${item.fotoUrl}" target="_blank">📷 Lihat Foto</a>`:'-'}</td>
+        <td>${item.akar || ''}</td>
+        <td>${item.tindakan || ''}</td>
+        <td>${item.catatan || ''}</td>
+        <td>${item.peserta || ''}</td>
+        <td class="action-cell"><button class="edit-btn">✏️ Edit</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    enableMeetingEdit();
+  }catch(err){ console.error(err); }
+  finally{ if(spinner) spinner.style.display="none"; }
+}
+
+/* ====================== ENABLE EDIT ====================== */
+function enableMeetingEdit(){
+  document.querySelectorAll("#meetingTable tbody tr").forEach((row,rowIndex)=>{
+    const editBtn = row.querySelector(".edit-btn");
+    if(!editBtn) return;
+
+    editBtn.onclick = ()=>{
+      if(!confirm("Apakah Anda ingin mengedit data ini?")) return;
+      row._original = [...row.children].map(td=>td.innerHTML);
+
+      const fieldIndices = { tanggal:0, namaMeeting:1, jam:2, ket:3, foto:4, akar:5, tindakan:6, catatan:7, peserta:8 };
+
+      for(const key in fieldIndices){
+        const idx = fieldIndices[key];
+        const cell = row.cells[idx];
+        const value = cell.textContent.trim();
+
+        if(key==='peserta'){
+          const wrapper = document.createElement("div");
+          wrapper.style.display="flex"; wrapper.style.flexWrap="wrap"; wrapper.style.gap="6px";
+          const pesertaList = ["NANI","ANJANI","SUCI","ANOM","IRNA","MARWAN","KIKI","MARTINI","KRESTIN","ISMIE"];
+          pesertaList.forEach(name=>{
+            const label = document.createElement("label");
+            label.style.fontSize="12px"; label.style.cursor="pointer";
+            const cb = document.createElement("input");
+            cb.type="checkbox"; cb.value=name;
+            if(value.includes(name)) cb.checked = true;
+            label.appendChild(cb); label.appendChild(document.createTextNode(" "+name));
+            wrapper.appendChild(label);
+          });
+          cell.innerHTML=""; cell.appendChild(wrapper);
+
+        }else if(key==='foto'){
+          const wrapper = document.createElement("div");
+          wrapper.style.display="flex"; wrapper.style.flexDirection="column"; wrapper.style.alignItems="center";
+          const label = document.createElement("label"); 
+          label.textContent="📁 Pilih File"; 
+          label.style.cursor="pointer"; label.style.background="#00BCD4"; label.style.color="#fff"; 
+          label.style.padding="6px 10px"; label.style.borderRadius="6px"; label.style.fontSize="13px";
+          const fileInput = document.createElement("input"); fileInput.type="file"; fileInput.accept="image/*"; fileInput.style.display="none";
+          const fileName = document.createElement("div"); fileName.style.fontSize="12px"; fileName.style.color="#555"; fileName.style.marginTop="6px";
+          fileInput.addEventListener("change",e=>{ fileName.textContent = e.target.files[0]?.name || ""; });
+          label.onclick = ()=>fileInput.click();
+          wrapper.appendChild(label); wrapper.appendChild(fileInput); wrapper.appendChild(fileName);
+          cell.innerHTML=""; cell.appendChild(wrapper);
+
+        }else if(key==='tanggal' || key==='jam'){
+          const input = document.createElement("input");
+          input.type = "text"; 
+          input.value = value;
+          input.setAttribute('readonly',true);
+          cell.innerHTML=""; cell.appendChild(input);
+
+        }else if(key==='namaMeeting'){
+          const input = document.createElement("input");
+          input.type="text"; input.value=value.toUpperCase(); input.style.width="100%";
+          cell.innerHTML=""; cell.appendChild(input);
+
+        }else{
+          const textarea = document.createElement("textarea");
+          textarea.value=value; textarea.rows=2; textarea.style.width="100%";
+          cell.innerHTML=""; cell.appendChild(textarea);
+        }
+      }
+
+      const aksiCell = row.cells[9];
+      aksiCell.innerHTML=`<button class="save-btn">💾 Simpan</button> <button class="cancel-btn">❌ Batal</button>`;
+      const spinner = document.createElement("span"); spinner.style.display="none"; spinner.textContent=" ⏳ Menyimpan..."; aksiCell.appendChild(spinner);
+
+      aksiCell.querySelector(".save-btn").onclick=async()=>{
+        if(!confirm("Apakah yakin ingin menyimpan perubahan ini?")) return;
+        spinner.style.display="inline";
+
+        const pesertaChecked = Array.from(row.cells[8].querySelectorAll("input[type='checkbox']:checked")).map(cb=>cb.value);
+
+        const updated={
+          tanggal: row.cells[0].querySelector("input")?.value,
+          namaMeeting: row.cells[1].querySelector("input")?.value.toUpperCase(),
+          jam: row.cells[2].querySelector("input")?.value,
+          ket: row.cells[3].querySelector("textarea")?.value || "",
+          akar: row.cells[5].querySelector("textarea")?.value || "",
+          tindakan: row.cells[6].querySelector("textarea")?.value || "",
+          catatan: row.cells[7].querySelector("textarea")?.value || "",
+          peserta: pesertaChecked.join(", "),
+          foto: await fileToBase64(row.cells[4].querySelector("input")?.files[0])
+        };
+
+        try{
+          await fetch(WEBAPP_URL,{
+            method:"POST",
+            body:new URLSearchParams({payload:JSON.stringify({sheet:"Meeting",action:"update",index:rowIndex,data:updated})})
+          });
+          alert("✅ Data berhasil diperbarui!");
+          row._original.forEach((html,i)=>row.cells[i].innerHTML=html);
+          enableMeetingEdit();
+          loadMeeting();
+        }catch(err){ console.error(err); alert("❌ Gagal memperbarui data!"); }
+        finally{ spinner.style.display="none"; }
+      };
+
+      aksiCell.querySelector(".cancel-btn").onclick=()=>{ 
+        if(!confirm("Batalkan edit? Semua perubahan akan hilang!")) return;
+        row._original.forEach((html,i)=>row.cells[i].innerHTML=html);
+        enableMeetingEdit();
+      };
+    };
+  });
+}
+
+/* ====================== PASSWORD OTOMATIS TAB ====================== */
+document.addEventListener('DOMContentLoaded',()=>{
+  const menuBtn = document.querySelector(`nav button[onclick="showMenu('qcMeeting')"]`);
+  if(menuBtn){
+    const originalOnClick = menuBtn.getAttribute('onclick');
+    menuBtn.onclick=function(e){
+      e.preventDefault();
+      const input = prompt('Masukkan password untuk QC MEETING:');
+      if(input===null) return;
+      if(input===QC_MEETING_PASSWORD) eval(originalOnClick);
+      else alert('Password salah!');
+    };
+  }
+  setMeetingDateTime();
+});
+</script>
+
+<script>
+document.querySelectorAll('#meetingForm input[type="text"], #meetingForm textarea')
+  .forEach(el => {
+    el.addEventListener('input', () => {
+      el.value = el.value.toUpperCase();
+    });
+});
+
+</script>
+
+
 <script>
 /* ====================== HOME QC ====================== */
 function goHome() {
@@ -5454,6 +6188,5 @@ function goHome() {
 
 </body>
 </html>
-
 
 
