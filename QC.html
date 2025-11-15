@@ -199,6 +199,7 @@ select {
   resize: vertical;
 }
 
+
 /* ======================== Status ======================== */
 .status-to {
   background: #fee2e2;
@@ -1349,6 +1350,26 @@ select {
   border: 1px solid #ccc;
 }
 
+/* ==== FIX FILTER TERTIMPA SAAT EDIT ==== */
+
+/* Filter harus paling atas */
+#hasilBapro input[type="text"] {
+    position: sticky;
+    top: 0;
+    z-index: 999 !important;
+}
+
+/* Card grid (termasuk mode edit) harus di bawah filter */
+#gridBapro .grid-card {
+    position: relative;
+    z-index: 1 !important;
+}
+
+/* Elemen dalam edit jangan sampai naik z-index */
+#gridBapro .grid-card * {
+    z-index: 1 !important;
+}
+
 </style>
 
 
@@ -1508,6 +1529,26 @@ select {
   margin-bottom: 8px;
 }
 
+/* ==== FIX FILTER QC CETAK TERTIMPA SAAT EDIT ==== */
+
+/* Filter harus paling atas */
+#hasilPA input[type="text"] {
+    position: sticky;
+    top: 0;
+    z-index: 999 !important;
+}
+
+/* Card grid (termasuk mode edit) harus di bawah filter */
+#gridPA .grid-card {
+    position: relative;
+    z-index: 1 !important;
+}
+
+/* Elemen di dalam edit jangan naik z-index */
+#gridPA .grid-card * {
+    z-index: 1 !important;
+}
+
 </style>
 
 
@@ -1652,6 +1693,26 @@ select {
   padding: 6px;
   border: 1px solid #ccc;
   margin-bottom: 8px;
+}
+
+/* ==== FIX FILTER QC FINISHING TERTUTUP SAAT EDIT ==== */
+
+/* Filter harus paling atas */
+#hasilFinishing input[type="text"] {
+    position: sticky;
+    top: 0;
+    z-index: 999 !important;
+}
+
+/* Semua card grid (termasuk mode edit) harus lebih rendah */
+#gridFinishing .grid-card {
+    position: relative;
+    z-index: 1 !important;
+}
+
+/* Elemen dalam mode edit jangan melompat ke atas */
+#gridFinishing .grid-card * {
+    z-index: 1 !important;
 }
 
 </style>
@@ -1804,6 +1865,26 @@ select {
   padding: 6px;
   border: 1px solid #ccc;
   margin-bottom: 8px;
+}
+
+/* ==== FIX FILTER QC LEM TERTUTUP SAAT EDIT ==== */
+
+/* Filter harus paling atas */
+#hasilLem input[type="text"] {
+    position: sticky;
+    top: 0;
+    z-index: 999 !important;
+}
+
+/* Semua card grid (termasuk mode edit) tetap lebih rendah */
+#gridLem .grid-card {
+    position: relative;
+    z-index: 1 !important;
+}
+
+/* Elemen dalam card edit juga tidak boleh naik ke atas */
+#gridLem .grid-card * {
+    z-index: 1 !important;
 }
 
 </style>
@@ -2857,8 +2938,13 @@ body {
     #meetingHasilSection .search-wrapper { position:sticky; top:0; z-index:90; background:#fff; padding-top:4px; padding-bottom:4px; margin-bottom:8px; }
     #meetingHasilSection .table-wrapper { overflow-y:auto; max-height:calc(80vh - 180px); border:1px solid #ddd; }
     #meetingHasilSection table thead th { position:sticky; top:0; background:#00BCD4; color:#fff; z-index:89; }
+
+
+
   </style>
-</section>
+
+
+  </section>
 
 
 
