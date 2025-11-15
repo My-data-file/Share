@@ -2480,11 +2480,13 @@ function filterManualList(input, tabId) {
 /* Rata tengah semua kolom */
 #spvTable th, #spvTable td { text-align:center; }
 
+/* ========== HP ========== */
 @media (max-width:768px){
   #spvTable, #spvTable thead, #spvTable tbody, #spvTable th, #spvTable td, #spvTable tr {
     display:block;
   }
   #spvTable thead { display:none; }
+
   #spvTable tr {
     background:#fff;
     border:1px solid #ddd;
@@ -2493,27 +2495,29 @@ function filterManualList(input, tabId) {
     box-shadow:0 2px 6px rgba(0,0,0,0.08);
     padding:10px 12px;
   }
+
   #spvTable td {
-    border:none;
     display:flex;
-    justify-content:space-between;
-    align-items:center;
+    flex-direction: column; /* label di atas isi */
+    align-items: flex-start;
     padding:6px 0;
     border-bottom:1px solid #eee;
     font-size:0.9rem;
     text-align:left;
     word-break:break-word;
   }
+
   #spvTable td:last-child { border-bottom:none; }
 
-  /* Label di samping isi */
+  /* Label di atas isi */
   #spvTable td::before {
     font-weight:600;
     color:#333;
-    flex:0 0 45%;
+    flex:0 0 auto;
     text-align:left;
-    padding-right:6px;
+    padding-bottom:4px; /* jarak antara label & isi */
   }
+
   #spvTable td:nth-child(1)::before { content:"Tanggal:"; }
   #spvTable td:nth-child(2)::before { content:"Nama Order:"; }
   #spvTable td:nth-child(3)::before { content:"No KS:"; }
@@ -2523,47 +2527,36 @@ function filterManualList(input, tabId) {
   #spvTable td:nth-child(7)::before { content:"Keterangan Temuan:"; }
   #spvTable td:nth-child(8)::before { content:"Foto Temuan:"; }
   #spvTable td:nth-child(9)::before { content:"Nama QC:"; }
+  #spvTable td:nth-child(10)::before { content:"Proses:"; }
+  #spvTable td:nth-child(11)::before { content:"Aksi:"; }
 
-  /* Kolom Proses — pindah ke flex column */
-  #spvTable td:nth-child(10) {
+  /* Tombol Proses & Aksi */
+  #spvTable td:nth-child(10),
+  #spvTable td:nth-child(11) {
+    width:100%;
     flex-direction: column;
     align-items:flex-start;
-    border-top:1px dashed #ddd;
-    margin-top:6px;
-    padding-top:8px;
     gap:6px;
-  }
-  #spvTable td:nth-child(10)::before { content:"Proses:"; margin-bottom:4px; }
-
-  /* Kolom Aksi — tombol di tengah, ukuran sama */
-  #spvTable td:nth-child(11) {
-    flex-direction: column;
-    align-items:center;
+    margin-top:4px;
+    padding-top:4px;
     border-top:1px dashed #ddd;
-    margin-top:6px;
-    padding-top:8px;
-    gap:6px;
   }
-  #spvTable td:nth-child(11)::before { content:"Aksi:"; margin-bottom:4px; text-align:center; }
 
-  /* Tombol rapi & sama ukuran */
   #spvTable td:nth-child(10) button,
   #spvTable td:nth-child(11) button {
     width:80%;
     max-width:160px;
-    padding:6px 0;
-    margin:4px auto;
-    display:block;
+    margin:4px 0;
   }
 
   /* Input file menyesuaikan */
-  #spvTable td input[type="file"] { max-width:100%; }
+  #spvTable td input[type="file"] { width:100%; max-width:100%; }
 
   /* Textarea / input edit area */
   #spvTable tbody td input,
   #spvTable tbody td textarea {
-    width: 100%;
-    box-sizing: border-box;
+    width:100%;
+    box-sizing:border-box;
     padding:8px;
     border-radius:6px;
     border:1px solid #999;
@@ -2572,10 +2565,9 @@ function filterManualList(input, tabId) {
     min-height:60px;
     max-height:200px;
     overflow-y:auto;
+    text-align:left;
   }
 }
-
-
 
 /* ========== Frame & Search ========== */
 .hasil-container {
@@ -6205,6 +6197,7 @@ function goHome() {
 
 </body>
 </html>
+
 
 
 
