@@ -2376,6 +2376,8 @@ function filterManualList(input, tabId) {
   </div>
 </div>
 
+
+
 </section>
 
 <style>
@@ -2667,6 +2669,124 @@ body {
   z-index: 89;
 }
 
+/* QC SPV — Agar hasil tetap rapi mengikuti enter + rata kiri */
+#spvTable td {
+  white-space: pre-line !important;
+  text-align: left !important;
+}
+
+/* ====== PERBESAR KOLOM EDIT DI TAB HASIL ====== */
+
+/* Kolom Tanggal */
+#spvTable td:nth-child(1) input {
+    width: 100px !important;
+    min-width: 100px !important;
+}
+
+/* Kolom Nama Order */
+#spvTable td:nth-child(2) input {
+    width: 180px !important;
+    min-width: 180px !important;
+}
+
+/* Kolom No KS */
+#spvTable td:nth-child(3) input {
+    width: 120px !important;
+    min-width: 120px !important;
+}
+
+/* Kolom Jam */
+#spvTable td:nth-child(4) input {
+    width: 90px !important;
+    min-width: 90px !important;
+}
+
+/* Kolom Keterangan Acuan */
+#spvTable td:nth-child(5) textarea {
+    width: 260px !important;
+    min-width: 260px !important;
+    height: 120px !important;
+    resize: vertical;
+    text-align: left;
+}
+
+/* Kolom Foto Acuan */
+#spvTable td:nth-child(6) input[type="file"] {
+    width: 140px !important;
+    min-width: 140px !important;
+}
+
+/* Kolom Keterangan Temuan */
+#spvTable td:nth-child(7) textarea {
+    width: 260px !important;
+    min-width: 260px !important;
+    height: 120px !important;
+    resize: vertical;
+    text-align: left;
+}
+
+/* Kolom Foto Temuan */
+#spvTable td:nth-child(8) input[type="file"] {
+    width: 140px !important;
+    min-width: 140px !important;
+}
+
+/* Kolom Nama QC — diperbesar */
+#spvTable td:nth-child(9) select {
+    width: 150px !important;
+    min-width: 150px !important;
+    padding: 6px;
+    font-size: 13px;
+}
+
+/* Kolom Proses — diperbesar */
+#spvTable td:nth-child(10) select {
+    width: 150px !important;
+    min-width: 150px !important;
+    padding: 6px;
+    font-size: 13px;
+}
+
+/* Kolom Aksi (biarkan default) */
+#spvTable td:nth-child(11) {
+    min-width: 120px;
+    text-align: center;
+}
+
+/* ===== Responsive untuk HP (layar < 600px) ===== */
+@media (max-width: 600px) {
+
+  /* Semua input & select dibuat full width */
+  #spvTable td input,
+  #spvTable td textarea,
+  #spvTable td select {
+      width: 100% !important;
+      min-width: 100% !important;
+      box-sizing: border-box;
+  }
+
+  /* Textarea diperkecil tingginya agar tidak makan layar */
+  #spvTable td textarea {
+      height: 80px !important;
+  }
+
+  /* File input dibuat rapi */
+  #spvTable td input[type="file"] {
+      width: 100% !important;
+  }
+
+  /* Kolom Aksi tetap kecil */
+  #spvTable td:nth-child(11) {
+      min-width: 80px;
+  }
+
+  /* Bungkus tabel biar tidak overflow berlebihan */
+  .table-wrapper {
+      overflow-x: auto;
+  }
+}
+
+
 </style>
 
 
@@ -2939,10 +3059,23 @@ body {
     #meetingHasilSection .table-wrapper { overflow-y:auto; max-height:calc(80vh - 180px); border:1px solid #ddd; }
     #meetingHasilSection table thead th { position:sticky; top:0; background:#00BCD4; color:#fff; z-index:89; }
 
+/* Agar hasil meeting tetap rapi dan rata kiri */
+#meetingTable td {
+  white-space: pre-line !important;
+  text-align: left !important;
+}
 
 
   </style>
 
+<script>
+document.querySelectorAll('#meetingForm input[type="text"], #meetingForm textarea')
+  .forEach(el => {
+    el.addEventListener('input', () => {
+      el.value = el.value.toUpperCase();
+    });
+});
+</script>
 
   </section>
 
@@ -3203,7 +3336,7 @@ function openChatbot() {
 
 <script>
 // ====================== KONFIGURASI ======================
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwlIREYeR8016TOBmMZVc1yRU5i_Elbc3EOrEI98QWZGFyGQoiQPuLZTm6a4X4odCrM/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxYIHmoNT_Zv4hqZmV2oiPLv22xJdPBgWCtbUsT1f6SuDjrjEbRIbmCCiScAAqC9SQ/exec";
 
 // ====================== SPINNER GLOBAL JS ======================
 const spinner = document.getElementById('loadingSpinner');
@@ -6115,6 +6248,5 @@ function goHome() {
 
 </body>
 </html>
-
 
 
