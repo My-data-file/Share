@@ -5633,13 +5633,21 @@ function loadSPV() {
   const tbody = document.querySelector('#spvTable tbody');
   if (!tbody) return;
 
+  // ===== Spinner sama seperti Meeting =====
   let spinner = document.getElementById("spvLoadingSpinner");
   if (!spinner) {
     spinner = document.createElement("div");
     spinner.id = "spvLoadingSpinner";
-    spinner.innerHTML = `<div style="text-align:center;padding:10px;font-weight:bold;color:#00BCD4;">⏳ Memuat Data QC</div>`;
+    spinner.style.display = "none";
+    spinner.innerHTML = `
+      <div style="text-align:center; padding:10px;">
+        <div class="spinner"></div>
+        <p style="font-size:0.9rem; color:#555; margin-top:6px;">Memuat Data QC</p>
+      </div>
+    `;
     tbody.parentElement.insertAdjacentElement("beforebegin", spinner);
   }
+
   spinner.style.display = "block";
 
   fetch(WEBAPP_URL + '?action=get&sheet=Register')
@@ -5648,7 +5656,6 @@ function loadSPV() {
       let data;
       try { data = JSON.parse(text); }
       catch { const match = text.match(/\((.*)\)/); if (match) data = JSON.parse(match[1]); }
-
       if (!data) { console.warn("Format data SPV tidak dikenali:", text); spinner.style.display = "none"; return; }
 
       const list = data.data || data || [];
@@ -5669,7 +5676,6 @@ function loadSPV() {
           <td>${item.namaQC || item['Nama QC'] || ''}</td>
           <td>${item.proses || item['Proses'] || ''}</td>
           <td class="action-cell"><button class="edit-btn">✏️ Edit</button></td>
-
         `;
         tbody.appendChild(tr);
       });
@@ -5679,6 +5685,7 @@ function loadSPV() {
     .catch(err => console.error("Gagal memuat data SPV:", err))
     .finally(() => spinner.style.display = "none");
 }
+
 
 /* ====================== ENABLE EDIT ====================== */
 function enableSPVEdit() {
@@ -5740,7 +5747,6 @@ function enableSPVEdit() {
           cell.innerHTML = "";
           cell.appendChild(wrapper);
         } 
-        
         // ===== Keterangan =====
         else if (i === 4 || i === 6) {
           const textarea = document.createElement("textarea");
@@ -5750,7 +5756,6 @@ function enableSPVEdit() {
           cell.innerHTML = "";
           cell.appendChild(textarea);
         } 
-
         // ===== Nama QC (Dropdown) =====
         else if (i === 8) {
           const select = document.createElement("select");
@@ -5760,11 +5765,7 @@ function enableSPVEdit() {
           select.style.border = "1px solid #ccc";
           select.style.fontSize = "13px";
 
-          const options = [
-            "NANI", "ANJANI", "SUCI", "ANOM", "IRNA", "MARWAN",
-            "KIKI", "MARTINI", "KRESTIN", "ISMIE"
-          ];
-
+          const options = ["NANI","ANJANI","SUCI","ANOM","IRNA","MARWAN","KIKI","MARTINI","KRESTIN","ISMIE"];
           options.forEach(opt => {
             const option = document.createElement("option");
             option.value = opt;
@@ -5776,7 +5777,6 @@ function enableSPVEdit() {
           cell.innerHTML = "";
           cell.appendChild(select);
         }
-
         // ===== Proses (Dropdown) =====
         else if (i === 9) {
           const select = document.createElement("select");
@@ -5786,10 +5786,7 @@ function enableSPVEdit() {
           select.style.border = "1px solid #ccc";
           select.style.fontSize = "13px";
 
-          const options = [
-            "QC BAPRO", "QC CETAK", "QC FINISHING", "QC LEM", "RETUR"
-          ];
-
+          const options = ["QC BAPRO","QC CETAK","QC FINISHING","QC LEM","RETUR"];
           options.forEach(opt => {
             const option = document.createElement("option");
             option.value = opt;
@@ -5801,13 +5798,16 @@ function enableSPVEdit() {
           cell.innerHTML = "";
           cell.appendChild(select);
         }
-
         // ===== Input teks biasa =====
         else {
           const input = document.createElement("input");
           input.type = "text";
           input.value = value;
           input.style.width = "100%";
+
+          // Tanggal dan Jam readonly
+          if (i === 0 || i === 3) input.setAttribute('readonly', true);
+
           cell.innerHTML = "";
           cell.appendChild(input);
         }
@@ -5839,12 +5839,8 @@ function enableSPVEdit() {
           ket1: row.cells[6].querySelector("textarea")?.value || row.cells[6].textContent,
           namaQC: row.cells[8].querySelector("select")?.value || row.cells[8].textContent,
           proses: row.cells[9].querySelector("select")?.value || row.cells[9].textContent,
-          foto: row.cells[5].querySelector("input")?.files[0]
-            ? await fileToBase64(row.cells[5].querySelector("input").files[0])
-            : null,
-          foto1: row.cells[7].querySelector("input")?.files[0]
-            ? await fileToBase64(row.cells[7].querySelector("input").files[0])
-            : null
+          foto: row.cells[5].querySelector("input")?.files[0] ? await fileToBase64(row.cells[5].querySelector("input").files[0]) : null,
+          foto1: row.cells[7].querySelector("input")?.files[0] ? await fileToBase64(row.cells[7].querySelector("input").files[0]) : null
         };
 
         fetch(WEBAPP_URL, {
@@ -5876,6 +5872,7 @@ function enableSPVEdit() {
     };
   });
 }
+
 
 
 /* ====================== FORMAT ====================== */
