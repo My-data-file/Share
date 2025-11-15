@@ -2753,36 +2753,83 @@ body {
     text-align: center;
 }
 
-/* ===== Responsive untuk HP (layar < 600px) ===== */
+/* =========================
+   RESPONSIVE MODE HP
+   Tabel berubah menjadi kartu
+   ========================= */
 @media (max-width: 600px) {
 
-  /* Semua input & select dibuat full width */
-  #spvTable td input,
-  #spvTable td textarea,
-  #spvTable td select {
+  #spvTable,
+  #spvTable thead,
+  #spvTable tbody,
+  #spvTable th,
+  #spvTable td,
+  #spvTable tr {
+      display: block;
+      width: 100%;
+  }
+
+  #spvTable thead {
+      display: none; /* header disembunyikan */
+  }
+
+  #spvTable tr {
+      margin-bottom: 18px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 10px;
+      background: #fff;
+  }
+
+  #spvTable td {
+      text-align: left !important;
+      padding-left: 120px;
+      position: relative;
+      min-height: 38px;
+      border: none;
+      border-bottom: 1px solid #eee;
+  }
+
+  #spvTable td:last-child {
+      border-bottom: none;
+  }
+
+  /* Label kolom muncul di depan isi nya */
+  #spvTable td:before {
+      position: absolute;
+      top: 8px;
+      left: 10px;
+      width: 110px;
+      font-weight: bold;
+      font-size: 13px;
+      white-space: normal;
+  }
+
+  /* Label sesuai urutan kolom */
+  #spvTable td:nth-child(1):before { content: "Tanggal"; }
+  #spvTable td:nth-child(2):before { content: "Nama Order"; }
+  #spvTable td:nth-child(3):before { content: "No KS"; }
+  #spvTable td:nth-child(4):before { content: "Jam"; }
+  #spvTable td:nth-child(5):before { content: "Ket. Acuan"; }
+  #spvTable td:nth-child(6):before { content: "Foto Acuan"; }
+  #spvTable td:nth-child(7):before { content: "Ket. Temuan"; }
+  #spvTable td:nth-child(8):before { content: "Foto Temuan"; }
+  #spvTable td:nth-child(9):before { content: "Nama QC"; }
+  #spvTable td:nth-child(10):before { content: "Proses"; }
+  #spvTable td:nth-child(11):before { content: "Aksi"; }
+
+  /* Input, textarea & select jadi full width */
+  #spvTable input,
+  #spvTable textarea,
+  #spvTable select {
       width: 100% !important;
       min-width: 100% !important;
       box-sizing: border-box;
   }
 
-  /* Textarea diperkecil tingginya agar tidak makan layar */
-  #spvTable td textarea {
-      height: 80px !important;
-  }
-
-  /* File input dibuat rapi */
-  #spvTable td input[type="file"] {
-      width: 100% !important;
-  }
-
-  /* Kolom Aksi tetap kecil */
-  #spvTable td:nth-child(11) {
-      min-width: 80px;
-  }
-
-  /* Bungkus tabel biar tidak overflow berlebihan */
-  .table-wrapper {
-      overflow-x: auto;
+  /* Perkecil textarea agar tidak terlalu tinggi */
+  #spvTable textarea {
+      height: 90px !important;
   }
 }
 
