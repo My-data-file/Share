@@ -1370,6 +1370,24 @@ select {
     z-index: 1 !important;
 }
 
+/* ===== Spinner untuk tombol ==== */
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #ddd;
+  border-top: 3px solid #D32F2F; /* warna merah/tema Bapro */
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 </style>
 
 
@@ -1437,7 +1455,6 @@ select {
     </div>
     <div class="form-group">
       <select id="paUpdate">
-        <option value="">Update</option>
         <option value="Proses">Proses</option>
         <option value="Selesai">Selesai</option>
         <option value="TO">TO</option>
@@ -1549,8 +1566,43 @@ select {
     z-index: 1 !important;
 }
 
+/* ===== Spinner ===== */
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #ddd;
+  border-top: 3px solid #00BCD4; /* warna biru */
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  animation: spin 0.8s linear infinite;
+  margin-right: 6px; /* jarak spinner ke teks */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 </style>
 
+<script>
+const paNoKS = document.getElementById('paNoKS');
+
+paNoKS.addEventListener('input', function(e) {
+  let value = paNoKS.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); // huruf & angka saja, uppercase
+
+  if (value.length > 2) {
+    value = value.slice(0,2) + '-' + value.slice(2);
+  }
+
+  if (value.length > 7) {
+    value = value.slice(0,7) + '-' + value.slice(7); // sisanya bebas
+  }
+
+  paNoKS.value = value;
+});
+</script>
 
 
 <!-- ======================== QC FINISHING ======================== -->
@@ -1715,7 +1767,44 @@ select {
     z-index: 1 !important;
 }
 
+/* ===== Spinner untuk tombol ==== */
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #ddd;
+  border-top: 3px solid #22C55E; /* warna hijau mirip theme finishing */
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 </style>
+
+
+<script>
+const finishingNoKS = document.getElementById('finishingNoKS');
+
+finishingNoKS.addEventListener('input', function(e) {
+  let value = finishingNoKS.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); // huruf & angka saja, uppercase
+
+  if (value.length > 2) {
+    value = value.slice(0,2) + '-' + value.slice(2);
+  }
+
+  if (value.length > 7) {
+    value = value.slice(0,7) + '-' + value.slice(7); // sisanya bebas
+  }
+
+  finishingNoKS.value = value;
+});
+</script>
 
 
 
@@ -1887,8 +1976,45 @@ select {
     z-index: 1 !important;
 }
 
+/* ===== Spinner ===== */
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #ddd;
+  border-top: 3px solid #00BCD4;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  animation: spin 0.8s linear infinite;
+  margin-right: 6px; /* jarak spinner ke teks */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 </style>
 
+<script>
+const lemNoKS = document.getElementById('lemNoKS');
+
+if (lemNoKS) {
+  lemNoKS.addEventListener('input', function() {
+    let value = lemNoKS.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); // huruf & angka saja, uppercase
+
+    if (value.length > 2) {
+      value = value.slice(0,2) + '-' + value.slice(2);
+    }
+
+    if (value.length > 7) {
+      value = value.slice(0,7) + '-' + value.slice(7); // sisanya bebas
+    }
+
+    lemNoKS.value = value;
+  });
+}
+</script>
 
 
 <!-- ======================== MENU MANUAL ======================== --> 
@@ -3649,7 +3775,7 @@ async function loadFinishingItems(){
   }catch(err){ console.error('⚠️ Error loadFinishingItems', err); }
 }
 
-// ====================== TAMBAH DATA ======================
+// ====================== TAMBAH DATA DENGAN SPINNER & NOTIF ======================
 function addFinishingItem() {
   const nama = document.getElementById('finishingNama').value.trim();
   const noKS = document.getElementById('finishingNoKS').value.trim();
@@ -3659,24 +3785,49 @@ function addFinishingItem() {
   const jenisBS = document.getElementById('finishingJenisBS').value.trim();
   const qc = document.getElementById('finishingQC').value.trim();
   const update = document.getElementById('finishingUpdate').value.trim();
-  const keterangan = document.getElementById('finishingKeterangan').value.trim(); // ✳️ tambahan baru
+  const keterangan = document.getElementById('finishingKeterangan').value.trim();
 
-  if (!nama || !noKS) return alert('Nama dan No KS wajib diisi!');
+    // ✅ Validasi wajib diisi
+  if (!nama || !noKS || !qc || !update) {
+    return alert('Nama Order, No KS, QC, dan Proses wajib diisi!');
+  }
 
-// === Tambah konfirmasi sederhana ===
   const konfirmasi = confirm(`Yakin ingin menambah data baru?\n\nNama: ${nama}\nNo KS: ${noKS}`);
-  if (!konfirmasi) return; // jika tekan Cancel, berhenti di sini
+  if (!konfirmasi) return;
 
   const tanggalFormatted = new Date().toLocaleString('id-ID', {
-    day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'
+    day:'2-digit', month:'long', year:'numeric',
+    hour:'2-digit', minute:'2-digit', second:'2-digit'
   });
 
   const payload = { action:'add', sheet:'Finishing', tanggal: tanggalFormatted, nama,noKS,order,isi,bagus,jenisBS,qc,update,keterangan };
 
-  postPayload(payload);
-  clearFinishingForm();
-  setTimeout(() => loadFinishingItems(), 20000);
+  // === Spinner tombol ===
+  const btnTambah = document.querySelector('#inputFinishing button');
+  if (btnTambah) {
+    btnTambah.disabled = true;
+    const originalHTML = btnTambah.innerHTML;
+    btnTambah.innerHTML = `<div class="spinner"></div> Menyimpan...`;
+
+    postPayload(payload);
+
+    // Tunggu proses sheet selesai (simulasi 8 detik)
+    setTimeout(() => {
+      btnTambah.disabled = false;
+      btnTambah.innerHTML = originalHTML; // kembalikan tombol
+      clearFinishingForm();
+      loadFinishingItems();
+      alert('✅ Data berhasil ditambahkan!');
+    }, 8000);
+  } else {
+    postPayload(payload);
+    clearFinishingForm();
+    setTimeout(() => loadFinishingItems(), 8000);
+    alert('✅ Data berhasil ditambahkan!');
+  }
 }
+
+
 
 // ====================== PANGGIL (isi form dari item) ======================
 function callFinishing(index){
@@ -4150,17 +4301,19 @@ function addBaproItem() {
   const update = document.getElementById('baproUpdate') ? document.getElementById('baproUpdate').value.trim() : '';
   const keterangan = document.getElementById('baproKeterangan') ? document.getElementById('baproKeterangan').value.trim() : '';
 
-  if (!nama || !cso) return alert('Nama dan cso wajib diisi!');
+    // ✅ Validasi wajib diisi
+  if (!nama || !cso || !jenis || !kertas || !NamaTinta || !update) {
+    return alert('Nama Order, CSO, Jenis Kertas, Tebal Kertas, Nama Tinta, dan Proses wajib diisi!');
+  }
 
-// === Tambah konfirmasi sederhana ===
   const konfirmasi = confirm(`Yakin ingin menambah data baru?\n\nNama: ${nama}\nCSO: ${cso}`);
-  if (!konfirmasi) return; // jika tekan Cancel, berhenti di sini
+  if (!konfirmasi) return;
 
   const tanggalFormatted = new Date().toLocaleString('id-ID', {
-    day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'
+    day:'2-digit', month:'long', year:'numeric',
+    hour:'2-digit', minute:'2-digit', second:'2-digit'
   });
 
-  // Kunci perubahan: gunakan key names sesuai header sheet Bapro
   const payload = { action:'add', sheet:'Bapro', tanggal: tanggalFormatted,
     nama, cso,
     jenisKertas: jenis,
@@ -4173,11 +4326,31 @@ function addBaproItem() {
     qc, update, keterangan
   };
 
-  postPayload(payload);
-  clearBaproForm();
-  // reload setelah delay agar sheet ter-update
-  setTimeout(() => loadBaproItems(), 20000);
+  // ===== Spinner tombol =====
+  const btnTambah = document.querySelector('#inputBapro button'); // pastikan tombol ada di #inputBapro
+  if (btnTambah) {
+    btnTambah.disabled = true;
+    const originalHTML = btnTambah.innerHTML;
+    btnTambah.innerHTML = `<div class="spinner"></div> Menyimpan...`;
+
+    postPayload(payload);
+
+    // Tunggu proses sheet selesai (simulasi 8 detik)
+    setTimeout(() => {
+      btnTambah.disabled = false;
+      btnTambah.innerHTML = originalHTML; // kembalikan tombol
+      clearBaproForm();
+      loadBaproItems();
+      alert('✅ Data BAPRO berhasil ditambahkan!');
+    }, 8000);
+  } else {
+    postPayload(payload);
+    clearBaproForm();
+    setTimeout(() => loadBaproItems(), 8000);
+    alert('✅ Data BAPRO berhasil ditambahkan!');
+  }
 }
+
 
 // ====================== PANGGIL (isi form dari item) ======================
 function callBapro(index){
@@ -4682,28 +4855,48 @@ function addPAItem() {
   const update = document.getElementById('paUpdate') ? document.getElementById('paUpdate').value.trim() : '';
   const keterangan = document.getElementById('paKeterangan') ? document.getElementById('paKeterangan').value.trim() : '';
 
-  if (!nama || !noKS) return alert('Nama dan No KS wajib diisi!');
+    // ✅ Validasi wajib diisi
+  if (!nama || !noKS || !qc || !mesin || !update) {
+    return alert('Nama Order, No KS, QC, Mesin, dan Proses wajib diisi!');
+  }
 
-// === Tambah konfirmasi sederhana ===
   const konfirmasi = confirm(`Yakin ingin menambah data baru?\n\nNama: ${nama}\nNo KS: ${noKS}`);
-  if (!konfirmasi) return; // jika tekan Cancel, berhenti di sini
+  if (!konfirmasi) return;
 
   const tanggalFormatted = new Date().toLocaleString('id-ID', {
-    day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'
+    day:'2-digit', month:'long', year:'numeric',
+    hour:'2-digit', minute:'2-digit', second:'2-digit'
   });
 
-  // gunakan key names sesuai header di sheet PA (sama pola seperti Bapro)
   const payload = {
     action:'add', sheet:'Cetak', tanggal: tanggalFormatted,
     nama, noKS, order, bagus, sortir, problem, qc, mesin, update, keterangan
   };
 
-  // PENTING: kirim ke WEBAPP yang sama dengan postPayload()
-  postPayload(payload);
-  clearPAForm();
-  // reload setelah delay agar sheet ter-update
-  setTimeout(() => loadPAItems(), 20000);
+  // ===== Spinner tombol =====
+  const btnTambah = document.querySelector('#inputPA button'); // pastikan tombol ada di #inputPA
+  if (btnTambah) {
+    btnTambah.disabled = true;
+    const originalHTML = btnTambah.innerHTML;
+    btnTambah.innerHTML = `<div class="spinner"></div> Menyimpan...`;
+
+    postPayload(payload);
+
+    setTimeout(() => {
+      btnTambah.disabled = false;
+      btnTambah.innerHTML = originalHTML; // kembalikan tombol
+      clearPAForm();
+      loadPAItems();
+      alert('✅ Data PA berhasil ditambahkan!');
+    }, 8000);
+  } else {
+    postPayload(payload);
+    clearPAForm();
+    setTimeout(() => loadPAItems(), 8000);
+    alert('✅ Data PA berhasil ditambahkan!');
+  }
 }
+
 
 // ====================== PANGGIL (isi form dari item) ======================
 function callPA(index){
@@ -5144,27 +5337,48 @@ function addLemItem() {
   const update = document.getElementById('lemUpdate') ? document.getElementById('lemUpdate').value.trim() : '';
   const keterangan = document.getElementById('lemKeterangan') ? document.getElementById('lemKeterangan').value.trim() : '';
 
-  if (!nama || !noKS) return alert('Nama dan No KS wajib diisi!');
+    // ✅ Validasi wajib diisi
+  if (!nama || !noKS || !qc || !update) {
+    return alert('Nama Order, No KS, QC, dan Proses wajib diisi!');
+  }
 
-// === Tambah konfirmasi sederhana ===
   const konfirmasi = confirm(`Yakin ingin menambah data baru?\n\nNama: ${nama}\nNo KS: ${noKS}`);
-  if (!konfirmasi) return; // jika tekan Cancel, berhenti di sini
+  if (!konfirmasi) return;
 
   const tanggalFormatted = new Date().toLocaleString('id-ID', {
-    day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'
+    day:'2-digit', month:'long', year:'numeric',
+    hour:'2-digit', minute:'2-digit', second:'2-digit'
   });
 
-  // key names mengikuti header sheet "Lem"
   const payload = {
     action:'add', sheet:'Lem', tanggal: tanggalFormatted,
     nama, noKS, order, isi, bagus, jenisBS, qc, update, keterangan
   };
 
-  // gunakan postPayload sama seperti Finishing (kirim ke WEBAPP_URL)
-  postPayload(payload);
-  clearLemForm();
-  setTimeout(() => loadLemItems(), 20000);
+  // ===== Spinner tombol =====
+  const btnTambah = document.querySelector('#inputLem button'); // pastikan tombol ada di #inputLem
+  if (btnTambah) {
+    btnTambah.disabled = true;
+    const originalHTML = btnTambah.innerHTML;
+    btnTambah.innerHTML = `<div class="spinner"></div> Menyimpan...`;
+
+    postPayload(payload);
+
+    setTimeout(() => {
+      btnTambah.disabled = false;
+      btnTambah.innerHTML = originalHTML; // kembalikan tombol
+      clearLemForm();
+      loadLemItems();
+      alert('✅ Data Lem berhasil ditambahkan!');
+    }, 8000);
+  } else {
+    postPayload(payload);
+    clearLemForm();
+    setTimeout(() => loadLemItems(), 8000);
+    alert('✅ Data Lem berhasil ditambahkan!');
+  }
 }
+
 
 // ====================== PANGGIL (isi form dari item) ======================
 function callLem(index){
@@ -6284,7 +6498,6 @@ function goHome() {
 
 </body>
 </html>
-
 
 
 
