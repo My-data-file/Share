@@ -3258,6 +3258,36 @@ body {
   text-align: center !important;
 }
 
+/* ===== Tombol Share WA (samakan dengan tombol Edit) ===== */
+#meetingTable .share-btn {
+  background: linear-gradient(135deg, #29B6F6, #4FC3F7);
+  color: #fff !important;
+  padding: 4px 10px;        /* <<< ukuran yang sama seperti tombol Edit */
+  font-size: 0.85rem;       /* <<< ukuran font tombol Edit */
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;       /* <<< sama dengan tombol Edit */
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  transition: 0.25s;
+  margin: 2px;
+  height: 30px;             /* <<< ini yang membuat benar-benar seragam */
+}
+
+#meetingTable .share-btn:hover {
+  background: linear-gradient(135deg, #4FC3F7, #81D4FA);
+  transform: translateY(-2px);
+}
+
+/* Mobile — ukuran tetap mengikuti tombol Edit */
+@media (max-width: 768px) {
+  #meetingTable td:nth-child(10) button.share-btn {
+    width: auto;
+    height: 34px;          /* match tombol Edit versi mobile */
+    font-size: 0.85rem;
+    margin: 4px 0;
+  }
+}
 
   </style>
 
@@ -6205,10 +6235,10 @@ function adjustSPVRowHeight(row) {
 <script>
 // ====================== QC MEETING ======================
 
-/* ====================== PASSWORD ====================== */
+// ===== PASSWORD =====
 const QC_MEETING_PASSWORD = 'spv123'; // ganti sesuai kebutuhan
 
-/* ====================== FORMAT TANGGAL & JAM ====================== */
+// ===== FORMAT TANGGAL & JAM =====
 function formatTanggal(tgl){
   if(!tgl) return "";
   const d = new Date(tgl);
@@ -6227,7 +6257,7 @@ function formatJam(jam){
   return `${hh}:${min}`;
 }
 
-/* ====================== FILE TO BASE64 ====================== */
+// ===== FILE TO BASE64 =====
 function fileToBase64(file){
   return new Promise((resolve,reject)=>{
     if(!file) return resolve("");
@@ -6238,7 +6268,7 @@ function fileToBase64(file){
   });
 }
 
-/* ====================== UPPERCASE INPUT ====================== */
+// ===== UPPERCASE INPUT =====
 function setupMeetingUppercase(){
   const inputs = document.querySelectorAll('#meetingForm input[type="text"], #meetingForm textarea');
   inputs.forEach(el=>{
@@ -6249,7 +6279,7 @@ function setupMeetingUppercase(){
   });
 }
 
-/* ====================== TANGGAL & JAM OTOMATIS ====================== */
+// ===== TANGGAL & JAM OTOMATIS =====
 function setMeetingDateTime(){
   const now = new Date();
   const yyyy = now.getFullYear();
@@ -6257,17 +6287,16 @@ function setMeetingDateTime(){
   const dd = String(now.getDate()).padStart(2,'0');
   const hh = String(now.getHours()).padStart(2,'0');
   const min = String(now.getMinutes()).padStart(2,'0');
-  const ss = String(now.getSeconds()).padStart(2,'0');
 
   const tglInput = document.getElementById('meetingTanggal');
   const jamInput = document.getElementById('meetingJam');
   if(tglInput) tglInput.value = `${yyyy}-${mm}-${dd}`;
-  if(jamInput) jamInput.value = `${hh}:${min}:${ss}`;
+  if(jamInput) jamInput.value = `${hh}:${min}`;
   if(tglInput) tglInput.setAttribute('readonly',true);
   if(jamInput) jamInput.setAttribute('readonly',true);
 }
 
-/* ====================== TAB QC MEETING ====================== */
+// ===== TAB QC MEETING =====
 function showMeetingTab(tab, btn){
   document.getElementById('meetingInputSection').style.display = (tab==='input')?'block':'none';
   document.getElementById('meetingHasilSection').style.display = (tab==='hasil')?'block':'none';
@@ -6286,7 +6315,7 @@ function showMeetingTab(tab, btn){
   }
 }
 
-/* ====================== SUBMIT FORM ====================== */
+// ===== SUBMIT FORM =====
 async function submitMeeting(e){
   e.preventDefault();
   const spinner = document.getElementById("meetingSpinner");
@@ -6332,7 +6361,7 @@ async function submitMeeting(e){
   }
 }
 
-/* ====================== LOAD DATA HASIL ====================== */
+// ===== LOAD DATA HASIL =====
 async function loadMeeting(){
   const tbody = document.querySelector('#meetingTable tbody');
   if(!tbody) return;
@@ -6353,6 +6382,7 @@ async function loadMeeting(){
     list.forEach((item,index)=>{
       const tr = document.createElement('tr');
       tr.dataset.index = index;
+
       tr.innerHTML = `
         <td>${formatTanggal(item.tanggal)}</td>
         <td>${item.namaMeeting || ''}</td>
@@ -6363,9 +6393,39 @@ async function loadMeeting(){
         <td>${item.tindakan || ''}</td>
         <td>${item.catatan || ''}</td>
         <td>${item.peserta || ''}</td>
-        <td class="action-cell"><button class="edit-btn">✏️ Edit</button></td>
+        <td class="action-cell">
+          <button class="edit-btn">✏️ Edit</button>
+          <button class="share-btn">📤 Share WA</button>
+        </td>
       `;
       tbody.appendChild(tr);
+
+// ===== Tombol Share WA =====
+const shareBtn = tr.querySelector(".share-btn");
+shareBtn.onclick = ()=>{
+  let textWA = "";
+  const br = "\n\n";  // spasi antar kolom
+
+  textWA += `📅 Tanggal:\n${formatTanggal(item.tanggal)}${br}`;
+  textWA += `⏰ Jam:\n${formatJam(item.jam)}${br}`;
+  textWA += `📌 Nama Meeting:\n${item.namaMeeting || '-'}${br}`;
+  textWA += `📝 Keterangan Foto:\n${item.ket || '-'}${br}`;
+  textWA += `🔍 Akar Masalah:\n${item.akar || '-'}${br}`;
+  textWA += `🛠 Tindakan:\n${item.tindakan || '-'}${br}`;
+  textWA += `📚 Catatan:\n${item.catatan || '-'}${br}`;
+  textWA += `👥 Peserta:\n${item.peserta || '-'}${br}`;
+
+  if(item.fotoUrl){
+    textWA += `📷 Foto:\n${item.fotoUrl}${br}`;
+  }
+
+  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const url = isMobile 
+    ? `https://wa.me/?text=${encodeURIComponent(textWA)}`
+    : `https://web.whatsapp.com/send?text=${encodeURIComponent(textWA)}`;
+
+  window.open(url, "_blank");
+    };
     });
 
     enableMeetingEdit();
@@ -6373,7 +6433,7 @@ async function loadMeeting(){
   finally{ if(spinner) spinner.style.display="none"; }
 }
 
-/* ====================== ENABLE EDIT ====================== */
+// ===== ENABLE EDIT =====
 function enableMeetingEdit(){
   document.querySelectorAll("#meetingTable tbody tr").forEach((row,rowIndex)=>{
     const editBtn = row.querySelector(".edit-btn");
@@ -6482,7 +6542,7 @@ function enableMeetingEdit(){
   });
 }
 
-/* ====================== PASSWORD OTOMATIS TAB ====================== */
+// ===== PASSWORD OTOMATIS TAB =====
 document.addEventListener('DOMContentLoaded',()=>{
   const menuBtn = document.querySelector(`nav button[onclick="showMenu('qcMeeting')"]`);
   if(menuBtn){
@@ -6496,18 +6556,12 @@ document.addEventListener('DOMContentLoaded',()=>{
     };
   }
   setMeetingDateTime();
+  setupMeetingUppercase();
 });
 </script>
 
-<script>
-document.querySelectorAll('#meetingForm input[type="text"], #meetingForm textarea')
-  .forEach(el => {
-    el.addEventListener('input', () => {
-      el.value = el.value.toUpperCase();
-    });
-});
 
-</script>
+
 
 
 <script>
