@@ -1264,9 +1264,13 @@ select {
       </select>
     </div>
     <div class="form-group">
-      <textarea id="baproKeterangan" placeholder="Resep Tinta" rows="3" style="width:100%; padding:.6rem; border:1px solid #ccc; border-radius:8px;"></textarea>
+      <textarea id="baproKeterangan" placeholder="Resep Tinta" rows="3"></textarea>
     </div>
-    <div class="form-group"><button onclick="addBaproItem()">➕ Tambah</button></div>
+
+    <!-- Tombol Tambah -->
+    <div class="form-group">
+      <button type="button" class="bapro-add-btn" onclick="addBaproItem()">➕ Tambah</button>
+    </div>
   </div>
 
   <!-- ===== Hasil ===== -->
@@ -1279,49 +1283,74 @@ select {
 
 <!-- ===== CSS Tab dan Style QC BAPRO ===== -->
 <style>
+/* ===== Tab Button ===== */
 .tab-btn.bapro {
   flex: 1;
   padding: 6px 0;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
-  border: 1px solid #000; /* outline hitam */
-  background: #e0e0e0 !important; /* tombol tidak aktif */
+  border: 1px solid #000;
+  background: #e0e0e0 !important;
   color: #000 !important;
   transition: all 0.2s;
   text-align: center;
 }
-
-/* Tab aktif */
 .tab-btn.bapro.active {
-  background: #FF5252 !important; /* merah aktif */
+  background: #FF5252 !important;
   color: #fff !important;
-  border: 1px solid #000 !important; /* outline hitam */
+  border: 1px solid #000 !important;
 }
-
-/* Hover tab tidak aktif */
 .tab-btn.bapro:not(.active):hover {
-  background: #FFB3B3 !important; /* merah muda */
+  background: #FFB3B3 !important;
   color: #000 !important;
   transform: translateY(-1px);
   box-shadow: 0 2px 6px rgba(255,82,82,0.3);
 }
-
-/* Hilangkan outline default saat klik/fokus */
 .tab-btn.bapro:focus {
   outline: none;
   box-shadow: none;
 }
 
-/* Agar seluruh section punya layout kolom */
+/* ===== Form Input & Tombol Tambah ===== */
+#inputBapro .form-group input,
+#inputBapro .form-group select,
+#inputBapro .form-group textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+}
+
+.bapro-add-btn {
+  width: 100%;
+  padding: 0.6rem;
+  background: linear-gradient(135deg, #D32F2F, #F44336);
+  color: #fff;
+  font-weight: 600;
+  border: 1px solid #000;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transition: all 0.25s;
+}
+.bapro-add-btn:hover {
+  background: linear-gradient(135deg, #F44336, #D32F2F);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(244,67,54,0.4);
+}
+
+/* ===== Section Layout ===== */
 #qcBapro {
   display: flex;
   flex-direction: column;
   max-height: none;
 }
 
-
-/* ===== BAGIAN TAB DIBUAT FIX DI ATAS ===== */
+/* Sticky tabs */
 #qcBapro .tabs {
   position: sticky;
   top: 0;
@@ -1331,64 +1360,48 @@ select {
   padding-bottom: 6px;
 }
 
-/* ===== AREA INPUT & HASIL MEMPUNYAI SCROLL SENDIRI ===== */
+/* Scrollable input & hasil */
 #inputBapro,
 #hasilBapro {
   overflow-y: auto;
-  max-height: calc(80vh - 120px); /* agar tidak melewati bawah layar */
+  max-height: calc(80vh - 120px);
   padding-right: 4px;
 }
 
-/* ===== FILTER HASIL BAPRO TETAP DI ATAS ===== */
+/* Filter hasil tetap di atas */
 #hasilBapro input[type="text"] {
   position: sticky;
   top: 0;
-  z-index: 40;
+  z-index: 999 !important;
   background: #fff;
   padding: 6px;
   margin-bottom: 8px;
   border: 1px solid #ccc;
 }
 
-/* ==== FIX FILTER TERTIMPA SAAT EDIT ==== */
+/* Grid card z-index fix */
+#gridBapro .grid-card { position: relative; z-index:1 !important; }
+#gridBapro .grid-card * { z-index:1 !important; }
 
-/* Filter harus paling atas */
-#hasilBapro input[type="text"] {
-    position: sticky;
-    top: 0;
-    z-index: 999 !important;
-}
-
-/* Card grid (termasuk mode edit) harus di bawah filter */
-#gridBapro .grid-card {
-    position: relative;
-    z-index: 1 !important;
-}
-
-/* Elemen dalam edit jangan sampai naik z-index */
-#gridBapro .grid-card * {
-    z-index: 1 !important;
-}
-
-/* ===== Spinner untuk tombol ==== */
+/* Spinner (opsional) */
 .spinner {
   display: inline-block;
   width: 20px;
   height: 20px;
   border: 3px solid #ddd;
-  border-top: 3px solid #D32F2F; /* warna merah/tema Bapro */
+  border-top: 3px solid #D32F2F;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   vertical-align: middle;
   margin-right: 6px;
 }
-
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
 </style>
+
 
 
 
@@ -1461,9 +1474,13 @@ select {
       </select>
     </div>
     <div class="form-group">
-      <textarea id="paKeterangan" placeholder="Keterangan (opsional)" rows="3" style="width:100%; padding:.6rem; border:1px solid #ccc; border-radius:8px;"></textarea>
+      <textarea id="paKeterangan" placeholder="Keterangan (opsional)" rows="3"></textarea>
     </div>
-    <div class="form-group"><button onclick="addPAItem()">➕ Tambah</button></div>
+
+    <!-- Tombol Tambah -->
+    <div class="form-group">
+      <button type="button" class="pa-add-btn" onclick="addPAItem()">➕ Tambah</button>
+    </div>
   </div>
 
   <!-- Hasil -->
@@ -1474,117 +1491,118 @@ select {
 
 </section>
 
-<!-- ===== CSS Tab dan Style QC CETAK ===== -->
+<!-- ===== CSS Tab dan Style QC CETAK (MEETING style) ===== -->
 <style>
+/* Tab Buttons */
 .tab-btn.cetak {
   flex: 1;
   padding: 6px 0;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
-  border: 1px solid #000; /* outline hitam */
-  background: #e0e0e0 !important; /* tombol tidak aktif */
+  border: 1px solid #000;
+  background: #e0e0e0 !important;
   color: #000 !important;
   transition: all 0.2s;
   text-align: center;
 }
-
-/* Tab aktif */
 .tab-btn.cetak.active {
   background: linear-gradient(to right, #FF9800, #FFB74D) !important;
   color: #fff !important;
-  border: 1px solid #000 !important; /* outline hitam */
+  border: 1px solid #000 !important;
 }
-
-/* Hover tab tidak aktif */
 .tab-btn.cetak:not(.active):hover {
-  background: #FFD180 !important; /* orange muda */
+  background: #FFD180 !important;
   color: #000 !important;
   transform: translateY(-1px);
   box-shadow: 0 2px 6px rgba(255,152,0,0.3);
 }
+.tab-btn.cetak:focus { outline:none; box-shadow:none; }
 
-/* Hilangkan outline default saat klik/fokus */
-.tab-btn.cetak:focus {
-  outline: none;
-  box-shadow: none;
+/* Form Input, Select, Textarea style MEETING */
+#inputPA .form-group input,
+#inputPA .form-group select,
+#inputPA .form-group textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
 }
 
-/* Layout utama section QC CETAK */
-#qcPA {
-  display: flex;
-  flex-direction: column;
-  max-height: none;
+/* Tombol Tambah MEETING style */
+.pa-add-btn {
+  width: 100%;
+  padding: 0.6rem;
+  background: linear-gradient(135deg, #FF9800, #FFB74D);
+  color: #fff;
+  font-weight: 600;
+  border: 1px solid #000;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transition: all 0.25s;
+}
+.pa-add-btn:hover {
+  background: linear-gradient(135deg, #FFB74D, #FF9800);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(255,183,77,0.4);
 }
 
-/* ===== BAGIAN TAB TETAP DI ATAS ===== */
+/* Section Layout */
+#qcPA { display:flex; flex-direction:column; max-height:none; }
+
+/* Sticky Tabs */
 #qcPA .tabs {
   position: sticky;
   top: 0;
   z-index: 50;
   background: #fff;
-  padding-top: 6px;
-  padding-bottom: 6px;
+  padding-top:6px;
+  padding-bottom:6px;
 }
 
-/* ===== AREA INPUT / HASIL BISA SCROLL SENDIRI ===== */
+/* Scrollable input & hasil */
 #inputPA,
 #hasilPA {
-  overflow-y: auto;
+  overflow-y:auto;
   max-height: calc(80vh - 120px);
-  padding-right: 4px;
+  padding-right:4px;
 }
 
-/* ===== FILTER HASIL TETAP DI ATAS ===== */
+/* Filter hasil tetap di atas */
 #hasilPA input[type="text"] {
   position: sticky;
   top: 0;
-  z-index: 40;
-  background: #fff;
-  padding: 6px;
-  border: 1px solid #ccc;
-  margin-bottom: 8px;
+  z-index: 999 !important;
+  background:#fff;
+  padding:6px;
+  margin-bottom:8px;
+  border:1px solid #ccc;
 }
 
-/* ==== FIX FILTER QC CETAK TERTIMPA SAAT EDIT ==== */
+/* Grid z-index fix */
+#gridPA .grid-card { position:relative; z-index:1 !important; }
+#gridPA .grid-card * { z-index:1 !important; }
 
-/* Filter harus paling atas */
-#hasilPA input[type="text"] {
-    position: sticky;
-    top: 0;
-    z-index: 999 !important;
-}
-
-/* Card grid (termasuk mode edit) harus di bawah filter */
-#gridPA .grid-card {
-    position: relative;
-    z-index: 1 !important;
-}
-
-/* Elemen di dalam edit jangan naik z-index */
-#gridPA .grid-card * {
-    z-index: 1 !important;
-}
-
-/* ===== Spinner ===== */
+/* Spinner (opsional) */
 .spinner {
   width: 18px;
   height: 18px;
-  border: 3px solid #ddd;
-  border-top: 3px solid #00BCD4; /* warna biru */
-  border-radius: 50%;
-  display: inline-block;
-  vertical-align: middle;
+  border:3px solid #ddd;
+  border-top:3px solid #00BCD4;
+  border-radius:50%;
+  display:inline-block;
+  vertical-align:middle;
   animation: spin 0.8s linear infinite;
-  margin-right: 6px; /* jarak spinner ke teks */
+  margin-right:6px;
 }
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+@keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
 
 </style>
+
 
 <script>
 const paNoKS = document.getElementById('paNoKS');
@@ -1662,9 +1680,13 @@ paNoKS.addEventListener('input', function(e) {
       </select>
     </div>
     <div class="form-group">
-      <textarea id="finishingKeterangan" placeholder="Keterangan (opsional)" rows="3" style="width:100%; padding:.6rem; border:1px solid #ccc; border-radius:8px;"></textarea>
+      <textarea id="finishingKeterangan" placeholder="Keterangan (opsional)" rows="3"></textarea>
     </div>
-    <div class="form-group"><button onclick="addFinishingItem()">➕ Tambah</button></div>
+
+    <!-- Tombol Tambah -->
+    <div class="form-group">
+      <button type="button" class="finishing-add-btn" onclick="addFinishingItem()">➕ Tambah</button>
+    </div>
   </div>
 
   <!-- Hasil -->
@@ -1675,117 +1697,118 @@ paNoKS.addEventListener('input', function(e) {
 
 </section>
 
-<!-- ===== CSS Tab dan Style QC FINISHING ===== -->
+<!-- ===== CSS Tab dan Style QC FINISHING (MEETING style) ===== -->
 <style>
+/* Tab Buttons */
 .tab-btn.finishing {
   flex: 1;
   padding: 6px 0;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
-  border: 1px solid #000; /* outline hitam */
-  background: #e0e0e0 !important; /* tombol tidak aktif */
+  border: 1px solid #000;
+  background: #e0e0e0 !important;
   color: #000 !important;
   transition: all 0.2s;
   text-align: center;
 }
-
-/* Tab aktif FINISHING */
 .tab-btn.finishing.active {
-  background: linear-gradient(to right, #22C55E, #4ADE80) !important; /* hijau */
+  background: linear-gradient(to right, #22C55E, #4ADE80) !important;
   color: #fff !important;
-  border: 1px solid #000 !important; /* outline hitam */
+  border: 1px solid #000 !important;
 }
-
-/* Hover tab tidak aktif FINISHING */
 .tab-btn.finishing:not(.active):hover {
-  background: #86efac !important; /* hijau muda */
+  background: #86efac !important;
   color: #000 !important;
   transform: translateY(-1px);
   box-shadow: 0 2px 6px rgba(34,197,94,0.3);
 }
+.tab-btn.finishing:focus { outline:none; box-shadow:none; }
 
-/* Hilangkan outline default saat klik/fokus */
-.tab-btn.finishing:focus {
-  outline: none;
-  box-shadow: none;
+/* Form Input, Select, Textarea style MEETING */
+#inputFinishing .form-group input,
+#inputFinishing .form-group select,
+#inputFinishing .form-group textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
 }
 
-/* Layout utama section QC FINISHING */
-#qcFinishing {
-  display: flex;
-  flex-direction: column;
-  max-height: none;
+/* Tombol Tambah MEETING style */
+.finishing-add-btn {
+  width: 100%;
+  padding: 0.6rem;
+  background: linear-gradient(135deg, #22C55E, #4ADE80);
+  color: #fff;
+  font-weight: 600;
+  border: 1px solid #000;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transition: all 0.25s;
+}
+.finishing-add-btn:hover {
+  background: linear-gradient(135deg, #4ADE80, #22C55E);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(74,222,128,0.4);
 }
 
-/* ===== TAB TETAP DI ATAS ===== */
+/* Section Layout */
+#qcFinishing { display:flex; flex-direction:column; max-height:none; }
+
+/* Sticky Tabs */
 #qcFinishing .tabs {
   position: sticky;
   top: 0;
   z-index: 50;
   background: #fff;
-  padding-top: 6px;
-  padding-bottom: 6px;
+  padding-top:6px;
+  padding-bottom:6px;
 }
 
-/* ===== AREA INPUT & HASIL SCROLL SENDIRI ===== */
+/* Scrollable input & hasil */
 #inputFinishing,
 #hasilFinishing {
-  overflow-y: auto;
+  overflow-y:auto;
   max-height: calc(80vh - 120px);
-  padding-right: 4px;
+  padding-right:4px;
 }
 
-/* ===== FILTER HASIL TETAP DI ATAS ===== */
+/* Filter hasil tetap di atas */
 #hasilFinishing input[type="text"] {
   position: sticky;
   top: 0;
-  z-index: 40;
-  background: #fff;
-  padding: 6px;
-  border: 1px solid #ccc;
-  margin-bottom: 8px;
+  z-index: 999 !important;
+  background:#fff;
+  padding:6px;
+  margin-bottom:8px;
+  border:1px solid #ccc;
 }
 
-/* ==== FIX FILTER QC FINISHING TERTUTUP SAAT EDIT ==== */
+/* Grid z-index fix */
+#gridFinishing .grid-card { position:relative; z-index:1 !important; }
+#gridFinishing .grid-card * { z-index:1 !important; }
 
-/* Filter harus paling atas */
-#hasilFinishing input[type="text"] {
-    position: sticky;
-    top: 0;
-    z-index: 999 !important;
-}
-
-/* Semua card grid (termasuk mode edit) harus lebih rendah */
-#gridFinishing .grid-card {
-    position: relative;
-    z-index: 1 !important;
-}
-
-/* Elemen dalam mode edit jangan melompat ke atas */
-#gridFinishing .grid-card * {
-    z-index: 1 !important;
-}
-
-/* ===== Spinner untuk tombol ==== */
+/* Spinner (opsional) */
 .spinner {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 3px solid #ddd;
-  border-top: 3px solid #22C55E; /* warna hijau mirip theme finishing */
-  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  border:3px solid #ddd;
+  border-top:3px solid #22C55E;
+  border-radius:50%;
+  display:inline-block;
+  vertical-align:middle;
   animation: spin 0.8s linear infinite;
-  vertical-align: middle;
-  margin-right: 6px;
+  margin-right:6px;
 }
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+@keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
 
 </style>
+
 
 
 <script>
@@ -1841,8 +1864,8 @@ finishingNoKS.addEventListener('input', function(e) {
 
   <!-- Tabs -->
   <div class="tabs" style="display:flex; gap:8px; margin-bottom:10px;">
-    <button class="tab-btn active" data-tab="inputLem" onclick="switchTab(this)">Inputan</button>
-    <button class="tab-btn" data-tab="hasilLem" onclick="switchTab(this)">Hasil</button>
+    <button class="tab-btn lem active" data-tab="inputLem" onclick="switchTab(this)">Inputan</button>
+    <button class="tab-btn lem" data-tab="hasilLem" onclick="switchTab(this)">Hasil</button>
   </div>
 
   <!-- Inputan -->
@@ -1869,9 +1892,13 @@ finishingNoKS.addEventListener('input', function(e) {
       </select>
     </div>
     <div class="form-group">
-      <textarea id="lemKeterangan" placeholder="Keterangan (opsional)" rows="3" style="width:100%; padding:.6rem; border:1px solid #ccc; border-radius:8px;"></textarea>
+      <textarea id="lemKeterangan" placeholder="Keterangan (opsional)" rows="3"></textarea>
     </div>
-    <div class="form-group"><button onclick="addLemItem()">➕ Tambah</button></div>
+
+    <!-- Tombol Tambah -->
+    <div class="form-group">
+      <button type="button" class="lem-add-btn" onclick="addLemItem()">➕ Tambah</button>
+    </div>
   </div>
 
   <!-- Hasil -->
@@ -1881,120 +1908,118 @@ finishingNoKS.addEventListener('input', function(e) {
   </div>
 </section>
 
-<!-- ===== CSS Tab dan Style QC LEM (Fix Ungu) ===== -->
+<!-- ===== CSS Tab dan Style QC LEM (MEETING style) ===== -->
 <style>
 /* Tombol tab */
-.tab-btn {
+.tab-btn.lem {
   flex: 1;
   padding: 6px 0;
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
-  border: 1px solid #000 !important;
-  background: #e0e0e0 !important; /* default abu */
+  border: 1px solid #000;
+  background: #e0e0e0 !important;
   color: #000 !important;
   transition: all 0.2s;
   text-align: center;
 }
-
-/* Tab aktif */
-#qcLem .tab-btn.active {
+.tab-btn.lem.active {
   background: linear-gradient(to right, #9C27B0, #BA68C8) !important;
   color: #fff !important;
   border: 1px solid #000 !important;
-  background-color: #9C27B0 !important;
 }
-
-/* Hover tab tidak aktif */
-#qcLem .tab-btn:not(.active):hover {
+.tab-btn.lem:not(.active):hover {
   background: #D18FE0 !important; /* ungu muda */
   color: #000 !important;
-  border: 1px solid #000 !important;
   transform: translateY(-1px);
   box-shadow: 0 2px 6px rgba(156,39,176,0.3);
 }
+.tab-btn.lem:focus { outline:none; box-shadow:none; }
 
-/* Hilangkan outline default saat klik/fokus */
-#qcLem .tab-btn:focus {
-  outline: none !important;
-  box-shadow: none !important;
+/* Form input, select, textarea MEETING style */
+#inputLem .form-group input,
+#inputLem .form-group select,
+#inputLem .form-group textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
 }
 
-/* Layout utama section QC LEM */
-#qcLem {
-  display: flex;
-  flex-direction: column;
-  max-height: none;
+/* Tombol Tambah MEETING style */
+.lem-add-btn {
+  width: 100%;
+  padding: 0.6rem;
+  background: linear-gradient(135deg, #9C27B0, #BA68C8);
+  color: #fff;
+  font-weight: 600;
+  border: 1px solid #000;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  transition: all 0.25s;
+}
+.lem-add-btn:hover {
+  background: linear-gradient(135deg, #BA68C8, #9C27B0);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(186,104,200,0.4);
 }
 
-/* ===== TAB TETAP DI ATAS ===== */
+/* Layout section */
+#qcLem { display:flex; flex-direction:column; max-height:none; }
+
+/* Sticky Tabs */
 #qcLem .tabs {
   position: sticky;
   top: 0;
   z-index: 50;
   background: #fff;
-  padding-top: 6px;
-  padding-bottom: 6px;
+  padding-top:6px;
+  padding-bottom:6px;
 }
 
-/* ===== AREA INPUT & HASIL BISA SCROLL SENDIRI ===== */
+/* Scrollable input & hasil */
 #inputLem,
 #hasilLem {
-  overflow-y: auto;
-  max-height: calc(80vh - 120px); /* aman untuk laptop & HP */
-  padding-right: 4px;
+  overflow-y:auto;
+  max-height: calc(80vh - 120px);
+  padding-right:4px;
 }
 
-/* ===== FILTER HASIL TETAP DI ATAS ===== */
+/* Filter hasil tetap di atas */
 #hasilLem input[type="text"] {
   position: sticky;
   top: 0;
-  z-index: 40;
-  background: #fff;
-  padding: 6px;
-  border: 1px solid #ccc;
-  margin-bottom: 8px;
+  z-index: 999 !important;
+  background:#fff;
+  padding:6px;
+  margin-bottom:8px;
+  border:1px solid #ccc;
 }
 
-/* ==== FIX FILTER QC LEM TERTUTUP SAAT EDIT ==== */
+/* Grid fix */
+#gridLem .grid-card { position:relative; z-index:1 !important; }
+#gridLem .grid-card * { z-index:1 !important; }
 
-/* Filter harus paling atas */
-#hasilLem input[type="text"] {
-    position: sticky;
-    top: 0;
-    z-index: 999 !important;
-}
-
-/* Semua card grid (termasuk mode edit) tetap lebih rendah */
-#gridLem .grid-card {
-    position: relative;
-    z-index: 1 !important;
-}
-
-/* Elemen dalam card edit juga tidak boleh naik ke atas */
-#gridLem .grid-card * {
-    z-index: 1 !important;
-}
-
-/* ===== Spinner ===== */
+/* Spinner */
 .spinner {
   width: 18px;
   height: 18px;
-  border: 3px solid #ddd;
-  border-top: 3px solid #00BCD4;
-  border-radius: 50%;
-  display: inline-block;
-  vertical-align: middle;
+  border:3px solid #ddd;
+  border-top:3px solid #9C27B0;
+  border-radius:50%;
+  display:inline-block;
+  vertical-align:middle;
   animation: spin 0.8s linear infinite;
-  margin-right: 6px; /* jarak spinner ke teks */
+  margin-right:6px;
 }
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+@keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
 
 </style>
+
 
 <script>
 const lemNoKS = document.getElementById('lemNoKS');
@@ -3489,6 +3514,7 @@ function openChatbot() {
 }
 
 </style>
+
 
 
 <script>
@@ -6180,7 +6206,7 @@ function adjustSPVRowHeight(row) {
 // ====================== QC MEETING ======================
 
 /* ====================== PASSWORD ====================== */
-const QC_MEETING_PASSWORD = 'qc123'; // ganti sesuai kebutuhan
+const QC_MEETING_PASSWORD = 'spv123'; // ganti sesuai kebutuhan
 
 /* ====================== FORMAT TANGGAL & JAM ====================== */
 function formatTanggal(tgl){
