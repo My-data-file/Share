@@ -4091,9 +4091,22 @@ function filterFinishingGrid(query){
 
 // ====================== CLEAR FORM ======================
 function clearFinishingForm() {
-  ['finishingNama','finishingNoKS','finishingOrder','finishingIsi','finishingBagus','finishingJenisBS','finishingQC','finishingUpdate','finishingKeterangan']
-    .forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  [
+    'finishingNama','finishingNoKS','finishingQC','finishingUpdate','finishingKeterangan'
+  ].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+
+  // Number fields → default 0
+  [
+    'finishingOrder','finishingIsi','finishingBagus','finishingJenisBS'
+  ].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = 0;
+  });
 }
+
 
 // ====================== DASHBOARD (UPDATE: TAMBAH STATUS "TO") ======================
 function renderDashboardFinishingCompact() {
@@ -4646,9 +4659,21 @@ function filterBaproGrid(query){
 
 // ====================== CLEAR FORM (BAPRO) ======================
 function clearBaproForm() {
-  ['baproNama','baprocso','baproJenis','baproKertas','baproNamaTinta','baproDmax','baproL','baproA','baproB','baproQC','baproUpdate','baproKeterangan']
-    .forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  [
+    'baproNama','baprocso','baproJenis','baproKertas','baproNamaTinta',
+    'baproQC','baproUpdate','baproKeterangan'
+  ].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+
+  // Number fields
+  ['baproDmax','baproL','baproA','baproB'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = 0;
+  });
 }
+
 
 // ====================== DASHBOARD BAPRO (TO / PROSES / SELESAI) ======================
 function renderDashboardBaproCompact() {
@@ -5149,9 +5174,20 @@ function filterPAGrid(query){
 
 // ====================== CLEAR FORM (PA) ======================
 function clearPAForm() {
-  ['paNama','paNoKS','paOrder','paBagus','paSortir','paProblem','paQC','paMesin','paUpdate','paKeterangan']
-    .forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  [
+    'paNama','paNoKS','paQC','paMesin','paUpdate','paKeterangan'
+  ].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+
+  // Number fields
+  ['paOrder','paBagus','paSortir','paProblem'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = 0;
+  });
 }
+
 
 // ====================== DASHBOARD PA (TO / PROSES / SELESAI) ======================
 function renderDashboardPACompact() {
@@ -5616,9 +5652,20 @@ function filterLemGrid(query){
 
 // ====================== CLEAR FORM (LEM) ======================
 function clearLemForm() {
-  ['lemNama','lemNoKS','lemOrder','lemIsi','lemBagus','lemJenisBS','lemQC','lemUpdate','lemKeterangan']
-    .forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  [
+    'lemNama','lemNoKS','lemQC','lemUpdate','lemKeterangan'
+  ].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+
+  // Number fields
+  ['lemOrder','lemIsi','lemBagus','lemJenisBS'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = 0;
+  });
 }
+
 
 // ====================== DASHBOARD LEM (TO / PROSES / SELESAI) ======================
 function renderDashboardLemCompact() {
@@ -6558,6 +6605,136 @@ document.addEventListener('DOMContentLoaded',()=>{
   setMeetingDateTime();
   setupMeetingUppercase();
 });
+
+// ====================== UNIVERSAL AUTO-DEFAULT 0 (FINAL CLEAN VERSION) ======================
+(function(){
+  'use strict';
+
+  // === daftar semua id input number ===
+  const UNIVERSAL_NUMBER_IDS = [
+    // Finishing
+    'finishingOrder','finishingIsi','finishingBagus','finishingJenisBS',
+    // Bapro
+    'baproDmax','baproL','baproA','baproB',
+    // PA / Cetak
+    'paOrder','paBagus','paSortir','paProblem',
+    // Lem
+    'lemOrder','lemIsi','lemBagus','lemJenisBS'
+  ];
+
+  // Helper: apply default 0 but ALLOW user to delete and type freely
+  function attachNumberZeroBehavior(input) {
+    if (!input || input._attachedAutoZero) return;
+    input._attachedAutoZero = true;
+
+    if (input.tagName !== 'INPUT' || input.type !== 'number') return;
+
+    // === DEFAULT VALUE ===
+    if ((input.value || '').trim() === '') input.value = 0;
+
+    // === BLUR → kalau kosong setelah user hapus angka → isi 0 ===
+    input.addEventListener('blur', () => {
+      if (input.value === '' || input.value === null) {
+        input.value = 0;
+      }
+    });
+
+    // === CHANGE → sebelum submit selalu terjamin 0 ===
+    input.addEventListener('change', () => {
+      if (input.value === '' || input.value === null) {
+        input.value = 0;
+      }
+    });
+
+    // ❗ PENTING:
+    // Tidak ada event "input" supaya user BEBAS menghapus angka.
+  }
+
+  // Apply by ID
+  function applyUniversalNumberZeroToKnownIds() {
+    UNIVERSAL_NUMBER_IDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) attachNumberZeroBehavior(el);
+    });
+  }
+
+  // Apply to all <input type="number">
+  function applyUniversalNumberZeroToAllNumberInputs() {
+    document.querySelectorAll('input[type="number"]').forEach(input => {
+      attachNumberZeroBehavior(input);
+    });
+  }
+
+  // Mutation observer for dynamic inputs
+  const observer = new MutationObserver(mutations => {
+    mutations.forEach(m => {
+      m.addedNodes.forEach(node => {
+        if (!node || node.nodeType !== 1) return;
+        if (node.matches && node.matches('input[type="number"]')) {
+          attachNumberZeroBehavior(node);
+        }
+        node.querySelectorAll && node.querySelectorAll('input[type="number"]').forEach(el => {
+          attachNumberZeroBehavior(el);
+        });
+      });
+    });
+  });
+
+  function startObserver() {
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  // === PATCH CLEAR FUNCTIONS ===
+  function patchClearFunction(funcName) {
+    try {
+      const original = window[funcName];
+      if (typeof original !== 'function') return;
+      if (original._isPatchedForAutoZero) return;
+
+      const wrapped = function(...args) {
+        const r = original.apply(this, args);
+        // setelah form di-RESET → pasang default 0 lagi
+        setTimeout(() => {
+          applyUniversalNumberZeroToKnownIds();
+          applyUniversalNumberZeroToAllNumberInputs();
+        }, 20);
+        return r;
+      };
+
+      wrapped._isPatchedForAutoZero = true;
+      window[funcName] = wrapped;
+
+    } catch (err) {
+      console.warn("patchClearFunction error:", funcName, err);
+    }
+  }
+
+  function patchAllClearFunctions() {
+    ['clearFinishingForm','clearBaproForm','clearPAForm','clearLemForm']
+      .forEach(patchClearFunction);
+  }
+
+  // === Init ===
+  function initUniversalAutoZero() {
+    applyUniversalNumberZeroToKnownIds();
+    applyUniversalNumberZeroToAllNumberInputs();
+    startObserver();
+    patchAllClearFunctions();
+  }
+
+  // Auto run
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initUniversalAutoZero);
+  } else {
+    initUniversalAutoZero();
+  }
+
+  // For manual debug
+  window.applyUniversalNumberZero = initUniversalAutoZero;
+
+})();
+
+
 </script>
 
 
@@ -6578,7 +6755,6 @@ function goHome() {
 
 </body>
 </html>
-
 
 
 
