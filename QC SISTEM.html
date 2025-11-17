@@ -1557,7 +1557,7 @@ select {
 
   <div class="form-group">
     <label>Keterangan (opsional)</label>
-    <textarea id="paKeterangan" rows="3" placeholder="1. GHOSTING (GARIS) NO. 2
+    <textarea id="paKeterangan" rows="3" placeholder="1. GHOSTING (GARIS) NO.2
 2. HUJAN DAN GARIS NO.1"></textarea>
   </div>
 
@@ -2586,43 +2586,59 @@ function filterManualList(input, tabId) {
       <div id="spvSpinner"><div></div></div>
 
       <!-- Input Nama Order -->
+      <!-- Input Nama Order -->
       <div class="form-group">
+        <label>Nama Order</label>
         <input type="text" id="spvOrder" placeholder="Nama Order" required>
       </div>
 
       <!-- Input No KS -->
       <div class="form-group">
+        <label>No KS</label>
         <input type="text" id="spvNoKS" placeholder="KS-xxxx-xx" required>
       </div>
 
       <!-- Tanggal & Jam -->
       <div class="form-group" style="display:flex; gap:10px;">
-        <input type="date" id="spvTanggal" required style="flex:1;">
-        <input type="time" id="spvJam" required style="flex:1;">
+        <div style="flex:1;">
+          <label>Tanggal</label>
+          <input type="date" id="spvTanggal" required style="width:100%;">
+        </div>
+        <div style="flex:1;">
+          <label>Jam</label>
+          <input type="time" id="spvJam" required style="width:100%;">
+        </div>
       </div>
 
       <!-- Foto Acuan -->
       <div class="form-group">
-        <label for="spvFoto">📸 Foto Acuan:</label>
+        <label>Foto Acuan</label>
+        <label for="spvFoto">📸 Pilih Foto:</label>
         <input type="file" id="spvFoto" accept="image/*">
       </div>
 
+      <!-- Keterangan Acuan -->
       <div class="form-group">
+        <label>Keterangan Acuan (opsional)</label>
         <textarea id="spvKet" placeholder="Keterangan Acuan (opsional)" rows="3"></textarea>
       </div>
 
       <!-- Foto Temuan -->
       <div class="form-group">
-        <label for="spvFoto1">📷 Foto Temuan:</label>
+        <label>Foto Temuan</label>
+        <label for="spvFoto1">📷 Pilih Foto:</label>
         <input type="file" id="spvFoto1" accept="image/*">
       </div>
 
+      <!-- Keterangan Temuan -->
       <div class="form-group">
+        <label>Keterangan Temuan (opsional)</label>
         <textarea id="spvKet1" placeholder="Keterangan Temuan (opsional)" rows="3"></textarea>
       </div>
 
       <!-- Nama QC -->
       <div class="form-group">
+        <label>Nama QC</label>
         <select id="spvNama" required>
           <option value="" disabled selected>Pilih Nama QC</option>
           <option value="NANI">NANI</option>
@@ -2638,8 +2654,9 @@ function filterManualList(input, tabId) {
         </select>
       </div>
 
-      <!-- Pilih Proses -->
+      <!-- Proses -->
       <div class="form-group">
+        <label>Proses</label>
         <select id="spvProses" required>
           <option value="" disabled selected>Pilih Proses</option>
           <option value="QC BAPRO">QC BAPRO</option>
@@ -2649,6 +2666,7 @@ function filterManualList(input, tabId) {
           <option value="RETUR">RETUR</option>
         </select>
       </div>
+
 
       <!-- Tombol Submit -->
       <div class="form-group">
@@ -3188,44 +3206,56 @@ if (spvNoKS) {
 
       <!-- Nama Meeting -->
       <div class="form-group">
+        <label>Nama Meeting / Tema</label>
         <input type="text" id="meetingNama" placeholder="Tema" required>
       </div>
 
       <!-- Tanggal & Jam -->
       <div class="form-group" style="display:flex; gap:10px;">
-        <input type="date" id="meetingTanggal" required style="flex:1;">
-        <input type="time" id="meetingJam" required style="flex:1;">
+        <div style="flex:1;">
+          <label>Tanggal</label>
+          <input type="date" id="meetingTanggal" required style="width:100%;">
+        </div>
+        <div style="flex:1;">
+          <label>Jam</label>
+          <input type="time" id="meetingJam" required style="width:100%;">
+        </div>
       </div>
 
       <!-- Foto Permasalahan -->
       <div class="form-group">
-        <label for="meetingFoto">📷 Foto Permasalahan:</label>
+        <label>Foto Permasalahan</label>
+        <label for="meetingFoto">📷 Pilih Foto:</label>
         <input type="file" id="meetingFoto" accept="image/*">
       </div>
 
       <!-- Keterangan Foto -->
       <div class="form-group">
+        <label>Keterangan Foto (opsional)</label>
         <textarea id="meetingKet" placeholder="Keterangan Foto (opsional)" rows="3"></textarea>
       </div>
 
       <!-- Akar Masalah -->
       <div class="form-group">
+        <label>Akar Masalah</label>
         <textarea id="meetingAkar" placeholder="Akar Masalah" rows="2"></textarea>
       </div>
 
       <!-- Tindakan Perbaikan -->
       <div class="form-group">
+        <label>Tindakan Perbaikan</label>
         <textarea id="meetingTindakan" placeholder="Tindakan Perbaikan" rows="2"></textarea>
       </div>
 
       <!-- Catatan Tambahan -->
       <div class="form-group">
+        <label>Catatan Tambahan (opsional)</label>
         <textarea id="meetingCatatan" placeholder="Catatan Tambahan (opsional)" rows="2"></textarea>
       </div>
 
       <!-- Peserta (checkbox, rapi) -->
       <div class="form-group">
-        <label>Peserta:</label>
+        <label>Peserta</label>
         <div style="display:flex; flex-wrap:wrap; gap:10px;">
           <label><input type="checkbox" value="NANI"> NANI</label>
           <label><input type="checkbox" value="ANJANI"> ANJANI</label>
@@ -3239,6 +3269,7 @@ if (spvNoKS) {
           <label><input type="checkbox" value="ISMIE"> ISMIE</label>
         </div>
       </div>
+
 
       <!-- Tombol Submit -->
       <div class="form-group">
@@ -3489,14 +3520,15 @@ if (spvNoKS) {
 
 
 
-<!-- ======================== Floating Chatbot 3D Button (Password Protected) ======================== -->
+<!-- ======================== Floating Chatbot 3D Button (Premium Edition) ======================== -->
 <div class="chatbot-wrapper" onclick="openChatbot()">
-  <div class="chatbot-bg">
+  <div class="chatbot-bg pulse-lines">
     <div class="bg-light"></div>
 
     <!-- Robot -->
     <div class="chatbot-body robot">
-      <div class="chatbot-face">
+      <div class="chatbot-face" id="cbFace">
+        <div class="reflection"></div>
         <div class="eye left"></div>
         <div class="eye right"></div>
         <div class="smile"></div>
@@ -3504,7 +3536,7 @@ if (spvNoKS) {
     </div>
 
     <!-- Text AI + Flare -->
-    <div class="chatbot-text">
+    <div class="chatbot-text" id="cbText">
       AI
       <div class="flare"></div>
     </div>
@@ -3512,6 +3544,7 @@ if (spvNoKS) {
 </div>
 
 <script>
+/* ---- OPEN CHATBOT ---- */
 function openChatbot() {
   const pass = prompt("Masukkan password untuk membuka Chatbot:");
   if (pass === "spv123") {
@@ -3520,37 +3553,72 @@ function openChatbot() {
     alert("Password salah! Akses ditolak.");
   }
 }
+
+/* ---- FACE ↔ TEXT LOOP ---- */
+let showFace = true;
+
+function swapFaceText() {
+  const face = document.getElementById("cbFace");
+  const text = document.getElementById("cbText");
+
+  if (showFace) {
+    face.style.opacity = "0";
+    text.style.opacity = "1";
+  } else {
+    text.style.opacity = "0";
+    face.style.opacity = "1";
+  }
+
+  showFace = !showFace;
+
+  setTimeout(swapFaceText, 2600);
+}
+
+setTimeout(swapFaceText, 1500);
 </script>
 
 <style>
-/* ===== Wrapper (diperkecil) ===== */
+/* ===== Wrapper ===== */
 .chatbot-wrapper {
   position: fixed;
   bottom: 80px;
   right: 20px;
-  width: 70px;
-  height: 70px;
+  width: 78px;
+  height: 78px;
   border-radius: 50%;
   background: radial-gradient(circle at 30% 30%, #4b68ff, #1c2ca5);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 25px rgba(80, 120, 255, 0.6);
+  box-shadow: 0 8px 25px rgba(80, 120, 255, 0.55);
   cursor: pointer;
   z-index: 9999;
   overflow: hidden;
   transition: transform 0.4s ease, box-shadow 0.4s ease;
-  animation: float 4s ease-in-out infinite;
+  animation: idleFloat 5s ease-in-out infinite;
 }
 .chatbot-wrapper:hover {
-  transform: scale(1.1) rotate(3deg);
-  box-shadow: 0 0 35px rgba(100, 150, 255, 0.9);
+  transform: scale(1.12) rotate3d(1, 1, 0, 6deg);
+  box-shadow: 0 12px 40px rgba(120,150,255,0.85);
+}
+
+/* Shadow responsive */
+.chatbot-wrapper::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  width: 50%;
+  height: 10px;
+  background: rgba(0,0,0,0.25);
+  border-radius: 50%;
+  filter: blur(8px);
+  animation: shadowMove 5s ease-in-out infinite;
 }
 
 /* ===== Background Glow Layer ===== */
 .chatbot-bg {
-  width: 56px;
-  height: 56px;
+  width: 62px;
+  height: 62px;
   position: relative;
   border-radius: 50%;
   overflow: hidden;
@@ -3558,6 +3626,23 @@ function openChatbot() {
   align-items: center;
   justify-content: center;
 }
+
+/* Pulse Lines */
+.pulse-lines::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(255,255,255,0.18) 0deg,
+    rgba(255,255,255,0) 12deg
+  );
+  animation: pulseLines 6s linear infinite;
+  opacity: 0.4;
+}
+
+/* Rotating glow layer */
 .bg-light {
   position: absolute;
   width: 200%;
@@ -3570,8 +3655,8 @@ function openChatbot() {
 /* ===== Robot Body ===== */
 .chatbot-body {
   position: relative;
-  width: 38px;
-  height: 40px;
+  width: 40px;
+  height: 42px;
   background: linear-gradient(145deg, #f8faff, #cad3ff);
   border-radius: 18px;
   box-shadow:
@@ -3580,7 +3665,7 @@ function openChatbot() {
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: fadeToggle 6s ease-in-out infinite;
+  animation: heartbeatGlow 4s ease-in-out infinite;
 }
 
 /* ===== Face ===== */
@@ -3590,7 +3675,23 @@ function openChatbot() {
   background: linear-gradient(180deg, #193bff 0%, #132cad 100%);
   border-radius: 10px;
   position: relative;
+  overflow: hidden;
   box-shadow: inset 0 0 8px rgba(255,255,255,0.25);
+  opacity: 1;
+  transition: opacity .55s ease;
+}
+
+/* Reflection Shine */
+.reflection {
+  position: absolute;
+  top: 0;
+  left: -40px;
+  width: 35px;
+  height: 20px;
+  background: linear-gradient(100deg, transparent 0%, rgba(255,255,255,0.5) 50%, transparent 100%);
+  transform: skewX(-20deg);
+  animation: reflectionMove 4.5s ease-in-out infinite;
+  opacity: 0.35;
 }
 
 /* ===== Eyes ===== */
@@ -3602,9 +3703,14 @@ function openChatbot() {
   background: radial-gradient(circle, #8cd2ff 40%, #3d7eff 100%);
   border-radius: 50%;
   animation: blink 6s infinite, lookAround 5s ease-in-out infinite;
+  transition: transform 0.2s ease;
 }
 .eye.left { left: 6px; }
 .eye.right { right: 6px; }
+
+.chatbot-wrapper:hover .eye {
+  transform: scale(1.25);
+}
 
 /* ===== Smile ===== */
 .smile {
@@ -3616,8 +3722,11 @@ function openChatbot() {
   height: 5px;
   border-bottom: 2px solid #6cb0ff;
   border-radius: 0 0 10px 10px;
-  transform-origin: center center;
   animation: smileWiden 3s ease-in-out infinite;
+  transition: width 0.2s ease;
+}
+.chatbot-wrapper:hover .smile {
+  width: 18px;
 }
 
 /* ===== AI Text ===== */
@@ -3625,13 +3734,13 @@ function openChatbot() {
   position: absolute;
   font-size: 18px;
   font-weight: bold;
-  color: #ffffff;
+  color: #1976D2;
   text-shadow: 0 0 8px rgba(255,255,255,0.8);
   opacity: 0;
-  animation: fadeTextToggle 6s ease-in-out infinite;
+  transition: opacity .55s ease;
 }
 
-/* ===== Lens Flare Effect ===== */
+/* Flare Effect */
 .flare {
   position: absolute;
   width: 140%;
@@ -3646,13 +3755,29 @@ function openChatbot() {
 }
 
 /* ===== Animations ===== */
-@keyframes float {
+@keyframes idleFloat {
   0%,100% { transform: translateY(0); }
   50% { transform: translateY(-5px); }
+}
+@keyframes shadowMove {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.25); }
 }
 @keyframes rotateLight {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+@keyframes pulseLines {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+@keyframes heartbeatGlow {
+  0%,100% { box-shadow: 0 0 4px rgba(70,140,255,0.28); }
+  50% { box-shadow: 0 0 12px rgba(70,140,255,0.45); }
+}
+@keyframes reflectionMove {
+  0%,100% { left: -40px; }
+  50% { left: 35px; }
 }
 @keyframes blink {
   0%, 94%, 100% { height: 5px; }
@@ -3660,43 +3785,22 @@ function openChatbot() {
 }
 @keyframes lookAround {
   0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(1.5px); }
-  75% { transform: translateX(-1.5px); }
+  25% { transform: translateX(1.3px); }
+  75% { transform: translateX(-1.3px); }
 }
 @keyframes smileWiden {
-  0%,100% { width: 12px; border-radius: 0 0 10px 10px; }
-  50% { width: 16px; border-radius: 0 0 14px 14px; }
-}
-@keyframes fadeToggle {
-  0%,40% { opacity: 1; transform: scale(1); }
-  50%,90% { opacity: 0; transform: scale(0.8); }
-  100% { opacity: 1; transform: scale(1); }
-}
-@keyframes fadeTextToggle {
-  0%,40% { opacity: 0; transform: scale(0.8); }
-  50%,90% { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: scale(0.8); }
+  0%,100% { width: 12px; }
+  50% { width: 16px; }
 }
 @keyframes flarePulse {
-  0%,40% {
-    transform: scale(0);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.2);
-    opacity: 0.6;
-    filter: blur(4px);
-  }
-  70% {
-    transform: scale(1);
-    opacity: 0.3;
-  }
-  90%,100% {
-    transform: scale(0);
-    opacity: 0;
-  }
+  0%,40% { transform: scale(0); opacity: 0; }
+  50% { transform: scale(1.2); opacity: 0.6; filter: blur(4px); }
+  70% { transform: scale(1); opacity: 0.3; }
+  90%,100% { transform: scale(0); opacity: 0; }
 }
 </style>
+
+
 
 
 
