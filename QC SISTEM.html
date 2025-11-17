@@ -1230,48 +1230,89 @@ select {
     <button class="tab-btn bapro" data-tab="hasilBapro" onclick="switchTab(this)">Hasil</button>
   </div>
 
-  <!-- ===== Inputan ===== -->
-  <div id="inputBapro" class="tab-content active">
-    <div class="form-group"><input type="text" id="baproNama" placeholder="Nama Order"></div>
-    <div class="form-group">
-      <select id="baprocso">
-        <option value="">CSO</option>
-        <option value="Yati">Yati</option>
-        <option value="Retni">Retni</option>
-        <option value="Aulia">Aulia</option>
-        <option value="Yuli">Yuli</option>
-      </select>
-    </div>
-    <div class="form-group"><input type="text" id="baproJenis" placeholder="Jenis Kertas"></div>
-    <div class="form-group"><input type="number" id="baproKertas" placeholder="Tebal Kertas (gsm)"></div>
-    <div class="form-group"><input type="text" id="baproNamaTinta" placeholder="Nama Tinta"></div>
-    <div class="form-group"><input type="number" id="baproDmax" placeholder="Dmax"></div>
-    <div class="form-group"><input type="number" id="baproL" placeholder="L"></div>
-    <div class="form-group"><input type="number" id="baproA" placeholder="A"></div>
-    <div class="form-group"><input type="number" id="baproB" placeholder="B"></div>
-    <div class="form-group">
-      <select id="baproQC">
-        <option value="">QC</option>
-        <option value="Marwan">Marwan</option>
-        <option value="Kiki">Kiki</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <select id="baproUpdate">
-        <option value="Proses">Proses</option>
-        <option value="Selesai">Selesai</option>
-        <option value="TO">TO</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <textarea id="baproKeterangan" placeholder="Resep Tinta" rows="3"></textarea>
-    </div>
+<!-- ===== Inputan ===== -->
+<div id="inputBapro" class="tab-content active">
 
-    <!-- Tombol Tambah -->
-    <div class="form-group">
-      <button type="button" class="bapro-add-btn" onclick="addBaproItem()">➕ Tambah</button>
-    </div>
+  <div class="form-group">
+    <label>Nama Order</label>
+    <input type="text" id="baproNama" placeholder="GIV">
   </div>
+
+  <div class="form-group">
+    <label>CSO</label>
+    <select id="baprocso">
+      <option value="">Pilih CSO</option>
+      <option value="Yati">Yati</option>
+      <option value="Retni">Retni</option>
+      <option value="Aulia">Aulia</option>
+      <option value="Yuli">Yuli</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Jenis Kertas</label>
+    <input type="text" id="baproJenis" placeholder="Jenis Kertas">
+  </div>
+
+  <div class="form-group">
+    <label>Tebal Kertas (gsm)</label>
+    <input type="number" id="baproKertas" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>Nama Tinta</label>
+    <input type="text" id="baproNamaTinta" placeholder="Nama Tinta">
+  </div>
+
+  <div class="form-group">
+    <label>Dmax</label>
+    <input type="number" id="baproDmax" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>L</label>
+    <input type="number" id="baproL" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>A</label>
+    <input type="number" id="baproA" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>B</label>
+    <input type="number" id="baproB" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>QC</label>
+    <select id="baproQC">
+      <option value="">Pilih QC</option>
+      <option value="Marwan">Marwan</option>
+      <option value="Kiki">Kiki</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Update</label>
+    <select id="baproUpdate">
+      <option value="Proses">Proses</option>
+      <option value="Selesai">Selesai</option>
+      <option value="TO">TO</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Resep Tinta</label>
+    <textarea id="baproKeterangan" placeholder="Resep Tinta" rows="3"></textarea>
+  </div>
+
+  <!-- Tombol Tambah -->
+  <div class="form-group">
+    <button type="button" class="bapro-add-btn" onclick="addBaproItem()">➕ Tambah</button>
+  </div>
+</div>
+
 
   <!-- ===== Hasil ===== -->
   <div id="hasilBapro" class="tab-content">
@@ -1400,6 +1441,14 @@ select {
   100% { transform: rotate(360deg); }
 }
 
+#inputBapro .form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+  color: #333;
+}
+
 </style>
 
 
@@ -1441,47 +1490,78 @@ select {
   </div>
 
   <!-- Inputan -->
-  <div id="inputPA" class="tab-content active">
-    <div class="form-group"><input type="text" id="paNama" placeholder="Nama Order"></div>
-    <div class="form-group"><input type="text" id="paNoKS" placeholder="No KS"></div>
-    <div class="form-group"><input type="number" id="paOrder" placeholder="Total Order (lembar)"></div>
-    <div class="form-group"><input type="number" id="paBagus" placeholder="Bagus (lembar)"></div>
-    <div class="form-group"><input type="number" id="paSortir" placeholder="Sortir (lembar)"></div>
-    <div class="form-group"><input type="number" id="paProblem" placeholder="Problem (lembar)"></div>
-    <div class="form-group">
-      <select id="paQC">
-        <option value="">QC</option>
-        <option value="Suci">Suci</option>
-        <option value="Anjani">Anjani</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <select id="paMesin">
-        <option value="">Mesin</option>
-        <option value="KM 640">KM 640</option>
-        <option value="KM 644">KM 644</option>
-        <option value="KM 620">KM 620</option>
-        <option value="MT 430">MT 430</option>
-        <option value="KM 640 GL">KM 640 GL</option>
-        <option value="RL 140">RL 140</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <select id="paUpdate">
-        <option value="Proses">Proses</option>
-        <option value="Selesai">Selesai</option>
-        <option value="TO">TO</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <textarea id="paKeterangan" placeholder="Keterangan (opsional)" rows="3"></textarea>
-    </div>
+<div id="inputPA" class="tab-content active">
 
-    <!-- Tombol Tambah -->
-    <div class="form-group">
-      <button type="button" class="pa-add-btn" onclick="addPAItem()">➕ Tambah</button>
-    </div>
+  <div class="form-group">
+    <label>Nama Order</label>
+    <input type="text" id="paNama" placeholder="GIV">
   </div>
+
+  <div class="form-group">
+    <label>No KS</label>
+    <input type="text" id="paNoKS" placeholder="KS-xxxx-xx">
+  </div>
+
+  <div class="form-group">
+    <label>Total Order (lembar)</label>
+    <input type="number" id="paOrder" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>Bagus (lembar)</label>
+    <input type="number" id="paBagus" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>Sortir (lembar)</label>
+    <input type="number" id="paSortir" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>Problem (lembar)</label>
+    <input type="number" id="paProblem" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>QC</label>
+    <select id="paQC">
+      <option value="">Pilih QC</option>
+      <option value="Suci">Suci</option>
+      <option value="Anjani">Anjani</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Mesin</label>
+    <select id="paMesin">
+      <option value="">Pilih Mesin</option>
+      <option value="KM 640">KM 640</option>
+      <option value="KM 644">KM 644</option>
+      <option value="KM 620">KM 620</option>
+      <option value="MT 430">MT 430</option>
+      <option value="KM 640 GL">KM 640 GL</option>
+      <option value="RL 140">RL 140</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Update</label>
+    <select id="paUpdate">
+      <option value="Proses">Proses</option>
+      <option value="Selesai">Selesai</option>
+      <option value="TO">TO</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Keterangan (opsional)</label>
+    <textarea id="paKeterangan" rows="3" placeholder="Keterangan"></textarea>
+  </div>
+
+  <div class="form-group">
+    <button type="button" class="pa-add-btn" onclick="addPAItem()">➕ Tambah</button>
+  </div>
+</div>
 
   <!-- Hasil -->
   <div id="hasilPA" class="tab-content">
@@ -1601,6 +1681,14 @@ select {
 }
 @keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
 
+#inputPA .form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+  color: #333;
+}
+
 </style>
 
 
@@ -1657,37 +1745,69 @@ paNoKS.addEventListener('input', function(e) {
     <button class="tab-btn finishing" data-tab="hasilFinishing" onclick="switchTab(this)">Hasil</button>
   </div>
 
-  <!-- Inputan -->
-  <div id="inputFinishing" class="tab-content active">
-    <div class="form-group"><input type="text" id="finishingNama" placeholder="Nama Order"></div>
-    <div class="form-group"><input type="text" id="finishingNoKS" placeholder="No KS"></div>
-    <div class="form-group"><input type="number" id="finishingOrder" placeholder="Total Order (lembar)"></div>
-    <div class="form-group"><input type="number" id="finishingIsi" placeholder="Isi/Dus (pcs)"></div>
-    <div class="form-group"><input type="number" id="finishingBagus" placeholder="Total Bagus (pcs)"></div>
-    <div class="form-group"><input type="number" id="finishingJenisBS" placeholder="Total BS (pcs)"></div>
-    <div class="form-group">
-      <select id="finishingQC">
-        <option value="">QC</option>
-        <option value="Anom">Anom</option>
-        <option value="Irna">Irna</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <select id="finishingUpdate">
-        <option value="Proses">Proses</option>
-        <option value="Selesai">Selesai</option>
-        <option value="TO">TO</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <textarea id="finishingKeterangan" placeholder="Keterangan (opsional)" rows="3"></textarea>
-    </div>
+<!-- Inputan -->
+<div id="inputFinishing" class="tab-content active">
 
-    <!-- Tombol Tambah -->
-    <div class="form-group">
-      <button type="button" class="finishing-add-btn" onclick="addFinishingItem()">➕ Tambah</button>
-    </div>
+  <div class="form-group">
+    <label>Nama Order</label>
+    <input type="text" id="finishingNama" placeholder="GIV">
   </div>
+
+  <div class="form-group">
+    <label>No KS</label>
+    <input type="text" id="finishingNoKS" placeholder="No KS">
+  </div>
+
+  <div class="form-group">
+    <label>Total Order (lembar)</label>
+    <input type="number" id="finishingOrder" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>Isi/Dus (pcs)</label>
+    <input type="number" id="finishingIsi" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>Total Bagus (pcs)</label>
+    <input type="number" id="finishingBagus" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>Total BS (pcs)</label>
+    <input type="number" id="finishingJenisBS" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>QC</label>
+    <select id="finishingQC">
+      <option value="">Pilih QC</option>
+      <option value="Anom">Anom</option>
+      <option value="Irna">Irna</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Update</label>
+    <select id="finishingUpdate">
+      <option value="Proses">Proses</option>
+      <option value="Selesai">Selesai</option>
+      <option value="TO">TO</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Keterangan (opsional)</label>
+    <textarea id="finishingKeterangan" placeholder="Keterangan (opsional)" rows="3"></textarea>
+  </div>
+
+  <!-- Tombol Tambah -->
+  <div class="form-group">
+    <button type="button" class="finishing-add-btn" onclick="addFinishingItem()">➕ Tambah</button>
+  </div>
+
+</div>
+
 
   <!-- Hasil -->
   <div id="hasilFinishing" class="tab-content">
@@ -1807,6 +1927,14 @@ paNoKS.addEventListener('input', function(e) {
 }
 @keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
 
+#inputFinishing .form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+  color: #333;
+}
+
 </style>
 
 
@@ -1868,38 +1996,69 @@ finishingNoKS.addEventListener('input', function(e) {
     <button class="tab-btn lem" data-tab="hasilLem" onclick="switchTab(this)">Hasil</button>
   </div>
 
-  <!-- Inputan -->
-  <div id="inputLem" class="tab-content active">
-    <div class="form-group"><input type="text" id="lemNama" placeholder="Nama Order"></div>
-    <div class="form-group"><input type="text" id="lemNoKS" placeholder="No KS"></div>
-    <div class="form-group"><input type="number" id="lemOrder" placeholder="Total Order (lembar)"></div>
-    <div class="form-group"><input type="number" id="lemIsi" placeholder="Isi/Dus (pcs)"></div>
-    <div class="form-group"><input type="number" id="lemBagus" placeholder="Total Bagus (pcs)"></div>
-    <div class="form-group"><input type="number" id="lemJenisBS" placeholder="Total BS (pcs)"></div>
-    <div class="form-group">
-      <select id="lemQC">
-        <option value="">QC</option>
-        <option value="Martini">Martini</option>
-        <option value="Krestin">Krestin</option>
-        <option value="Ismie">Ismie</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <select id="lemUpdate">
-        <option value="Proses">Proses</option>
-        <option value="Selesai">Selesai</option>
-        <option value="TO">TO</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <textarea id="lemKeterangan" placeholder="Keterangan (opsional)" rows="3"></textarea>
-    </div>
+<!-- Inputan -->
+<div id="inputLem" class="tab-content active">
 
-    <!-- Tombol Tambah -->
-    <div class="form-group">
-      <button type="button" class="lem-add-btn" onclick="addLemItem()">➕ Tambah</button>
-    </div>
+  <div class="form-group">
+    <label>Nama Order</label>
+    <input type="text" id="lemNama" placeholder="GIV">
   </div>
+
+  <div class="form-group">
+    <label>No KS</label>
+    <input type="text" id="lemNoKS" placeholder="No KS">
+  </div>
+
+  <div class="form-group">
+    <label>Total Order (lembar)</label>
+    <input type="number" id="lemOrder" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>Isi/Dus (pcs)</label>
+    <input type="number" id="lemIsi" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>Total Bagus (pcs)</label>
+    <input type="number" id="lemBagus" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>Total BS (pcs)</label>
+    <input type="number" id="lemJenisBS" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>QC</label>
+    <select id="lemQC">
+      <option value="">Pilih QC</option>
+      <option value="Martini">Martini</option>
+      <option value="Krestin">Krestin</option>
+      <option value="Ismie">Ismie</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Update</label>
+    <select id="lemUpdate">
+      <option value="Proses">Proses</option>
+      <option value="Selesai">Selesai</option>
+      <option value="TO">TO</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Keterangan (opsional)</label>
+    <textarea id="lemKeterangan" placeholder="Keterangan (opsional)" rows="3"></textarea>
+  </div>
+
+  <!-- Tombol Tambah -->
+  <div class="form-group">
+    <button type="button" class="lem-add-btn" onclick="addLemItem()">➕ Tambah</button>
+  </div>
+</div>
+
 
   <!-- Hasil -->
   <div id="hasilLem" class="tab-content">
@@ -2017,6 +2176,14 @@ finishingNoKS.addEventListener('input', function(e) {
   margin-right:6px;
 }
 @keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+
+#inputLem .form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+  color: #333;
+}
 
 </style>
 
@@ -2872,6 +3039,25 @@ body {
 
 </style>
 
+<script>
+const spvNoKS = document.getElementById('spvNoKS');
+
+if (spvNoKS) {
+  spvNoKS.addEventListener('input', function() {
+    let value = spvNoKS.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); // hanya huruf & angka, uppercase
+
+    if (value.length > 2) {
+      value = value.slice(0,2) + '-' + value.slice(2);
+    }
+
+    if (value.length > 7) {
+      value = value.slice(0,7) + '-' + value.slice(7); // sisanya bebas
+    }
+
+    spvNoKS.value = value;
+  });
+}
+</script>
 
 
 
@@ -2995,7 +3181,7 @@ body {
 
       <!-- Nama Meeting -->
       <div class="form-group">
-        <input type="text" id="meetingNama" placeholder="Nama Meeting" required>
+        <input type="text" id="meetingNama" placeholder="Tema" required>
       </div>
 
       <!-- Tanggal & Jam -->
