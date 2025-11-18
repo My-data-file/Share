@@ -275,7 +275,7 @@ select {
     " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
       QC
     </button>
-    <div id="headerTitle" style="font-size: 0.85rem; color: #e0f7fa;">System V</div>
+    <div id="headerTitle" style="font-size: 0.85rem; color: #e0f7fa;">System</div>
   </div>
   <div id="headerTime" style="text-align:right; font-size:0.8rem; color:#e0f7fa;">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -1698,24 +1698,20 @@ select {
 <script>
 const paNoKS = document.getElementById('paNoKS');
 
-// Tidak format saat mengetik
-paNoKS.addEventListener('input', function () {
-  // Uppercase saja, aman untuk semua HP
-  this.value = this.value.toUpperCase();
-});
+paNoKS.addEventListener('input', function(e) {
+  let value = paNoKS.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); // huruf & angka saja, uppercase
 
-// Format setelah user selesai mengetik (saat keluar dari input)
-paNoKS.addEventListener('blur', function () {
-  let raw = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  if (value.length > 2) {
+    value = value.slice(0,2) + '-' + value.slice(2);
+  }
 
-  if (raw.length > 2) raw = raw.slice(0,2) + '-' + raw.slice(2);
-  if (raw.length > 7) raw = raw.slice(0,7) + '-' + raw.slice(7);
+  if (value.length > 7) {
+    value = value.slice(0,7) + '-' + value.slice(7); // sisanya bebas
+  }
 
-  this.value = raw;
+  paNoKS.value = value;
 });
 </script>
-
-
 
 
 
@@ -7058,6 +7054,7 @@ function goHome() {
 
 </body>
 </html>
+
 
 
 
