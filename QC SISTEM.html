@@ -275,7 +275,7 @@ select {
     " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
       QC
     </button>
-    <div id="headerTitle" style="font-size: 0.85rem; color: #e0f7fa;">System T</div>
+    <div id="headerTitle" style="font-size: 0.85rem; color: #e0f7fa;">System V</div>
   </div>
   <div id="headerTime" style="text-align:right; font-size:0.8rem; color:#e0f7fa;">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -1698,11 +1698,23 @@ select {
 <script>
 const paNoKS = document.getElementById('paNoKS');
 
+// Tidak format saat mengetik
 paNoKS.addEventListener('input', function () {
-  // Uppercase saja — tanpa filter karakter
-  paNoKS.value = paNoKS.value.toUpperCase();
+  // Uppercase saja, aman untuk semua HP
+  this.value = this.value.toUpperCase();
+});
+
+// Format setelah user selesai mengetik (saat keluar dari input)
+paNoKS.addEventListener('blur', function () {
+  let raw = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+
+  if (raw.length > 2) raw = raw.slice(0,2) + '-' + raw.slice(2);
+  if (raw.length > 7) raw = raw.slice(0,7) + '-' + raw.slice(7);
+
+  this.value = raw;
 });
 </script>
+
 
 
 
@@ -7046,6 +7058,7 @@ function goHome() {
 
 </body>
 </html>
+
 
 
 
