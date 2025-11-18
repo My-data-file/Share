@@ -1698,29 +1698,12 @@ select {
 <script>
 const paNoKS = document.getElementById('paNoKS');
 
-paNoKS.addEventListener('input', function(e) {
-  let val = paNoKS.value.toUpperCase();
-
-  // izinkan A–Z, 0–9, dash, spasi
-  val = val.replace(/[^A-Z0-9\- ]/g, '');
-
-  // hapus semua spasi hanya dalam formatting, bukan saat mengetik
-  let raw = val.replace(/ /g, '').replace(/-/g, '');
-
-  // format otomatis KS-1234-56
-  let result = '';
-
-  if (raw.length <= 2) {
-    result = raw;
-  } else if (raw.length <= 6) {
-    result = raw.slice(0,2) + '-' + raw.slice(2);
-  } else {
-    result = raw.slice(0,2) + '-' + raw.slice(2,6) + '-' + raw.slice(6);
-  }
-
-  paNoKS.value = result;
+paNoKS.addEventListener('input', function () {
+  // Uppercase saja — tanpa filter karakter
+  paNoKS.value = paNoKS.value.toUpperCase();
 });
 </script>
+
 
 
 
@@ -7063,6 +7046,7 @@ function goHome() {
 
 </body>
 </html>
+
 
 
 
