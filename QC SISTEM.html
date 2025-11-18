@@ -3846,7 +3846,7 @@ setTimeout(swapFaceText, 1500);
 
 <script>
 // ====================== KONFIGURASI ======================
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxYIHmoNT_Zv4hqZmV2oiPLv22xJdPBgWCtbUsT1f6SuDjrjEbRIbmCCiScAAqC9SQ/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxb0tAadZDZa870AVQfkmf03_YthZGZkFlmhMO2OZLnQZZo8bMNqeX0sS3nX6TCRf9a/exec";
 
 // ====================== SPINNER GLOBAL JS ======================
 const spinner = document.getElementById('loadingSpinner');
@@ -6903,73 +6903,78 @@ document.addEventListener('DOMContentLoaded',()=>{
   setupMeetingUppercase();
 });
 
-// ====================== UNIVERSAL AUTO-DEFAULT 0 (FINAL CLEAN VERSION) ======================
+
+</script>
+
+
+<script>
+// ====================== UNIVERSAL AUTO-DEFAULT 0 (FINAL STABLE VERSION) ======================
 (function(){
   'use strict';
 
   // === daftar semua id input number ===
   const UNIVERSAL_NUMBER_IDS = [
-    // Finishing
     'finishingOrder','finishingIsi','finishingBagus','finishingJenisBS',
-    // Bapro
     'baproDmax','baproL','baproA','baproB',
-    // PA / Cetak
     'paOrder','paBagus','paSortir','paProblem',
-    // Lem
     'lemOrder','lemIsi','lemBagus','lemJenisBS'
   ];
 
-  // Helper: apply default 0 but ALLOW user to delete and type freely
-  function attachNumberZeroBehavior(input) {
+  // Helper universal: selalu pastikan value valid
+  function forceZeroIfEmpty(input){
+    if (!input) return;
+    if (input.tagName !== 'INPUT' || input.type !== 'number') return;
+    if (input.value === '' || input.value === null) {
+      input.value = 0;
+    }
+  }
+
+  // Attach behavior BUT tetap bebas hapus
+  function attachNumberZeroBehavior(input){
     if (!input || input._attachedAutoZero) return;
     input._attachedAutoZero = true;
 
     if (input.tagName !== 'INPUT' || input.type !== 'number') return;
 
-    // === DEFAULT VALUE ===
-    if ((input.value || '').trim() === '') input.value = 0;
+    // default awal
+    forceZeroIfEmpty(input);
 
-    // === BLUR → kalau kosong setelah user hapus angka → isi 0 ===
+    // saat blur → kosong jadi 0
     input.addEventListener('blur', () => {
-      if (input.value === '' || input.value === null) {
-        input.value = 0;
-      }
+      forceZeroIfEmpty(input);
     });
 
-    // === CHANGE → sebelum submit selalu terjamin 0 ===
+    // saat change → kosong jadi 0
     input.addEventListener('change', () => {
-      if (input.value === '' || input.value === null) {
-        input.value = 0;
-      }
+      forceZeroIfEmpty(input);
     });
-
-    // ❗ PENTING:
-    // Tidak ada event "input" supaya user BEBAS menghapus angka.
   }
 
-  // Apply by ID
-  function applyUniversalNumberZeroToKnownIds() {
+  // Terapkan ke ID yang dikenal
+  function applyByIDs(){
     UNIVERSAL_NUMBER_IDS.forEach(id => {
       const el = document.getElementById(id);
       if (el) attachNumberZeroBehavior(el);
     });
   }
 
-  // Apply to all <input type="number">
-  function applyUniversalNumberZeroToAllNumberInputs() {
-    document.querySelectorAll('input[type="number"]').forEach(input => {
-      attachNumberZeroBehavior(input);
+  // Terapkan ke seluruh input number
+  function applyToAllNumberInputs(){
+    document.querySelectorAll('input[type="number"]').forEach(inp => {
+      attachNumberZeroBehavior(inp);
     });
   }
 
-  // Mutation observer for dynamic inputs
-  const observer = new MutationObserver(mutations => {
-    mutations.forEach(m => {
+  // Observer
+  const observer = new MutationObserver(mList => {
+    mList.forEach(m => {
       m.addedNodes.forEach(node => {
         if (!node || node.nodeType !== 1) return;
-        if (node.matches && node.matches('input[type="number"]')) {
+
+        if (node.matches && node.matches('input[type="number"]')){
           attachNumberZeroBehavior(node);
         }
+
         node.querySelectorAll && node.querySelectorAll('input[type="number"]').forEach(el => {
           attachNumberZeroBehavior(el);
         });
@@ -6977,64 +6982,60 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
   });
 
-  function startObserver() {
-    observer.observe(document.body, { childList: true, subtree: true });
+  function startObserver(){
+    observer.observe(document.body, { childList:true, subtree:true });
   }
 
-  // === PATCH CLEAR FUNCTIONS ===
-  function patchClearFunction(funcName) {
-    try {
-      const original = window[funcName];
-      if (typeof original !== 'function') return;
-      if (original._isPatchedForAutoZero) return;
+  // === FIX PALING PENTING ===
+  // Digunakan oleh kode submit kamu kapanpun (AMAKAN)
+  window.getSafeNumberValue = function(id){
+    const el = document.getElementById(id);
+    if (!el) return 0;
+    if (el.value === '' || el.value === null) return 0;
+    return Number(el.value) || 0;
+  };
 
-      const wrapped = function(...args) {
-        const r = original.apply(this, args);
-        // setelah form di-RESET → pasang default 0 lagi
-        setTimeout(() => {
-          applyUniversalNumberZeroToKnownIds();
-          applyUniversalNumberZeroToAllNumberInputs();
-        }, 20);
-        return r;
-      };
+  // Patch fungsi clear (tanpa mengganggu)
+  function patchClearFunction(funcName){
+    const ori = window[funcName];
+    if (typeof ori !== 'function') return;
+    if (ori._patchedAutoZero) return;
 
-      wrapped._isPatchedForAutoZero = true;
-      window[funcName] = wrapped;
+    const wrap = function(...args){
+      const r = ori.apply(this, args);
+      setTimeout(() => {
+        applyByIDs();
+        applyToAllNumberInputs();
+      }, 20);
+      return r;
+    };
 
-    } catch (err) {
-      console.warn("patchClearFunction error:", funcName, err);
-    }
+    wrap._patchedAutoZero = true;
+    window[funcName] = wrap;
   }
 
-  function patchAllClearFunctions() {
+  function patchAllClearFunctions(){
     ['clearFinishingForm','clearBaproForm','clearPAForm','clearLemForm']
       .forEach(patchClearFunction);
   }
 
-  // === Init ===
-  function initUniversalAutoZero() {
-    applyUniversalNumberZeroToKnownIds();
-    applyUniversalNumberZeroToAllNumberInputs();
+  // Init
+  function init(){
+    applyByIDs();
+    applyToAllNumberInputs();
     startObserver();
     patchAllClearFunctions();
   }
 
-  // Auto run
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initUniversalAutoZero);
+  // Run
+  if (document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
   } else {
-    initUniversalAutoZero();
+    init();
   }
 
-  // For manual debug
-  window.applyUniversalNumberZero = initUniversalAutoZero;
-
 })();
-
-
 </script>
-
-
 
 
 
