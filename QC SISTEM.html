@@ -275,7 +275,7 @@ select {
     " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
       QC
     </button>
-    <div id="headerTitle" style="font-size: 0.85rem; color: #e0f7fa;">System</div>
+    <div id="headerTitle" style="font-size: 0.85rem; color: #e0f7fa;">System T</div>
   </div>
   <div id="headerTime" style="text-align:right; font-size:0.8rem; color:#e0f7fa;">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
@@ -1699,19 +1699,29 @@ select {
 const paNoKS = document.getElementById('paNoKS');
 
 paNoKS.addEventListener('input', function(e) {
-  let value = paNoKS.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); // huruf & angka saja, uppercase
+  let val = paNoKS.value.toUpperCase();
 
-  if (value.length > 2) {
-    value = value.slice(0,2) + '-' + value.slice(2);
+  // izinkan A–Z, 0–9, dash, spasi
+  val = val.replace(/[^A-Z0-9\- ]/g, '');
+
+  // hapus semua spasi hanya dalam formatting, bukan saat mengetik
+  let raw = val.replace(/ /g, '').replace(/-/g, '');
+
+  // format otomatis KS-1234-56
+  let result = '';
+
+  if (raw.length <= 2) {
+    result = raw;
+  } else if (raw.length <= 6) {
+    result = raw.slice(0,2) + '-' + raw.slice(2);
+  } else {
+    result = raw.slice(0,2) + '-' + raw.slice(2,6) + '-' + raw.slice(6);
   }
 
-  if (value.length > 7) {
-    value = value.slice(0,7) + '-' + value.slice(7); // sisanya bebas
-  }
-
-  paNoKS.value = value;
+  paNoKS.value = result;
 });
 </script>
+
 
 
 <!-- ======================== QC FINISHING ======================== -->
@@ -7053,6 +7063,7 @@ function goHome() {
 
 </body>
 </html>
+
 
 
 
