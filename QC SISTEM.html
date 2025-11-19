@@ -1302,12 +1302,31 @@ select {
     </select>
   </div>
 
-  <div class="form-group">
-    <label>Resep Tinta</label>
-    <textarea id="baproKeterangan" placeholder="1. 7708A CRSMAX MAGENTA : 6.5
-2. TC 0105 MED.YELLOW : 4
-3. MEDIUM : 11.5" rows="3"></textarea>
-  </div>
+<div class="form-group">
+  <label>Resep Tinta</label>
+
+  <div class="rowKet"><span>1.</span><input type="text" id="ket1" placeholder="Isi keterangan 1"></div>
+  <div class="rowKet"><span>2.</span><input type="text" id="ket2" placeholder="Isi keterangan 2"></div>
+  <div class="rowKet"><span>3.</span><input type="text" id="ket3" placeholder="Isi keterangan 3"></div>
+  <div class="rowKet"><span>4.</span><input type="text" id="ket4" placeholder="Isi keterangan 4"></div>
+  <div class="rowKet"><span>5.</span><input type="text" id="ket5" placeholder="Isi keterangan 5"></div>
+</div>
+
+<style>
+.rowKet {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.rowKet input {
+  flex: 1;
+  padding: 4px 8px;
+}
+</style>
+
+
+
 
   <!-- Tombol Tambah -->
   <div class="form-group">
@@ -1455,8 +1474,6 @@ select {
 
 
 
-
-
 <!-- ======================== QC CETAK ======================== -->
 <section id="qcPA" class="card qc-section" style="display:none;">
 
@@ -1555,11 +1572,36 @@ select {
     </select>
   </div>
 
-  <div class="form-group">
-    <label>Keterangan (opsional)</label>
-    <textarea id="paKeterangan" rows="3" placeholder="1. GHOSTING (GARIS) NO.2
-2. HUJAN DAN GARIS NO.1"></textarea>
-  </div>
+<div class="form-group">
+  <label>Keterangan (opsional)</label>
+
+  <div class="rowKet"><span>1.</span><input type="text" id="ketPA1" placeholder="Isi keterangan 1"></div>
+  <div class="rowKet"><span>2.</span><input type="text" id="ketPA2" placeholder="Isi keterangan 2"></div>
+  <div class="rowKet"><span>3.</span><input type="text" id="ketPA3" placeholder="Isi keterangan 3"></div>
+  <div class="rowKet"><span>4.</span><input type="text" id="ketPA4" placeholder="Isi keterangan 4"></div>
+  <div class="rowKet"><span>5.</span><input type="text" id="ketPA5" placeholder="Isi keterangan 5"></div>
+</div>
+
+
+<style>
+.rowKet {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.rowKet input {
+  flex: 1;
+  padding: 4px 8px;
+}
+.rowKet span {
+  width: 20px;
+  text-align: right;
+  font-weight: bold;
+}
+</style>
+
+
 
   <div class="form-group">
     <button type="button" class="pa-add-btn" onclick="addPAItem()">➕ Tambah</button>
@@ -1800,12 +1842,29 @@ paNoKS.addEventListener('input', function(e) {
     </select>
   </div>
 
-  <div class="form-group">
-    <label>Keterangan (opsional)</label>
-    <textarea id="finishingKeterangan" placeholder="1. WARNA BELANG 
-2. MATA AYAM
-3. OVER GLUE" rows="3"></textarea>
-  </div>
+<div class="form-group">
+  <label>Keterangan (opsional)</label>
+
+  <div class="rowKet"><span>1.</span><input type="text" id="finKet1" placeholder="Isi keterangan 1"></div>
+  <div class="rowKet"><span>2.</span><input type="text" id="finKet2" placeholder="Isi keterangan 2"></div>
+  <div class="rowKet"><span>3.</span><input type="text" id="finKet3" placeholder="Isi keterangan 3"></div>
+  <div class="rowKet"><span>4.</span><input type="text" id="finKet4" placeholder="Isi keterangan 4"></div>
+  <div class="rowKet"><span>5.</span><input type="text" id="finKet5" placeholder="Isi keterangan 5"></div>
+</div>
+
+<style>
+.rowKet {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.rowKet input {
+  flex: 1;
+  padding: 4px 8px;
+}
+</style>
+
 
   <!-- Tombol Tambah -->
   <div class="form-group">
@@ -2054,12 +2113,34 @@ finishingNoKS.addEventListener('input', function(e) {
     </select>
   </div>
 
-  <div class="form-group">
-    <label>Keterangan (opsional)</label>
-    <textarea id="lemKeterangan" placeholder="1.LEM MIRING
-2.DUS MELET
-3.DUS SOBEK" rows="3"></textarea>
-  </div>
+<div class="form-group">
+  <label>Keterangan (opsional)</label>
+
+  <div class="rowKet"><span>1.</span><input type="text" id="lemKet1" placeholder="Isi keterangan 1"></div>
+  <div class="rowKet"><span>2.</span><input type="text" id="lemKet2" placeholder="Isi keterangan 2"></div>
+  <div class="rowKet"><span>3.</span><input type="text" id="lemKet3" placeholder="Isi keterangan 3"></div>
+  <div class="rowKet"><span>4.</span><input type="text" id="lemKet4" placeholder="Isi keterangan 4"></div>
+  <div class="rowKet"><span>5.</span><input type="text" id="lemKet5" placeholder="Isi keterangan 5"></div>
+</div>
+
+<style>
+.rowKet {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.rowKet input {
+  flex: 1;
+  padding: 4px 8px;
+}
+.rowKet span {
+  width: 20px;
+  text-align: right;
+  font-weight: bold;
+}
+</style>
+
 
   <!-- Tombol Tambah -->
   <div class="form-group">
@@ -4129,7 +4210,7 @@ async function loadFinishingItems(){
   }catch(err){ console.error('⚠️ Error loadFinishingItems', err); }
 }
 
-// ====================== TAMBAH DATA DENGAN SPINNER & NOTIF ======================
+// ====================== TAMBAH DATA (FINISHING) ======================
 function addFinishingItem() {
   const nama = document.getElementById('finishingNama').value.trim();
   const noKS = document.getElementById('finishingNoKS').value.trim();
@@ -4139,9 +4220,16 @@ function addFinishingItem() {
   const jenisBS = document.getElementById('finishingJenisBS').value.trim();
   const qc = document.getElementById('finishingQC').value.trim();
   const update = document.getElementById('finishingUpdate').value.trim();
-  const keterangan = document.getElementById('finishingKeterangan').value.trim();
 
-    // ✅ Validasi wajib diisi
+  // ===== Gabungkan keterangan format BAPRO =====
+  const keterangan =
+`1. ${document.getElementById("finKet1").value}
+2. ${document.getElementById("finKet2").value}
+3. ${document.getElementById("finKet3").value}
+4. ${document.getElementById("finKet4").value}
+5. ${document.getElementById("finKet5").value}`;
+
+  // Validasi
   if (!nama || !noKS || !qc || !update) {
     return alert('Nama Order, No KS, QC, dan Proses wajib diisi!');
   }
@@ -4154,9 +4242,14 @@ function addFinishingItem() {
     hour:'2-digit', minute:'2-digit', second:'2-digit'
   });
 
-  const payload = { action:'add', sheet:'Finishing', tanggal: tanggalFormatted, nama,noKS,order,isi,bagus,jenisBS,qc,update,keterangan };
+  const payload = { 
+    action:'add', 
+    sheet:'Finishing', 
+    tanggal: tanggalFormatted,
+    nama,noKS,order,isi,bagus,jenisBS,qc,update,keterangan
+  };
 
-  // === Spinner tombol ===
+  // Spinner
   const btnTambah = document.querySelector('#inputFinishing button');
   if (btnTambah) {
     btnTambah.disabled = true;
@@ -4165,10 +4258,9 @@ function addFinishingItem() {
 
     postPayload(payload);
 
-    // Tunggu proses sheet selesai (simulasi 8 detik)
     setTimeout(() => {
       btnTambah.disabled = false;
-      btnTambah.innerHTML = originalHTML; // kembalikan tombol
+      btnTambah.innerHTML = originalHTML;
       clearFinishingForm();
       loadFinishingItems();
       alert('✅ Data berhasil ditambahkan!');
@@ -4187,6 +4279,7 @@ function addFinishingItem() {
 function callFinishing(index){
   const item = finishingItems[index];
   if(!item) return;
+
   document.getElementById('finishingNama').value = item.nama || '';
   document.getElementById('finishingNoKS').value = item.noKS || '';
   document.getElementById('finishingOrder').value = item.order || '';
@@ -4195,12 +4288,24 @@ function callFinishing(index){
   document.getElementById('finishingJenisBS').value = item.jenisBS || '';
   document.getElementById('finishingQC').value = item.qc || '';
   document.getElementById('finishingUpdate').value = item.update || '';
-  document.getElementById('finishingKeterangan').value = item.keterangan || ''; // ✳️ tambahan
 
+  // ===== Kembalikan keterangan ke input 1–5 =====
+  const lines = (item.keterangan || "").split("\n");
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById("finKet" + i);
+    if (el) el.value = (lines[i-1] || "").replace(`${i}. `, "");
+  }
+
+  // ===== Pastikan pindah ke tab FINISHING INPUT =====
   showMenu('qcFinishing');
+
   const tabBtn = document.querySelector('#qcFinishing .tabs button[data-tab="inputFinishing"]');
-  if(tabBtn) switchTab(tabBtn);
+  if (tabBtn) switchTab(tabBtn);
 }
+
+
+
+
 
 // ====================== HAPUS ITEM (langsung hilang dari grid) ======================
 function deleteFinishing(index) {
@@ -4389,21 +4494,29 @@ function filterFinishingGrid(query){
 
 // ====================== CLEAR FORM ======================
 function clearFinishingForm() {
+
   [
-    'finishingNama','finishingNoKS','finishingQC','finishingUpdate','finishingKeterangan'
+    'finishingNama','finishingNoKS','finishingQC','finishingUpdate'
   ].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
 
-  // Number fields → default 0
+  // Number fields
   [
     'finishingOrder','finishingIsi','finishingBagus','finishingJenisBS'
   ].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = 0;
   });
+
+  // Reset keterangan format 1–5
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById("finKet" + i);
+    if (el) el.value = '';
+  }
 }
+
 
 
 // ====================== DASHBOARD (UPDATE: TAMBAH STATUS "TO") ======================
@@ -4666,9 +4779,16 @@ function addBaproItem() {
   const B = document.getElementById('baproB') ? document.getElementById('baproB').value.trim() : '';
   const qc = document.getElementById('baproQC') ? document.getElementById('baproQC').value.trim() : '';
   const update = document.getElementById('baproUpdate') ? document.getElementById('baproUpdate').value.trim() : '';
-  const keterangan = document.getElementById('baproKeterangan') ? document.getElementById('baproKeterangan').value.trim() : '';
 
-    // ✅ Validasi wajib diisi
+  // ===== Gabungkan keterangan nomor 1–5 dari 5 input =====
+  const keterangan = 
+    `1. ${document.getElementById("ket1").value}
+2. ${document.getElementById("ket2").value}
+3. ${document.getElementById("ket3").value}
+4. ${document.getElementById("ket4").value}
+5. ${document.getElementById("ket5").value}`;
+
+  // ✅ Validasi wajib diisi
   if (!nama || !cso || !jenis || !kertas || !NamaTinta || !update) {
     return alert('Nama Order, CSO, Jenis Kertas, Tebal Kertas, Nama Tinta, dan Proses wajib diisi!');
   }
@@ -4681,8 +4801,13 @@ function addBaproItem() {
     hour:'2-digit', minute:'2-digit', second:'2-digit'
   });
 
-  const payload = { action:'add', sheet:'Bapro', tanggal: tanggalFormatted,
-    nama, cso,
+  // ===== Payload =====
+  const payload = { 
+    action:'add', 
+    sheet:'Bapro', 
+    tanggal: tanggalFormatted,
+    nama, 
+    cso,
     jenisKertas: jenis,
     tebalKertas: kertas,
     NamaTinta: NamaTinta,
@@ -4690,11 +4815,13 @@ function addBaproItem() {
     l: L,
     a: A,
     b: B,
-    qc, update, keterangan
+    qc, 
+    update, 
+    keterangan  // <— nomor 1–5 sudah tergabung
   };
 
   // ===== Spinner tombol =====
-  const btnTambah = document.querySelector('#inputBapro button'); // pastikan tombol ada di #inputBapro
+  const btnTambah = document.querySelector('#inputBapro button'); 
   if (btnTambah) {
     btnTambah.disabled = true;
     const originalHTML = btnTambah.innerHTML;
@@ -4702,10 +4829,9 @@ function addBaproItem() {
 
     postPayload(payload);
 
-    // Tunggu proses sheet selesai (simulasi 8 detik)
     setTimeout(() => {
       btnTambah.disabled = false;
-      btnTambah.innerHTML = originalHTML; // kembalikan tombol
+      btnTambah.innerHTML = originalHTML;
       clearBaproForm();
       loadBaproItems();
       alert('✅ Data BAPRO berhasil ditambahkan!');
@@ -4719,27 +4845,46 @@ function addBaproItem() {
 }
 
 
-// ====================== PANGGIL (isi form dari item) ======================
+
+// ====================== PANGGIL (ISI FORM dari item BAPRO) ======================
 function callBapro(index){
   const item = baproItems[index];
   if(!item) return;
-  if (document.getElementById('baproNama')) document.getElementById('baproNama').value = item.nama || '';
-  if (document.getElementById('baprocso')) document.getElementById('baprocso').value = item.cso || '';
-  if (document.getElementById('baproJenis')) document.getElementById('baproJenis').value = item.jenisKertas || '';
-  if (document.getElementById('baproKertas')) document.getElementById('baproKertas').value = item.tebalKertas || '';
-  if (document.getElementById('baproNamaTinta')) document.getElementById('baproNamaTinta').value = item.NamaTinta || '';
-  if (document.getElementById('baproDmax')) document.getElementById('baproDmax').value = item.dmax || '';
-  if (document.getElementById('baproL')) document.getElementById('baproL').value = item.l || '';
-  if (document.getElementById('baproA')) document.getElementById('baproA').value = item.a || '';
-  if (document.getElementById('baproB')) document.getElementById('baproB').value = item.b || '';
-  if (document.getElementById('baproQC')) document.getElementById('baproQC').value = item.qc || '';
-  if (document.getElementById('baproUpdate')) document.getElementById('baproUpdate').value = item.update || '';
-  if (document.getElementById('baproKeterangan')) document.getElementById('baproKeterangan').value = item.keterangan || '';
 
+  // Isi field normal
+  document.getElementById('baproNama').value = item.nama || '';
+  document.getElementById('baprocso').value = item.cso || '';
+  document.getElementById('baproJenis').value = item.jenisKertas || '';
+  document.getElementById('baproKertas').value = item.tebalKertas || '';
+  document.getElementById('baproNamaTinta').value = item.NamaTinta || '';
+  document.getElementById('baproDmax').value = item.dmax || 0;
+  document.getElementById('baproL').value = item.l || 0;
+  document.getElementById('baproA').value = item.a || 0;
+  document.getElementById('baproB').value = item.b || 0;
+  document.getElementById('baproQC').value = item.qc || '';
+  document.getElementById('baproUpdate').value = item.update || '';
+
+  // ================================================
+  //   ISI keterangan 1–5 (sesuai format Finishing)
+  // ================================================
+  const ket = item.keterangan ? item.keterangan.split("\n") : [];
+
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById("ket" + i);
+    if (el) {
+      el.value = ket[i-1] ? ket[i-1].replace(i + ". ", "") : "";
+    }
+  }
+
+  // ==============================
+  // PINDAH VIEW seperti Finishing
+  // ==============================
   showMenu('qcBapro');
+
   const tabBtn = document.querySelector('#qcBapro .tabs button[data-tab="inputBapro"]');
-  if(tabBtn) switchTab(tabBtn);
+  if (tabBtn) switchTab(tabBtn);
 }
+
 
 // ====================== HAPUS ITEM (BAPRO) ======================
 function deleteBapro(index) {
@@ -4957,6 +5102,7 @@ function filterBaproGrid(query){
 
 // ====================== CLEAR FORM (BAPRO) ======================
 function clearBaproForm() {
+  // Text fields
   [
     'baproNama','baprocso','baproJenis','baproKertas','baproNamaTinta',
     'baproQC','baproUpdate','baproKeterangan'
@@ -4970,7 +5116,14 @@ function clearBaproForm() {
     const el = document.getElementById(id);
     if (el) el.value = 0;
   });
+
+  // ===== Kosongkan input nomor 1–5 =====
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById('ket' + i);
+    if (el) el.value = '';
+  }
 }
+
 
 
 // ====================== DASHBOARD BAPRO (TO / PROSES / SELESAI) ======================
@@ -5232,9 +5385,16 @@ function addPAItem() {
   const qc = document.getElementById('paQC') ? document.getElementById('paQC').value.trim() : '';
   const mesin = document.getElementById('paMesin') ? document.getElementById('paMesin').value.trim() : '';
   const update = document.getElementById('paUpdate') ? document.getElementById('paUpdate').value.trim() : '';
-  const keterangan = document.getElementById('paKeterangan') ? document.getElementById('paKeterangan').value.trim() : '';
 
-    // ✅ Validasi wajib diisi
+  // ===== Gabungkan keterangan nomor 1–5 (FORMAT BAPRO) =====
+  const keterangan =
+    `1. ${document.getElementById("ketPA1").value}
+2. ${document.getElementById("ketPA2").value}
+3. ${document.getElementById("ketPA3").value}
+4. ${document.getElementById("ketPA4").value}
+5. ${document.getElementById("ketPA5").value}`;
+
+  // ===== VALIDASI =====
   if (!nama || !noKS || !qc || !mesin || !update) {
     return alert('Nama Order, No KS, QC, Mesin, dan Proses wajib diisi!');
   }
@@ -5252,8 +5412,8 @@ function addPAItem() {
     nama, noKS, order, bagus, sortir, problem, qc, mesin, update, keterangan
   };
 
-  // ===== Spinner tombol =====
-  const btnTambah = document.querySelector('#inputPA button'); // pastikan tombol ada di #inputPA
+  // ===== SPINNER =====
+  const btnTambah = document.querySelector('#inputPA button');
   if (btnTambah) {
     btnTambah.disabled = true;
     const originalHTML = btnTambah.innerHTML;
@@ -5263,7 +5423,7 @@ function addPAItem() {
 
     setTimeout(() => {
       btnTambah.disabled = false;
-      btnTambah.innerHTML = originalHTML; // kembalikan tombol
+      btnTambah.innerHTML = originalHTML;
       clearPAForm();
       loadPAItems();
       alert('✅ Data PA berhasil ditambahkan!');
@@ -5277,25 +5437,40 @@ function addPAItem() {
 }
 
 
-// ====================== PANGGIL (isi form dari item) ======================
+// ====================== PANGGIL (isi form CETAK dari item) ======================
 function callPA(index){
   const item = paItems[index];
   if(!item) return;
-  if (document.getElementById('paNama')) document.getElementById('paNama').value = item.nama || '';
-  if (document.getElementById('paNoKS')) document.getElementById('paNoKS').value = item.noKS || '';
-  if (document.getElementById('paOrder')) document.getElementById('paOrder').value = item.order || '';
-  if (document.getElementById('paBagus')) document.getElementById('paBagus').value = item.bagus || '';
-  if (document.getElementById('paSortir')) document.getElementById('paSortir').value = item.sortir || '';
-  if (document.getElementById('paProblem')) document.getElementById('paProblem').value = item.problem || '';
-  if (document.getElementById('paQC')) document.getElementById('paQC').value = item.qc || '';
-  if (document.getElementById('paMesin')) document.getElementById('paMesin').value = item.mesin || '';
-  if (document.getElementById('paUpdate')) document.getElementById('paUpdate').value = item.update || '';
-  if (document.getElementById('paKeterangan')) document.getElementById('paKeterangan').value = item.keterangan || '';
 
+  // ===== Isi input utama =====
+  document.getElementById('paNama').value = item.nama || '';
+  document.getElementById('paNoKS').value = item.noKS || '';
+  document.getElementById('paOrder').value = item.order || 0;
+  document.getElementById('paBagus').value = item.bagus || 0;
+  document.getElementById('paSortir').value = item.sortir || 0;
+  document.getElementById('paProblem').value = item.problem || 0;
+  document.getElementById('paQC').value = item.qc || '';
+  document.getElementById('paMesin').value = item.mesin || '';
+  document.getElementById('paUpdate').value = item.update || '';
+
+  // ===== Pecah keterangan nomor 1–5 =====
+  const ket = (item.keterangan || "").split("\n");
+
+  document.getElementById("ketPA1").value = (ket[0] || "").replace("1. ","");
+  document.getElementById("ketPA2").value = (ket[1] || "").replace("2. ","");
+  document.getElementById("ketPA3").value = (ket[2] || "").replace("3. ","");
+  document.getElementById("ketPA4").value = (ket[3] || "").replace("4. ","");
+  document.getElementById("ketPA5").value = (ket[4] || "").replace("5. ","");
+
+  // ===== PINDAH VIEW seperti BAPRO & FINISHING =====
   showMenu('qcPA');
+
   const tabBtn = document.querySelector('#qcPA .tabs button[data-tab="inputPA"]');
   if(tabBtn) switchTab(tabBtn);
 }
+
+
+
 
 // ====================== HAPUS ITEM (PA) ======================
 function deletePA(index) {
@@ -5473,7 +5648,7 @@ function filterPAGrid(query){
 // ====================== CLEAR FORM (PA) ======================
 function clearPAForm() {
   [
-    'paNama','paNoKS','paQC','paMesin','paUpdate','paKeterangan'
+    'paNama','paNoKS','paQC','paMesin','paUpdate'
   ].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
@@ -5484,7 +5659,16 @@ function clearPAForm() {
     const el = document.getElementById(id);
     if (el) el.value = 0;
   });
+
+  // ===== Kosongkan input nomor 1–5 (FORMAT BAPRO) =====
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById('ketPA' + i);
+    if (el) el.value = '';
+  }
 }
+
+
+
 
 
 // ====================== DASHBOARD PA (TO / PROSES / SELESAI) ======================
@@ -5715,6 +5899,7 @@ async function loadLemItems(){
   }catch(err){ console.error('⚠️ Error loadLemItems', err); }
 }
 
+
 // ====================== TAMBAH DATA (LEM) ======================
 function addLemItem() {
   const nama = document.getElementById('lemNama').value.trim();
@@ -5725,9 +5910,16 @@ function addLemItem() {
   const jenisBS = document.getElementById('lemJenisBS') ? document.getElementById('lemJenisBS').value.trim() : '';
   const qc = document.getElementById('lemQC') ? document.getElementById('lemQC').value.trim() : '';
   const update = document.getElementById('lemUpdate') ? document.getElementById('lemUpdate').value.trim() : '';
-  const keterangan = document.getElementById('lemKeterangan') ? document.getElementById('lemKeterangan').value.trim() : '';
 
-    // ✅ Validasi wajib diisi
+  // ===== Gabungkan keterangan nomor 1–5 format BAPRO =====
+  const keterangan =
+`1. ${document.getElementById("lemKet1").value}
+2. ${document.getElementById("lemKet2").value}
+3. ${document.getElementById("lemKet3").value}
+4. ${document.getElementById("lemKet4").value}
+5. ${document.getElementById("lemKet5").value}`;
+
+  // Validasi
   if (!nama || !noKS || !qc || !update) {
     return alert('Nama Order, No KS, QC, dan Proses wajib diisi!');
   }
@@ -5740,13 +5932,15 @@ function addLemItem() {
     hour:'2-digit', minute:'2-digit', second:'2-digit'
   });
 
-  const payload = {
-    action:'add', sheet:'Lem', tanggal: tanggalFormatted,
-    nama, noKS, order, isi, bagus, jenisBS, qc, update, keterangan
+  const payload = { 
+    action:'add', 
+    sheet:'Lem', 
+    tanggal: tanggalFormatted,
+    nama,noKS,order,isi,bagus,jenisBS,qc,update,keterangan
   };
 
-  // ===== Spinner tombol =====
-  const btnTambah = document.querySelector('#inputLem button'); // pastikan tombol ada di #inputLem
+  // Spinner tombol
+  const btnTambah = document.querySelector('#inputLem button');
   if (btnTambah) {
     btnTambah.disabled = true;
     const originalHTML = btnTambah.innerHTML;
@@ -5756,7 +5950,7 @@ function addLemItem() {
 
     setTimeout(() => {
       btnTambah.disabled = false;
-      btnTambah.innerHTML = originalHTML; // kembalikan tombol
+      btnTambah.innerHTML = originalHTML;
       clearLemForm();
       loadLemItems();
       alert('✅ Data Lem berhasil ditambahkan!');
@@ -5774,16 +5968,24 @@ function addLemItem() {
 function callLem(index){
   const item = lemItems[index];
   if(!item) return;
-  if (document.getElementById('lemNama')) document.getElementById('lemNama').value = item.nama || '';
-  if (document.getElementById('lemNoKS')) document.getElementById('lemNoKS').value = item.noKS || '';
-  if (document.getElementById('lemOrder')) document.getElementById('lemOrder').value = item.order || '';
-  if (document.getElementById('lemIsi')) document.getElementById('lemIsi').value = item.isi || '';
-  if (document.getElementById('lemBagus')) document.getElementById('lemBagus').value = item.bagus || '';
-  if (document.getElementById('lemJenisBS')) document.getElementById('lemJenisBS').value = item.jenisBS || '';
-  if (document.getElementById('lemQC')) document.getElementById('lemQC').value = item.qc || '';
-  if (document.getElementById('lemUpdate')) document.getElementById('lemUpdate').value = item.update || '';
-  if (document.getElementById('lemKeterangan')) document.getElementById('lemKeterangan').value = item.keterangan || '';
 
+  document.getElementById('lemNama').value = item.nama || '';
+  document.getElementById('lemNoKS').value = item.noKS || '';
+  document.getElementById('lemOrder').value = item.order || '';
+  document.getElementById('lemIsi').value = item.isi || '';
+  document.getElementById('lemBagus').value = item.bagus || '';
+  document.getElementById('lemJenisBS').value = item.jenisBS || '';
+  document.getElementById('lemQC').value = item.qc || '';
+  document.getElementById('lemUpdate').value = item.update || '';
+
+  // ===== Pecah keterangan ke input 1–5 =====
+  const lines = (item.keterangan || "").split("\n");
+  for(let i=1; i<=5; i++){
+    const el = document.getElementById("lemKet"+i);
+    if(el) el.value = (lines[i-1] || "").replace(`${i}. `, "");
+  }
+
+  // ===== Pindah ke tab LEM INPUT =====
   showMenu('qcLem');
   const tabBtn = document.querySelector('#qcLem .tabs button[data-tab="inputLem"]');
   if(tabBtn) switchTab(tabBtn);
@@ -5951,7 +6153,7 @@ function filterLemGrid(query){
 // ====================== CLEAR FORM (LEM) ======================
 function clearLemForm() {
   [
-    'lemNama','lemNoKS','lemQC','lemUpdate','lemKeterangan'
+    'lemNama','lemNoKS','lemQC','lemUpdate'
   ].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
@@ -5962,6 +6164,12 @@ function clearLemForm() {
     const el = document.getElementById(id);
     if (el) el.value = 0;
   });
+
+  // Reset keterangan 1–5
+  for (let i=1; i<=5; i++){
+    const el = document.getElementById("lemKet"+i);
+    if(el) el.value = '';
+  }
 }
 
 
@@ -7054,7 +7262,6 @@ function goHome() {
 
 </body>
 </html>
-
 
 
 
