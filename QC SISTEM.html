@@ -3988,13 +3988,30 @@ document.addEventListener("DOMContentLoaded", () => {
   transform: scale(1.35) !important;
 }
 
-/* Scale robot pada desktop */
+/* Desktop (lebih kecil) */
 @media (min-width: 768px) {
   .chatbot-wrapper {
-    transform: scale(0.35) !important;
+    transform: scale(0.45) !important;
     transform-origin: bottom right !important;
   }
 }
+
+/* Tablet */
+@media (max-width: 767px) and (min-width: 481px) {
+  .chatbot-wrapper {
+    transform: scale(0.85) !important;
+    transform-origin: bottom right !important;
+  }
+}
+
+/* HP */
+@media (max-width: 480px) {
+  .chatbot-wrapper {
+    transform: scale(0.75) !important;
+    transform-origin: bottom right !important;
+  }
+}
+
 
 
 </style>
@@ -7371,7 +7388,6 @@ function goHome() {
 
 </body>
 </html>
-
 
 
 
