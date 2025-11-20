@@ -3602,31 +3602,47 @@ if (spvNoKS) {
 
 
 
-<!-- ======================== Floating Chatbot 3D Button (Premium Edition) ======================== -->
+<!-- ======================== Floating Chibi Robot Button ======================== -->
 <div class="chatbot-wrapper" onclick="openChatbot()">
-  <div class="chatbot-bg pulse-lines">
-    <div class="bg-light"></div>
+  <div class="robot-chibi">
 
-    <!-- Robot -->
-    <div class="chatbot-body robot">
-      <div class="chatbot-face" id="cbFace">
-        <div class="reflection"></div>
-        <div class="eye left"></div>
-        <div class="eye right"></div>
-        <div class="smile"></div>
+    <!-- Antena -->
+    <div class="antenna-stick"></div>
+    <div class="antenna-ball"></div>
+
+    <!-- Kepala -->
+    <div class="head">
+      <div class="visor">
+
+        <!-- WRAPPER MATA (baru) -->
+        <div class="eyes-wrap">
+          <div class="eye-left"></div>
+          <div class="eye-right"></div>
+        </div>
+
+        <!-- Mulut -->
+        <div class="mouth"></div>
+
       </div>
     </div>
 
-    <!-- Text AI + Flare -->
-    <div class="chatbot-text" id="cbText">
-      AI
-      <div class="flare"></div>
+    <!-- Badan -->
+    <div class="body">
+      <div class="body-light">AI</div>
     </div>
+
+    <!-- Tangan -->
+    <div class="arm left"></div>
+    <div class="arm right"></div>
+
+    <!-- Kaki -->
+    <div class="leg left"></div>
+    <div class="leg right"></div>
+
   </div>
 </div>
 
 <script>
-/* ---- OPEN CHATBOT ---- */
 function openChatbot() {
   const pass = prompt("Masukkan password untuk membuka Chatbot:");
   if (pass === "spv123") {
@@ -3636,251 +3652,356 @@ function openChatbot() {
   }
 }
 
-/* ---- FACE ↔ TEXT LOOP ---- */
-let showFace = true;
+/* ============================================================
+   ========== EKSPRESI MATA + MULUT HIDUP =====================
+   ============================================================ */
+document.addEventListener("DOMContentLoaded", () => {
+  const eyeL = document.querySelector(".eye-left");
+  const eyeR = document.querySelector(".eye-right");
+  const mouth = document.querySelector(".mouth");
 
-function swapFaceText() {
-  const face = document.getElementById("cbFace");
-  const text = document.getElementById("cbText");
-
-  if (showFace) {
-    face.style.opacity = "0";
-    text.style.opacity = "1";
-  } else {
-    text.style.opacity = "0";
-    face.style.opacity = "1";
+  function expNormal() {
+    eyeL.style.cssText = eyeR.style.cssText =
+      "width:18px;height:18px;border-radius:50%;";
+    mouth.style.cssText =
+      "width:22px;height:6px;border-radius:20px;background:#ffcf2d;";
   }
 
-  showFace = !showFace;
+  function expWink() {
+    eyeL.style.cssText = "width:18px;height:18px;border-radius:50%;";
+    eyeR.style.cssText = "width:18px;height:5px;border-radius:4px;";
+    mouth.style.cssText =
+      "width:26px;height:10px;border-radius:20px;background:#ffcf2d;";
+  }
 
-  setTimeout(swapFaceText, 2600);
-}
+  function expHappy() {
+    eyeL.style.cssText =
+      "width:18px;height:14px;border-radius:50% 50% 70% 70%;";
+    eyeR.style.cssText =
+      "width:18px;height:14px;border-radius:50% 50% 70% 70%;";
+    mouth.style.cssText =
+      "width:28px;height:16px;border-radius:0 0 20px 20px;background:#ffcf2d;";
+  }
 
-setTimeout(swapFaceText, 1500);
+  function expSurprise() {
+    eyeL.style.cssText = eyeR.style.cssText =
+      "width:26px;height:26px;border-radius:50%;";
+    mouth.style.cssText =
+      "width:16px;height:16px;border-radius:50%;background:#ffcf2d;";
+  }
+
+  function expSleepy() {
+    eyeL.style.cssText = "width:18px;height:6px;border-radius:6px;";
+    eyeR.style.cssText = "width:18px;height:6px;border-radius:6px;";
+    mouth.style.cssText =
+      "width:20px;height:4px;border-radius:4px;background:#ffcf2d;";
+  }
+
+  const moods = [expNormal, expWink, expHappy, expSurprise, expSleepy];
+
+  setInterval(() => {
+    const pick = moods[Math.floor(Math.random() * moods.length)];
+    pick();
+  }, 2500);
+});
+
+
 </script>
 
 <style>
-/* ===== Wrapper ===== */
 .chatbot-wrapper {
+  width: 120px;
+  height: 150px;
   position: fixed;
-  bottom: 80px;
-  right: 20px;
-  width: 78px;
-  height: 78px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #4b68ff, #1c2ca5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 25px rgba(80, 120, 255, 0.55);
-  cursor: pointer;
+  bottom: 78px;
+  right: 28px;
   z-index: 9999;
-  overflow: hidden;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  animation: idleFloat 5s ease-in-out infinite;
-}
-.chatbot-wrapper:hover {
-  transform: scale(1.12) rotate3d(1, 1, 0, 6deg);
-  box-shadow: 0 12px 40px rgba(120,150,255,0.85);
-}
-
-/* Shadow responsive */
-.chatbot-wrapper::after {
-  content: "";
-  position: absolute;
-  bottom: -6px;
-  width: 50%;
-  height: 10px;
-  background: rgba(0,0,0,0.25);
-  border-radius: 50%;
-  filter: blur(8px);
-  animation: shadowMove 5s ease-in-out infinite;
-}
-
-/* ===== Background Glow Layer ===== */
-.chatbot-bg {
-  width: 62px;
-  height: 62px;
-  position: relative;
-  border-radius: 50%;
-  overflow: hidden;
+  cursor: pointer;
   display: flex;
-  align-items: center;
   justify-content: center;
-}
-
-/* Pulse Lines */
-.pulse-lines::before {
-  content: "";
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  background: repeating-conic-gradient(
-    from 0deg,
-    rgba(255,255,255,0.18) 0deg,
-    rgba(255,255,255,0) 12deg
-  );
-  animation: pulseLines 6s linear infinite;
-  opacity: 0.4;
-}
-
-/* Rotating glow layer */
-.bg-light {
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  background: conic-gradient(from 0deg, #6e8cff, #3b56ff, #6e8cff);
-  animation: rotateLight 8s linear infinite;
-  opacity: 0.25;
-}
-
-/* ===== Robot Body ===== */
-.chatbot-body {
-  position: relative;
-  width: 40px;
-  height: 42px;
-  background: linear-gradient(145deg, #f8faff, #cad3ff);
-  border-radius: 18px;
-  box-shadow:
-    inset 0 -4px 10px rgba(0,0,0,0.15),
-    0 3px 6px rgba(0,0,0,0.1);
-  display: flex;
   align-items: center;
-  justify-content: center;
-  animation: heartbeatGlow 4s ease-in-out infinite;
+
+  /* ROBOT LEBIH HIDUP */
+  animation: float 4s ease-in-out infinite, idleTilt 6s ease-in-out infinite;
 }
 
-/* ===== Face ===== */
-.chatbot-face {
-  width: 30px;
-  height: 20px;
-  background: linear-gradient(180deg, #193bff 0%, #132cad 100%);
-  border-radius: 10px;
+@keyframes idleTilt {
+  0%,100% { transform: rotate(0deg); }
+  50% { transform: rotate(1.5deg); }
+}
+
+/* ======================== ROBOT CHIBI ======================== */
+.robot-chibi {
   position: relative;
-  overflow: hidden;
-  box-shadow: inset 0 0 8px rgba(255,255,255,0.25);
-  opacity: 1;
-  transition: opacity .55s ease;
+  width: 105px;
+  height: 140px;
 }
 
-/* Reflection Shine */
-.reflection {
+/* Floating */
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ANTENA */
+.antenna-stick {
+  width: 8px;
+  height: 22px;
+  background: #222;
+  border-radius: 4px;
   position: absolute;
-  top: 0;
-  left: -40px;
-  width: 35px;
-  height: 20px;
-  background: linear-gradient(100deg, transparent 0%, rgba(255,255,255,0.5) 50%, transparent 100%);
-  transform: skewX(-20deg);
-  animation: reflectionMove 4.5s ease-in-out infinite;
-  opacity: 0.35;
-}
-
-/* ===== Eyes ===== */
-.eye {
-  position: absolute;
-  top: 5px;
-  width: 5px;
-  height: 5px;
-  background: radial-gradient(circle, #8cd2ff 40%, #3d7eff 100%);
-  border-radius: 50%;
-  animation: blink 6s infinite, lookAround 5s ease-in-out infinite;
-  transition: transform 0.2s ease;
-}
-.eye.left { left: 6px; }
-.eye.right { right: 6px; }
-
-.chatbot-wrapper:hover .eye {
-  transform: scale(1.25);
-}
-
-/* ===== Smile ===== */
-.smile {
-  position: absolute;
-  bottom: 2px;
+  top: -10px;
   left: 50%;
   transform: translateX(-50%);
-  width: 12px;
-  height: 5px;
-  border-bottom: 2px solid #6cb0ff;
-  border-radius: 0 0 10px 10px;
-  animation: smileWiden 3s ease-in-out infinite;
-  transition: width 0.2s ease;
-}
-.chatbot-wrapper:hover .smile {
-  width: 18px;
+  animation: headSway 3s ease-in-out infinite;
 }
 
-/* ===== AI Text ===== */
-.chatbot-text {
-  position: absolute;
-  font-size: 18px;
-  font-weight: bold;
-  color: #1976D2;
-  text-shadow: 0 0 8px rgba(255,255,255,0.8);
-  opacity: 0;
-  transition: opacity .55s ease;
-}
-
-/* Flare Effect */
-.flare {
-  position: absolute;
-  width: 140%;
-  height: 140%;
-  background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 70%);
+.antenna-ball {
+  width: 20px;
+  height: 20px;
+  background: #ffcf2d;
+  border: 5px solid #222;
   border-radius: 50%;
-  top: -20%;
-  left: -20%;
-  transform: scale(0);
-  opacity: 0;
-  animation: flarePulse 6s ease-in-out infinite;
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: antennaPulse 1.8s ease-in-out infinite, antennaBlink 4s infinite;
 }
 
-/* ===== Animations ===== */
-@keyframes idleFloat {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+/* kedip seperti LED */
+@keyframes antennaBlink {
+  0%,100% { filter: brightness(1); }
+  50% { filter: brightness(1.9); }
 }
-@keyframes shadowMove {
+
+@keyframes antennaPulse {
+  0%,100% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.18); }
+}
+
+/* HEAD */
+.head {
+  width: 95px;
+  height: 75px;
+  background: #f4f4f4;
+  border: 6px solid #222;
+  border-radius: 26px;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: headSway 3s ease-in-out infinite;
+
+  /* glow lembut */
+  box-shadow: 0 0 10px rgba(255, 230, 120, 0.4);
+}
+
+/* Ayunan kepala natural */
+@keyframes headSway {
+  0%,100% { transform: translateX(-50%) rotate(0deg); }
+  50% { transform: translateX(-50%) rotate(2deg); }
+}
+
+/* VISOR */
+.visor {
+  width: 78px;
+  height: 46px;
+  background: #0f0f0f;
+  border-radius: 20px;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 4px;
+  overflow: hidden;
+
+  /* efek layar digital */
+  box-shadow: inset 0 0 15px rgba(255, 240, 120, 0.25);
+}
+
+.eyes-wrap {
+  display: flex;
+  gap: 12px;
+  margin-top: 2px;
+}
+
+/* MOUTH hidup */
+.mouth {
+  position: absolute;
+  bottom: 5px;
+  width: 22px;
+  height: 6px;
+  background: #ffcf2d;
+  border-radius: 20px;
+  transition: all 0.25s ease-in-out;
+
+  /* napas kecil */
+  animation: mouthBreath 3.5s ease-in-out infinite;
+}
+
+@keyframes mouthBreath {
   0%,100% { transform: scale(1); }
-  50% { transform: scale(1.25); }
+  50% { transform: scale(1.15); }
 }
-@keyframes rotateLight {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+
+/* EYES */
+.eye-left, .eye-right {
+  width: 18px;
+  height: 18px;
+  background: #ffcf2d;
+  border-radius: 50%;
+  transition: all 0.25s ease-in-out;
+
+  animation: blink 6s infinite, eyeMove 5s ease-in-out infinite, microMove 2.4s infinite ease-in-out;
 }
-@keyframes pulseLines {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(-360deg); }
+
+/* micro gerakan lucu */
+@keyframes microMove {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(1px); }
 }
-@keyframes heartbeatGlow {
-  0%,100% { box-shadow: 0 0 4px rgba(70,140,255,0.28); }
-  50% { box-shadow: 0 0 12px rgba(70,140,255,0.45); }
-}
-@keyframes reflectionMove {
-  0%,100% { left: -40px; }
-  50% { left: 35px; }
-}
+
 @keyframes blink {
-  0%, 94%, 100% { height: 5px; }
-  96% { height: 1.5px; }
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
 }
-@keyframes lookAround {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(1.3px); }
-  75% { transform: translateX(-1.3px); }
+
+@keyframes eyeMove {
+  0%,100% { transform: translateX(0); }
+  40% { transform: translateX(2px); }
+  70% { transform: translateX(-2px); }
 }
-@keyframes smileWiden {
-  0%,100% { width: 12px; }
-  50% { width: 16px; }
+
+/* BODY dengan animasi napas */
+.body {
+  width: 70px;
+  height: 55px;
+  background: #e3e3e3;
+  border: 6px solid #222;
+  border-radius: 26px;
+  position: absolute;
+  top: 82px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: bodyWobble 3s ease-in-out infinite, bodyBreath 4s ease-in-out infinite;
 }
-@keyframes flarePulse {
-  0%,40% { transform: scale(0); opacity: 0; }
-  50% { transform: scale(1.2); opacity: 0.6; filter: blur(4px); }
-  70% { transform: scale(1); opacity: 0.3; }
-  90%,100% { transform: scale(0); opacity: 0; }
+
+@keyframes bodyBreath {
+  0%,100% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.03); }
 }
+
+@keyframes bodyWobble {
+  0%,100% { transform: translateX(-50%) rotate(0deg); }
+  50% { transform: translateX(-50%) rotate(-1.5deg); }
+}
+
+.body-light {
+  width: 36px;
+  height: 24px;
+  background: #ffcf2d;
+  border-radius: 10px;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 900;
+  color: #000;
+  letter-spacing: 0.6px;
+
+  /* glow */
+  text-shadow:
+     0 0 4px rgba(255, 240, 120, 1),
+     0 0 8px rgba(255, 240, 140, 0.8);
+
+  animation: aiGlow 1.8s ease-in-out infinite, aiPulse 3s ease-in-out infinite;
+}
+
+@keyframes aiPulse {
+  0%,100% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.07); }
+}
+
+/* ARMS */
+.arm {
+  width: 28px;
+  height: 38px;
+  background: #e3e3e3;
+  border: 6px solid #222;
+  border-radius: 20px;
+  position: absolute;
+  top: 86px;
+}
+
+.arm.left {
+  left: -4px;
+  animation: armLeft 3s ease-in-out infinite;
+}
+
+.arm.right {
+  right: -4px;
+  animation: armRight 3s ease-in-out infinite;
+}
+
+@keyframes armLeft {
+  0%,100% { transform: rotate(0deg); }
+  50% { transform: rotate(6deg); }
+}
+
+@keyframes armRight {
+  0%,100% { transform: rotate(0deg); }
+  50% { transform: rotate(-4deg); }
+}
+
+/* LEGS */
+.leg {
+  width: 28px;
+  height: 24px;
+  background: #e3e3e3;
+  border: 6px solid #222;
+  border-radius: 14px;
+  position: absolute;
+  top: 138px;
+  animation: footBounce 4s ease-in-out infinite;
+}
+
+.leg.left { left: 16px; }
+.leg.right { right: 16px; }
+
+@keyframes footBounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+
+/* Hover senyum */
+.chatbot-wrapper:hover .eye-left,
+.chatbot-wrapper:hover .eye-right {
+  transform: scale(1.35) !important;
+}
+
+/* Scale robot pada desktop */
+@media (min-width: 768px) {
+  .chatbot-wrapper {
+    transform: scale(0.65) !important;
+    transform-origin: bottom right !important;
+  }
+}
+
+
 </style>
+
+
+
+
 
 
 
@@ -7250,7 +7371,6 @@ function goHome() {
 
 </body>
 </html>
-
 
 
 
