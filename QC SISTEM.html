@@ -2695,7 +2695,7 @@ function filterManualList(input, tabId) {
       <!-- Foto Acuan -->
       <div class="form-group">
         <label>Foto Acuan</label>
-        <label for="spvFoto">📸 Pilih Foto:</label>
+        <label for="spvFoto">📁 Pilih File:</label>
         <input type="file" id="spvFoto" accept="image/*">
       </div>
 
@@ -2708,7 +2708,7 @@ function filterManualList(input, tabId) {
       <!-- Foto Temuan -->
       <div class="form-group">
         <label>Foto Temuan</label>
-        <label for="spvFoto1">📷 Pilih Foto:</label>
+        <label for="spvFoto1">📁 Pilih File:</label>
         <input type="file" id="spvFoto1" accept="image/*">
       </div>
 
@@ -3307,7 +3307,7 @@ if (spvNoKS) {
       <!-- Foto Permasalahan -->
       <div class="form-group">
         <label>Foto Permasalahan</label>
-        <label for="meetingFoto">📷 Pilih Foto:</label>
+        <label for="meetingFoto">📁 Pilih File:</label>
         <input type="file" id="meetingFoto" accept="image/*">
       </div>
 
@@ -6383,20 +6383,30 @@ function updateSPVDateTime() {
   document.getElementById('spvJam').value = `${hh}:${min}:${ss}`;
 }
 
-/* ====================== UPPERCASE INPUT ====================== */
+/* ====================== UPPERCASE INPUT AMAN ====================== */
 function setupUppercaseInputs() {
-  const inputs = document.querySelectorAll('#spvForm input[type="text"], #spvForm textarea');
+  const inputs = document.querySelectorAll('#spvForm input[type="text"], #spvForm textarea, #spvTable input[type="text"], #spvTable textarea');
   inputs.forEach(el => {
-    el.removeEventListener('input', el._uppercaseListener);
-    const listener = () => el.value = el.value.toUpperCase();
+    if (el._uppercaseListener) el.removeEventListener('input', el._uppercaseListener);
+
+    const listener = (e) => {
+      const start = e.target.selectionStart;
+      const end = e.target.selectionEnd;
+      e.target.value = e.target.value.toUpperCase();
+      e.target.setSelectionRange(start, end);
+    };
+
     el.addEventListener('input', listener);
     el._uppercaseListener = listener;
+
+    el.style.textTransform = 'uppercase';
   });
 }
 
 /* ====================== FILE TO BASE64 ====================== */
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
+    if (!file) return resolve("");
     const reader = new FileReader();
     reader.onload = () => resolve(reader.result);
     reader.onerror = reject;
@@ -6414,10 +6424,10 @@ async function submitSPV(e) {
     action: "add",
     tanggal: document.getElementById('spvTanggal').value,
     jam: document.getElementById('spvJam').value,
-    namaOrder: document.getElementById('spvOrder').value.trim().toUpperCase(),
-    noKS: document.getElementById('spvNoKS').value.trim().toUpperCase(),
-    ket: document.getElementById('spvKet').value.trim().toUpperCase(),
-    ket1: document.getElementById('spvKet1').value.trim().toUpperCase(),
+    namaOrder: (document.getElementById('spvOrder').value || '').trim().toUpperCase(),
+    noKS: (document.getElementById('spvNoKS').value || '').trim().toUpperCase(),
+    ket: (document.getElementById('spvKet').value || '').trim().toUpperCase(),
+    ket1: (document.getElementById('spvKet1').value || '').trim().toUpperCase(),
     namaQC: document.getElementById('spvNama').value,
     proses: document.getElementById('spvProses').value,
     foto: document.getElementById('spvFoto').files[0] ? await fileToBase64(document.getElementById('spvFoto').files[0]) : "",
@@ -6434,40 +6444,29 @@ async function submitSPV(e) {
   document.getElementById('spvForm').reset();
   spinner.style.display = "flex";
 
-  fetch(WEBAPP_URL, {
-    method: "POST",
-    body: new URLSearchParams({ payload: JSON.stringify(payload) })
-  })
-  .then(res => res.text())
-  .then(() => {
-    spinner.style.display = "none";
+  try {
+    await fetch(WEBAPP_URL, {
+      method: "POST",
+      body: new URLSearchParams({ payload: JSON.stringify(payload) })
+    });
     alert("✅ Data SPV berhasil dikirim!");
     loadSPV();
-  })
-  .catch(err => {
-    spinner.style.display = "none";
+  } catch (err) {
     alert("❌ Gagal mengirim data SPV!");
     console.error(err);
-  });
+  } finally { spinner.style.display = "none"; }
 }
 
 /* ====================== LOAD DATA HASIL + EDIT ====================== */
 function loadSPV() {
   const tbody = document.querySelector('#spvTable tbody');
   if (!tbody) return;
-
-  // ===== Spinner sama seperti Meeting =====
   let spinner = document.getElementById("spvLoadingSpinner");
   if (!spinner) {
     spinner = document.createElement("div");
     spinner.id = "spvLoadingSpinner";
     spinner.style.display = "none";
-    spinner.innerHTML = `
-      <div style="text-align:center; padding:10px;">
-        <div class="spinner"></div>
-        <p style="font-size:0.9rem; color:#555; margin-top:6px;">Memuat Data QC</p>
-      </div>
-    `;
+    spinner.innerHTML = `<div style="text-align:center; padding:10px;"><div class="spinner"></div><p style="font-size:0.9rem; color:#555; margin-top:6px;">Memuat Data QC</p></div>`;
     tbody.parentElement.insertAdjacentElement("beforebegin", spinner);
   }
 
@@ -6479,7 +6478,7 @@ function loadSPV() {
       let data;
       try { data = JSON.parse(text); }
       catch { const match = text.match(/\((.*)\)/); if (match) data = JSON.parse(match[1]); }
-      if (!data) { console.warn("Format data SPV tidak dikenali:", text); spinner.style.display = "none"; return; }
+      if (!data) { spinner.style.display = "none"; return; }
 
       const list = data.data || data || [];
       tbody.innerHTML = "";
@@ -6509,7 +6508,6 @@ function loadSPV() {
     .finally(() => spinner.style.display = "none");
 }
 
-
 /* ====================== ENABLE EDIT ====================== */
 function enableSPVEdit() {
   document.querySelectorAll("#spvTable tbody tr").forEach((row, rowIndex) => {
@@ -6534,7 +6532,6 @@ function enableSPVEdit() {
 
           const label = document.createElement("label");
           label.textContent = "📁 Pilih File";
-          label.style.display = "inline-block";
           label.style.background = "#00bcd4";
           label.style.color = "#fff";
           label.style.padding = "6px 10px";
@@ -6579,8 +6576,8 @@ function enableSPVEdit() {
           cell.innerHTML = "";
           cell.appendChild(textarea);
         } 
-        // ===== Nama QC (Dropdown) =====
-        else if (i === 8) {
+        // ===== Nama QC / Proses (Dropdown) =====
+        else if (i === 8 || i === 9) {
           const select = document.createElement("select");
           select.style.width = "100%";
           select.style.padding = "6px";
@@ -6588,7 +6585,10 @@ function enableSPVEdit() {
           select.style.border = "1px solid #ccc";
           select.style.fontSize = "13px";
 
-          const options = ["NANI","ANJANI","SUCI","ANOM","IRNA","MARWAN","KIKI","MARTINI","KRESTIN","ISMIE"];
+          let options = [];
+          if (i === 8) options = ["NANI","ANJANI","SUCI","ANOM","IRNA","MARWAN","KIKI","MARTINI","KRESTIN","ISMIE"];
+          else options = ["QC BAPRO","QC CETAK","QC FINISHING","QC LEM","RETUR"];
+
           options.forEach(opt => {
             const option = document.createElement("option");
             option.value = opt;
@@ -6599,28 +6599,7 @@ function enableSPVEdit() {
 
           cell.innerHTML = "";
           cell.appendChild(select);
-        }
-        // ===== Proses (Dropdown) =====
-        else if (i === 9) {
-          const select = document.createElement("select");
-          select.style.width = "100%";
-          select.style.padding = "6px";
-          select.style.borderRadius = "6px";
-          select.style.border = "1px solid #ccc";
-          select.style.fontSize = "13px";
-
-          const options = ["QC BAPRO","QC CETAK","QC FINISHING","QC LEM","RETUR"];
-          options.forEach(opt => {
-            const option = document.createElement("option");
-            option.value = opt;
-            option.textContent = opt;
-            if (opt === value) option.selected = true;
-            select.appendChild(option);
-          });
-
-          cell.innerHTML = "";
-          cell.appendChild(select);
-        }
+        } 
         // ===== Input teks biasa =====
         else {
           const input = document.createElement("input");
@@ -6628,13 +6607,14 @@ function enableSPVEdit() {
           input.value = value;
           input.style.width = "100%";
 
-          // Tanggal dan Jam readonly
           if (i === 0 || i === 3) input.setAttribute('readonly', true);
 
           cell.innerHTML = "";
           cell.appendChild(input);
         }
       }
+
+      setupUppercaseInputs(); // pastikan semua input edit otomatis uppercase
 
       // ===== Tombol aksi =====
       const aksiCell = row.cells[10];
@@ -6655,11 +6635,11 @@ function enableSPVEdit() {
         spinner.style.display = "inline";
         const updated = {
           tanggal: row.cells[0].querySelector("input")?.value || row.cells[0].textContent,
-          namaOrder: row.cells[1].querySelector("input")?.value || row.cells[1].textContent,
-          noKS: row.cells[2].querySelector("input")?.value || row.cells[2].textContent,
+          namaOrder: (row.cells[1].querySelector("input")?.value || row.cells[1].textContent).toUpperCase(),
+          noKS: (row.cells[2].querySelector("input")?.value || row.cells[2].textContent).toUpperCase(),
           jam: row.cells[3].querySelector("input")?.value || row.cells[3].textContent,
-          ket: row.cells[4].querySelector("textarea")?.value || row.cells[4].textContent,
-          ket1: row.cells[6].querySelector("textarea")?.value || row.cells[6].textContent,
+          ket: (row.cells[4].querySelector("textarea")?.value || row.cells[4].textContent).toUpperCase(),
+          ket1: (row.cells[6].querySelector("textarea")?.value || row.cells[6].textContent).toUpperCase(),
           namaQC: row.cells[8].querySelector("select")?.value || row.cells[8].textContent,
           proses: row.cells[9].querySelector("select")?.value || row.cells[9].textContent,
           foto: row.cells[5].querySelector("input")?.files[0] ? await fileToBase64(row.cells[5].querySelector("input").files[0]) : null,
@@ -6686,7 +6666,6 @@ function enableSPVEdit() {
         .finally(() => spinner.style.display = "none");
       };
 
-      // ===== Batal edit =====
       aksiCell.querySelector(".cancel-btn").onclick = () => {
         if (!confirm("Batalkan edit? Semua perubahan akan hilang!")) return;
         row._original.forEach((html, i) => (row.cells[i].innerHTML = html));
@@ -6695,8 +6674,6 @@ function enableSPVEdit() {
     };
   });
 }
-
-
 
 /* ====================== FORMAT ====================== */
 function formatTanggal(tgl) { if (!tgl) return ""; const parts = tgl.split("-"); return parts.length === 3 ? `${parts[2]}-${parts[1]}-${parts[0]}` : tgl; }
@@ -6726,61 +6703,32 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-/* ====================== FILTER / SEARCH DATA ====================== */
-document.addEventListener('DOMContentLoaded', () => {
-  const searchInput = document.getElementById('spvSearch');
-  if (!searchInput) return;
-  searchInput.addEventListener('keyup', () => {
-    const filter = searchInput.value.toUpperCase();
-    document.querySelectorAll('#spvTable tbody tr').forEach(row => {
-      const tanggal = (row.cells[0]?.textContent || '').toUpperCase();
-      const namaOrder = (row.cells[1]?.textContent || '').toUpperCase();
-      const noKS = (row.cells[2]?.textContent || '').toUpperCase();
-      const namaQC = (row.cells[8]?.textContent || '').toUpperCase();
-      const proses = (row.cells[9]?.textContent || '').toUpperCase();
-      const match = tanggal.includes(filter) || namaOrder.includes(filter) || noKS.includes(filter) || namaQC.includes(filter) || proses.includes(filter);
-      row.style.display = match ? '' : 'none';
-    });
-  });
-});
 
-// ====================== SCROLL OTOMATIS QC REGISTER ======================
+/* ====================== SCROLL OTOMATIS KE BARIS TERAKHIR ====================== */
 document.addEventListener('DOMContentLoaded', () => {
   const tbody = document.querySelector('#spvTable tbody');
   if (!tbody) return;
 
-  // Observer untuk scroll otomatis saat baris pertama muncul
-  const observer = new MutationObserver(() => {
-    const rows = tbody.querySelectorAll('tr');
-    if (rows.length) {
-      rows[rows.length - 1].scrollIntoView({ behavior: 'smooth', block: 'end' });
-    }
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach(mutation => {
+      if (mutation.addedNodes.length > 0) {
+        const rows = tbody.querySelectorAll('tr');
+        if (rows.length) {
+          const lastRow = rows[rows.length - 1];
+          // scroll hanya jika tidak ada input aktif di table
+          if (!tbody.querySelector('input:focus, textarea:focus, select:focus')) {
+            lastRow.scrollIntoView({ behavior: 'smooth', block: 'end' });
+          }
+        }
+      }
+    });
   });
 
   observer.observe(tbody, { childList: true });
 });
 
-// ===== Patch rapi otomatis tinggi row saat edit inline =====
-function adjustSPVRowHeight(row) {
-  const tds = Array.from(row.cells).slice(0, 10); // hanya kolom data
-  let maxHeight = 0;
-
-  // Hitung tinggi maksimal
-  tds.forEach(td => {
-    td.style.height = 'auto'; // reset dulu
-    const el = td.querySelector('input, textarea, div');
-    if (el) {
-      const h = el.scrollHeight;
-      if (h > maxHeight) maxHeight = h;
-    }
-  });
-
-  // Terapkan tinggi ke semua td
-  tds.forEach(td => td.style.height = maxHeight + 'px');
-}
-
-
 </script>
+
 
 
 
@@ -6821,14 +6769,27 @@ function fileToBase64(file){
   });
 }
 
-// ===== UPPERCASE INPUT =====
+// ===== UPPERCASE INPUT GLOBAL (TANPA CURSOR LONCAT) =====
 function setupMeetingUppercase(){
-  const inputs = document.querySelectorAll('#meetingForm input[type="text"], #meetingForm textarea');
+  const inputs = document.querySelectorAll(
+    '#meetingForm input[type="text"], #meetingForm textarea, ' +
+    '#meetingTable input[type="text"], #meetingTable textarea'
+  );
+
   inputs.forEach(el=>{
-    el.removeEventListener('input', el._uppercaseListener);
-    const listener = ()=> el.value = el.value.toUpperCase();
+    if(el._uppercaseListener) el.removeEventListener('input', el._uppercaseListener);
+
+    const listener = (e)=>{
+      const start = e.target.selectionStart;
+      const end = e.target.selectionEnd;
+      e.target.value = e.target.value.toUpperCase();
+      e.target.setSelectionRange(start, end);
+    };
+
     el.addEventListener('input', listener);
     el._uppercaseListener = listener;
+
+    el.style.textTransform = 'uppercase';
   });
 }
 
@@ -6901,7 +6862,7 @@ async function submitMeeting(e){
 
   try{
     await fetch(WEBAPP_URL,{
-      method:"POST",
+      method: "POST",
       body: new URLSearchParams({payload:JSON.stringify(payload)})
     });
     alert("✅ Data Meeting berhasil dikirim!");
@@ -6953,32 +6914,31 @@ async function loadMeeting(){
       `;
       tbody.appendChild(tr);
 
-// ===== Tombol Share WA =====
-const shareBtn = tr.querySelector(".share-btn");
-shareBtn.onclick = ()=>{
-  let textWA = "";
-  const br = "\n\n";  // spasi antar kolom
+      // Tombol Share WA
+      const shareBtn = tr.querySelector(".share-btn");
+      shareBtn.onclick = ()=>{
+        let textWA = "";
+        const br = "\n\n";
 
-  textWA += `📅 Tanggal:\n${formatTanggal(item.tanggal)}${br}`;
-  textWA += `⏰ Jam:\n${formatJam(item.jam)}${br}`;
-  textWA += `📌 Nama Meeting:\n${item.namaMeeting || '-'}${br}`;
-  textWA += `📝 Keterangan Foto:\n${item.ket || '-'}${br}`;
-  textWA += `🔍 Akar Masalah:\n${item.akar || '-'}${br}`;
-  textWA += `🛠 Tindakan:\n${item.tindakan || '-'}${br}`;
-  textWA += `📚 Catatan:\n${item.catatan || '-'}${br}`;
-  textWA += `👥 Peserta:\n${item.peserta || '-'}${br}`;
+        textWA += `📅 Tanggal:\n${formatTanggal(item.tanggal)}${br}`;
+        textWA += `⏰ Jam:\n${formatJam(item.jam)}${br}`;
+        textWA += `📌 Nama Meeting:\n${item.namaMeeting || '-'}${br}`;
+        textWA += `📝 Keterangan Foto:\n${item.ket || '-'}${br}`;
+        textWA += `🔍 Akar Masalah:\n${item.akar || '-'}${br}`;
+        textWA += `🛠 Tindakan:\n${item.tindakan || '-'}${br}`;
+        textWA += `📚 Catatan:\n${item.catatan || '-'}${br}`;
+        textWA += `👥 Peserta:\n${item.peserta || '-'}${br}`;
 
-  if(item.fotoUrl){
-    textWA += `📷 Foto:\n${item.fotoUrl}${br}`;
-  }
+        if(item.fotoUrl){
+          textWA += `📷 Foto:\n${item.fotoUrl}${br}`;
+        }
 
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  const url = isMobile 
-    ? `https://wa.me/?text=${encodeURIComponent(textWA)}`
-    : `https://web.whatsapp.com/send?text=${encodeURIComponent(textWA)}`;
-
-  window.open(url, "_blank");
-    };
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        const url = isMobile 
+          ? `https://wa.me/?text=${encodeURIComponent(textWA)}`
+          : `https://web.whatsapp.com/send?text=${encodeURIComponent(textWA)}`;
+        window.open(url, "_blank");
+      };
     });
 
     enableMeetingEdit();
@@ -7051,6 +7011,9 @@ function enableMeetingEdit(){
         }
       }
 
+      // ===== PANGGIL UPPERCASE SETUP UNTUK EDIT =====
+      setupMeetingUppercase();
+
       const aksiCell = row.cells[9];
       aksiCell.innerHTML=`<button class="save-btn">💾 Simpan</button> <button class="cancel-btn">❌ Batal</button>`;
       const spinner = document.createElement("span"); spinner.style.display="none"; spinner.textContent=" ⏳ Menyimpan..."; aksiCell.appendChild(spinner);
@@ -7113,7 +7076,32 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 
 
+/* ====================== SCROLL OTOMATIS QC MEETING ====================== */
+document.addEventListener('DOMContentLoaded', () => {
+  const tbody = document.querySelector('#meetingTable tbody');
+  if (!tbody) return;
+
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach(mutation => {
+      if (mutation.addedNodes.length > 0) {
+        const rows = tbody.querySelectorAll('tr');
+        if (rows.length) {
+          const lastRow = rows[rows.length - 1];
+          // scroll hanya jika tidak ada input/textarea/select aktif
+          if (!tbody.querySelector('input:focus, textarea:focus, select:focus')) {
+            lastRow.scrollIntoView({ behavior: 'smooth', block: 'end' });
+          }
+        }
+      }
+    });
+  });
+
+  observer.observe(tbody, { childList: true });
+});
+
 </script>
+
+
 
 
 <script>
