@@ -3606,6 +3606,9 @@ if (spvNoKS) {
 <div class="chatbot-wrapper" onclick="openChatbot()">
   <div class="robot-chibi">
 
+    <!-- PANEL TEKS BICARA -->
+    <div class="speech-panel" id="speechPanel">Halo!</div>
+
     <!-- Antena -->
     <div class="antenna-stick"></div>
     <div class="antenna-ball"></div>
@@ -3704,6 +3707,33 @@ document.addEventListener("DOMContentLoaded", () => {
     pick();
   }, 2500);
 });
+
+/* ============================================================
+   =============== PANEL TEKS BICARA OTOMATIS =================
+   ============================================================ */
+document.addEventListener("DOMContentLoaded", () => {
+  const panel = document.getElementById("speechPanel");
+
+  const messages = [
+    "Halo 👋",
+    "Saya siap bantu!",
+    "Ada yang bisa dibantu?",
+    "Klik aku ya!",
+    "AI Mode ON!",
+    "AI siap!"
+  ];
+
+  function showSpeech() {
+    panel.classList.add("show");
+    panel.textContent = messages[Math.floor(Math.random() * messages.length)];
+
+    setTimeout(() => {
+      panel.classList.remove("show");
+    }, 2600);
+  }
+
+  setInterval(showSpeech, 5000);
+});
 </script>
 
 <style>
@@ -3719,7 +3749,6 @@ document.addEventListener("DOMContentLoaded", () => {
   justify-content: center;
   align-items: center;
 
-  /* ROBOT LEBIH HIDUP */
   animation: float 4s ease-in-out infinite, idleTilt 6s ease-in-out infinite;
 }
 
@@ -3735,6 +3764,40 @@ document.addEventListener("DOMContentLoaded", () => {
   height: 140px;
 }
 
+/* ============================================================
+      UPDATED SPEECH PANEL — BESAR + GAP AMAN + RESPONSIF
+   ============================================================ */
+.speech-panel {
+  position: absolute;
+  top: -30px;
+  right: 140px;        /* jarak lebih jauh lagi dari robot */
+
+  max-width: 260px;    /* PANEL SANGAT BESAR */
+  background: #ffffff;
+  border: 5px solid #000;
+  padding: 16px 20px;  /* lebih lega */
+  border-radius: 18px;
+
+  font-size: 20px;     /* UKURAN TEKS SANGAT BESAR */
+  font-weight: 900;
+  color: #000;
+  line-height: 1.45;   /* lebih enak dibaca */
+
+  opacity: 0;
+  transform: translateX(10px);
+  pointer-events: none;
+  transition: all 0.35s ease;
+  box-shadow: 0 0 16px rgba(0,0,0,0.32);
+
+  word-wrap: break-word;
+}
+
+.speech-panel.show {
+  opacity: 1;
+  transform: translateX(0px);
+}
+
+
 /* Floating */
 @keyframes float {
   0%,100% { transform: translateY(0); }
@@ -3745,7 +3808,7 @@ document.addEventListener("DOMContentLoaded", () => {
 .antenna-stick {
   width: 8px;
   height: 22px;
-  background: #000; /* hitam */
+  background: #000;
   border-radius: 4px;
   position: absolute;
   top: -10px;
@@ -3757,8 +3820,8 @@ document.addEventListener("DOMContentLoaded", () => {
 .antenna-ball {
   width: 20px;
   height: 20px;
-  background: #00cfff; /* biru muda */
-  border: 5px solid #000; /* hitam */
+  background: #00cfff;
+  border: 5px solid #000;
   border-radius: 50%;
   position: absolute;
   top: -28px;
@@ -3782,20 +3845,17 @@ document.addEventListener("DOMContentLoaded", () => {
 .head {
   width: 95px;
   height: 75px;
-  background: #ffffff; /* putih */
-  border: 6px solid #000; /* hitam */
+  background: #ffffff;
+  border: 6px solid #000;
   border-radius: 26px;
   position: absolute;
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
   animation: headSway 3s ease-in-out infinite;
-
-  /* glow biru */
   box-shadow: 0 0 12px rgba(0, 207, 255, 0.4);
 }
 
-/* Ayunan kepala natural */
 @keyframes headSway {
   0%,100% { transform: translateX(-50%) rotate(0deg); }
   50% { transform: translateX(-50%) rotate(2deg); }
@@ -3805,7 +3865,7 @@ document.addEventListener("DOMContentLoaded", () => {
 .visor {
   width: 78px;
   height: 46px;
-  background: #111; /* hitam */
+  background: #111;
   border-radius: 20px;
   position: absolute;
   top: 10px;
@@ -3817,12 +3877,9 @@ document.addEventListener("DOMContentLoaded", () => {
   justify-content: flex-start;
   padding-top: 4px;
   overflow: hidden;
-
-  /* efek layar digital biru */
   box-shadow: inset 0 0 15px rgba(0, 207, 255, 0.25);
 }
 
-/* Eyes wrapper */
 .eyes-wrap {
   display: flex;
   gap: 12px;
@@ -3835,7 +3892,7 @@ document.addEventListener("DOMContentLoaded", () => {
   bottom: 5px;
   width: 22px;
   height: 6px;
-  background: #00cfff; /* biru muda */
+  background: #00cfff;
   border-radius: 20px;
   transition: all 0.25s ease-in-out;
   animation: mouthBreath 3.5s ease-in-out infinite;
@@ -3850,7 +3907,7 @@ document.addEventListener("DOMContentLoaded", () => {
 .eye-left, .eye-right {
   width: 18px;
   height: 18px;
-  background: #00cfff; /* biru muda */
+  background: #00cfff;
   border-radius: 50%;
   transition: all 0.25s ease-in-out;
   animation: blink 6s infinite, eyeMove 5s ease-in-out infinite, microMove 2.4s infinite ease-in-out;
@@ -3876,8 +3933,8 @@ document.addEventListener("DOMContentLoaded", () => {
 .body {
   width: 70px;
   height: 55px;
-  background: #ffffff; /* putih */
-  border: 6px solid #000; /* hitam */
+  background: #ffffff;
+  border: 6px solid #000;
   border-radius: 26px;
   position: absolute;
   top: 82px;
@@ -3896,12 +3953,12 @@ document.addEventListener("DOMContentLoaded", () => {
   50% { transform: translateX(-50%) rotate(-1.5deg); }
 }
 
-/* BODY LIGHT (AI) */
+/* BODY LIGHT */
 .body-light {
-  width: 40px;        /* lebih lebar */
-  height: 30px;       /* lebih tinggi */
-  background: #00cfff; /* biru muda */
-  border-radius: 12px; /* sedikit lebih melengkung */
+  width: 40px;
+  height: 30px;
+  background: #00cfff;
+  border-radius: 12px;
   position: absolute;
   bottom: 10px;
   left: 50%;
@@ -3909,18 +3966,17 @@ document.addEventListener("DOMContentLoaded", () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 22px;    /* tulisan AI lebih besar */
+  font-size: 22px;
   font-weight: 900;
-  color: #000;        /* hitam */
+  color: #000;
   letter-spacing: 0.6px;
 
-  /* glow neon */
   text-shadow:
      0 0 6px rgba(0, 207, 255, 1),
      0 0 12px rgba(0, 207, 255, 0.8),
      0 0 18px rgba(0, 207, 255, 0.6);
 
-  animation: aiGlow 1.8s ease-in-out infinite, aiPulse 3s ease-in-out infinite;
+  animation: aiPulse 3s ease-in-out infinite;
 }
 
 @keyframes aiPulse {
@@ -3928,10 +3984,7 @@ document.addEventListener("DOMContentLoaded", () => {
   50% { transform: translateX(-50%) scale(1.07); }
 }
 
-/* =====================================================================
-   ====================  UPDATE: ANIMASI TANGAN BARU   ==================
-   ===================================================================== */
-
+/* ARMS */
 .arm {
   width: 28px;
   height: 38px;
@@ -3940,49 +3993,34 @@ document.addEventListener("DOMContentLoaded", () => {
   border-radius: 20px;
   position: absolute;
   top: 86px;
-
-  /* pusat rotasi biar melambai natural */
-  transform-origin: top center;
 }
 
-/* TANGAN KIRI */
 .arm.left {
   left: -4px;
-  animation: armLeftWave 2.2s ease-in-out infinite;
+  animation: armLeft 3s ease-in-out infinite;
 }
 
-/* TANGAN KANAN */
 .arm.right {
   right: -4px;
-  animation: armRightWave 2.2s ease-in-out infinite;
+  animation: armRight 3s ease-in-out infinite;
 }
 
-/* ANIMASI LENGAN KIRI */
-@keyframes armLeftWave {
-  0%   { transform: rotate(0deg) translateY(0); }
-  25%  { transform: rotate(14deg) translateY(1px); }
-  50%  { transform: rotate(0deg) translateY(0); }
-  75%  { transform: rotate(20deg) translateY(1px); }
-  100% { transform: rotate(0deg); }
+@keyframes armLeft {
+  0%,100% { transform: rotate(0deg); }
+  50% { transform: rotate(6deg); }
 }
 
-/* ANIMASI LENGAN KANAN */
-@keyframes armRightWave {
-  0%   { transform: rotate(0deg) translateY(0); }
-  25%  { transform: rotate(-14deg) translateY(1px); }
-  50%  { transform: rotate(0deg) translateY(0); }
-  75%  { transform: rotate(-20deg) translateY(1px); }
-  100% { transform: rotate(0deg); }
+@keyframes armRight {
+  0%,100% { transform: rotate(0deg); }
+  50% { transform: rotate(-4deg); }
 }
-
-/* ===================================================================== */
 
 /* LEGS */
 .leg {
   width: 28px;
   height: 24px;
-  background: #ffffff; /* putih */
-  border: 6px solid #000; /* hitam */
+  background: #ffffff;
+  border: 6px solid #000;
   border-radius: 14px;
   position: absolute;
   top: 138px;
@@ -3997,13 +4035,12 @@ document.addEventListener("DOMContentLoaded", () => {
   50% { transform: translateY(3px); }
 }
 
-/* Hover senyum */
 .chatbot-wrapper:hover .eye-left,
 .chatbot-wrapper:hover .eye-right {
   transform: scale(1.35) !important;
 }
 
-/* Desktop */
+/* MEDIA RESPONSIVE */
 @media (min-width: 768px) {
   .chatbot-wrapper {
     transform: scale(0.45) !important;
@@ -4011,7 +4048,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 }
 
-/* Tablet */
 @media (max-width: 767px) and (min-width: 481px) {
   .chatbot-wrapper {
     transform: scale(0.85) !important;
@@ -4019,7 +4055,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 }
 
-/* HP */
 @media (max-width: 480px) {
   .chatbot-wrapper {
     transform: scale(0.45) !important;
