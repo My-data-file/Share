@@ -3923,42 +3923,59 @@ document.addEventListener("DOMContentLoaded", () => {
   animation: aiGlow 1.8s ease-in-out infinite, aiPulse 3s ease-in-out infinite;
 }
 
-
 @keyframes aiPulse {
   0%,100% { transform: translateX(-50%) scale(1); }
   50% { transform: translateX(-50%) scale(1.07); }
 }
 
-/* ARMS */
+/* =====================================================================
+   ====================  UPDATE: ANIMASI TANGAN BARU   ==================
+   ===================================================================== */
+
 .arm {
   width: 28px;
   height: 38px;
-  background: #ffffff; /* putih */
-  border: 6px solid #000; /* hitam */
+  background: #ffffff;
+  border: 6px solid #000;
   border-radius: 20px;
   position: absolute;
   top: 86px;
+
+  /* pusat rotasi biar melambai natural */
+  transform-origin: top center;
 }
 
+/* TANGAN KIRI */
 .arm.left {
   left: -4px;
-  animation: armLeft 3s ease-in-out infinite;
+  animation: armLeftWave 2.2s ease-in-out infinite;
 }
 
+/* TANGAN KANAN */
 .arm.right {
   right: -4px;
-  animation: armRight 3s ease-in-out infinite;
+  animation: armRightWave 2.2s ease-in-out infinite;
 }
 
-@keyframes armLeft {
-  0%,100% { transform: rotate(0deg); }
-  50% { transform: rotate(6deg); }
+/* ANIMASI LENGAN KIRI */
+@keyframes armLeftWave {
+  0%   { transform: rotate(0deg) translateY(0); }
+  25%  { transform: rotate(14deg) translateY(1px); }
+  50%  { transform: rotate(0deg) translateY(0); }
+  75%  { transform: rotate(20deg) translateY(1px); }
+  100% { transform: rotate(0deg); }
 }
 
-@keyframes armRight {
-  0%,100% { transform: rotate(0deg); }
-  50% { transform: rotate(-4deg); }
+/* ANIMASI LENGAN KANAN */
+@keyframes armRightWave {
+  0%   { transform: rotate(0deg) translateY(0); }
+  25%  { transform: rotate(-14deg) translateY(1px); }
+  50%  { transform: rotate(0deg) translateY(0); }
+  75%  { transform: rotate(-20deg) translateY(1px); }
+  100% { transform: rotate(0deg); }
 }
+
+/* ===================================================================== */
 
 /* LEGS */
 .leg {
@@ -4010,12 +4027,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 }
 </style>
-
-
-
-
-
-
 
 
 
