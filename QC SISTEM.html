@@ -4054,31 +4054,41 @@ document.addEventListener("DOMContentLoaded", () => {
 .pw-modal[aria-hidden="false"] { visibility: visible; }
 
 /* ======================================================= */
-/*      ✅ PERBAIKAN KHUSUS MOBILE (AGAR RAPI DI HP)     */
+/*   🔥 MOBILE FIX SUPER RAPI — Panel & Ekor PRESISI       */
 /* ======================================================= */
 @media (max-width: 480px) {
 
-  /* Dekatkan panel ke robot */
+  /* Panel lebih dekat, pas seperti di laptop */
   .speech-panel {
-    top: -18px !important;
-    right: 88px !important;
+    top: -12px !important;
+    right: calc(100% + 18px) !important;     /* posisi otomatis relatif robot */
+    transform: none !important;
+    max-width: 150px !important;
+    padding: 12px 14px !important;
   }
 
-  /* Fix ekor agar nempel rapi */
+  /* EKOR KOMIK PRESISI & MENUNJUK KE KEPALA ROBOT */
   .speech-panel::before {
-    right: -42px !important;
-    top: 26px !important;
-    border-left-width: 42px !important;
-    transform: skewY(12deg) !important;
+    right: -38px !important;
+    top: 22px !important;
+
+    border-left-width: 38px !important;
+    border-top-width: 12px !important;
+    border-bottom-width: 12px !important;
+    transform: skewY(10deg) !important;
   }
 
   .speech-panel::after {
-    right: -38px !important;
-    top: 28px !important;
-    border-left-width: 38px !important;
-    transform: skewY(12deg) !important;
+    right: -33px !important;
+    top: 24px !important;
+
+    border-left-width: 33px !important;
+    border-top-width: 10px !important;
+    border-bottom-width: 10px !important;
+    transform: skewY(10deg) !important;
   }
 }
+
 </style>
 
 
@@ -7450,8 +7460,6 @@ function goHome() {
 
 </body>
 </html>
-
-
 
 
 
