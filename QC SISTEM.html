@@ -3602,16 +3602,16 @@ if (spvNoKS) {
 
 
 
-<!-- ======================== Floating Chibi Robot Button ======================== -->
-<div class="chatbot-wrapper" onclick="openChatbot()">
+<!-- ======================== Floating Chibi Robot Button (UPDATED) ======================== -->
+<div class="chatbot-wrapper" role="button" aria-label="Buka chatbot" tabindex="0">
   <div class="robot-chibi">
 
     <!-- PANEL TEKS BICARA -->
-    <div class="speech-panel" id="speechPanel">Halo!</div>
+    <div class="speech-panel" id="speechPanel" aria-live="polite">Halo!</div>
 
     <!-- Antena -->
-    <div class="antenna-stick"></div>
-    <div class="antenna-ball"></div>
+    <div class="antenna-stick" aria-hidden="true"></div>
+    <div class="antenna-ball" aria-hidden="true"></div>
 
     <!-- Kepala -->
     <div class="head">
@@ -3619,125 +3619,192 @@ if (spvNoKS) {
 
         <!-- WRAPPER MATA -->
         <div class="eyes-wrap">
-          <div class="eye-left"></div>
-          <div class="eye-right"></div>
+          <div class="eye-left" aria-hidden="true"></div>
+          <div class="eye-right" aria-hidden="true"></div>
         </div>
 
         <!-- Mulut -->
-        <div class="mouth"></div>
+        <div class="mouth" aria-hidden="true"></div>
 
       </div>
     </div>
 
     <!-- Badan -->
     <div class="body">
-      <div class="body-light">AI</div>
+      <div class="body-light" aria-hidden="true">AI</div>
     </div>
 
     <!-- Tangan -->
-    <div class="arm left"></div>
-    <div class="arm right"></div>
+    <div class="arm left" aria-hidden="true"></div>
+    <div class="arm right" aria-hidden="true"></div>
 
     <!-- Kaki -->
-    <div class="leg left"></div>
-    <div class="leg right"></div>
+    <div class="leg left" aria-hidden="true"></div>
+    <div class="leg right" aria-hidden="true"></div>
 
   </div>
 </div>
 
-<script>
-function openChatbot() {
-  const pass = prompt("Masukkan password untuk membuka Chatbot:");
-  if (pass === "spv123") {
-    window.open("https://www.chatbase.co/chatbot-iframe/xC4UNODh6Z_N6c5NrdqnJ");
-  } else if (pass !== null) {
-    alert("Password salah! Akses ditolak.");
-  }
-}
+<!-- Custom Password Modal (replaces prompt) -->
+<div id="pwModal" class="pw-modal" aria-hidden="true">
+  <div class="pw-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="pwTitle">
+    <h3 id="pwTitle">Masukkan password untuk membuka Chatbot</h3>
+    <input id="pwInput" type="password" placeholder="Password" autocomplete="off" />
+    <div class="pw-actions">
+      <button id="pwOk">Buka</button>
+      <button id="pwCancel">Batal</button>
+    </div>
+    <p class="pw-note">Tip: Gunakan Chatboot Dengan Bijak</p>
+  </div>
+</div>
 
-/* ============================================================
-   ========== EKSPRESI MATA + MULUT HIDUP =====================
-   ============================================================ */
+<script>
+/* ===================== CONFIG ===================== */
+const SPV_PASSWORD = "spv123"; // ubah sesuai kebutuhan
+const CHAT_URL = "https://www.chatbase.co/chatbot-iframe/xC4UNODh6Z_N6c5NrdqnJ";
+
+/* ===================== SINGLE DOM READY ===================== */
 document.addEventListener("DOMContentLoaded", () => {
+  // elements
+  const wrapper = document.querySelector(".chatbot-wrapper");
   const eyeL = document.querySelector(".eye-left");
   const eyeR = document.querySelector(".eye-right");
   const mouth = document.querySelector(".mouth");
+  const panel = document.getElementById("speechPanel");
+  const bodyLight = document.querySelector(".body-light");
+  // modal
+  const modal = document.getElementById("pwModal");
+  const pwInput = document.getElementById("pwInput");
+  const pwOk = document.getElementById("pwOk");
+  const pwCancel = document.getElementById("pwCancel");
 
+  /* ===================== EXPRESSIONS (use style + transforms) ===================== */
+  function resetEyes() {
+    eyeL.style.cssText = eyeR.style.cssText = "width:18px;height:18px;border-radius:50%;transform:translate(0,0);";
+  }
   function expNormal() {
-    eyeL.style.cssText = eyeR.style.cssText =
-      "width:18px;height:18px;border-radius:50%;";
-    mouth.style.cssText =
-      "width:22px;height:6px;border-radius:20px;background:#00cfff;";
+    resetEyes();
+    mouth.style.cssText = "width:22px;height:6px;border-radius:20px;background:#00cfff;transform:translateY(0) scale(1);";
   }
-
   function expWink() {
-    eyeL.style.cssText = "width:18px;height:18px;border-radius:50%;";
-    eyeR.style.cssText = "width:18px;height:5px;border-radius:4px;";
-    mouth.style.cssText =
-      "width:26px;height:10px;border-radius:20px;background:#00cfff;";
+    // wink right (natural: small translate + squish)
+    eyeL.style.cssText = "width:18px;height:18px;border-radius:50%;transform:translateY(1px);";
+    eyeR.style.cssText = "width:18px;height:5px;border-radius:4px;transform:translateY(2px);";
+    mouth.style.cssText = "width:26px;height:10px;border-radius:20px;background:#00cfff;transform:translateY(-2px) scale(1.02);";
   }
-
   function expHappy() {
-    eyeL.style.cssText =
-      "width:18px;height:14px;border-radius:50% 50% 70% 70%;";
-    eyeR.style.cssText =
-      "width:18px;height:14px;border-radius:50% 50% 70% 70%;";
-    mouth.style.cssText =
-      "width:28px;height:16px;border-radius:0 0 20px 20px;background:#00cfff;";
+    eyeL.style.cssText = eyeR.style.cssText = "width:18px;height:14px;border-radius:50% 50% 70% 70%;transform:translateY(-1px);";
+    mouth.style.cssText = "width:28px;height:16px;border-radius:0 0 20px 20px;background:#00cfff;transform:translateY(-3px) scale(1.04);";
   }
-
   function expSurprise() {
-    eyeL.style.cssText = eyeR.style.cssText =
-      "width:26px;height:26px;border-radius:50%;";
-    mouth.style.cssText =
-      "width:16px;height:16px;border-radius:50%;background:#00cfff;";
+    eyeL.style.cssText = eyeR.style.cssText = "width:26px;height:26px;border-radius:50%;transform:translateY(-2px);";
+    mouth.style.cssText = "width:16px;height:16px;border-radius:50%;background:#00cfff;transform:translateY(-2px) scale(1.02);";
   }
-
   function expSleepy() {
-    eyeL.style.cssText = "width:18px;height:6px;border-radius:6px;";
-    eyeR.style.cssText = "width:18px;height:6px;border-radius:6px;";
-    mouth.style.cssText =
-      "width:20px;height:4px;border-radius:4px;background:#00cfff;";
+    eyeL.style.cssText = eyeR.style.cssText = "width:18px;height:6px;border-radius:6px;transform:translateY(1px);";
+    mouth.style.cssText = "width:20px;height:4px;border-radius:4px;background:#00cfff;transform:translateY(0) scale(0.98);";
   }
 
   const moods = [expNormal, expWink, expHappy, expSurprise, expSleepy];
 
-  setInterval(() => {
-    const pick = moods[Math.floor(Math.random() * moods.length)];
-    pick();
-  }, 2500);
-});
+  /* optimized random mood interval (pauses when not visible) */
+  let moodTimer = null;
+  function startMoodCycle() {
+    if (moodTimer) clearInterval(moodTimer);
+    moodTimer = setInterval(() => {
+      const pick = moods[Math.floor(Math.random() * moods.length)];
+      pick();
+    }, 2500);
+  }
+  function stopMoodCycle() {
+    if (moodTimer) clearInterval(moodTimer);
+    moodTimer = null;
+  }
+  startMoodCycle();
 
-/* ============================================================
-   =============== PANEL TEKS BICARA OTOMATIS =================
-   ============================================================ */
-document.addEventListener("DOMContentLoaded", () => {
-  const panel = document.getElementById("speechPanel");
+  /* pause moods when user focuses modal or hovers long */
+  wrapper.addEventListener("mouseenter", () => { stopMoodCycle(); });
+  wrapper.addEventListener("mouseleave", () => { startMoodCycle(); });
 
-const messages = [
-  "Halo 👋😊",
-  "Siap bantu 🔍",
-  "Klik aku 👉",
-  "AI Mode ON ⚡",
-  "Perlu bantuan ❓",
-  "Ayo cari data 📝",
-  "Standby nih 👀",
-];
+  /* ===================== SPEECH PANEL (auto messages + talk-shake) ===================== */
+  const messages = [
+    "Halo 👋",
+    "Siap bantu 🔍",
+    "Klik aku 👉",
+    "AI Mode ON ⚡",
+    "Perlu bantuan ❓",
+    "Ayo cari data 📝",
+    "Standby nih 👀",
+  ];
 
+  let speechTimer = null;
   function showSpeech() {
-    panel.classList.add("show");
+    panel.classList.add("show", "talkShake");
     panel.textContent = messages[Math.floor(Math.random() * messages.length)];
+    // remove talkShake after animation completes (250ms)
+    setTimeout(() => panel.classList.remove("talkShake"), 300);
+    setTimeout(() => panel.classList.remove("show"), 2600);
+  }
+  // start with a small random delay so it feels organic
+  setTimeout(showSpeech, 600);
+  speechTimer = setInterval(showSpeech, 5000);
 
-    setTimeout(() => {
-      panel.classList.remove("show");
-    }, 2600);
+  /* ===================== OPEN CHATBOT (modal-based password) ===================== */
+  function openModal() {
+    modal.setAttribute("aria-hidden", "false");
+    modal.classList.add("open");
+    pwInput.value = "";
+    setTimeout(() => pwInput.focus(), 120);
+  }
+  function closeModal() {
+    modal.setAttribute("aria-hidden", "true");
+    modal.classList.remove("open");
   }
 
-  setInterval(showSpeech, 5000);
+  function tryOpenChat() {
+    const pass = pwInput.value;
+    if (pass === SPV_PASSWORD) {
+      // success
+      closeModal();
+      window.open(CHAT_URL, "_blank");
+    } else {
+      // wrong
+      pwInput.value = "";
+      pwInput.focus();
+      alert("Password salah! Akses ditolak.");
+    }
+  }
+
+  // wrapper click / keyboard enter to open modal
+  function activateWrapper() { openModal(); }
+  wrapper.addEventListener("click", activateWrapper);
+  wrapper.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); activateWrapper(); } });
+
+  // modal buttons
+  pwOk.addEventListener("click", tryOpenChat);
+  pwCancel.addEventListener("click", closeModal);
+  pwInput.addEventListener("keydown", (e) => { if (e.key === "Enter") tryOpenChat(); if (e.key === "Escape") closeModal(); });
+
+  // close modal when clicking outside dialog
+  modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
+
+  /* ===================== accessibility: close modal with ESC globally ===================== */
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      if (modal.classList.contains("open")) closeModal();
+    }
+  });
+
+  /* small cleanup on unload */
+  window.addEventListener("unload", () => {
+    if (moodTimer) clearInterval(moodTimer);
+    if (speechTimer) clearInterval(speechTimer);
+  });
 });
 </script>
 
 <style>
+/* ===================== BASE WRAPPER ===================== */
 .chatbot-wrapper {
   width: 120px;
   height: 150px;
@@ -3749,243 +3816,155 @@ const messages = [
   display: flex;
   justify-content: center;
   align-items: center;
-
   animation: float 4s ease-in-out infinite, idleTilt 6s ease-in-out infinite;
+  outline: none;
 }
 
-@keyframes idleTilt {
-  0%,100% { transform: rotate(0deg); }
-  50% { transform: rotate(1.5deg); }
-}
+/* keyboard focus */
+.chatbot-wrapper:focus { box-shadow: 0 0 0 4px rgba(0,207,255,0.12); border-radius: 12px; }
 
 /* ======================== ROBOT CHIBI ======================== */
-.robot-chibi {
-  position: relative;
-  width: 105px;
-  height: 140px;
-}
+.robot-chibi { position: relative; width: 105px; height: 140px; }
 
-/* ============================================================
-      UPDATED SPEECH PANEL — BESAR + GAP AMAN + RESPONSIF
-   ============================================================ */
+/* SPEECH PANEL (balloon + tail + responsive) */
 .speech-panel {
   position: absolute;
   top: -30px;
-  right: 140px;        /* jarak lebih jauh lagi dari robot */
-
-  max-width: 240px;    /* PANEL SANGAT BESAR */
+  right: 160px;
+  min-width: 220px;
+  max-width: 300px;
   background: #ffffff;
   border: 5px solid #000;
-  padding: 16px 20px;  /* lebih lega */
+  padding: 16px 22px;
   border-radius: 18px;
-
-  font-size: 10px;     /* UKURAN TEKS SANGAT BESAR */
+  font-size: 11px;
   font-weight: 900;
   color: #000;
-  line-height: 1.45;   /* lebih enak dibaca */
-
+  line-height: 1.45;
   opacity: 0;
   transform: translateX(10px);
   pointer-events: none;
   transition: all 0.35s ease;
   box-shadow: 0 0 16px rgba(0,0,0,0.32);
-
   word-wrap: break-word;
 }
 
-.speech-panel.show {
-  opacity: 1;
-  transform: translateX(0px);
+/* ===================== */
+/*   EKOR KOMIK LANCIP   */
+/* ===================== */
+
+/* Outline hitam panjang (ekor komik) */
+.speech-panel::before {
+  content: "";
+  position: absolute;
+  right: -55px;
+  top: 30px;
+  width: 0;
+  height: 0;
+
+  border-left: 55px solid #000;      /* garis luar hitam */
+  border-top: 14px solid transparent;
+  border-bottom: 14px solid transparent;
+
+  transform: skewY(14deg);           /* memberi bentuk komik */
 }
 
+/* Layer putih di atas outline (isi ekor) */
+.speech-panel::after {
+  content: "";
+  position: absolute;
+  right: -49px;
+  top: 33px;
+  width: 0;
+  height: 0;
 
-/* Floating */
-@keyframes float {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  border-left: 49px solid #fff;      /* isi putih */
+  border-top: 11px solid transparent;
+  border-bottom: 11px solid transparent;
+
+  transform: skewY(14deg);
 }
+
+.speech-panel.show { opacity: 1; transform: translateX(0); }
+
+/* talkShake: subtle shake when panel appears */
+.speech-panel.talkShake { animation: talkShake 0.25s ease-in-out; }
+@keyframes talkShake {
+  0%   { transform: translateX(0); }
+  35%  { transform: translateX(2px); }
+  70%  { transform: translateX(-2px); }
+  100% { transform: translateX(0); }
+}
+
+/* Floating & idle tilt */
+@keyframes float { 0%,100% { transform: translateY(0);} 50% { transform: translateY(-8px); } }
+@keyframes idleTilt { 0%,100% { transform: rotate(0deg);} 50% { transform: rotate(1.5deg);} }
+
 
 /* ANTENA */
-.antenna-stick {
-  width: 8px;
-  height: 22px;
-  background: #000;
-  border-radius: 4px;
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  animation: headSway 3s ease-in-out infinite;
-}
-
+.antenna-stick { width: 8px; height: 22px; background: #000; border-radius: 4px; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); animation: headSway 3s ease-in-out infinite; }
 .antenna-ball {
-  width: 20px;
-  height: 20px;
-  background: #00cfff;
-  border: 5px solid #000;
-  border-radius: 50%;
-  position: absolute;
-  top: -28px;
-  left: 50%;
-  transform: translateX(-50%);
-  animation: antennaPulse 1.8s ease-in-out infinite, antennaBlink 4s infinite;
+  width: 20px; height: 20px; background: #00cfff; border: 5px solid #000; border-radius: 50%;
+  position: absolute; top: -28px; left: 50%; transform: translateX(-50%); animation: antennaPulse 1.8s ease-in-out infinite, antennaBlink 4s infinite;
 }
+@keyframes antennaBlink { 0%,100% { filter: brightness(1); } 50% { filter: brightness(1.9); } }
+@keyframes antennaPulse { 0%,100% { transform: translateX(-50%) scale(1);} 50% { transform: translateX(-50%) scale(1.18); } }
 
-/* kedip seperti LED */
-@keyframes antennaBlink {
-  0%,100% { filter: brightness(1); }
-  50% { filter: brightness(1.9); }
-}
-
-@keyframes antennaPulse {
-  0%,100% { transform: translateX(-50%) scale(1); }
-  50% { transform: translateX(-50%) scale(1.18); }
-}
-
-/* HEAD */
+/* HEAD / visor (neon glow added) */
 .head {
-  width: 95px;
-  height: 75px;
-  background: #ffffff;
-  border: 6px solid #000;
-  border-radius: 26px;
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  animation: headSway 3s ease-in-out infinite;
+  width: 95px; height: 75px; background: #ffffff; border: 6px solid #000; border-radius: 26px;
+  position: absolute; top: 10px; left: 50%; transform: translateX(-50%); animation: headSway 3s ease-in-out infinite;
   box-shadow: 0 0 12px rgba(0, 207, 255, 0.4);
 }
+@keyframes headSway { 0%,100% { transform: translateX(-50%) rotate(0deg);} 50% { transform: translateX(-50%) rotate(2deg);} }
 
-@keyframes headSway {
-  0%,100% { transform: translateX(-50%) rotate(0deg); }
-  50% { transform: translateX(-50%) rotate(2deg); }
-}
-
-/* VISOR */
 .visor {
-  width: 78px;
-  height: 46px;
-  background: #111;
-  border-radius: 20px;
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding-top: 4px;
-  overflow: hidden;
-  box-shadow: inset 0 0 15px rgba(0, 207, 255, 0.25);
-}
-
-.eyes-wrap {
-  display: flex;
-  gap: 12px;
-  margin-top: 2px;
-}
-
-/* MOUTH hidup */
-.mouth {
-  position: absolute;
-  bottom: 5px;
-  width: 22px;
-  height: 6px;
-  background: #00cfff;
-  border-radius: 20px;
-  transition: all 0.25s ease-in-out;
-  animation: mouthBreath 3.5s ease-in-out infinite;
-}
-
-@keyframes mouthBreath {
-  0%,100% { transform: scale(1); }
-  50% { transform: scale(1.15); }
+  width: 78px; height: 46px; background: #111; border-radius: 20px; position: absolute; top: 10px; left: 50%;
+  transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  padding-top: 4px; overflow: hidden;
+  /* stronger neon + subtle outer glow for visor */
+  box-shadow:
+    inset 0 0 18px rgba(0, 207, 255, 0.28),
+    0 6px 18px rgba(0, 207, 255, 0.06);
 }
 
 /* EYES */
+.eyes-wrap { display: flex; gap: 12px; margin-top: 2px; }
 .eye-left, .eye-right {
-  width: 18px;
-  height: 18px;
-  background: #00cfff;
-  border-radius: 50%;
-  transition: all 0.25s ease-in-out;
-  animation: blink 6s infinite, eyeMove 5s ease-in-out infinite, microMove 2.4s infinite ease-in-out;
+  width: 18px; height: 18px; background: #00cfff; border-radius: 50%;
+  transition: all 0.25s ease-in-out; animation: blink 6s infinite, eyeMove 5s ease-in-out infinite, microMove 2.4s infinite ease-in-out;
 }
+@keyframes microMove { 0%,100% { transform: translateY(0);} 50% { transform: translateY(1px);} }
+@keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+@keyframes eyeMove { 0%,100% { transform: translateX(0);} 40% { transform: translateX(2px);} 70% { transform: translateX(-2px);} }
 
-@keyframes microMove {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(1px); }
+/* MOUTH (animation + transform ready) */
+.mouth {
+  position: absolute; bottom: 5px; width: 22px; height: 6px; background: #00cfff; border-radius: 20px;
+  transition: all 0.22s cubic-bezier(.2,.9,.2,1); animation: mouthBreath 3.5s ease-in-out infinite;
 }
+@keyframes mouthBreath { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
 
-@keyframes blink {
-  0%, 92%, 100% { transform: scaleY(1); }
-  95% { transform: scaleY(0.1); }
-}
-
-@keyframes eyeMove {
-  0%,100% { transform: translateX(0); }
-  40% { transform: translateX(2px); }
-  70% { transform: translateX(-2px); }
-}
-
-/* BODY */
+/* BODY (wobble + breath) */
 .body {
-  width: 70px;
-  height: 55px;
-  background: #ffffff;
-  border: 6px solid #000;
-  border-radius: 26px;
-  position: absolute;
-  top: 82px;
-  left: 50%;
-  transform: translateX(-50%);
-  animation: bodyWobble 3s ease-in-out infinite, bodyBreath 4s ease-in-out infinite;
+  width: 70px; height: 55px; background: #ffffff; border: 6px solid #000; border-radius: 26px;
+  position: absolute; top: 82px; left: 50%; transform: translateX(-50%); animation: bodyWobble 3s ease-in-out infinite, bodyBreath 4s ease-in-out infinite;
 }
+@keyframes bodyBreath { 0%,100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.03); } }
+@keyframes bodyWobble { 0%,100% { transform: translateX(-50%) rotate(0deg); } 50% { transform: translateX(-50%) rotate(-1.5deg); } }
 
-@keyframes bodyBreath {
-  0%,100% { transform: translateX(-50%) scale(1); }
-  50% { transform: translateX(-50%) scale(1.03); }
-}
-
-@keyframes bodyWobble {
-  0%,100% { transform: translateX(-50%) rotate(0deg); }
-  50% { transform: translateX(-50%) rotate(-1.5deg); }
-}
-
-/* BODY LIGHT */
+/* BODY LIGHT (charging glow added) */
 .body-light {
-  width: 40px;
-  height: 30px;
-  background: #00cfff;
-  border-radius: 12px;
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 22px;
-  font-weight: 900;
-  color: #000;
-  letter-spacing: 0.6px;
-
-  text-shadow:
-     0 0 6px rgba(0, 207, 255, 1),
-     0 0 12px rgba(0, 207, 255, 0.8),
-     0 0 18px rgba(0, 207, 255, 0.6);
-
-  animation: aiPulse 3s ease-in-out infinite;
+  width: 40px; height: 30px; background: #00cfff; border-radius: 12px; position: absolute; bottom: 10px; left: 50%;
+  transform: translateX(-50%); display: flex; justify-content: center; align-items: center;
+  font-size: 22px; font-weight: 900; color: #000; letter-spacing: 0.6px;
+  text-shadow: 0 0 6px rgba(0, 207, 255, 1), 0 0 12px rgba(0, 207, 255, 0.8), 0 0 18px rgba(0, 207, 255, 0.6);
+  animation: aiPulse 3s ease-in-out infinite, chargeGlow 2.8s infinite;
 }
+@keyframes aiPulse { 0%,100% { transform: translateX(-50%) scale(1);} 50% { transform: translateX(-50%) scale(1.07);} }
+@keyframes chargeGlow { 0%,100% { box-shadow: 0 0 8px #00cfff; } 50% { box-shadow: 0 0 18px #00eaff; } }
 
-@keyframes aiPulse {
-  0%,100% { transform: translateX(-50%) scale(1); }
-  50% { transform: translateX(-50%) scale(1.07); }
-}
-
-/* ARMS */
+/* ===================== ARMS – UPDATED FULL MOVEMENT ===================== */
 .arm {
   width: 28px;
   height: 38px;
@@ -3994,113 +3973,94 @@ const messages = [
   border-radius: 20px;
   position: absolute;
   top: 86px;
+  transition: transform .22s ease-in-out;
 }
 
+/* LEFT ARM — naik turun + goyang */
 .arm.left {
   left: -4px;
-  animation: armLeft 3s ease-in-out infinite;
+  transform-origin: top left;
+  animation: armLeftMove 3.2s ease-in-out infinite;
 }
 
+@keyframes armLeftMove {
+  0%   { transform: rotate(0deg) translateY(0px); }
+  25%  { transform: rotate(8deg) translateY(-2px); }
+  50%  { transform: rotate(-4deg) translateY(1px); }
+  75%  { transform: rotate(5deg) translateY(-1px); }
+  100% { transform: rotate(0deg) translateY(0px); }
+}
+
+/* RIGHT ARM — ayunan + melambai ringan */
 .arm.right {
   right: -4px;
-  animation: armRight 3s ease-in-out infinite;
+  transform-origin: top right;
+  animation: armRightMove 2.8s ease-in-out infinite;
 }
 
-@keyframes armLeft {
-  0%,100% { transform: rotate(0deg); }
-  50% { transform: rotate(6deg); }
+@keyframes armRightMove {
+  0%   { transform: rotate(0deg) translateY(0); }
+  20%  { transform: rotate(-10deg) translateY(-3px); }
+  45%  { transform: rotate(4deg) translateY(1px); }
+  70%  { transform: rotate(-6deg) translateY(-2px); }
+  100% { transform: rotate(0deg) translateY(0); }
 }
 
-@keyframes armRight {
-  0%,100% { transform: rotate(0deg); }
-  50% { transform: rotate(-4deg); }
+/* Saat hover — tangan kanan melambai lebih besar */
+.chatbot-wrapper:hover .arm.right {
+  transform: rotate(-18deg) translateY(-6px) !important;
+  transition: transform .18s ease-in-out;
 }
+
+
+/* waving effect when hover - more visible but subtle */
+.chatbot-wrapper:hover .arm.right { transform: rotate(-12deg) translateY(-3px); transition: transform .18s ease-in-out; }
+
+/* small eye scale on hover for expressiveness */
+.chatbot-wrapper:hover .eye-left, .chatbot-wrapper:hover .eye-right { transform: scale(1.35) !important; }
 
 /* LEGS */
-.leg {
-  width: 28px;
-  height: 24px;
-  background: #ffffff;
-  border: 6px solid #000;
-  border-radius: 14px;
-  position: absolute;
-  top: 138px;
-  animation: footBounce 4s ease-in-out infinite;
-}
+.leg { width: 28px; height: 24px; background: #ffffff; border: 6px solid #000; border-radius: 14px; position: absolute; top: 138px; animation: footBounce 4s ease-in-out infinite; }
+.leg.left { left: 16px; } .leg.right { right: 16px; }
+@keyframes footBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(3px); } }
 
-.leg.left { left: 16px; }
-.leg.right { right: 16px; }
-
-@keyframes footBounce {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(3px); }
-}
-
-.chatbot-wrapper:hover .eye-left,
-.chatbot-wrapper:hover .eye-right {
-  transform: scale(1.35) !important;
-}
-
-/* MEDIA RESPONSIVE */
+/* MEDIA RESPONSIVE: scale robot for different devices */
 @media (min-width: 768px) {
-  .chatbot-wrapper {
-    transform: scale(0.65) !important;
-    transform-origin: bottom right !important;
-  }
+  .chatbot-wrapper { transform: scale(0.65) !important; transform-origin: bottom right !important; }
+  .speech-panel { max-width: 240px; font-size: 20px; right: 140px; padding: 16px 20px; border-width: 5px; }
 }
-
 @media (max-width: 767px) and (min-width: 481px) {
-  .chatbot-wrapper {
-    transform: scale(0.85) !important;
-    transform-origin: bottom right !important;
-  }
+  .chatbot-wrapper { transform: scale(0.85) !important; transform-origin: bottom right !important; }
+  .speech-panel { max-width: 220px; font-size: 18px; right: 120px; padding: 14px 18px; border-width: 4px; }
 }
-
 @media (max-width: 480px) {
-  .chatbot-wrapper {
-    transform: scale(0.45) !important;
-    transform-origin: bottom right !important;
-  }
+  .chatbot-wrapper { transform: scale(0.45) !important; transform-origin: bottom right !important; }
+  .speech-panel { max-width: 160px; font-size: 15px; right: 105px; padding: 12px 16px; border-width: 4px; }
 }
 
-/* =============================== */
-/* RESPONSIVE SPEECH PANEL (TEXT) */
-/* =============================== */
-
-/* 🖥️ Laptop / Desktop (≥ 768px) */
-@media (min-width: 768px) {
-  .speech-panel {
-    max-width: 240px;
-    font-size: 20px;
-    right: 140px;
-    padding: 16px 20px;
-    border-width: 5px;
-  }
+/* ===================== PASSWORD MODAL STYLES ===================== */
+.pw-modal {
+  position: fixed; inset: 0; display: grid; place-items: center; background: rgba(0,0,0,0.45);
+  z-index: 99999; opacity: 0; pointer-events: none; transition: opacity .18s ease-in-out;
 }
-
-/* 📱 Tablet kecil / HP besar (481px – 767px) */
-@media (max-width: 767px) and (min-width: 481px) {
-  .speech-panel {
-    max-width: 220px;
-    font-size: 18px;
-    right: 120px;
-    padding: 14px 18px;
-    border-width: 4px;
-  }
+.pw-modal.open { opacity: 1; pointer-events: auto; }
+.pw-modal__dialog {
+  width: 320px; max-width: calc(100% - 32px); background: #fff; border-radius: 12px; padding: 16px 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-align: center;
 }
+.pw-modal__dialog h3 { margin: 0 0 10px; font-size: 16px; color: #111; }
+.pw-modal__dialog input { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 12px; font-size: 14px; outline: none; }
+.pw-modal__dialog input:focus { box-shadow: 0 0 0 4px rgba(0,207,255,0.08); border-color: #00cfff; }
+.pw-actions { display:flex; gap:8px; justify-content:center; }
+.pw-actions button { padding: 8px 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; }
+#pwOk { background: #00cfff; color: #000; }
+#pwCancel { background: #f2f2f2; color: #111; }
+.pw-note { margin-top: 8px; font-size: 12px; color: #666; }
 
-/* 📱 HP kecil (≤ 480px) */
-@media (max-width: 480px) {
-  .speech-panel {
-    max-width: 160px;
-    font-size: 15px;
-    right: 105px;
-    padding: 12px 16px;
-    border-width: 4px;
-  }
-}
-
+/* small helper to ensure modal hidden for screenreaders by default */
+.pw-modal[aria-hidden="true"] { visibility: hidden; }
+.pw-modal[aria-hidden="false"] { visibility: visible; }
 </style>
+
 
 
 
