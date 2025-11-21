@@ -3692,7 +3692,7 @@ document.addEventListener("DOMContentLoaded", () => {
   wrapper.addEventListener("mouseenter",()=>{stopMoodCycle();});
   wrapper.addEventListener("mouseleave",()=>{startMoodCycle();});
 
-  const messages = ["Halo 👋","Siap bantu 🔍","Klik aku 👉","AI Mode ON ⚡","Perlu bantuan ❓","Ayo cari data 📝","Standby nih 👀"];
+  const messages = ["HALO 👋","AKU SIAP BANTU 🔍","KLIK AKU 👉","AI MODE ON ⚡","PERLU BANTUAN ❓","CARI DATA APA 📝"];
   let speechTimer = null;
   function showSpeech(){ panel.classList.add("show","talkShake"); panel.textContent=messages[Math.floor(Math.random()*messages.length)]; setTimeout(()=>panel.classList.remove("talkShake"),300); setTimeout(()=>panel.classList.remove("show"),2600);}
   setTimeout(showSpeech,600); speechTimer=setInterval(showSpeech,5000);
