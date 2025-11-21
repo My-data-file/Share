@@ -3614,7 +3614,7 @@ if (spvNoKS) {
     <div class="head">
       <div class="visor">
 
-        <!-- WRAPPER MATA (baru) -->
+        <!-- WRAPPER MATA -->
         <div class="eyes-wrap">
           <div class="eye-left"></div>
           <div class="eye-right"></div>
@@ -3664,14 +3664,14 @@ document.addEventListener("DOMContentLoaded", () => {
     eyeL.style.cssText = eyeR.style.cssText =
       "width:18px;height:18px;border-radius:50%;";
     mouth.style.cssText =
-      "width:22px;height:6px;border-radius:20px;background:#ffcf2d;";
+      "width:22px;height:6px;border-radius:20px;background:#00cfff;";
   }
 
   function expWink() {
     eyeL.style.cssText = "width:18px;height:18px;border-radius:50%;";
     eyeR.style.cssText = "width:18px;height:5px;border-radius:4px;";
     mouth.style.cssText =
-      "width:26px;height:10px;border-radius:20px;background:#ffcf2d;";
+      "width:26px;height:10px;border-radius:20px;background:#00cfff;";
   }
 
   function expHappy() {
@@ -3680,21 +3680,21 @@ document.addEventListener("DOMContentLoaded", () => {
     eyeR.style.cssText =
       "width:18px;height:14px;border-radius:50% 50% 70% 70%;";
     mouth.style.cssText =
-      "width:28px;height:16px;border-radius:0 0 20px 20px;background:#ffcf2d;";
+      "width:28px;height:16px;border-radius:0 0 20px 20px;background:#00cfff;";
   }
 
   function expSurprise() {
     eyeL.style.cssText = eyeR.style.cssText =
       "width:26px;height:26px;border-radius:50%;";
     mouth.style.cssText =
-      "width:16px;height:16px;border-radius:50%;background:#ffcf2d;";
+      "width:16px;height:16px;border-radius:50%;background:#00cfff;";
   }
 
   function expSleepy() {
     eyeL.style.cssText = "width:18px;height:6px;border-radius:6px;";
     eyeR.style.cssText = "width:18px;height:6px;border-radius:6px;";
     mouth.style.cssText =
-      "width:20px;height:4px;border-radius:4px;background:#ffcf2d;";
+      "width:20px;height:4px;border-radius:4px;background:#00cfff;";
   }
 
   const moods = [expNormal, expWink, expHappy, expSurprise, expSleepy];
@@ -3704,8 +3704,6 @@ document.addEventListener("DOMContentLoaded", () => {
     pick();
   }, 2500);
 });
-
-
 </script>
 
 <style>
@@ -3747,7 +3745,7 @@ document.addEventListener("DOMContentLoaded", () => {
 .antenna-stick {
   width: 8px;
   height: 22px;
-  background: #222;
+  background: #000; /* hitam */
   border-radius: 4px;
   position: absolute;
   top: -10px;
@@ -3759,8 +3757,8 @@ document.addEventListener("DOMContentLoaded", () => {
 .antenna-ball {
   width: 20px;
   height: 20px;
-  background: #ffcf2d;
-  border: 5px solid #222;
+  background: #00cfff; /* biru muda */
+  border: 5px solid #000; /* hitam */
   border-radius: 50%;
   position: absolute;
   top: -28px;
@@ -3784,8 +3782,8 @@ document.addEventListener("DOMContentLoaded", () => {
 .head {
   width: 95px;
   height: 75px;
-  background: #f4f4f4;
-  border: 6px solid #222;
+  background: #ffffff; /* putih */
+  border: 6px solid #000; /* hitam */
   border-radius: 26px;
   position: absolute;
   top: 10px;
@@ -3793,8 +3791,8 @@ document.addEventListener("DOMContentLoaded", () => {
   transform: translateX(-50%);
   animation: headSway 3s ease-in-out infinite;
 
-  /* glow lembut */
-  box-shadow: 0 0 10px rgba(255, 230, 120, 0.4);
+  /* glow biru */
+  box-shadow: 0 0 12px rgba(0, 207, 255, 0.4);
 }
 
 /* Ayunan kepala natural */
@@ -3807,7 +3805,7 @@ document.addEventListener("DOMContentLoaded", () => {
 .visor {
   width: 78px;
   height: 46px;
-  background: #0f0f0f;
+  background: #111; /* hitam */
   border-radius: 20px;
   position: absolute;
   top: 10px;
@@ -3820,10 +3818,11 @@ document.addEventListener("DOMContentLoaded", () => {
   padding-top: 4px;
   overflow: hidden;
 
-  /* efek layar digital */
-  box-shadow: inset 0 0 15px rgba(255, 240, 120, 0.25);
+  /* efek layar digital biru */
+  box-shadow: inset 0 0 15px rgba(0, 207, 255, 0.25);
 }
 
+/* Eyes wrapper */
 .eyes-wrap {
   display: flex;
   gap: 12px;
@@ -3836,11 +3835,9 @@ document.addEventListener("DOMContentLoaded", () => {
   bottom: 5px;
   width: 22px;
   height: 6px;
-  background: #ffcf2d;
+  background: #00cfff; /* biru muda */
   border-radius: 20px;
   transition: all 0.25s ease-in-out;
-
-  /* napas kecil */
   animation: mouthBreath 3.5s ease-in-out infinite;
 }
 
@@ -3853,14 +3850,12 @@ document.addEventListener("DOMContentLoaded", () => {
 .eye-left, .eye-right {
   width: 18px;
   height: 18px;
-  background: #ffcf2d;
+  background: #00cfff; /* biru muda */
   border-radius: 50%;
   transition: all 0.25s ease-in-out;
-
   animation: blink 6s infinite, eyeMove 5s ease-in-out infinite, microMove 2.4s infinite ease-in-out;
 }
 
-/* micro gerakan lucu */
 @keyframes microMove {
   0%,100% { transform: translateY(0); }
   50% { transform: translateY(1px); }
@@ -3877,12 +3872,12 @@ document.addEventListener("DOMContentLoaded", () => {
   70% { transform: translateX(-2px); }
 }
 
-/* BODY dengan animasi napas */
+/* BODY */
 .body {
   width: 70px;
   height: 55px;
-  background: #e3e3e3;
-  border: 6px solid #222;
+  background: #ffffff; /* putih */
+  border: 6px solid #000; /* hitam */
   border-radius: 26px;
   position: absolute;
   top: 82px;
@@ -3901,11 +3896,12 @@ document.addEventListener("DOMContentLoaded", () => {
   50% { transform: translateX(-50%) rotate(-1.5deg); }
 }
 
+/* BODY LIGHT (AI) */
 .body-light {
-  width: 36px;
-  height: 24px;
-  background: #ffcf2d;
-  border-radius: 10px;
+  width: 40px;        /* lebih lebar */
+  height: 30px;       /* lebih tinggi */
+  background: #00cfff; /* biru muda */
+  border-radius: 12px; /* sedikit lebih melengkung */
   position: absolute;
   bottom: 10px;
   left: 50%;
@@ -3913,18 +3909,20 @@ document.addEventListener("DOMContentLoaded", () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 14px;
+  font-size: 22px;    /* tulisan AI lebih besar */
   font-weight: 900;
-  color: #000;
+  color: #000;        /* hitam */
   letter-spacing: 0.6px;
 
-  /* glow */
+  /* glow neon */
   text-shadow:
-     0 0 4px rgba(255, 240, 120, 1),
-     0 0 8px rgba(255, 240, 140, 0.8);
+     0 0 6px rgba(0, 207, 255, 1),
+     0 0 12px rgba(0, 207, 255, 0.8),
+     0 0 18px rgba(0, 207, 255, 0.6);
 
   animation: aiGlow 1.8s ease-in-out infinite, aiPulse 3s ease-in-out infinite;
 }
+
 
 @keyframes aiPulse {
   0%,100% { transform: translateX(-50%) scale(1); }
@@ -3935,8 +3933,8 @@ document.addEventListener("DOMContentLoaded", () => {
 .arm {
   width: 28px;
   height: 38px;
-  background: #e3e3e3;
-  border: 6px solid #222;
+  background: #ffffff; /* putih */
+  border: 6px solid #000; /* hitam */
   border-radius: 20px;
   position: absolute;
   top: 86px;
@@ -3966,8 +3964,8 @@ document.addEventListener("DOMContentLoaded", () => {
 .leg {
   width: 28px;
   height: 24px;
-  background: #e3e3e3;
-  border: 6px solid #222;
+  background: #ffffff; /* putih */
+  border: 6px solid #000; /* hitam */
   border-radius: 14px;
   position: absolute;
   top: 138px;
@@ -3988,7 +3986,7 @@ document.addEventListener("DOMContentLoaded", () => {
   transform: scale(1.35) !important;
 }
 
-/* Desktop (lebih kecil) */
+/* Desktop */
 @media (min-width: 768px) {
   .chatbot-wrapper {
     transform: scale(0.45) !important;
@@ -4011,10 +4009,8 @@ document.addEventListener("DOMContentLoaded", () => {
     transform-origin: bottom right !important;
   }
 }
-
-
-
 </style>
+
 
 
 
@@ -7388,7 +7384,6 @@ function goHome() {
 
 </body>
 </html>
-
 
 
 
