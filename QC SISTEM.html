@@ -4069,18 +4069,77 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 /* ARMS */
-.arm{width:28px;height:40px;background:#fff;border:6px solid #000;border-radius:20px;position:absolute;top:90px;transition:transform .22s ease-in-out;}
-.arm.left{left:-4px;transform-origin:top left;animation:armLeftMove 3.2s ease-in-out infinite;}
-.arm.right{right:-4px;transform-origin:top right;animation:armRightMove 2.8s ease-in-out infinite;}
-@keyframes armLeftMove{0%{transform:rotate(0deg) translateY(0);}25%{transform:rotate(8deg) translateY(-2px);}50%{transform:rotate(-4deg) translateY(1px);}75%{transform:rotate(5deg) translateY(-1px);}100%{transform:rotate(0deg) translateY(0);}}
-@keyframes armRightMove{0%{transform:rotate(0deg) translateY(0);}20%{transform:rotate(-10deg) translateY(-3px);}45%{transform:rotate(4deg) translateY(1px);}70%{transform:rotate(-6deg) translateY(-2px);}100%{transform:rotate(0deg) translateY(0);}}
-.chatbot-wrapper:hover .arm.right{transform:rotate(-12deg) translateY(-3px);transition:transform .18s ease-in-out;}
-.chatbot-wrapper:hover .eye-left,.chatbot-wrapper:hover .eye-right{transform:scale(1.35) !important;}
+.arm {
+  width: 28px;
+  height: 40px;
+  background: #fff;
+  border: 6px solid #000;
+  border-radius: 20px;
+  position: absolute;
+  top: 90px;
+  transition: transform .22s ease-in-out;
+  animation: armIdle 3.5s ease-in-out infinite;
+}
+
+.arm.left {
+  left: -4px;
+  transform-origin: top left;
+  animation: armLeftAlive 3s ease-in-out infinite;
+}
+
+.arm.right {
+  right: -4px;
+  transform-origin: top right;
+  animation: armRightAlive 3s ease-in-out infinite;
+}
+
+@keyframes armLeftAlive {
+  0%,100% { transform: rotate(0deg) translate(0,0); }
+  20% { transform: rotate(8deg) translate(0,-2px); }
+  40% { transform: rotate(4deg) translate(1px,-1px); }
+  60% { transform: rotate(-6deg) translate(-1px,1px); }
+  80% { transform: rotate(5deg) translate(0,-1px); }
+}
+
+@keyframes armRightAlive {
+  0%,100% { transform: rotate(0deg) translate(0,0); }
+  20% { transform: rotate(-8deg) translate(0,-2px); }
+  40% { transform: rotate(-4deg) translate(-1px,-1px); }
+  60% { transform: rotate(6deg) translate(1px,1px); }
+  80% { transform: rotate(-5deg) translate(0,-1px); }
+}
+
+
+.chatbot-wrapper:hover .arm.left {
+  transform: rotate(20deg) translateY(-4px);
+}
+.chatbot-wrapper:hover .arm.right {
+  transform: rotate(-20deg) translateY(-4px);
+}
+
 
 /* LEGS */
-.leg{width:35px;height:28px;background:#fff;border:6px solid #000;border-radius:14px;position:absolute;top:138px;animation:footBounce 4s ease-in-out infinite;}
-.leg.left{left:16px;} .leg.right{right:16px;}
-@keyframes footBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(3px);}}
+.leg {
+  width: 35px;
+  height: 28px;
+  background: #fff;
+  border: 6px solid #000;
+  border-radius: 14px;
+  position: absolute;
+  top: 138px;
+  animation: legIdle 3s ease-in-out infinite;
+}
+
+.leg.left { left: 16px; }
+.leg.right { right: 16px; }
+
+@keyframes legIdle {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(2px) rotate(-2deg); }
+  50% { transform: translateY(3px) rotate(1deg); }
+  75% { transform: translateY(1px) rotate(-1deg); }
+}
+
 
 /* RESPONSIVE FLEX PANEL */
 @media (min-width:768px){.chatbot-wrapper{transform:scale(0.65) !important;transform-origin:bottom right !important;}.speech-panel{max-width:fit-content;font-size:20px;right:140px;padding:16px 20px;border-width:5px;}}
