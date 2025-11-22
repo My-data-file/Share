@@ -1337,7 +1337,7 @@ select {
 
   <!-- ===== Hasil ===== -->
   <div id="hasilBapro" class="tab-content">
-    <input type="text" placeholder="Cari..." oninput="filterBaproGrid(this.value)">
+<input type="text" placeholder="Cari..." oninput="renderGridBapro(this.value)">
     <div id="gridBapro" class="grid-container"></div>
   </div>
 
@@ -1610,7 +1610,7 @@ select {
 
   <!-- Hasil -->
   <div id="hasilPA" class="tab-content">
-    <input type="text" placeholder="Cari..." oninput="filterPAGrid(this.value)">
+<input type="text" placeholder="Cari..." oninput="renderGridPA(this.value)">
     <div id="gridPA" class="grid-container"></div>
   </div>
 
@@ -1876,7 +1876,7 @@ paNoKS.addEventListener('input', function(e) {
 
   <!-- Hasil -->
   <div id="hasilFinishing" class="tab-content">
-    <input type="text" placeholder="Cari..." oninput="filterFinishingGrid(this.value)">
+<input type="text" placeholder="Cari..." oninput="renderGridFinishing(this.value)">
     <div id="gridFinishing" class="grid-container"></div>
   </div>
 
@@ -2151,7 +2151,7 @@ finishingNoKS.addEventListener('input', function(e) {
 
   <!-- Hasil -->
   <div id="hasilLem" class="tab-content">
-    <input type="text" placeholder="Cari..." oninput="filterLemGrid(this.value)">
+<input type="text" placeholder="Cari..." oninput="renderGridLem(this.value)">
     <div id="gridLem" class="grid-container"></div>
   </div>
 </section>
@@ -4152,10 +4152,31 @@ function switchTab(btn) {
   });
 }
 
+// ====================== ESCAPE HTML ======================
+function escapeHtml(s) {
+  return String(s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+// ====================== HIGHLIGHT KATA (SAFE) ======================
+function highlightHtmlSafe(text, query) {
+  if (!query) return escapeHtml(text);
+  const escapedText = escapeHtml(text);
+  const q = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // escape regex
+  const regex = new RegExp(`(${q})`, 'gi');
+  return escapedText.replace(regex, '<mark>$1</mark>');
+}
+
+
+
+
+
 // ====================== GLOBAL STATE ======================
 let finishingItems = []; // array yang diambil dari sheet
 
-// ====================== RENDER GRID HASIL (Fix: tampilkan TO juga) ======================
+// ====================== RENDER GRID FINISHING ======================
 function renderGridFinishing(query = "") {
   const container = document.getElementById('gridFinishing');
   container.innerHTML = '';
@@ -4164,31 +4185,35 @@ function renderGridFinishing(query = "") {
 
   finishingItems.forEach((item, i) => {
     // Filter pencarian
-    if (q && !(String(item.nama || '').toLowerCase().includes(q) || String(item.noKS || '').toLowerCase().includes(q))) return;
+    if (q && !(
+      (item.nama || '').toLowerCase().includes(q) ||
+      (item.noKS || '').toLowerCase().includes(q) ||
+      (item.qc || '').toLowerCase().includes(q) ||
+      (item.keterangan || '').toLowerCase().includes(q)
+    )) return;
 
     const card = document.createElement('div');
     card.className = 'grid-card';
 
-    // 🔧 Tambahkan status TO
     let statusClass = '';
     if (item.update === "Proses") statusClass = "status-proses";
     else if (item.update === "Selesai") statusClass = "status-selesai";
     else if (item.update === "TO") statusClass = "status-to";
 
-    const tanggal = item.tanggal ? `<strong>${escapeHtml(item.tanggal)}</strong><br>` : '';
+    const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, query)}</strong><br>` : '';
 
     card.innerHTML = `
       <div>
         ${tanggal}
-        <span>Nama Order: ${escapeHtml(item.nama || '')}</span><br>
-        <span>No KS: ${escapeHtml(item.noKS || '')}</span><br>
-        <span>Order: ${escapeHtml(item.order || '')}</span><br>
-        <span>Isi/Dus: ${escapeHtml(item.isi || '')}</span><br>
-        <span>Bagus: ${escapeHtml(item.bagus || '')}</span><br>
-        <span>BS: ${escapeHtml(item.jenisBS || '')}</span><br>
-        <span>QC: ${escapeHtml(item.qc || '')}</span><br>
-        <span>Keterangan: ${escapeHtml(item.keterangan || '')}</span><br>
-        <span class="${statusClass}">${escapeHtml(item.update || '')}</span>
+        <span>Nama Order: ${highlightHtmlSafe(item.nama || '', query)}</span><br>
+        <span>No KS: ${highlightHtmlSafe(item.noKS || '', query)}</span><br>
+        <span>Order: ${highlightHtmlSafe(item.order || '', query)}</span><br>
+        <span>Isi/Dus: ${highlightHtmlSafe(item.isi || '', query)}</span><br>
+        <span>Bagus: ${highlightHtmlSafe(item.bagus || '', query)}</span><br>
+        <span>BS: ${highlightHtmlSafe(item.jenisBS || '', query)}</span><br>
+        <span>QC: ${highlightHtmlSafe(item.qc || '', query)}</span><br>
+        <span>Keterangan: ${highlightHtmlSafe(item.keterangan || '', query)}</span><br>
+        <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
       </div>
       <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
         <button class="btn-icon btn-call" title="Panggil" onclick="callFinishing(${i})">📤</button>
@@ -4200,20 +4225,15 @@ function renderGridFinishing(query = "") {
     container.appendChild(card);
   });
 
-// Render ulang dashboard setelah daftar hasil berubah
+  // Render dashboard compact
   renderDashboardFinishingCompact();
 
-  // ✅ Scroll otomatis ke item terakhir jika ada
+  // Scroll otomatis ke item terakhir
   const lastCard = container.querySelector('.grid-card:last-child');
   if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
 
-function escapeHtml(s) {
-  return String(s || '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;');
-}
+
 
 // ====================== LOAD DATA DARI SPREADSHEET ======================
 async function loadFinishingItems(){
@@ -4535,13 +4555,14 @@ function clearFinishingForm() {
 
 
 
-// ====================== DASHBOARD (UPDATE: TAMBAH STATUS "TO") ======================
-function renderDashboardFinishingCompact() {
-  const containerTO = document.getElementById('dashboardFinishingTO');      // 🔹 container baru untuk TO
+// ====================== DASHBOARD FINISHING COMPACT DENGAN HIGHLIGHT ======================
+function renderDashboardFinishingCompact(query = "", safeMode = false) {
+  const q = query.toLowerCase().trim();
+
+  const containerTO = document.getElementById('dashboardFinishingTO');
   const containerProses = document.getElementById('dashboardFinishingProses');
   const containerSelesai = document.getElementById('dashboardFinishingSelesai');
 
-  // pastikan elemen tidak null agar tidak error
   if (!containerProses || !containerSelesai) return;
 
   if (containerTO) containerTO.innerHTML = '';
@@ -4552,25 +4573,27 @@ function renderDashboardFinishingCompact() {
 
   finishingItems.forEach(item => {
     const updateVal = (item.update || "").trim().toLowerCase();
-    const tanggal = item.tanggal ? item.tanggal : "-";
+    const tanggal = item.tanggal || "-";
     const card = document.createElement('div');
     card.className = 'grid-card';
 
-    // 🟢 Tentukan warna/status class
     let statusClass = "";
     if (updateVal === "proses") statusClass = "status-proses";
     else if (updateVal === "selesai") statusClass = "status-selesai";
-    else if (updateVal === "to") statusClass = "status-to"; // 💙 class baru untuk TO
+    else if (updateVal === "to") statusClass = "status-to";
 
-    // 🧩 Isi kartu
     card.innerHTML = `
-      <strong>${escapeHtml(item.nama || '')}</strong><br>
-      <strong>QC: ${escapeHtml(item.qc || '')}</strong><br>
-      <span>📅 ${escapeHtml(tanggal)}</span><br>
-      <span class="${statusClass}">${escapeHtml(item.update || '')}</span>
+      <strong>${highlightHtmlSafe(item.nama || '', query)}</strong><br>
+      <strong>QC: ${highlightHtmlSafe(item.qc || '', query)}</strong><br>
+      <span>📅 ${highlightHtmlSafe(tanggal, query)}</span><br>
+      <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
     `;
 
-    // 🧠 Kelompokkan berdasarkan status
+    const cardText = card.textContent.toLowerCase();
+
+    // FILTER hanya berjalan jika NOT safe mode
+    if (!safeMode && q && !cardText.includes(q)) return;
+
     if (updateVal === 'to') {
       if (containerTO) containerTO.appendChild(card);
       totalTO++;
@@ -4582,16 +4605,26 @@ function renderDashboardFinishingCompact() {
       totalSelesai++;
     }
 
-    // 📋 klik kartu untuk lihat detail
     card.addEventListener('click', () => showDetailModal(item));
   });
 
-// 🧮 Update counter
-document.getElementById('countFinishing').textContent = finishingItems.length; // total order
-document.getElementById('countTOFinishing').textContent = totalTO;
-document.getElementById('countProsesFinishing').textContent = totalProses;
-document.getElementById('countSelesaiFinishing').textContent = totalSelesai;
+  document.getElementById('countFinishing').textContent = finishingItems.length;
+  document.getElementById('countTOFinishing').textContent = totalTO;
+  document.getElementById('countProsesFinishing').textContent = totalProses;
+  document.getElementById('countSelesaiFinishing').textContent = totalSelesai;
 }
+
+// ====================== FILTER INPUT REAL-TIME UNTUK DASHBOARD ======================
+document.addEventListener('DOMContentLoaded', () => {
+  const filterTO = document.getElementById('filterFinishingTO');
+  const filterProses = document.getElementById('filterFinishingProses');
+  const filterSelesai = document.getElementById('filterFinishingSelesai');
+
+  if (filterTO) filterTO.addEventListener('input', () => renderDashboardFinishingCompact(filterTO.value));
+  if (filterProses) filterProses.addEventListener('input', () => renderDashboardFinishingCompact(filterProses.value));
+  if (filterSelesai) filterSelesai.addEventListener('input', () => renderDashboardFinishingCompact(filterSelesai.value));
+});
+
 
 // ====================== DETAIL ======================
 function showDetailModal(item) {
@@ -4719,7 +4752,8 @@ loadFinishingItems();
 // ====================== GLOBAL STATE (BAPRO) ======================
 let baproItems = []; // array yang diambil dari sheet Bapro
 
-// ====================== RENDER GRID HASIL (BAPRO) ======================
+
+// ====================== RENDER GRID HASIL (BAPRO) DENGAN HIGHLIGHT ======================
 function renderGridBapro(query = "") {
   const container = document.getElementById('gridBapro');
   if (!container) return;
@@ -4729,32 +4763,37 @@ function renderGridBapro(query = "") {
 
   baproItems.forEach((item, i) => {
     // Filter pencarian (nama atau cso)
-    if (q && !(String(item.nama || '').toLowerCase().includes(q) || String(item.cso || '').toLowerCase().includes(q))) return;
+    if (q && !(
+      (item.nama || '').toLowerCase().includes(q) ||
+      (item.cso || '').toLowerCase().includes(q) ||
+      (item.qc || '').toLowerCase().includes(q) ||
+      (item.keterangan || '').toLowerCase().includes(q)
+    )) return;
 
     const card = document.createElement('div');
     card.className = 'grid-card';
 
-    // status class (cocokkan nilai case-sensitive seperti di sheet)
     let statusClass = '';
-    if ((item.update || '').toString() === "Proses") statusClass = "status-proses";
-    else if ((item.update || '').toString() === "Selesai") statusClass = "status-selesai";
-    else if ((item.update || '').toString() === "TO") statusClass = "status-to";
+    const updateVal = (item.update || '').toString();
+    if (updateVal === "Proses") statusClass = "status-proses";
+    else if (updateVal === "Selesai") statusClass = "status-selesai";
+    else if (updateVal === "TO") statusClass = "status-to";
 
-    const tanggal = item.tanggal ? `<strong>${escapeHtml(item.tanggal)}</strong><br>` : '';
+    const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, query)}</strong><br>` : '';
 
     card.innerHTML = `
       <div>
         ${tanggal}
-        <span>Nama Order: ${escapeHtml(item.nama || '')}</span><br>
-        <span>CSO: ${escapeHtml(item.cso || '')}</span><br>
-        <span>Jenis: ${escapeHtml(item.jenisKertas || '')}</span><br>
-        <span>GSM: ${escapeHtml(item.tebalKertas || '')}</span><br>
-        <span>Nama Tinta: ${escapeHtml(item.NamaTinta || '')}</span><br>
-        <span>Dmax: ${escapeHtml(item.dmax || '')}</span><br>
-        <span>L: ${escapeHtml(item.l || '')}  A: ${escapeHtml(item.a || '')}  B: ${escapeHtml(item.b || '')}</span><br>
-        <span>QC: ${escapeHtml(item.qc || '')}</span><br>
-        <span>Keterangan: ${escapeHtml(item.keterangan || '')}</span><br>
-        <span class="${statusClass}">${escapeHtml(item.update || '')}</span>
+        <span>Nama Order: ${highlightHtmlSafe(item.nama || '', query)}</span><br>
+        <span>CSO: ${highlightHtmlSafe(item.cso || '', query)}</span><br>
+        <span>Jenis: ${highlightHtmlSafe(item.jenisKertas || '', query)}</span><br>
+        <span>GSM: ${highlightHtmlSafe(item.tebalKertas || '', query)}</span><br>
+        <span>Nama Tinta: ${highlightHtmlSafe(item.NamaTinta || '', query)}</span><br>
+        <span>Dmax: ${highlightHtmlSafe(item.dmax || '', query)}</span><br>
+        <span>L: ${highlightHtmlSafe(item.l || '', query)}  A: ${highlightHtmlSafe(item.a || '', query)}  B: ${highlightHtmlSafe(item.b || '', query)}</span><br>
+        <span>QC: ${highlightHtmlSafe(item.qc || '', query)}</span><br>
+        <span>Keterangan: ${highlightHtmlSafe(item.keterangan || '', query)}</span><br>
+        <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
       </div>
       <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
         <button class="btn-icon btn-call" title="Panggil" onclick="callBapro(${i})">📤</button>
@@ -4766,9 +4805,15 @@ function renderGridBapro(query = "") {
     container.appendChild(card);
   });
 
-  // Render ulang dashboard setelah daftar hasil berubah
+  // Render ulang dashboard
   renderDashboardBaproCompact();
+
+  // Scroll otomatis ke item terakhir
+  const lastCard = container.querySelector('.grid-card:last-child');
+  if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
+
+
 
 // ====================== LOAD DATA DARI SPREADSHEET (BAPRO) ======================
 async function loadBaproItems(){
@@ -5142,13 +5187,14 @@ function clearBaproForm() {
 
 
 
-// ====================== DASHBOARD BAPRO (TO / PROSES / SELESAI) ======================
-function renderDashboardBaproCompact() {
+// ====================== DASHBOARD BAPRO COMPACT DENGAN HIGHLIGHT ======================
+function renderDashboardBaproCompact(query = "", safeMode = false) {
+  const q = query.toLowerCase().trim();
+
   const containerTO = document.getElementById('dashboardBaproTO');
   const containerProses = document.getElementById('dashboardBaproProses');
   const containerSelesai = document.getElementById('dashboardBaproSelesai');
 
-  // jika elemen dashboard tidak ada, jangan error
   if (!containerProses || !containerSelesai) return;
 
   if (containerTO) containerTO.innerHTML = '';
@@ -5158,8 +5204,8 @@ function renderDashboardBaproCompact() {
   let totalTO = 0, totalProses = 0, totalSelesai = 0;
 
   baproItems.forEach(item => {
-    const updateVal = (item.update || "").toString().trim().toLowerCase();
-    const tanggal = item.tanggal ? item.tanggal : "-";
+    const updateVal = (item.update || "").trim().toLowerCase();
+    const tanggal = item.tanggal || "-";
     const card = document.createElement('div');
     card.className = 'grid-card';
 
@@ -5169,13 +5215,17 @@ function renderDashboardBaproCompact() {
     else if (updateVal === "to") statusClass = "status-to";
 
     card.innerHTML = `
-      <strong>${escapeHtml(item.nama || '')}</strong><br>
-      <strong>CSO: ${escapeHtml(item.cso || '')}</strong><br>
-      <strong>QC: ${escapeHtml(item.qc || '')}</strong><br>
-      <strong>Tinta: ${escapeHtml(item.NamaTinta || '')}</strong><br>
-      <span>📅 ${escapeHtml(tanggal)}</span><br>
-      <span class="${statusClass}">${escapeHtml(item.update || '')}</span>
+      <strong>${highlightHtmlSafe(item.nama || '', query)}</strong><br>
+      <strong>CSO: ${highlightHtmlSafe(item.cso || '', query)}</strong><br>
+      <strong>QC: ${highlightHtmlSafe(item.qc || '', query)}</strong><br>
+      <strong>Tinta: ${highlightHtmlSafe(item.NamaTinta || '', query)}</strong><br>
+      <span>📅 ${highlightHtmlSafe(tanggal, query)}</span><br>
+      <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
     `;
+
+    // FILTER seperti Finishing
+    const cardText = card.textContent.toLowerCase();
+    if (!safeMode && q && !cardText.includes(q)) return;
 
     if (updateVal === 'to') {
       if (containerTO) containerTO.appendChild(card);
@@ -5188,20 +5238,27 @@ function renderDashboardBaproCompact() {
       totalSelesai++;
     }
 
-    // ✅ panggil fungsi detail yang benar
     card.addEventListener('click', () => showDetailModalBapro(item));
   });
 
-  // update counters
-  const elTotal = document.getElementById('countBapro');
-  if (elTotal) elTotal.textContent = baproItems.length;
-  const elTO = document.getElementById('countTOBapro');
-  if (elTO) elTO.textContent = totalTO;
-  const elProses = document.getElementById('countProsesBapro');
-  if (elProses) elProses.textContent = totalProses;
-  const elSelesai = document.getElementById('countSelesaiBapro');
-  if (elSelesai) elSelesai.textContent = totalSelesai;
+  document.getElementById('countBapro').textContent = baproItems.length;
+  document.getElementById('countTOBapro').textContent = totalTO;
+  document.getElementById('countProsesBapro').textContent = totalProses;
+  document.getElementById('countSelesaiBapro').textContent = totalSelesai;
 }
+
+// ====================== FILTER INPUT REAL-TIME BAPRO ======================
+document.addEventListener('DOMContentLoaded', () => {
+  const filterTO = document.getElementById('filterTOBapro');
+  const filterProses = document.getElementById('filterProsesBapro');
+  const filterSelesai = document.getElementById('filterSelesaiBapro');
+
+  if (filterTO) filterTO.addEventListener('input', () => renderDashboardBaproCompact(filterTO.value));
+  if (filterProses) filterProses.addEventListener('input', () => renderDashboardBaproCompact(filterProses.value));
+  if (filterSelesai) filterSelesai.addEventListener('input', () => renderDashboardBaproCompact(filterSelesai.value));
+});
+
+
 
 // ====================== DETAIL BAPRO ======================
 function showDetailModalBapro(item) {
@@ -5326,7 +5383,7 @@ loadBaproItems();
 // ====================== GLOBAL STATE (PA) ======================
 let paItems = []; // array yang diambil dari sheet Cetak
 
-// ====================== RENDER GRID HASIL (PA) ======================
+// ====================== RENDER GRID HASIL (PA) DENGAN HIGHLIGHT ======================
 function renderGridPA(query = "") {
   const container = document.getElementById('gridPA');
   if (!container) return;
@@ -5335,33 +5392,38 @@ function renderGridPA(query = "") {
   const q = (query || '').toLowerCase();
 
   paItems.forEach((item, i) => {
-    // Filter pencarian (nama atau noKS)
-    if (q && !(String(item.nama || '').toLowerCase().includes(q) || String(item.noKS || '').toLowerCase().includes(q))) return;
+    // Filter pencarian (nama atau noKS atau QC atau keterangan)
+    if (q && !(
+      (item.nama || '').toLowerCase().includes(q) ||
+      (item.noKS || '').toLowerCase().includes(q) ||
+      (item.qc || '').toLowerCase().includes(q) ||
+      (item.keterangan || '').toLowerCase().includes(q)
+    )) return;
 
     const card = document.createElement('div');
     card.className = 'grid-card';
 
-    // status class (sama gaya dengan Bapro/Finishing)
     let statusClass = '';
-    if ((item.update || '').toString() === "Proses") statusClass = "status-proses";
-    else if ((item.update || '').toString() === "Selesai") statusClass = "status-selesai";
-    else if ((item.update || '').toString() === "TO") statusClass = "status-to";
+    const updateVal = (item.update || '').toString();
+    if (updateVal === "Proses") statusClass = "status-proses";
+    else if (updateVal === "Selesai") statusClass = "status-selesai";
+    else if (updateVal === "TO") statusClass = "status-to";
 
-    const tanggal = item.tanggal ? `<strong>${escapeHtml(item.tanggal)}</strong><br>` : '';
+    const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, query)}</strong><br>` : '';
 
     card.innerHTML = `
       <div>
         ${tanggal}
-        <span>Nama Order: ${escapeHtml(item.nama || '')}</span><br>
-        <span>No KS: ${escapeHtml(item.noKS || '')}</span><br>
-        <span>Order: ${escapeHtml(item.order || '')}</span><br>
-        <span>Bagus: ${escapeHtml(item.bagus || '')}</span><br>
-        <span>Sortir: ${escapeHtml(item.sortir || '')}</span><br>
-        <span>Problem: ${escapeHtml(item.problem || '')}</span><br>
-        <span>Mesin: ${escapeHtml(item.mesin || '')}</span><br>
-        <span>QC: ${escapeHtml(item.qc || '')}</span><br>
-        <span>Keterangan: ${escapeHtml(item.keterangan || '')}</span><br>
-        <span class="${statusClass}">${escapeHtml(item.update || '')}</span>
+        <span>Nama Order: ${highlightHtmlSafe(item.nama || '', query)}</span><br>
+        <span>No KS: ${highlightHtmlSafe(item.noKS || '', query)}</span><br>
+        <span>Order: ${highlightHtmlSafe(item.order || '', query)}</span><br>
+        <span>Bagus: ${highlightHtmlSafe(item.bagus || '', query)}</span><br>
+        <span>Sortir: ${highlightHtmlSafe(item.sortir || '', query)}</span><br>
+        <span>Problem: ${highlightHtmlSafe(item.problem || '', query)}</span><br>
+        <span>Mesin: ${highlightHtmlSafe(item.mesin || '', query)}</span><br>
+        <span>QC: ${highlightHtmlSafe(item.qc || '', query)}</span><br>
+        <span>Keterangan: ${highlightHtmlSafe(item.keterangan || '', query)}</span><br>
+        <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
       </div>
       <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
         <button class="btn-icon btn-call" title="Panggil" onclick="callPA(${i})">📤</button>
@@ -5373,9 +5435,14 @@ function renderGridPA(query = "") {
     container.appendChild(card);
   });
 
-  // Render ulang dashboard setelah daftar hasil berubah
+  // Render ulang dashboard PA
   renderDashboardPACompact();
+
+  // Scroll otomatis ke item terakhir
+  const lastCard = container.querySelector('.grid-card:last-child');
+  if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
+
 
 // ====================== LOAD DATA DARI SPREADSHEET (PA) ======================
 async function loadPAItems(){
@@ -5687,8 +5754,10 @@ function clearPAForm() {
 
 
 
-// ====================== DASHBOARD PA (TO / PROSES / SELESAI) ======================
-function renderDashboardPACompact() {
+// ====================== DASHBOARD PA (COMPACT + FILTER + HIGHLIGHT) ======================
+function renderDashboardPACompact(query = "", safeMode = false) {
+  const q = query.toLowerCase().trim();
+
   const containerTO = document.getElementById('dashboardPATO');
   const containerProses = document.getElementById('dashboardPAProses');
   const containerSelesai = document.getElementById('dashboardPASelesai');
@@ -5702,8 +5771,9 @@ function renderDashboardPACompact() {
   let totalTO = 0, totalProses = 0, totalSelesai = 0;
 
   paItems.forEach(item => {
-    const updateVal = (item.update || "").toString().trim().toLowerCase();
-    const tanggal = item.tanggal ? item.tanggal : "-";
+    const updateVal = (item.update || "").trim().toLowerCase();
+    const tanggal = item.tanggal || "-";
+
     const card = document.createElement('div');
     card.className = 'grid-card';
 
@@ -5712,14 +5782,20 @@ function renderDashboardPACompact() {
     else if (updateVal === "selesai") statusClass = "status-selesai";
     else if (updateVal === "to") statusClass = "status-to";
 
+    // ===== CARD TEMPLATE DENGAN HIGHLIGHT (ACUAN BAPRO / FINISHING) =====
     card.innerHTML = `
-      <strong>${escapeHtml(item.nama || '')}</strong><br>
-      <strong>QC: ${escapeHtml(item.qc || '')}</strong><br>
-      <strong>Mesin: ${escapeHtml(item.mesin || '')}</strong><br>
-      <span>📅 ${escapeHtml(tanggal)}</span><br>
-      <span class="${statusClass}">${escapeHtml(item.update || '')}</span>
+      <strong>${highlightHtmlSafe(item.nama || '', query)}</strong><br>
+      <strong>QC: ${highlightHtmlSafe(item.qc || '', query)}</strong><br>
+      <strong>Mesin: ${highlightHtmlSafe(item.mesin || '', query)}</strong><br>
+      <span>📅 ${highlightHtmlSafe(tanggal, query)}</span><br>
+      <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
     `;
 
+    // ===== FILTER seperti Finishing / Bapro =====
+    const cardText = card.textContent.toLowerCase();
+    if (!safeMode && q && !cardText.includes(q)) return;
+
+    // ===== MASUKKAN KE KATEGORI =====
     if (updateVal === 'to') {
       if (containerTO) containerTO.appendChild(card);
       totalTO++;
@@ -5734,16 +5810,23 @@ function renderDashboardPACompact() {
     card.addEventListener('click', () => showDetailModalPA(item));
   });
 
-  // update counters
-  const elTotal = document.getElementById('countPA');
-  if (elTotal) elTotal.textContent = paItems.length;
-  const elTO = document.getElementById('countTOPA');
-  if (elTO) elTO.textContent = totalTO;
-  const elProses = document.getElementById('countProsesPA');
-  if (elProses) elProses.textContent = totalProses;
-  const elSelesai = document.getElementById('countSelesaiPA');
-  if (elSelesai) elSelesai.textContent = totalSelesai;
+  // COUNTER
+  document.getElementById('countPA').textContent = paItems.length;
+  document.getElementById('countTOPA').textContent = totalTO;
+  document.getElementById('countProsesPA').textContent = totalProses;
+  document.getElementById('countSelesaiPA').textContent = totalSelesai;
 }
+
+// ====================== FILTER INPUT REAL-TIME PA ======================
+document.addEventListener('DOMContentLoaded', () => {
+  const filterTO = document.getElementById('filterPATO');
+  const filterProses = document.getElementById('filterPAProses');
+  const filterSelesai = document.getElementById('filterPASelesai');
+
+  if (filterTO) filterTO.addEventListener('input', () => renderDashboardPACompact(filterTO.value));
+  if (filterProses) filterProses.addEventListener('input', () => renderDashboardPACompact(filterProses.value));
+  if (filterSelesai) filterSelesai.addEventListener('input', () => renderDashboardPACompact(filterSelesai.value));
+});
 
 // ====================== DETAIL PA ======================
 function showDetailModalPA(item) {
@@ -5853,7 +5936,7 @@ loadPAItems();
 // ====================== GLOBAL STATE (LEM) ======================
 let lemItems = []; // array yang diambil dari sheet Lem
 
-// ====================== RENDER GRID HASIL (LEM) ======================
+// ====================== RENDER GRID HASIL (LEM) DENGAN HIGHLIGHT ======================
 function renderGridLem(query = "") {
   const container = document.getElementById('gridLem');
   if (!container) return;
@@ -5862,32 +5945,37 @@ function renderGridLem(query = "") {
   const q = (query || '').toLowerCase();
 
   lemItems.forEach((item, i) => {
-    // Filter pencarian (nama atau noKS)
-    if (q && !(String(item.nama || '').toLowerCase().includes(q) || String(item.noKS || '').toLowerCase().includes(q))) return;
+    // Filter pencarian (nama atau noKS atau QC atau keterangan)
+    if (q && !(
+      (item.nama || '').toLowerCase().includes(q) ||
+      (item.noKS || '').toLowerCase().includes(q) ||
+      (item.qc || '').toLowerCase().includes(q) ||
+      (item.keterangan || '').toLowerCase().includes(q)
+    )) return;
 
     const card = document.createElement('div');
     card.className = 'grid-card';
 
-    // status class (sama seperti referensi)
     let statusClass = '';
-    if ((item.update || '').toString() === "Proses") statusClass = "status-proses";
-    else if ((item.update || '').toString() === "Selesai") statusClass = "status-selesai";
-    else if ((item.update || '').toString() === "TO") statusClass = "status-to";
+    const updateVal = (item.update || '').toString();
+    if (updateVal === "Proses") statusClass = "status-proses";
+    else if (updateVal === "Selesai") statusClass = "status-selesai";
+    else if (updateVal === "TO") statusClass = "status-to";
 
-    const tanggal = item.tanggal ? `<strong>${escapeHtml(item.tanggal)}</strong><br>` : '';
+    const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, query)}</strong><br>` : '';
 
     card.innerHTML = `
       <div>
         ${tanggal}
-        <span>Nama Order: ${escapeHtml(item.nama || '')}</span><br>
-        <span>No KS: ${escapeHtml(item.noKS || '')}</span><br>
-        <span>Order: ${escapeHtml(item.order || '')}</span><br>
-        <span>Isi/Dus: ${escapeHtml(item.isi || '')}</span><br>
-        <span>Bagus: ${escapeHtml(item.bagus || '')}</span><br>
-        <span>BS: ${escapeHtml(item.jenisBS || '')}</span><br>
-        <span>QC: ${escapeHtml(item.qc || '')}</span><br>
-        <span>Keterangan: ${escapeHtml(item.keterangan || '')}</span><br>
-        <span class="${statusClass}">${escapeHtml(item.update || '')}</span>
+        <span>Nama Order: ${highlightHtmlSafe(item.nama || '', query)}</span><br>
+        <span>No KS: ${highlightHtmlSafe(item.noKS || '', query)}</span><br>
+        <span>Order: ${highlightHtmlSafe(item.order || '', query)}</span><br>
+        <span>Isi/Dus: ${highlightHtmlSafe(item.isi || '', query)}</span><br>
+        <span>Bagus: ${highlightHtmlSafe(item.bagus || '', query)}</span><br>
+        <span>BS: ${highlightHtmlSafe(item.jenisBS || '', query)}</span><br>
+        <span>QC: ${highlightHtmlSafe(item.qc || '', query)}</span><br>
+        <span>Keterangan: ${highlightHtmlSafe(item.keterangan || '', query)}</span><br>
+        <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
       </div>
       <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
         <button class="btn-icon btn-call" title="Panggil" onclick="callLem(${i})">📤</button>
@@ -5899,9 +5987,14 @@ function renderGridLem(query = "") {
     container.appendChild(card);
   });
 
-  // Render ulang dashboard setelah daftar hasil berubah
+  // Render ulang dashboard Lem
   renderDashboardLemCompact();
+
+  // Scroll otomatis ke item terakhir
+  const lastCard = container.querySelector('.grid-card:last-child');
+  if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
+
 
 // ====================== LOAD DATA DARI SPREADSHEET (LEM) ======================
 async function loadLemItems(){
@@ -6189,8 +6282,10 @@ function clearLemForm() {
 }
 
 
-// ====================== DASHBOARD LEM (TO / PROSES / SELESAI) ======================
-function renderDashboardLemCompact() {
+// ====================== DASHBOARD LEM (COMPACT + FILTER + HIGHLIGHT) ======================
+function renderDashboardLemCompact(query = "", safeMode = false) {
+  const q = query.toLowerCase().trim();
+
   const containerTO = document.getElementById('dashboardLemTO');
   const containerProses = document.getElementById('dashboardLemProses');
   const containerSelesai = document.getElementById('dashboardLemSelesai');
@@ -6204,8 +6299,9 @@ function renderDashboardLemCompact() {
   let totalTO = 0, totalProses = 0, totalSelesai = 0;
 
   lemItems.forEach(item => {
-    const updateVal = (item.update || "").toString().trim().toLowerCase();
-    const tanggal = item.tanggal ? item.tanggal : "-";
+    const updateVal = (item.update || "").trim().toLowerCase();
+    const tanggal = item.tanggal || "-";
+
     const card = document.createElement('div');
     card.className = 'grid-card';
 
@@ -6214,13 +6310,19 @@ function renderDashboardLemCompact() {
     else if (updateVal === "selesai") statusClass = "status-selesai";
     else if (updateVal === "to") statusClass = "status-to";
 
+    // ===== CARD TEMPLATE DENGAN HIGHLIGHT (ACUAN FINISHING) =====
     card.innerHTML = `
-      <strong>${escapeHtml(item.nama || '')}</strong><br>
-      <strong>QC: ${escapeHtml(item.qc || '')}</strong><br>
-      <span>📅 ${escapeHtml(tanggal)}</span><br>
-      <span class="${statusClass}">${escapeHtml(item.update || '')}</span>
+      <strong>${highlightHtmlSafe(item.nama || '', query)}</strong><br>
+      <strong>QC: ${highlightHtmlSafe(item.qc || '', query)}</strong><br>
+      <span>📅 ${highlightHtmlSafe(tanggal, query)}</span><br>
+      <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
     `;
 
+    // ===== FILTER seperti Finishing / PA =====
+    const cardText = card.textContent.toLowerCase();
+    if (!safeMode && q && !cardText.includes(q)) return;
+
+    // ===== MASUKKAN KE KATEGORI =====
     if (updateVal === 'to') {
       if (containerTO) containerTO.appendChild(card);
       totalTO++;
@@ -6235,16 +6337,23 @@ function renderDashboardLemCompact() {
     card.addEventListener('click', () => showDetailModalLem(item));
   });
 
-  // update counters
-  const elTotal = document.getElementById('countLem');
-  if (elTotal) elTotal.textContent = lemItems.length;
-  const elTO = document.getElementById('countTOLem');
-  if (elTO) elTO.textContent = totalTO;
-  const elProses = document.getElementById('countProsesLem');
-  if (elProses) elProses.textContent = totalProses;
-  const elSelesai = document.getElementById('countSelesaiLem');
-  if (elSelesai) elSelesai.textContent = totalSelesai;
+  // COUNTER
+  document.getElementById('countLem').textContent = lemItems.length;
+  document.getElementById('countTOLem').textContent = totalTO;
+  document.getElementById('countProsesLem').textContent = totalProses;
+  document.getElementById('countSelesaiLem').textContent = totalSelesai;
 }
+
+// ====================== FILTER INPUT REAL-TIME LEM ======================
+document.addEventListener('DOMContentLoaded', () => {
+  const filterTO = document.getElementById('filterTOLem');
+  const filterProses = document.getElementById('filterProsesLem');
+  const filterSelesai = document.getElementById('filterSelesaiLem');
+
+  if (filterTO) filterTO.addEventListener('input', () => renderDashboardLemCompact(filterTO.value));
+  if (filterProses) filterProses.addEventListener('input', () => renderDashboardLemCompact(filterProses.value));
+  if (filterSelesai) filterSelesai.addEventListener('input', () => renderDashboardLemCompact(filterSelesai.value));
+});
 
 // ====================== DETAIL LEM ======================
 function showDetailModalLem(item) {
@@ -6691,6 +6800,37 @@ function enableSPVEdit() {
   });
 }
 
+/* ====================== FILTER & HIGHLIGHT QC REGISTER ====================== */
+const spvSearchInput = document.getElementById('spvSearch');
+if (spvSearchInput) {
+  spvSearchInput.addEventListener('input', () => {
+    const filter = spvSearchInput.value.trim().toLowerCase();
+    const tbody = document.querySelector('#spvTable tbody');
+    if (!tbody) return;
+
+    tbody.querySelectorAll('tr').forEach(tr => {
+      let rowMatches = false;
+
+      tr.querySelectorAll('td').forEach(td => {
+        const text = td.textContent || '';
+        const lower = text.toLowerCase();
+
+        // highlight text yang cocok
+        if (filter && lower.includes(filter)) {
+          const regex = new RegExp(`(${filter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+          td.innerHTML = text.replace(regex, `<span style="background-color:yellow;">$1</span>`);
+          rowMatches = true;
+        } else {
+          td.innerHTML = td.textContent; // reset highlight
+        }
+      });
+
+      // sembunyikan baris jika tidak ada kecocokan
+      tr.style.display = rowMatches || !filter ? '' : 'none';
+    });
+  });
+}
+
 /* ====================== FORMAT ====================== */
 function formatTanggal(tgl) { if (!tgl) return ""; const parts = tgl.split("-"); return parts.length === 3 ? `${parts[2]}-${parts[1]}-${parts[0]}` : tgl; }
 function formatJam(jam) { if (!jam) return ""; return jam.length >= 5 ? jam.slice(0, 5) : jam; }
@@ -7074,6 +7214,42 @@ function enableMeetingEdit(){
   });
 }
 
+// ====================== FILTER & HIGHLIGHT MEETING ======================
+document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.getElementById('meetingSearch');
+  const tableBody = document.querySelector('#meetingTable tbody');
+
+  if(!searchInput || !tableBody) return;
+
+  searchInput.addEventListener('input', () => {
+    const filter = searchInput.value.toLowerCase();
+    const rows = tableBody.querySelectorAll('tr');
+
+    rows.forEach(row => {
+      let match = false;
+
+      // loop setiap cell kecuali aksi
+      row.querySelectorAll('td:not(.action-cell)').forEach(cell => {
+        const text = cell.textContent.toLowerCase();
+
+        if(filter && text.includes(filter)){
+          // highlight
+          const regex = new RegExp(`(${filter.replace(/[-/\\^$*+?.()|[\]{}]/g,'\\$&')})`, 'gi');
+          cell.innerHTML = cell.textContent.replace(regex, '<span style="background:yellow">$1</span>');
+          match = true;
+        } else {
+          // reset highlight
+          cell.innerHTML = cell.textContent;
+        }
+      });
+
+      // show/hide row
+      row.style.display = match || !filter ? '' : 'none';
+    });
+  });
+});
+
+
 // ===== PASSWORD OTOMATIS TAB =====
 document.addEventListener('DOMContentLoaded',()=>{
   const menuBtn = document.querySelector(`nav button[onclick="showMenu('qcMeeting')"]`);
@@ -7266,7 +7442,6 @@ function goHome() {
 
 </body>
 </html>
-
 
 
 
