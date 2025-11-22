@@ -446,6 +446,7 @@ select {
   " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Order<br><strong id="countBapro">0</strong>
   </div>
+
   <div style="
       flex:1; min-width:120px; 
       background: linear-gradient(to bottom, #FF6677, #FF3D5A); 
@@ -456,6 +457,7 @@ select {
   " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total TO<br><strong id="countTOBapro">0</strong>
   </div>
+
   <div style="
       flex:1; min-width:120px; 
       background: linear-gradient(to bottom, #FF6F61, #FF3B30); 
@@ -466,6 +468,7 @@ select {
   " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Proses<br><strong id="countProsesBapro">0</strong>
   </div>
+
   <div style="
       flex:1; min-width:120px; 
       background: linear-gradient(to bottom, #FF7F7F, #FF4444); 
@@ -478,7 +481,7 @@ select {
   </div>
 </div>
 
-<!-- ========== TO / Proses / Selesai Buttons ========== -->
+<!-- ========== TO ========== -->
 <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
   <h4 style="
     margin:0; 
@@ -503,9 +506,14 @@ select {
 
 <div id="sectionBaproTO" style="display:none;">
   <input id="filterTOBapro" type="text" placeholder="🔍 Filter TO" class="filter-input">
-  <div id="dashboardBaproTO" class="grid-container"></div>
+
+  <!-- WRAPPER SCROLL -->
+  <div class="grid-wrapper">
+    <div id="dashboardBaproTO" class="grid-container"></div>
+  </div>
 </div>
 
+<!-- ========== PROSES ========== -->
 <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
   <h4 style="
     margin:0; 
@@ -530,9 +538,14 @@ select {
 
 <div id="sectionBaproProses" style="display:none;">
   <input id="filterProsesBapro" type="text" placeholder="🔍 Filter Proses" class="filter-input">
-  <div id="dashboardBaproProses" class="grid-container"></div>
+
+  <!-- WRAPPER SCROLL -->
+  <div class="grid-wrapper">
+    <div id="dashboardBaproProses" class="grid-container"></div>
+  </div>
 </div>
 
+<!-- ========== SELESAI ========== -->
 <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
   <h4 style="
     margin:0; 
@@ -557,8 +570,13 @@ select {
 
 <div id="sectionBaproSelesai" style="display:none;">
   <input id="filterSelesaiBapro" type="text" placeholder="🔍 Filter Selesai" class="filter-input">
-  <div id="dashboardBaproSelesai" class="grid-container"></div>
+
+  <!-- WRAPPER SCROLL -->
+  <div class="grid-wrapper">
+    <div id="dashboardBaproSelesai" class="grid-container"></div>
+  </div>
 </div>
+
 
 <style>
 .filter-input {
@@ -569,12 +587,27 @@ select {
   border-radius: 6px;
   border: 1px solid #ccc;
   display: block;
+
+  /* agar tidak ikut scroll */
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
 }
+
+/* Scroll wrapper */
+.grid-wrapper {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
 .grid-container {
   display: grid;
   gap: 8px;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 }
+
 .card {
   background: #fff;
   border-radius: 8px;
@@ -601,6 +634,7 @@ select {
   transform: translateY(-2px);
 }
 </style>
+
 
 
 <!-- ======================== QC CETAK ======================== -->
@@ -641,6 +675,7 @@ select {
   " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Order<br><strong id="countPA">0</strong>
   </div>
+
   <div style="
       flex:1; min-width:120px; 
       background: linear-gradient(to bottom, #FFD187, #FFB85C); 
@@ -651,6 +686,7 @@ select {
   " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total TO<br><strong id="countTOPA">0</strong>
   </div>
+
   <div style="
       flex:1; min-width:120px; 
       background: linear-gradient(to bottom, #FFC080, #FFB266); 
@@ -661,6 +697,7 @@ select {
   " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Proses<br><strong id="countProsesPA">0</strong>
   </div>
+
   <div style="
       flex:1; min-width:120px; 
       background: linear-gradient(to bottom, #FFD090, #FFBF70); 
@@ -695,9 +732,13 @@ select {
   </h4>
   <button id="togglePATO" class="toggle-btn">Show</button>
 </div>
+
 <div id="sectionPATO" style="display:none;">
   <input id="filterPATO" type="text" placeholder="🔍 Filter TO" class="filter-input">
-  <div id="dashboardPATO" class="grid-container"></div>
+
+  <div class="grid-wrapper">
+    <div id="dashboardPATO" class="grid-container"></div>
+  </div>
 </div>
 
 <!-- ========== PROSES ========== -->
@@ -722,9 +763,13 @@ select {
   </h4>
   <button id="togglePAProses" class="toggle-btn">Show</button>
 </div>
+
 <div id="sectionPAProses" style="display:none;">
   <input id="filterPAProses" type="text" placeholder="🔍 Filter Proses" class="filter-input">
-  <div id="dashboardPAProses" class="grid-container"></div>
+
+  <div class="grid-wrapper">
+    <div id="dashboardPAProses" class="grid-container"></div>
+  </div>
 </div>
 
 <!-- ========== SELESAI ========== -->
@@ -749,9 +794,13 @@ select {
   </h4>
   <button id="togglePASelesai" class="toggle-btn">Show</button>
 </div>
+
 <div id="sectionPASelesai" style="display:none;">
   <input id="filterPASelesai" type="text" placeholder="🔍 Filter Selesai" class="filter-input">
-  <div id="dashboardPASelesai" class="grid-container"></div>
+
+  <div class="grid-wrapper">
+    <div id="dashboardPASelesai" class="grid-container"></div>
+  </div>
 </div>
 
 <style>
@@ -763,12 +812,27 @@ select {
   border-radius: 6px;
   border: 1px solid #ccc;
   display: block;
+
+  /* Sticky biar tidak ikut scroll */
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 10;
 }
+
+/* Scroll wrapper */
+.grid-wrapper {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
 .grid-container {
   display: grid;
   gap: 8px;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 }
+
 .card {
   background: #fff;
   border-radius: 8px;
@@ -777,24 +841,25 @@ select {
   color: #000;
 }
 
-/* ===== Tombol Show/Hide Abu-abu Metalik Modern ===== */
+/* Tombol Show/Hide */
 .toggle-btn {
   padding: 2px 6px;
   font-size: 0.8rem;
   height: 32px;
-  background: linear-gradient(to bottom, #f0f0f0, #bdbdbd) !important;
-  color: #000 !important;
-  border: 1px solid #000 !important;
-  border-radius: 4px !important;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.25) !important;
+  background: linear-gradient(to bottom, #f0f0f0, #bdbdbd);
+  color: #000;
+  border: 1px solid #000;
+  border-radius: 4px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.25);
   cursor: pointer;
-  transition: transform 0.2s, background 0.2s !important;
+  transition: transform 0.2s, background 0.2s;
 }
 .toggle-btn:hover {
-  background: linear-gradient(to bottom, #ffffff, #d6d6d6) !important;
+  background: linear-gradient(to bottom, #ffffff, #cfcfcf);
   transform: translateY(-2px);
 }
 </style>
+
 
 
 
@@ -838,6 +903,7 @@ select {
   " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Order<br><strong id="countFinishing">0</strong>
   </div>
+
   <div style="
       flex:1; min-width:120px; 
       background: linear-gradient(to bottom, #38D39F, #22C55E); 
@@ -848,6 +914,7 @@ select {
   " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total TO<br><strong id="countTOFinishing">0</strong>
   </div>
+
   <div style="
       flex:1; min-width:120px; 
       background: linear-gradient(to bottom, #4EEA8C, #22C55E); 
@@ -858,6 +925,7 @@ select {
   " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Proses<br><strong id="countProsesFinishing">0</strong>
   </div>
+
   <div style="
       flex:1; min-width:120px; 
       background: linear-gradient(to bottom, #6EE7B7, #22C55E); 
@@ -892,9 +960,14 @@ select {
   </h4>
   <button id="toggleFinishingTO" class="toggle-btn">Show</button>
 </div>
+
 <div id="sectionFinishingTO" style="display:none;">
   <input id="filterFinishingTO" type="text" placeholder="🔍 Filter TO" class="filter-input">
-  <div id="dashboardFinishingTO" class="grid-container"></div>
+
+  <!-- WRAPPER SCROLL (ditambahkan) -->
+  <div class="grid-wrapper">
+    <div id="dashboardFinishingTO" class="grid-container"></div>
+  </div>
 </div>
 
 <!-- ========== PROSES ========== -->
@@ -919,9 +992,14 @@ select {
   </h4>
   <button id="toggleFinishingProses" class="toggle-btn">Show</button>
 </div>
+
 <div id="sectionFinishingProses" style="display:none;">
   <input id="filterFinishingProses" type="text" placeholder="🔍 Filter Proses" class="filter-input">
-  <div id="dashboardFinishingProses" class="grid-container"></div>
+
+  <!-- WRAPPER SCROLL -->
+  <div class="grid-wrapper">
+    <div id="dashboardFinishingProses" class="grid-container"></div>
+  </div>
 </div>
 
 <!-- ========== SELESAI ========== -->
@@ -946,9 +1024,14 @@ select {
   </h4>
   <button id="toggleFinishingSelesai" class="toggle-btn">Show</button>
 </div>
+
 <div id="sectionFinishingSelesai" style="display:none;">
   <input id="filterFinishingSelesai" type="text" placeholder="🔍 Filter Selesai" class="filter-input">
-  <div id="dashboardFinishingSelesai" class="grid-container"></div>
+
+  <!-- WRAPPER SCROLL -->
+  <div class="grid-wrapper">
+    <div id="dashboardFinishingSelesai" class="grid-container"></div>
+  </div>
 </div>
 
 <style>
@@ -960,12 +1043,27 @@ select {
   border-radius: 6px;
   border: 1px solid #ccc;
   display: block;
+
+  /* sticky - tidak ikut scroll */
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
 }
+
+/* Scroll area */
+.grid-wrapper {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
 .grid-container {
   display: grid;
   gap: 8px;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 }
+
 .card {
   background: #fff;
   border-radius: 8px;
@@ -974,7 +1072,7 @@ select {
   color: #000;
 }
 
-/* ===== Tombol Show/Hide Abu-abu Metalik Modern ===== */
+/* Tombol Show/Hide */
 .toggle-btn {
   padding: 2px 6px;
   font-size: 0.8rem;
@@ -987,11 +1085,13 @@ select {
   cursor: pointer;
   transition: transform 0.2s, background 0.2s !important;
 }
+
 .toggle-btn:hover {
   background: linear-gradient(to bottom, #ffffff, #d6d6d6) !important;
   transform: translateY(-2px);
 }
 </style>
+
 
 
 
@@ -1034,6 +1134,7 @@ select {
   " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Order<br><strong id="countLem">0</strong>
   </div>
+
   <div style="
       flex:1; min-width:120px; 
       background: linear-gradient(to bottom, #C084FC, #9C27B0); 
@@ -1044,6 +1145,7 @@ select {
   " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total TO<br><strong id="countTOLem">0</strong>
   </div>
+
   <div style="
       flex:1; min-width:120px; 
       background: linear-gradient(to bottom, #D8B4FE, #9C27B0); 
@@ -1054,6 +1156,7 @@ select {
   " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
     Total Proses<br><strong id="countProsesLem">0</strong>
   </div>
+
   <div style="
       flex:1; min-width:120px; 
       background: linear-gradient(to bottom, #E9D5FF, #9C27B0); 
@@ -1088,9 +1191,13 @@ select {
   </h4>
   <button id="toggleLemTO" class="toggle-btn">Show</button>
 </div>
+
 <div id="sectionLemTO" style="display:none;">
   <input id="filterTOLem" type="text" placeholder="🔍 Filter TO" class="filter-input">
-  <div id="dashboardLemTO" class="grid-container"></div>
+
+  <div class="grid-wrapper">
+    <div id="dashboardLemTO" class="grid-container"></div>
+  </div>
 </div>
 
 <!-- ========== PROSES ========== -->
@@ -1115,9 +1222,13 @@ select {
   </h4>
   <button id="toggleLemProses" class="toggle-btn">Show</button>
 </div>
+
 <div id="sectionLemProses" style="display:none;">
   <input id="filterProsesLem" type="text" placeholder="🔍 Filter Proses" class="filter-input">
-  <div id="dashboardLemProses" class="grid-container"></div>
+
+  <div class="grid-wrapper">
+    <div id="dashboardLemProses" class="grid-container"></div>
+  </div>
 </div>
 
 <!-- ========== SELESAI ========== -->
@@ -1142,13 +1253,16 @@ select {
   </h4>
   <button id="toggleLemSelesai" class="toggle-btn">Show</button>
 </div>
+
 <div id="sectionLemSelesai" style="display:none;">
   <input id="filterSelesaiLem" type="text" placeholder="🔍 Filter Selesai" class="filter-input">
-  <div id="dashboardLemSelesai" class="grid-container"></div>
+
+  <div class="grid-wrapper">
+    <div id="dashboardLemSelesai" class="grid-container"></div>
+  </div>
 </div>
 
 <style>
-/* ===== Input & Grid ===== */
 .filter-input {
   width: 100%;
   max-width: 280px;
@@ -1157,12 +1271,26 @@ select {
   border-radius: 6px;
   border: 1px solid #ccc;
   display: block;
+
+  /* sticky - tidak ikut scroll */
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
 }
+
+.grid-wrapper {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
 .grid-container {
   display: grid;
   gap: 8px;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 }
+
 .card {
   background: #fff;
   border-radius: 8px;
@@ -1171,7 +1299,6 @@ select {
   color: #000;
 }
 
-/* ===== Tombol Show/Hide Abu-abu Metalik Modern (Sama Finishing) ===== */
 .toggle-btn {
   padding: 2px 6px;
   font-size: 0.8rem;
@@ -1189,6 +1316,7 @@ select {
   transform: translateY(-2px);
 }
 </style>
+
 
 
 
@@ -7442,6 +7570,5 @@ function goHome() {
 
 </body>
 </html>
-
 
 
