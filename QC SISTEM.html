@@ -3843,80 +3843,77 @@ document.addEventListener("DOMContentLoaded", () => {
   const pwOk = document.getElementById("pwOk");
   const pwCancel = document.getElementById("pwCancel");
 
+  // ====================== EKSPRESI MATA & MULUT 20 MOODS ======================
   function resetEyes() {
     eyeL.style.cssText = eyeR.style.cssText = "width:18px;height:18px;border-radius:50%;transform:translate(0,0);";
   }
+
   function expNormal() { resetEyes(); mouth.style.cssText = "width:22px;height:6px;border-radius:20px;background:#00cfff;transform:translateY(0) scale(1);"; }
   function expWink() { eyeL.style.cssText="width:18px;height:18px;border-radius:50%;transform:translateY(1px);"; eyeR.style.cssText="width:18px;height:5px;border-radius:4px;transform:translateY(2px);"; mouth.style.cssText="width:26px;height:10px;border-radius:20px;background:#00cfff;transform:translateY(-2px) scale(1.02);"; }
   function expHappy() { eyeL.style.cssText=eyeR.style.cssText="width:18px;height:14px;border-radius:50% 50% 70% 70%;transform:translateY(-1px);"; mouth.style.cssText="width:28px;height:16px;border-radius:0 0 20px 20px;background:#00cfff;transform:translateY(-3px) scale(1.04);"; }
   function expSurprise() { eyeL.style.cssText=eyeR.style.cssText="width:26px;height:26px;border-radius:50%;transform:translateY(-2px);"; mouth.style.cssText="width:16px;height:16px;border-radius:50%;background:#00cfff;transform:translateY(-2px) scale(1.02);"; }
   function expSleepy() { eyeL.style.cssText=eyeR.style.cssText="width:18px;height:6px;border-radius:6px;transform:translateY(1px);"; mouth.style.cssText="width:20px;height:4px;border-radius:4px;background:#00cfff;transform:translateY(0) scale(0.98);"; }
+  function expAngry() { eyeL.style.cssText="width:18px;height:6px;border-radius:4px;transform:translateY(1px) rotate(-10deg);"; eyeR.style.cssText="width:18px;height:6px;border-radius:4px;transform:translateY(1px) rotate(10deg);"; mouth.style.cssText="width:24px;height:4px;border-radius:4px;background:#ff4d4d;transform:translateY(2px) scale(1);"; }
+  function expConfused() { eyeL.style.cssText=eyeR.style.cssText="width:18px;height:12px;border-radius:50%;transform:translateY(0) rotate(5deg);"; mouth.style.cssText="width:20px;height:8px;border-radius:10px;background:#00cfff;transform:translateY(1px) scale(0.95);"; }
+  function expExcited() { eyeL.style.cssText=eyeR.style.cssText="width:20px;height:20px;border-radius:50%;transform:translateY(-1px) scale(1.1);"; mouth.style.cssText="width:30px;height:12px;border-radius:20px;background:#00cfff;transform:translateY(-2px) scale(1.08);"; }
+  function expTalking() { eyeL.style.cssText=eyeR.style.cssText="width:18px;height:18px;border-radius:50%;transform:translateY(0);"; mouth.style.cssText="width:22px;height:8px;border-radius:12px;background:#00cfff;transform:translateY(0) scale(1.05);"; }
+  function expPlayful() { eyeL.style.cssText="width:18px;height:18px;border-radius:50%;transform:translateY(0) rotate(-5deg);"; eyeR.style.cssText="width:18px;height:18px;border-radius:50%;transform:translateY(0) rotate(5deg);"; mouth.style.cssText="width:26px;height:10px;border-radius:20px;background:#00cfff;transform:translateY(-1px) scale(1.02);"; }
+  function expSleepy2() { eyeL.style.cssText=eyeR.style.cssText="width:14px;height:4px;border-radius:50%;transform:translateY(2px);"; mouth.style.cssText="width:18px;height:3px;border-radius:3px;background:#00cfff;transform:translateY(0) scale(0.95);"; }
+  function expSad() { eyeL.style.cssText=eyeR.style.cssText="width:16px;height:8px;border-radius:50%;transform:translateY(2px);"; mouth.style.cssText="width:18px;height:6px;border-radius:0 0 10px 10px;background:#00cfff;transform:translateY(2px) scale(0.95);"; }
+  function expShy() { eyeL.style.cssText=eyeR.style.cssText="width:14px;height:14px;border-radius:50%;transform:translateY(1px);"; mouth.style.cssText="width:16px;height:6px;border-radius:10px;background:#00cfff;transform:translateY(1px) scale(0.98);"; }
+  function expCool() { eyeL.style.cssText=eyeR.style.cssText="width:18px;height:6px;border-radius:4px;transform:translateY(0);"; mouth.style.cssText="width:20px;height:4px;border-radius:4px;background:#00cfff;transform:translateY(0) scale(1);"; }
+  function expSleepy3() { eyeL.style.cssText=eyeR.style.cssText="width:12px;height:4px;border-radius:50%;transform:translateY(2px);"; mouth.style.cssText="width:18px;height:3px;border-radius:3px;background:#00cfff;transform:translateY(1px) scale(0.95);"; }
+  function expLaugh() { eyeL.style.cssText=eyeR.style.cssText="width:16px;height:16px;border-radius:50%;transform:translateY(-1px);"; mouth.style.cssText="width:28px;height:12px;border-radius:20px;background:#00cfff;transform:translateY(-2px) scale(1.05);"; }
+  function expBlinking() { eyeL.style.cssText=eyeR.style.cssText="width:18px;height:18px;border-radius:50%;transform:scaleY(0.1)"; mouth.style.cssText="width:22px;height:6px;border-radius:20px;background:#00cfff;"; }
+  function expCurious() { eyeL.style.cssText=eyeR.style.cssText="width:20px;height:20px;border-radius:50%;transform:translateY(0) rotate(-2deg);"; mouth.style.cssText="width:24px;height:8px;border-radius:10px;background:#00cfff;transform:translateY(0) scale(1);"; }
+  function expMischief() { eyeL.style.cssText="width:16px;height:16px;border-radius:50%;transform:translateY(0) rotate(-8deg);"; eyeR.style.cssText="width:16px;height:16px;border-radius:50%;transform:translateY(0) rotate(8deg);"; mouth.style.cssText="width:26px;height:10px;border-radius:20px;background:#00cfff;transform:translateY(-1px) scale(1.02);"; }
 
-  const moods = [expNormal, expWink, expHappy, expSurprise, expSleepy];
+  const moods = [
+    expNormal, expWink, expHappy, expSurprise, expSleepy,
+    expAngry, expConfused, expExcited, expTalking, expPlayful,
+    expSleepy2, expSad, expShy, expCool, expSleepy3,
+    expLaugh, expBlinking, expCurious, expMischief
+  ];
+
   let moodTimer = null;
-  function startMoodCycle() { if(moodTimer) clearInterval(moodTimer); moodTimer=setInterval(()=>{ moods[Math.floor(Math.random()*moods.length)](); },2500);}
+  function startMoodCycle() { if(moodTimer) clearInterval(moodTimer); moodTimer=setInterval(()=>{ moods[Math.floor(Math.random()*moods.length)](); },2000);}
   function stopMoodCycle(){ if(moodTimer) clearInterval(moodTimer); moodTimer=null; }
   startMoodCycle();
   wrapper.addEventListener("mouseenter",()=>{stopMoodCycle();});
   wrapper.addEventListener("mouseleave",()=>{startMoodCycle();});
 
-const messages = [
-  // QC / data
-  "HALO! SIAP CEK DATA QC 🔍",
-  "CEK DATA BAPRO 📝",
-  "CEK DATA CETAK 📝",
-  "CEK DATA FINISHING 📝",
-  "CEK DATA LEM 📝",
-  "REGISTER TERUPDATE ✅",
-  "MEETING DICATAT 🗂",
-  "PERLU DI CARI APA ❓",
-  
-  // Interaksi santai
-  "HALO 👋",
-  "AKU SIAP BANTU 🔍",
-  "KLIK AKU 👉",
-  "AI MODE ON ⚡",
-  "PERLU BANTUAN ❓",
-  "CARI DATA APA 📝",
-  "SEMANGAT! 💪",
-  "AYO KITA CARI SOLUSI 🧠",
-  "HEI, BUTUH PETUNJUK ❓",
-  "SEDANG STANDBY NICH 👀",
-  "ADA YANG BISA AKU BANTU?",
+  // ====================== SPEECH PANEL ======================
+  const messages = [
+    "HALO! SIAP CEK DATA QC 🔍",
+    "CEK DATA BAPRO 📝",
+    "CEK DATA CETAK 📝",
+    "CEK DATA FINISHING 📝",
+    "CEK DATA LEM 📝",
+    "REGISTER TERUPDATE ✅",
+    "MEETING DICATAT 🗂",
+    "PERLU DI CARI APA ❓",
+    "HALO 👋","AKU SIAP BANTU 🔍","KLIK AKU 👉","AI MODE ON ⚡","PERLU BANTUAN ❓",
+    "CARI DATA APA 📝","SEMANGAT! 💪","AYO KITA CARI SOLUSI 🧠","HEI, BUTUH PETUNJUK ❓",
+    "SEDANG STANDBY NICH 👀","ADA YANG BISA AKU BANTU?",
+    "JANGAN LUPA UPDATE DATA 💡","CEK KEMBALI SEBELUM INPUT ✅","CEK HASIL INPUTAN 🗒","SANTAI DULU 😎","AI SIAP MEMBANTU KAPAN SAJA ⏱"
+  ];
 
-  // Tips / motivasi
-  "JANGAN LUPA UPDATE DATA 💡",
-  "CEK KEMBALI SEBELUM INPUT ✅",
-  "CEK HASIL INPUTAN 🗒",
-  "SANTAI DULU 😎",
-  "AI SIAP MEMBANTU KAPAN SAJA ⏱"
-];
+  let speechTimer = null;
+  function showSpeech(){
+    panel.classList.add("show","talkShake");
+    const msg = messages[Math.floor(Math.random() * messages.length)];
+    panel.textContent = msg;
+    panel.style.minWidth = "auto";
+    panel.style.width = "auto";
+    panel.style.maxWidth = "300px";
+    setTimeout(()=>panel.classList.remove("talkShake"),300);
+    setTimeout(()=>panel.classList.remove("show"),2600);
+    clearInterval(speechTimer);
+    speechTimer = setTimeout(showSpeech, 4000 + Math.random()*4000);
+  }
+  setTimeout(showSpeech,600);
 
-let speechTimer = null;
-
-function showSpeech(){
-  panel.classList.add("show","talkShake");
-
-  // pilih pesan random
-  const msg = messages[Math.floor(Math.random() * messages.length)];
-  panel.textContent = msg;
-
-  // sesuaikan lebar panel otomatis
-  panel.style.minWidth = "auto";
-  panel.style.width = "auto";
-  panel.style.maxWidth = "300px"; // batas maksimal
-
-  setTimeout(()=>panel.classList.remove("talkShake"),300);
-  setTimeout(()=>panel.classList.remove("show"),2600);
-
-  // random interval 4-8 detik
-  clearInterval(speechTimer);
-  speechTimer = setTimeout(showSpeech, 4000 + Math.random()*4000);
-}
-
-setTimeout(showSpeech,600);
-
-
+  // ====================== PASSWORD MODAL ======================
   function openModal(){ modal.setAttribute("aria-hidden","false"); modal.classList.add("open"); pwInput.value=""; setTimeout(()=>pwInput.focus(),120);}
   function closeModal(){ modal.setAttribute("aria-hidden","true"); modal.classList.remove("open");}
   function tryOpenChat(){ const pass=pwInput.value; if(pass===SPV_PASSWORD){ closeModal(); window.open(CHAT_URL,"_blank");} else { pwInput.value=""; pwInput.focus(); alert("Password salah! Akses ditolak."); } }
@@ -3931,6 +3928,8 @@ setTimeout(showSpeech,600);
   window.addEventListener("unload",()=>{ if(moodTimer) clearInterval(moodTimer); if(speechTimer) clearInterval(speechTimer); });
 });
 </script>
+
+
 
 <style>
 /* ===================== BASE WRAPPER ===================== */
@@ -4029,9 +4028,45 @@ setTimeout(showSpeech,600);
 @keyframes bodyBreath{0%,100%{transform:translateX(-50%) scale(1);}50%{transform:translateX(-50%) scale(1.03);}}
 @keyframes bodyWobble{0%,100%{transform:translateX(-50%) rotate(0deg);}50%{transform:translateX(-50%) rotate(-1.5deg);}}
 
-.body-light{width:auto;height:30px;background:#00cfff;border-radius:12px;position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;justify-content:center;align-items:center;font-size:22px;font-weight:900;color:#000;letter-spacing:0.6px;text-shadow:0 0 6px rgba(0,207,255,1),0 0 12px rgba(0,207,255,0.8),0 0 18px rgba(0,207,255,0.6);animation:aiPulse 3s ease-in-out infinite,chargeGlow 2.8s infinite;}
-@keyframes aiPulse{0%,100%{transform:translateX(-50%) scale(1);}50%{transform:translateX(-50%) scale(1.07);}}
-@keyframes chargeGlow{0%,100%{box-shadow:0 0 8px #00cfff;}50%{box-shadow:0 0 18px #00eaff;}}
+.body-light {
+  width: auto;
+  min-width: 40px;          /* memastikan tidak terlalu kecil */
+  padding: 0 10px;          /* agar teks tidak mepet */
+  height: 32px;
+  background: linear-gradient(135deg, #00e0ff, #00cfff); /* gradasi biru lebih hidup */
+  border-radius: 14px;
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  font-weight: 900;
+  color: #000;
+  letter-spacing: 0.6px;
+  text-shadow: 
+    0 0 6px rgba(0, 207, 255, 0.8),
+    0 0 12px rgba(0, 207, 255, 0.6),
+    0 0 18px rgba(0, 207, 255, 0.4);
+  box-shadow: 0 0 8px rgba(0, 207, 255, 0.4), 0 0 16px rgba(0, 207, 255, 0.2);
+  animation: aiPulse 3s ease-in-out infinite, chargeGlow 2.8s ease-in-out infinite;
+  transition: all 0.3s ease-in-out; /* smooth scale saat hover */
+}
+
+/* Animasi pulse halus */
+@keyframes aiPulse {
+  0%, 100% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.08); } /* sedikit lebih terasa */
+}
+
+/* Animasi glow lebih natural */
+@keyframes chargeGlow {
+  0%, 100% { box-shadow: 0 0 8px #00cfff, 0 0 16px rgba(0, 207, 255, 0.3); }
+  50% { box-shadow: 0 0 18px #00eaff, 0 0 28px rgba(0, 224, 255, 0.35); }
+}
+
 
 /* ARMS */
 .arm{width:28px;height:38px;background:#fff;border:6px solid #000;border-radius:20px;position:absolute;top:86px;transition:transform .22s ease-in-out;}
