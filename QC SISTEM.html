@@ -118,7 +118,7 @@ select {
   transition: border .2s, box-shadow .2s;
 }
 
-/* ================= SUPER TRANSPARAN ACRYLIC ================= */
+/* ================= GRID GLOBAL ================= */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -200,82 +200,139 @@ select {
 
 
 
-/* ======================== Tombol Aksi di Grid ======================== */
-.grid-card .btn-icon {
-  border: none;
-  cursor: pointer;
-  border-radius: 6px;
-  padding: 4px 6px;
-  font-size: 0.9rem;
-  transition: .2s;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-.btn-call { background: var(--accent); color: #fff; }
-.btn-edit { background: #facc15; color: #111; }
-.btn-delete { background: var(--danger); color: #fff; }
-.btn-save { background: var(--success); color: #fff; }
-.btn-icon:hover { opacity: .9; transform: translateY(-1px); }
-
-/* ======================== Edit Inline ======================== */
-.edit-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-}
-.edit-grid input,
-.edit-grid select {
-  flex: 1 1 48%;
-  min-width: 100px;
-}
-.edit-grid textarea {
-  flex: 1 1 100%;
-  width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 6px;
-  font-family: inherit;
-  resize: vertical;
+/* ========================== WRAPPER GRID ========================== */
+#gridBapro {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  padding: 10px;
+  margin-top: 10px;
 }
 
-
-/* ======================== Status ======================== */
-.status-to {
-  background: #fee2e2;
-  color: #b91c1c;
-  font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 6px;
-  display: inline-block;
+/* ========================== CARD STYLE ========================== */
+.grid-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  border-left: 6px solid #4b9cff;
+  transition: transform .2s ease, box-shadow .2s ease;
+  font-size: 14px;
+  line-height: 1.35;
 }
+
+.grid-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 14px rgba(0,0,0,0.22);
+}
+
+/* ========================== TEXT ========================== */
+.grid-card span,
+.grid-card strong {
+  display: block;
+  margin-bottom: 2px;
+}
+
+/* ========================== STATUS COLOR ========================== */
 .status-proses {
-  background: var(--warning);
-  color: #111;
-  padding: 2px 6px;
+  background: #ffe08a;
+  color: #886300;
+  padding: 4px 8px;
   border-radius: 6px;
-  font-weight: 600;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 6px;
 }
+
 .status-selesai {
-  background: var(--success);
-  color: #fff;
-  padding: 2px 6px;
+  background: #b7ffbf;
+  color: #005b1a;
+  padding: 4px 8px;
   border-radius: 6px;
-  font-weight: 600;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 6px;
 }
 
-.form-group { margin-bottom: 10px; }
+.status-to {
+  background: #ffb6b6;
+  color: #850000;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 6px;
+}
 
-/* ==================== RATA KIRI UNTUK SEMUA DASHBOARD QC ==================== */
-[id^="dashboard"] .grid-card,
-[id^="dashboard"] .grid-card * {
-  text-align: left !important;
-  align-items: flex-start !important;
-  justify-content: flex-start !important;
+/* ========================== BUTTON AREA ========================== */
+.btn-icon {
+  cursor: pointer;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+.btn-call {
+  background: #4aa3ff;
+  color: white;
+}
+
+.btn-edit {
+  background: #ffc93c;
+  color: #4a3700;
+}
+
+.btn-delete {
+  background: #ff4d4d;
+  color: white;
+}
+
+.btn-icon:hover {
+  opacity: 0.75;
+  transform: scale(1.08);
+}
+
+/* ========================== TOMBOL SIMPAN ========================== */
+.btn-save {
+  background: #28c76f;      /* hijau */
+  color: #ffffff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.btn-save:hover {
+  background: #22ad61;
+  transform: scale(1.06);
+}
+
+/* ========================== TOMBOL BATAL ========================== */
+.btn-cancel {
+  background: #ff4d4d;      /* merah */
+  color: #ffffff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.btn-cancel:hover {
+  background: #d63c3c;
+  transform: scale(1.06);
 }
 
 
-/* ======================= MODAL FINISHING ======================= */
+
+/* ======================= DETAIL GLOBAL ======================= */
 .modal-fin {
   display: none;
   position: fixed;
@@ -350,6 +407,54 @@ select {
   cursor: pointer;
   font-size: 14px;
 }
+
+/* ======================== Edit Inline ======================== */
+.edit-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.edit-grid input,
+.edit-grid select {
+  flex: 1 1 48%;
+  min-width: 100px;
+}
+.edit-grid textarea {
+  flex: 1 1 100%;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 6px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+
+/* ======================== Status ======================== */
+.status-to {
+  background: #fee2e2;
+  color: #b91c1c;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 6px;
+  display: inline-block;
+}
+.status-proses {
+  background: var(--warning);
+  color: #111;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+.status-selesai {
+  background: var(--success);
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.form-group { margin-bottom: 10px; }
 
   
 </style>
