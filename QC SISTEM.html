@@ -275,6 +275,82 @@ select {
 }
 
 
+/* ======================= MODAL FINISHING ======================= */
+.modal-fin {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(2px);
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+}
+
+.modal-fin-content {
+  width: 92%;
+  max-width: 420px;
+  background: #fff;
+  border-radius: 14px;
+  padding: 0;
+  overflow: hidden;
+  animation: modalPop 0.25s ease;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+@keyframes modalPop {
+  from { transform: scale(0.8); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+.modal-fin-header {
+  background: #3677FF;
+  color: white;
+  padding: 12px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-fin-title {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.modal-fin-close {
+  background: transparent;
+  color: white;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.modal-fin-body {
+  padding: 16px 20px;
+  font-size: 15px;
+  line-height: 1.42;
+}
+
+.modal-fin-body strong {
+  color: #0A3D62;
+}
+
+.modal-fin-footer {
+  padding: 12px 18px;
+  text-align: right;
+  background: #f5f5f5;
+}
+
+.modal-fin-btn {
+  background: #3677FF;
+  padding: 8px 16px;
+  border-radius: 8px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
   
 </style>
 
@@ -1511,6 +1587,24 @@ select {
 
 </section>
 
+<!-- ======================= MODAL DETAIL BAPRO (SAMA PERSIS SEPERTI FINISHING) ======================= -->
+<div id="detailBaproModal" class="modal-fin">
+  <div class="modal-fin-content">
+    <div class="modal-fin-header">
+      <span class="modal-fin-title">Detail QC Bapro</span>
+      <button class="modal-fin-close" onclick="closeDetailModalBapro()">×</button>
+    </div>
+
+    <div class="modal-fin-body" id="detailBaproBody">
+      <!-- Diisi otomatis -->
+    </div>
+
+    <div class="modal-fin-footer">
+      <button class="modal-fin-btn" onclick="closeDetailModalBapro()">Tutup</button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== CSS Tab dan Style QC BAPRO ===== -->
 <style>
 /* ===== Tab Button ===== */
@@ -1784,6 +1878,25 @@ select {
 
 </section>
 
+<!-- ======================= MODAL DETAIL CETAK (SAMA PERSIS SEPERTI FINISHING) ======================= -->
+<div id="detailCetakModal" class="modal-fin">
+  <div class="modal-fin-content">
+    <div class="modal-fin-header">
+      <span class="modal-fin-title">Detail QC Cetak</span>
+      <button class="modal-fin-close" onclick="closeDetailModalCetak()">×</button>
+    </div>
+
+    <div class="modal-fin-body" id="detailCetakBody">
+      <!-- otomatis -->
+    </div>
+
+    <div class="modal-fin-footer">
+      <button class="modal-fin-btn" onclick="closeDetailModalCetak()">Tutup</button>
+    </div>
+  </div>
+</div>
+
+
 <!-- ===== CSS Tab dan Style QC CETAK (MEETING style) ===== -->
 <style>
 /* Tab Buttons */
@@ -2049,6 +2162,26 @@ paNoKS.addEventListener('input', function(e) {
   </div>
 
 </section>
+
+<!-- ======================= MODAL DETAIL FINISHING ======================= -->
+<div id="detailFinishingModal" class="modal-fin">
+  <div class="modal-fin-content">
+    <div class="modal-fin-header">
+      <span class="modal-fin-title">Detail QC Finishing</span>
+      <button class="modal-fin-close" onclick="closeDetailModal()">×</button>
+    </div>
+
+    <div class="modal-fin-body" id="detailFinishingBody">
+      <!-- data diisi otomatis -->
+    </div>
+
+    <div class="modal-fin-footer">
+      <button class="modal-fin-btn" onclick="closeDetailModal()">Tutup</button>
+    </div>
+  </div>
+</div>
+
+
 
 <!-- ===== CSS Tab dan Style QC FINISHING (MEETING style) ===== -->
 <style>
@@ -2323,6 +2456,24 @@ finishingNoKS.addEventListener('input', function(e) {
     <div id="gridLem" class="grid-container"></div>
   </div>
 </section>
+
+<!-- ======================= MODAL DETAIL LEM (SAMA PERSIS SEPERTI FINISHING) ======================= -->
+<div id="detailLemModal" class="modal-fin">
+  <div class="modal-fin-content">
+    <div class="modal-fin-header">
+      <span class="modal-fin-title">Detail QC Lem</span>
+      <button class="modal-fin-close" onclick="closeDetailModalLem()">×</button>
+    </div>
+
+    <div class="modal-fin-body" id="detailLemBody">
+      <!-- otomatis -->
+    </div>
+
+    <div class="modal-fin-footer">
+      <button class="modal-fin-btn" onclick="closeDetailModalLem()">Tutup</button>
+    </div>
+  </div>
+</div>
 
 <!-- ===== CSS Tab dan Style QC LEM (MEETING style) ===== -->
 <style>
@@ -4944,17 +5095,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ====================== DETAIL ======================
 function showDetailModal(item) {
-  alert(`Detail QC Finishing:
-Nama: ${item.nama}
-No KS: ${item.noKS}
-Order: ${item.order}
-Isi: ${item.isi}
-Bagus: ${item.bagus}
-BS: ${item.jenisBS}
-QC: ${item.qc}
-Update: ${item.update}
-Keterangan: ${item.keterangan || '-'}`);
+  const body = document.getElementById("detailFinishingBody");
+
+  body.innerHTML = `
+    <strong>Nama:</strong> ${item.nama}<br>
+    <strong>No KS:</strong> ${item.noKS}<br>
+    <strong>Order:</strong> ${item.order}<br>
+    <strong>Isi:</strong> ${item.isi}<br>
+    <strong>Bagus:</strong> ${item.bagus}<br>
+    <strong>BS:</strong> ${item.jenisBS}<br>
+    <strong>QC:</strong> ${item.qc}<br>
+    <strong>Update:</strong> <span class="status-${(item.update || '').toLowerCase()}">${item.update}</span><br><br>
+    <strong>Keterangan:</strong><br>
+    ${(item.keterangan || "-").replace(/\n/g, "<br>")}
+  `;
+
+  document.getElementById("detailFinishingModal").style.display = "flex";
 }
+
+function closeDetailModal() {
+  document.getElementById("detailFinishingModal").style.display = "none";
+}
+
 
 // ====================== TOGGLE VIEW + FILTER QC FINISHING ======================
 document.addEventListener('DOMContentLoaded', () => {
@@ -5578,21 +5740,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ====================== DETAIL BAPRO ======================
 function showDetailModalBapro(item) {
-  alert(`Detail QC Bapro:
-Tanggal: ${item.tanggal || '-'}
-Nama: ${item.nama || '-'}
-Nama CSO: ${item.cso || '-'}
-Jenis Kertas: ${item.jenisKertas || '-'}
-Tebal Kertas: ${item.tebalKertas || '-'}
-Nama Tinta: ${item.NamaTinta || '-'}
-Dmax: ${item.dmax || '-'}
-L: ${item.l || '-'}
-A: ${item.a || '-'}
-B: ${item.b || '-'}
-QC: ${item.qc || '-'}
-Update: ${item.update || '-'}
-Keterangan: ${item.keterangan || '-'}`);
+  const body = document.getElementById("detailBaproBody");
+
+  body.innerHTML = `
+    <strong>Tanggal:</strong> ${item.tanggal || '-'}<br>
+    <strong>Nama:</strong> ${item.nama || '-'}<br>
+    <strong>Nama CSO:</strong> ${item.cso || '-'}<br>
+    <strong>Jenis Kertas:</strong> ${item.jenisKertas || '-'}<br>
+    <strong>Tebal Kertas:</strong> ${item.tebalKertas || '-'}<br>
+    <strong>Nama Tinta:</strong> ${item.NamaTinta || '-'}<br>
+    <strong>Dmax:</strong> ${item.dmax || '-'}<br>
+    <strong>L:</strong> ${item.l || '-'}<br>
+    <strong>A:</strong> ${item.a || '-'}<br>
+    <strong>B:</strong> ${item.b || '-'}<br>
+    <strong>QC:</strong> ${item.qc || '-'}<br>
+    <strong>Update:</strong> <span class="status-${(item.update || '').toLowerCase()}">${item.update || '-'}</span><br><br>
+
+    <strong>Keterangan:</strong><br>
+    ${(item.keterangan || '-').replace(/\n/g, '<br>')}
+  `;
+
+  document.getElementById("detailBaproModal").style.display = "flex";
 }
+
+function closeDetailModalBapro() {
+  document.getElementById("detailBaproModal").style.display = "none";
+}
+
 
 // ====================== TOGGLE VIEW + FILTER BAPRO ======================
 document.addEventListener('DOMContentLoaded', () => {
@@ -5694,9 +5868,9 @@ document.addEventListener('DOMContentLoaded', () => {
 loadBaproItems();
 </script>
 
-<!-- ====== JS QC PA  ====== -->
+<!-- ====== JS QC CETAK  ====== -->
 <script>
-// ====================== GLOBAL STATE (PA) ======================
+// ====================== GLOBAL STATE (CETAK) ======================
 let paItems = []; // array yang diambil dari sheet Cetak
 
 // ====================== RENDER GRID HASIL (PA) DENGAN HIGHLIGHT ======================
@@ -6146,19 +6320,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ====================== DETAIL PA ======================
 function showDetailModalPA(item) {
-  alert(`Detail QC Cetak:
-Tanggal: ${item.tanggal || '-'}
-Nama: ${item.nama || '-'}
-No KS: ${item.noKS || '-'}
-Order: ${item.order || '-'}
-Bagus: ${item.bagus || '-'}
-Sortir: ${item.sortir || '-'}
-Problem: ${item.problem || '-'}
-Mesin: ${item.mesin || '-'}
-QC: ${item.qc || '-'}
-Update: ${item.update || '-'}
-Keterangan: ${item.keterangan || '-'}`);
+  const body = document.getElementById("detailCetakBody");
+
+  body.innerHTML = `
+    <strong>Tanggal:</strong> ${item.tanggal || '-'}<br>
+    <strong>Nama:</strong> ${item.nama || '-'}<br>
+    <strong>No KS:</strong> ${item.noKS || '-'}<br>
+    <strong>Order:</strong> ${item.order || '-'}<br>
+    <strong>Bagus:</strong> ${item.bagus || '-'}<br>
+    <strong>Sortir:</strong> ${item.sortir || '-'}<br>
+    <strong>Problem:</strong> ${item.problem || '-'}<br>
+    <strong>Mesin:</strong> ${item.mesin || '-'}<br>
+    <strong>QC:</strong> ${item.qc || '-'}<br>
+    <strong>Update:</strong> 
+      <span class="status-${(item.update || '').toLowerCase()}">
+        ${item.update || '-'}
+      </span><br><br>
+
+    <strong>Keterangan:</strong><br>
+    ${(item.keterangan || "-").replace(/\n/g, "<br>")}
+  `;
+
+  document.getElementById("detailCetakModal").style.display = "flex";
 }
+
+function closeDetailModalCetak() {
+  document.getElementById("detailCetakModal").style.display = "none";
+}
+
 
 // ====================== TOGGLE VIEW + FILTER QC CETAK ======================
 document.addEventListener('DOMContentLoaded', () => {
@@ -6673,18 +6862,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ====================== DETAIL LEM ======================
 function showDetailModalLem(item) {
-  alert(`Detail QC Lem:
-Tanggal: ${item.tanggal || '-'}
-Nama: ${item.nama || '-'}
-No KS: ${item.noKS || '-'}
-Order: ${item.order || '-'}
-Isi/Dus: ${item.isi || '-'}
-Bagus: ${item.bagus || '-'}
-BS: ${item.jenisBS || '-'}
-QC: ${item.qc || '-'}
-Update: ${item.update || '-'}
-Keterangan: ${item.keterangan || '-'}`);
+  const body = document.getElementById("detailLemBody");
+
+  body.innerHTML = `
+    <strong>Tanggal:</strong> ${item.tanggal || '-'}<br>
+    <strong>Nama:</strong> ${item.nama || '-'}<br>
+    <strong>No KS:</strong> ${item.noKS || '-'}<br>
+    <strong>Order:</strong> ${item.order || '-'}<br>
+    <strong>Isi/Dus:</strong> ${item.isi || '-'}<br>
+    <strong>Bagus:</strong> ${item.bagus || '-'}<br>
+    <strong>BS:</strong> ${item.jenisBS || '-'}<br>
+    <strong>QC:</strong> ${item.qc || '-'}<br>
+    <strong>Update:</strong> 
+      <span class="status-${(item.update || '').toLowerCase()}">
+        ${item.update || '-'}
+      </span><br><br>
+
+    <strong>Keterangan:</strong><br>
+    ${(item.keterangan || "-").replace(/\n/g, "<br>")}
+  `;
+
+  document.getElementById("detailLemModal").style.display = "flex";
 }
+
+function closeDetailModalLem() {
+  document.getElementById("detailLemModal").style.display = "none";
+}
+
 
 // ====================== TOGGLE VIEW + FILTER QC LEM ======================
 document.addEventListener('DOMContentLoaded', () => {
