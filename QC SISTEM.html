@@ -411,23 +411,38 @@ select {
 /* ======================== Edit Inline ======================== */
 .edit-grid {
   display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
+  flex-direction: column;   /* 1 kolom semua */
+  gap: 10px;
+  width: 100%;
 }
+
+/* Input & Select full width */
 .edit-grid input,
 .edit-grid select {
-  flex: 1 1 48%;
-  min-width: 100px;
-}
-.edit-grid textarea {
-  flex: 1 1 100%;
   width: 100%;
-  border: 1px solid #ccc;
+  padding: 8px;
+  border: 1px solid #bbb;
   border-radius: 6px;
-  padding: 6px;
+  font-size: 15px;
+}
+
+/* Textarea lebih besar */
+.edit-grid textarea {
+  width: 100%;
+  min-height: 110px;        /* dibuat jauh lebih besar */
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  padding: 10px;
   font-family: inherit;
   resize: vertical;
 }
+
+/* Extra: Jarak antar label biar rapi */
+.edit-grid label {
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
 
 
 /* ======================== Status ======================== */
