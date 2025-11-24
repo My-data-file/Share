@@ -233,6 +233,30 @@ select {
   margin-bottom: 2px;
 }
 
+/* ===========================
+   GLOBAL STYLE KETERANGAN 1–5
+   Berlaku untuk Bapro, Cetak, Finishing, Lem, PA, dll
+   =========================== */
+
+.ket-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;           /* Jarak antar baris nomor */
+  margin-top: 4px;
+}
+
+.ket-list div {
+  padding: 3px 6px;   /* Ruang dalam per baris */
+  border-radius: 4px;
+  background: #f8f8f8;      /* Warna latar lembut */
+  border-left: 3px solid #00bcd4;  /* Garis kiri kecil sebagai indikator */
+  font-size: 0.9rem;
+  line-height: 1.3rem;
+  min-height: 20px;   /* Agar baris yg kosong tetap rapi */
+  display: flex;
+  align-items: center;
+}
+
 /* ========================== STATUS COLOR ========================== */
 .status-proses {
   background: #ffe08a;
@@ -470,6 +494,8 @@ select {
 }
 
 .form-group { margin-bottom: 10px; }
+
+
 
   
 </style>
@@ -4761,11 +4787,13 @@ function highlightHtmlSafe(text, query) {
 
 
 // ====================== GLOBAL STATE ======================
-let finishingItems = []; // array yang diambil dari sheet
+let finishingItems = []; // array yang diambil dari 
 
-// ====================== RENDER GRID FINISHING ======================
+
+// ====================== RENDER GRID FINISHING (DIUPDATE SESUAI BAPRO) ======================
 function renderGridFinishing(query = "") {
   const container = document.getElementById('gridFinishing');
+  if (!container) return;
   container.innerHTML = '';
 
   const q = (query || '').toLowerCase();
@@ -4782,26 +4810,92 @@ function renderGridFinishing(query = "") {
     const card = document.createElement('div');
     card.className = 'grid-card';
 
+    // ===== STATUS WARNA =====
     let statusClass = '';
-    if (item.update === "Proses") statusClass = "status-proses";
-    else if (item.update === "Selesai") statusClass = "status-selesai";
-    else if (item.update === "TO") statusClass = "status-to";
+    const updateVal = (item.update || '').toString();
+    if (updateVal === "Proses") statusClass = "status-proses";
+    else if (updateVal === "Selesai") statusClass = "status-selesai";
+    else if (updateVal === "TO") statusClass = "status-to";
 
-    const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, query)}</strong><br>` : '';
+    // ===== TANGGAL =====
+    const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, q)}</strong><br>` : '';
 
+    // =========================
+    // PERSIAPKAN KETERANGAN 1–5 (UPDATED FIX)
+    // =========================
+    let kets = [];
+
+    if (item.ket1 || item.ket2 || item.ket3 || item.ket4 || item.ket5) {
+      kets = [
+        item.ket1 || '',
+        item.ket2 || '',
+        item.ket3 || '',
+        item.ket4 || '',
+        item.ket5 || ''
+      ];
+    } else {
+      const raw = (item.keterangan || '').toString().trim();
+
+      // FIX BARU → jika data hanya berisi “1.”, “2.”, … tanpa teks → kosongkan semua
+      if (/^(\s*\d+\.\s*)+$/.test(raw)) {
+        kets = ['', '', '', '', ''];
+      } 
+      else if (raw === '') {
+        kets = ['', '', '', '', ''];
+      } 
+      else {
+        let parts = raw
+          .split(/(\d+)\.\s*(?=[A-Za-z])/)
+          .map(p => p.trim())
+          .filter(p => !/^\d+$/.test(p))
+          .filter(p => p !== '');
+
+        if (parts.length === 0) {
+          parts = raw.split(/[\r\n]+/)
+            .map(p => p.trim())
+            .filter(p => p !== '');
+        }
+
+        parts = parts.map(p => p.replace(/^\d+\.\s*/, '').trim());
+
+        kets = [
+          parts[0] || '',
+          parts[1] || '',
+          parts[2] || '',
+          parts[3] || '',
+          parts[4] || ''
+        ];
+      }
+    }
+
+    // =========================
+
+    // ===== TAMPILKAN HTML =====
     card.innerHTML = `
       <div>
         ${tanggal}
-        <span>Nama Order: ${highlightHtmlSafe(item.nama || '', query)}</span><br>
-        <span>No KS: ${highlightHtmlSafe(item.noKS || '', query)}</span><br>
-        <span>Order: ${highlightHtmlSafe(item.order || '', query)}</span><br>
-        <span>Isi/Dus: ${highlightHtmlSafe(item.isi || '', query)}</span><br>
-        <span>Bagus: ${highlightHtmlSafe(item.bagus || '', query)}</span><br>
-        <span>BS: ${highlightHtmlSafe(item.jenisBS || '', query)}</span><br>
-        <span>QC: ${highlightHtmlSafe(item.qc || '', query)}</span><br>
-        <span>Keterangan: ${highlightHtmlSafe(item.keterangan || '', query)}</span><br>
-        <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
+        <span>Nama Order: ${highlightHtmlSafe(item.nama || '', q)}</span><br>
+        <span>No KS: ${highlightHtmlSafe(item.noKS || '', q)}</span><br>
+        <span>Order: ${highlightHtmlSafe(item.order || '', q)}</span><br>
+        <span>Isi/Dus: ${highlightHtmlSafe(item.isi || '', q)}</span><br>
+        <span>Bagus: ${highlightHtmlSafe(item.bagus || '', q)}</span><br>
+        <span>BS: ${highlightHtmlSafe(item.jenisBS || '', q)}</span><br>
+        <span>QC: ${highlightHtmlSafe(item.qc || '', q)}</span><br>
+
+        <span><b>Keterangan:</b></span><br>
+        <div class="ket-list">
+          <div>1. ${highlightHtmlSafe(kets[0] || '-', q)}</div>
+          <div>2. ${highlightHtmlSafe(kets[1] || '-', q)}</div>
+          <div>3. ${highlightHtmlSafe(kets[2] || '-', q)}</div>
+          <div>4. ${highlightHtmlSafe(kets[3] || '-', q)}</div>
+          <div>5. ${highlightHtmlSafe(kets[4] || '-', q)}</div>
+        </div>
+
+        <br>
+
+        <span class="${statusClass}">${highlightHtmlSafe(item.update || '', q)}</span>
       </div>
+
       <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
         <button class="btn-icon btn-call" title="Panggil" onclick="callFinishing(${i})">📤</button>
         <button class="btn-icon btn-edit" title="Edit Inline" onclick="editFinishingInline(${i})">✏️</button>
@@ -4812,10 +4906,10 @@ function renderGridFinishing(query = "") {
     container.appendChild(card);
   });
 
-  // Render dashboard compact
-  renderDashboardFinishingCompact();
+  if (typeof renderDashboardFinishingCompact === 'function') {
+    try { renderDashboardFinishingCompact(); } catch (e) {}
+  }
 
-  // Scroll otomatis ke item terakhir
   const lastCard = container.querySelector('.grid-card:last-child');
   if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
@@ -5302,19 +5396,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// ====================== AUTO UPPERCASE ======================
-document.addEventListener('input', (e) => {
-  if (!e.target) return;
-  const el = e.target;
-
-  // Berlaku untuk input text dan textarea di dalam #qcFinishing
-  if (
-    (el.tagName === 'INPUT' && el.type === 'text' && el.closest('#qcFinishing')) ||
-    (el.tagName === 'TEXTAREA' && el.closest('#qcFinishing'))
-  ) {
-    el.value = el.value.toUpperCase();
-  }
-});
 
 // ===== Password untuk QC FINISHING (ubah sesuai kebutuhan) =====
 const QC_FINISHING_PASSWORD = 'qc123';
@@ -5351,7 +5432,7 @@ loadFinishingItems();
 let baproItems = []; // array yang diambil dari sheet Bapro
 
 
-// ====================== RENDER GRID HASIL (BAPRO) DENGAN HIGHLIGHT ======================
+// ====================== RENDER GRID HASIL (BAPRO) — FIX TOTAL ACUAN FINISHING ======================
 function renderGridBapro(query = "") {
   const container = document.getElementById('gridBapro');
   if (!container) return;
@@ -5360,7 +5441,8 @@ function renderGridBapro(query = "") {
   const q = (query || '').toLowerCase();
 
   baproItems.forEach((item, i) => {
-    // Filter pencarian (nama atau cso)
+
+    // Filter pencarian
     if (q && !(
       (item.nama || '').toLowerCase().includes(q) ||
       (item.cso || '').toLowerCase().includes(q) ||
@@ -5371,28 +5453,88 @@ function renderGridBapro(query = "") {
     const card = document.createElement('div');
     card.className = 'grid-card';
 
+    // ===== STATUS WARNA =====
     let statusClass = '';
     const updateVal = (item.update || '').toString();
     if (updateVal === "Proses") statusClass = "status-proses";
     else if (updateVal === "Selesai") statusClass = "status-selesai";
     else if (updateVal === "TO") statusClass = "status-to";
 
-    const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, query)}</strong><br>` : '';
+    // ===== TANGGAL =====
+    const tanggal = item.tanggal
+      ? `<strong>${highlightHtmlSafe(item.tanggal, q)}</strong><br>`
+      : '';
 
+    // ============================
+    // PARSING KETERANGAN — FIX TOTAL
+    // ============================
+    let kets = [];
+
+    // PRIORITAS ket1..ket5
+    if (item.ket1 || item.ket2 || item.ket3 || item.ket4 || item.ket5) {
+      kets = [
+        item.ket1 || '',
+        item.ket2 || '',
+        item.ket3 || '',
+        item.ket4 || '',
+        item.ket5 || ''
+      ];
+    } else {
+      const raw = (item.keterangan || '').toString().trim();
+
+      if (raw === "") {
+        kets = ["", "", "", "", ""];
+      } else {
+        // potong format “1. text”, “2. text” tanpa merusak angka lain
+        const parts = raw
+          .split(/^\s*(?:1\.|2\.|3\.|4\.|5\.)\s*/gm)
+          .map(v => v.trim())
+          .filter(v => v !== "");
+
+        kets = [
+          parts[0] || "",
+          parts[1] || "",
+          parts[2] || "",
+          parts[3] || "",
+          parts[4] || ""
+        ];
+      }
+    }
+
+    // ============================
+    // TAMPILKAN HTML
+    // ============================
     card.innerHTML = `
       <div>
         ${tanggal}
-        <span>Nama Order: ${highlightHtmlSafe(item.nama || '', query)}</span><br>
-        <span>CSO: ${highlightHtmlSafe(item.cso || '', query)}</span><br>
-        <span>Jenis: ${highlightHtmlSafe(item.jenisKertas || '', query)}</span><br>
-        <span>GSM: ${highlightHtmlSafe(item.tebalKertas || '', query)}</span><br>
-        <span>Nama Tinta: ${highlightHtmlSafe(item.NamaTinta || '', query)}</span><br>
-        <span>Dmax: ${highlightHtmlSafe(item.dmax || '', query)}</span><br>
-        <span>L: ${highlightHtmlSafe(item.l || '', query)}  A: ${highlightHtmlSafe(item.a || '', query)}  B: ${highlightHtmlSafe(item.b || '', query)}</span><br>
-        <span>QC: ${highlightHtmlSafe(item.qc || '', query)}</span><br>
-        <span>Keterangan: ${highlightHtmlSafe(item.keterangan || '', query)}</span><br>
-        <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
+
+        <span>Nama Order: ${highlightHtmlSafe(item.nama || '', q)}</span><br>
+        <span>CSO: ${highlightHtmlSafe(item.cso || '', q)}</span><br>
+        <span>Jenis: ${highlightHtmlSafe(item.jenisKertas || '', q)}</span><br>
+        <span>GSM: ${highlightHtmlSafe(item.tebalKertas || '', q)}</span><br>
+        <span>Nama Tinta: ${highlightHtmlSafe(item.NamaTinta || '', q)}</span><br>
+        <span>Dmax: ${highlightHtmlSafe(item.dmax || '', q)}</span><br>
+
+        <span>L: ${highlightHtmlSafe(item.l || '', q)}  
+           A: ${highlightHtmlSafe(item.a || '', q)}  
+           B: ${highlightHtmlSafe(item.b || '', q)}</span><br>
+
+        <span>QC: ${highlightHtmlSafe(item.qc || '', q)}</span><br>
+
+        <span><b>Keterangan:</b></span><br>
+        <div class="ket-list">
+          <div>1. ${kets[0] ? highlightHtmlSafe(kets[0], q) : '-'}</div>
+          <div>2. ${kets[1] ? highlightHtmlSafe(kets[1], q) : '-'}</div>
+          <div>3. ${kets[2] ? highlightHtmlSafe(kets[2], q) : '-'}</div>
+          <div>4. ${kets[3] ? highlightHtmlSafe(kets[3], q) : '-'}</div>
+          <div>5. ${kets[4] ? highlightHtmlSafe(kets[4], q) : '-'}</div>
+        </div>
+
+        <br>
+
+        <span class="${statusClass}">${highlightHtmlSafe(item.update || '', q)}</span>
       </div>
+
       <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
         <button class="btn-icon btn-call" title="Panggil" onclick="callBapro(${i})">📤</button>
         <button class="btn-icon btn-edit" title="Edit Inline" onclick="editBaproInline(${i})">✏️</button>
@@ -5403,13 +5545,17 @@ function renderGridBapro(query = "") {
     container.appendChild(card);
   });
 
-  // Render ulang dashboard
-  renderDashboardBaproCompact();
+  // Dashboard
+  if (typeof renderDashboardBaproCompact === "function") {
+    try { renderDashboardBaproCompact(); } catch (e) {}
+  }
 
-  // Scroll otomatis ke item terakhir
+  // Auto-scroll
   const lastCard = container.querySelector('.grid-card:last-child');
   if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
+
+
 
 
 
@@ -5629,6 +5775,7 @@ function editBaproInline(index){
 
   card.dataset.originalHTML = originalHTML;
 }
+
 
 // ====================== CANCEL INLINE (BAPRO) ======================
 function cancelBaproInline(index){
@@ -5951,19 +6098,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnSelesai) btnSelesai.addEventListener('click', () => toggleSection(sectionSelesai, btnSelesai));
 });
 
-// ====================== AUTO UPPERCASE KHUSUS BAPRO ======================
-document.addEventListener('input', (e) => {
-  if (!e.target) return;
-  const el = e.target;
 
-  // Berlaku untuk input text dan textarea di dalam #qcBapro
-  if (
-    (el.tagName === 'INPUT' && el.type === 'text' && el.closest('#qcBapro')) ||
-    (el.tagName === 'TEXTAREA' && el.closest('#qcBapro'))
-  ) {
-    el.value = el.value.toUpperCase();
-  }
-});
 
 // ===== Password untuk QC BAPRO (ubah sesuai kebutuhan) =====
 const QC_BAPRO_PASSWORD = 'qc123';
@@ -5988,12 +6123,19 @@ document.addEventListener('DOMContentLoaded', () => {
 loadBaproItems();
 </script>
 
+
+
+
+
+
+
 <!-- ====== JS QC CETAK  ====== -->
 <script>
 // ====================== GLOBAL STATE (CETAK) ======================
 let paItems = []; // array yang diambil dari sheet Cetak
 
-// ====================== RENDER GRID HASIL (PA) DENGAN HIGHLIGHT ======================
+
+// ====================== RENDER GRID HASIL (PA) – FIX TOTAL MENGIKUTI FINISHING ======================
 function renderGridPA(query = "") {
   const container = document.getElementById('gridPA');
   if (!container) return;
@@ -6002,7 +6144,8 @@ function renderGridPA(query = "") {
   const q = (query || '').toLowerCase();
 
   paItems.forEach((item, i) => {
-    // Filter pencarian (nama atau noKS atau QC atau keterangan)
+
+    // Filter pencarian
     if (q && !(
       (item.nama || '').toLowerCase().includes(q) ||
       (item.noKS || '').toLowerCase().includes(q) ||
@@ -6013,28 +6156,85 @@ function renderGridPA(query = "") {
     const card = document.createElement('div');
     card.className = 'grid-card';
 
+    // STATUS WARNA
     let statusClass = '';
     const updateVal = (item.update || '').toString();
     if (updateVal === "Proses") statusClass = "status-proses";
     else if (updateVal === "Selesai") statusClass = "status-selesai";
     else if (updateVal === "TO") statusClass = "status-to";
 
-    const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, query)}</strong><br>` : '';
+    const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, q)}</strong><br>` : '';
 
+    // ============================
+    // PARSING KETERANGAN — SESUAI ACUAN FINISHING
+    // ============================
+    let kets = [];
+
+    if (item.ket1 || item.ket2 || item.ket3 || item.ket4 || item.ket5) {
+      kets = [
+        item.ket1 || '',
+        item.ket2 || '',
+        item.ket3 || '',
+        item.ket4 || '',
+        item.ket5 || ''
+      ];
+    } else {
+      const raw = (item.keterangan || '').toString().trim();
+
+      // kosongkan semua jika hanya berisi angka saja atau kosong
+      if (/^(\s*\d+\.\s*)+$/.test(raw) || raw === '') {
+        kets = ['', '', '', '', ''];
+      } else {
+        let parts = raw
+          .split(/(\d+)\.\s*(?=[A-Za-z])/)
+          .map(p => p.trim())
+          .filter(p => !/^\d+$/.test(p))
+          .filter(p => p !== '');
+
+        if (parts.length === 0) {
+          parts = raw.split(/[\r\n]+/)
+            .map(p => p.trim())
+            .filter(p => p !== '');
+        }
+
+        parts = parts.map(p => p.replace(/^\d+\.\s*/, '').trim());
+
+        kets = [
+          parts[0] || '',
+          parts[1] || '',
+          parts[2] || '',
+          parts[3] || '',
+          parts[4] || ''
+        ];
+      }
+    }
+
+    // ============================ HTML ============================
     card.innerHTML = `
       <div>
         ${tanggal}
-        <span>Nama Order: ${highlightHtmlSafe(item.nama || '', query)}</span><br>
-        <span>No KS: ${highlightHtmlSafe(item.noKS || '', query)}</span><br>
-        <span>Order: ${highlightHtmlSafe(item.order || '', query)}</span><br>
-        <span>Bagus: ${highlightHtmlSafe(item.bagus || '', query)}</span><br>
-        <span>Sortir: ${highlightHtmlSafe(item.sortir || '', query)}</span><br>
-        <span>Problem: ${highlightHtmlSafe(item.problem || '', query)}</span><br>
-        <span>Mesin: ${highlightHtmlSafe(item.mesin || '', query)}</span><br>
-        <span>QC: ${highlightHtmlSafe(item.qc || '', query)}</span><br>
-        <span>Keterangan: ${highlightHtmlSafe(item.keterangan || '', query)}</span><br>
-        <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
+        <span>Nama Order: ${highlightHtmlSafe(item.nama || '', q)}</span><br>
+        <span>No KS: ${highlightHtmlSafe(item.noKS || '', q)}</span><br>
+        <span>Order: ${highlightHtmlSafe(item.order || '', q)}</span><br>
+        <span>Bagus: ${highlightHtmlSafe(item.bagus || '', q)}</span><br>
+        <span>Sortir: ${highlightHtmlSafe(item.sortir || '', q)}</span><br>
+        <span>Problem: ${highlightHtmlSafe(item.problem || '', q)}</span><br>
+        <span>Mesin: ${highlightHtmlSafe(item.mesin || '', q)}</span><br>
+        <span>QC: ${highlightHtmlSafe(item.qc || '', q)}</span><br>
+
+        <span><b>Keterangan:</b></span><br>
+        <div class="ket-list">
+          <div>1. ${kets[0] ? highlightHtmlSafe(kets[0], q) : '-'}</div>
+          <div>2. ${kets[1] ? highlightHtmlSafe(kets[1], q) : '-'}</div>
+          <div>3. ${kets[2] ? highlightHtmlSafe(kets[2], q) : '-'}</div>
+          <div>4. ${kets[3] ? highlightHtmlSafe(kets[3], q) : '-'}</div>
+          <div>5. ${kets[4] ? highlightHtmlSafe(kets[4], q) : '-'}</div>
+        </div>
+
+        <br>
+        <span class="${statusClass}">${highlightHtmlSafe(item.update || '', q)}</span>
       </div>
+
       <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
         <button class="btn-icon btn-call" title="Panggil" onclick="callPA(${i})">📤</button>
         <button class="btn-icon btn-edit" title="Edit Inline" onclick="editPAInline(${i})">✏️</button>
@@ -6045,13 +6245,13 @@ function renderGridPA(query = "") {
     container.appendChild(card);
   });
 
-  // Render ulang dashboard PA
   renderDashboardPACompact();
 
-  // Scroll otomatis ke item terakhir
+  // Auto-scroll
   const lastCard = container.querySelector('.grid-card:last-child');
   if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
+
 
 
 // ====================== LOAD DATA DARI SPREADSHEET (PA) ======================
@@ -6521,17 +6721,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if(btnSelesai)btnSelesai.addEventListener('click',()=>toggleSection(sectionSelesai,btnSelesai));
 });
 
-// ====================== AUTO UPPERCASE KHUSUS PA ======================
-document.addEventListener('input', (e) => {
-  if (!e.target) return;
-  const el = e.target;
-  if (
-    (el.tagName === 'INPUT' && el.type === 'text' && el.closest('#qcPA')) ||
-    (el.tagName === 'TEXTAREA' && el.closest('#qcPA'))
-  ) {
-    el.value = el.value.toUpperCase();
-  }
-});
+
 
 // ===== Password untuk QC PA (ubah sesuai kebutuhan) =====
 const QC_PA_PASSWORD = 'qc123';
@@ -6556,12 +6746,19 @@ document.addEventListener('DOMContentLoaded', () => {
 loadPAItems();
 </script>
 
+
+
+
+
+
+
 <!-- ====== JS QC LEM (paste this after script utama, format disesuaikan dg QC Finishing) -->
 <script>
 // ====================== GLOBAL STATE (LEM) ======================
 let lemItems = []; // array yang diambil dari sheet Lem
 
-// ====================== RENDER GRID HASIL (LEM) DENGAN HIGHLIGHT ======================
+
+// ====================== RENDER GRID HASIL (LEM) – FIX TOTAL MENGIKUTI FINISHING ======================
 function renderGridLem(query = "") {
   const container = document.getElementById('gridLem');
   if (!container) return;
@@ -6570,7 +6767,8 @@ function renderGridLem(query = "") {
   const q = (query || '').toLowerCase();
 
   lemItems.forEach((item, i) => {
-    // Filter pencarian (nama atau noKS atau QC atau keterangan)
+
+    // Filter pencarian
     if (q && !(
       (item.nama || '').toLowerCase().includes(q) ||
       (item.noKS || '').toLowerCase().includes(q) ||
@@ -6581,27 +6779,78 @@ function renderGridLem(query = "") {
     const card = document.createElement('div');
     card.className = 'grid-card';
 
+    // STATUS COLOR
     let statusClass = '';
     const updateVal = (item.update || '').toString();
     if (updateVal === "Proses") statusClass = "status-proses";
     else if (updateVal === "Selesai") statusClass = "status-selesai";
     else if (updateVal === "TO") statusClass = "status-to";
 
-    const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, query)}</strong><br>` : '';
+    const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, q)}</strong><br>` : '';
 
+    // ============================
+    // PARSING KETERANGAN — FIX SESUAI FINISHING
+    // ============================
+
+    let kets = [];
+
+    // PRIORITAS ket1..ket5
+    if (item.ket1 || item.ket2 || item.ket3 || item.ket4 || item.ket5) {
+      kets = [
+        item.ket1 || '',
+        item.ket2 || '',
+        item.ket3 || '',
+        item.ket4 || '',
+        item.ket5 || ''
+      ];
+    } else {
+      const raw = (item.keterangan || '').toString().trim();
+
+      if (raw === "") {
+        // kalau kosong → semua "-"
+        kets = ["", "", "", "", ""];
+      } else {
+        // potong hanya format "1. teks", "2. teks"
+        const parts = raw
+          .split(/^\s*(?:1\.|2\.|3\.|4\.|5\.)\s*/gm)
+          .map(v => v.trim())
+          .filter(v => v !== "");
+
+        kets = [
+          parts[0] || "",
+          parts[1] || "",
+          parts[2] || "",
+          parts[3] || "",
+          parts[4] || ""
+        ];
+      }
+    }
+
+    // ============================ HTML ============================
     card.innerHTML = `
       <div>
         ${tanggal}
-        <span>Nama Order: ${highlightHtmlSafe(item.nama || '', query)}</span><br>
-        <span>No KS: ${highlightHtmlSafe(item.noKS || '', query)}</span><br>
-        <span>Order: ${highlightHtmlSafe(item.order || '', query)}</span><br>
-        <span>Isi/Dus: ${highlightHtmlSafe(item.isi || '', query)}</span><br>
-        <span>Bagus: ${highlightHtmlSafe(item.bagus || '', query)}</span><br>
-        <span>BS: ${highlightHtmlSafe(item.jenisBS || '', query)}</span><br>
-        <span>QC: ${highlightHtmlSafe(item.qc || '', query)}</span><br>
-        <span>Keterangan: ${highlightHtmlSafe(item.keterangan || '', query)}</span><br>
-        <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
+        <span>Nama Order: ${highlightHtmlSafe(item.nama || '', q)}</span><br>
+        <span>No KS: ${highlightHtmlSafe(item.noKS || '', q)}</span><br>
+        <span>Order: ${highlightHtmlSafe(item.order || '', q)}</span><br>
+        <span>Isi/Dus: ${highlightHtmlSafe(item.isi || '', q)}</span><br>
+        <span>Bagus: ${highlightHtmlSafe(item.bagus || '', q)}</span><br>
+        <span>BS: ${highlightHtmlSafe(item.jenisBS || '', q)}</span><br>
+        <span>QC: ${highlightHtmlSafe(item.qc || '', q)}</span><br>
+
+        <span><b>Keterangan:</b></span><br>
+        <div class="ket-list">
+          <div>1. ${kets[0] ? highlightHtmlSafe(kets[0], q) : '-'}</div>
+          <div>2. ${kets[1] ? highlightHtmlSafe(kets[1], q) : '-'}</div>
+          <div>3. ${kets[2] ? highlightHtmlSafe(kets[2], q) : '-'}</div>
+          <div>4. ${kets[3] ? highlightHtmlSafe(kets[3], q) : '-'}</div>
+          <div>5. ${kets[4] ? highlightHtmlSafe(kets[4], q) : '-'}</div>
+        </div>
+
+        <br>
+        <span class="${statusClass}">${highlightHtmlSafe(item.update || '', q)}</span>
       </div>
+
       <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
         <button class="btn-icon btn-call" title="Panggil" onclick="callLem(${i})">📤</button>
         <button class="btn-icon btn-edit" title="Edit Inline" onclick="editLemInline(${i})">✏️</button>
@@ -6612,13 +6861,14 @@ function renderGridLem(query = "") {
     container.appendChild(card);
   });
 
-  // Render ulang dashboard Lem
   renderDashboardLemCompact();
 
-  // Scroll otomatis ke item terakhir
+  // Auto-scroll
   const lastCard = container.querySelector('.grid-card:last-child');
   if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
+
+
 
 
 // ====================== LOAD DATA DARI SPREADSHEET (LEM) ======================
@@ -7073,17 +7323,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnSelesai) btnSelesai.addEventListener('click', () => toggleSection(sectionSelesai, btnSelesai));
 });
 
-// ====================== AUTO UPPERCASE KHUSUS LEM ======================
-document.addEventListener('input', (e) => {
-  if (!e.target) return;
-  const el = e.target;
-  if (
-    (el.tagName === 'INPUT' && el.type === 'text' && el.closest('#qcLem')) ||
-    (el.tagName === 'TEXTAREA' && el.closest('#qcLem'))
-  ) {
-    el.value = el.value.toUpperCase();
-  }
-});
+
 
 // ===== Password untuk QC Lem (ubah sesuai kebutuhan) =====
 const QC_LEM_PASSWORD = 'qc123';
