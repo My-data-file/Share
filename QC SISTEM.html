@@ -4782,15 +4782,43 @@ function highlightHtmlSafe(text, query) {
   return escapedText.replace(regex, '<mark>$1</mark>');
 }
 
+// ====================== POST PAYLOAD Finishing ======================
+function ensureIframe(){
+  if(document.querySelector('iframe[name="hidden_iframe_post"]')) return;
+  const ifr = document.createElement('iframe');
+  ifr.name = 'hidden_iframe_post';
+  ifr.style.display = 'none';
+  ifr.addEventListener('load', ()=> setTimeout(()=> loadFinishingItems(), 10000));
+  document.body.appendChild(ifr);
+}
+function postPayload(payloadObj){
+  ensureIframe();
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = WEBAPP_URL;
+  form.target = 'hidden_iframe_post';
+  const input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'payload';
+  input.value = JSON.stringify(payloadObj);
+  form.appendChild(input);
+  document.body.appendChild(form);
+  form.submit();
+  form.remove();
+}
 
 
 
 
-// ====================== GLOBAL STATE ======================
-let finishingItems = []; // array yang diambil dari 
 
 
-// ====================== RENDER GRID FINISHING (DIUPDATE SESUAI BAPRO) ======================
+
+
+
+// ====================== GLOBAL STATE (FINISHING) ======================
+let finishingItems = []; // array yang diambil dari sheet Finishing
+
+// ====================== RENDER GRID FINISHING (MENGIKUTI GAYA LEM) ======================
 function renderGridFinishing(query = "") {
   const container = document.getElementById('gridFinishing');
   if (!container) return;
@@ -4799,7 +4827,8 @@ function renderGridFinishing(query = "") {
   const q = (query || '').toLowerCase();
 
   finishingItems.forEach((item, i) => {
-    // Filter pencarian
+
+    // ===== FILTER =====
     if (q && !(
       (item.nama || '').toLowerCase().includes(q) ||
       (item.noKS || '').toLowerCase().includes(q) ||
@@ -4809,8 +4838,9 @@ function renderGridFinishing(query = "") {
 
     const card = document.createElement('div');
     card.className = 'grid-card';
+    card.dataset.index = i;
 
-    // ===== STATUS WARNA =====
+    // ===== STATUS WARNA (SAMA DENGAN LEM) =====
     let statusClass = '';
     const updateVal = (item.update || '').toString();
     if (updateVal === "Proses") statusClass = "status-proses";
@@ -4818,62 +4848,43 @@ function renderGridFinishing(query = "") {
     else if (updateVal === "TO") statusClass = "status-to";
 
     // ===== TANGGAL =====
-    const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, q)}</strong><br>` : '';
+    const tanggal = item.tanggal
+      ? `<strong>${highlightHtmlSafe(item.tanggal, q)}</strong><br>`
+      : "";
 
-    // =========================
-    // PERSIAPKAN KETERANGAN 1–5 (UPDATED FIX)
-    // =========================
-    let kets = [];
+    // ===========================================================
+    // NORMALISASI KETERANGAN (MENGIKUTI LOGIKA LEM)
+    // ===========================================================
+    const raw = (item.keterangan || "").toString().trim();
+    const ketMap = {1:"",2:"",3:"",4:"",5:""};
 
-    if (item.ket1 || item.ket2 || item.ket3 || item.ket4 || item.ket5) {
-      kets = [
-        item.ket1 || '',
-        item.ket2 || '',
-        item.ket3 || '',
-        item.ket4 || '',
-        item.ket5 || ''
-      ];
-    } else {
-      const raw = (item.keterangan || '').toString().trim();
-
-      // FIX BARU → jika data hanya berisi “1.”, “2.”, … tanpa teks → kosongkan semua
-      if (/^(\s*\d+\.\s*)+$/.test(raw)) {
-        kets = ['', '', '', '', ''];
-      } 
-      else if (raw === '') {
-        kets = ['', '', '', '', ''];
-      } 
-      else {
-        let parts = raw
-          .split(/(\d+)\.\s*(?=[A-Za-z])/)
-          .map(p => p.trim())
-          .filter(p => !/^\d+$/.test(p))
-          .filter(p => p !== '');
-
-        if (parts.length === 0) {
-          parts = raw.split(/[\r\n]+/)
-            .map(p => p.trim())
-            .filter(p => p !== '');
+    if (raw !== "") {
+      raw.split(/\r?\n/).forEach(line => {
+        const m = line.match(/^\s*(\d+)\.\s*(.*)/);
+        if (m) {
+          const no = parseInt(m[1]);
+          if (no >= 1 && no <= 5) {
+            ketMap[no] = m[2].trim() || "";
+          }
         }
-
-        parts = parts.map(p => p.replace(/^\d+\.\s*/, '').trim());
-
-        kets = [
-          parts[0] || '',
-          parts[1] || '',
-          parts[2] || '',
-          parts[3] || '',
-          parts[4] || ''
-        ];
-      }
+      });
     }
 
-    // =========================
+    const kets = [
+      ketMap[1] || "",
+      ketMap[2] || "",
+      ketMap[3] || "",
+      ketMap[4] || "",
+      ketMap[5] || ""
+    ];
 
-    // ===== TAMPILKAN HTML =====
+    // ===========================================================
+    // HTML (FORMAT KARTU MENGIKUTI LEM)
+    // ===========================================================
     card.innerHTML = `
       <div>
         ${tanggal}
+
         <span>Nama Order: ${highlightHtmlSafe(item.nama || '', q)}</span><br>
         <span>No KS: ${highlightHtmlSafe(item.noKS || '', q)}</span><br>
         <span>Order: ${highlightHtmlSafe(item.order || '', q)}</span><br>
@@ -4906,14 +4917,15 @@ function renderGridFinishing(query = "") {
     container.appendChild(card);
   });
 
+  // Dashboard ringkas (jika ada)
   if (typeof renderDashboardFinishingCompact === 'function') {
-    try { renderDashboardFinishingCompact(); } catch (e) {}
+    try { renderDashboardFinishingCompact(); } catch(e) {}
   }
 
+  // Auto scroll ke item terakhir
   const lastCard = container.querySelector('.grid-card:last-child');
   if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
-
 
 
 // ====================== LOAD DATA DARI SPREADSHEET ======================
@@ -4926,6 +4938,7 @@ async function loadFinishingItems(){
     } else console.warn('loadFinishingItems unexpected', res);
   }catch(err){ console.error('⚠️ Error loadFinishingItems', err); }
 }
+
 
 // ====================== TAMBAH DATA (FINISHING) ======================
 function addFinishingItem() {
@@ -4940,11 +4953,11 @@ function addFinishingItem() {
 
   // ===== Gabungkan keterangan format BAPRO =====
   const keterangan =
-`1. ${document.getElementById("finKet1").value}
-2. ${document.getElementById("finKet2").value}
-3. ${document.getElementById("finKet3").value}
-4. ${document.getElementById("finKet4").value}
-5. ${document.getElementById("finKet5").value}`;
+`1. ${document.getElementById("finKet1").value || ''}
+2. ${document.getElementById("finKet2").value || ''}
+3. ${document.getElementById("finKet3").value || ''}
+4. ${document.getElementById("finKet4").value || ''}
+5. ${document.getElementById("finKet5").value || ''}`;
 
   // Validasi
   if (!nama || !noKS || !qc || !update) {
@@ -4966,7 +4979,7 @@ function addFinishingItem() {
     nama,noKS,order,isi,bagus,jenisBS,qc,update,keterangan
   };
 
-  // Spinner
+  // Spinner tombol
   const btnTambah = document.querySelector('#inputFinishing button');
   if (btnTambah) {
     btnTambah.disabled = true;
@@ -4978,18 +4991,17 @@ function addFinishingItem() {
     setTimeout(() => {
       btnTambah.disabled = false;
       btnTambah.innerHTML = originalHTML;
-      clearFinishingForm();
+      if (typeof clearFinishingForm === 'function') clearFinishingForm();
       loadFinishingItems();
       alert('✅ Data berhasil ditambahkan!');
     }, 8000);
   } else {
     postPayload(payload);
-    clearFinishingForm();
+    if (typeof clearFinishingForm === 'function') clearFinishingForm();
     setTimeout(() => loadFinishingItems(), 8000);
     alert('✅ Data berhasil ditambahkan!');
   }
 }
-
 
 
 // ====================== PANGGIL (isi form dari item) ======================
@@ -5007,10 +5019,10 @@ function callFinishing(index){
   document.getElementById('finishingUpdate').value = item.update || '';
 
   // ===== Kembalikan keterangan ke input 1–5 =====
-  const lines = (item.keterangan || "").split("\n");
+  const lines = (item.keterangan || "").split(/\r?\n/);
   for (let i = 1; i <= 5; i++) {
     const el = document.getElementById("finKet" + i);
-    if (el) el.value = (lines[i-1] || "").replace(`${i}. `, "");
+    if (el) el.value = (lines[i-1] || "").replace(new RegExp(`^\\s*${i}\\.\\s*`), "");
   }
 
   // ===== Pastikan pindah ke tab FINISHING INPUT =====
@@ -5021,9 +5033,6 @@ function callFinishing(index){
 }
 
 
-
-
-
 // ====================== HAPUS ITEM (langsung hilang dari grid) ======================
 function deleteFinishing(index) {
   const item = finishingItems[index];
@@ -5031,7 +5040,8 @@ function deleteFinishing(index) {
   if (!confirm('Hapus data ini?')) return;
 
   const container = document.getElementById('gridFinishing');
-  const card = container.children[index];
+  const card = container.querySelector(`.grid-card[data-index="${index}"]`);
+
   const btnDelete = card?.querySelector('.btn-delete');
 
   if (btnDelete) {
@@ -5051,80 +5061,93 @@ function deleteFinishing(index) {
 
   // 🔹 Tunggu proses di Google Sheet (sekitar 8 detik)
   setTimeout(() => {
-    // hapus dari array dan DOM setelah spinner tampil cukup lama
+    // hapus dari array dan DOM agar langsung hilang dari grid
     finishingItems.splice(index, 1);
-    card.remove();
+    if (card) card.remove();
     loadFinishingItems();
   }, 8000);
 }
+
 
 // ====================== EDIT INLINE (FINISHING) ======================
 function editFinishingInline(index){
   const item = finishingItems[index];
   const container = document.getElementById('gridFinishing');
-  const card = container.children[index];
+  const card = container.querySelector(`.grid-card[data-index="${index}"]`);
+
   if(!card) return;
   if(card.querySelector('.edit-inline')) return;
 
-  // Simpan HTML lama untuk cancel
+  // Simpan HTML lama untuk cancel (encode agar aman)
   const originalHTML = card.innerHTML;
+  card.innerHTML = ''; // kosongkan dulu supaya tidak ada flicker data lama saat set dataset
+  card.dataset.oldHtml = encodeURIComponent(originalHTML);
+
+  // siapkan nilai keterangan: tampilkan utuh di textarea (user bisa edit bebas)
+  const keteranganRaw = item.keterangan || '';
 
   card.innerHTML = `
     <div class="edit-grid">
-      <input type="text" class="edit-inline" value="${escapeHtml(item.nama||'')}" placeholder="Nama Order">
-      <input type="text" class="edit-inline" value="${escapeHtml(item.noKS||'')}" placeholder="No KS">
-      <input type="number" class="edit-inline" value="${escapeHtml(item.order||'')}" placeholder="Order">
-      <input type="number" class="edit-inline" value="${escapeHtml(item.isi||'')}" placeholder="Isi/Dus">
-      <input type="number" class="edit-inline" value="${escapeHtml(item.bagus||'')}" placeholder="Bagus">
-      <input type="number" class="edit-inline" value="${escapeHtml(item.jenisBS||'')}" placeholder="BS">
+      <input type="text" class="edit-inline" name="nama" value="${escapeHtml(item.nama||'')}" placeholder="Nama Order">
+      <input type="text" class="edit-inline" name="noKS" value="${escapeHtml(item.noKS||'')}" placeholder="No KS">
+      <input type="number" class="edit-inline" name="order" value="${escapeHtml(item.order||'')}" placeholder="Order">
+      <input type="number" class="edit-inline" name="isi" value="${escapeHtml(item.isi||'')}" placeholder="Isi/Dus">
+      <input type="number" class="edit-inline" name="bagus" value="${escapeHtml(item.bagus||'')}" placeholder="Bagus">
+      <input type="number" class="edit-inline" name="jenisBS" value="${escapeHtml(item.jenisBS||'')}" placeholder="BS">
 
-      <select class="edit-inline">
+      <select class="edit-inline" name="qc">
         <option value="Anom" ${item.qc==='Anom'? 'selected':''}>Anom</option>
         <option value="Irna" ${item.qc==='Irna'? 'selected':''}>Irna</option>
       </select>
 
-      <select class="edit-inline">
+      <select class="edit-inline" name="update">
         <option value="TO" ${item.update==='TO'? 'selected':''}>TO</option>
         <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
         <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
       </select>
 
-      <textarea class="edit-inline" rows="2" placeholder="Keterangan">${escapeHtml(item.keterangan||'')}</textarea>
+      <textarea class="edit-inline" name="keterangan" rows="3" placeholder="Keterangan">${escapeHtml(keteranganRaw)}</textarea>
     </div>
+
     <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
-      <button class="btn-icon btn-save" title="Simpan" onclick="saveFinishingInline(${index})">💾</button>
-      <button class="btn-icon btn-cancel" title="Batal" onclick="cancelFinishingInline(${index})">✖️</button>
-    </div>`;
-
-  card.dataset.originalHTML = originalHTML;
+      <button class="btn-icon btn-save" title="Simpan" onclick="saveFinishingInline(${index}, this)">💾</button>
+      <button class="btn-icon btn-cancel" title="Batal" onclick="cancelFinishingInline(${index}, '${encodeURIComponent(originalHTML)}')">✖️</button>
+    </div>
+  `;
 }
 
-// ====================== CANCEL INLINE (FINISHING) ======================
-function cancelFinishingInline(index){
-  const container = document.getElementById('gridFinishing');
-  const card = container.children[index];
-  if(!card) return;
-  delete card.dataset.originalHTML;
-  renderGridFinishing(); // tampilkan ulang tampilan normal
-}
 
-// ====================== SIMPAN HASIL EDIT INLINE (FINISHING) ======================
-async function saveFinishingInline(index) {
+// ====================== BATAL EDIT INLINE (FINISHING) ======================
+function cancelFinishingInline(index, oldHtmlEncoded) {
   const container = document.getElementById('gridFinishing');
-  const card = container.children[index];
+  const card = container.querySelector(`.grid-card[data-index="${index}"]`);
   if (!card) return;
 
-  const btnSave = card.querySelector('.btn-save');
-  const btnCancel = card.querySelector('.btn-cancel'); // 🔹 ambil tombol cancel
+  try {
+    card.innerHTML = decodeURIComponent(oldHtmlEncoded || card.dataset.oldHtml || '');
+    if (card.dataset.oldHtml) delete card.dataset.oldHtml;
+  } catch (e) {
+    // fallback: reload list
+    loadFinishingItems();
+  }
+}
 
+
+// ====================== SIMPAN HASIL EDIT INLINE (FINISHING) ======================
+async function saveFinishingInline(index, btn) {
+  const container = document.getElementById('gridFinishing');
+  const card = container.querySelector(`.grid-card[data-index="${index}"]`);
+  if (!card) return;
+
+  const btnSave = btn;
+  const btnCancel = card.querySelector('.btn-cancel');
   if (btnSave) {
     btnSave.textContent = '⏳ Menyimpan...';
     btnSave.disabled = true;
   }
-  if (btnCancel) btnCancel.style.display = 'none'; // 🔹 sembunyikan tombol cancel saat menyimpan
+  if (btnCancel) btnCancel.style.display = 'none';
 
   const inputs = card.querySelectorAll('.edit-inline');
-
   const updated = {
     nama: inputs[0].value.trim(),
     noKS: inputs[1].value.trim(),
@@ -5156,11 +5179,12 @@ async function saveFinishingInline(index) {
 
   try {
     await postPayload(payload);
+    // beri waktu sheet memproses
     await new Promise(res => setTimeout(res, 5000));
     await loadFinishingItems();
   } catch (err) {
-    console.error('Gagal menyimpan data Finishing:', err);
-    alert('Gagal menyimpan data. Silakan coba lagi.');
+    console.error('Gagal menyimpan:', err);
+    alert('Gagal menyimpan data. Coba lagi.');
   } finally {
     if (btnSave) {
       btnSave.textContent = '💾 Simpan';
@@ -5169,37 +5193,15 @@ async function saveFinishingInline(index) {
   }
 }
 
-// ====================== POST PAYLOAD ======================
-function ensureIframe(){
-  if(document.querySelector('iframe[name="hidden_iframe_post"]')) return;
-  const ifr = document.createElement('iframe');
-  ifr.name = 'hidden_iframe_post';
-  ifr.style.display = 'none';
-  ifr.addEventListener('load', ()=> setTimeout(()=> loadFinishingItems(), 10000));
-  document.body.appendChild(ifr);
-}
-function postPayload(payloadObj){
-  ensureIframe();
-  const form = document.createElement('form');
-  form.method = 'POST';
-  form.action = WEBAPP_URL;
-  form.target = 'hidden_iframe_post';
-  const input = document.createElement('input');
-  input.type = 'hidden';
-  input.name = 'payload';
-  input.value = JSON.stringify(payloadObj);
-  form.appendChild(input);
-  document.body.appendChild(form);
-  form.submit();
-  form.remove();
-}
 
-// ====================== FILTER BERDASARKAN ISI GRID (FINISHING) ======================
+
+
+// ====================== FILTER BERDASARKAN ISI GRID FINISHING ======================
 function filterFinishingGrid(query){
   const grid = document.getElementById('gridFinishing');
   if (!grid) return;
 
-  const keyword = query.toLowerCase().trim();
+  const keyword = (query || '').toLowerCase().trim();
   const cards = grid.querySelectorAll('.grid-card');
 
   cards.forEach(card => {
@@ -5209,9 +5211,8 @@ function filterFinishingGrid(query){
 }
 
 
-// ====================== CLEAR FORM ======================
+// ====================== CLEAR FORM (FINISHING) ======================
 function clearFinishingForm() {
-
   [
     'finishingNama','finishingNoKS','finishingQC','finishingUpdate'
   ].forEach(id => {
@@ -5220,20 +5221,17 @@ function clearFinishingForm() {
   });
 
   // Number fields
-  [
-    'finishingOrder','finishingIsi','finishingBagus','finishingJenisBS'
-  ].forEach(id => {
+  ['finishingOrder','finishingIsi','finishingBagus','finishingJenisBS'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = 0;
   });
 
-  // Reset keterangan format 1–5
-  for (let i = 1; i <= 5; i++) {
-    const el = document.getElementById("finKet" + i);
-    if (el) el.value = '';
+  // Reset keterangan 1–5
+  for (let i=1; i<=5; i++){
+    const el = document.getElementById("finKet"+i);
+    if(el) el.value = '';
   }
 }
-
 
 
 // ====================== DASHBOARD FINISHING COMPACT DENGAN HIGHLIGHT ======================
@@ -5307,124 +5305,154 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// ====================== DETAIL ======================
-function showDetailModal(item) {
+// ====================== DETAIL FINISHING ======================
+function showDetailModalFinishing(item) {
+  const modal = document.getElementById("detailFinishingModal");
   const body = document.getElementById("detailFinishingBody");
 
+  if (!modal || !body) return;
+
   body.innerHTML = `
-    <strong>Nama:</strong> ${item.nama}<br>
-    <strong>No KS:</strong> ${item.noKS}<br>
-    <strong>Order:</strong> ${item.order}<br>
-    <strong>Isi:</strong> ${item.isi}<br>
-    <strong>Bagus:</strong> ${item.bagus}<br>
-    <strong>BS:</strong> ${item.jenisBS}<br>
-    <strong>QC:</strong> ${item.qc}<br>
-    <strong>Update:</strong> <span class="status-${(item.update || '').toLowerCase()}">${item.update}</span><br><br>
+    <strong>Tanggal:</strong> ${item.tanggal || '-'}<br>
+    <strong>Nama:</strong> ${item.nama || '-'}<br>
+    <strong>No KS:</strong> ${item.noKS || '-'}<br>
+    <strong>Order:</strong> ${item.order || '-'}<br>
+    <strong>Isi/Dus:</strong> ${item.isi || '-'}<br>
+    <strong>Bagus:</strong> ${item.bagus || '-'}<br>
+    <strong>BS:</strong> ${item.jenisBS || '-'}<br>
+    <strong>QC:</strong> ${item.qc || '-'}<br>
+    <strong>Update:</strong> 
+      <span class="status-${(item.update || '').toLowerCase()}">
+        ${item.update || '-'}
+      </span><br><br>
+
     <strong>Keterangan:</strong><br>
     ${(item.keterangan || "-").replace(/\n/g, "<br>")}
   `;
 
-  document.getElementById("detailFinishingModal").style.display = "flex";
+  modal.style.display = "flex";
 }
 
-function closeDetailModal() {
-  document.getElementById("detailFinishingModal").style.display = "none";
+function closeDetailModal() {   // << SAMA seperti yang dipanggil HTML
+  const modal = document.getElementById("detailFinishingModal");
+  if (modal) modal.style.display = "none";
 }
+
+// Close modal jika klik area luar
+document.addEventListener("click", (e) => {
+  const modal = document.getElementById("detailFinishingModal");
+  if (!modal) return;
+
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+});
 
 
 // ====================== TOGGLE VIEW + FILTER QC FINISHING ======================
-document.addEventListener('DOMContentLoaded', () => {
-  // Tombol
-  const btnTO = document.getElementById('toggleFinishingTO');
-  const btnProses = document.getElementById('toggleFinishingProses');
-  const btnSelesai = document.getElementById('toggleFinishingSelesai');
+document.addEventListener("DOMContentLoaded", () => {
+
+  // Tombol toggle
+  const btnTO = document.getElementById("toggleFinishingTO");
+  const btnProses = document.getElementById("toggleFinishingProses");
+  const btnSelesai = document.getElementById("toggleFinishingSelesai");
 
   // Section
-  const sectionTO = document.getElementById('sectionFinishingTO');
-  const sectionProses = document.getElementById('sectionFinishingProses');
-  const sectionSelesai = document.getElementById('sectionFinishingSelesai');
+  const sectionTO = document.getElementById("sectionFinishingTO");
+  const sectionProses = document.getElementById("sectionFinishingProses");
+  const sectionSelesai = document.getElementById("sectionFinishingSelesai");
 
-  // Filter input
-  const filterTO = document.getElementById('filterFinishingTO');
-  const filterProses = document.getElementById('filterFinishingProses');
-  const filterSelesai = document.getElementById('filterFinishingSelesai');
+  // Filter input (ID diperbaiki sesuai HTML)
+  const filterTO = document.getElementById("filterFinishingTO");
+  const filterProses = document.getElementById("filterFinishingProses");
+  const filterSelesai = document.getElementById("filterFinishingSelesai");
 
   // Grid container
-  const gridTO = document.getElementById('dashboardFinishingTO');
-  const gridProses = document.getElementById('dashboardFinishingProses');
-  const gridSelesai = document.getElementById('dashboardFinishingSelesai');
+  const gridTO = document.getElementById("dashboardFinishingTO");
+  const gridProses = document.getElementById("dashboardFinishingProses");
+  const gridSelesai = document.getElementById("dashboardFinishingSelesai");
 
-  // 🔍 Fungsi filter universal (per grid)
+  // Fungsi filter
   function filterCards(container, keyword) {
     if (!container) return;
-    const cards = container.querySelectorAll('.grid-card');
+    const cards = container.querySelectorAll(".grid-card");
     const term = keyword.toLowerCase().trim();
     cards.forEach(card => {
       const text = card.textContent.toLowerCase();
-      card.style.display = text.includes(term) ? '' : 'none';
+      card.style.display = text.includes(term) ? "" : "none";
     });
   }
 
-  // Event input untuk filter real-time
+  // Filter real time
   [
-    {input: filterTO, grid: gridTO},
-    {input: filterProses, grid: gridProses},
-    {input: filterSelesai, grid: gridSelesai}
-  ].forEach(({input, grid}) => {
+    { input: filterTO, grid: gridTO },
+    { input: filterProses, grid: gridProses },
+    { input: filterSelesai, grid: gridSelesai }
+  ].forEach(({ input, grid }) => {
     if (input) {
-      input.addEventListener('input', () => filterCards(grid, input.value));
+      input.addEventListener("input", () => filterCards(grid, input.value));
     }
   });
 
-  // Fungsi supaya filter tetap aktif setelah reload data
-  window.applyFinishingFilters = function() {
-    filterCards(gridTO, filterTO.value);
-    filterCards(gridProses, filterProses.value);
-    filterCards(gridSelesai, filterSelesai.value);
+  // Tetap filter setelah data dirender ulang
+  window.applyFinishingFilters = function () {
+    filterCards(gridTO, filterTO?.value || "");
+    filterCards(gridProses, filterProses?.value || "");
+    filterCards(gridSelesai, filterSelesai?.value || "");
   };
 
-  // Toggle show/hide tiap section
+  // Toggle section
   function toggleSection(section, btn) {
-    const visible = section.style.display !== 'none';
-    section.style.display = visible ? 'none' : 'block';
-    btn.textContent = visible ? 'Show' : 'Hide';
+    const visible = section.style.display !== "none";
+    section.style.display = visible ? "none" : "block";
+    btn.textContent = visible ? "Show" : "Hide";
   }
 
-  if (btnTO) btnTO.addEventListener('click', () => toggleSection(sectionTO, btnTO));
-  if (btnProses) btnProses.addEventListener('click', () => toggleSection(sectionProses, btnProses));
-  if (btnSelesai) btnSelesai.addEventListener('click', () => toggleSection(sectionSelesai, btnSelesai));
+  if (btnTO) btnTO.addEventListener("click", () => toggleSection(sectionTO, btnTO));
+  if (btnProses) btnProses.addEventListener("click", () => toggleSection(sectionProses, btnProses));
+  if (btnSelesai) btnSelesai.addEventListener("click", () => toggleSection(sectionSelesai, btnSelesai));
 });
 
 
+// ====================== PASSWORD PROTECT QC FINISHING ======================
+const QC_FINISHING_PASSWORD = "qc123";
 
-// ===== Password untuk QC FINISHING (ubah sesuai kebutuhan) =====
-const QC_FINISHING_PASSWORD = 'qc123';
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   const btn = document.querySelector(`nav button[onclick="showMenu('qcFinishing')"]`);
-  if (btn) {
-    const originalOnClick = btn.getAttribute('onclick');
-    btn.onclick = function(e) {
-      e.preventDefault();
-      const input = prompt('Masukkan password untuk QC FINISHING:');
-      if (input === null) return;
-      if (input === QC_FINISHING_PASSWORD) {
-        eval(originalOnClick); // jalankan fungsi aslinya
-      } else {
-        alert('Password salah!');
+  if (!btn) return;
+
+  const originalOnClick = btn.getAttribute("onclick");
+  
+  btn.onclick = function (e) {
+    e.preventDefault();
+
+    const input = prompt("Masukkan password untuk QC Finishing:");
+    if (input === null) return;
+
+    if (input === QC_FINISHING_PASSWORD) {
+      try {
+        eval(originalOnClick);
+      } catch {
+        if (typeof showMenu === "function") showMenu("qcFinishing");
       }
-    };
-  }
+    } else {
+      alert("Password salah!");
+    }
+  };
 });
 
 
 
-
-// ====================== INISIALISASI ======================
-showMenu('dashboard');
+// ====================== INISIALISASI (panggil loader FINISHING) ======================
 loadFinishingItems();
 
 
 </script>
+
+
+
+
+
 
 <!-- ====== JS QC BAPRO ====== -->
 <script>
@@ -5432,7 +5460,7 @@ loadFinishingItems();
 let baproItems = []; // array yang diambil dari sheet Bapro
 
 
-// ====================== RENDER GRID HASIL (BAPRO) — FIX TOTAL ACUAN FINISHING ======================
+// ====================== RENDER GRID HASIL (BAPRO) – MENGIKUTI QC LEM ======================
 function renderGridBapro(query = "") {
   const container = document.getElementById('gridBapro');
   if (!container) return;
@@ -5452,6 +5480,7 @@ function renderGridBapro(query = "") {
 
     const card = document.createElement('div');
     card.className = 'grid-card';
+    card.dataset.index = i;
 
     // ===== STATUS WARNA =====
     let statusClass = '';
@@ -5461,49 +5490,32 @@ function renderGridBapro(query = "") {
     else if (updateVal === "TO") statusClass = "status-to";
 
     // ===== TANGGAL =====
-    const tanggal = item.tanggal
-      ? `<strong>${highlightHtmlSafe(item.tanggal, q)}</strong><br>`
-      : '';
+    const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, q)}</strong><br>` : '';
 
     // ============================
-    // PARSING KETERANGAN — FIX TOTAL
+    // NORMALISASI KETERANGAN 1–5
     // ============================
-    let kets = [];
-
-    // PRIORITAS ket1..ket5
-    if (item.ket1 || item.ket2 || item.ket3 || item.ket4 || item.ket5) {
-      kets = [
-        item.ket1 || '',
-        item.ket2 || '',
-        item.ket3 || '',
-        item.ket4 || '',
-        item.ket5 || ''
-      ];
-    } else {
-      const raw = (item.keterangan || '').toString().trim();
-
-      if (raw === "") {
-        kets = ["", "", "", "", ""];
-      } else {
-        // potong format “1. text”, “2. text” tanpa merusak angka lain
-        const parts = raw
-          .split(/^\s*(?:1\.|2\.|3\.|4\.|5\.)\s*/gm)
-          .map(v => v.trim())
-          .filter(v => v !== "");
-
-        kets = [
-          parts[0] || "",
-          parts[1] || "",
-          parts[2] || "",
-          parts[3] || "",
-          parts[4] || ""
-        ];
-      }
+    const ketMap = {1:"-",2:"-",3:"-",4:"-",5:"-"};
+    const raw = (item.keterangan || "").toString().trim();
+    if(raw !== ""){
+      raw.split("\n").forEach(line=>{
+        const m = line.match(/^\s*(\d+)\.\s*(.*)/);
+        if(m){
+          const no = parseInt(m[1]);
+          if(no>=1 && no<=5){
+            ketMap[no] = m[2].trim() || "-";
+          }
+        }
+      });
     }
 
-    // ============================
-    // TAMPILKAN HTML
-    // ============================
+    // Render selalu 1–5
+    let ketsHtml = '';
+    for(let j=1; j<=5; j++){
+      ketsHtml += `<div>${j}. ${highlightHtmlSafe(ketMap[j], q)}</div>`;
+    }
+
+    // ============================ HTML ============================
     card.innerHTML = `
       <div>
         ${tanggal}
@@ -5523,15 +5535,10 @@ function renderGridBapro(query = "") {
 
         <span><b>Keterangan:</b></span><br>
         <div class="ket-list">
-          <div>1. ${kets[0] ? highlightHtmlSafe(kets[0], q) : '-'}</div>
-          <div>2. ${kets[1] ? highlightHtmlSafe(kets[1], q) : '-'}</div>
-          <div>3. ${kets[2] ? highlightHtmlSafe(kets[2], q) : '-'}</div>
-          <div>4. ${kets[3] ? highlightHtmlSafe(kets[3], q) : '-'}</div>
-          <div>5. ${kets[4] ? highlightHtmlSafe(kets[4], q) : '-'}</div>
+          ${ketsHtml}
         </div>
 
         <br>
-
         <span class="${statusClass}">${highlightHtmlSafe(item.update || '', q)}</span>
       </div>
 
@@ -5555,23 +5562,20 @@ function renderGridBapro(query = "") {
   if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
 
-
-
-
-
-// ====================== LOAD DATA DARI SPREADSHEET (BAPRO) ======================
+// ====================== LOAD DATA DARI SPREADSHEET (BAPRO) – MENGIKUTI QC LEM ======================
 async function loadBaproItems(){
   try{
     const res = await jsonpGet(WEBAPP_URL, { action: 'get', sheet: 'Bapro' });
     if(res && res.status === 'ok' && Array.isArray(res.data)){
-      // NOTE: getDataFromSheet returns objects with keys sesuai header names
       baproItems = res.data.map((it, idx) => ({ __index: idx, id: (it.id||it._row||it.row||null), ...it }));
       renderGridBapro();
     } else console.warn('loadBaproItems unexpected', res);
   }catch(err){ console.error('⚠️ Error loadBaproItems', err); }
 }
 
-// ====================== TAMBAH DATA (BAPRO) ======================
+
+
+// ====================== TAMBAH DATA (BAPRO) — SESUAI QC LEM ======================
 function addBaproItem() {
   const nama = document.getElementById('baproNama').value.trim();
   const cso = document.getElementById('baprocso').value.trim();
@@ -5585,15 +5589,15 @@ function addBaproItem() {
   const qc = document.getElementById('baproQC') ? document.getElementById('baproQC').value.trim() : '';
   const update = document.getElementById('baproUpdate') ? document.getElementById('baproUpdate').value.trim() : '';
 
-  // ===== Gabungkan keterangan nomor 1–5 dari 5 input =====
-  const keterangan = 
-    `1. ${document.getElementById("ket1").value}
+  // ===== Gabungkan keterangan 1–5
+  const keterangan = `
+1. ${document.getElementById("ket1").value}
 2. ${document.getElementById("ket2").value}
 3. ${document.getElementById("ket3").value}
 4. ${document.getElementById("ket4").value}
 5. ${document.getElementById("ket5").value}`;
 
-  // ✅ Validasi wajib diisi
+  // Validasi wajib
   if (!nama || !cso || !jenis || !kertas || !NamaTinta || !update) {
     return alert('Nama Order, CSO, Jenis Kertas, Tebal Kertas, Nama Tinta, dan Proses wajib diisi!');
   }
@@ -5606,12 +5610,11 @@ function addBaproItem() {
     hour:'2-digit', minute:'2-digit', second:'2-digit'
   });
 
-  // ===== Payload =====
-  const payload = { 
-    action:'add', 
-    sheet:'Bapro', 
+  const payload = {
+    action:'add',
+    sheet:'Bapro',
     tanggal: tanggalFormatted,
-    nama, 
+    nama,
     cso,
     jenisKertas: jenis,
     tebalKertas: kertas,
@@ -5620,12 +5623,12 @@ function addBaproItem() {
     l: L,
     a: A,
     b: B,
-    qc, 
-    update, 
-    keterangan  // <— nomor 1–5 sudah tergabung
+    qc,
+    update,
+    keterangan
   };
 
-  // ===== Spinner tombol =====
+  // Spinner tombol
   const btnTambah = document.querySelector('#inputBapro button'); 
   if (btnTambah) {
     btnTambah.disabled = true;
@@ -5650,45 +5653,49 @@ function addBaproItem() {
 }
 
 
-
-// ====================== PANGGIL (ISI FORM dari item BAPRO) ======================
+// ====================== PANGGIL (ISI FORM dari item BAPRO) — SESUAI QC LEM ======================
 function callBapro(index){
   const item = baproItems[index];
   if(!item) return;
 
-  // Isi field normal
+  // Field normal
   document.getElementById('baproNama').value = item.nama || '';
   document.getElementById('baprocso').value = item.cso || '';
   document.getElementById('baproJenis').value = item.jenisKertas || '';
   document.getElementById('baproKertas').value = item.tebalKertas || '';
   document.getElementById('baproNamaTinta').value = item.NamaTinta || '';
-  document.getElementById('baproDmax').value = item.dmax || 0;
-  document.getElementById('baproL').value = item.l || 0;
-  document.getElementById('baproA').value = item.a || 0;
-  document.getElementById('baproB').value = item.b || 0;
+  document.getElementById('baproDmax').value = item.dmax || '';
+  document.getElementById('baproL').value = item.l || '';
+  document.getElementById('baproA').value = item.a || '';
+  document.getElementById('baproB').value = item.b || '';
   document.getElementById('baproQC').value = item.qc || '';
   document.getElementById('baproUpdate').value = item.update || '';
 
-  // ================================================
-  //   ISI keterangan 1–5 (sesuai format Finishing)
-  // ================================================
-  const ket = item.keterangan ? item.keterangan.split("\n") : [];
-
-  for (let i = 1; i <= 5; i++) {
-    const el = document.getElementById("ket" + i);
-    if (el) {
-      el.value = ket[i-1] ? ket[i-1].replace(i + ". ", "") : "";
-    }
+  // ===== Pecah keterangan ke input 1–5
+  const ketMap = {1:"",2:"",3:"",4:"",5:""};
+  if(item.keterangan){
+    item.keterangan.split("\n").forEach(line=>{
+      const m = line.match(/^\s*(\d+)\.\s*(.*)/);
+      if(m){
+        const no = parseInt(m[1]);
+        if(no>=1 && no<=5){
+          ketMap[no] = m[2].trim() || "";
+        }
+      }
+    });
   }
 
-  // ==============================
-  // PINDAH VIEW seperti Finishing
-  // ==============================
-  showMenu('qcBapro');
+  for(let i=1;i<=5;i++){
+    const el = document.getElementById("ket"+i);
+    if(el) el.value = ketMap[i];
+  }
 
+  // Pindah ke tab input Bapro
+  showMenu('qcBapro');
   const tabBtn = document.querySelector('#qcBapro .tabs button[data-tab="inputBapro"]');
-  if (tabBtn) switchTab(tabBtn);
+  if(tabBtn) switchTab(tabBtn);
 }
+
 
 
 // ====================== HAPUS ITEM (BAPRO) ======================
@@ -5698,9 +5705,9 @@ function deleteBapro(index) {
   if (!confirm('Hapus data ini?')) return;
 
   const container = document.getElementById('gridBapro');
-  const card = container ? container.children[index] : null;
-  const btnDelete = card?.querySelector('.btn-delete');
+  const card = container.querySelector(`.grid-card[data-index="${index}"]`);
 
+  const btnDelete = card?.querySelector('.btn-delete');
   if (btnDelete) {
     btnDelete.textContent = '⏳ Menghapus...';
     btnDelete.disabled = true;
@@ -5716,12 +5723,9 @@ function deleteBapro(index) {
 
   postPayload(payload);
 
-  // 🔹 Tunda sedikit agar spinner terlihat dan Sheet sempat update
   setTimeout(() => {
-    // hapus dari array dan DOM supaya langsung hilang
     baproItems.splice(index, 1);
     if (card) card.remove();
-    // muat ulang data dari spreadsheet
     loadBaproItems();
   }, 8000);
 }
@@ -5731,78 +5735,77 @@ function deleteBapro(index) {
 function editBaproInline(index){
   const item = baproItems[index];
   const container = document.getElementById('gridBapro');
-  const card = container ? container.children[index] : null;
+  const card = container.querySelector(`.grid-card[data-index="${index}"]`);
+
   if(!card) return;
   if(card.querySelector('.edit-inline')) return;
 
-  // Simpan HTML lama
-  const originalHTML = card.innerHTML;
+  const oldHtml = card.innerHTML;
+
+  // Pecah keterangan 1–5
+  const ketMap = {1:"",2:"",3:"",4:"",5:""};
+  if(item.keterangan){
+    item.keterangan.split("\n").forEach(line=>{
+      const m = line.match(/^\s*(\d+)\.\s*(.*)/);
+      if(m){
+        const no = parseInt(m[1]);
+        if(no>=1 && no<=5) ketMap[no] = m[2].trim() || "";
+      }
+    });
+  }
 
   card.innerHTML = `
     <div class="edit-grid">
       <input type="text" class="edit-inline" value="${escapeHtml(item.nama||'')}" placeholder="Nama Order">
-      <select class="edit-inline">
-        <option value="Yati" ${item.cso==='Yati'? 'selected':''}>Yati</option>
-        <option value="Retni" ${item.cso==='Retni'? 'selected':''}>Retni</option>
-        <option value="Aulia" ${item.cso==='Aulia'? 'selected':''}>Aulia</option>
-        <option value="Yuli" ${item.cso==='Yuli'? 'selected':''}>Yuli</option>
-      </select>
-      <input type="text" class="edit-inline" value="${escapeHtml(item.jenisKertas||'')}" placeholder="Jenis">
-      <input type="number" class="edit-inline" value="${escapeHtml(item.tebalKertas||'')}" placeholder="GSM">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.cso||'')}" placeholder="CSO">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.jenisKertas||'')}" placeholder="Jenis Kertas">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.tebalKertas||'')}" placeholder="Tebal Kertas">
       <input type="text" class="edit-inline" value="${escapeHtml(item.NamaTinta||'')}" placeholder="Nama Tinta">
-      <input type="number" class="edit-inline" value="${escapeHtml(item.dmax||'')}" placeholder="Dmax">
-      <input type="number" class="edit-inline" value="${escapeHtml(item.l||'')}" placeholder="L">
-      <input type="number" class="edit-inline" value="${escapeHtml(item.a||'')}" placeholder="A">
-      <input type="number" class="edit-inline" value="${escapeHtml(item.b||'')}" placeholder="B">
-
-      <select class="edit-inline">
-        <option value="Marwan" ${item.qc==='Marwan'? 'selected':''}>Marwan</option>
-        <option value="Kiki" ${item.qc==='Kiki'? 'selected':''}>Kiki</option>
-      </select>
-
+      <input type="text" class="edit-inline" value="${escapeHtml(item.dmax||'')}" placeholder="Dmax">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.l||'')}" placeholder="L">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.a||'')}" placeholder="A">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.b||'')}" placeholder="B">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.qc||'')}" placeholder="QC">
       <select class="edit-inline">
         <option value="TO" ${item.update==='TO'? 'selected':''}>TO</option>
         <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
         <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
       </select>
-
-      <textarea class="edit-inline" rows="2" placeholder="Keterangan">${escapeHtml(item.keterangan||'')}</textarea>
+      <textarea class="edit-inline" rows="2" placeholder="Keterangan">
+1. ${ketMap[1]}
+2. ${ketMap[2]}
+3. ${ketMap[3]}
+4. ${ketMap[4]}
+5. ${ketMap[5]}</textarea>
     </div>
+
     <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
-      <button class="btn-icon btn-save" title="Simpan" onclick="saveBaproInline(${index})">💾</button>
-      <button class="btn-icon btn-cancel" title="Batal" onclick="cancelBaproInline(${index})">✖️</button>
-    </div>`;
-
-  card.dataset.originalHTML = originalHTML;
+      <button class="btn-icon btn-save" title="Simpan" onclick="saveBaproInline(${index}, this)">💾</button>
+      <button class="btn-icon btn-cancel" title="Batal" onclick="cancelBaproInline(${index}, \`${encodeURIComponent(oldHtml)}\`)">❌</button>
+    </div>
+  `;
 }
 
 
-// ====================== CANCEL INLINE (BAPRO) ======================
-function cancelBaproInline(index){
+// ====================== BATAL EDIT INLINE (BAPRO) ======================
+function cancelBaproInline(index, oldHtmlEncoded) {
   const container = document.getElementById('gridBapro');
-  const card = container ? container.children[index] : null;
-  if(!card) return;
-
-  // Hapus data lama dan render ulang item sesuai data aslinya
-  delete card.dataset.originalHTML;
-  renderGridBapro(); // panggil ulang fungsi render untuk menampilkan ulang grid normal
+  const card = container.querySelector(`.grid-card[data-index="${index}"]`);
+  if (!card) return;
+  card.innerHTML = decodeURIComponent(oldHtmlEncoded);
 }
+
 
 // ====================== SIMPAN HASIL EDIT INLINE (BAPRO) ======================
-async function saveBaproInline(index) {
+async function saveBaproInline(index, btn) {
   const container = document.getElementById('gridBapro');
-  const card = container ? container.children[index] : null;
+  const card = container.querySelector(`.grid-card[data-index="${index}"]`);
   if (!card) return;
 
-  const btnSave = card.querySelector('.btn-save');
-  const btnCancel = card.querySelector('.btn-cancel'); // ✅ tambahkan ambil tombol cancel
-
-  // Saat mulai menyimpan
-  if (btnSave) {
-    btnSave.textContent = '⏳ Menyimpan...';
-    btnSave.disabled = true;
-  }
-  if (btnCancel) btnCancel.style.display = 'none'; // ✅ sembunyikan tombol cancel saat simpan
+  const btnSave = btn;
+  const btnCancel = card.querySelector('.btn-cancel');
+  if (btnSave) { btnSave.textContent = '⏳ Menyimpan...'; btnSave.disabled = true; }
+  if (btnCancel) btnCancel.style.display = 'none';
 
   const inputs = card.querySelectorAll('.edit-inline');
   const updated = {
@@ -5815,8 +5818,8 @@ async function saveBaproInline(index) {
     l: inputs[6].value.trim(),
     a: inputs[7].value.trim(),
     b: inputs[8].value.trim(),
-    qc: inputs[9].value,
-    update: inputs[10].value,
+    qc: inputs[9].value.trim(),
+    update: inputs[10].value.trim(),
     keterangan: inputs[11].value.trim()
   };
 
@@ -5828,68 +5831,29 @@ async function saveBaproInline(index) {
     hour: '2-digit', minute: '2-digit', second: '2-digit'
   });
 
-  const payload = {
-    action: 'update',
-    sheet: 'Bapro',
-    id: identifier,
-    index: orig.__index,
-    tanggal: tanggalFormatted,
-    ...updated
+  const payload = { 
+    action: 'update', 
+    sheet: 'Bapro', 
+    id: identifier, 
+    index: orig.__index, 
+    tanggal: tanggalFormatted, 
+    ...updated 
   };
 
   try {
-    // kirim ke Apps Script
     await postPayload(payload);
-
-    // beri jeda sedikit agar sheet sempat ter-update
     await new Promise(res => setTimeout(res, 5000));
-
-    // refresh data
     await loadBaproItems();
   } catch (err) {
-    console.error('Gagal menyimpan data:', err);
-    alert('Gagal menyimpan perubahan. Silakan coba lagi.');
+    console.error('Gagal menyimpan:', err);
+    alert('Gagal menyimpan data. Coba lagi.');
   } finally {
-    // Kembalikan tombol save ke normal
-    if (btnSave) {
-      btnSave.textContent = '💾 Simpan';
-      btnSave.disabled = false;
-    }
+    if (btnSave) { btnSave.textContent = '💾 Simpan'; btnSave.disabled = false; }
   }
 }
 
-// ====================== POST PAYLOAD BAPRO ======================
-function ensureIframeBapro() {
-  if (document.querySelector('iframe[name="hidden_iframe_post_bapro"]')) return;
 
-  const ifr = document.createElement('iframe');
-  ifr.name = 'hidden_iframe_post_bapro';
-  ifr.style.display = 'none';
 
-  // setelah kirim data, reload data Bapro dari sheet
-  ifr.addEventListener('load', () => setTimeout(() => loadBaproItems(), 10000));
-
-  document.body.appendChild(ifr);
-}
-
-function postPayloadBapro(payloadObj) {
-  ensureIframeBapro();
-
-  const form = document.createElement('form');
-  form.method = 'POST';
-  form.action = WEBAPP_URL_BAPRO; // ⚠️ pastikan ganti dengan URL WebApp sheet Bapro
-  form.target = 'hidden_iframe_post_bapro';
-
-  const input = document.createElement('input');
-  input.type = 'hidden';
-  input.name = 'payload';
-  input.value = JSON.stringify(payloadObj);
-
-  form.appendChild(input);
-  document.body.appendChild(form);
-  form.submit();
-  form.remove();
-}
 
 // ====================== FILTER BERDASARKAN ISI GRID (BAPRO) ======================
 function filterBaproGrid(query){
@@ -5905,34 +5869,29 @@ function filterBaproGrid(query){
   });
 }
 
-
 // ====================== CLEAR FORM (BAPRO) ======================
 function clearBaproForm() {
-  // Text fields
   [
-    'baproNama','baprocso','baproJenis','baproKertas','baproNamaTinta',
-    'baproQC','baproUpdate','baproKeterangan'
+    'baproNama','baprocso','baproQC','baproUpdate'
   ].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
 
-  // Number fields
-  ['baproDmax','baproL','baproA','baproB'].forEach(id => {
+  // Number / text fields
+  ['baproJenis','baproKertas','baproNamaTinta','baproDmax','baproL','baproA','baproB'].forEach(id => {
     const el = document.getElementById(id);
-    if (el) el.value = 0;
+    if (el) el.value = '';
   });
 
-  // ===== Kosongkan input nomor 1–5 =====
-  for (let i = 1; i <= 5; i++) {
-    const el = document.getElementById('ket' + i);
-    if (el) el.value = '';
+  // Reset keterangan 1–5
+  for (let i=1; i<=5; i++){
+    const el = document.getElementById("ket"+i);
+    if(el) el.value = '';
   }
 }
 
-
-
-// ====================== DASHBOARD BAPRO COMPACT DENGAN HIGHLIGHT ======================
+// ====================== DASHBOARD BAPRO (COMPACT + FILTER + HIGHLIGHT) ======================
 function renderDashboardBaproCompact(query = "", safeMode = false) {
   const q = query.toLowerCase().trim();
 
@@ -5951,6 +5910,7 @@ function renderDashboardBaproCompact(query = "", safeMode = false) {
   baproItems.forEach(item => {
     const updateVal = (item.update || "").trim().toLowerCase();
     const tanggal = item.tanggal || "-";
+
     const card = document.createElement('div');
     card.className = 'grid-card';
 
@@ -5961,14 +5921,11 @@ function renderDashboardBaproCompact(query = "", safeMode = false) {
 
     card.innerHTML = `
       <strong>${highlightHtmlSafe(item.nama || '', query)}</strong><br>
-      <strong>CSO: ${highlightHtmlSafe(item.cso || '', query)}</strong><br>
       <strong>QC: ${highlightHtmlSafe(item.qc || '', query)}</strong><br>
-      <strong>Tinta: ${highlightHtmlSafe(item.NamaTinta || '', query)}</strong><br>
       <span>📅 ${highlightHtmlSafe(tanggal, query)}</span><br>
       <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
     `;
 
-    // FILTER seperti Finishing
     const cardText = card.textContent.toLowerCase();
     if (!safeMode && q && !cardText.includes(q)) return;
 
@@ -6003,8 +5960,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (filterSelesai) filterSelesai.addEventListener('input', () => renderDashboardBaproCompact(filterSelesai.value));
 });
 
-
-
 // ====================== DETAIL BAPRO ======================
 function showDetailModalBapro(item) {
   const body = document.getElementById("detailBaproBody");
@@ -6012,19 +5967,21 @@ function showDetailModalBapro(item) {
   body.innerHTML = `
     <strong>Tanggal:</strong> ${item.tanggal || '-'}<br>
     <strong>Nama:</strong> ${item.nama || '-'}<br>
-    <strong>Nama CSO:</strong> ${item.cso || '-'}<br>
-    <strong>Jenis Kertas:</strong> ${item.jenisKertas || '-'}<br>
-    <strong>Tebal Kertas:</strong> ${item.tebalKertas || '-'}<br>
+    <strong>CSO:</strong> ${item.cso || '-'}<br>
+    <strong>Jenis:</strong> ${item.jenisKertas || '-'}<br>
+    <strong>GSM:</strong> ${item.tebalKertas || '-'}<br>
     <strong>Nama Tinta:</strong> ${item.NamaTinta || '-'}<br>
     <strong>Dmax:</strong> ${item.dmax || '-'}<br>
-    <strong>L:</strong> ${item.l || '-'}<br>
-    <strong>A:</strong> ${item.a || '-'}<br>
+    <strong>L:</strong> ${item.l || '-'}  
+    <strong>A:</strong> ${item.a || '-'}  
     <strong>B:</strong> ${item.b || '-'}<br>
     <strong>QC:</strong> ${item.qc || '-'}<br>
-    <strong>Update:</strong> <span class="status-${(item.update || '').toLowerCase()}">${item.update || '-'}</span><br><br>
-
+    <strong>Update:</strong> 
+      <span class="status-${(item.update || '').toLowerCase()}">
+        ${item.update || '-'}
+      </span><br><br>
     <strong>Keterangan:</strong><br>
-    ${(item.keterangan || '-').replace(/\n/g, '<br>')}
+    ${(item.keterangan || "-").replace(/\n/g, "<br>")}
   `;
 
   document.getElementById("detailBaproModal").style.display = "flex";
@@ -6034,59 +5991,45 @@ function closeDetailModalBapro() {
   document.getElementById("detailBaproModal").style.display = "none";
 }
 
-
-// ====================== TOGGLE VIEW + FILTER BAPRO ======================
+// ====================== TOGGLE VIEW + FILTER QC BAPRO ======================
 document.addEventListener('DOMContentLoaded', () => {
-  // Tombol
   const btnTO = document.getElementById('toggleBaproTO');
   const btnProses = document.getElementById('toggleBaproProses');
   const btnSelesai = document.getElementById('toggleBaproSelesai');
 
-  // Section
   const sectionTO = document.getElementById('sectionBaproTO');
   const sectionProses = document.getElementById('sectionBaproProses');
   const sectionSelesai = document.getElementById('sectionBaproSelesai');
 
-  // Filter input (1 kolom di dalam tiap grid)
   const filterTO = document.getElementById('filterTOBapro');
   const filterProses = document.getElementById('filterProsesBapro');
   const filterSelesai = document.getElementById('filterSelesaiBapro');
 
-  // Grid container
   const gridTO = document.getElementById('dashboardBaproTO');
   const gridProses = document.getElementById('dashboardBaproProses');
   const gridSelesai = document.getElementById('dashboardBaproSelesai');
 
-  // 🔍 Fungsi filter universal (per grid)
   function filterCards(container, keyword) {
     if (!container) return;
-    const cards = container.querySelectorAll('.grid-card'); // ✅ fix di sini
+    const cards = container.querySelectorAll('.grid-card');
     const term = keyword.toLowerCase().trim();
-    cards.forEach(card => {
-      const text = card.textContent.toLowerCase();
-      card.style.display = text.includes(term) ? '' : 'none';
-    });
+    cards.forEach(card => card.style.display = card.textContent.toLowerCase().includes(term) ? '' : 'none');
   }
 
-  // Event input untuk filter real-time
   [
     {input: filterTO, grid: gridTO},
     {input: filterProses, grid: gridProses},
     {input: filterSelesai, grid: gridSelesai}
   ].forEach(({input, grid}) => {
-    if (input) {
-      input.addEventListener('input', () => filterCards(grid, input.value));
-    }
+    if (input) input.addEventListener('input', () => filterCards(grid, input.value));
   });
 
-  // Fungsi supaya filter tetap aktif setelah reload data
   window.applyBaproFilters = function() {
     filterCards(gridTO, filterTO.value);
     filterCards(gridProses, filterProses.value);
     filterCards(gridSelesai, filterSelesai.value);
   };
 
-  // Toggle show/hide tiap section
   function toggleSection(section, btn) {
     const visible = section.style.display !== 'none';
     section.style.display = visible ? 'none' : 'block';
@@ -6098,8 +6041,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnSelesai) btnSelesai.addEventListener('click', () => toggleSection(sectionSelesai, btnSelesai));
 });
 
-
-
 // ===== Password untuk QC BAPRO (ubah sesuai kebutuhan) =====
 const QC_BAPRO_PASSWORD = 'qc123';
 document.addEventListener('DOMContentLoaded', () => {
@@ -6110,17 +6051,15 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const input = prompt('Masukkan password untuk QC BAPRO:');
       if (input === null) return;
-      if (input === QC_BAPRO_PASSWORD) {
-        eval(originalOnClick);
-      } else {
-        alert('Password salah!');
-      }
+      if (input === QC_BAPRO_PASSWORD) eval(originalOnClick);
+      else alert('Password salah!');
     };
   }
 });
 
-// ====================== INISIALISASI TAMBAHAN (panggil loader) ======================
+// ====================== INISIALISASI (panggil loader) ======================
 loadBaproItems();
+
 </script>
 
 
@@ -6129,13 +6068,12 @@ loadBaproItems();
 
 
 
-<!-- ====== JS QC CETAK  ====== -->
+<!-- ====== JS QC PA – Bagian 1 ===== -->
 <script>
-// ====================== GLOBAL STATE (CETAK) ======================
-let paItems = []; // array yang diambil dari sheet Cetak
+// ====================== GLOBAL STATE (PA) ======================
+let paItems = []; // array yang diambil dari sheet PA
 
-
-// ====================== RENDER GRID HASIL (PA) – FIX TOTAL MENGIKUTI FINISHING ======================
+// ====================== RENDER GRID HASIL (PA) ======================
 function renderGridPA(query = "") {
   const container = document.getElementById('gridPA');
   if (!container) return;
@@ -6155,8 +6093,9 @@ function renderGridPA(query = "") {
 
     const card = document.createElement('div');
     card.className = 'grid-card';
+    card.dataset.index = i;
 
-    // STATUS WARNA
+    // STATUS COLOR
     let statusClass = '';
     const updateVal = (item.update || '').toString();
     if (updateVal === "Proses") statusClass = "status-proses";
@@ -6165,48 +6104,23 @@ function renderGridPA(query = "") {
 
     const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, q)}</strong><br>` : '';
 
-    // ============================
-    // PARSING KETERANGAN — SESUAI ACUAN FINISHING
-    // ============================
-    let kets = [];
-
-    if (item.ket1 || item.ket2 || item.ket3 || item.ket4 || item.ket5) {
-      kets = [
-        item.ket1 || '',
-        item.ket2 || '',
-        item.ket3 || '',
-        item.ket4 || '',
-        item.ket5 || ''
-      ];
-    } else {
-      const raw = (item.keterangan || '').toString().trim();
-
-      // kosongkan semua jika hanya berisi angka saja atau kosong
-      if (/^(\s*\d+\.\s*)+$/.test(raw) || raw === '') {
-        kets = ['', '', '', '', ''];
-      } else {
-        let parts = raw
-          .split(/(\d+)\.\s*(?=[A-Za-z])/)
-          .map(p => p.trim())
-          .filter(p => !/^\d+$/.test(p))
-          .filter(p => p !== '');
-
-        if (parts.length === 0) {
-          parts = raw.split(/[\r\n]+/)
-            .map(p => p.trim())
-            .filter(p => p !== '');
+    // ============================ NORMALISASI KETERANGAN 1–5 ============================
+    const ketMap = {1:"-",2:"-",3:"-",4:"-",5:"-"};
+    const raw = (item.keterangan || "").toString().trim();
+    if(raw !== ""){
+      raw.split("\n").forEach(line=>{
+        const m = line.match(/^\s*(\d+)\.\s*(.*)/);
+        if(m){
+          const no = parseInt(m[1]);
+          if(no>=1 && no<=5){
+            ketMap[no] = m[2].trim() || "-";
+          }
         }
-
-        parts = parts.map(p => p.replace(/^\d+\.\s*/, '').trim());
-
-        kets = [
-          parts[0] || '',
-          parts[1] || '',
-          parts[2] || '',
-          parts[3] || '',
-          parts[4] || ''
-        ];
-      }
+      });
+    }
+    let ketsHtml = '';
+    for(let j=1;j<=5;j++){
+      ketsHtml += `<div>${j}. ${highlightHtmlSafe(ketMap[j], q)}</div>`;
     }
 
     // ============================ HTML ============================
@@ -6217,20 +6131,11 @@ function renderGridPA(query = "") {
         <span>No KS: ${highlightHtmlSafe(item.noKS || '', q)}</span><br>
         <span>Order: ${highlightHtmlSafe(item.order || '', q)}</span><br>
         <span>Bagus: ${highlightHtmlSafe(item.bagus || '', q)}</span><br>
-        <span>Sortir: ${highlightHtmlSafe(item.sortir || '', q)}</span><br>
-        <span>Problem: ${highlightHtmlSafe(item.problem || '', q)}</span><br>
-        <span>Mesin: ${highlightHtmlSafe(item.mesin || '', q)}</span><br>
         <span>QC: ${highlightHtmlSafe(item.qc || '', q)}</span><br>
-
         <span><b>Keterangan:</b></span><br>
         <div class="ket-list">
-          <div>1. ${kets[0] ? highlightHtmlSafe(kets[0], q) : '-'}</div>
-          <div>2. ${kets[1] ? highlightHtmlSafe(kets[1], q) : '-'}</div>
-          <div>3. ${kets[2] ? highlightHtmlSafe(kets[2], q) : '-'}</div>
-          <div>4. ${kets[3] ? highlightHtmlSafe(kets[3], q) : '-'}</div>
-          <div>5. ${kets[4] ? highlightHtmlSafe(kets[4], q) : '-'}</div>
+          ${ketsHtml}
         </div>
-
         <br>
         <span class="${statusClass}">${highlightHtmlSafe(item.update || '', q)}</span>
       </div>
@@ -6247,24 +6152,19 @@ function renderGridPA(query = "") {
 
   renderDashboardPACompact();
 
-  // Auto-scroll
   const lastCard = container.querySelector('.grid-card:last-child');
-  if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  if(lastCard) lastCard.scrollIntoView({behavior:'smooth',block:'end'});
 }
-
-
 
 // ====================== LOAD DATA DARI SPREADSHEET (PA) ======================
 async function loadPAItems(){
   try{
-    // PENTING: pakai WEBAPP_URL (sama seperti Bapro/Finishing)
-    const res = await jsonpGet(WEBAPP_URL, { action: 'get', sheet: 'Cetak' });
-    if(res && res.status === 'ok' && Array.isArray(res.data)){
-      // sisipkan __index & id (baris)
-      paItems = res.data.map((it, idx) => ({ __index: idx, id: (it.id||it._row||it.row||null), ...it }));
+    const res = await jsonpGet(WEBAPP_URL, {action:'get',sheet:'Cetak'});
+    if(res && res.status==='ok' && Array.isArray(res.data)){
+      paItems = res.data.map((it, idx)=>({__index:idx,id:(it.id||it._row||it.row||null),...it}));
       renderGridPA();
     } else console.warn('loadPAItems unexpected', res);
-  }catch(err){ console.error('⚠️ Error loadPAItems', err); }
+  }catch(err){ console.error('⚠️ Error loadPAItems', err);}
 }
 
 // ====================== TAMBAH DATA (PA) ======================
@@ -6329,35 +6229,40 @@ function addPAItem() {
   }
 }
 
-
-// ====================== PANGGIL (isi form CETAK dari item) ======================
+// ====================== PANGGIL (isi form dari item PA) — SESUAI QC LEM/BAPRO ======================
 function callPA(index){
   const item = paItems[index];
   if(!item) return;
 
-  // ===== Isi input utama =====
+  // ===== Field normal =====
   document.getElementById('paNama').value = item.nama || '';
   document.getElementById('paNoKS').value = item.noKS || '';
-  document.getElementById('paOrder').value = item.order || 0;
-  document.getElementById('paBagus').value = item.bagus || 0;
-  document.getElementById('paSortir').value = item.sortir || 0;
-  document.getElementById('paProblem').value = item.problem || 0;
+  document.getElementById('paOrder').value = item.order || '';
+  document.getElementById('paBagus').value = item.bagus || '';
   document.getElementById('paQC').value = item.qc || '';
-  document.getElementById('paMesin').value = item.mesin || '';
   document.getElementById('paUpdate').value = item.update || '';
 
-  // ===== Pecah keterangan nomor 1–5 =====
-  const ket = (item.keterangan || "").split("\n");
+  // ===== Pecah keterangan ke input 1–5 =====
+  const ketMap = {1:"",2:"",3:"",4:"",5:""};
+  if(item.keterangan){
+    item.keterangan.split("\n").forEach(line=>{
+      const m = line.match(/^\s*(\d+)\.\s*(.*)/);
+      if(m){
+        const no = parseInt(m[1]);
+        if(no>=1 && no<=5){
+          ketMap[no] = m[2].trim() || "";
+        }
+      }
+    });
+  }
 
-  document.getElementById("ketPA1").value = (ket[0] || "").replace("1. ","");
-  document.getElementById("ketPA2").value = (ket[1] || "").replace("2. ","");
-  document.getElementById("ketPA3").value = (ket[2] || "").replace("3. ","");
-  document.getElementById("ketPA4").value = (ket[3] || "").replace("4. ","");
-  document.getElementById("ketPA5").value = (ket[4] || "").replace("5. ","");
+  for(let i=1;i<=5;i++){
+    const el = document.getElementById("ketPA"+i); // sesuai form PA
+    if(el) el.value = ketMap[i];
+  }
 
-  // ===== PINDAH VIEW seperti BAPRO & FINISHING =====
+  // ===== Pindah ke tab INPUT PA =====
   showMenu('qcPA');
-
   const tabBtn = document.querySelector('#qcPA .tabs button[data-tab="inputPA"]');
   if(tabBtn) switchTab(tabBtn);
 }
@@ -6366,51 +6271,41 @@ function callPA(index){
 
 
 // ====================== HAPUS ITEM (PA) ======================
-function deletePA(index) {
+function deletePA(index){
   const item = paItems[index];
-  if (!item) return;
-  if (!confirm('Hapus data ini?')) return;
+  if(!item) return;
+  if(!confirm('Hapus data ini?')) return;
 
   const container = document.getElementById('gridPA');
-  const card = container ? container.children[index] : null;
-  const btnDelete = card?.querySelector('.btn-delete');
+  const card = container.querySelector(`.grid-card[data-index="${index}"]`);
 
-  if (btnDelete) {
-    btnDelete.textContent = '⏳ Menghapus...';
-    btnDelete.disabled = true;
+  const btnDelete = card?.querySelector('.btn-delete');
+  if(btnDelete){
+    btnDelete.textContent='⏳ Menghapus...';
+    btnDelete.disabled=true;
   }
 
-  const identifier = item.id || item._row || item.row || item.__index;
-  const payload = { 
-    action: 'delete', 
-    sheet: 'Cetak', 
-    id: identifier, 
-    index: item.__index 
-  };
+  const identifier = item.id||item._row||item.row||item.__index;
+  const payload = {action:'delete',sheet:'Cetak',id:identifier,index:item.__index};
 
   postPayload(payload);
 
-  // 🔹 Spinner tetap tampil beberapa detik sebelum data hilang
-  setTimeout(() => {
-    // hapus dari array & DOM supaya tampilan langsung update
-    paItems.splice(index, 1);
-    if (card) card.remove();
-
-    // reload data dari sheet untuk sinkronisasi
+  setTimeout(()=>{
+    paItems.splice(index,1);
+    if(card) card.remove();
     loadPAItems();
-  }, 8000);
+  },8000);
 }
 
 // ====================== EDIT INLINE (PA) ======================
 function editPAInline(index){
   const item = paItems[index];
   const container = document.getElementById('gridPA');
-  const card = container ? container.children[index] : null;
+  const card = container.querySelector(`.grid-card[data-index="${index}"]`);
   if(!card) return;
   if(card.querySelector('.edit-inline')) return;
 
-  // Simpan HTML lama untuk tombol Cancel
-  const originalHTML = card.innerHTML;
+  const oldHtml = card.innerHTML;
 
   card.innerHTML = `
     <div class="edit-grid">
@@ -6418,21 +6313,10 @@ function editPAInline(index){
       <input type="text" class="edit-inline" value="${escapeHtml(item.noKS||'')}" placeholder="No KS">
       <input type="number" class="edit-inline" value="${escapeHtml(item.order||'')}" placeholder="Order">
       <input type="number" class="edit-inline" value="${escapeHtml(item.bagus||'')}" placeholder="Bagus">
-      <input type="number" class="edit-inline" value="${escapeHtml(item.sortir||'')}" placeholder="Sortir">
-      <input type="number" class="edit-inline" value="${escapeHtml(item.problem||'')}" placeholder="Problem">
 
       <select class="edit-inline">
         <option value="Suci" ${item.qc==='Suci'? 'selected':''}>Suci</option>
         <option value="Anjani" ${item.qc==='Anjani'? 'selected':''}>Anjani</option>
-      </select>
-
-      <select class="edit-inline">
-        <option value="KM 640" ${item.mesin==='KM 640'? 'selected':''}>KM 640</option>
-        <option value="KM 644" ${item.mesin==='KM 644'? 'selected':''}>KM 644</option>
-        <option value="KM 620" ${item.mesin==='KM 620'? 'selected':''}>KM 620</option>
-        <option value="MT 430" ${item.mesin==='MT 430'? 'selected':''}>MT 430</option>
-        <option value="KM 640 GL" ${item.mesin==='KM 640 GL'? 'selected':''}>KM 640 GL</option>
-        <option value="RL 140" ${item.mesin==='RL 140'? 'selected':''}>RL 140</option>
       </select>
 
       <select class="edit-inline">
@@ -6443,301 +6327,241 @@ function editPAInline(index){
 
       <textarea class="edit-inline" rows="2" placeholder="Keterangan">${escapeHtml(item.keterangan||'')}</textarea>
     </div>
-    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
-      <button class="btn-icon btn-save" title="Simpan" onclick="savePAInline(${index})">💾</button>
-      <button class="btn-icon btn-cancel" title="Batal" onclick="cancelPAInline(${index})">✖️</button>
-    </div>`;
 
-  card.dataset.originalHTML = originalHTML;
+    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
+      <button class="btn-icon btn-save" title="Simpan" onclick="savePAInline(${index}, this)">💾</button>
+      <button class="btn-icon btn-cancel" title="Batal" onclick="cancelPAInline(${index}, \`${encodeURIComponent(oldHtml)}\`)">❌</button>
+    </div>`;
 }
 
-// ====================== CANCEL INLINE (PA) ======================
-function cancelPAInline(index){
+// ====================== BATAL EDIT INLINE (PA) ======================
+function cancelPAInline(index, oldHtmlEncoded){
   const container = document.getElementById('gridPA');
-  const card = container ? container.children[index] : null;
+  const card = container.querySelector(`.grid-card[data-index="${index}"]`);
   if(!card) return;
-  delete card.dataset.originalHTML;
-  renderGridPA(); // kembalikan tampilan normal grid PA
+  card.innerHTML = decodeURIComponent(oldHtmlEncoded);
 }
 
 // ====================== SIMPAN HASIL EDIT INLINE (PA) ======================
-async function savePAInline(index) {
+async function savePAInline(index, btn){
   const container = document.getElementById('gridPA');
-  const card = container ? container.children[index] : null;
-  if (!card) return;
+  const card = container.querySelector(`.grid-card[data-index="${index}"]`);
+  if(!card) return;
 
-  const btnSave = card.querySelector('.btn-save');
-  const btnCancel = card.querySelector('.btn-cancel'); // ✅ ambil tombol cancel
-
-  // Saat mulai menyimpan
-  if (btnSave) {
-    btnSave.textContent = '⏳ Menyimpan...';
-    btnSave.disabled = true;
-  }
-  if (btnCancel) btnCancel.style.display = 'none'; // ✅ sembunyikan tombol cancel saat proses simpan
+  const btnSave = btn;
+  const btnCancel = card.querySelector('.btn-cancel');
+  if(btnSave){ btnSave.textContent='⏳ Menyimpan...'; btnSave.disabled=true;}
+  if(btnCancel) btnCancel.style.display='none';
 
   const inputs = card.querySelectorAll('.edit-inline');
-
   const updated = {
     nama: inputs[0].value.trim(),
     noKS: inputs[1].value.trim(),
     order: inputs[2].value.trim(),
     bagus: inputs[3].value.trim(),
-    sortir: inputs[4].value.trim(),
-    problem: inputs[5].value.trim(),
-    qc: inputs[6].value,
-    mesin: inputs[7].value,
-    update: inputs[8].value,
-    keterangan: inputs[9].value.trim()
+    qc: inputs[4].value,
+    update: inputs[5].value,
+    keterangan: inputs[6].value.trim()
   };
 
   const orig = paItems[index];
-  const identifier = orig.id || orig._row || orig.row || orig.__index;
-
-  const tanggalFormatted = orig.tanggal || new Date().toLocaleString('id-ID', {
-    day: '2-digit', month: 'long', year: 'numeric',
-    hour: '2-digit', minute: '2-digit', second: '2-digit'
+  const identifier = orig.id||orig._row||orig.row||orig.__index;
+  const tanggalFormatted = orig.tanggal||new Date().toLocaleString('id-ID',{
+    day:'2-digit',month:'long',year:'numeric',
+    hour:'2-digit',minute:'2-digit',second:'2-digit'
   });
 
-  const payload = {
-    action: 'update',
-    sheet: 'Cetak',
-    id: identifier,
-    index: orig.__index,
-    tanggal: tanggalFormatted,
-    ...updated
-  };
+  const payload = {...updated,action:'update',sheet:'Cetak',id:identifier,index:orig.__index,tanggal:tanggalFormatted};
 
-  try {
+  try{
     await postPayload(payload);
-    await new Promise(res => setTimeout(res, 5000));
+    await new Promise(res=>setTimeout(res,5000));
     await loadPAItems();
-  } catch (err) {
-    console.error('Gagal menyimpan:', err);
-    alert('Gagal menyimpan data. Silakan coba lagi.');
-  } finally {
-    if (btnSave) {
-      btnSave.textContent = '💾 Simpan';
-      btnSave.disabled = false;
-    }
+  }catch(err){
+    console.error('Gagal menyimpan:',err);
+    alert('Gagal menyimpan data. Coba lagi.');
+  }finally{
+    if(btnSave){ btnSave.textContent='💾 Simpan'; btnSave.disabled=false; }
   }
 }
 
-// ====================== FILTER BERDASARKAN ISI GRID (PA) ======================
+
+
+
+
+// ====================== FILTER BERDASARKAN ISI GRID ======================
 function filterPAGrid(query){
   const grid = document.getElementById('gridPA');
-  if (!grid) return;
+  if(!grid) return;
 
   const keyword = query.toLowerCase().trim();
   const cards = grid.querySelectorAll('.grid-card');
 
-  cards.forEach(card => {
+  cards.forEach(card=>{
     const text = card.textContent.toLowerCase();
     card.style.display = text.includes(keyword) ? '' : 'none';
   });
 }
 
-
 // ====================== CLEAR FORM (PA) ======================
-function clearPAForm() {
-  [
-    'paNama','paNoKS','paQC','paMesin','paUpdate'
-  ].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = '';
+function clearPAForm(){
+  ['paNama','paNoKS','paQC','paUpdate'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value='';
   });
 
-  // Number fields
-  ['paOrder','paBagus','paSortir','paProblem'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = 0;
+  ['paOrder','paBagus'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value=0;
   });
 
-  // ===== Kosongkan input nomor 1–5 (FORMAT BAPRO) =====
-  for (let i = 1; i <= 5; i++) {
-    const el = document.getElementById('ketPA' + i);
-    if (el) el.value = '';
+  // reset keterangan 1–5
+  for(let i=1;i<=5;i++){
+    const el=document.getElementById('ketPA'+i);
+    if(el) el.value='';
   }
 }
 
 
-
-
-
 // ====================== DASHBOARD PA (COMPACT + FILTER + HIGHLIGHT) ======================
-function renderDashboardPACompact(query = "", safeMode = false) {
-  const q = query.toLowerCase().trim();
+function renderDashboardPACompact(query="", safeMode=false){
+  const q=query.toLowerCase().trim();
+  const containerTO=document.getElementById('dashboardPATo');
+  const containerProses=document.getElementById('dashboardPAProses');
+  const containerSelesai=document.getElementById('dashboardPASelesai');
 
-  const containerTO = document.getElementById('dashboardPATO');
-  const containerProses = document.getElementById('dashboardPAProses');
-  const containerSelesai = document.getElementById('dashboardPASelesai');
+  if(!containerProses || !containerSelesai) return;
 
-  if (!containerProses || !containerSelesai) return;
+  if(containerTO) containerTO.innerHTML='';
+  containerProses.innerHTML='';
+  containerSelesai.innerHTML='';
 
-  if (containerTO) containerTO.innerHTML = '';
-  containerProses.innerHTML = '';
-  containerSelesai.innerHTML = '';
+  let totalTO=0, totalProses=0, totalSelesai=0;
 
-  let totalTO = 0, totalProses = 0, totalSelesai = 0;
+  paItems.forEach(item=>{
+    const updateVal=(item.update||'').trim().toLowerCase();
+    const tanggal=item.tanggal||'-';
 
-  paItems.forEach(item => {
-    const updateVal = (item.update || "").trim().toLowerCase();
-    const tanggal = item.tanggal || "-";
+    const card=document.createElement('div');
+    card.className='grid-card';
 
-    const card = document.createElement('div');
-    card.className = 'grid-card';
+    let statusClass="";
+    if(updateVal==='proses') statusClass="status-proses";
+    else if(updateVal==='selesai') statusClass="status-selesai";
+    else if(updateVal==='to') statusClass="status-to";
 
-    let statusClass = "";
-    if (updateVal === "proses") statusClass = "status-proses";
-    else if (updateVal === "selesai") statusClass = "status-selesai";
-    else if (updateVal === "to") statusClass = "status-to";
-
-    // ===== CARD TEMPLATE DENGAN HIGHLIGHT (ACUAN BAPRO / FINISHING) =====
-    card.innerHTML = `
-      <strong>${highlightHtmlSafe(item.nama || '', query)}</strong><br>
-      <strong>QC: ${highlightHtmlSafe(item.qc || '', query)}</strong><br>
-      <strong>Mesin: ${highlightHtmlSafe(item.mesin || '', query)}</strong><br>
+    card.innerHTML=`
+      <strong>${highlightHtmlSafe(item.nama||'', query)}</strong><br>
+      <strong>QC: ${highlightHtmlSafe(item.qc||'', query)}</strong><br>
       <span>📅 ${highlightHtmlSafe(tanggal, query)}</span><br>
-      <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
+      <span class="${statusClass}">${highlightHtmlSafe(item.update||'', query)}</span>
     `;
 
-    // ===== FILTER seperti Finishing / Bapro =====
-    const cardText = card.textContent.toLowerCase();
-    if (!safeMode && q && !cardText.includes(q)) return;
+    const cardText=card.textContent.toLowerCase();
+    if(!safeMode && q && !cardText.includes(q)) return;
 
-    // ===== MASUKKAN KE KATEGORI =====
-    if (updateVal === 'to') {
-      if (containerTO) containerTO.appendChild(card);
-      totalTO++;
-    } else if (updateVal === 'proses') {
-      containerProses.appendChild(card);
-      totalProses++;
-    } else if (updateVal === 'selesai') {
-      containerSelesai.appendChild(card);
-      totalSelesai++;
-    }
+    if(updateVal==='to'){ if(containerTO) containerTO.appendChild(card); totalTO++; }
+    else if(updateVal==='proses'){ containerProses.appendChild(card); totalProses++; }
+    else if(updateVal==='selesai'){ containerSelesai.appendChild(card); totalSelesai++; }
 
-    card.addEventListener('click', () => showDetailModalPA(item));
+    card.addEventListener('click', ()=>showDetailModalPA(item));
   });
 
-  // COUNTER
-  document.getElementById('countPA').textContent = paItems.length;
-  document.getElementById('countTOPA').textContent = totalTO;
-  document.getElementById('countProsesPA').textContent = totalProses;
-  document.getElementById('countSelesaiPA').textContent = totalSelesai;
+  document.getElementById('countPA').textContent=paItems.length;
+  document.getElementById('countTOPA').textContent=totalTO;
+  document.getElementById('countProsesPA').textContent=totalProses;
+  document.getElementById('countSelesaiPA').textContent=totalSelesai;
 }
 
-// ====================== FILTER INPUT REAL-TIME PA ======================
-document.addEventListener('DOMContentLoaded', () => {
-  const filterTO = document.getElementById('filterPATO');
-  const filterProses = document.getElementById('filterPAProses');
-  const filterSelesai = document.getElementById('filterPASelesai');
-
-  if (filterTO) filterTO.addEventListener('input', () => renderDashboardPACompact(filterTO.value));
-  if (filterProses) filterProses.addEventListener('input', () => renderDashboardPACompact(filterProses.value));
-  if (filterSelesai) filterSelesai.addEventListener('input', () => renderDashboardPACompact(filterSelesai.value));
-});
-
 // ====================== DETAIL PA ======================
-function showDetailModalPA(item) {
-  const body = document.getElementById("detailCetakBody");
+function showDetailModalPA(item){
+  const body=document.getElementById('detailCetakBody');
 
-  body.innerHTML = `
-    <strong>Tanggal:</strong> ${item.tanggal || '-'}<br>
-    <strong>Nama:</strong> ${item.nama || '-'}<br>
-    <strong>No KS:</strong> ${item.noKS || '-'}<br>
-    <strong>Order:</strong> ${item.order || '-'}<br>
-    <strong>Bagus:</strong> ${item.bagus || '-'}<br>
-    <strong>Sortir:</strong> ${item.sortir || '-'}<br>
-    <strong>Problem:</strong> ${item.problem || '-'}<br>
-    <strong>Mesin:</strong> ${item.mesin || '-'}<br>
-    <strong>QC:</strong> ${item.qc || '-'}<br>
-    <strong>Update:</strong> 
-      <span class="status-${(item.update || '').toLowerCase()}">
-        ${item.update || '-'}
+  body.innerHTML=`
+    <strong>Tanggal:</strong> ${item.tanggal||'-'}<br>
+    <strong>Nama:</strong> ${item.nama||'-'}<br>
+    <strong>No KS:</strong> ${item.noKS||'-'}<br>
+    <strong>Order:</strong> ${item.order||'-'}<br>
+    <strong>Bagus:</strong> ${item.bagus||'-'}<br>
+    <strong>QC:</strong> ${item.qc||'-'}<br>
+    <strong>Update:</strong>
+      <span class="status-${(item.update||'').toLowerCase()}">
+        ${item.update||'-'}
       </span><br><br>
 
     <strong>Keterangan:</strong><br>
-    ${(item.keterangan || "-").replace(/\n/g, "<br>")}
+    ${(item.keterangan||"-").replace(/\n/g,'<br>')}
   `;
 
-  document.getElementById("detailCetakModal").style.display = "flex";
+  document.getElementById('detailCetakModal').style.display='flex';
 }
 
-function closeDetailModalCetak() {
-  document.getElementById("detailCetakModal").style.display = "none";
+function closeDetailModalCetak(){
+  document.getElementById('detailCetakModal').style.display='none';
 }
 
+// ====================== TOGGLE VIEW + FILTER QC PA ======================
+document.addEventListener('DOMContentLoaded', ()=>{
+  const btnTO=document.getElementById('togglePATO');
+  const btnProses=document.getElementById('togglePAProses');
+  const btnSelesai=document.getElementById('togglePASelesai');
 
-// ====================== TOGGLE VIEW + FILTER QC CETAK ======================
-document.addEventListener('DOMContentLoaded', () => {
-  const btnTO = document.getElementById('togglePATO');
-  const btnProses = document.getElementById('togglePAProses');
-  const btnSelesai = document.getElementById('togglePASelesai');
+  const sectionTO=document.getElementById('sectionPATO');
+  const sectionProses=document.getElementById('sectionPAProses');
+  const sectionSelesai=document.getElementById('sectionPASelesai');
 
-  const sectionTO = document.getElementById('sectionPATO');
-  const sectionProses = document.getElementById('sectionPAProses');
-  const sectionSelesai = document.getElementById('sectionPASelesai');
+  const filterTO=document.getElementById('filterPATO');
+  const filterProses=document.getElementById('filterPAProses');
+  const filterSelesai=document.getElementById('filterPASelesai');
 
-  const filterTO = document.getElementById('filterPATO');
-  const filterProses = document.getElementById('filterPAProses');
-  const filterSelesai = document.getElementById('filterPASelesai');
+  const gridTO=document.getElementById('dashboardPATO');
+  const gridProses=document.getElementById('dashboardPAProses');
+  const gridSelesai=document.getElementById('dashboardPASelesai');
 
-  const gridTO = document.getElementById('dashboardPATO');
-  const gridProses = document.getElementById('dashboardPAProses');
-  const gridSelesai = document.getElementById('dashboardPASelesai');
-
-  function filterCards(container, keyword) {
-    if (!container) return;
-    const cards = container.querySelectorAll('.grid-card');
-    const term = keyword.toLowerCase().trim();
-    cards.forEach(card => {
-      const text = card.textContent.toLowerCase();
-      card.style.display = text.includes(term) ? '' : 'none';
+  function filterCards(container, keyword){
+    if(!container) return;
+    const cards=container.querySelectorAll('.grid-card');
+    const term=keyword.toLowerCase().trim();
+    cards.forEach(card=>{
+      const text=card.textContent.toLowerCase();
+      card.style.display=text.includes(term)?'':'none';
     });
   }
 
   [{input:filterTO,grid:gridTO},{input:filterProses,grid:gridProses},{input:filterSelesai,grid:gridSelesai}]
   .forEach(({input,grid})=>{
-    if(input){
-      input.addEventListener('input',()=>filterCards(grid,input.value));
-    }
+    if(input) input.addEventListener('input',()=>filterCards(grid,input.value));
   });
 
-  window.applyCetakFilters = function(){
+  window.applyPAFilters=function(){
     filterCards(gridTO,filterTO.value);
     filterCards(gridProses,filterProses.value);
     filterCards(gridSelesai,filterSelesai.value);
   };
 
   function toggleSection(section,btn){
-    const visible = section.style.display!=='none';
+    const visible=section.style.display!=='none';
     section.style.display=visible?'none':'block';
     btn.textContent=visible?'Show':'Hide';
   }
 
-  if(btnTO)btnTO.addEventListener('click',()=>toggleSection(sectionTO,btnTO));
-  if(btnProses)btnProses.addEventListener('click',()=>toggleSection(sectionProses,btnProses));
-  if(btnSelesai)btnSelesai.addEventListener('click',()=>toggleSection(sectionSelesai,btnSelesai));
+  if(btnTO) btnTO.addEventListener('click',()=>toggleSection(sectionTO,btnTO));
+  if(btnProses) btnProses.addEventListener('click',()=>toggleSection(sectionProses,btnProses));
+  if(btnSelesai) btnSelesai.addEventListener('click',()=>toggleSection(sectionSelesai,btnSelesai));
 });
 
-
-
 // ===== Password untuk QC PA (ubah sesuai kebutuhan) =====
-const QC_PA_PASSWORD = 'qc123';
-document.addEventListener('DOMContentLoaded', () => {
-  const btn = document.querySelector(`nav button[onclick="showMenu('qcPA')"]`);
-  if (btn) {
-    const originalOnClick = btn.getAttribute('onclick');
-    btn.onclick = function(e) {
+const QC_PA_PASSWORD='qc123';
+document.addEventListener('DOMContentLoaded',()=>{
+  const btn=document.querySelector(`nav button[onclick="showMenu('qcPA')"]`);
+  if(btn){
+    const originalOnClick=btn.getAttribute('onclick');
+    btn.onclick=function(e){
       e.preventDefault();
-      const input = prompt('Masukkan password untuk QC CETAK:');
-      if (input === null) return;
-      if (input === QC_PA_PASSWORD) {
-        eval(originalOnClick);
-      } else {
-        alert('Password salah!');
-      }
+      const input=prompt('Masukkan password untuk QC CETAK:');
+      if(input===null) return;
+      if(input===QC_PA_PASSWORD){ eval(originalOnClick); }
+      else{ alert('Password salah!'); }
     };
   }
 });
@@ -6752,13 +6576,15 @@ loadPAItems();
 
 
 
+
+
 <!-- ====== JS QC LEM (paste this after script utama, format disesuaikan dg QC Finishing) -->
 <script>
 // ====================== GLOBAL STATE (LEM) ======================
 let lemItems = []; // array yang diambil dari sheet Lem
 
 
-// ====================== RENDER GRID HASIL (LEM) – FIX TOTAL MENGIKUTI FINISHING ======================
+// ====================== RENDER GRID HASIL (LEM) ======================
 function renderGridLem(query = "") {
   const container = document.getElementById('gridLem');
   if (!container) return;
@@ -6778,6 +6604,7 @@ function renderGridLem(query = "") {
 
     const card = document.createElement('div');
     card.className = 'grid-card';
+    card.dataset.index = i;
 
     // STATUS COLOR
     let statusClass = '';
@@ -6789,41 +6616,27 @@ function renderGridLem(query = "") {
     const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, q)}</strong><br>` : '';
 
     // ============================
-    // PARSING KETERANGAN — FIX SESUAI FINISHING
+    // NORMALISASI KETERANGAN 1–5
     // ============================
+    const ketMap = {1:"-",2:"-",3:"-",4:"-",5:"-"};
+    const raw = (item.keterangan || "").toString().trim();
+    if(raw !== ""){
+      raw.split("\n").forEach(line=>{
+        const m = line.match(/^\s*(\d+)\.\s*(.*)/);
+        if(m){
+          const no = parseInt(m[1]);
+          if(no>=1 && no<=5){
+            // bersihkan teks, kalau kosong tetap "-"
+            ketMap[no] = m[2].trim() || "-";
+          }
+        }
+      });
+    }
 
-    let kets = [];
-
-    // PRIORITAS ket1..ket5
-    if (item.ket1 || item.ket2 || item.ket3 || item.ket4 || item.ket5) {
-      kets = [
-        item.ket1 || '',
-        item.ket2 || '',
-        item.ket3 || '',
-        item.ket4 || '',
-        item.ket5 || ''
-      ];
-    } else {
-      const raw = (item.keterangan || '').toString().trim();
-
-      if (raw === "") {
-        // kalau kosong → semua "-"
-        kets = ["", "", "", "", ""];
-      } else {
-        // potong hanya format "1. teks", "2. teks"
-        const parts = raw
-          .split(/^\s*(?:1\.|2\.|3\.|4\.|5\.)\s*/gm)
-          .map(v => v.trim())
-          .filter(v => v !== "");
-
-        kets = [
-          parts[0] || "",
-          parts[1] || "",
-          parts[2] || "",
-          parts[3] || "",
-          parts[4] || ""
-        ];
-      }
+    // Render selalu 1–5
+    let ketsHtml = '';
+    for(let j=1; j<=5; j++){
+      ketsHtml += `<div>${j}. ${highlightHtmlSafe(ketMap[j], q)}</div>`;
     }
 
     // ============================ HTML ============================
@@ -6840,11 +6653,7 @@ function renderGridLem(query = "") {
 
         <span><b>Keterangan:</b></span><br>
         <div class="ket-list">
-          <div>1. ${kets[0] ? highlightHtmlSafe(kets[0], q) : '-'}</div>
-          <div>2. ${kets[1] ? highlightHtmlSafe(kets[1], q) : '-'}</div>
-          <div>3. ${kets[2] ? highlightHtmlSafe(kets[2], q) : '-'}</div>
-          <div>4. ${kets[3] ? highlightHtmlSafe(kets[3], q) : '-'}</div>
-          <div>5. ${kets[4] ? highlightHtmlSafe(kets[4], q) : '-'}</div>
+          ${ketsHtml}
         </div>
 
         <br>
@@ -6863,7 +6672,7 @@ function renderGridLem(query = "") {
 
   renderDashboardLemCompact();
 
-  // Auto-scroll
+  // Auto-scroll ke item terakhir
   const lastCard = container.querySelector('.grid-card:last-child');
   if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
@@ -6982,7 +6791,8 @@ function deleteLem(index) {
   if (!confirm('Hapus data ini?')) return;
 
   const container = document.getElementById('gridLem');
-  const card = container ? container.children[index] : null;
+  const card = container.querySelector(`.grid-card[data-index="${index}"]`);
+
   const btnDelete = card?.querySelector('.btn-delete');
 
   if (btnDelete) {
@@ -7015,7 +6825,8 @@ function deleteLem(index) {
 function editLemInline(index){
   const item = lemItems[index];
   const container = document.getElementById('gridLem');
-  const card = container ? container.children[index] : null;
+  const card = container.querySelector(`.grid-card[data-index="${index}"]`);
+
   if(!card) return;
   if(card.querySelector('.edit-inline')) return;
 
@@ -7055,7 +6866,8 @@ function editLemInline(index){
 // ====================== BATAL EDIT INLINE (LEM) ======================
 function cancelLemInline(index, oldHtmlEncoded) {
   const container = document.getElementById('gridLem');
-  const card = container ? container.children[index] : null;
+  const card = container.querySelector(`.grid-card[data-index="${index}"]`);
+
   if (!card) return;
   card.innerHTML = decodeURIComponent(oldHtmlEncoded);
 }
@@ -7063,7 +6875,8 @@ function cancelLemInline(index, oldHtmlEncoded) {
 // ====================== SIMPAN HASIL EDIT INLINE (LEM) ======================
 async function saveLemInline(index, btn) {
   const container = document.getElementById('gridLem');
-  const card = container ? container.children[index] : null;
+  const card = container.querySelector(`.grid-card[data-index="${index}"]`);
+
   if (!card) return;
 
   const btnSave = btn;
@@ -7118,6 +6931,9 @@ async function saveLemInline(index, btn) {
     }
   }
 }
+
+
+
 
 // ====================== FILTER BERDASARKAN ISI GRID ======================
 function filterLemGrid(query){
