@@ -5762,7 +5762,12 @@ function editBaproInline(index){
       <input type="text" class="edit-inline" value="${escapeHtml(item.l||'')}" placeholder="L">
       <input type="text" class="edit-inline" value="${escapeHtml(item.a||'')}" placeholder="A">
       <input type="text" class="edit-inline" value="${escapeHtml(item.b||'')}" placeholder="B">
-      <input type="text" class="edit-inline" value="${escapeHtml(item.qc||'')}" placeholder="QC">
+
+      <select class="edit-inline">
+        <option value="Marwan" ${item.qc==='Marwan'? 'selected':''}>Marwan</option>
+        <option value="Kiki" ${item.qc==='Kiki'? 'selected':''}>Kiki</option>
+      </select>
+
       <select class="edit-inline">
         <option value="TO" ${item.update==='TO'? 'selected':''}>TO</option>
         <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
