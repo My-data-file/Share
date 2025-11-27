@@ -5305,32 +5305,29 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// ====================== DETAIL FINISHING ======================
-function showDetailModalFinishing(item) {
-  const modal = document.getElementById("detailFinishingModal");
+// ====================== DETAIL ======================
+function showDetailModal(item) {
   const body = document.getElementById("detailFinishingBody");
-
-  if (!modal || !body) return;
 
   body.innerHTML = `
     <strong>Tanggal:</strong> ${item.tanggal || '-'}<br>
-    <strong>Nama:</strong> ${item.nama || '-'}<br>
-    <strong>No KS:</strong> ${item.noKS || '-'}<br>
-    <strong>Order:</strong> ${item.order || '-'}<br>
-    <strong>Isi/Dus:</strong> ${item.isi || '-'}<br>
-    <strong>Bagus:</strong> ${item.bagus || '-'}<br>
-    <strong>BS:</strong> ${item.jenisBS || '-'}<br>
-    <strong>QC:</strong> ${item.qc || '-'}<br>
-    <strong>Update:</strong> 
-      <span class="status-${(item.update || '').toLowerCase()}">
-        ${item.update || '-'}
-      </span><br><br>
-
+    <strong>Nama:</strong> ${item.nama}<br>
+    <strong>No KS:</strong> ${item.noKS}<br>
+    <strong>Order:</strong> ${item.order}<br>
+    <strong>Isi:</strong> ${item.isi}<br>
+    <strong>Bagus:</strong> ${item.bagus}<br>
+    <strong>BS:</strong> ${item.jenisBS}<br>
+    <strong>QC:</strong> ${item.qc}<br>
+    <strong>Update:</strong> <span class="status-${(item.update || '').toLowerCase()}">${item.update}</span><br><br>
     <strong>Keterangan:</strong><br>
     ${(item.keterangan || "-").replace(/\n/g, "<br>")}
   `;
 
-  modal.style.display = "flex";
+  document.getElementById("detailFinishingModal").style.display = "flex";
+}
+
+function closeDetailModal() {
+  document.getElementById("detailFinishingModal").style.display = "none";
 }
 
 function closeDetailModal() {   // << SAMA seperti yang dipanggil HTML
@@ -6473,32 +6470,36 @@ function renderDashboardPACompact(query="", safeMode=false){
   document.getElementById('countSelesaiPA').textContent=totalSelesai;
 }
 
-// ====================== DETAIL PA ======================
+// ====================== DETAIL PA (VERSI LENGKAP) ======================
 function showDetailModalPA(item){
-  const body=document.getElementById('detailCetakBody');
+  const body = document.getElementById('detailCetakBody');
 
-  body.innerHTML=`
-    <strong>Tanggal:</strong> ${item.tanggal||'-'}<br>
-    <strong>Nama:</strong> ${item.nama||'-'}<br>
-    <strong>No KS:</strong> ${item.noKS||'-'}<br>
-    <strong>Order:</strong> ${item.order||'-'}<br>
-    <strong>Bagus:</strong> ${item.bagus||'-'}<br>
-    <strong>QC:</strong> ${item.qc||'-'}<br>
+  body.innerHTML = `
+    <strong>Tanggal:</strong> ${item.tanggal || '-'}<br>
+    <strong>Nama:</strong> ${item.nama || '-'}<br>
+    <strong>No KS:</strong> ${item.noKS || '-'}<br>
+    <strong>Order:</strong> ${item.order || '-'}<br>
+    <strong>Bagus:</strong> ${item.bagus || '-'}<br>
+    <strong>Sortir:</strong> ${item.sortir || '-'}<br>
+    <strong>Problem:</strong> ${item.problem || '-'}<br>
+    <strong>QC:</strong> ${item.qc || '-'}<br>
+    <strong>Mesin:</strong> ${item.mesin || '-'}<br>
     <strong>Update:</strong>
-      <span class="status-${(item.update||'').toLowerCase()}">
-        ${item.update||'-'}
+      <span class="status-${(item.update || '').toLowerCase()}">
+        ${item.update || '-'}
       </span><br><br>
 
     <strong>Keterangan:</strong><br>
-    ${(item.keterangan||"-").replace(/\n/g,'<br>')}
+    ${(item.keterangan || "-").replace(/\n/g,'<br>')}
   `;
 
-  document.getElementById('detailCetakModal').style.display='flex';
+  document.getElementById('detailCetakModal').style.display = 'flex';
 }
 
 function closeDetailModalCetak(){
-  document.getElementById('detailCetakModal').style.display='none';
+  document.getElementById('detailCetakModal').style.display = 'none';
 }
+
 
 // ====================== TOGGLE VIEW + FILTER QC PA ======================
 document.addEventListener('DOMContentLoaded', ()=>{
