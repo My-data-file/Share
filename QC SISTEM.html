@@ -511,39 +511,102 @@ select {
   justify-content: space-between;
   align-items: center;
   padding: 14px 24px;
-  background: linear-gradient(to right, #0078D7, #1A86D1);
+  background: linear-gradient(90deg, #0078D7, #1A86D1);
   color: white;
   font-family: 'Inter', sans-serif;
   font-weight: 500;
   letter-spacing: 0.3px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.28);
   position: sticky;
   top: 0;
   z-index: 1000;
-  border-bottom: 1px solid rgba(255,255,255,0.15);
+  border-bottom: 1px solid rgba(255,255,255,0.18);
 ">
-  <div style="display: flex; align-items: center; gap: 10px;">
-    <button onclick="goHome()" style="
-      background: linear-gradient(to bottom, #ffffff, #d1faff);
-      color: #0078D7;
-      font-weight: 700;
-      font-size: 1.2rem;
-      padding: 6px 12px;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-      transition: transform 0.2s;
-    " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+  <div style="display: flex; align-items: center; gap: 12px;">
+
+    <!-- ================= BUTTON QC ================= -->
+    <button class="btnQC" onclick="goHome()">
       QC
     </button>
-    <div id="headerTitle" style="font-size: 0.85rem; color: #e0f7fa;">System</div>
+
+    <div id="headerTitle" style="font-size: 0.9rem; color: #e0f7fa;">
+      System
+    </div>
   </div>
+
   <div id="headerTime" style="text-align:right; font-size:0.8rem; color:#e0f7fa;">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
     <div class="jam">14:30</div>
   </div>
 </header>
+
+<style>
+/* ---------------- BACKGROUND ANIMATION QC (PUNYA KAMU) ---------------- */
+.btnQC {
+  position: relative;
+  background: linear-gradient(120deg, #ffffff, #f4fbff, #d6f3ff, #ffffff);
+  background-size: 230% 230%;
+  animation: qcBgMove 4s ease-in-out infinite;
+
+  color: #0078D7;
+  font-weight: 800;
+  font-size: 1.25rem;
+  padding: 8px 18px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  letter-spacing: 0.5px;
+
+  transition: transform 0.25s ease;
+  overflow: visible;
+}
+
+.btnQC:hover {
+  transform: scale(1.06);
+}
+
+/* ================= PULSE RING EXPAND — WARNA HITAM ================= */
+.btnQC::before,
+.btnQC::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  border: 3px solid rgba(0, 0, 0, 0.45);
+  animation: pulseExpand 1.8s ease-out infinite;
+  z-index: -1;
+}
+
+.btnQC::after {
+  animation-delay: 0.9s; /* gelombang kedua */
+}
+
+/* ---------------- ANIMASI PULSE ---------------- */
+@keyframes pulseExpand {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  70% {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+/* ---------------- KEYFRAMES BACKGROUND ---------------- */
+@keyframes qcBgMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+</style>
+
+
 
 
 <!-- ======================== Footer Nav ======================== -->
