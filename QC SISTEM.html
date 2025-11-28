@@ -541,12 +541,12 @@ select {
 </header>
 
 <style>
-/* ---------------- BACKGROUND ANIMATION QC (PUNYA KAMU) ---------------- */
+/* ---------------- BACKGROUND QC ---------------- */
 .btnQC {
   position: relative;
   background: linear-gradient(120deg, #ffffff, #f4fbff, #d6f3ff, #ffffff);
   background-size: 230% 230%;
-  animation: qcBgMove 4s ease-in-out infinite;
+  animation: qcBgMove 5.5s ease-in-out infinite;   /* dibuat lebih halus dan lambat */
 
   color: #0078D7;
   font-weight: 800;
@@ -566,34 +566,34 @@ select {
   transform: scale(1.06);
 }
 
-/* ================= PULSE RING EXPAND — WARNA HITAM ================= */
+/* ================= PULSE RING EXPAND — DIBUAT LEBIH HALUS ================= */
 .btnQC::before,
 .btnQC::after {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: 14px;
-  border: 3px solid rgba(0, 0, 0, 0.45);
-  animation: pulseExpand 1.8s ease-out infinite;
+  border: 2.6px solid rgba(0, 0, 0, 0.42);   /* sedikit lebih tipis & halus */
+  animation: pulseExpand 2.8s cubic-bezier(.25,.8,.35,1) infinite; /* GERAK HALUS */
   z-index: -1;
 }
 
 .btnQC::after {
-  animation-delay: 0.9s; /* gelombang kedua */
+  animation-delay: 1.4s; /* gelombang kedua tetap ada, lebih halus */
 }
 
-/* ---------------- ANIMASI PULSE ---------------- */
+/* ---------------- ANIMASI PULSE LEBIH SOFT ---------------- */
 @keyframes pulseExpand {
   0% {
     transform: scale(1);
     opacity: 0.9;
   }
-  70% {
-    transform: scale(1.45);
-    opacity: 0;
+  60% {
+    transform: scale(1.30);    /* dulu 1.45 → sekarang lebih lembut */
+    opacity: 0.12;
   }
   100% {
-    transform: scale(1.6);
+    transform: scale(1.45);    /* dulu 1.6 → diperhalus */
     opacity: 0;
   }
 }
