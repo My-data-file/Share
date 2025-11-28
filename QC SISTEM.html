@@ -7502,7 +7502,7 @@ function enableSPVEdit() {
   });
 }
 
-/* ====================== FILTER & HIGHLIGHT QC REGISTER ====================== */
+/* ====================== FILTER & HIGHLIGHT PER HURUF (AMAN UNTUK EDIT) ====================== */
 const spvSearchInput = document.getElementById('spvSearch');
 if (spvSearchInput) {
   spvSearchInput.addEventListener('input', () => {
@@ -7513,25 +7513,34 @@ if (spvSearchInput) {
     tbody.querySelectorAll('tr').forEach(tr => {
       let rowMatches = false;
 
-      tr.querySelectorAll('td').forEach(td => {
-        const text = td.textContent || '';
-        const lower = text.toLowerCase();
+      tr.querySelectorAll('td').forEach((td, idx) => {
 
-        // highlight text yang cocok
+        // JANGAN UBRAK-ABRIK CELL AKSI (EDIT)
+        if (idx === 10) return;
+
+        const original = td.dataset.original || td.textContent;
+        td.dataset.original = original;
+
+        const lower = original.toLowerCase();
+
         if (filter && lower.includes(filter)) {
-          const regex = new RegExp(`(${filter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-          td.innerHTML = text.replace(regex, `<span style="background-color:yellow;">$1</span>`);
           rowMatches = true;
+
+          // highlight per huruf
+          const regex = new RegExp(`(${filter.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, 'gi');
+          td.innerHTML = original.replace(regex, `<span style="background:yellow;">$1</span>`);
         } else {
-          td.innerHTML = td.textContent; // reset highlight
+          td.innerHTML = original; // kembalikan isi asli
         }
       });
 
-      // sembunyikan baris jika tidak ada kecocokan
+      // sembunyikan baris yang tidak cocok
       tr.style.display = rowMatches || !filter ? '' : 'none';
     });
   });
 }
+
+
 
 /* ====================== FORMAT ====================== */
 function formatTanggal(tgl) { if (!tgl) return ""; const parts = tgl.split("-"); return parts.length === 3 ? `${parts[2]}-${parts[1]}-${parts[0]}` : tgl; }
