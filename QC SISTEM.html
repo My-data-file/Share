@@ -511,21 +511,16 @@ select {
   justify-content: space-between;
   align-items: center;
   padding: 14px 24px;
-
-background: rgba(0, 0, 0, 0.55);
-backdrop-filter: blur(10px);
-border-bottom: 1px solid rgba(0, 207, 255, 0.45);
-
-
+  background: linear-gradient(90deg, #0078D7, #1A86D1);
   color: white;
   font-family: 'Inter', sans-serif;
   font-weight: 500;
   letter-spacing: 0.3px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.45);
-
+  box-shadow: 0 4px 12px rgba(0,0,0,0.28);
   position: sticky;
   top: 0;
   z-index: 1000;
+  border-bottom: 1px solid rgba(255,255,255,0.18);
 ">
   <div style="display: flex; align-items: center; gap: 12px;">
 
@@ -534,16 +529,12 @@ border-bottom: 1px solid rgba(0, 207, 255, 0.45);
       QC
     </button>
 
-    <div id="headerTitle" style="
-      font-size: 0.9rem; 
-      color: #e8ffff; 
-      text-shadow: 0 0 6px rgba(0,207,255,0.8);
-    ">
+    <div id="headerTitle" style="font-size: 0.9rem; color: #e0f7fa;">
       System
     </div>
   </div>
 
-  <div id="headerTime" style="text-align:right; font-size:0.8rem; color:#e8ffff;">
+  <div id="headerTime" style="text-align:right; font-size:0.8rem; color:#e0f7fa;">
     <div class="tanggal">Selasa, 5 Oktober 2025</div>
     <div class="jam">14:30</div>
   </div>
@@ -553,60 +544,67 @@ border-bottom: 1px solid rgba(0, 207, 255, 0.45);
 /* ---------------- BACKGROUND QC ---------------- */
 .btnQC {
   position: relative;
+  background: linear-gradient(120deg, #ffffff, #f4fbff, #d6f3ff, #ffffff);
+  background-size: 230% 230%;
+  animation: qcBgMove 5.5s ease-in-out infinite;   /* dibuat lebih halus dan lambat */
 
-  /* === GRADIENT CYAN BARU === */
-  background: linear-gradient(135deg, #00e0ff, #00bfff);
-  color: #000;
-
+  color: #0078D7;
   font-weight: 800;
   font-size: 1.25rem;
   padding: 8px 18px;
   border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.45);
-
+  border: none;
   cursor: pointer;
-  box-shadow: 0 6px 14px rgba(0,207,255,0.4);
-
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
   letter-spacing: 0.5px;
-  transition: transform 0.25s ease, filter 0.25s ease;
+
+  transition: transform 0.25s ease;
   overflow: visible;
 }
 
 .btnQC:hover {
-  filter: brightness(1.12);
   transform: scale(1.06);
 }
 
-.btnQC:active {
-  transform: scale(0.96);
-}
-
-/* ================= PULSE RING EXPAND — tetap tapi disamakan dengan theme glass/blue ================= */
+/* ================= PULSE RING EXPAND — DIBUAT LEBIH HALUS ================= */
 .btnQC::before,
 .btnQC::after {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: 14px;
-
-  /* === Ganti warna ring ke cyan transparan === */
-  border: 2.6px solid rgba(0, 207, 255, 0.45);
-  animation: pulseExpand 2.8s cubic-bezier(.25,.8,.35,1) infinite;
+  border: 2.6px solid rgba(0, 0, 0, 0.42);   /* sedikit lebih tipis & halus */
+  animation: pulseExpand 2.8s cubic-bezier(.25,.8,.35,1) infinite; /* GERAK HALUS */
   z-index: -1;
 }
 
 .btnQC::after {
-  animation-delay: 1.4s;
+  animation-delay: 1.4s; /* gelombang kedua tetap ada, lebih halus */
 }
 
-/* ---------------- ANIMASI PULSE ---------------- */
+/* ---------------- ANIMASI PULSE LEBIH SOFT ---------------- */
 @keyframes pulseExpand {
-  0% { transform: scale(1); opacity: 0.9; }
-  60% { transform: scale(1.30); opacity: 0.12; }
-  100% { transform: scale(1.45); opacity: 0; }
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  60% {
+    transform: scale(1.30);    /* dulu 1.45 → sekarang lebih lembut */
+    opacity: 0.12;
+  }
+  100% {
+    transform: scale(1.45);    /* dulu 1.6 → diperhalus */
+    opacity: 0;
+  }
+}
+
+/* ---------------- KEYFRAMES BACKGROUND ---------------- */
+@keyframes qcBgMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 </style>
-
 
 
 
@@ -632,11 +630,7 @@ border-bottom: 1px solid rgba(0, 207, 255, 0.45);
   bottom: 0;
   left: 0;
   width: 100%;
-
-  background: rgba(0, 0, 0, 0.50);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(0,207,255,0.45);
-
+  background: linear-gradient(to right, #0078D7, #1A86D1);
   height: 64px;
   z-index: 999;
   display: flex;
@@ -655,83 +649,76 @@ border-bottom: 1px solid rgba(0, 207, 255, 0.45);
   overflow-x: auto;
   white-space: nowrap;
   scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch; /* efek geser halus iOS */
   width: 100%;
 }
 
-/* Scrollbar hidden */
-.nav-inner { scrollbar-width: none; }
-.nav-inner::-webkit-scrollbar { display: none; }
+/* 🔽 Sembunyikan scrollbar di semua browser */
+.nav-inner {
+  scrollbar-width: none;          /* Firefox */
+  -ms-overflow-style: none;       /* IE & Edge lama */
+}
+.nav-inner::-webkit-scrollbar {   /* Chrome, Safari, Opera */
+  display: none;
+}
 
-/* ======================== NAV BUTTON STYLE ======================== */
+/* ======================== Tombol Putih HD Modern ======================== */
 .nav-btn {
   flex-shrink: 0;
+  color: #0f172a;
   font-weight: 600;
   font-size: 15px;
   padding: 10px 20px;
-
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.45);
-
-  /* WHITE GLASS */
-  background: rgba(255,255,255,0.22);
-  color: #e8ffff;
-
-  backdrop-filter: blur(6px);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.7);
+  background: #ffffff;
+  text-shadow: none;
   box-shadow:
-    0 4px 10px rgba(0,0,0,0.35),
-    inset 0 1px 0 rgba(255,255,255,0.25);
-
+    0 2px 6px rgba(0,0,0,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.3);
   transition: all 0.25s ease;
   cursor: pointer;
 }
 
-/* Hover efek neon lembut */
+/* Hover efek lembut */
 .nav-btn:hover {
-  background: rgba(255,255,255,0.32);
+  background: #f5f9ff;
   transform: translateY(-2px);
   box-shadow:
-    0 0 10px rgba(0,207,255,0.4),
-    0 6px 14px rgba(0,0,0,0.35);
+    0 4px 10px rgba(0,0,0,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.4);
 }
 
-/* ======================== Tombol Aktif – Multi-Layer Neon ======================== */
+/* Aktif: glow hijau elegan */
 .nav-btn.active {
-  background: rgba(0,0,0,0.25);
-  color: #00e0ff;
-  border: 2px solid #00e0ff;
+  color: #fff;
+  background: linear-gradient(145deg, #22c55e, #16a34a);
+  border-color: rgba(34,197,94,0.6);
   box-shadow:
-    0 0 6px rgba(0,224,255,0.5),
-    0 0 12px rgba(0,207,255,0.3),
-    inset 0 0 6px rgba(0,224,255,0.2);
+    0 0 15px rgba(34,197,94,0.6),
+    0 0 30px rgba(34,197,94,0.4);
 }
 
-/* Hover saat tombol aktif */
-.nav-btn.active:hover {
-  border-color: #00bfff;
-  box-shadow:
-    0 0 8px rgba(0,224,255,0.6),
-    inset 0 0 6px rgba(0,224,255,0.4);
-  filter: brightness(1.05);
-}
-
-/* Klik */
+/* Klik efek */
 .nav-btn:active {
-  transform: scale(0.96);
+  transform: scale(0.97);
   box-shadow: 0 0 6px rgba(0,0,0,0.3);
 }
 
-
 /* ======================== Responsif ======================== */
 @media (max-width: 768px) {
-  .nav-inner { justify-content: flex-start; }
+  .nav-inner {
+    justify-content: flex-start;
+  }
   .nav-btn {
     font-size: 14px;
     padding: 9px 16px;
   }
 }
 @media (min-width: 1024px) {
-  .nav-inner { justify-content: center; }
+  .nav-inner {
+    justify-content: center;
+  }
   .nav-btn {
     font-size: 15px;
     padding: 11px 22px;
@@ -739,10 +726,8 @@ border-bottom: 1px solid rgba(0, 207, 255, 0.45);
 }
 </style>
 
-
 <!-- ======================== Main Section ======================== -->
 <main>
-
 
 
 <!-- ======================== Dashboard ======================== -->
@@ -4160,6 +4145,7 @@ if (spvNoKS) {
   </section>
 
 
+
 <!-- ======================== Floating Chibi Robot Button (UPDATED FLEX) ======================== -->
 <div class="chatbot-wrapper" role="button" aria-label="Buka chatbot" tabindex="0">
   <div class="robot-chibi">
@@ -4203,24 +4189,7 @@ if (spvNoKS) {
   </div>
 </div>
 
-<!-- ====================== MENU MODAL (5 AI) ====================== -->
-<div id="menuModal" class="pw-modal" aria-hidden="true" style="display:none;">
-  <div class="pw-modal__dialog" role="dialog" aria-modal="true" style="max-width:420px;">
-    <h3 style="margin:0 0 8px;">Pilih Asisten AI QC</h3>
-    <div style="display:flex;flex-direction:column;gap:8px;">
-      <button class="menu-ai-btn" data-ai="bapro" style="padding:10px;border-radius:8px;border:none;cursor:pointer;background:#00cfff;font-weight:800;">AI QC BAPRO</button>
-      <button class="menu-ai-btn" data-ai="cetak" style="padding:10px;border-radius:8px;border:none;cursor:pointer;background:#00cfff;font-weight:800;">AI QC CETAK</button>
-      <button class="menu-ai-btn" data-ai="finishing" style="padding:10px;border-radius:8px;border:none;cursor:pointer;background:#00cfff;font-weight:800;">AI QC FINISHING</button>
-      <button class="menu-ai-btn" data-ai="lem" style="padding:10px;border-radius:8px;border:none;cursor:pointer;background:#00cfff;font-weight:800;">AI QC LEM</button>
-      <button class="menu-ai-btn" data-ai="register" style="padding:10px;border-radius:8px;border:none;cursor:pointer;background:#00cfff;font-weight:800;">AI QC REGISTER</button>
-    </div>
-    <div style="margin-top:12px;text-align:center;">
-      <button id="menuCloseBtn" style="padding:8px 12px;border-radius:8px;border:none;background:#f2f2f2;cursor:pointer;">Batal</button>
-    </div>
-  </div>
-</div>
-
-<!-- Custom Password Modal (original, reused for per-AI password) -->
+<!-- Custom Password Modal -->
 <div id="pwModal" class="pw-modal" aria-hidden="true">
   <div class="pw-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="pwTitle">
     <h3 id="pwTitle">Password AI</h3>
@@ -4233,325 +4202,21 @@ if (spvNoKS) {
   </div>
 </div>
 
-<style>
-/* ===================== BASE WRAPPER ===================== */
-.chatbot-wrapper { width:120px;height:150px;position:fixed;bottom:78px;right:28px;z-index:9999;cursor:pointer;display:flex;justify-content:center;align-items:center;animation: float 4s ease-in-out infinite, idleTilt 6s ease-in-out infinite; outline:none; }
-.chatbot-wrapper:focus{ box-shadow:0 0 0 4px rgba(0,207,255,0.12); border-radius:12px; }
-
-/* ROBOT CHIBI */
-.robot-chibi{ position:relative;width:105px;height:140px; }
-
-/* SPEECH PANEL FLEXIBLE */
-.speech-panel{ position:absolute; top:-30px; right:160px; min-width:fit-content; max-width:300px; background:#fff; border:5px solid #000; padding:16px 22px; border-radius:18px; font-size:11px; font-weight:900; color:#000; line-height:1.45; opacity:0; transform:translateX(10px); pointer-events:none; transition:all 0.35s ease; box-shadow:0 0 16px rgba(0,0,0,0.32); word-wrap: break-word; }
-
-/* SPEECH PANEL MODERN */
-.speech-panel {
-  position: absolute;
-  top: -30px;
-  right: 160px;
-  min-width: fit-content;
-  max-width: 300px;
-  padding: 14px 20px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #000;
-  line-height: 1.5;
-  background: rgba(0, 207, 255, 0.15);
-  backdrop-filter: blur(8px);
-  border-radius: 22px;
-  border: 1px solid rgba(0, 207, 255, 0.4);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  opacity: 0;
-  transform: translateX(10px);
-  pointer-events: none;
-  transition: all 0.35s ease;
-  word-wrap: break-word;
-}
-
-/* Pointer modern */
-.speech-panel::before {
-  content: "";
-  position: absolute;
-  right: -24px;
-  top: 30px;
-  width: 0;
-  height: 0;
-  border-left: 24px solid rgba(0, 207, 255, 0.4);
-  border-top: 12px solid transparent;
-  border-bottom: 12px solid transparent;
-}
-.speech-panel::after {
-  content: "";
-  position: absolute;
-  right: -20px;
-  top: 30px;
-  width: 0;
-  height: 0;
-  border-left: 20px solid rgba(0, 207, 255, 0.15);
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-}
-
-.speech-panel.show {
-  opacity: 1;
-  transform: translateX(0);
-}
-.speech-panel.talkShake {
-  animation: talkShake 0.25s ease-in-out;
-}
-
-@keyframes talkShake{0%{transform:translateX(0);}35%{transform:translateX(2px);}70%{transform:translateX(-2px);}100%{transform:translateX(0);} }
-
-/* Floating & tilt */
-@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-@keyframes idleTilt{0%,100%{transform:rotate(0deg);}50%{transform:rotate(1.5deg);}}
-
-/* ANTENA */
-.antenna-stick{width:8px;height:22px;background:#000;border-radius:4px;position:absolute;top:-10px;left:50%;transform:translateX(-50%);animation: headSway 3s ease-in-out infinite;}
-.antenna-ball{width:20px;height:20px;background:#00cfff;border:5px solid #000;border-radius:50%;position:absolute;top:-28px;left:50%;transform:translateX(-50%);animation: antennaPulse 1.8s ease-in-out infinite, antennaBlink 4s infinite;}
-@keyframes antennaBlink{0%,100%{filter:brightness(1);}50%{filter:brightness(1.9);}}
-
-/* HEAD & VISOR */
-.head{ width:95px;height:75px;background:#fff;border:6px solid #000;border-radius:26px; position:absolute;top:10px;left:50%;transform:translateX(-50%);animation: headSway 3s ease-in-out infinite;box-shadow:0 0 12px rgba(0,207,255,0.4);}
-.visor{width:78px;height:46px;background:#111;border-radius:20px;position:absolute;top:10px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:4px;overflow:hidden; box-shadow:inset 0 0 18px rgba(0,207,255,0.28),0 6px 18px rgba(0,207,255,0.06);}
-.eyes-wrap{display:flex;gap:12px;margin-top:2px;}
-.eye-left,.eye-right{width:18px;height:18px;background:#00cfff;border-radius:50%;transition:all 0.25s ease-in-out;animation: blink 6s infinite, eyeMove 5s ease-in-out infinite, microMove 2.4s infinite ease-in-out;}
-@keyframes microMove{0%,100%{transform:translateY(0);}50%{transform:translateY(1px);}}
-
-/* mouth, body, arms, legs — tetap sama */
-.mouth{position:absolute;bottom:5px;width:22px;height:6px;background:#00cfff;border-radius:20px;transition:all 0.22s cubic-bezier(.2,.9,.2,1);animation:mouthBreath 3.5s ease-in-out infinite;}
-@keyframes mouthBreath{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
-
-/* AI chest */
-.body{width:70px;height:55px;background:#fff;border:6px solid #000;border-radius:26px;position:absolute;top:82px;left:50%;transform:translateX(-50%);animation:bodyWobble 3s ease-in-out infinite,bodyBreath 4s ease-in-out infinite;}
-.body-light{ ... } /* tetap */
-
-/* ===================== PASSWORD MODAL – NEW MODERN STYLE ===================== */
-
-.pw-modal {
-  position: fixed;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  backdrop-filter: blur(8px);
-  background: rgba(0, 0, 0, 0.45);
-  z-index: 99999;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-.pw-modal.open,
-.pw-modal[aria-hidden="false"] {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.pw-modal__dialog {
-  width: 310px;
-  padding: 22px 26px;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(14px);
-  border-radius: 20px;
-  border: 1px solid rgba(0, 207, 255, 0.45);
-  text-align: center;
-  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
-  transform: scale(0.85);
-  opacity: 0;
-  animation: pwPopupShow 0.35s ease forwards;
-}
-
-@keyframes pwPopupShow {
-  0% { opacity: 0; transform: scale(0.85); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-/* Title */
-.pw-modal__dialog h3 {
-  font-size: 18px;
-  margin: 0 0 14px;
-  font-weight: 700;
-  color: #ffffff;
-  text-shadow: 0 0 6px rgba(0, 207, 255, 0.8);
-}
-
-/* Input */
-.pw-modal__dialog input {
-  width: 100%;
-  padding: 12px 14px;
-  font-size: 15px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.5);
-  background: rgba(255,255,255,0.18);
-  color: #fff;
-  outline: none;
-  transition: 0.2s ease;
-}
-.pw-modal__dialog input:focus {
-  border-color: #00e1ff;
-  box-shadow: 0 0 10px rgba(0,224,255,0.6);
-  background: rgba(255,255,255,0.26);
-}
-
-/* Buttons */
-.pw-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 14px;
-  justify-content: center;
-}
-
-.pw-actions button {
-  flex: 1;
-  padding: 10px 14px;
-  border-radius: 14px;
-  border: none;
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: 800;
-  transition: 0.22s ease;
-}
-
-/* OK */
-#pwOk {
-  background: linear-gradient(135deg, #00e0ff, #00bfff);
-  color: #000;
-  box-shadow: 0 6px 14px rgba(0,207,255,0.4);
-}
-#pwOk:hover { filter: brightness(1.12); box-shadow: 0 8px 18px rgba(0,224,255,0.6); }
-#pwOk:active { transform: scale(0.96); }
-
-/* Cancel */
-#pwCancel {
-  background: rgba(255,255,255,0.3);
-  color: #fff;
-  border: 1px solid rgba(255,255,255,0.35);
-}
-#pwCancel:hover { background: rgba(255,255,255,0.45); }
-#pwCancel:active { transform: scale(0.96); }
-
-/* Note */
-.pw-note {
-  margin-top: 10px;
-  font-size: 13px;
-  color: #e8ffff;
-  opacity: 0.8;
-}
-
-/* ====== EFFECT HOVER + ACTIVE UNTUK TOMBOL PASSWORD ====== */
-
-/* Tombol OK */
-#pwOk {
-  background: #00cfff;
-  color: #000;
-  transition: all 0.22s ease;
-}
-#pwOk:hover {
-  filter: brightness(1.18);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0, 207, 255, 0.45);
-}
-#pwOk:active {
-  transform: scale(0.94);
-  box-shadow: 0 3px 8px rgba(0, 207, 255, 0.35);
-}
-
-/* Tombol Cancel */
-#pwCancel {
-  background: #f2f2f2;
-  color: #000 !important;        /* <<< TEKS BATAL JADI HITAM */
-  border: 1px solid #ddd;
-  transition: all 0.22s ease;
-}
-#pwCancel:hover {
-  background: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
-}
-#pwCancel:active {
-  transform: scale(0.94);
-  box-shadow: 0 3px 8px rgba(0,0,0,0.10);
-}
-
-
-/* =========================================================
-   EFECT HOVER & ACTIVE UNTUK TOMBOL MENU AI QC (BAPRO DLL)
-   ========================================================= */
-
-/* Target semua tombol pilihan QC */
-button[id*="QC"],
-button[class*="qc"],
-button[class*="QC"],
-button[class*="btn"],
-button[class*="menu"],
-.qc-btn {
-  transition: all 0.22s ease;
-}
-
-/* Hover */
-button[id*="QC"]:hover,
-button[class*="qc"]:hover,
-button[class*="QC"]:hover,
-button[class*="btn"]:hover,
-button[class*="menu"]:hover,
-.qc-btn:hover {
-  transform: translateY(-3px);
-  filter: brightness(1.15);
-  box-shadow: 0 8px 18px rgba(0, 207, 255, 0.45);
-}
-
-/* Active (klik) */
-button[id*="QC"]:active,
-button[class*="qc"]:active,
-button[class*="QC"]:active,
-button[class*="btn"]:active,
-button[class*="menu"]:active,
-.qc-btn:active {
-  transform: scale(0.94);
-  box-shadow: 0 3px 8px rgba(0, 207, 255, 0.35);
-}
-
-
-
-</style>
-
 <script>
-/* ===================== CONFIG & AI LIST ===================== */
-/* Default legacy password (kept for backward compat, but we now use per-AI passwords) */
-const SPV_PASSWORD = "spv123";
+/* ===================== CONFIG ===================== */
+const SPV_PASSWORD = "spv123"; 
 const CHAT_URL = "https://www.chatbase.co/chatbot-iframe/Ow6RgaAkkBqt6viAupxxm";
 
-/* Per-AI config: password + url */
-const AI_CONFIG = {
-  bapro:      { pass: "spv123",    url: "https://www.chatbase.co/chatbot-iframe/Ow6RgaAkkBqt6viAupxxm" }, // <-- isi url Chatbase masing-masing
-  cetak:      { pass: "spv123",    url: "https://www.chatbase.co/chatbot-iframe/xC4UNODh6Z_N6c5NrdqnJ" },
-  finishing:  { pass: "spv123",    url: "https://www.chatbase.co/chatbot-iframe/h8G0LYCfSqbKPrEGZO91-" },
-  lem:        { pass: "spv123",    url: "https://www.chatbase.co/chatbot-iframe/Bg84DJJ43GDzYAbU9o30O" },
-  register:   { pass: "spv123",    url: "https://www.chatbase.co/chatbot-iframe/HOzp5h4l66C3iJbun33x-" }
-};
-
-let selectedAI = null;
-
-/* ===================== DOM READY ===================== */
 document.addEventListener("DOMContentLoaded", () => {
-  /* ---- original element selections ---- */
   const wrapper = document.querySelector(".chatbot-wrapper");
   const eyeL = document.querySelector(".eye-left");
   const eyeR = document.querySelector(".eye-right");
   const mouth = document.querySelector(".mouth");
   const panel = document.getElementById("speechPanel");
-
-  /* ---- existing password modal (reused) ---- */
-  const modalPW = document.getElementById("pwModal");
+  const modal = document.getElementById("pwModal");
   const pwInput = document.getElementById("pwInput");
   const pwOk = document.getElementById("pwOk");
   const pwCancel = document.getElementById("pwCancel");
-  const pwTitle = document.getElementById("pwTitle");
-
-  /* ---- new menu modal ---- */
-  const menuModal = document.getElementById("menuModal");
-  const menuButtons = document.querySelectorAll(".menu-ai-btn");
-  const menuCloseBtn = document.getElementById("menuCloseBtn");
 
   /* ====================== EKSPRESI MATA & MULUT ====================== */
   function resetEyes() {
@@ -4559,9 +4224,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const moods = [];
+
   function addMood(fn) { moods.push(fn); }
 
-  // (many moods added — keep same as original)
+  // ==== 40+ ekspresi ====
   addMood(function expNormal() { resetEyes(); mouth.style.cssText="width:22px;height:6px;border-radius:20px;background:#00cfff;transform:translateY(0) scale(1);"; });
   addMood(function expWink() { eyeL.style.cssText="width:18px;height:18px;border-radius:50%;transform:translateY(1px);"; eyeR.style.cssText="width:18px;height:5px;border-radius:4px;transform:translateY(2px);"; mouth.style.cssText="width:26px;height:10px;border-radius:20px;background:#00cfff;transform:translateY(-2px) scale(1.02);"; });
   addMood(function expHappy() { eyeL.style.cssText=eyeR.style.cssText="width:18px;height:14px;border-radius:50% 50% 70% 70%;transform:translateY(-1px);"; mouth.style.cssText="width:28px;height:16px;border-radius:0 0 20px 20px;background:#00cfff;transform:translateY(-3px) scale(1.04);"; });
@@ -4602,7 +4268,7 @@ document.addEventListener("DOMContentLoaded", () => {
   addMood(function expExcited4() { eyeL.style.cssText=eyeR.style.cssText="width:20px;height:20px;border-radius:50%;transform:translateY(-1px);"; mouth.style.cssText="width:30px;height:12px;border-radius:20px;background:#00cfff;transform:translateY(-2px) scale(1.08);"; });
   addMood(function expJoyful() { eyeL.style.cssText=eyeR.style.cssText="width:18px;height:18px;border-radius:50%;transform:translateY(-1px);"; mouth.style.cssText="width:28px;height:14px;border-radius:20px;background:#00cfff;transform:translateY(-2px) scale(1.05);"; });
 
-  /* ====================== MOOD SHUFFLE ====================== */
+  /* ====================== MOOD SHUFFLE TANPA ULANG ====================== */
   let moodTimer = null;
   let moodQueue = [];
 
@@ -4636,17 +4302,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ====================== SPEECH PANEL ====================== */
   const messages = [
+    "CEK DATA QC APA 🔍",
     "CEK DATA BAPRO 📝",
     "CEK DATA CETAK 📝",
     "CEK DATA FINISHING 📝",
     "CEK DATA LEM 📝",
-    "CEK DATA REGISTER 📝",
+    "TOLONG REGISTER ✅",
     "MEETING DICATAT 🗂",
-    "CARI APA ❓",
+    " CARI APA ❓",
     "HALO 👋","AKU SIAP BANTU 🔍","KLIK AKU 👉","AI MODE ON ⚡","PERLU BANTUAN ❓",
-    "CARI DATA APA ❓","SEMANGAT! 💪","AYO IMPROVEMENT 🧠","BUTUH PETUNJUK 💡",
+    "CARI DATA APA 📝","SEMANGAT! 💪","AYO IMPROVEMENT 🧠","HEI, BUTUH PETUNJUK ❓",
     "STANDBY NICH 👀","BUTUH BANTUAN?",
-    "SELALU UPDATE DATA 💡","CEK KEMBALI SEBELUM INPUT ✅","CEK HASIL INPUTAN 🗒","AI SIAP BANTU ⏱"
+    "SELALU UPDATE DATA 💡","CEK KEMBALI SEBELUM INPUT ✅","CEK HASIL INPUTAN 🗒","SANTAI DULU 😎","AI SIAP BANTU ⏱"
   ];
 
   let speechTimer = null;
@@ -4664,81 +4331,32 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   setTimeout(showSpeech, 600);
 
-  /* ====================== MENU MODAL HANDLERS ====================== */
-  function openMenuModal(){
-    menuModal.classList.add("open");
-    menuModal.setAttribute("aria-hidden","false");
-    menuModal.style.display = "grid";
-  }
-  function closeMenuModal(){
-    menuModal.classList.remove("open");
-    menuModal.setAttribute("aria-hidden","true");
-    menuModal.style.display = "none";
-  }
-
-  menuButtons.forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const ai = btn.dataset.ai;
-      selectedAI = ai;
-      closeMenuModal();
-      openPasswordModalForAI(ai);
-    });
-  });
-
-  menuCloseBtn.addEventListener("click", closeMenuModal);
-
-  /* ====================== PASSWORD MODAL (per-AI) ====================== */
-  function openPasswordModalForAI(ai){
-    pwTitle.innerText = "Password " + ai.toUpperCase();
-    pwInput.value = "";
-    modalPW.classList.add("open");
-    modalPW.setAttribute("aria-hidden","false");
-    setTimeout(()=> pwInput.focus(), 120);
-  }
-  function closePWModal(){
-    modalPW.classList.remove("open");
-    modalPW.setAttribute("aria-hidden","true");
+  /* ====================== PASSWORD MODAL ====================== */
+  function openModal(){ modal.setAttribute("aria-hidden","false"); modal.classList.add("open"); pwInput.value=""; setTimeout(()=>pwInput.focus(),120);}
+  function closeModal(){ modal.setAttribute("aria-hidden","true"); modal.classList.remove("open");}
+  function tryOpenChat(){ 
+    const pass = pwInput.value; 
+    if(pass === SPV_PASSWORD){ 
+      closeModal(); 
+      window.open(CHAT_URL,"_blank");
+    } else { 
+      pwInput.value=""; 
+      pwInput.focus(); 
+      alert("Password salah! Akses ditolak."); 
+    } 
   }
 
-  function validateAndOpenAI(){
-    if(!selectedAI){ alert("AI belum dipilih."); return; }
-    const cfg = AI_CONFIG[selectedAI];
-    if(pwInput.value === cfg.pass || pwInput.value === SPV_PASSWORD){
-      closePWModal();
-      // jika url kosong beri peringatan, else buka
-      if(cfg.url && cfg.url.trim() !== ""){
-        window.open(cfg.url, "_blank");
-      } else {
-        alert("Link AI untuk '" + selectedAI + "' belum diisi.");
-      }
-    } else {
-      alert("Password salah! Akses ditolak.");
-      pwInput.value = "";
-      pwInput.focus();
-    }
-  }
-
-  pwOk.addEventListener("click", validateAndOpenAI);
-  pwCancel.addEventListener("click", closePWModal);
-  pwInput.addEventListener("keydown", (e)=>{ if(e.key === "Enter") validateAndOpenAI(); if(e.key === "Escape") closePWModal(); });
-
-  /* tutup modal saat klik diluar dialog */
-  menuModal.addEventListener("click", (e)=>{ if(e.target === menuModal) closeMenuModal(); });
-  modalPW.addEventListener("click", (e)=>{ if(e.target === modalPW) closePWModal(); });
-
-  /* ====================== INTEGRATE CLICK ROBOT -> OPEN MENU ====================== */
-  function activateWrapper(){
-    openMenuModal(); // opsi A: buka menu pilihan AI
-  }
-
-  wrapper.addEventListener("click", activateWrapper);
-  wrapper.addEventListener("keydown", (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); activateWrapper(); }});
-
-  /* ====================== CLEANUP ON UNLOAD ====================== */
-  window.addEventListener("unload", ()=>{ if(moodTimer) clearInterval(moodTimer); if(speechTimer) clearTimeout(speechTimer); });
+  function activateWrapper(){openModal();}
+  wrapper.addEventListener("click",activateWrapper);
+  wrapper.addEventListener("keydown",(e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); activateWrapper(); }});
+  pwOk.addEventListener("click",tryOpenChat);
+  pwCancel.addEventListener("click",closeModal);
+  pwInput.addEventListener("keydown",(e)=>{ if(e.key==="Enter") tryOpenChat(); if(e.key==="Escape") closeModal(); });
+  modal.addEventListener("click",(e)=>{ if(e.target===modal) closeModal(); });
+  document.addEventListener("keydown",(e)=>{ if(e.key==="Escape" && modal.classList.contains("open")) closeModal(); });
+  window.addEventListener("unload",()=>{ if(moodTimer) clearInterval(moodTimer); if(speechTimer) clearTimeout(speechTimer); });
 });
 </script>
-
 
 
 
@@ -4958,7 +4576,20 @@ document.addEventListener("DOMContentLoaded", () => {
 @media (max-width:767px) and (min-width:481px){.chatbot-wrapper{transform:scale(0.85) !important;transform-origin:bottom right !important;}.speech-panel{max-width:fit-content;font-size:18px;right:120px;padding:14px 18px;border-width:4px;}}
 @media (max-width:480px){.chatbot-wrapper{transform:scale(0.45) !important;transform-origin:bottom right !important;}.speech-panel{top:-12px !important;right:calc(100% + 18px) !important;transform:none !important;max-width:fit-content !important;padding:12px 14px !important;}.speech-panel::before{right:-38px !important;top:22px !important;border-left-width:38px !important;border-top-width:12px !important;border-bottom-width:12px !important;transform:skewY(10deg) !important;}.speech-panel::after{right:-33px !important;top:24px !important;border-left-width:33px !important;border-top-width:10px !important;border-bottom-width:10px !important;transform:skewY(10deg) !important;}}
 
-
+/* PASSWORD MODAL */
+.pw-modal{position:fixed;inset:0;display:grid;place-items:center;background:rgba(0,0,0,0.45);z-index:99999;opacity:0;pointer-events:none;transition:opacity .18s ease-in-out;}
+.pw-modal.open{opacity:1;pointer-events:auto;}
+.pw-modal__dialog{width:320px;max-width:calc(100%-32px);background:#fff;border-radius:12px;padding:16px 18px;box-shadow:0 10px 30px rgba(0,0,0,0.3);text-align:center;}
+.pw-modal__dialog h3{margin:0 0 10px;font-size:16px;color:#111;}
+.pw-modal__dialog input{width:100%;padding:10px 12px;border-radius:8px;border:1px solid #ddd;margin-bottom:12px;font-size:14px;outline:none;}
+.pw-modal__dialog input:focus{box-shadow:0 0 0 4px rgba(0,207,255,0.08);border-color:#00cfff;}
+.pw-actions{display:flex;gap:8px;justify-content:center;}
+.pw-actions button{padding:8px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:700;}
+#pwOk{background:#00cfff;color:#000;}
+#pwCancel{background:#f2f2f2;color:#111;}
+.pw-note{margin-top:8px;font-size:12px;color:#666;}
+.pw-modal[aria-hidden="true"]{visibility:hidden;}
+.pw-modal[aria-hidden="false"]{visibility:visible;}
 </style>
 
 
@@ -6047,10 +5678,6 @@ function addBaproItem() {
     return alert('Nama Order, CSO, Jenis Kertas, Tebal Kertas, Nama Tinta, dan Proses wajib diisi!');
   }
 
-  if (!qc) {
-    return alert('Nama QC wajib diisi!');
-  }
-
   const konfirmasi = confirm(`Yakin ingin menambah data baru?\n\nNama: ${nama}\nCSO: ${cso}`);
   if (!konfirmasi) return;
 
@@ -6376,7 +6003,6 @@ function renderDashboardBaproCompact(query = "", safeMode = false) {
     card.innerHTML = `
       <strong>${highlightHtmlSafe(item.nama || '', query)}</strong><br>
       <strong>QC: ${highlightHtmlSafe(item.qc || '', query)}</strong><br>
-      <strong>CSO: ${highlightHtmlSafe(item.cso || '', query)}</strong><br>
       <span>📅 ${highlightHtmlSafe(tanggal, query)}</span><br>
       <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
     `;
@@ -8630,3 +8256,5 @@ function goHome() {
 
 </body>
 </html>
+
+
