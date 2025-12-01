@@ -4605,18 +4605,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ====================== SPEECH PANEL ====================== */
   const messages = [
-    "CEK DATA QC APA 🔍",
     "CEK DATA BAPRO 📝",
     "CEK DATA CETAK 📝",
     "CEK DATA FINISHING 📝",
     "CEK DATA LEM 📝",
-    "TOLONG REGISTER ✅",
+    "CEK DATA REGISTER 📝",
     "MEETING DICATAT 🗂",
-    " CARI APA ❓",
+    "CARI APA ❓",
     "HALO 👋","AKU SIAP BANTU 🔍","KLIK AKU 👉","AI MODE ON ⚡","PERLU BANTUAN ❓",
-    "CARI DATA APA 📝","SEMANGAT! 💪","AYO IMPROVEMENT 🧠","HEI, BUTUH PETUNJUK ❓",
+    "CARI DATA APA ❓","SEMANGAT! 💪","AYO IMPROVEMENT 🧠","BUTUH PETUNJUK 💡",
     "STANDBY NICH 👀","BUTUH BANTUAN?",
-    "SELALU UPDATE DATA 💡","CEK KEMBALI SEBELUM INPUT ✅","CEK HASIL INPUTAN 🗒","SANTAI DULU 😎","AI SIAP BANTU ⏱"
+    "SELALU UPDATE DATA 💡","CEK KEMBALI SEBELUM INPUT ✅","CEK HASIL INPUTAN 🗒","AI SIAP BANTU ⏱"
   ];
 
   let speechTimer = null;
@@ -6017,6 +6016,10 @@ function addBaproItem() {
     return alert('Nama Order, CSO, Jenis Kertas, Tebal Kertas, Nama Tinta, dan Proses wajib diisi!');
   }
 
+  if (!qc) {
+    return alert('Nama QC wajib diisi!');
+  }
+
   const konfirmasi = confirm(`Yakin ingin menambah data baru?\n\nNama: ${nama}\nCSO: ${cso}`);
   if (!konfirmasi) return;
 
@@ -6342,6 +6345,7 @@ function renderDashboardBaproCompact(query = "", safeMode = false) {
     card.innerHTML = `
       <strong>${highlightHtmlSafe(item.nama || '', query)}</strong><br>
       <strong>QC: ${highlightHtmlSafe(item.qc || '', query)}</strong><br>
+      <strong>CSO: ${highlightHtmlSafe(item.cso || '', query)}</strong><br>
       <span>📅 ${highlightHtmlSafe(tanggal, query)}</span><br>
       <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
     `;
@@ -6873,6 +6877,7 @@ function renderDashboardPACompact(query="", safeMode=false){
     card.innerHTML=`
       <strong>${highlightHtmlSafe(item.nama||'', query)}</strong><br>
       <strong>QC: ${highlightHtmlSafe(item.qc||'', query)}</strong><br>
+      <strong>Mesin: ${highlightHtmlSafe(item.mesin||'', query)}</strong><br>
       <span>📅 ${highlightHtmlSafe(tanggal, query)}</span><br>
       <span class="${statusClass}">${highlightHtmlSafe(item.update||'', query)}</span>
     `;
@@ -8571,4 +8576,3 @@ function goHome() {
 
 </body>
 </html>
-
