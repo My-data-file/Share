@@ -6848,55 +6848,78 @@ function clearPAForm(){
 
 
 // ====================== DASHBOARD PA (COMPACT + FILTER + HIGHLIGHT) ======================
-function renderDashboardPACompact(query="", safeMode=false){
-  const q=query.toLowerCase().trim();
-  const containerTO=document.getElementById('dashboardPATo');
-  const containerProses=document.getElementById('dashboardPAProses');
-  const containerSelesai=document.getElementById('dashboardPASelesai');
+function renderDashboardPACompact(query = "", safeMode = false) {
+  const q = query.toLowerCase().trim();
 
-  if(!containerProses || !containerSelesai) return;
+  const containerTO = document.getElementById('dashboardPATO');
+  const containerProses = document.getElementById('dashboardPAProses');
+  const containerSelesai = document.getElementById('dashboardPASelesai');
 
-  if(containerTO) containerTO.innerHTML='';
-  containerProses.innerHTML='';
-  containerSelesai.innerHTML='';
+  if (!containerProses || !containerSelesai) return;
 
-  let totalTO=0, totalProses=0, totalSelesai=0;
+  if (containerTO) containerTO.innerHTML = '';
+  containerProses.innerHTML = '';
+  containerSelesai.innerHTML = '';
 
-  paItems.forEach(item=>{
-    const updateVal=(item.update||'').trim().toLowerCase();
-    const tanggal=item.tanggal||'-';
+  let totalTO = 0, totalProses = 0, totalSelesai = 0;
 
-    const card=document.createElement('div');
-    card.className='grid-card';
+  paItems.forEach(item => {
+    const updateVal = (item.update || "").trim().toLowerCase();
+    const tanggal = item.tanggal || "-";
 
-    let statusClass="";
-    if(updateVal==='proses') statusClass="status-proses";
-    else if(updateVal==='selesai') statusClass="status-selesai";
-    else if(updateVal==='to') statusClass="status-to";
+    const card = document.createElement('div');
+    card.className = 'grid-card';
 
-    card.innerHTML=`
-      <strong>${highlightHtmlSafe(item.nama||'', query)}</strong><br>
-      <strong>QC: ${highlightHtmlSafe(item.qc||'', query)}</strong><br>
-      <strong>Mesin: ${highlightHtmlSafe(item.mesin||'', query)}</strong><br>
+    let statusClass = "";
+    if (updateVal === "proses") statusClass = "status-proses";
+    else if (updateVal === "selesai") statusClass = "status-selesai";
+    else if (updateVal === "to") statusClass = "status-to";
+
+    // ===== CARD TEMPLATE DENGAN HIGHLIGHT (ACUAN BAPRO / FINISHING) =====
+    card.innerHTML = `
+      <strong>${highlightHtmlSafe(item.nama || '', query)}</strong><br>
+      <strong>QC: ${highlightHtmlSafe(item.qc || '', query)}</strong><br>
+      <strong>Mesin: ${highlightHtmlSafe(item.mesin || '', query)}</strong><br>
       <span>📅 ${highlightHtmlSafe(tanggal, query)}</span><br>
-      <span class="${statusClass}">${highlightHtmlSafe(item.update||'', query)}</span>
+      <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
     `;
 
-    const cardText=card.textContent.toLowerCase();
-    if(!safeMode && q && !cardText.includes(q)) return;
+    // ===== FILTER seperti Finishing / Bapro =====
+    const cardText = card.textContent.toLowerCase();
+    if (!safeMode && q && !cardText.includes(q)) return;
 
-    if(updateVal==='to'){ if(containerTO) containerTO.appendChild(card); totalTO++; }
-    else if(updateVal==='proses'){ containerProses.appendChild(card); totalProses++; }
-    else if(updateVal==='selesai'){ containerSelesai.appendChild(card); totalSelesai++; }
+    // ===== MASUKKAN KE KATEGORI =====
+    if (updateVal === 'to') {
+      if (containerTO) containerTO.appendChild(card);
+      totalTO++;
+    } else if (updateVal === 'proses') {
+      containerProses.appendChild(card);
+      totalProses++;
+    } else if (updateVal === 'selesai') {
+      containerSelesai.appendChild(card);
+      totalSelesai++;
+    }
 
-    card.addEventListener('click', ()=>showDetailModalPA(item));
+    card.addEventListener('click', () => showDetailModalPA(item));
   });
 
-  document.getElementById('countPA').textContent=paItems.length;
-  document.getElementById('countTOPA').textContent=totalTO;
-  document.getElementById('countProsesPA').textContent=totalProses;
-  document.getElementById('countSelesaiPA').textContent=totalSelesai;
+  // COUNTER
+  document.getElementById('countPA').textContent = paItems.length;
+  document.getElementById('countTOPA').textContent = totalTO;
+  document.getElementById('countProsesPA').textContent = totalProses;
+  document.getElementById('countSelesaiPA').textContent = totalSelesai;
 }
+
+// ====================== FILTER INPUT REAL-TIME PA ======================
+document.addEventListener('DOMContentLoaded', () => {
+  const filterTO = document.getElementById('filterPATO');
+  const filterProses = document.getElementById('filterPAProses');
+  const filterSelesai = document.getElementById('filterPASelesai');
+
+  if (filterTO) filterTO.addEventListener('input', () => renderDashboardPACompact(filterTO.value));
+  if (filterProses) filterProses.addEventListener('input', () => renderDashboardPACompact(filterProses.value));
+  if (filterSelesai) filterSelesai.addEventListener('input', () => renderDashboardPACompact(filterSelesai.value));
+});
 
 // ====================== DETAIL PA (VERSI LENGKAP) ======================
 function showDetailModalPA(item){
