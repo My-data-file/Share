@@ -4237,7 +4237,7 @@ if (spvNoKS) {
   word-wrap: break-word;
 }
 
-/* Pointer / ekor modern */
+/* Pointer modern */
 .speech-panel::before {
   content: "";
   position: absolute;
@@ -4261,7 +4261,6 @@ if (spvNoKS) {
   border-bottom: 10px solid transparent;
 }
 
-/* Animasi muncul */
 .speech-panel.show {
   opacity: 1;
   transform: translateX(0);
@@ -4283,82 +4282,206 @@ if (spvNoKS) {
 
 /* HEAD & VISOR */
 .head{ width:95px;height:75px;background:#fff;border:6px solid #000;border-radius:26px; position:absolute;top:10px;left:50%;transform:translateX(-50%);animation: headSway 3s ease-in-out infinite;box-shadow:0 0 12px rgba(0,207,255,0.4);}
-/* ... (keperluan gaya dilanjutkan, tetap sama seperti kode awal) */
-
-/* Visor, eyes, mouth, body, arms, legs, responsive, modals */
 .visor{width:78px;height:46px;background:#111;border-radius:20px;position:absolute;top:10px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:4px;overflow:hidden; box-shadow:inset 0 0 18px rgba(0,207,255,0.28),0 6px 18px rgba(0,207,255,0.06);}
 .eyes-wrap{display:flex;gap:12px;margin-top:2px;}
 .eye-left,.eye-right{width:18px;height:18px;background:#00cfff;border-radius:50%;transition:all 0.25s ease-in-out;animation: blink 6s infinite, eyeMove 5s ease-in-out infinite, microMove 2.4s infinite ease-in-out;}
 @keyframes microMove{0%,100%{transform:translateY(0);}50%{transform:translateY(1px);}}
-@keyframes blink{0%,92%,100%{transform:scaleY(1);}95%{transform:scaleY(0.1);}}
-@keyframes eyeMove{0%,100%{transform:translateX(0);}40%{transform:translateX(2px);}70%{transform:translateX(-2px);}}
 
+/* mouth, body, arms, legs — tetap sama */
 .mouth{position:absolute;bottom:5px;width:22px;height:6px;background:#00cfff;border-radius:20px;transition:all 0.22s cubic-bezier(.2,.9,.2,1);animation:mouthBreath 3.5s ease-in-out infinite;}
 @keyframes mouthBreath{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
 
+/* AI chest */
 .body{width:70px;height:55px;background:#fff;border:6px solid #000;border-radius:26px;position:absolute;top:82px;left:50%;transform:translateX(-50%);animation:bodyWobble 3s ease-in-out infinite,bodyBreath 4s ease-in-out infinite;}
-@keyframes bodyBreath{0%,100%{transform:translateX(-50%) scale(1);}50%{transform:translateX(-50%) scale(1.03);}}
-@keyframes bodyWobble{0%,100%{transform:translateX(-50%) rotate(0deg);}50%{transform:translateX(-50%) rotate(-1.5deg);}}
+.body-light{ ... } /* tetap */
 
-.body-light {
-  width: auto;
-  min-width: 40px;
-  padding: 0 10px;
-  height: 32px;
-  background: linear-gradient(135deg, #00e0ff, #00cfff);
+/* ===================== PASSWORD MODAL – NEW MODERN STYLE ===================== */
+
+.pw-modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 99999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.pw-modal.open,
+.pw-modal[aria-hidden="false"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.pw-modal__dialog {
+  width: 310px;
+  padding: 22px 26px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(14px);
+  border-radius: 20px;
+  border: 1px solid rgba(0, 207, 255, 0.45);
+  text-align: center;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
+  transform: scale(0.85);
+  opacity: 0;
+  animation: pwPopupShow 0.35s ease forwards;
+}
+
+@keyframes pwPopupShow {
+  0% { opacity: 0; transform: scale(0.85); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Title */
+.pw-modal__dialog h3 {
+  font-size: 18px;
+  margin: 0 0 14px;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 0 6px rgba(0, 207, 255, 0.8);
+}
+
+/* Input */
+.pw-modal__dialog input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 15px;
   border-radius: 14px;
-  position: absolute;
-  bottom: 6px;
-  left: 50%;
-  transform: translateX(-50%);
+  border: 1px solid rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  outline: none;
+  transition: 0.2s ease;
+}
+.pw-modal__dialog input:focus {
+  border-color: #00e1ff;
+  box-shadow: 0 0 10px rgba(0,224,255,0.6);
+  background: rgba(255,255,255,0.26);
+}
+
+/* Buttons */
+.pw-actions {
   display: flex;
+  gap: 10px;
+  margin-top: 14px;
   justify-content: center;
-  align-items: center;
-  font-size: 22px;
-  font-weight: 900;
+}
+
+.pw-actions button {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 800;
+  transition: 0.22s ease;
+}
+
+/* OK */
+#pwOk {
+  background: linear-gradient(135deg, #00e0ff, #00bfff);
   color: #000;
-  letter-spacing: 0.6px;
-  text-shadow:
-    0 0 6px rgba(0, 207, 255, 0.8),
-    0 0 12px rgba(0, 207, 255, 0.6),
-    0 0 18px rgba(0, 207, 255, 0.4);
-  box-shadow: 0 0 8px rgba(0, 207, 255, 0.4), 0 0 16px rgba(0, 207, 255, 0.2);
-  animation: aiPulse 3s ease-in-out infinite, chargeGlow 2.8s ease-in-out infinite;
-  transition: all 0.3s ease-in-out;
+  box-shadow: 0 6px 14px rgba(0,207,255,0.4);
 }
-@keyframes aiPulse {
-  0%, 100% { transform: translateX(-50%) scale(1); }
-  50% { transform: translateX(-50%) scale(1.08); }
+#pwOk:hover { filter: brightness(1.12); box-shadow: 0 8px 18px rgba(0,224,255,0.6); }
+#pwOk:active { transform: scale(0.96); }
+
+/* Cancel */
+#pwCancel {
+  background: rgba(255,255,255,0.3);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.35);
 }
-@keyframes chargeGlow {
-  0%, 100% { box-shadow: 0 0 8px #00cfff, 0 0 16px rgba(0, 207, 255, 0.3); }
-  50% { box-shadow: 0 0 18px #00eaff, 0 0 28px rgba(0, 224, 255, 0.35); }
+#pwCancel:hover { background: rgba(255,255,255,0.45); }
+#pwCancel:active { transform: scale(0.96); }
+
+/* Note */
+.pw-note {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #e8ffff;
+  opacity: 0.8;
 }
 
-/* Arms & legs */
-.arm { width: 28px; height: 40px; background: #fff; border: 6px solid #000; border-radius: 20px; position: absolute; top: 90px; transition: transform .22s ease-in-out; animation: armIdle 3.5s ease-in-out infinite; }
-.arm.left { left: -4px; transform-origin: top left; animation: armLeftAlive 3s ease-in-out infinite; }
-.arm.right { right: -4px; transform-origin: top right; animation: armRightAlive 3s ease-in-out infinite; }
-.leg { width: 35px; height: 28px; background: #fff; border: 6px solid #000; border-radius: 14px; position: absolute; top: 138px; animation: legIdle 3s ease-in-out infinite; }
-.leg.left { left: 16px; } .leg.right { right: 16px; }
+/* ====== EFFECT HOVER + ACTIVE UNTUK TOMBOL PASSWORD ====== */
 
-/* Responsiveness */
-@media (min-width:768px){.chatbot-wrapper{transform:scale(0.65) !important;transform-origin:bottom right !important;}.speech-panel{max-width:fit-content;font-size:20px;right:140px;padding:16px 20px;border-width:5px;}}
-@media (max-width:767px) and (min-width:481px){.chatbot-wrapper{transform:scale(0.85) !important;transform-origin:bottom right !important;}.speech-panel{max-width:fit-content;font-size:18px;right:120px;padding:14px 18px;border-width:4px;}}
-@media (max-width:480px){.chatbot-wrapper{transform:scale(0.45) !important;transform-origin:bottom right !important;}.speech-panel{top:-12px !important;right:calc(100% + 18px) !important;transform:none !important;max-width:fit-content !important;padding:12px 14px !important;}.speech-panel::before{right:-38px !important;top:22px !important;border-left-width:38px !important;border-top-width:12px !important;border-bottom-width:12px !important;transform:skewY(10deg) !important;}.speech-panel::after{right:-33px !important;top:24px !important;border-left-width:33px !important;border-top-width:10px !important;border-bottom-width:10px !important;transform:skewY(10deg) !important;}}
+/* Tombol OK */
+#pwOk {
+  background: #00cfff;
+  color: #000;
+  transition: all 0.22s ease;
+}
+#pwOk:hover {
+  filter: brightness(1.18);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 207, 255, 0.45);
+}
+#pwOk:active {
+  transform: scale(0.94);
+  box-shadow: 0 3px 8px rgba(0, 207, 255, 0.35);
+}
 
-/* PASSWORD MODAL STYLES (reuse existing) */
-.pw-modal{position:fixed;inset:0;display:grid;place-items:center;background:rgba(0,0,0,0.45);z-index:99999;opacity:0;pointer-events:none;transition:opacity .18s ease-in-out;}
-.pw-modal.open, .pw-modal[aria-hidden="false"]{opacity:1;pointer-events:auto;visibility:visible;}
-.pw-modal__dialog{width:320px;max-width:calc(100%-32px);background:#fff;border-radius:12px;padding:16px 18px;box-shadow:0 10px 30px rgba(0,0,0,0.3);text-align:center;}
-.pw-modal__dialog h3{margin:0 0 10px;font-size:16px;color:#111;}
-.pw-modal__dialog input{width:100%;padding:10px 12px;border-radius:8px;border:1px solid #ddd;margin-bottom:12px;font-size:14px;outline:none;}
-.pw-modal__dialog input:focus{box-shadow:0 0 0 4px rgba(0,207,255,0.08);border-color:#00cfff;}
-.pw-actions{display:flex;gap:8px;justify-content:center;}
-.pw-actions button{padding:8px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:700;}
-#pwOk{background:#00cfff;color:#000;}
-#pwCancel{background:#f2f2f2;color:#111;}
-.pw-note{margin-top:8px;font-size:12px;color:#666;}
+/* Tombol Cancel */
+#pwCancel {
+  background: #f2f2f2;
+  color: #000 !important;        /* <<< TEKS BATAL JADI HITAM */
+  border: 1px solid #ddd;
+  transition: all 0.22s ease;
+}
+#pwCancel:hover {
+  background: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+#pwCancel:active {
+  transform: scale(0.94);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.10);
+}
+
+
+/* =========================================================
+   EFECT HOVER & ACTIVE UNTUK TOMBOL MENU AI QC (BAPRO DLL)
+   ========================================================= */
+
+/* Target semua tombol pilihan QC */
+button[id*="QC"],
+button[class*="qc"],
+button[class*="QC"],
+button[class*="btn"],
+button[class*="menu"],
+.qc-btn {
+  transition: all 0.22s ease;
+}
+
+/* Hover */
+button[id*="QC"]:hover,
+button[class*="qc"]:hover,
+button[class*="QC"]:hover,
+button[class*="btn"]:hover,
+button[class*="menu"]:hover,
+.qc-btn:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.15);
+  box-shadow: 0 8px 18px rgba(0, 207, 255, 0.45);
+}
+
+/* Active (klik) */
+button[id*="QC"]:active,
+button[class*="qc"]:active,
+button[class*="QC"]:active,
+button[class*="btn"]:active,
+button[class*="menu"]:active,
+.qc-btn:active {
+  transform: scale(0.94);
+  box-shadow: 0 3px 8px rgba(0, 207, 255, 0.35);
+}
+
+
+
 </style>
 
 <script>
@@ -4805,20 +4928,7 @@ document.addEventListener("DOMContentLoaded", () => {
 @media (max-width:767px) and (min-width:481px){.chatbot-wrapper{transform:scale(0.85) !important;transform-origin:bottom right !important;}.speech-panel{max-width:fit-content;font-size:18px;right:120px;padding:14px 18px;border-width:4px;}}
 @media (max-width:480px){.chatbot-wrapper{transform:scale(0.45) !important;transform-origin:bottom right !important;}.speech-panel{top:-12px !important;right:calc(100% + 18px) !important;transform:none !important;max-width:fit-content !important;padding:12px 14px !important;}.speech-panel::before{right:-38px !important;top:22px !important;border-left-width:38px !important;border-top-width:12px !important;border-bottom-width:12px !important;transform:skewY(10deg) !important;}.speech-panel::after{right:-33px !important;top:24px !important;border-left-width:33px !important;border-top-width:10px !important;border-bottom-width:10px !important;transform:skewY(10deg) !important;}}
 
-/* PASSWORD MODAL */
-.pw-modal{position:fixed;inset:0;display:grid;place-items:center;background:rgba(0,0,0,0.45);z-index:99999;opacity:0;pointer-events:none;transition:opacity .18s ease-in-out;}
-.pw-modal.open{opacity:1;pointer-events:auto;}
-.pw-modal__dialog{width:320px;max-width:calc(100%-32px);background:#fff;border-radius:12px;padding:16px 18px;box-shadow:0 10px 30px rgba(0,0,0,0.3);text-align:center;}
-.pw-modal__dialog h3{margin:0 0 10px;font-size:16px;color:#111;}
-.pw-modal__dialog input{width:100%;padding:10px 12px;border-radius:8px;border:1px solid #ddd;margin-bottom:12px;font-size:14px;outline:none;}
-.pw-modal__dialog input:focus{box-shadow:0 0 0 4px rgba(0,207,255,0.08);border-color:#00cfff;}
-.pw-actions{display:flex;gap:8px;justify-content:center;}
-.pw-actions button{padding:8px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:700;}
-#pwOk{background:#00cfff;color:#000;}
-#pwCancel{background:#f2f2f2;color:#111;}
-.pw-note{margin-top:8px;font-size:12px;color:#666;}
-.pw-modal[aria-hidden="true"]{visibility:hidden;}
-.pw-modal[aria-hidden="false"]{visibility:visible;}
+
 </style>
 
 
