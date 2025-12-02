@@ -530,7 +530,7 @@ select {
     </button>
 
     <div id="headerTitle" style="font-size: 0.9rem; color: #e0f7fa;">
-      System
+      System.
     </div>
   </div>
 
@@ -3383,7 +3383,7 @@ function filterManualList(input, tabId) {
   <div class="foto-modal-content">
     <span class="close-btn" onclick="confirmCloseFotoModal()">&times;</span>
     <canvas id="editorCanvas" style="border:1px solid #ccc;"></canvas>
-    <div id="toolButtons" style="margin-top:8px; display:flex; gap:6px; justify-content:center;">
+    <div id="toolButtons">
       <button onclick="setTool('move', this)">🖐 Move</button>
       <button onclick="setTool('arrow', this)">➡️ Panah</button>
       <button onclick="setTool('rect', this)">⬛ Kotak</button>
@@ -3392,6 +3392,7 @@ function filterManualList(input, tabId) {
     </div>
   </div>
 </div>
+
 
 <style>
 .foto-modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; z-index:9999;}
@@ -3407,8 +3408,12 @@ let currentFileInput = null;
 let canvas = document.getElementById('editorCanvas');
 let ctx = canvas.getContext('2d');
 
-let tool='move', startX=0, startY=0, drawing=false, items=[], selectedItem=null;
-let tempItem=null;
+let tool='move', items=[], selectedItem=null, tempItem=null;
+
+// ====================== Koordinat ======================
+let moveStartX=0, moveStartY=0;
+let drawStartX=0, drawStartY=0;
+let drawing=false;
 
 // ====================== Set Tool ======================
 function setTool(t, btn=null){
@@ -3457,48 +3462,59 @@ function confirmCloseFotoModal(){
 }
 function closeFotoModal(){ document.getElementById('fotoModal').style.display='none'; }
 
-// ====================== Touch / Mouse Events ======================
+// ====================== Pointer Position ======================
 function getPointerPos(e){
   let rect = canvas.getBoundingClientRect();
   let x, y;
-  if(e.touches) { x=e.touches[0].clientX-rect.left; y=e.touches[0].clientY-rect.top; }
-  else { x=e.offsetX; y=e.offsetY; }
+  if(e.touches) { 
+    x=e.touches[0].clientX-rect.left; 
+    y=e.touches[0].clientY-rect.top; 
+  } else { 
+    x=e.offsetX; y=e.offsetY; 
+  }
   return {x,y};
 }
 
+// ====================== Start Drawing/Moving ======================
 function startDraw(e){
   e.preventDefault();
   let pos = getPointerPos(e);
-  startX = pos.x; startY = pos.y;
 
   if(tool==='move'){
+    moveStartX = pos.x; moveStartY = pos.y;
     selectedItem = items.find(item=>{
-      if(item.type==='rect') return pos.x>=item.x-10 && pos.x<=item.x+item.w+10 && pos.y>=item.y-10 && pos.y<=item.y+item.h+10;
-      else if(item.type==='arrow') {
-        let minX=Math.min(item.x,item.x2)-10, maxX=Math.max(item.x,item.x2)+10;
-        let minY=Math.min(item.y,item.y2)-10, maxY=Math.max(item.y,item.y2)+10;
+      if(item.type==='rect') return pos.x>=item.x && pos.x<=item.x+item.w && pos.y>=item.y && pos.y<=item.y+item.h;
+      else if(item.type==='arrow'){
+        const minX = Math.min(item.x,item.x2), maxX=Math.max(item.x,item.x2);
+        const minY = Math.min(item.y,item.y2), maxY=Math.max(item.y,item.y2);
         return pos.x>=minX && pos.x<=maxX && pos.y>=minY && pos.y<=maxY;
       }
       return false;
     });
   } else {
-    drawing = true;
-    tempItem = {type: tool, x:startX, y:startY, x2:startX, y2:startY, w:0, h:0};
+    drawing=true;
+    drawStartX = pos.x; drawStartY = pos.y;
+    tempItem = {type: tool, x: drawStartX, y: drawStartY, x2: drawStartX, y2: drawStartY, w:0, h:0};
   }
 }
+
+// ====================== Move/Draw ======================
 function moveDraw(e){
   e.preventDefault();
   let pos = getPointerPos(e);
+
   if(tool==='move' && selectedItem){
-    const dx=pos.x-startX, dy=pos.y-startY;
-    selectedItem.x+=dx; selectedItem.y+=dy;
-    if(selectedItem.type==='arrow'){ selectedItem.x2+=dx; selectedItem.y2+=dy; }
-    startX = pos.x; startY = pos.y;
+    const dx = pos.x - moveStartX;
+    const dy = pos.y - moveStartY;
+    selectedItem.x += dx;
+    selectedItem.y += dy;
+    if(selectedItem.type==='arrow'){ selectedItem.x2 += dx; selectedItem.y2 += dy; }
+    moveStartX = pos.x; moveStartY = pos.y;
     redraw();
   } else if(drawing && tempItem){
     if(tempItem.type==='rect'){
-      tempItem.w = pos.x-startX;
-      tempItem.h = pos.y-startY;
+      tempItem.w = pos.x - drawStartX;
+      tempItem.h = pos.y - drawStartY;
     } else if(tempItem.type==='arrow'){
       tempItem.x2 = pos.x;
       tempItem.y2 = pos.y;
@@ -3507,10 +3523,17 @@ function moveDraw(e){
     drawTemp();
   }
 }
+
+// ====================== End Drawing ======================
 function endDraw(e){
   e.preventDefault();
   if(tool==='move'){ selectedItem=null; return; }
-  if(drawing && tempItem){ items.push({...tempItem}); tempItem=null; drawing=false; redraw(); }
+  if(drawing && tempItem){
+    items.push({...tempItem});
+    tempItem=null;
+    drawing=false;
+    redraw();
+  }
 }
 
 // ====================== Redraw ======================
@@ -3520,20 +3543,20 @@ function redraw(){
   items.forEach(item=>{
     ctx.strokeStyle='red'; ctx.lineWidth=3; ctx.fillStyle='red';
     if(item.type==='rect') ctx.strokeRect(item.x,item.y,item.w,item.h);
-    else if(item.type==='arrow'){ 
-      ctx.beginPath(); ctx.moveTo(item.x,item.y); ctx.lineTo(item.x2,item.y2); ctx.stroke(); 
+    else if(item.type==='arrow'){
+      ctx.beginPath(); ctx.moveTo(item.x,item.y); ctx.lineTo(item.x2,item.y2); ctx.stroke();
       drawArrowHead(item.x,item.y,item.x2,item.y2);
     }
   });
 }
 
-// ====================== Draw Temp Item ======================
+// ====================== Draw Temporary Item ======================
 function drawTemp(){
   if(!tempItem) return;
   ctx.strokeStyle='red'; ctx.lineWidth=3; ctx.fillStyle='red';
   if(tempItem.type==='rect') ctx.strokeRect(tempItem.x,tempItem.y,tempItem.w,tempItem.h);
-  else if(tempItem.type==='arrow'){ 
-    ctx.beginPath(); ctx.moveTo(tempItem.x,tempItem.y); ctx.lineTo(tempItem.x2,tempItem.y2); ctx.stroke(); 
+  else if(tempItem.type==='arrow'){
+    ctx.beginPath(); ctx.moveTo(tempItem.x,tempItem.y); ctx.lineTo(tempItem.x2,tempItem.y2); ctx.stroke();
     drawArrowHead(tempItem.x,tempItem.y,tempItem.x2,tempItem.y2);
   }
 }
@@ -3547,7 +3570,7 @@ function drawArrowHead(x1,y1,x2,y2){
   ctx.lineTo(x2,y2); ctx.fill();
 }
 
-// ====================== Simpan ======================
+// ====================== Save ======================
 function confirmSaveCanvas(){
   if(confirm("Simpan perubahan pada gambar?")){
     saveCanvas();
@@ -3556,12 +3579,12 @@ function confirmSaveCanvas(){
 function saveCanvas(){
   if(!currentFileInput) return;
   canvas.toBlob(blob=>{
-    const file=new File([blob],currentFileInput.files[0]?.name||'edited.png',{type:blob.type});
-    const dt=new DataTransfer();
+    const file = new File([blob],currentFileInput.files[0]?.name||'edited.png',{type:blob.type});
+    const dt = new DataTransfer();
     dt.items.add(file);
-    currentFileInput.files=dt.files;
+    currentFileInput.files = dt.files;
     closeFotoModal();
-  },'image/png');
+  }, 'image/png');
 }
 
 // ====================== Event Listeners ======================
