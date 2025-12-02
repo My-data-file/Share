@@ -530,7 +530,7 @@ select {
     </button>
 
     <div id="headerTitle" style="font-size: 0.9rem; color: #e0f7fa;">
-      System
+      System.
     </div>
   </div>
 
@@ -3397,7 +3397,7 @@ function filterManualList(input, tabId) {
 .foto-modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; z-index:9999;}
 .foto-modal-content { background:#fff; padding:12px; border-radius:8px; text-align:center; position:relative; max-width:90%; max-height:90%;}
 .close-btn { position:absolute; top:6px; right:10px; font-size:24px; cursor:pointer;}
-#editorCanvas { max-width:100%; max-height:80vh; touch-action: none; }
+#editorCanvas { max-width:100%; max-height:80vh;}
 #toolButtons button { padding:6px 10px; border-radius:6px; border:1px solid #ccc; cursor:pointer; background:#f0f0f0;}
 #toolButtons button.active { background:#00bcd4; color:#fff;}
 </style>
@@ -3406,13 +3406,11 @@ function filterManualList(input, tabId) {
 let currentFileInput = null;
 let canvas = document.getElementById('editorCanvas');
 let ctx = canvas.getContext('2d');
-
-let tool='move', startX=0, startY=0, drawing=false, items=[], selectedItem=null;
-let tempItem=null;
+let tool = 'move', startX=0, startY=0, drawing=false, items=[], selectedItem=null;
 
 // ====================== Set Tool ======================
 function setTool(t, btn=null){
-  tool=t; selectedItem=null; tempItem=null;
+  tool=t; selectedItem=null;
   document.querySelectorAll('#toolButtons button').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
 }
@@ -3422,34 +3420,29 @@ function clearCanvas(){ items=[]; redraw(); }
 
 // ====================== Open Modal ======================
 function openFotoEditor(fileInput){
-  let inputElem = (typeof fileInput==='string') ? document.getElementById(fileInput) : fileInput;
-  if(inputElem.files.length===0){
-    alert("⚠️ Silakan pilih file terlebih dahulu sebelum mengedit!");
-    return;
-  }
-  currentFileInput = inputElem;
+  const input = (typeof fileInput==='string') ? document.getElementById(fileInput) : fileInput;
+  if(input.files.length===0){ alert("⚠️ Silakan pilih file terlebih dahulu!"); return; }
 
+  currentFileInput = input;
   const reader = new FileReader();
-  reader.onload=function(e){
+  reader.onload = function(e){
     let img = new Image();
-    img.onload=function(){
-      const maxW=600;
-      const scale=Math.min(1,maxW/img.width);
-      canvas.width = img.width*scale;
-      canvas.height = img.height*scale;
+    img.onload = function(){
+      canvas.width = img.width>600 ? 600 : img.width;
+      canvas.height = (img.height/img.width)*canvas.width;
       ctx.clearRect(0,0,canvas.width,canvas.height);
       ctx.drawImage(img,0,0,canvas.width,canvas.height);
       canvas.backgroundImage = img;
       items=[];
       setTool('move', document.querySelector('#toolButtons button:first-child'));
     }
-    img.src=e.target.result;
+    img.src = e.target.result;
   }
   reader.readAsDataURL(currentFileInput.files[0]);
   document.getElementById('fotoModal').style.display='flex';
 }
 
-// ====================== Close Modal dengan Konfirmasi ======================
+// ====================== Close Modal ======================
 function confirmCloseFotoModal(){
   if(confirm("Apakah yakin ingin menutup editor? Semua perubahan yang belum disimpan akan hilang.")){
     closeFotoModal();
@@ -3457,61 +3450,67 @@ function confirmCloseFotoModal(){
 }
 function closeFotoModal(){ document.getElementById('fotoModal').style.display='none'; }
 
-// ====================== Touch / Mouse Events ======================
+// ====================== Get Pointer Position (Mouse & Touch) ======================
 function getPointerPos(e){
-  let rect = canvas.getBoundingClientRect();
+  const rect = canvas.getBoundingClientRect();
   let x, y;
-  if(e.touches) { x=e.touches[0].clientX-rect.left; y=e.touches[0].clientY-rect.top; }
-  else { x=e.offsetX; y=e.offsetY; }
-  return {x,y};
+  if(e.touches){
+    x = (e.touches[0].clientX - rect.left) * (canvas.width / rect.width);
+    y = (e.touches[0].clientY - rect.top) * (canvas.height / rect.height);
+  } else {
+    x = (e.offsetX || e.clientX - rect.left) * (canvas.width / rect.width);
+    y = (e.offsetY || e.clientY - rect.top) * (canvas.height / rect.height);
+  }
+  return {x, y};
 }
 
-function startDraw(e){
-  e.preventDefault();
-  let pos = getPointerPos(e);
-  startX = pos.x; startY = pos.y;
-
+// ====================== Pointer Events ======================
+function startPointer(e){ 
+  const pos = getPointerPos(e);
+  startX=pos.x; startY=pos.y;
   if(tool==='move'){
     selectedItem = items.find(item=>{
       if(item.type==='rect') return pos.x>=item.x-10 && pos.x<=item.x+item.w+10 && pos.y>=item.y-10 && pos.y<=item.y+item.h+10;
-      else if(item.type==='arrow') {
-        let minX=Math.min(item.x,item.x2)-10, maxX=Math.max(item.x,item.x2)+10;
-        let minY=Math.min(item.y,item.y2)-10, maxY=Math.max(item.y,item.y2)+10;
+      if(item.type==='arrow'){
+        const minX=Math.min(item.x,item.x2)-10, maxX=Math.max(item.x,item.x2)+10;
+        const minY=Math.min(item.y,item.y2)-10, maxY=Math.max(item.y,item.y2)+10;
         return pos.x>=minX && pos.x<=maxX && pos.y>=minY && pos.y<=maxY;
       }
       return false;
     });
-  } else {
-    drawing = true;
-    tempItem = {type: tool, x:startX, y:startY, x2:startX, y2:startY, w:0, h:0};
-  }
-}
-function moveDraw(e){
+  } else { drawing=true; selectedItem=null; }
   e.preventDefault();
-  let pos = getPointerPos(e);
+}
+function movePointer(e){
   if(tool==='move' && selectedItem){
-    const dx=pos.x-startX, dy=pos.y-startY;
-    selectedItem.x+=dx; selectedItem.y+=dy;
-    if(selectedItem.type==='arrow'){ selectedItem.x2+=dx; selectedItem.y2+=dy; }
+    const pos = getPointerPos(e);
+    const dx = pos.x - startX, dy = pos.y - startY;
+    selectedItem.x += dx; selectedItem.y += dy;
+    if(selectedItem.type==='arrow'){ selectedItem.x2 += dx; selectedItem.y2 += dy; }
     startX = pos.x; startY = pos.y;
     redraw();
-  } else if(drawing && tempItem){
-    if(tempItem.type==='rect'){
-      tempItem.w = pos.x-startX;
-      tempItem.h = pos.y-startY;
-    } else if(tempItem.type==='arrow'){
-      tempItem.x2 = pos.x;
-      tempItem.y2 = pos.y;
-    }
-    redraw();
-    drawTemp();
   }
-}
-function endDraw(e){
   e.preventDefault();
-  if(tool==='move'){ selectedItem=null; return; }
-  if(drawing && tempItem){ items.push({...tempItem}); tempItem=null; drawing=false; redraw(); }
 }
+function endPointer(e){
+  if(tool!=='move' && drawing){
+    const pos = getPointerPos(e);
+    drawing=false;
+    if(tool==='arrow') items.push({type:'arrow', x:startX, y:startY, x2:pos.x, y2:pos.y});
+    if(tool==='rect') items.push({type:'rect', x:startX, y:startY, w:pos.x-startX, h:pos.y-startY});
+    redraw();
+  }
+  selectedItem=null;
+  e.preventDefault();
+}
+
+// ====================== Add Event Listeners ======================
+canvas.addEventListener('mousedown', startPointer);
+canvas.addEventListener('mousemove', movePointer);
+canvas.addEventListener('mouseup', endPointer);
+canvas.addEventListener('touchstart', startPointer, {passive:false});
+canvas.addEventListener('touchmove', movePointer, {passive:false});
+canvas.addEventListener('touchend', endPointer, {passive:false});
 
 // ====================== Redraw ======================
 function redraw(){
@@ -3520,28 +3519,25 @@ function redraw(){
   items.forEach(item=>{
     ctx.strokeStyle='red'; ctx.lineWidth=3; ctx.fillStyle='red';
     if(item.type==='rect') ctx.strokeRect(item.x,item.y,item.w,item.h);
-    else if(item.type==='arrow'){ ctx.beginPath(); ctx.moveTo(item.x,item.y); ctx.lineTo(item.x2,item.y2); ctx.stroke(); drawArrowHead(item.x,item.y,item.x2,item.y2);}
+    else if(item.type==='arrow'){ 
+      ctx.beginPath(); ctx.moveTo(item.x,item.y); ctx.lineTo(item.x2,item.y2); ctx.stroke(); 
+      drawArrowHead(item.x,item.y,item.x2,item.y2);
+    }
   });
 }
 
-// ====================== Draw Temp Item ======================
-function drawTemp(){
-  if(!tempItem) return;
-  ctx.strokeStyle='red'; ctx.lineWidth=3; ctx.fillStyle='red';
-  if(tempItem.type==='rect') ctx.strokeRect(tempItem.x,tempItem.y,tempItem.w,tempItem.h);
-  else if(tempItem.type==='arrow'){ ctx.beginPath(); ctx.moveTo(tempItem.x,tempItem.y); ctx.lineTo(tempItem.x2,tempItem.y2); ctx.stroke(); drawArrowHead(tempItem.x,tempItem.y,tempItem.x2,tempItem.y2);}
-}
-
-// ====================== Arrow Head ======================
+// ====================== Draw Arrow Head ======================
 function drawArrowHead(x1,y1,x2,y2){
   const headlen=15, dx=x2-x1, dy=y2-y1, angle=Math.atan2(dy,dx);
-  ctx.beginPath(); ctx.moveTo(x2,y2);
+  ctx.beginPath();
+  ctx.moveTo(x2,y2);
   ctx.lineTo(x2-headlen*Math.cos(angle-Math.PI/6),y2-headlen*Math.sin(angle-Math.PI/6));
   ctx.lineTo(x2-headlen*Math.cos(angle+Math.PI/6),y2-headlen*Math.sin(angle+Math.PI/6));
-  ctx.lineTo(x2,y2); ctx.fill();
+  ctx.lineTo(x2,y2);
+  ctx.fill();
 }
 
-// ====================== Simpan dengan Konfirmasi ======================
+// ====================== Save Canvas ======================
 function confirmSaveCanvas(){
   if(confirm("Simpan perubahan pada gambar?")){
     saveCanvas();
@@ -3550,23 +3546,13 @@ function confirmSaveCanvas(){
 function saveCanvas(){
   if(!currentFileInput) return;
   canvas.toBlob(blob=>{
-    const file=new File([blob],currentFileInput.files[0]?.name||'edited.png',{type:blob.type});
-    const dt=new DataTransfer();
+    const file = new File([blob], currentFileInput.files[0]?.name || 'edited.png', {type:blob.type});
+    const dt = new DataTransfer();
     dt.items.add(file);
-    currentFileInput.files=dt.files;
+    currentFileInput.files = dt.files;
     closeFotoModal();
-  },'image/png');
+  }, 'image/png');
 }
-
-// ====================== Event Listeners ======================
-canvas.addEventListener('mousedown', startDraw);
-canvas.addEventListener('mousemove', moveDraw);
-canvas.addEventListener('mouseup', endDraw);
-canvas.addEventListener('mouseleave', endDraw);
-
-canvas.addEventListener('touchstart', startDraw);
-canvas.addEventListener('touchmove', moveDraw);
-canvas.addEventListener('touchend', endDraw);
 </script>
 
 
