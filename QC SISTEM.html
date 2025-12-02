@@ -3408,6 +3408,7 @@ let currentFileInput = null;
 let canvas = document.getElementById('editorCanvas');
 let ctx = canvas.getContext('2d');
 let tool='move', startX=0, startY=0, drawing=false, items=[], selectedItem=null;
+let imgOriginal = null; // menyimpan ukuran asli gambar
 
 // ====================== Set Tool ======================
 function setTool(t, btn=null){
@@ -3419,9 +3420,20 @@ function setTool(t, btn=null){
 // ====================== Clear ======================
 function clearCanvas(){ items=[]; redraw(); }
 
+// ====================== Resize Canvas Responsive ======================
+function resizeCanvasResponsive(){
+  if(!imgOriginal) return;
+  const modal = document.querySelector('.foto-modal-content');
+  const maxW = modal.clientWidth - 24; // padding
+  const maxH = modal.clientHeight - 80; // space for buttons
+  const scale = Math.min(maxW / imgOriginal.width, maxH / imgOriginal.height, 1);
+  canvas.width = imgOriginal.width * scale;
+  canvas.height = imgOriginal.height * scale;
+  redraw();
+}
+
 // ====================== Open Modal ======================
 function openFotoEditor(fileInput){
-  // cek file sudah dipilih
   if((typeof fileInput==='string'? document.getElementById(fileInput): fileInput).files.length===0){
     alert("⚠️ Silakan pilih file terlebih dahulu sebelum mengedit!");
     return;
@@ -3433,15 +3445,12 @@ function openFotoEditor(fileInput){
   reader.onload=function(e){
     let img=new Image();
     img.onload=function(){
-      const maxW=600;
-      const scale=Math.min(1,maxW/img.width);
-      canvas.width=img.width*scale;
-      canvas.height=img.height*scale;
+      imgOriginal = {width: img.width, height: img.height};
+      resizeCanvasResponsive();
       ctx.clearRect(0,0,canvas.width,canvas.height);
-      ctx.drawImage(img,0,0,canvas.width,canvas.height);
-      canvas.backgroundImage=img;
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      canvas.backgroundImage = img;
       items=[];
-      // set tombol default aktif
       setTool('move', document.querySelector('#toolButtons button:first-child'));
     }
     img.src=e.target.result;
@@ -3450,7 +3459,7 @@ function openFotoEditor(fileInput){
   document.getElementById('fotoModal').style.display='flex';
 }
 
-// ====================== Close Modal dengan Konfirmasi ======================
+// ====================== Close Modal ======================
 function confirmCloseFotoModal(){
   if(confirm("Apakah yakin ingin menutup editor? Semua perubahan yang belum disimpan akan hilang.")){
     closeFotoModal();
@@ -3458,38 +3467,61 @@ function confirmCloseFotoModal(){
 }
 function closeFotoModal(){ document.getElementById('fotoModal').style.display='none'; }
 
-// ====================== Mouse Events ======================
-canvas.onmousedown=function(e){
-  startX=e.offsetX; startY=e.offsetY;
+// ====================== Mouse & Touch Events ======================
+function getEventOffset(e){
+  const rect = canvas.getBoundingClientRect();
+  if(e.touches) { 
+    const t = e.touches[0];
+    return {offsetX: t.clientX - rect.left, offsetY: t.clientY - rect.top};
+  }
+  return {offsetX: e.offsetX, offsetY: e.offsetY};
+}
+
+function startDraw(e){
+  const pos = getEventOffset(e);
+  startX = pos.offsetX; startY = pos.offsetY;
   if(tool==='move'){
-    selectedItem=items.find(item=>{
-      if(item.type==='rect') return e.offsetX>=item.x-10 && e.offsetX<=item.x+item.w+10 && e.offsetY>=item.y-10 && e.offsetY<=item.y+item.h+10;
+    selectedItem = items.find(item=>{
+      if(item.type==='rect') return startX>=item.x-10 && startX<=item.x+item.w+10 && startY>=item.y-10 && startY<=item.y+item.h+10;
       else if(item.type==='arrow'){
         const minX=Math.min(item.x,item.x2)-10, maxX=Math.max(item.x,item.x2)+10;
         const minY=Math.min(item.y,item.y2)-10, maxY=Math.max(item.y,item.y2)+10;
-        return e.offsetX>=minX && e.offsetX<=maxX && e.offsetY>=minY && e.offsetY<=maxY;
+        return startX>=minX && startX<=maxX && startY>=minY && startY<=maxY;
       }
       return false;
     });
-  } else drawing=true;
+  } else drawing = true;
 }
-canvas.onmouseup=function(e){
-  if(tool==='move'){ selectedItem=null; return; }
-  if(!drawing) return; drawing=false;
-  const endX=e.offsetX,endY=e.offsetY;
-  if(tool==='arrow') items.push({type:'arrow', x:startX, y:startY, x2:endX, y2:endY});
-  else if(tool==='rect') items.push({type:'rect', x:startX, y:startY, w:endX-startX, h:endY-startY});
-  redraw();
-}
-canvas.onmousemove=function(e){
+
+function moveDraw(e){
+  const pos = getEventOffset(e);
   if(tool==='move' && selectedItem){
-    const dx=e.offsetX-startX, dy=e.offsetY-startY;
-    selectedItem.x+=dx; selectedItem.y+=dy;
+    const dx = pos.offsetX - startX, dy = pos.offsetY - startY;
+    selectedItem.x += dx; selectedItem.y += dy;
     if(selectedItem.type==='arrow'){ selectedItem.x2+=dx; selectedItem.y2+=dy; }
-    startX=e.offsetX; startY=e.offsetY;
+    startX = pos.offsetX; startY = pos.offsetY;
     redraw();
   }
 }
+
+function endDraw(e){
+  if(tool==='move'){ selectedItem=null; return; }
+  if(!drawing) return; drawing=false;
+  const pos = getEventOffset(e);
+  if(tool==='arrow') items.push({type:'arrow', x:startX, y:startY, x2:pos.offsetX, y2:pos.offsetY});
+  else if(tool==='rect') items.push({type:'rect', x:startX, y:startY, w:pos.offsetX-startX, h:pos.offsetY-startY});
+  redraw();
+}
+
+// Mouse events
+canvas.onmousedown = startDraw;
+canvas.onmousemove = moveDraw;
+canvas.onmouseup = endDraw;
+
+// Touch events
+canvas.ontouchstart = function(e){ e.preventDefault(); startDraw(e); };
+canvas.ontouchmove = function(e){ e.preventDefault(); moveDraw(e); };
+canvas.ontouchend = function(e){ e.preventDefault(); endDraw(e); };
 
 // ====================== Redraw ======================
 function redraw(){
@@ -3511,7 +3543,7 @@ function drawArrowHead(x1,y1,x2,y2){
   ctx.lineTo(x2,y2); ctx.fill();
 }
 
-// ====================== Simpan dengan Konfirmasi ======================
+// ====================== Simpan ======================
 function confirmSaveCanvas(){
   if(confirm("Simpan perubahan pada gambar?")){
     saveCanvas();
@@ -3527,7 +3559,11 @@ function saveCanvas(){
     closeFotoModal();
   },'image/png');
 }
+
+// ====================== Resize listener ======================
+window.addEventListener('resize', resizeCanvasResponsive);
 </script>
+
 
 
 
