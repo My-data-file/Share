@@ -3381,23 +3381,18 @@ function filterManualList(input, tabId) {
 <!-- ======================== Modal Editor Gambar ======================== -->
 <div id="fotoModal" class="foto-modal" style="display:none;">
   <div class="foto-modal-content">
+    <span class="close-btn" onclick="confirmCloseFotoModal()">&times;</span>
 
-    <!-- =================== TOOLBAR ATAS =================== -->
-    <div id="toolButtons" class="tool-buttons top">
+    <canvas id="editorCanvas" class="canvas-area"></canvas>
+
+    <!-- TOOL BUTTONS -->
+    <div id="toolButtons" class="tool-buttons">
       <button onclick="setTool('move', this)">🖐 Move</button>
       <button onclick="setTool('arrow', this)">➡️ Panah</button>
       <button onclick="setTool('rect', this)">⬛ Kotak</button>
-
-      <button onclick="clearCanvas()" class="full">🧹 Clear</button>
-      <button onclick="confirmSaveCanvas()" class="full">💾 Simpan</button>
-
-      <!-- CLOSE BUTTON -->
-      <button class="close-under full" onclick="confirmCloseFotoModal()">✖ Tutup</button>
+      <button onclick="clearCanvas()">🧹 Clear</button>
+      <button class="full" onclick="confirmSaveCanvas()">💾 Simpan</button>
     </div>
-
-    <!-- =================== CANVAS =================== -->
-    <canvas id="editorCanvas" class="canvas-area"></canvas>
-
   </div>
 </div>
 
@@ -3428,6 +3423,13 @@ function filterManualList(input, tabId) {
   gap:10px;
 }
 
+.close-btn {
+  position:absolute;
+  top:8px; right:12px;
+  font-size:26px;
+  cursor:pointer;
+}
+
 /* ===================== Canvas ===================== */
 .canvas-area {
   width:100%;
@@ -3437,26 +3439,24 @@ function filterManualList(input, tabId) {
   border-radius:6px;
 }
 
-/* ===================== Buttons ===================== */
+/* ===================== Buttons FLEX FIX ===================== */
 .tool-buttons {
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap:8px;
+  display:flex;
+  flex-wrap:wrap;
   width:100%;
-}
-
-.tool-buttons.top {
-  margin-bottom: 6px;
+  gap:8px;
+  justify-content:space-between;
 }
 
 .tool-buttons button {
+  flex:1 1 calc(33.33% - 8px);
   padding:10px;
   border:none;
   border-radius:8px;
   background:#f2f2f2;
   font-size:15px;
   cursor:pointer;
-  width:100%;
+  text-align:center;
 }
 
 .tool-buttons button.active {
@@ -3464,46 +3464,41 @@ function filterManualList(input, tabId) {
   color:#fff;
 }
 
-/* Full width button (Clear, Simpan, Tutup) */
+/* Tombol Simpan full width */
 .tool-buttons .full {
-  grid-column: span 3;
-}
-
-.close-under {
-  background:#ff5c5c !important;
-  color:#fff;
-  font-weight:bold;
+  flex: 1 1 100%;
 }
 
 /* ===================== Mobile optimization ===================== */
 @media (max-width:420px){
-  .tool-buttons {
-    grid-template-columns: repeat(2, 1fr);
+  .foto-modal-content {
+    padding:8px;
   }
 
-  /* Full width tetap 2 kolom di HP */
-  .tool-buttons .full {
-    grid-column: span 2;
+  .tool-buttons {
+    gap:6px;
   }
 
   .tool-buttons button {
+    flex:1 1 calc(50% - 6px); /* 2 kolom di HP */
     font-size:14px;
     padding:9px;
   }
+
+  .tool-buttons .full {
+    flex:1 1 100%;
+  }
 }
 
-/* HP Kecil (≤ 340px) — Supaya tidak tumpang tindih */
-@media (max-width:340px){
-  .tool-buttons {
-    grid-template-columns: 1fr 1fr;
-  }
-
+/* HP sangat kecil (≤360px) */
+@media (max-width:360px){
   .tool-buttons button {
     font-size:13px;
     padding:8px;
   }
 }
 </style>
+
 
 
 
@@ -9170,4 +9165,5 @@ function goHome() {
 
 </body>
 </html>
+
 
