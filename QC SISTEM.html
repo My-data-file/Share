@@ -6589,7 +6589,10 @@ function renderGridPA(query = "") {
         <span>No KS: ${highlightHtmlSafe(item.noKS || '', q)}</span><br>
         <span>Order: ${highlightHtmlSafe(item.order || '', q)}</span><br>
         <span>Bagus: ${highlightHtmlSafe(item.bagus || '', q)}</span><br>
+        <span>Sortir: ${highlightHtmlSafe(item.sortir || '', q)}</span><br>
+        <span>Problem: ${highlightHtmlSafe(item.problem || '', q)}</span><br>
         <span>QC: ${highlightHtmlSafe(item.qc || '', q)}</span><br>
+        <span>Mesin: ${highlightHtmlSafe(item.mesin || '', q)}</span><br>
         <span><b>Keterangan:</b></span><br>
         <div class="ket-list">
           ${ketsHtml}
@@ -6697,8 +6700,14 @@ function callPA(index){
   document.getElementById('paNoKS').value = item.noKS || '';
   document.getElementById('paOrder').value = item.order || '';
   document.getElementById('paBagus').value = item.bagus || '';
+  document.getElementById('paSortir').value = item.sortir || '';
+  document.getElementById('paProblem').value = item.problem || '';
   document.getElementById('paQC').value = item.qc || '';
+  document.getElementById('paMesin').value = item.mesin || '';
   document.getElementById('paUpdate').value = item.update || '';
+
+
+
 
   // ===== Pecah keterangan ke input 1–5 =====
   const ketMap = {1:"",2:"",3:"",4:"",5:""};
@@ -6771,10 +6780,21 @@ function editPAInline(index){
       <input type="text" class="edit-inline" value="${escapeHtml(item.noKS||'')}" placeholder="No KS">
       <input type="number" class="edit-inline" value="${escapeHtml(item.order||'')}" placeholder="Order">
       <input type="number" class="edit-inline" value="${escapeHtml(item.bagus||'')}" placeholder="Bagus">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.sortir||'')}" placeholder="Sortir">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.problem||'')}" placeholder="Problem">
 
       <select class="edit-inline">
         <option value="Suci" ${item.qc==='Suci'? 'selected':''}>Suci</option>
         <option value="Anjani" ${item.qc==='Anjani'? 'selected':''}>Anjani</option>
+      </select>
+
+      <select class="edit-inline">
+        <option value="KM 640" ${item.mesin==='KM 640'? 'selected':''}>KM 640</option>
+        <option value="KM 644" ${item.mesin==='KM 644'? 'selected':''}>KM 644</option>
+        <option value="KM 620" ${item.mesin==='KM 620'? 'selected':''}>KM 620</option>
+        <option value="MT 430" ${item.mesin==='MT 430'? 'selected':''}>MT 430</option>
+        <option value="KM 640 GL" ${item.mesin==='KM 640 GL'? 'selected':''}>KM 640 GL</option>
+        <option value="RL 140" ${item.mesin==='RL 140'? 'selected':''}>RL 140</option>
       </select>
 
       <select class="edit-inline">
@@ -6812,15 +6832,20 @@ async function savePAInline(index, btn){
   if(btnCancel) btnCancel.style.display='none';
 
   const inputs = card.querySelectorAll('.edit-inline');
-  const updated = {
-    nama: inputs[0].value.trim(),
-    noKS: inputs[1].value.trim(),
-    order: inputs[2].value.trim(),
-    bagus: inputs[3].value.trim(),
-    qc: inputs[4].value,
-    update: inputs[5].value,
-    keterangan: inputs[6].value.trim()
-  };
+const updated = {
+  nama: inputs[0].value.trim(),
+  noKS: inputs[1].value.trim(),
+  order: inputs[2].value.trim(),
+  bagus: inputs[3].value.trim(),
+  sortir: inputs[4].value.trim(),     // ← baru
+  problem: inputs[5].value.trim(),    // ← baru
+  qc: inputs[6].value,
+  mesin: inputs[7].value.trim(),
+  update: inputs[8].value,
+  keterangan: inputs[9].value.trim()
+};
+
+
 
   const orig = paItems[index];
   const identifier = orig.id||orig._row||orig.row||orig.__index;
@@ -8633,4 +8658,3 @@ function goHome() {
 
 </body>
 </html>
-
