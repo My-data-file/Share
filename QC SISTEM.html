@@ -530,7 +530,7 @@ select {
     </button>
 
     <div id="headerTitle" style="font-size: 0.9rem; color: #e0f7fa;">
-      System
+      System v
     </div>
   </div>
 
@@ -7654,6 +7654,187 @@ loadLemItems();
 
 
 <script>
+/* ====================== TAMBAHAN: Marker.js editor untuk INPUT (VERSI A) ====================== */
+/* load markerjs2 secara dinamis (tidak mengganggu jika sudah ada) */
+(function loadMarkerJsOnce(){
+  if (!window.markerjs2Loaded) {
+    const s = document.createElement('script');
+    s.src = "https://unpkg.com/markerjs2/markerjs2.js";
+    s.onload = () => { window.markerjs2Loaded = true; };
+    s.onerror = () => { console.warn("Gagal memuat Marker.js (editor foto)."); };
+    document.head.appendChild(s);
+  } else {
+    window.markerjs2Loaded = true;
+  }
+})();
+
+/* Globals untuk menyimpan hasil edit input */
+let editedFoto = "";   // akan berisi dataURL jika user mengedit spvFoto
+let editedFoto1 = "";  // akan berisi dataURL jika user mengedit spvFoto1
+
+/* helper: open marker editor dari dataURL */
+function openMarkerEditorFromDataUrl(dataUrl) {
+  return new Promise((resolve) => {
+    // tunggu sampai markerjs2 siap
+    const startEditor = () => {
+      try {
+        const img = document.createElement("img");
+        img.src = dataUrl;
+        img.onload = () => {
+          const editor = new markerjs2.MarkerArea(img);
+          editor.addEventListener("render", (ev) => resolve(ev.dataUrl));
+          editor.show();
+        };
+        img.onerror = () => resolve(dataUrl);
+      } catch (e) {
+        console.error("Marker editor error:", e);
+        resolve(dataUrl);
+      }
+    };
+
+    if (window.markerjs2Loaded) startEditor();
+    else {
+      // jika belum, tunggu sedikit sampai script ter-load
+      const t = setInterval(() => {
+        if (window.markerjs2Loaded) {
+          clearInterval(t);
+          startEditor();
+        }
+      }, 150);
+      // timeout fallback
+      setTimeout(() => {
+        if (!window.markerjs2Loaded) {
+          clearInterval(t);
+          resolve(dataUrl);
+        }
+      }, 6000);
+    }
+  });
+}
+
+/* helper: open marker editor dari File object */
+function openMarkerEditorFromFile(file) {
+  return new Promise((resolve) => {
+    if (!file) return resolve("");
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      try {
+        const edited = await openMarkerEditorFromDataUrl(e.target.result);
+        resolve(edited);
+      } catch (err) {
+        resolve(e.target.result);
+      }
+    };
+    reader.onerror = () => resolve("");
+    reader.readAsDataURL(file);
+  });
+}
+
+/* helper: convert external image URL -> dataURL (untuk kemungkinan) */
+function urlToDataURL(url) {
+  return new Promise((resolve) => {
+    if (!url) return resolve("");
+    const img = new Image();
+    img.crossOrigin = "Anonymous";
+    img.onload = () => {
+      try {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.naturalWidth || img.width;
+        canvas.height = img.naturalHeight || img.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        resolve(canvas.toDataURL("image/png"));
+      } catch (e) {
+        resolve(url); // fallback ke url as-is
+      }
+    };
+    img.onerror = () => resolve(url);
+    img.src = url;
+    // if cached and complete
+    if (img.complete) {
+      try {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.naturalWidth || img.width;
+        canvas.height = img.naturalHeight || img.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        resolve(canvas.toDataURL("image/png"));
+      } catch (e) {
+        // ignore
+      }
+    }
+  });
+}
+
+/* pastikan ada elemen preview untuk input foto; jika belum ada, buat otomatis */
+function ensurePreviewElements() {
+  const f1 = document.getElementById('spvFoto');
+  if (f1 && !document.getElementById('previewSPVFoto')) {
+    const img = document.createElement('img');
+    img.id = 'previewSPVFoto';
+    img.style.maxWidth = '120px';
+    img.style.display = 'none';
+    img.style.marginTop = '6px';
+    f1.parentElement.insertBefore(img, f1.nextSibling);
+  }
+  const f2 = document.getElementById('spvFoto1');
+  if (f2 && !document.getElementById('previewSPVFoto1')) {
+    const img = document.createElement('img');
+    img.id = 'previewSPVFoto1';
+    img.style.maxWidth = '120px';
+    img.style.display = 'none';
+    img.style.marginTop = '6px';
+    f2.parentElement.insertBefore(img, f2.nextSibling);
+  }
+}
+
+/* bind input file (INPUT AREA) -> buka editor otomatis (VERSI A) */
+function bindInputPhotoEditors() {
+  const input1 = document.getElementById('spvFoto');
+  const input2 = document.getElementById('spvFoto1');
+
+  if (input1) {
+    input1.addEventListener('change', async () => {
+      const file = input1.files[0];
+      if (!file) return;
+      // buka editor dari file
+      const edited = await openMarkerEditorFromFile(file);
+      if (edited) {
+        editedFoto = edited;
+        const pv = document.getElementById('previewSPVFoto');
+        if (pv) { pv.src = edited; pv.style.display = 'block'; }
+      }
+    });
+  }
+
+  if (input2) {
+    input2.addEventListener('change', async () => {
+      const file = input2.files[0];
+      if (!file) return;
+      const edited = await openMarkerEditorFromFile(file);
+      if (edited) {
+        editedFoto1 = edited;
+        const pv = document.getElementById('previewSPVFoto1');
+        if (pv) { pv.src = edited; pv.style.display = 'block'; }
+      }
+    });
+  }
+}
+
+/* override fileToBase64 usage in submit untuk gunakan hasil edit jika ada
+   (tetap mempertahankan fungsi fileToBase64 asli agar bagian lain tetap berjalan) */
+const _orig_fileToBase64 = fileToBase64;
+fileToBase64 = function(fileOrElem) {
+  // jika diberikan input element (like document.getElementById('spvFoto')), ambil edited jika ada
+  try {
+    if (fileOrElem && fileOrElem.id === 'spvFoto' && editedFoto) return Promise.resolve(editedFoto);
+    if (fileOrElem && fileOrElem.id === 'spvFoto1' && editedFoto1) return Promise.resolve(editedFoto1);
+  } catch (e) { /* ignore */ }
+
+  // jika dipanggil dengan File instance, delegasikan ke original
+  return _orig_fileToBase64(fileOrElem);
+};
+
 /* ====================== TAB QC Register ====================== */
 function showSPVTab(tab, btn) {
   document.getElementById('spvInputSection').style.display = (tab === 'input') ? 'block' : 'none';
@@ -7711,6 +7892,7 @@ function setupUppercaseInputs() {
 }
 
 /* ====================== FILE TO BASE64 ====================== */
+/* NOTE: fileToBase64 sudah dideklarasi di atas dan di-override untuk input spvFoto/spvFoto1 */
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
     if (!file) return resolve("");
@@ -7726,6 +7908,10 @@ async function submitSPV(e) {
   e.preventDefault();
   const spinner = document.getElementById("spvSpinner");
 
+  // gunakan editedFoto/editedFoto1 jika ada; fallback ke fileToBase64(originalFile)
+  const rawFile = document.getElementById('spvFoto')?.files[0];
+  const rawFile1 = document.getElementById('spvFoto1')?.files[0];
+
   const payload = {
     sheet: "Register",
     action: "add",
@@ -7737,8 +7923,8 @@ async function submitSPV(e) {
     ket1: (document.getElementById('spvKet1').value || '').trim().toUpperCase(),
     namaQC: document.getElementById('spvNama').value,
     proses: document.getElementById('spvProses').value,
-    foto: document.getElementById('spvFoto').files[0] ? await fileToBase64(document.getElementById('spvFoto').files[0]) : "",
-    foto1: document.getElementById('spvFoto1').files[0] ? await fileToBase64(document.getElementById('spvFoto1').files[0]) : ""
+    foto: editedFoto || (rawFile ? await _orig_fileToBase64(rawFile) : ""),
+    foto1: editedFoto1 || (rawFile1 ? await _orig_fileToBase64(rawFile1) : "")
   };
 
   if (!payload.namaOrder || !payload.noKS || !payload.tanggal || !payload.jam || !payload.namaQC || !payload.proses) {
@@ -7749,6 +7935,12 @@ async function submitSPV(e) {
   if (!confirm('Kirim data ini?')) return;
 
   document.getElementById('spvForm').reset();
+  // reset preview & edited cache
+  editedFoto = "";
+  editedFoto1 = "";
+  const pv1 = document.getElementById('previewSPVFoto'); if (pv1) { pv1.style.display = 'none'; pv1.src = ""; }
+  const pv2 = document.getElementById('previewSPVFoto1'); if (pv2) { pv2.style.display = 'none'; pv2.src = ""; }
+
   spinner.style.display = "flex";
 
   try {
@@ -8048,6 +8240,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('spvTanggal').setAttribute('readonly', true);
     document.getElementById('spvJam').setAttribute('readonly', true);
   }
+
+  // tambahan: ensure preview dan bind editor hanya untuk bagian INPUT (versi A)
+  ensurePreviewElements();
+  bindInputPhotoEditors();
 });
 
 
@@ -8075,6 +8271,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
+
 
 
 
@@ -8633,4 +8830,3 @@ function goHome() {
 
 </body>
 </html>
-
