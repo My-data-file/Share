@@ -530,7 +530,7 @@ select {
     </button>
 
     <div id="headerTitle" style="font-size: 0.9rem; color: #e0f7fa;">
-      System
+      System v
     </div>
   </div>
 
@@ -3383,7 +3383,7 @@ function filterManualList(input, tabId) {
   <div class="foto-modal-content">
     <span class="close-btn" onclick="confirmCloseFotoModal()">&times;</span>
     <canvas id="editorCanvas" style="border:1px solid #ccc;"></canvas>
-    <div id="toolButtons">
+    <div id="toolButtons" style="margin-top:8px; display:flex; gap:6px; justify-content:center;">
       <button onclick="setTool('move', this)">🖐 Move</button>
       <button onclick="setTool('arrow', this)">➡️ Panah</button>
       <button onclick="setTool('rect', this)">⬛ Kotak</button>
@@ -3393,12 +3393,11 @@ function filterManualList(input, tabId) {
   </div>
 </div>
 
-
 <style>
 .foto-modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); display:flex; justify-content:center; align-items:center; z-index:9999;}
 .foto-modal-content { background:#fff; padding:12px; border-radius:8px; text-align:center; position:relative; max-width:90%; max-height:90%;}
 .close-btn { position:absolute; top:6px; right:10px; font-size:24px; cursor:pointer;}
-#editorCanvas { max-width:100%; max-height:80vh;}
+#editorCanvas { max-width:100%; max-height:80vh; touch-action:none;}
 #toolButtons button { padding:6px 10px; border-radius:6px; border:1px solid #ccc; cursor:pointer; background:#f0f0f0;}
 #toolButtons button.active { background:#00bcd4; color:#fff;}
 </style>
@@ -3407,11 +3406,13 @@ function filterManualList(input, tabId) {
 let currentFileInput = null;
 let canvas = document.getElementById('editorCanvas');
 let ctx = canvas.getContext('2d');
-let tool = 'move', startX = 0, startY = 0, drawing = false, items = [], selectedItem = null;
+
+let tool='move', startX=0, startY=0, drawing=false, items=[], selectedItem=null;
+let offsetX=0, offsetY=0;
 
 // ====================== Set Tool ======================
 function setTool(t, btn=null){
-  tool = t; selectedItem = null;
+  tool=t; selectedItem=null;
   document.querySelectorAll('#toolButtons button').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
 }
@@ -3421,29 +3422,33 @@ function clearCanvas(){ items=[]; redraw(); }
 
 // ====================== Open Modal ======================
 function openFotoEditor(fileInput){
-  const inputElem = (typeof fileInput==='string') ? document.getElementById(fileInput) : fileInput;
-  if(inputElem.files.length===0){ alert("⚠️ Pilih file terlebih dahulu!"); return; }
-  currentFileInput = inputElem;
+  let input = (typeof fileInput==='string') ? document.getElementById(fileInput) : fileInput;
+  if(input.files.length===0){
+    alert("⚠️ Silakan pilih file terlebih dahulu sebelum mengedit!");
+    return;
+  }
 
-  const reader = new FileReader();
-  reader.onload = function(e){
-    let img = new Image();
-    img.onload = function(){
-      canvas.width = img.width > 600 ? 600 : img.width;
-      canvas.height = img.height > 400 ? 400 : img.height;
+  currentFileInput = input;
+
+  const reader=new FileReader();
+  reader.onload=function(e){
+    let img=new Image();
+    img.onload=function(){
+      canvas.width = img.width>600?600:img.width;
+      canvas.height = (img.height/img.width)*canvas.width;
       ctx.clearRect(0,0,canvas.width,canvas.height);
       ctx.drawImage(img,0,0,canvas.width,canvas.height);
-      canvas.backgroundImage = img;
-      items = [];
+      canvas.backgroundImage=img;
+      items=[];
       setTool('move', document.querySelector('#toolButtons button:first-child'));
     }
-    img.src = e.target.result;
+    img.src=e.target.result;
   }
-  reader.readAsDataURL(currentFileInput.files[0]);
-  document.getElementById('fotoModal').style.display = 'flex';
+  reader.readAsDataURL(input.files[0]);
+  document.getElementById('fotoModal').style.display='flex';
 }
 
-// ====================== Close Modal ======================
+// ====================== Close Modal dengan Konfirmasi ======================
 function confirmCloseFotoModal(){
   if(confirm("Apakah yakin ingin menutup editor? Semua perubahan yang belum disimpan akan hilang.")){
     closeFotoModal();
@@ -3451,45 +3456,67 @@ function confirmCloseFotoModal(){
 }
 function closeFotoModal(){ document.getElementById('fotoModal').style.display='none'; }
 
-// ====================== Touch & Mouse Events ======================
+// ====================== Helper Posisi ======================
 function getPos(e){
-  if(e.touches) { // touch
-    const rect = canvas.getBoundingClientRect();
-    return { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top };
-  } else { // mouse
-    return { x: e.offsetX, y: e.offsetY };
-  }
+  let rect = canvas.getBoundingClientRect();
+  if(e.touches) e = e.touches[0];
+  return { x: e.clientX - rect.left, y: e.clientY - rect.top };
 }
+
+// ====================== Events Mouse & Touch ======================
+canvas.addEventListener('mousedown', startDraw);
+canvas.addEventListener('mousemove', moveDraw);
+canvas.addEventListener('mouseup', endDraw);
+canvas.addEventListener('mouseleave', endDraw);
+
+canvas.addEventListener('touchstart', startDraw);
+canvas.addEventListener('touchmove', moveDraw);
+canvas.addEventListener('touchend', endDraw);
+canvas.addEventListener('touchcancel', endDraw);
 
 function startDraw(e){
   const pos = getPos(e);
   startX = pos.x; startY = pos.y;
+
   if(tool==='move'){
     selectedItem = items.find(item=>{
       if(item.type==='rect') return pos.x>=item.x-10 && pos.x<=item.x+item.w+10 && pos.y>=item.y-10 && pos.y<=item.y+item.h+10;
-      if(item.type==='arrow') {
+      if(item.type==='arrow'){
         const minX=Math.min(item.x,item.x2)-10, maxX=Math.max(item.x,item.x2)+10;
         const minY=Math.min(item.y,item.y2)-10, maxY=Math.max(item.y,item.y2)+10;
         return pos.x>=minX && pos.x<=maxX && pos.y>=minY && pos.y<=maxY;
       }
       return false;
     });
+    if(selectedItem){
+      offsetX = pos.x - selectedItem.x;
+      offsetY = pos.y - selectedItem.y;
+    }
   } else { drawing=true; selectedItem=null; }
+
   e.preventDefault();
 }
 
 function moveDraw(e){
   if(!drawing && !selectedItem) return;
   const pos = getPos(e);
-  const dx = pos.x - startX, dy = pos.y - startY;
+
   if(tool==='move' && selectedItem){
-    selectedItem.x += dx; selectedItem.y += dy;
-    if(selectedItem.type==='arrow'){ selectedItem.x2 += dx; selectedItem.y2 += dy; }
-    startX = pos.x; startY = pos.y;
+    if(selectedItem.type==='rect'){
+      selectedItem.x = pos.x - offsetX;
+      selectedItem.y = pos.y - offsetY;
+    } else if(selectedItem.type==='arrow'){
+      const w = selectedItem.x2 - selectedItem.x;
+      const h = selectedItem.y2 - selectedItem.y;
+      selectedItem.x = pos.x - offsetX;
+      selectedItem.y = pos.y - offsetY;
+      selectedItem.x2 = selectedItem.x + w;
+      selectedItem.y2 = selectedItem.y + h;
+    }
     redraw();
   } else if(drawing){
     redraw();
-    if(tool==='arrow') {
+    if(tool==='arrow'){
       ctx.strokeStyle='red'; ctx.lineWidth=3;
       ctx.beginPath(); ctx.moveTo(startX,startY); ctx.lineTo(pos.x,pos.y); ctx.stroke();
       drawArrowHead(startX,startY,pos.x,pos.y);
@@ -3502,24 +3529,16 @@ function moveDraw(e){
 }
 
 function endDraw(e){
-  if(drawing){
+  if(tool!=='move' && drawing){
     const pos = getPos(e);
+    drawing=false;
     if(tool==='arrow') items.push({type:'arrow', x:startX, y:startY, x2:pos.x, y2:pos.y});
     else if(tool==='rect') items.push({type:'rect', x:startX, y:startY, w:pos.x-startX, h:pos.y-startY});
+    redraw();
   }
-  drawing = false; selectedItem = null;
-  redraw();
+  selectedItem=null;
   e.preventDefault();
 }
-
-// Mouse events
-canvas.addEventListener('mousedown', startDraw);
-canvas.addEventListener('mousemove', moveDraw);
-canvas.addEventListener('mouseup', endDraw);
-// Touch events
-canvas.addEventListener('touchstart', startDraw);
-canvas.addEventListener('touchmove', moveDraw);
-canvas.addEventListener('touchend', endDraw);
 
 // ====================== Redraw ======================
 function redraw(){
@@ -3528,7 +3547,10 @@ function redraw(){
   items.forEach(item=>{
     ctx.strokeStyle='red'; ctx.lineWidth=3; ctx.fillStyle='red';
     if(item.type==='rect') ctx.strokeRect(item.x,item.y,item.w,item.h);
-    else if(item.type==='arrow'){ ctx.beginPath(); ctx.moveTo(item.x,item.y); ctx.lineTo(item.x2,item.y2); ctx.stroke(); drawArrowHead(item.x,item.y,item.x2,item.y2);}
+    else if(item.type==='arrow'){
+      ctx.beginPath(); ctx.moveTo(item.x,item.y); ctx.lineTo(item.x2,item.y2); ctx.stroke();
+      drawArrowHead(item.x,item.y,item.x2,item.y2);
+    }
   });
 }
 
@@ -3541,15 +3563,19 @@ function drawArrowHead(x1,y1,x2,y2){
   ctx.lineTo(x2,y2); ctx.fill();
 }
 
-// ====================== Simpan ======================
+// ====================== Simpan dengan Konfirmasi ======================
 function confirmSaveCanvas(){
-  if(confirm("Simpan perubahan pada gambar?")) saveCanvas();
+  if(confirm("Simpan perubahan pada gambar?")){
+    saveCanvas();
+  }
 }
 function saveCanvas(){
   if(!currentFileInput) return;
   canvas.toBlob(blob=>{
     const file=new File([blob],currentFileInput.files[0]?.name||'edited.png',{type:blob.type});
-    const dt=new DataTransfer(); dt.items.add(file); currentFileInput.files=dt.files;
+    const dt=new DataTransfer();
+    dt.items.add(file);
+    currentFileInput.files=dt.files;
     closeFotoModal();
   },'image/png');
 }
