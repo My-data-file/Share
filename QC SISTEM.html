@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QC System</title>
+<title>QC System v</title>
 
 <style>
 /* ======================== Variabel Warna & Radius ======================== */
@@ -7653,7 +7653,177 @@ loadLemItems();
 
 
 
+<!-- ================== FOTO EDITOR (Marker.js 2) ================== -->
+<script src="https://unpkg.com/markerjs2/markerjs2.js"></script>
+
 <script>
+/* ====================== GLOBALS ====================== */
+const WEBAPP_URL = window.WEBAPP_URL || ""; // pastikan sudah didefinisikan di halaman
+let editedFoto = "";    // untuk input biasa spvFoto
+let editedFoto1 = "";   // untuk input biasa spvFoto1
+const editedFotosByRow = {}; // simpan edit foto saat edit baris: key = `${rowIndex}-5` atau `${rowIndex}-7`
+
+/* ====================== HELPERS - FILE <-> BASE64 ====================== */
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    if (!file) return resolve("");
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+// convert image URL to dataURL (try/cors-safe)
+function urlToDataURL(url) {
+  return new Promise((resolve, reject) => {
+    if (!url) return resolve("");
+    try {
+      const img = new Image();
+      img.crossOrigin = "Anonymous";
+      img.onload = () => {
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          const dataURL = canvas.toDataURL('image/png');
+          resolve(dataURL);
+        } catch (err) {
+          // fallback: return original url (may be a data URL already)
+          resolve(url);
+        }
+      };
+      img.onerror = () => resolve(url);
+      img.src = url;
+      // if immediate cached
+      if (img.complete) {
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          const dataURL = canvas.toDataURL('image/png');
+          resolve(dataURL);
+        } catch (err) {
+          resolve(url);
+        }
+      }
+    } catch (e) {
+      resolve(url);
+    }
+  });
+}
+
+/* ====================== PHOTO EDITOR (Marker.js) ====================== */
+/**
+ * openMarkerEditorFromDataUrl(dataUrl) -> returns Promise<dataUrlEdited>
+ */
+function openMarkerEditorFromDataUrl(dataUrl) {
+  return new Promise((resolve) => {
+    const img = document.createElement("img");
+    img.src = dataUrl;
+    img.onload = () => {
+      const editor = new markerjs2.MarkerArea(img);
+      editor.addEventListener("render", (event) => {
+        resolve(event.dataUrl);
+      });
+      editor.show();
+    };
+    img.onerror = () => {
+      // fallback: just resolve original
+      resolve(dataUrl);
+    };
+  });
+}
+
+/**
+ * openMarkerEditorFromFile(file) -> Promise<dataUrlEdited>
+ */
+function openMarkerEditorFromFile(file) {
+  return new Promise((resolve, reject) => {
+    if (!file) return resolve("");
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const edited = await openMarkerEditorFromDataUrl(reader.result);
+        resolve(edited);
+      } catch (e) { resolve(reader.result); }
+    };
+    reader.onerror = () => resolve("");
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ====================== ENSURE PREVIEW ELEMENTS EXIST ====================== */
+function ensurePreviewElements() {
+  const existing1 = document.getElementById('previewSPVFoto');
+  if (!existing1) {
+    const f = document.getElementById('spvFoto');
+    if (f && f.parentElement) {
+      const img = document.createElement('img');
+      img.id = 'previewSPVFoto';
+      img.style.maxWidth = '120px';
+      img.style.display = 'none';
+      img.style.marginTop = '6px';
+      f.parentElement.insertBefore(img, f.nextSibling);
+    }
+  }
+
+  const existing2 = document.getElementById('previewSPVFoto1');
+  if (!existing2) {
+    const f = document.getElementById('spvFoto1');
+    if (f && f.parentElement) {
+      const img = document.createElement('img');
+      img.id = 'previewSPVFoto1';
+      img.style.maxWidth = '120px';
+      img.style.display = 'none';
+      img.style.marginTop = '6px';
+      f.parentElement.insertBefore(img, f.nextSibling);
+    }
+  }
+}
+
+/* ====================== OPEN EDITOR WHEN INPUT FILE CHOSEN (INPUT AREA) ====================== */
+async function bindInputPhotoEditors() {
+  const f1 = document.getElementById('spvFoto');
+  const f2 = document.getElementById('spvFoto1');
+
+  if (f1) {
+    f1.addEventListener('change', async () => {
+      const file = f1.files[0];
+      if (!file) return;
+      const edited = await openMarkerEditorFromFile(file);
+      if (edited) {
+        editedFoto = edited;
+        const preview = document.getElementById('previewSPVFoto');
+        if (preview) {
+          preview.src = edited;
+          preview.style.display = 'block';
+        }
+      }
+    });
+  }
+
+  if (f2) {
+    f2.addEventListener('change', async () => {
+      const file = f2.files[0];
+      if (!file) return;
+      const edited = await openMarkerEditorFromFile(file);
+      if (edited) {
+        editedFoto1 = edited;
+        const preview = document.getElementById('previewSPVFoto1');
+        if (preview) {
+          preview.src = edited;
+          preview.style.display = 'block';
+        }
+      }
+    });
+  }
+}
+
 /* ====================== TAB QC Register ====================== */
 function showSPVTab(tab, btn) {
   document.getElementById('spvInputSection').style.display = (tab === 'input') ? 'block' : 'none';
@@ -7710,21 +7880,13 @@ function setupUppercaseInputs() {
   });
 }
 
-/* ====================== FILE TO BASE64 ====================== */
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    if (!file) return resolve("");
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-
 /* ====================== SUBMIT FORM ====================== */
 async function submitSPV(e) {
   e.preventDefault();
   const spinner = document.getElementById("spvSpinner");
+
+  const rawFoto = document.getElementById('spvFoto')?.files[0];
+  const rawFoto1 = document.getElementById('spvFoto1')?.files[0];
 
   const payload = {
     sheet: "Register",
@@ -7737,8 +7899,10 @@ async function submitSPV(e) {
     ket1: (document.getElementById('spvKet1').value || '').trim().toUpperCase(),
     namaQC: document.getElementById('spvNama').value,
     proses: document.getElementById('spvProses').value,
-    foto: document.getElementById('spvFoto').files[0] ? await fileToBase64(document.getElementById('spvFoto').files[0]) : "",
-    foto1: document.getElementById('spvFoto1').files[0] ? await fileToBase64(document.getElementById('spvFoto1').files[0]) : ""
+
+    // pakai hasil edit kalau ada, kalau tidak pakai raw file base64
+    foto: editedFoto || (rawFoto ? await fileToBase64(rawFoto) : ""),
+    foto1: editedFoto1 || (rawFoto1 ? await fileToBase64(rawFoto1) : "")
   };
 
   if (!payload.namaOrder || !payload.noKS || !payload.tanggal || !payload.jam || !payload.namaQC || !payload.proses) {
@@ -7749,6 +7913,14 @@ async function submitSPV(e) {
   if (!confirm('Kirim data ini?')) return;
 
   document.getElementById('spvForm').reset();
+  editedFoto = "";
+  editedFoto1 = "";
+  // hide previews
+  const pv1 = document.getElementById('previewSPVFoto');
+  if (pv1) { pv1.style.display = 'none'; pv1.src = ''; }
+  const pv2 = document.getElementById('previewSPVFoto1');
+  if (pv2) { pv2.style.display = 'none'; pv2.src = ''; }
+
   spinner.style.display = "flex";
 
   try {
@@ -7793,15 +7965,20 @@ function loadSPV() {
       list.forEach((item, index) => {
         const tr = document.createElement('tr');
         tr.dataset.index = index;
+
+        // Pastikan foto link field dinyatakan dengan proper key
+        const fotoLink = item.fotoUrl || item.foto || item['fotoUrl'] || item['Foto'] || "";
+        const fotoLink1 = item.fotoUrl1 || item.foto1 || item['fotoUrl1'] || item['Foto1'] || "";
+
         tr.innerHTML = `
           <td>${formatTanggal(item.tanggal || item.Tanggal)}</td>
           <td>${item.namaOrder || item['Nama Order'] || ''}</td>
           <td>${item.noKS || item['No KS'] || ''}</td>
           <td>${formatJam(item.jam || item.Jam)}</td>
           <td>${item.ket || item['Keterangan Acuan'] || ''}</td>
-          <td>${item.fotoUrl ? `<a href="${item.fotoUrl}" target="_blank">📷 Lihat Foto</a>` : '-'}</td>
+          <td>${fotoLink ? `<a href="${fotoLink}" target="_blank">📷 Lihat Foto</a>` : '-'}</td>
           <td>${item.ket1 || item['Keterangan Temuan'] || ''}</td>
-          <td>${item.fotoUrl1 ? `<a href="${item.fotoUrl1}" target="_blank">📷 Lihat Foto</a>` : '-'}</td>
+          <td>${fotoLink1 ? `<a href="${fotoLink1}" target="_blank">📷 Lihat Foto</a>` : '-'}</td>
           <td>${item.namaQC || item['Nama QC'] || ''}</td>
           <td>${item.proses || item['Proses'] || ''}</td>
           <td class="action-cell"><button class="edit-btn">✏️ Edit</button></td>
@@ -7824,6 +8001,7 @@ function enableSPVEdit() {
     editBtn.onclick = () => {
       if (!confirm("Apakah Anda ingin mengedit data ini?")) return;
 
+      // simpan original HTML untuk rollback
       row._original = [...row.children].map(td => td.innerHTML);
 
       for (let i = 0; i < 10; i++) {
@@ -7832,6 +8010,12 @@ function enableSPVEdit() {
 
         // ===== Foto Acuan & Foto Temuan =====
         if (i === 5 || i === 7) {
+          // ambil original HTML (sebelum diganti)
+          const origHtml = row._original[i] || cell.innerHTML;
+          // try extract href dari anchor
+          const hrefMatch = origHtml.match(/href="([^"]+)"/);
+          const existingHref = hrefMatch ? hrefMatch[1] : "";
+
           const wrapper = document.createElement("div");
           wrapper.style.display = "flex";
           wrapper.style.flexDirection = "column";
@@ -7847,6 +8031,7 @@ function enableSPVEdit() {
           label.style.fontSize = "13px";
           label.style.textAlign = "center";
           label.style.width = "fit-content";
+          label.style.marginBottom = "6px";
 
           const fileInput = document.createElement("input");
           fileInput.type = "file";
@@ -7860,16 +8045,81 @@ function enableSPVEdit() {
           fileName.style.wordBreak = "break-word";
           fileName.style.textAlign = "center";
 
-          fileInput.addEventListener("change", (e) => {
+          // tombol edit langsung (mode B) - buka editor langsung dari foto lama atau file yang dipilih
+          const editNowBtn = document.createElement("button");
+          editNowBtn.type = "button";
+          editNowBtn.textContent = "✏️ Edit Sekarang";
+          editNowBtn.style.marginTop = "6px";
+          editNowBtn.style.padding = "6px 8px";
+          editNowBtn.style.borderRadius = "6px";
+          editNowBtn.style.border = "1px solid #ccc";
+          editNowBtn.style.background = "#fff";
+          editNowBtn.style.cursor = "pointer";
+          editNowBtn.style.fontSize = "12px";
+
+          // preview img (opsional)
+          const preview = document.createElement("img");
+          preview.style.maxWidth = "120px";
+          preview.style.display = existingHref ? "block" : "none";
+          preview.style.marginTop = "6px";
+          preview.src = existingHref || "";
+
+          // when file selected -> show name and set preview to the chosen file (after editing)
+          fileInput.addEventListener("change", async (e) => {
             const file = e.target.files[0];
-            fileName.textContent = file ? file.name : "";
+            if (!file) {
+              fileName.textContent = "";
+              return;
+            }
+            fileName.textContent = file.name;
+            // open editor for chosen file
+            const edited = await openMarkerEditorFromFile(file);
+            if (edited) {
+              preview.src = edited;
+              preview.style.display = "block";
+              // store edited image in editedFotosByRow for this row
+              editedFotosByRow[`${rowIndex}-${i}`] = edited;
+            }
           });
 
           label.onclick = () => fileInput.click();
 
+          // editNowBtn: open editor from existingHref (if present) OR if a file already chosen in fileInput then edit that
+          editNowBtn.onclick = async () => {
+            // if a file already selected in fileInput -> edit that
+            const file = fileInput.files[0];
+            if (file) {
+              const edited = await openMarkerEditorFromFile(file);
+              if (edited) {
+                preview.src = edited;
+                preview.style.display = "block";
+                editedFotosByRow[`${rowIndex}-${i}`] = edited;
+                fileName.textContent = "(file diubah)";
+              }
+              return;
+            }
+
+            // else try open editor from existingHref (link to image)
+            if (existingHref) {
+              const dataUrl = await urlToDataURL(existingHref);
+              const edited = await openMarkerEditorFromDataUrl(dataUrl);
+              if (edited) {
+                preview.src = edited;
+                preview.style.display = "block";
+                editedFotosByRow[`${rowIndex}-${i}`] = edited;
+                fileName.textContent = "(link diubah)";
+              }
+              return;
+            }
+
+            alert("Tidak ada gambar lama. Pilih file atau ambil foto dulu.");
+          };
+
           wrapper.appendChild(label);
           wrapper.appendChild(fileInput);
           wrapper.appendChild(fileName);
+          wrapper.appendChild(editNowBtn);
+          wrapper.appendChild(preview);
 
           cell.innerHTML = "";
           cell.appendChild(wrapper);
@@ -7940,37 +8190,73 @@ function enableSPVEdit() {
         if (!confirm("Apakah yakin ingin menyimpan perubahan ini?")) return;
 
         spinner.style.display = "inline";
-        const updated = {
-          tanggal: row.cells[0].querySelector("input")?.value || row.cells[0].textContent,
-          namaOrder: (row.cells[1].querySelector("input")?.value || row.cells[1].textContent).toUpperCase(),
-          noKS: (row.cells[2].querySelector("input")?.value || row.cells[2].textContent).toUpperCase(),
-          jam: row.cells[3].querySelector("input")?.value || row.cells[3].textContent,
-          ket: (row.cells[4].querySelector("textarea")?.value || row.cells[4].textContent).toUpperCase(),
-          ket1: (row.cells[6].querySelector("textarea")?.value || row.cells[6].textContent).toUpperCase(),
-          namaQC: row.cells[8].querySelector("select")?.value || row.cells[8].textContent,
-          proses: row.cells[9].querySelector("select")?.value || row.cells[9].textContent,
-          foto: row.cells[5].querySelector("input")?.files[0] ? await fileToBase64(row.cells[5].querySelector("input").files[0]) : null,
-          foto1: row.cells[7].querySelector("input")?.files[0] ? await fileToBase64(row.cells[7].querySelector("input").files[0]) : null
-        };
 
-        fetch(WEBAPP_URL, {
-          method: "POST",
-          body: new URLSearchParams({
-            payload: JSON.stringify({ sheet: "Register", action: "update", index: rowIndex, data: updated })
-          })
-        })
-        .then(res => res.text())
-        .then(() => {
+        try {
+          // ambil foto edited dari editedFotosByRow jika ada, kalau tidak cek input file di sel
+          const fotoKey = `${rowIndex}-5`;
+          const fotoKey1 = `${rowIndex}-7`;
+
+          const fotoEdited = editedFotosByRow[fotoKey] || null;
+          const fotoEdited1 = editedFotosByRow[fotoKey1] || null;
+
+          // jika tidak ada edited, cek apakah user memilih file di input (DOM)
+          const fotoInputElem = row.cells[5].querySelector("input[type=file]");
+          const fotoInputElem1 = row.cells[7].querySelector("input[type=file]");
+
+          let fotoPayload = null;
+          let fotoPayload1 = null;
+
+          if (fotoEdited) {
+            fotoPayload = fotoEdited;
+          } else if (fotoInputElem && fotoInputElem.files[0]) {
+            fotoPayload = await fileToBase64(fotoInputElem.files[0]);
+          } else {
+            fotoPayload = null; // biarkan server memakai nilai lama
+          }
+
+          if (fotoEdited1) {
+            fotoPayload1 = fotoEdited1;
+          } else if (fotoInputElem1 && fotoInputElem1.files[0]) {
+            fotoPayload1 = await fileToBase64(fotoInputElem1.files[0]);
+          } else {
+            fotoPayload1 = null;
+          }
+
+          const updated = {
+            tanggal: row.cells[0].querySelector("input")?.value || row.cells[0].textContent,
+            namaOrder: (row.cells[1].querySelector("input")?.value || row.cells[1].textContent).toUpperCase(),
+            noKS: (row.cells[2].querySelector("input")?.value || row.cells[2].textContent).toUpperCase(),
+            jam: row.cells[3].querySelector("input")?.value || row.cells[3].textContent,
+            ket: (row.cells[4].querySelector("textarea")?.value || row.cells[4].textContent).toUpperCase(),
+            ket1: (row.cells[6].querySelector("textarea")?.value || row.cells[6].textContent).toUpperCase(),
+            namaQC: row.cells[8].querySelector("select")?.value || row.cells[8].textContent,
+            proses: row.cells[9].querySelector("select")?.value || row.cells[9].textContent,
+            foto: fotoPayload,
+            foto1: fotoPayload1
+          };
+
+          await fetch(WEBAPP_URL, {
+            method: "POST",
+            body: new URLSearchParams({
+              payload: JSON.stringify({ sheet: "Register", action: "update", index: rowIndex, data: updated })
+            })
+          });
+
           alert("✅ Data berhasil diperbarui!");
+          // bersihkan edited cache untuk row ini
+          delete editedFotosByRow[fotoKey];
+          delete editedFotosByRow[fotoKey1];
+
+          // kembalikan isi asli (server loadSPV akan memperbarui tabel)
           row._original.forEach((html, i) => (row.cells[i].innerHTML = html));
           enableSPVEdit();
           loadSPV();
-        })
-        .catch(err => {
+        } catch (err) {
           console.error(err);
           alert("❌ Gagal memperbarui data!");
-        })
-        .finally(() => spinner.style.display = "none");
+        } finally {
+          spinner.style.display = "none";
+        }
       };
 
       aksiCell.querySelector(".cancel-btn").onclick = () => {
@@ -8020,8 +8306,6 @@ if (spvSearchInput) {
   });
 }
 
-
-
 /* ====================== FORMAT ====================== */
 function formatTanggal(tgl) { if (!tgl) return ""; const parts = tgl.split("-"); return parts.length === 3 ? `${parts[2]}-${parts[1]}-${parts[0]}` : tgl; }
 function formatJam(jam) { if (!jam) return ""; return jam.length >= 5 ? jam.slice(0, 5) : jam; }
@@ -8048,6 +8332,10 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('spvTanggal').setAttribute('readonly', true);
     document.getElementById('spvJam').setAttribute('readonly', true);
   }
+
+  // ensure preview images exist and bind input editors
+  ensurePreviewElements();
+  bindInputPhotoEditors();
 });
 
 
@@ -8073,8 +8361,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   observer.observe(tbody, { childList: true });
 });
-
 </script>
+
 
 
 
