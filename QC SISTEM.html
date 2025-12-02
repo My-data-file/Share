@@ -4153,10 +4153,6 @@ if (spvNoKS) {
     <!-- PANEL TEKS BICARA -->
     <div class="speech-panel" id="speechPanel" aria-live="polite">Halo!</div>
 
-    <!-- Antena -->
-    <div class="antenna-stick" aria-hidden="true"></div>
-    <div class="antenna-ball" aria-hidden="true"></div>
-
     <!-- Kepala -->
     <div class="head">
       <div class="visor">
@@ -4193,18 +4189,55 @@ if (spvNoKS) {
 <div id="menuModal" class="pw-modal" aria-hidden="true" style="display:none;">
   <div class="pw-modal__dialog" role="dialog" aria-modal="true" style="max-width:420px;">
     <h3 style="margin:0 0 8px;">Pilih Asisten AI QC</h3>
+
     <div style="display:flex;flex-direction:column;gap:8px;">
-      <button class="menu-ai-btn" data-ai="bapro" style="padding:10px;border-radius:8px;border:none;cursor:pointer;background:#00cfff;font-weight:800;">AI QC BAPRO</button>
-      <button class="menu-ai-btn" data-ai="cetak" style="padding:10px;border-radius:8px;border:none;cursor:pointer;background:#00cfff;font-weight:800;">AI QC CETAK</button>
-      <button class="menu-ai-btn" data-ai="finishing" style="padding:10px;border-radius:8px;border:none;cursor:pointer;background:#00cfff;font-weight:800;">AI QC FINISHING</button>
-      <button class="menu-ai-btn" data-ai="lem" style="padding:10px;border-radius:8px;border:none;cursor:pointer;background:#00cfff;font-weight:800;">AI QC LEM</button>
-      <button class="menu-ai-btn" data-ai="register" style="padding:10px;border-radius:8px;border:none;cursor:pointer;background:#00cfff;font-weight:800;">AI QC REGISTER</button>
+
+      <!-- QC BAPRO – MERAH TRANSPARAN -->
+      <button class="menu-ai-btn" data-ai="bapro"
+        style="padding:10px;border-radius:8px;border:none;cursor:pointer;
+        background:rgba(255, 59, 59, 0.65);color:#fff;font-weight:800;">
+        AI QC BAPRO
+      </button>
+
+      <!-- QC CETAK – ORANGE TRANSPARAN -->
+      <button class="menu-ai-btn" data-ai="cetak"
+        style="padding:10px;border-radius:8px;border:none;cursor:pointer;
+        background:rgba(255, 152, 0, 0.65);color:#000;font-weight:800;">
+        AI QC CETAK
+      </button>
+
+      <!-- QC FINISHING – HIJAU TRANSPARAN -->
+      <button class="menu-ai-btn" data-ai="finishing"
+        style="padding:10px;border-radius:8px;border:none;cursor:pointer;
+        background:rgba(76, 175, 80, 0.65);color:#fff;font-weight:800;">
+        AI QC FINISHING
+      </button>
+
+      <!-- QC LEM – UNGU TRANSPARAN -->
+      <button class="menu-ai-btn" data-ai="lem"
+        style="padding:10px;border-radius:8px;border:none;cursor:pointer;
+        background:rgba(155, 89, 182, 0.65);color:#fff;font-weight:800;">
+        AI QC LEM
+      </button>
+
+      <!-- QC REGISTER – BIRU MUDA TRANSPARAN -->
+      <button class="menu-ai-btn" data-ai="register"
+        style="padding:10px;border-radius:8px;border:none;cursor:pointer;
+        background:rgba(0, 207, 255, 0.65);color:#000;font-weight:800;">
+        AI QC REGISTER
+      </button>
+
     </div>
+
     <div style="margin-top:12px;text-align:center;">
-      <button id="menuCloseBtn" style="padding:8px 12px;border-radius:8px;border:none;background:#f2f2f2;cursor:pointer;">Batal</button>
+      <button id="menuCloseBtn" style="padding:8px 12px;border-radius:8px;border:none;background:#f2f2f2;cursor:pointer;">
+        Batal
+      </button>
     </div>
+
   </div>
 </div>
+
 
 <!-- Custom Password Modal (original, reused for per-AI password) -->
 <div id="pwModal" class="pw-modal" aria-hidden="true">
@@ -4291,11 +4324,6 @@ if (spvNoKS) {
 /* Floating & tilt */
 @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
 @keyframes idleTilt{0%,100%{transform:rotate(0deg);}50%{transform:rotate(1.5deg);}}
-
-/* ANTENA */
-.antenna-stick{width:8px;height:22px;background:#000;border-radius:4px;position:absolute;top:-10px;left:50%;transform:translateX(-50%);animation: headSway 3s ease-in-out infinite;}
-.antenna-ball{width:20px;height:20px;background:#00cfff;border:5px solid #000;border-radius:50%;position:absolute;top:-28px;left:50%;transform:translateX(-50%);animation: antennaPulse 1.8s ease-in-out infinite, antennaBlink 4s infinite;}
-@keyframes antennaBlink{0%,100%{filter:brightness(1);}50%{filter:brightness(1.9);}}
 
 /* HEAD & VISOR */
 .head{ width:95px;height:75px;background:#fff;border:6px solid #000;border-radius:26px; position:absolute;top:10px;left:50%;transform:translateX(-50%);animation: headSway 3s ease-in-out infinite;box-shadow:0 0 12px rgba(0,207,255,0.4);}
@@ -4803,12 +4831,6 @@ document.addEventListener("DOMContentLoaded", () => {
 /* Floating & tilt */
 @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
 @keyframes idleTilt{0%,100%{transform:rotate(0deg);}50%{transform:rotate(1.5deg);}}
-
-/* ANTENA */
-.antenna-stick{width:8px;height:22px;background:#000;border-radius:4px;position:absolute;top:-10px;left:50%;transform:translateX(-50%);animation: headSway 3s ease-in-out infinite;}
-.antenna-ball{width:20px;height:20px;background:#00cfff;border:5px solid #000;border-radius:50%;position:absolute;top:-28px;left:50%;transform:translateX(-50%);animation: antennaPulse 1.8s ease-in-out infinite, antennaBlink 4s infinite;}
-@keyframes antennaBlink{0%,100%{filter:brightness(1);}50%{filter:brightness(1.9);}}
-@keyframes antennaPulse{0%,100%{transform:translateX(-50%) scale(1);}50%{transform:translateX(-50%) scale(1.18);}}
 
 /* HEAD & VISOR */
 .head{ width:95px;height:75px;background:#fff;border:6px solid #000;border-radius:26px; position:absolute;top:10px;left:50%;transform:translateX(-50%);animation: headSway 3s ease-in-out infinite;box-shadow:0 0 12px rgba(0,207,255,0.4);}
@@ -8611,5 +8633,4 @@ function goHome() {
 
 </body>
 </html>
-
 
