@@ -3381,18 +3381,22 @@ function filterManualList(input, tabId) {
 <!-- ======================== Modal Editor Gambar ======================== -->
 <div id="fotoModal" class="foto-modal" style="display:none;">
   <div class="foto-modal-content">
-    <span class="close-btn" onclick="confirmCloseFotoModal()">&times;</span>
 
-    <canvas id="editorCanvas" class="canvas-area"></canvas>
-
-    <!-- TOOL BUTTONS -->
-    <div id="toolButtons" class="tool-buttons">
+    <!-- =================== TOOLBAR ATAS =================== -->
+    <div id="toolButtons" class="tool-buttons top">
       <button onclick="setTool('move', this)">🖐 Move</button>
       <button onclick="setTool('arrow', this)">➡️ Panah</button>
       <button onclick="setTool('rect', this)">⬛ Kotak</button>
       <button onclick="clearCanvas()">🧹 Clear</button>
       <button onclick="confirmSaveCanvas()">💾 Simpan</button>
+
+      <!-- CLOSE BUTTON -->
+      <button class="close-under" onclick="confirmCloseFotoModal()">✖ Tutup</button>
     </div>
+
+    <!-- =================== CANVAS =================== -->
+    <canvas id="editorCanvas" class="canvas-area"></canvas>
+
   </div>
 </div>
 
@@ -3423,13 +3427,6 @@ function filterManualList(input, tabId) {
   gap:10px;
 }
 
-.close-btn {
-  position:absolute;
-  top:8px; right:12px;
-  font-size:26px;
-  cursor:pointer;
-}
-
 /* ===================== Canvas ===================== */
 .canvas-area {
   width:100%;
@@ -3447,6 +3444,10 @@ function filterManualList(input, tabId) {
   width:100%;
 }
 
+.tool-buttons.top {
+  margin-bottom: 6px;
+}
+
 .tool-buttons button {
   padding:10px;
   border:none;
@@ -3462,22 +3463,23 @@ function filterManualList(input, tabId) {
   color:#fff;
 }
 
-/* Tombol Simpan dibuat full-width */
-.tool-buttons button:last-child {
+/* Simpan full width */
+.tool-buttons button:nth-child(5) {
   grid-column: span 2;
+}
+
+/* Tombol Close full width */
+.close-under {
+  grid-column: span 2;
+  background:#ff5c5c !important;
+  color:#fff;
+  font-weight:bold;
 }
 
 /* Mobile optimization */
 @media (max-width:420px){
-
-  /* Modal dinaikkan */
-  .foto-modal-content {
-    margin-top: -20px;       /* atur lebih naik jika perlu */
-  }
-
-  /* Canvas sedikit lebih kecil agar tombol tidak turun */
-  .canvas-area {
-    max-height: 55vh;
+  .tool-buttons {
+    grid-template-columns: 1fr 1fr;
   }
 
   .tool-buttons button {
@@ -9151,6 +9153,3 @@ function goHome() {
 
 </body>
 </html>
-
-
-
