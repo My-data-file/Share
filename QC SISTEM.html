@@ -3408,7 +3408,6 @@ let currentFileInput = null;
 let canvas = document.getElementById('editorCanvas');
 let ctx = canvas.getContext('2d');
 let tool='move', startX=0, startY=0, drawing=false, items=[], selectedItem=null;
-let imgOriginal = null; // menyimpan ukuran asli gambar
 
 // ====================== Set Tool ======================
 function setTool(t, btn=null){
@@ -3420,18 +3419,6 @@ function setTool(t, btn=null){
 // ====================== Clear ======================
 function clearCanvas(){ items=[]; redraw(); }
 
-// ====================== Resize Canvas Responsive ======================
-function resizeCanvasResponsive(){
-  if(!imgOriginal) return;
-  const modal = document.querySelector('.foto-modal-content');
-  const maxW = modal.clientWidth - 24; // padding
-  const maxH = modal.clientHeight - 80; // space for buttons
-  const scale = Math.min(maxW / imgOriginal.width, maxH / imgOriginal.height, 1);
-  canvas.width = imgOriginal.width * scale;
-  canvas.height = imgOriginal.height * scale;
-  redraw();
-}
-
 // ====================== Open Modal ======================
 function openFotoEditor(fileInput){
   if((typeof fileInput==='string'? document.getElementById(fileInput): fileInput).files.length===0){
@@ -3441,19 +3428,19 @@ function openFotoEditor(fileInput){
 
   currentFileInput = (typeof fileInput==='string') ? document.getElementById(fileInput) : fileInput;
 
-  const reader=new FileReader();
-  reader.onload=function(e){
-    let img=new Image();
-    img.onload=function(){
-      imgOriginal = {width: img.width, height: img.height};
-      resizeCanvasResponsive();
+  const reader = new FileReader();
+  reader.onload = function(e){
+    let img = new Image();
+    img.onload = function(){
+      canvas.width = img.width > 600 ? 600 : img.width;
+      canvas.height = (img.height / img.width) * canvas.width;
       ctx.clearRect(0,0,canvas.width,canvas.height);
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img,0,0,canvas.width,canvas.height);
       canvas.backgroundImage = img;
       items=[];
       setTool('move', document.querySelector('#toolButtons button:first-child'));
     }
-    img.src=e.target.result;
+    img.src = e.target.result;
   }
   reader.readAsDataURL(currentFileInput.files[0]);
   document.getElementById('fotoModal').style.display='flex';
@@ -3467,19 +3454,27 @@ function confirmCloseFotoModal(){
 }
 function closeFotoModal(){ document.getElementById('fotoModal').style.display='none'; }
 
-// ====================== Mouse & Touch Events ======================
-function getEventOffset(e){
+// ====================== Event Helpers ======================
+function getCanvasPos(e){
   const rect = canvas.getBoundingClientRect();
-  if(e.touches) { 
-    const t = e.touches[0];
-    return {offsetX: t.clientX - rect.left, offsetY: t.clientY - rect.top};
+  if(e.touches && e.touches.length > 0){
+    return {
+      x: e.touches[0].clientX - rect.left,
+      y: e.touches[0].clientY - rect.top
+    };
+  } else {
+    return {
+      x: e.offsetX !== undefined ? e.offsetX : e.clientX - rect.left,
+      y: e.offsetY !== undefined ? e.offsetY : e.clientY - rect.top
+    };
   }
-  return {offsetX: e.offsetX, offsetY: e.offsetY};
 }
 
+// ====================== Start, Move, End ======================
 function startDraw(e){
-  const pos = getEventOffset(e);
-  startX = pos.offsetX; startY = pos.offsetY;
+  e.preventDefault();
+  const pos = getCanvasPos(e);
+  startX = pos.x; startY = pos.y;
   if(tool==='move'){
     selectedItem = items.find(item=>{
       if(item.type==='rect') return startX>=item.x-10 && startX<=item.x+item.w+10 && startY>=item.y-10 && startY<=item.y+item.h+10;
@@ -3494,34 +3489,36 @@ function startDraw(e){
 }
 
 function moveDraw(e){
-  const pos = getEventOffset(e);
+  e.preventDefault();
+  const pos = getCanvasPos(e);
   if(tool==='move' && selectedItem){
-    const dx = pos.offsetX - startX, dy = pos.offsetY - startY;
+    const dx = pos.x - startX;
+    const dy = pos.y - startY;
     selectedItem.x += dx; selectedItem.y += dy;
     if(selectedItem.type==='arrow'){ selectedItem.x2+=dx; selectedItem.y2+=dy; }
-    startX = pos.offsetX; startY = pos.offsetY;
+    startX = pos.x; startY = pos.y;
     redraw();
   }
 }
 
 function endDraw(e){
+  e.preventDefault();
   if(tool==='move'){ selectedItem=null; return; }
   if(!drawing) return; drawing=false;
-  const pos = getEventOffset(e);
-  if(tool==='arrow') items.push({type:'arrow', x:startX, y:startY, x2:pos.offsetX, y2:pos.offsetY});
-  else if(tool==='rect') items.push({type:'rect', x:startX, y:startY, w:pos.offsetX-startX, h:pos.offsetY-startY});
+  const pos = getCanvasPos(e);
+  if(tool==='arrow') items.push({type:'arrow', x:startX, y:startY, x2:pos.x, y2:pos.y});
+  else if(tool==='rect') items.push({type:'rect', x:startX, y:startY, w:pos.x-startX, h:pos.y-startY});
   redraw();
 }
 
-// Mouse events
-canvas.onmousedown = startDraw;
-canvas.onmousemove = moveDraw;
-canvas.onmouseup = endDraw;
+// ====================== Event Listeners ======================
+canvas.addEventListener('mousedown', startDraw);
+canvas.addEventListener('mousemove', moveDraw);
+canvas.addEventListener('mouseup', endDraw);
 
-// Touch events
-canvas.ontouchstart = function(e){ e.preventDefault(); startDraw(e); };
-canvas.ontouchmove = function(e){ e.preventDefault(); moveDraw(e); };
-canvas.ontouchend = function(e){ e.preventDefault(); endDraw(e); };
+canvas.addEventListener('touchstart', startDraw, {passive:false});
+canvas.addEventListener('touchmove', moveDraw, {passive:false});
+canvas.addEventListener('touchend', endDraw, {passive:false});
 
 // ====================== Redraw ======================
 function redraw(){
@@ -3559,9 +3556,6 @@ function saveCanvas(){
     closeFotoModal();
   },'image/png');
 }
-
-// ====================== Resize listener ======================
-window.addEventListener('resize', resizeCanvasResponsive);
 </script>
 
 
