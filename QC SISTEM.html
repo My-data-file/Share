@@ -530,7 +530,7 @@ select {
     </button>
 
     <div id="headerTitle" style="font-size: 0.9rem; color: #e0f7fa;">
-      System
+      System x
     </div>
   </div>
 
@@ -3421,26 +3421,28 @@ function clearCanvas(){ items=[]; redraw(); }
 
 // ====================== Open Modal ======================
 function openFotoEditor(fileInput){
-  if((typeof fileInput==='string'? document.getElementById(fileInput): fileInput).files.length===0){
+  // cek file sudah dipilih
+  let input = (typeof fileInput==='string') ? document.getElementById(fileInput) : fileInput;
+  if(input.files.length===0){
     alert("⚠️ Silakan pilih file terlebih dahulu sebelum mengedit!");
     return;
   }
 
-  currentFileInput = (typeof fileInput==='string') ? document.getElementById(fileInput) : fileInput;
+  currentFileInput = input;
 
-  const reader = new FileReader();
-  reader.onload = function(e){
-    let img = new Image();
-    img.onload = function(){
-      canvas.width = img.width > 600 ? 600 : img.width;
-      canvas.height = (img.height / img.width) * canvas.width;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    let img=new Image();
+    img.onload=function(){
+      canvas.width = img.width>600?600:img.width;
+      canvas.height = (img.height/img.width)*canvas.width;
       ctx.clearRect(0,0,canvas.width,canvas.height);
       ctx.drawImage(img,0,0,canvas.width,canvas.height);
       canvas.backgroundImage = img;
       items=[];
       setTool('move', document.querySelector('#toolButtons button:first-child'));
     }
-    img.src = e.target.result;
+    img.src=e.target.result;
   }
   reader.readAsDataURL(currentFileInput.files[0]);
   document.getElementById('fotoModal').style.display='flex';
@@ -3454,72 +3456,6 @@ function confirmCloseFotoModal(){
 }
 function closeFotoModal(){ document.getElementById('fotoModal').style.display='none'; }
 
-// ====================== Event Helpers ======================
-function getCanvasPos(e){
-  const rect = canvas.getBoundingClientRect();
-  if(e.touches && e.touches.length > 0){
-    return {
-      x: e.touches[0].clientX - rect.left,
-      y: e.touches[0].clientY - rect.top
-    };
-  } else {
-    return {
-      x: e.offsetX !== undefined ? e.offsetX : e.clientX - rect.left,
-      y: e.offsetY !== undefined ? e.offsetY : e.clientY - rect.top
-    };
-  }
-}
-
-// ====================== Start, Move, End ======================
-function startDraw(e){
-  e.preventDefault();
-  const pos = getCanvasPos(e);
-  startX = pos.x; startY = pos.y;
-  if(tool==='move'){
-    selectedItem = items.find(item=>{
-      if(item.type==='rect') return startX>=item.x-10 && startX<=item.x+item.w+10 && startY>=item.y-10 && startY<=item.y+item.h+10;
-      else if(item.type==='arrow'){
-        const minX=Math.min(item.x,item.x2)-10, maxX=Math.max(item.x,item.x2)+10;
-        const minY=Math.min(item.y,item.y2)-10, maxY=Math.max(item.y,item.y2)+10;
-        return startX>=minX && startX<=maxX && startY>=minY && startY<=maxY;
-      }
-      return false;
-    });
-  } else drawing = true;
-}
-
-function moveDraw(e){
-  e.preventDefault();
-  const pos = getCanvasPos(e);
-  if(tool==='move' && selectedItem){
-    const dx = pos.x - startX;
-    const dy = pos.y - startY;
-    selectedItem.x += dx; selectedItem.y += dy;
-    if(selectedItem.type==='arrow'){ selectedItem.x2+=dx; selectedItem.y2+=dy; }
-    startX = pos.x; startY = pos.y;
-    redraw();
-  }
-}
-
-function endDraw(e){
-  e.preventDefault();
-  if(tool==='move'){ selectedItem=null; return; }
-  if(!drawing) return; drawing=false;
-  const pos = getCanvasPos(e);
-  if(tool==='arrow') items.push({type:'arrow', x:startX, y:startY, x2:pos.x, y2:pos.y});
-  else if(tool==='rect') items.push({type:'rect', x:startX, y:startY, w:pos.x-startX, h:pos.y-startY});
-  redraw();
-}
-
-// ====================== Event Listeners ======================
-canvas.addEventListener('mousedown', startDraw);
-canvas.addEventListener('mousemove', moveDraw);
-canvas.addEventListener('mouseup', endDraw);
-
-canvas.addEventListener('touchstart', startDraw, {passive:false});
-canvas.addEventListener('touchmove', moveDraw, {passive:false});
-canvas.addEventListener('touchend', endDraw, {passive:false});
-
 // ====================== Redraw ======================
 function redraw(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -3527,7 +3463,10 @@ function redraw(){
   items.forEach(item=>{
     ctx.strokeStyle='red'; ctx.lineWidth=3; ctx.fillStyle='red';
     if(item.type==='rect') ctx.strokeRect(item.x,item.y,item.w,item.h);
-    else if(item.type==='arrow'){ ctx.beginPath(); ctx.moveTo(item.x,item.y); ctx.lineTo(item.x2,item.y2); ctx.stroke(); drawArrowHead(item.x,item.y,item.x2,item.y2);}
+    else if(item.type==='arrow'){ 
+      ctx.beginPath(); ctx.moveTo(item.x,item.y); ctx.lineTo(item.x2,item.y2); ctx.stroke(); 
+      drawArrowHead(item.x,item.y,item.x2,item.y2);
+    }
   });
 }
 
@@ -3556,6 +3495,66 @@ function saveCanvas(){
     closeFotoModal();
   },'image/png');
 }
+
+// ====================== Helper untuk mouse & touch ======================
+function getCanvasPos(e){
+  const rect = canvas.getBoundingClientRect();
+  if(e.touches && e.touches.length > 0){
+    return {x:e.touches[0].clientX - rect.left, y:e.touches[0].clientY - rect.top};
+  } else {
+    return {x:e.offsetX!==undefined?e.offsetX:e.clientX-rect.left, y:e.offsetY!==undefined?e.offsetY:e.clientY-rect.top};
+  }
+}
+
+// ====================== Start, Move, End ======================
+function startDraw(e){
+  e.preventDefault();
+  const pos = getCanvasPos(e);
+  startX = pos.x; startY = pos.y;
+  if(tool==='move'){
+    selectedItem = items.find(item=>{
+      if(item.type==='rect') return startX>=item.x-10 && startX<=item.x+item.w+10 && startY>=item.y-10 && startY<=item.y+item.h+10;
+      else if(item.type==='arrow'){
+        const minX=Math.min(item.x,item.x2)-10, maxX=Math.max(item.x,item.x2)+10;
+        const minY=Math.min(item.y,item.y2)-10, maxY=Math.max(item.y,item.y2)+10;
+        return startX>=minX && startX<=maxX && startY>=minY && startY<=maxY;
+      }
+      return false;
+    });
+  } else drawing = true;
+}
+
+function moveDraw(e){
+  e.preventDefault();
+  const pos = getCanvasPos(e);
+  if(tool==='move' && selectedItem){
+    const dx = pos.x - startX;
+    const dy = pos.y - startY;
+    selectedItem.x += dx; selectedItem.y += dy;
+    if(selectedItem.type==='arrow'){ selectedItem.x2 += dx; selectedItem.y2 += dy; }
+    startX = pos.x; startY = pos.y;
+    redraw();
+  }
+}
+
+function endDraw(e){
+  e.preventDefault();
+  if(tool==='move'){ selectedItem=null; return; }
+  if(!drawing) return; drawing=false;
+  const pos = getCanvasPos(e);
+  if(tool==='arrow') items.push({type:'arrow', x:startX, y:startY, x2:pos.x, y2:pos.y});
+  else if(tool==='rect') items.push({type:'rect', x:startX, y:startY, w:pos.x-startX, h:pos.y-startY});
+  redraw();
+}
+
+// ====================== Event Listeners ======================
+canvas.addEventListener('mousedown', startDraw);
+canvas.addEventListener('mousemove', moveDraw);
+canvas.addEventListener('mouseup', endDraw);
+
+canvas.addEventListener('touchstart', startDraw, {passive:false});
+canvas.addEventListener('touchmove', moveDraw, {passive:false});
+canvas.addEventListener('touchend', endDraw, {passive:false});
 </script>
 
 
