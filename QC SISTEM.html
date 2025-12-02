@@ -530,7 +530,7 @@ select {
     </button>
 
     <div id="headerTitle" style="font-size: 0.9rem; color: #e0f7fa;">
-      System
+      System.
     </div>
   </div>
 
@@ -3408,12 +3408,14 @@ let currentFileInput = null;
 let canvas = document.getElementById('editorCanvas');
 let ctx = canvas.getContext('2d');
 
-let tool = 'move', startX = 0, startY = 0, drawing = false, items = [], selectedItem = null;
+let tool = 'move', startX = 0, startY = 0, items = [], selectedItem = null;
+let waitingSecondPoint = false; // untuk tanda dua titik
 
 // ====================== Set Tool ======================
 function setTool(t, btn = null) {
   tool = t;
   selectedItem = null;
+  waitingSecondPoint = false;
   document.querySelectorAll('#toolButtons button').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
 }
@@ -3427,10 +3429,7 @@ function clearCanvas() {
 // ====================== Open Modal ======================
 function openFotoEditor(fileInput) {
   const input = (typeof fileInput === 'string') ? document.getElementById(fileInput) : fileInput;
-  if (input.files.length === 0) {
-    alert("⚠️ Silakan pilih file terlebih dahulu!");
-    return;
-  }
+  if (input.files.length === 0) { alert("⚠️ Silakan pilih file terlebih dahulu!"); return; }
 
   currentFileInput = input;
   const reader = new FileReader();
@@ -3457,9 +3456,7 @@ function confirmCloseFotoModal() {
     closeFotoModal();
   }
 }
-function closeFotoModal() {
-  document.getElementById('fotoModal').style.display = 'none';
-}
+function closeFotoModal() { document.getElementById('fotoModal').style.display = 'none'; }
 
 // ====================== Get Pointer Position ======================
 function getPointerPos(e) {
@@ -3476,10 +3473,10 @@ function getPointerPos(e) {
 }
 
 // ====================== Pointer Events ======================
-function startPointer(e) { 
+function startPointer(e) {
   const pos = getPointerPos(e);
   startX = pos.x; startY = pos.y;
-  
+
   if (tool === 'move') {
     selectedItem = items.find(item => {
       if (item.type === 'rect') return pos.x >= item.x && pos.x <= item.x + item.w && pos.y >= item.y && pos.y <= item.y + item.h;
@@ -3491,17 +3488,24 @@ function startPointer(e) {
       return false;
     });
   } else {
-    drawing = true;
-    selectedItem = null;
+    if (!waitingSecondPoint) {
+      // titik pertama
+      waitingSecondPoint = true;
+    } else {
+      // titik kedua
+      if (tool === 'arrow') items.push({ type: 'arrow', x: startX, y: startY, x2: pos.x, y2: pos.y });
+      if (tool === 'rect') items.push({ type: 'rect', x: startX, y: startY, w: pos.x - startX, h: pos.y - startY });
+      waitingSecondPoint = false;
+      redraw();
+    }
   }
+
   e.preventDefault();
 }
 
 function movePointer(e) {
-  const pos = getPointerPos(e);
-
-  // ====================== Move ======================
   if (tool === 'move' && selectedItem) {
+    const pos = getPointerPos(e);
     const dx = pos.x - startX, dy = pos.y - startY;
     selectedItem.x += dx;
     selectedItem.y += dy;
@@ -3509,22 +3513,10 @@ function movePointer(e) {
     startX = pos.x; startY = pos.y;
     redraw();
   }
-
   e.preventDefault();
 }
 
 function endPointer(e) {
-  if (tool !== 'move' && drawing) {
-    const pos = getPointerPos(e);
-    drawing = false;
-
-    // ====================== Add Arrow / Rect ======================
-    if (tool === 'arrow') items.push({ type: 'arrow', x: startX, y: startY, x2: pos.x, y2: pos.y });
-    if (tool === 'rect') items.push({ type: 'rect', x: startX, y: startY, w: pos.x - startX, h: pos.y - startY });
-
-    redraw();
-  }
-
   selectedItem = null;
   e.preventDefault();
 }
