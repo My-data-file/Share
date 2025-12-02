@@ -530,7 +530,7 @@ select {
     </button>
 
     <div id="headerTitle" style="font-size: 0.9rem; color: #e0f7fa;">
-      System
+      System.
     </div>
   </div>
 
@@ -3469,8 +3469,15 @@ function filterManualList(input, tabId) {
 
 /* Mobile optimization */
 @media (max-width:420px){
-  .tool-buttons {
-    grid-template-columns: 1fr 1fr;
+
+  /* Modal dinaikkan */
+  .foto-modal-content {
+    margin-top: -40px;       /* atur lebih naik jika perlu */
+  }
+
+  /* Canvas sedikit lebih kecil agar tombol tidak turun */
+  .canvas-area {
+    max-height: 55vh;
   }
 
   .tool-buttons button {
@@ -3479,6 +3486,7 @@ function filterManualList(input, tabId) {
   }
 }
 </style>
+
 
 
 <script>
@@ -9143,4 +9151,5 @@ function goHome() {
 
 </body>
 </html>
+
 
