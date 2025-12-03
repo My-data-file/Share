@@ -2331,6 +2331,75 @@ paNoKS.addEventListener('input', function(e) {
   </div>
 
   <div class="form-group">
+    <label>BS Cetak (pcs)</label>
+    <input type="number" id="finishingJenisBS1" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>BS Lem (pcs)</label>
+    <input type="number" id="finishingJenisBS2" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>BS Ponch (pcs)</label>
+    <input type="number" id="finishingJenisBS3" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>BS Varnish (pcs)</label>
+    <input type="number" id="finishingJenisBS4" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>BS Potong (pcs)</label>
+    <input type="number" id="finishingJenisBS5" placeholder="0">
+  </div>
+
+<style>
+/* ====================== Total BS Merah Tua ====================== */
+#finishingJenisBS {
+  background-color: #ff6f91;  /* merah muda tua */
+  border: 1px solid #ff3366;
+  border-radius: 4px;
+  padding: 6px 8px;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+/* Placeholder tetap terbaca */
+#finishingJenisBS::placeholder {
+  color: #660022;
+  opacity: 1;
+}
+
+/* ====================== Kolom BS Lain Merah Muda Normal ====================== */
+#finishingJenisBS1,
+#finishingJenisBS2,
+#finishingJenisBS3,
+#finishingJenisBS4,
+#finishingJenisBS5 {
+  background-color: #ffc0cb;  /* merah muda cerah */
+  border: 1px solid #ff69b4;
+  border-radius: 4px;
+  padding: 6px 8px;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+#finishingJenisBS1::placeholder,
+#finishingJenisBS2::placeholder,
+#finishingJenisBS3::placeholder,
+#finishingJenisBS4::placeholder,
+#finishingJenisBS5::placeholder {
+  color: #990033;
+  opacity: 1;
+}
+
+</style>
+
+  <div class="form-group">
     <label>QC</label>
     <select id="finishingQC">
       <option value="">Pilih QC</option>
@@ -2619,6 +2688,73 @@ finishingNoKS.addEventListener('input', function(e) {
     <label>Total BS (pcs)</label>
     <input type="number" id="lemJenisBS" placeholder="0">
   </div>
+
+  <div class="form-group">
+    <label>BS Cetak (pcs)</label>
+    <input type="number" id="lemJenisBS1" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>BS Lem (pcs)</label>
+    <input type="number" id="lemJenisBS12" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>BS Ponch (pcs)</label>
+    <input type="number" id="lemJenisBS13" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>BS Varnish (pcs)</label>
+    <input type="number" id="lemJenisBS14" placeholder="0">
+  </div>
+
+  <div class="form-group">
+    <label>BS Potong (pcs)</label>
+    <input type="number" id="lemJenisBS15" placeholder="0">
+  </div>
+
+<style>
+/* ====================== Total BS LEM Merah Tua ====================== */
+#lemJenisBS {
+  background-color: #ff6f91;  /* merah muda tua */
+  border: 1px solid #ff3366;
+  border-radius: 4px;
+  padding: 6px 8px;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+#lemJenisBS::placeholder {
+  color: #660022;
+  opacity: 1;
+}
+
+/* ====================== Kolom BS Lain LEM Merah Muda Cerah ====================== */
+#lemJenisBS1,
+#lemJenisBS12,
+#lemJenisBS13,
+#lemJenisBS14,
+#lemJenisBS15 {
+  background-color: #ffc0cb;  /* merah muda cerah */
+  border: 1px solid #ff69b4;
+  border-radius: 4px;
+  padding: 6px 8px;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+#lemJenisBS1::placeholder,
+#lemJenisBS12::placeholder,
+#lemJenisBS13::placeholder,
+#lemJenisBS14::placeholder,
+#lemJenisBS15::placeholder {
+  color: #990033;
+  opacity: 1;
+}
+</style>
 
   <div class="form-group">
     <label>QC</label>
@@ -4946,7 +5082,7 @@ setTimeout(swapFaceText, 1500);
 
 <script>
 // ====================== KONFIGURASI ======================
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxKZil5H175NoI4JbjkNhccVaok3yeSRiwv8m0I-w2PfdU9Esr6V86mRZkx-My_L1w/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwlu0jT-7MobmgIOpebLIiwXr0k9UqrLIMyUYEqPPh9Gl1qUZZVun1zqB8a8U0E8WLU/exec";
 
 // ====================== SPINNER GLOBAL JS ======================
 const spinner = document.getElementById('loadingSpinner');
@@ -5329,7 +5465,7 @@ async function loadFinishingItems(){
 }
 
 
-// ====================== TAMBAH DATA (FINISHING) ======================
+// ====================== TAMBAH DATA (FINISHING) DENGAN BS DETAIL ======================
 function addFinishingItem() {
   const nama = document.getElementById('finishingNama').value.trim();
   const noKS = document.getElementById('finishingNoKS').value.trim();
@@ -5337,6 +5473,11 @@ function addFinishingItem() {
   const isi = document.getElementById('finishingIsi').value.trim();
   const bagus = document.getElementById('finishingBagus').value.trim();
   const jenisBS = document.getElementById('finishingJenisBS').value.trim();
+  const jenisBS1 = document.getElementById('finishingJenisBS1').value.trim();
+  const jenisBS2 = document.getElementById('finishingJenisBS2').value.trim();
+  const jenisBS3 = document.getElementById('finishingJenisBS3').value.trim();
+  const jenisBS4 = document.getElementById('finishingJenisBS4').value.trim();
+  const jenisBS5 = document.getElementById('finishingJenisBS5').value.trim();
   const qc = document.getElementById('finishingQC').value.trim();
   const update = document.getElementById('finishingUpdate').value.trim();
 
@@ -5365,7 +5506,9 @@ function addFinishingItem() {
     action:'add', 
     sheet:'Finishing', 
     tanggal: tanggalFormatted,
-    nama,noKS,order,isi,bagus,jenisBS,qc,update,keterangan
+    nama,noKS,order,isi,bagus,
+    jenisBS, jenisBS1, jenisBS2, jenisBS3, jenisBS4, jenisBS5, // <-- kolom BS baru
+    qc, update, keterangan
   };
 
   // Spinner tombol
@@ -5393,7 +5536,8 @@ function addFinishingItem() {
 }
 
 
-// ====================== PANGGIL (isi form dari item) ======================
+
+// ====================== PANGGIL (isi form dari item) DENGAN BS DETAIL ======================
 function callFinishing(index){
   const item = finishingItems[index];
   if(!item) return;
@@ -5404,6 +5548,14 @@ function callFinishing(index){
   document.getElementById('finishingIsi').value = item.isi || '';
   document.getElementById('finishingBagus').value = item.bagus || '';
   document.getElementById('finishingJenisBS').value = item.jenisBS || '';
+
+  // ===== Tambahkan BS detail baru =====
+  document.getElementById('finishingJenisBS1').value = item.jenisBS1 || '';
+  document.getElementById('finishingJenisBS2').value = item.jenisBS2 || '';
+  document.getElementById('finishingJenisBS3').value = item.jenisBS3 || '';
+  document.getElementById('finishingJenisBS4').value = item.jenisBS4 || '';
+  document.getElementById('finishingJenisBS5').value = item.jenisBS5 || '';
+
   document.getElementById('finishingQC').value = item.qc || '';
   document.getElementById('finishingUpdate').value = item.update || '';
 
@@ -5416,10 +5568,10 @@ function callFinishing(index){
 
   // ===== Pastikan pindah ke tab FINISHING INPUT =====
   showMenu('qcFinishing');
-
   const tabBtn = document.querySelector('#qcFinishing .tabs button[data-tab="inputFinishing"]');
   if (tabBtn) switchTab(tabBtn);
 }
+
 
 
 // ====================== HAPUS ITEM (langsung hilang dari grid) ======================
@@ -5492,7 +5644,7 @@ if (finishingContainer) {
   }, true); // capture phase
 }
 
-// ====================== EDIT INLINE (FINISHING) ======================
+// ====================== EDIT INLINE (FINISHING) DENGAN BS DETAIL ======================
 function editFinishingInline(index){
   const item = finishingItems[index];
   const container = document.getElementById('gridFinishing');
@@ -5503,10 +5655,9 @@ function editFinishingInline(index){
 
   // Simpan HTML lama untuk cancel (encode agar aman)
   const originalHTML = card.innerHTML;
-  card.innerHTML = ''; // kosongkan dulu supaya tidak ada flicker data lama saat set dataset
+  card.innerHTML = '';
   card.dataset.oldHtml = encodeURIComponent(originalHTML);
 
-  // siapkan nilai keterangan: tampilkan utuh di textarea (user bisa edit bebas)
   const keteranganRaw = item.keterangan || '';
 
   card.innerHTML = `
@@ -5516,7 +5667,13 @@ function editFinishingInline(index){
       <input type="number" class="edit-inline" name="order" value="${escapeHtml(item.order||'')}" placeholder="Order">
       <input type="number" class="edit-inline" name="isi" value="${escapeHtml(item.isi||'')}" placeholder="Isi/Dus">
       <input type="number" class="edit-inline" name="bagus" value="${escapeHtml(item.bagus||'')}" placeholder="Bagus">
-      <input type="number" class="edit-inline" name="jenisBS" value="${escapeHtml(item.jenisBS||'')}" placeholder="BS">
+      
+      <input type="number" class="edit-inline" name="jenisBS" value="${escapeHtml(item.jenisBS||'')}" placeholder="BS Total">
+      <input type="number" class="edit-inline" name="jenisBS1" value="${escapeHtml(item.jenisBS1||'')}" placeholder="BS Cetak">
+      <input type="number" class="edit-inline" name="jenisBS2" value="${escapeHtml(item.jenisBS2||'')}" placeholder="BS Lem">
+      <input type="number" class="edit-inline" name="jenisBS3" value="${escapeHtml(item.jenisBS3||'')}" placeholder="BS Ponch">
+      <input type="number" class="edit-inline" name="jenisBS4" value="${escapeHtml(item.jenisBS4||'')}" placeholder="BS Varnish">
+      <input type="number" class="edit-inline" name="jenisBS5" value="${escapeHtml(item.jenisBS5||'')}" placeholder="BS Potong">
 
       <select class="edit-inline" name="qc">
         <option value="Anom" ${item.qc==='Anom'? 'selected':''}>Anom</option>
@@ -5540,6 +5697,7 @@ function editFinishingInline(index){
 }
 
 
+
 // ====================== BATAL EDIT INLINE (FINISHING) ======================
 function cancelFinishingInline(index, oldHtmlEncoded) {
   const container = document.getElementById('gridFinishing');
@@ -5556,7 +5714,7 @@ function cancelFinishingInline(index, oldHtmlEncoded) {
 }
 
 
-// ====================== SIMPAN HASIL EDIT INLINE (FINISHING) ======================
+// ====================== SIMPAN HASIL EDIT INLINE (FINISHING) DENGAN BS DETAIL ======================
 async function saveFinishingInline(index, btn) {
   const container = document.getElementById('gridFinishing');
   const card = container.querySelector(`.grid-card[data-index="${index}"]`);
@@ -5578,9 +5736,14 @@ async function saveFinishingInline(index, btn) {
     isi: inputs[3].value.trim(),
     bagus: inputs[4].value.trim(),
     jenisBS: inputs[5].value.trim(),
-    qc: inputs[6].value,
-    update: inputs[7].value,
-    keterangan: inputs[8].value.trim()
+    jenisBS1: inputs[6].value.trim(),
+    jenisBS2: inputs[7].value.trim(),
+    jenisBS3: inputs[8].value.trim(),
+    jenisBS4: inputs[9].value.trim(),
+    jenisBS5: inputs[10].value.trim(),
+    qc: inputs[11].value,
+    update: inputs[12].value,
+    keterangan: inputs[13].value.trim()
   };
 
   const orig = finishingItems[index];
@@ -5619,6 +5782,7 @@ async function saveFinishingInline(index, btn) {
 
 
 
+
 // ====================== FILTER BERDASARKAN ISI GRID FINISHING ======================
 function filterFinishingGrid(query){
   const grid = document.getElementById('gridFinishing');
@@ -5634,17 +5798,18 @@ function filterFinishingGrid(query){
 }
 
 
-// ====================== CLEAR FORM (FINISHING) ======================
+// ====================== CLEAR FORM (FINISHING) DENGAN BS DETAIL ======================
 function clearFinishingForm() {
-  [
-    'finishingNama','finishingNoKS','finishingQC','finishingUpdate'
-  ].forEach(id => {
+  // Text fields
+  ['finishingNama','finishingNoKS','finishingQC','finishingUpdate'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
 
   // Number fields
-  ['finishingOrder','finishingIsi','finishingBagus','finishingJenisBS'].forEach(id => {
+  ['finishingOrder','finishingIsi','finishingBagus','finishingJenisBS',
+   'finishingJenisBS1','finishingJenisBS2','finishingJenisBS3','finishingJenisBS4','finishingJenisBS5'
+  ].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = 0;
   });
@@ -5655,6 +5820,7 @@ function clearFinishingForm() {
     if(el) el.value = '';
   }
 }
+
 
 
 // ====================== DASHBOARD FINISHING COMPACT DENGAN HIGHLIGHT ======================
@@ -7131,7 +7297,7 @@ loadPAItems();
 let lemItems = []; // array yang diambil dari sheet Lem
 
 
-// ====================== RENDER GRID HASIL (LEM) ======================
+// ====================== RENDER GRID HASIL (LEM) DENGAN BS DETAIL ======================
 function renderGridLem(query = "") {
   const container = document.getElementById('gridLem');
   if (!container) return;
@@ -7162,9 +7328,7 @@ function renderGridLem(query = "") {
 
     const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, q)}</strong><br>` : '';
 
-    // ============================
-    // NORMALISASI KETERANGAN 1–5
-    // ============================
+    // ============================ NORMALISASI KETERANGAN 1–5 ============================
     const ketMap = {1:"-",2:"-",3:"-",4:"-",5:"-"};
     const raw = (item.keterangan || "").toString().trim();
     if(raw !== ""){
@@ -7173,14 +7337,11 @@ function renderGridLem(query = "") {
         if(m){
           const no = parseInt(m[1]);
           if(no>=1 && no<=5){
-            // bersihkan teks, kalau kosong tetap "-"
             ketMap[no] = m[2].trim() || "-";
           }
         }
       });
     }
-
-    // Render selalu 1–5
     let ketsHtml = '';
     for(let j=1; j<=5; j++){
       ketsHtml += `<div>${j}. ${highlightHtmlSafe(ketMap[j], q)}</div>`;
@@ -7195,7 +7356,12 @@ function renderGridLem(query = "") {
         <span>Order: ${highlightHtmlSafe(item.order || '', q)}</span><br>
         <span>Isi/Dus: ${highlightHtmlSafe(item.isi || '', q)}</span><br>
         <span>Bagus: ${highlightHtmlSafe(item.bagus || '', q)}</span><br>
-        <span>BS: ${highlightHtmlSafe(item.jenisBS || '', q)}</span><br>
+        <span>BS Total: ${highlightHtmlSafe(item.jenisBS || '', q)}</span><br>
+        <span>BS Cetak: ${highlightHtmlSafe(item.jenisBS1 || '', q)}</span><br>
+        <span>BS Lem: ${highlightHtmlSafe(item.jenisBS12 || '', q)}</span><br>
+        <span>BS Ponch: ${highlightHtmlSafe(item.jenisBS13 || '', q)}</span><br>
+        <span>BS Varnish: ${highlightHtmlSafe(item.jenisBS14 || '', q)}</span><br>
+        <span>BS Potong: ${highlightHtmlSafe(item.jenisBS15 || '', q)}</span><br>
         <span>QC: ${highlightHtmlSafe(item.qc || '', q)}</span><br>
 
         <span><b>Keterangan:</b></span><br>
@@ -7227,6 +7393,7 @@ function renderGridLem(query = "") {
 
 
 
+
 // ====================== LOAD DATA DARI SPREADSHEET (LEM) ======================
 async function loadLemItems(){
   try{
@@ -7240,26 +7407,31 @@ async function loadLemItems(){
 }
 
 
-// ====================== TAMBAH DATA (LEM) ======================
+// ====================== TAMBAH DATA (LEM) DENGAN BS DETAIL ======================
 function addLemItem() {
   const nama = document.getElementById('lemNama').value.trim();
   const noKS = document.getElementById('lemNoKS').value.trim();
-  const order = document.getElementById('lemOrder') ? document.getElementById('lemOrder').value.trim() : '';
-  const isi = document.getElementById('lemIsi') ? document.getElementById('lemIsi').value.trim() : '';
-  const bagus = document.getElementById('lemBagus') ? document.getElementById('lemBagus').value.trim() : '';
-  const jenisBS = document.getElementById('lemJenisBS') ? document.getElementById('lemJenisBS').value.trim() : '';
-  const qc = document.getElementById('lemQC') ? document.getElementById('lemQC').value.trim() : '';
-  const update = document.getElementById('lemUpdate') ? document.getElementById('lemUpdate').value.trim() : '';
+  const order = document.getElementById('lemOrder')?.value.trim() || '';
+  const isi = document.getElementById('lemIsi')?.value.trim() || '';
+  const bagus = document.getElementById('lemBagus')?.value.trim() || '';
+  const jenisBS = document.getElementById('lemJenisBS')?.value.trim() || '';
+  const jenisBS1 = document.getElementById('lemJenisBS1')?.value.trim() || '';
+  const jenisBS12 = document.getElementById('lemJenisBS12')?.value.trim() || '';
+  const jenisBS13 = document.getElementById('lemJenisBS13')?.value.trim() || '';
+  const jenisBS14 = document.getElementById('lemJenisBS14')?.value.trim() || '';
+  const jenisBS15 = document.getElementById('lemJenisBS15')?.value.trim() || '';
+  const qc = document.getElementById('lemQC')?.value.trim() || '';
+  const update = document.getElementById('lemUpdate')?.value.trim() || '';
 
-  // ===== Gabungkan keterangan nomor 1–5 format BAPRO =====
+  // Gabungkan keterangan nomor 1–5
   const keterangan =
-`1. ${document.getElementById("lemKet1").value}
-2. ${document.getElementById("lemKet2").value}
-3. ${document.getElementById("lemKet3").value}
-4. ${document.getElementById("lemKet4").value}
-5. ${document.getElementById("lemKet5").value}`;
+`1. ${document.getElementById("lemKet1")?.value || ''}
+2. ${document.getElementById("lemKet2")?.value || ''}
+3. ${document.getElementById("lemKet3")?.value || ''}
+4. ${document.getElementById("lemKet4")?.value || ''}
+5. ${document.getElementById("lemKet5")?.value || ''}`;
 
-  // Validasi
+  // Validasi wajib
   if (!nama || !noKS || !qc || !update) {
     return alert('Nama Order, No KS, QC, dan Proses wajib diisi!');
   }
@@ -7276,10 +7448,9 @@ function addLemItem() {
     action:'add', 
     sheet:'Lem', 
     tanggal: tanggalFormatted,
-    nama,noKS,order,isi,bagus,jenisBS,qc,update,keterangan
+    nama,noKS,order,isi,bagus,jenisBS,jenisBS1,jenisBS12,jenisBS13,jenisBS14,jenisBS15,qc,update,keterangan
   };
 
-  // Spinner tombol
   const btnTambah = document.querySelector('#inputLem button');
   if (btnTambah) {
     btnTambah.disabled = true;
@@ -7291,17 +7462,18 @@ function addLemItem() {
     setTimeout(() => {
       btnTambah.disabled = false;
       btnTambah.innerHTML = originalHTML;
-      clearLemForm();
+      if (typeof clearLemForm === 'function') clearLemForm();
       loadLemItems();
       alert('✅ Data Lem berhasil ditambahkan!');
     }, 8000);
   } else {
     postPayload(payload);
-    clearLemForm();
+    if (typeof clearLemForm === 'function') clearLemForm();
     setTimeout(() => loadLemItems(), 8000);
     alert('✅ Data Lem berhasil ditambahkan!');
   }
 }
+
 
 
 // ====================== PANGGIL (isi form dari item) ======================
@@ -7315,6 +7487,14 @@ function callLem(index){
   document.getElementById('lemIsi').value = item.isi || '';
   document.getElementById('lemBagus').value = item.bagus || '';
   document.getElementById('lemJenisBS').value = item.jenisBS || '';
+
+  // BS detail baru
+  document.getElementById('lemJenisBS1').value = item.jenisBS1 || '';
+  document.getElementById('lemJenisBS12').value = item.jenisBS12 || '';
+  document.getElementById('lemJenisBS13').value = item.jenisBS13 || '';
+  document.getElementById('lemJenisBS14').value = item.jenisBS14 || '';
+  document.getElementById('lemJenisBS15').value = item.jenisBS15 || '';
+
   document.getElementById('lemQC').value = item.qc || '';
   document.getElementById('lemUpdate').value = item.update || '';
 
@@ -7330,6 +7510,7 @@ function callLem(index){
   const tabBtn = document.querySelector('#qcLem .tabs button[data-tab="inputLem"]');
   if(tabBtn) switchTab(tabBtn);
 }
+
 
 // ====================== HAPUS ITEM (LEM) ======================
 function deleteLem(index) {
@@ -7403,7 +7584,7 @@ if (lemContainer) {
   }, true); // capture phase
 }
 
-// ====================== EDIT INLINE (LEM) ======================
+// ====================== EDIT INLINE (LEM) DENGAN BS DETAIL ======================
 function editLemInline(index){
   const item = lemItems[index];
   const container = document.getElementById('gridLem');
@@ -7417,26 +7598,33 @@ function editLemInline(index){
 
   card.innerHTML = `
     <div class="edit-grid">
-      <input type="text" class="edit-inline" value="${escapeHtml(item.nama||'')}" placeholder="Nama Order">
-      <input type="text" class="edit-inline" value="${escapeHtml(item.noKS||'')}" placeholder="No KS">
-      <input type="number" class="edit-inline" value="${escapeHtml(item.order||'')}" placeholder="Order">
-      <input type="number" class="edit-inline" value="${escapeHtml(item.isi||'')}" placeholder="Isi/Dus">
-      <input type="number" class="edit-inline" value="${escapeHtml(item.bagus||'')}" placeholder="Bagus">
-      <input type="number" class="edit-inline" value="${escapeHtml(item.jenisBS||'')}" placeholder="BS">
+      <input type="text" class="edit-inline" name="nama" value="${escapeHtml(item.nama||'')}" placeholder="Nama Order">
+      <input type="text" class="edit-inline" name="noKS" value="${escapeHtml(item.noKS||'')}" placeholder="No KS">
+      <input type="number" class="edit-inline" name="order" value="${escapeHtml(item.order||'')}" placeholder="Order">
+      <input type="number" class="edit-inline" name="isi" value="${escapeHtml(item.isi||'')}" placeholder="Isi/Dus">
+      <input type="number" class="edit-inline" name="bagus" value="${escapeHtml(item.bagus||'')}" placeholder="Bagus">
+      <input type="number" class="edit-inline" name="jenisBS" value="${escapeHtml(item.jenisBS||'')}" placeholder="Total BS">
 
-      <select class="edit-inline">
+      <!-- BS detail baru -->
+      <input type="number" class="edit-inline" name="jenisBS1" value="${escapeHtml(item.jenisBS1||'')}" placeholder="BS Cetak">
+      <input type="number" class="edit-inline" name="jenisBS12" value="${escapeHtml(item.jenisBS12||'')}" placeholder="BS Lem">
+      <input type="number" class="edit-inline" name="jenisBS13" value="${escapeHtml(item.jenisBS13||'')}" placeholder="BS Ponch">
+      <input type="number" class="edit-inline" name="jenisBS14" value="${escapeHtml(item.jenisBS14||'')}" placeholder="BS Varnish">
+      <input type="number" class="edit-inline" name="jenisBS15" value="${escapeHtml(item.jenisBS15||'')}" placeholder="BS Potong">
+
+      <select class="edit-inline" name="qc">
         <option value="Martini" ${item.qc==='Martini'? 'selected':''}>Martini</option>
         <option value="Krestin" ${item.qc==='Krestin'? 'selected':''}>Krestin</option>
         <option value="Ismie" ${item.qc==='Ismie'? 'selected':''}>Ismie</option>
       </select>
 
-      <select class="edit-inline">
+      <select class="edit-inline" name="update">
         <option value="TO" ${item.update==='TO'? 'selected':''}>TO</option>
         <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
         <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
       </select>
 
-      <textarea class="edit-inline" rows="2" placeholder="Keterangan">${escapeHtml(item.keterangan||'')}</textarea>
+      <textarea class="edit-inline" name="keterangan" rows="2" placeholder="Keterangan">${escapeHtml(item.keterangan||'')}</textarea>
     </div>
 
     <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
@@ -7444,6 +7632,7 @@ function editLemInline(index){
       <button class="btn-icon btn-cancel" title="Batal" onclick="cancelLemInline(${index}, \`${encodeURIComponent(oldHtml)}\`)">❌</button>
     </div>`;
 }
+
 
 // ====================== BATAL EDIT INLINE (LEM) ======================
 function cancelLemInline(index, oldHtmlEncoded) {
@@ -7454,11 +7643,10 @@ function cancelLemInline(index, oldHtmlEncoded) {
   card.innerHTML = decodeURIComponent(oldHtmlEncoded);
 }
 
-// ====================== SIMPAN HASIL EDIT INLINE (LEM) ======================
+// ====================== SIMPAN HASIL EDIT INLINE (LEM) DENGAN BS DETAIL ======================
 async function saveLemInline(index, btn) {
   const container = document.getElementById('gridLem');
   const card = container.querySelector(`.grid-card[data-index="${index}"]`);
-
   if (!card) return;
 
   const btnSave = btn;
@@ -7467,19 +7655,26 @@ async function saveLemInline(index, btn) {
     btnSave.textContent = '⏳ Menyimpan...';
     btnSave.disabled = true;
   }
-  if (btnCancel) btnCancel.style.display = 'none'; // sembunyikan cancel saat menyimpan
+  if (btnCancel) btnCancel.style.display = 'none';
 
   const inputs = card.querySelectorAll('.edit-inline');
+
+  // Sesuaikan urutan dengan editLemInline (nama, noKS, order, isi, bagus, jenisBS, jenisBS1, jenisBS12–15, qc, update, keterangan)
   const updated = {
     nama: inputs[0].value.trim(),
     noKS: inputs[1].value.trim(),
     order: inputs[2].value.trim(),
     isi: inputs[3].value.trim(),
     bagus: inputs[4].value.trim(),
-    jenisBS: inputs[5].value.trim(),
-    qc: inputs[6].value,
-    update: inputs[7].value,
-    keterangan: inputs[8].value.trim()
+    jenisBS: inputs[5].value.trim(),       // Total BS
+    jenisBS1: inputs[6].value.trim(),      // BS Cetak
+    jenisBS12: inputs[7].value.trim(),     // BS Lem
+    jenisBS13: inputs[8].value.trim(),     // BS Ponch
+    jenisBS14: inputs[9].value.trim(),     // BS Varnish
+    jenisBS15: inputs[10].value.trim(),    // BS Potong
+    qc: inputs[11].value,
+    update: inputs[12].value,
+    keterangan: inputs[13].value.trim()
   };
 
   const orig = lemItems[index];
@@ -7517,6 +7712,7 @@ async function saveLemInline(index, btn) {
 
 
 
+
 // ====================== FILTER BERDASARKAN ISI GRID ======================
 function filterLemGrid(query){
   const grid = document.getElementById('gridLem');
@@ -7532,27 +7728,30 @@ function filterLemGrid(query){
 }
 
 
-// ====================== CLEAR FORM (LEM) ======================
+// ====================== CLEAR FORM (LEM) DENGAN BS DETAIL ======================
 function clearLemForm() {
-  [
-    'lemNama','lemNoKS','lemQC','lemUpdate'
-  ].forEach(id => {
+  // Reset teks umum
+  ['lemNama','lemNoKS','lemQC','lemUpdate'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
   });
 
-  // Number fields
-  ['lemOrder','lemIsi','lemBagus','lemJenisBS'].forEach(id => {
+  // Reset semua number fields, termasuk BS baru
+  [
+    'lemOrder','lemIsi','lemBagus','lemJenisBS',
+    'lemJenisBS1','lemJenisBS12','lemJenisBS13','lemJenisBS14','lemJenisBS15'
+  ].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = 0;
   });
 
   // Reset keterangan 1–5
-  for (let i=1; i<=5; i++){
+  for (let i = 1; i <= 5; i++) {
     const el = document.getElementById("lemKet"+i);
-    if(el) el.value = '';
+    if (el) el.value = '';
   }
 }
+
 
 
 // ====================== DASHBOARD LEM (COMPACT + FILTER + HIGHLIGHT) ======================
