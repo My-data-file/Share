@@ -4653,828 +4653,254 @@ if (spvNoKS) {
 
 
 
-<!-- ======================== Floating Chibi Robot Button (UPDATED FLEX) ======================== -->
-<div class="chatbot-wrapper" role="button" aria-label="Buka chatbot" tabindex="0">
-  <div class="robot-chibi">
 
-    <!-- PANEL TEKS BICARA -->
-    <div class="speech-panel" id="speechPanel" aria-live="polite">Halo!</div>
 
-    <!-- Kepala -->
-    <div class="head">
-      <div class="visor">
 
-        <!-- WRAPPER MATA -->
-        <div class="eyes-wrap">
-          <div class="eye-left" aria-hidden="true"></div>
-          <div class="eye-right" aria-hidden="true"></div>
-        </div>
 
-        <!-- Mulut -->
-        <div class="mouth" aria-hidden="true"></div>
+<!-- =========================================
+      🟦 FLOATING CHATBOT 3D + MODAL AI
+========================================= -->
+<div class="chatbot-wrapper" onclick="openMenuModal()">
+  <div class="chatbot-bg pulse-lines">
+    <div class="bg-light"></div>
 
+    <!-- Robot -->
+    <div class="chatbot-body robot">
+      <div class="chatbot-face" id="cbFace">
+        <div class="reflection"></div>
+        <div class="eye left"></div>
+        <div class="eye right"></div>
+        <div class="smile"></div>
       </div>
     </div>
 
-    <!-- Badan -->
-    <div class="body">
-      <div class="body-light" aria-hidden="true">AI</div>
+    <!-- Text AI -->
+    <div class="chatbot-text" id="cbText">
+      AI
+      <div class="flare"></div>
     </div>
-
-    <!-- Tangan -->
-    <div class="arm left" aria-hidden="true"></div>
-    <div class="arm right" aria-hidden="true"></div>
-
-    <!-- Kaki -->
-    <div class="leg left" aria-hidden="true"></div>
-    <div class="leg right" aria-hidden="true"></div>
-
   </div>
 </div>
 
-<!-- ====================== MENU MODAL (5 AI) ====================== -->
-<div id="menuModal" class="pw-modal" aria-hidden="true" style="display:none;">
-  <div class="pw-modal__dialog" role="dialog" aria-modal="true" style="max-width:420px;">
-    <h3 style="margin:0 0 8px;">Pilih Asisten AI QC</h3>
-
-    <div style="display:flex;flex-direction:column;gap:8px;">
-
-      <!-- QC BAPRO – MERAH TRANSPARAN -->
-      <button class="menu-ai-btn" data-ai="bapro"
-        style="padding:10px;border-radius:8px;border:none;cursor:pointer;
-        background:rgba(255, 59, 59, 0.65);color:#fff;font-weight:800;">
-        AI QC BAPRO
-      </button>
-
-      <!-- QC CETAK – ORANGE TRANSPARAN -->
-      <button class="menu-ai-btn" data-ai="cetak"
-        style="padding:10px;border-radius:8px;border:none;cursor:pointer;
-        background:rgba(255, 152, 0, 0.65);color:#000;font-weight:800;">
-        AI QC CETAK
-      </button>
-
-      <!-- QC FINISHING – HIJAU TRANSPARAN -->
-      <button class="menu-ai-btn" data-ai="finishing"
-        style="padding:10px;border-radius:8px;border:none;cursor:pointer;
-        background:rgba(76, 175, 80, 0.65);color:#fff;font-weight:800;">
-        AI QC FINISHING
-      </button>
-
-      <!-- QC LEM – UNGU TRANSPARAN -->
-      <button class="menu-ai-btn" data-ai="lem"
-        style="padding:10px;border-radius:8px;border:none;cursor:pointer;
-        background:rgba(155, 89, 182, 0.65);color:#fff;font-weight:800;">
-        AI QC LEM
-      </button>
-
-      <!-- QC REGISTER – BIRU MUDA TRANSPARAN -->
-      <button class="menu-ai-btn" data-ai="register"
-        style="padding:10px;border-radius:8px;border:none;cursor:pointer;
-        background:rgba(0, 207, 255, 0.65);color:#000;font-weight:800;">
-        AI QC REGISTER
-      </button>
-
+<!-- =========================================
+      🟧 MODAL PILIH AI
+========================================= -->
+<div id="menuModal" class="pw-modal" style="display:none;">
+  <div class="pw-modal__dialog modal-menu">
+    <h3>Pilih Asisten AI QC</h3>
+    <div class="menu-btns">
+      <button class="menu-ai-btn" data-ai="bapro">AI QC BAPRO</button>
+      <button class="menu-ai-btn" data-ai="cetak">AI QC CETAK</button>
+      <button class="menu-ai-btn" data-ai="finishing">AI QC FINISHING</button>
+      <button class="menu-ai-btn" data-ai="lem">AI QC LEM</button>
+      <button class="menu-ai-btn" data-ai="register">AI QC REGISTER</button>
     </div>
-
-    <div style="margin-top:12px;text-align:center;">
-      <button id="menuCloseBtn" style="padding:8px 12px;border-radius:8px;border:none;background:#f2f2f2;cursor:pointer;">
-        Batal
-      </button>
+    <div class="menu-cancel">
+      <button id="menuCloseBtn">Batal</button>
     </div>
-
   </div>
 </div>
 
-
-<!-- Custom Password Modal (original, reused for per-AI password) -->
-<div id="pwModal" class="pw-modal" aria-hidden="true">
-  <div class="pw-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="pwTitle">
-    <h3 id="pwTitle">Password AI</h3>
-    <input id="pwInput" type="password" placeholder="Password" autocomplete="off" />
+<!-- =========================================
+      🟧 PASSWORD MODAL
+========================================= -->
+<div id="pwModal" class="pw-modal" aria-hidden="true" style="display:none;">
+  <div class="pw-modal__dialog modal-pw">
+    <h3>Password AI</h3>
+    <input id="pwInput" type="password" placeholder="Masukkan password" autocomplete="off" />
     <div class="pw-actions">
       <button id="pwOk">Buka</button>
       <button id="pwCancel">Batal</button>
     </div>
-    <p class="pw-note">Tip: Gunakan AI Dengan Baik</p>
+    <p class="pw-note">Gunakan AI dengan bijak.</p>
   </div>
 </div>
 
-<style>
-/* ===================== BASE WRAPPER ===================== */
-.chatbot-wrapper { width:120px;height:150px;position:fixed;bottom:78px;right:28px;z-index:9999;cursor:pointer;display:flex;justify-content:center;align-items:center;animation: float 4s ease-in-out infinite, idleTilt 6s ease-in-out infinite; outline:none; }
-.chatbot-wrapper:focus{ box-shadow:0 0 0 4px rgba(0,207,255,0.12); border-radius:12px; }
-
-/* ROBOT CHIBI */
-.robot-chibi{ position:relative;width:105px;height:140px; }
-
-/* SPEECH PANEL FLEXIBLE */
-.speech-panel{ position:absolute; top:-30px; right:160px; min-width:fit-content; max-width:300px; background:#fff; border:5px solid #000; padding:16px 22px; border-radius:18px; font-size:11px; font-weight:900; color:#000; line-height:1.45; opacity:0; transform:translateX(10px); pointer-events:none; transition:all 0.35s ease; box-shadow:0 0 16px rgba(0,0,0,0.32); word-wrap: break-word; }
-
-/* SPEECH PANEL MODERN */
-.speech-panel {
-  position: absolute;
-  top: -30px;
-  right: 160px;
-  min-width: fit-content;
-  max-width: 300px;
-  padding: 14px 20px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #000;
-  line-height: 1.5;
-  background: rgba(0, 207, 255, 0.15);
-  backdrop-filter: blur(8px);
-  border-radius: 22px;
-  border: 1px solid rgba(0, 207, 255, 0.4);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  opacity: 0;
-  transform: translateX(10px);
-  pointer-events: none;
-  transition: all 0.35s ease;
-  word-wrap: break-word;
-}
-
-/* Pointer modern */
-.speech-panel::before {
-  content: "";
-  position: absolute;
-  right: -24px;
-  top: 30px;
-  width: 0;
-  height: 0;
-  border-left: 24px solid rgba(0, 207, 255, 0.4);
-  border-top: 12px solid transparent;
-  border-bottom: 12px solid transparent;
-}
-.speech-panel::after {
-  content: "";
-  position: absolute;
-  right: -20px;
-  top: 30px;
-  width: 0;
-  height: 0;
-  border-left: 20px solid rgba(0, 207, 255, 0.15);
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-}
-
-.speech-panel.show {
-  opacity: 1;
-  transform: translateX(0);
-}
-.speech-panel.talkShake {
-  animation: talkShake 0.25s ease-in-out;
-}
-
-@keyframes talkShake{0%{transform:translateX(0);}35%{transform:translateX(2px);}70%{transform:translateX(-2px);}100%{transform:translateX(0);} }
-
-/* Floating & tilt */
-@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-@keyframes idleTilt{0%,100%{transform:rotate(0deg);}50%{transform:rotate(1.5deg);}}
-
-/* HEAD & VISOR */
-.head{ width:95px;height:75px;background:#fff;border:6px solid #000;border-radius:26px; position:absolute;top:10px;left:50%;transform:translateX(-50%);animation: headSway 3s ease-in-out infinite;box-shadow:0 0 12px rgba(0,207,255,0.4);}
-.visor{width:78px;height:46px;background:#111;border-radius:20px;position:absolute;top:10px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:4px;overflow:hidden; box-shadow:inset 0 0 18px rgba(0,207,255,0.28),0 6px 18px rgba(0,207,255,0.06);}
-.eyes-wrap{display:flex;gap:12px;margin-top:2px;}
-.eye-left,.eye-right{width:18px;height:18px;background:#00cfff;border-radius:50%;transition:all 0.25s ease-in-out;animation: blink 6s infinite, eyeMove 5s ease-in-out infinite, microMove 2.4s infinite ease-in-out;}
-@keyframes microMove{0%,100%{transform:translateY(0);}50%{transform:translateY(1px);}}
-
-/* mouth, body, arms, legs — tetap sama */
-.mouth{position:absolute;bottom:5px;width:22px;height:6px;background:#00cfff;border-radius:20px;transition:all 0.22s cubic-bezier(.2,.9,.2,1);animation:mouthBreath 3.5s ease-in-out infinite;}
-@keyframes mouthBreath{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
-
-/* AI chest */
-.body{width:70px;height:55px;background:#fff;border:6px solid #000;border-radius:26px;position:absolute;top:82px;left:50%;transform:translateX(-50%);animation:bodyWobble 3s ease-in-out infinite,bodyBreath 4s ease-in-out infinite;}
-.body-light{ ... } /* tetap */
-
-/* ===================== PASSWORD MODAL – NEW MODERN STYLE ===================== */
-
-.pw-modal {
-  position: fixed;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  backdrop-filter: blur(8px);
-  background: rgba(0, 0, 0, 0.45);
-  z-index: 99999;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-.pw-modal.open,
-.pw-modal[aria-hidden="false"] {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.pw-modal__dialog {
-  width: 310px;
-  padding: 22px 26px;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(14px);
-  border-radius: 20px;
-  border: 1px solid rgba(0, 207, 255, 0.45);
-  text-align: center;
-  box-shadow: 0 12px 28px rgba(0,0,0,0.35);
-  transform: scale(0.85);
-  opacity: 0;
-  animation: pwPopupShow 0.35s ease forwards;
-}
-
-@keyframes pwPopupShow {
-  0% { opacity: 0; transform: scale(0.85); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-/* Title */
-.pw-modal__dialog h3 {
-  font-size: 18px;
-  margin: 0 0 14px;
-  font-weight: 700;
-  color: #ffffff;
-  text-shadow: 0 0 6px rgba(0, 207, 255, 0.8);
-}
-
-/* Input */
-.pw-modal__dialog input {
-  width: 100%;
-  padding: 12px 14px;
-  font-size: 15px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.5);
-  background: rgba(255,255,255,0.18);
-  color: #fff;
-  outline: none;
-  transition: 0.2s ease;
-}
-.pw-modal__dialog input:focus {
-  border-color: #00e1ff;
-  box-shadow: 0 0 10px rgba(0,224,255,0.6);
-  background: rgba(255,255,255,0.26);
-}
-
-/* Buttons */
-.pw-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 14px;
-  justify-content: center;
-}
-
-.pw-actions button {
-  flex: 1;
-  padding: 10px 14px;
-  border-radius: 14px;
-  border: none;
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: 800;
-  transition: 0.22s ease;
-}
-
-/* OK */
-#pwOk {
-  background: linear-gradient(135deg, #00e0ff, #00bfff);
-  color: #000;
-  box-shadow: 0 6px 14px rgba(0,207,255,0.4);
-}
-#pwOk:hover { filter: brightness(1.12); box-shadow: 0 8px 18px rgba(0,224,255,0.6); }
-#pwOk:active { transform: scale(0.96); }
-
-/* Cancel */
-#pwCancel {
-  background: rgba(255,255,255,0.3);
-  color: #fff;
-  border: 1px solid rgba(255,255,255,0.35);
-}
-#pwCancel:hover { background: rgba(255,255,255,0.45); }
-#pwCancel:active { transform: scale(0.96); }
-
-/* Note */
-.pw-note {
-  margin-top: 10px;
-  font-size: 13px;
-  color: #e8ffff;
-  opacity: 0.8;
-}
-
-/* ====== EFFECT HOVER + ACTIVE UNTUK TOMBOL PASSWORD ====== */
-
-/* Tombol OK */
-#pwOk {
-  background: #00cfff;
-  color: #000;
-  transition: all 0.22s ease;
-}
-#pwOk:hover {
-  filter: brightness(1.18);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0, 207, 255, 0.45);
-}
-#pwOk:active {
-  transform: scale(0.94);
-  box-shadow: 0 3px 8px rgba(0, 207, 255, 0.35);
-}
-
-/* Tombol Cancel */
-#pwCancel {
-  background: #f2f2f2;
-  color: #000 !important;        /* <<< TEKS BATAL JADI HITAM */
-  border: 1px solid #ddd;
-  transition: all 0.22s ease;
-}
-#pwCancel:hover {
-  background: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
-}
-#pwCancel:active {
-  transform: scale(0.94);
-  box-shadow: 0 3px 8px rgba(0,0,0,0.10);
-}
-
-
-/* =========================================================
-   EFECT HOVER & ACTIVE UNTUK TOMBOL MENU AI QC (BAPRO DLL)
-   ========================================================= */
-
-/* Target semua tombol pilihan QC */
-button[id*="QC"],
-button[class*="qc"],
-button[class*="QC"],
-button[class*="btn"],
-button[class*="menu"],
-.qc-btn {
-  transition: all 0.22s ease;
-}
-
-/* Hover */
-button[id*="QC"]:hover,
-button[class*="qc"]:hover,
-button[class*="QC"]:hover,
-button[class*="btn"]:hover,
-button[class*="menu"]:hover,
-.qc-btn:hover {
-  transform: translateY(-3px);
-  filter: brightness(1.15);
-  box-shadow: 0 8px 18px rgba(0, 207, 255, 0.45);
-}
-
-/* Active (klik) */
-button[id*="QC"]:active,
-button[class*="qc"]:active,
-button[class*="QC"]:active,
-button[class*="btn"]:active,
-button[class*="menu"]:active,
-.qc-btn:active {
-  transform: scale(0.94);
-  box-shadow: 0 3px 8px rgba(0, 207, 255, 0.35);
-}
-
-
-
-</style>
-
+<!-- =========================================
+      🟦 SCRIPT PASSWORD + ROBOT ANIM
+========================================= -->
 <script>
-/* ===================== CONFIG & AI LIST ===================== */
-/* Default legacy password (kept for backward compat, but we now use per-AI passwords) */
-const SPV_PASSWORD = "spv123";
-const CHAT_URL = "https://www.chatbase.co/chatbot-iframe/Ow6RgaAkkBqt6viAupxxm";
-
-/* Per-AI config: password + url */
 const AI_CONFIG = {
-  bapro:      { pass: "spv123",    url: "https://www.chatbase.co/chatbot-iframe/Ow6RgaAkkBqt6viAupxxm" }, // <-- isi url Chatbase masing-masing
-  cetak:      { pass: "spv123",    url: "https://www.chatbase.co/chatbot-iframe/xC4UNODh6Z_N6c5NrdqnJ" },
-  finishing:  { pass: "spv123",    url: "https://www.chatbase.co/chatbot-iframe/h8G0LYCfSqbKPrEGZO91-" },
-  lem:        { pass: "spv123",    url: "https://www.chatbase.co/chatbot-iframe/Bg84DJJ43GDzYAbU9o30O" },
-  register:   { pass: "spv123",    url: "https://www.chatbase.co/chatbot-iframe/HOzp5h4l66C3iJbun33x-" }
+  bapro:      { pass: "spv123", url: "https://www.chatbase.co/chatbot-iframe/Ow6RgaAkkBqt6viAupxxm" },
+  cetak:      { pass: "spv123", url: "https://www.chatbase.co/chatbot-iframe/xC4UNODh6Z_N6c5NrdqnJ" },
+  finishing:  { pass: "spv123", url: "https://www.chatbase.co/chatbot-iframe/h8G0LYCfSqbKPrEGZO91-" },
+  lem:        { pass: "spv123", url: "https://www.chatbase.co/chatbot-iframe/Bg84DJJ43GDzYAbU9o30O" },
+  register:   { pass: "spv123", url: "https://www.chatbase.co/chatbot-iframe/HOzp5h4l66C3iJbun33x-" }
 };
 
 let selectedAI = null;
 
-/* ===================== DOM READY ===================== */
-document.addEventListener("DOMContentLoaded", () => {
-  /* ---- original element selections ---- */
-  const wrapper = document.querySelector(".chatbot-wrapper");
-  const eyeL = document.querySelector(".eye-left");
-  const eyeR = document.querySelector(".eye-right");
-  const mouth = document.querySelector(".mouth");
-  const panel = document.getElementById("speechPanel");
+/* ========== OPEN / CLOSE MODAL ========== */
+function openMenuModal() {
+  document.getElementById("menuModal").style.display = "flex";
+}
+document.getElementById("menuCloseBtn").onclick = () => {
+  document.getElementById("menuModal").style.display = "none";
+};
 
-  /* ---- existing password modal (reused) ---- */
-  const modalPW = document.getElementById("pwModal");
-  const pwInput = document.getElementById("pwInput");
-  const pwOk = document.getElementById("pwOk");
-  const pwCancel = document.getElementById("pwCancel");
-  const pwTitle = document.getElementById("pwTitle");
-
-  /* ---- new menu modal ---- */
-  const menuModal = document.getElementById("menuModal");
-  const menuButtons = document.querySelectorAll(".menu-ai-btn");
-  const menuCloseBtn = document.getElementById("menuCloseBtn");
-
-  /* ====================== EKSPRESI MATA & MULUT ====================== */
-  function resetEyes() {
-    eyeL.style.cssText = eyeR.style.cssText = "width:18px;height:18px;border-radius:50%;transform:translate(0,0);";
-  }
-
-  const moods = [];
-  function addMood(fn) { moods.push(fn); }
-
-  // (many moods added — keep same as original)
-  addMood(function expNormal() { resetEyes(); mouth.style.cssText="width:22px;height:6px;border-radius:20px;background:#00cfff;transform:translateY(0) scale(1);"; });
-  addMood(function expWink() { eyeL.style.cssText="width:18px;height:18px;border-radius:50%;transform:translateY(1px);"; eyeR.style.cssText="width:18px;height:5px;border-radius:4px;transform:translateY(2px);"; mouth.style.cssText="width:26px;height:10px;border-radius:20px;background:#00cfff;transform:translateY(-2px) scale(1.02);"; });
-  addMood(function expHappy() { eyeL.style.cssText=eyeR.style.cssText="width:18px;height:14px;border-radius:50% 50% 70% 70%;transform:translateY(-1px);"; mouth.style.cssText="width:28px;height:16px;border-radius:0 0 20px 20px;background:#00cfff;transform:translateY(-3px) scale(1.04);"; });
-  addMood(function expSurprise() { eyeL.style.cssText=eyeR.style.cssText="width:26px;height:26px;border-radius:50%;transform:translateY(-2px);"; mouth.style.cssText="width:16px;height:16px;border-radius:50%;background:#00cfff;transform:translateY(-2px) scale(1.02);"; });
-  addMood(function expSleepy() { eyeL.style.cssText=eyeR.style.cssText="width:18px;height:6px;border-radius:6px;transform:translateY(1px);"; mouth.style.cssText="width:20px;height:4px;border-radius:4px;background:#00cfff;transform:translateY(0) scale(0.98);"; });
-  addMood(function expAngry() { eyeL.style.cssText="width:18px;height:6px;border-radius:4px;transform:translateY(1px) rotate(-10deg);"; eyeR.style.cssText="width:18px;height:6px;border-radius:4px;transform:translateY(1px) rotate(10deg);"; mouth.style.cssText="width:24px;height:4px;border-radius:4px;background:#ff4d4d;transform:translateY(2px) scale(1);"; });
-  addMood(function expConfused() { eyeL.style.cssText=eyeR.style.cssText="width:18px;height:12px;border-radius:50%;transform:translateY(0) rotate(5deg);"; mouth.style.cssText="width:20px;height:8px;border-radius:10px;background:#00cfff;transform:translateY(1px) scale(0.95);"; });
-  addMood(function expExcited() { eyeL.style.cssText=eyeR.style.cssText="width:20px;height:20px;border-radius:50%;transform:translateY(-1px) scale(1.1);"; mouth.style.cssText="width:30px;height:12px;border-radius:20px;background:#00cfff;transform:translateY(-2px) scale(1.08);"; });
-  addMood(function expTalking() { eyeL.style.cssText=eyeR.style.cssText="width:18px;height:18px;border-radius:50%;transform:translateY(0);"; mouth.style.cssText="width:22px;height:8px;border-radius:12px;background:#00cfff;transform:translateY(0) scale(1.05);"; });
-  addMood(function expPlayful() { eyeL.style.cssText="width:18px;height:18px;border-radius:50%;transform:translateY(0) rotate(-5deg);"; eyeR.style.cssText="width:18px;height:18px;border-radius:50%;transform:translateY(0) rotate(5deg);"; mouth.style.cssText="width:26px;height:10px;border-radius:20px;background:#00cfff;transform:translateY(-1px) scale(1.02);"; });
-  addMood(function expSad() { eyeL.style.cssText=eyeR.style.cssText="width:16px;height:8px;border-radius:50%;transform:translateY(2px);"; mouth.style.cssText="width:18px;height:6px;border-radius:0 0 10px 10px;background:#00cfff;transform:translateY(2px) scale(0.95);"; });
-  addMood(function expShy() { eyeL.style.cssText=eyeR.style.cssText="width:14px;height:14px;border-radius:50%;transform:translateY(1px);"; mouth.style.cssText="width:16px;height:6px;border-radius:10px;background:#00cfff;transform:translateY(1px) scale(0.98);"; });
-  addMood(function expCool() { eyeL.style.cssText=eyeR.style.cssText="width:18px;height:6px;border-radius:4px;transform:translateY(0);"; mouth.style.cssText="width:20px;height:4px;border-radius:4px;background:#00cfff;transform:translateY(0) scale(1);"; });
-  addMood(function expLaugh() { eyeL.style.cssText=eyeR.style.cssText="width:16px;height:16px;border-radius:50%;transform:translateY(-1px);"; mouth.style.cssText="width:28px;height:12px;border-radius:20px;background:#00cfff;transform:translateY(-2px) scale(1.05);"; });
-  addMood(function expBlinking() { eyeL.style.cssText=eyeR.style.cssText="width:18px;height:18px;border-radius:50%;transform:scaleY(0.1);"; mouth.style.cssText="width:22px;height:6px;border-radius:20px;background:#00cfff;"; });
-  addMood(function expCurious() { eyeL.style.cssText=eyeR.style.cssText="width:20px;height:20px;border-radius:50%;transform:translateY(0) rotate(-2deg);"; mouth.style.cssText="width:24px;height:8px;border-radius:10px;background:#00cfff;transform:translateY(0) scale(1);"; });
-  addMood(function expMischief() { eyeL.style.cssText="width:16px;height:16px;border-radius:50%;transform:translateY(0) rotate(-8deg);"; eyeR.style.cssText="width:16px;height:16px;border-radius:50%;transform:translateY(0) rotate(8deg);"; mouth.style.cssText="width:26px;height:10px;border-radius:20px;background:#00cfff;transform:translateY(-1px) scale(1.02);"; });
-  addMood(function expTired() { eyeL.style.cssText=eyeR.style.cssText="width:16px;height:6px;border-radius:50%;transform:translateY(2px) scaleX(1.2);"; mouth.style.cssText="width:18px;height:4px;border-radius:4px;background:#00cfff;transform:translateY(1px) scale(0.95);"; });
-  addMood(function expAnnoyed() { eyeL.style.cssText="width:18px;height:8px;border-radius:4px;transform:translateY(1px) rotate(-5deg);"; eyeR.style.cssText="width:18px;height:8px;border-radius:4px;transform:translateY(1px) rotate(5deg);"; mouth.style.cssText="width:20px;height:4px;border-radius:4px;background:#ff8800;transform:translateY(1px) scale(1);"; });
-  addMood(function expWorried() { eyeL.style.cssText=eyeR.style.cssText="width:18px;height:14px;border-radius:50%;transform:translateY(-1px);"; mouth.style.cssText="width:22px;height:8px;border-radius:10px;background:#00cfff;transform:translateY(2px) scale(0.98);"; });
-  addMood(function expConfident() { eyeL.style.cssText=eyeR.style.cssText="width:18px;height:16px;border-radius:50%;transform:translateY(0);"; mouth.style.cssText="width:24px;height:10px;border-radius:12px;background:#00cfff;transform:translateY(0) scale(1.05);"; });
-  addMood(function expExcited2() { eyeL.style.cssText=eyeR.style.cssText="width:22px;height:22px;border-radius:50%;transform:translateY(-2px);"; mouth.style.cssText="width:32px;height:14px;border-radius:20px;background:#00cfff;transform:translateY(-2px) scale(1.08);"; });
-  addMood(function expShocked() { eyeL.style.cssText=eyeR.style.cssText="width:26px;height:26px;border-radius:50%;transform:translateY(-3px);"; mouth.style.cssText="width:18px;height:14px;border-radius:50%;background:#ff0000;transform:translateY(-2px) scale(1.02);"; });
-  addMood(function expGrin() { eyeL.style.cssText=eyeR.style.cssText="width:16px;height:12px;border-radius:50%;transform:translateY(0);"; mouth.style.cssText="width:28px;height:12px;border-radius:0 0 20px 20px;background:#00cfff;transform:translateY(-2px) scale(1.05);"; });
-  addMood(function expFrown() { eyeL.style.cssText=eyeR.style.cssText="width:16px;height:12px;border-radius:50%;transform:translateY(2px);"; mouth.style.cssText="width:20px;height:6px;border-radius:0 0 10px 10px;background:#00cfff;transform:translateY(2px) scale(0.95);"; });
-  addMood(function expSurprised2() { eyeL.style.cssText=eyeR.style.cssText="width:24px;height:24px;border-radius:50%;transform:translateY(-1px);"; mouth.style.cssText="width:20px;height:16px;border-radius:50%;background:#00cfff;transform:translateY(-2px) scale(1.02);"; });
-  addMood(function expSleepy4() { eyeL.style.cssText=eyeR.style.cssText="width:14px;height:6px;border-radius:50%;transform:translateY(2px);"; mouth.style.cssText="width:18px;height:4px;border-radius:4px;background:#00cfff;transform:translateY(1px) scale(0.96);"; });
-  addMood(function expJoy() { eyeL.style.cssText=eyeR.style.cssText="width:18px;height:18px;border-radius:50%;transform:translateY(-1px);"; mouth.style.cssText="width:30px;height:12px;border-radius:20px;background:#00cfff;transform:translateY(-3px) scale(1.08);"; });
-  addMood(function expDisappointed() { eyeL.style.cssText=eyeR.style.cssText="width:16px;height:12px;border-radius:50%;transform:translateY(1px);"; mouth.style.cssText="width:18px;height:6px;border-radius:4px;background:#00cfff;transform:translateY(2px) scale(0.95);"; });
-  addMood(function expSkeptical() { eyeL.style.cssText="width:18px;height:14px;border-radius:50%;transform:translateY(0) rotate(3deg);"; eyeR.style.cssText="width:18px;height:14px;border-radius:50%;transform:translateY(0) rotate(-3deg);"; mouth.style.cssText="width:22px;height:8px;border-radius:12px;background:#00cfff;transform:translateY(0) scale(1);"; });
-  addMood(function expBlushing() { eyeL.style.cssText=eyeR.style.cssText="width:16px;height:12px;border-radius:50%;transform:translateY(0);"; mouth.style.cssText="width:18px;height:6px;border-radius:10px;background:#ffb6c1;transform:translateY(1px) scale(1);"; });
-  addMood(function expNervous() { eyeL.style.cssText=eyeR.style.cssText="width:16px;height:12px;border-radius:50%;transform:translateY(0);"; mouth.style.cssText="width:20px;height:6px;border-radius:4px;background:#00cfff;transform:translateY(1px) scale(0.96);"; });
-  addMood(function expExcited3() { eyeL.style.cssText=eyeR.style.cssText="width:22px;height:22px;border-radius:50%;transform:translateY(-2px);"; mouth.style.cssText="width:32px;height:14px;border-radius:20px;background:#00cfff;transform:translateY(-2px) scale(1.08);"; });
-  addMood(function expSilly() { eyeL.style.cssText="width:16px;height:16px;border-radius:50%;transform:translateY(0) rotate(10deg);"; eyeR.style.cssText="width:16px;height:16px;border-radius:50%;transform:translateY(0) rotate(-10deg);"; mouth.style.cssText="width:26px;height:10px;border-radius:20px;background:#00cfff;transform:translateY(-1px) scale(1.02);"; });
-  addMood(function expSmirk() { eyeL.style.cssText="width:16px;height:16px;border-radius:50%;transform:translateY(0) rotate(-5deg);"; eyeR.style.cssText="width:16px;height:16px;border-radius:50%;transform:translateY(0) rotate(5deg);"; mouth.style.cssText="width:24px;height:8px;border-radius:12px;background:#00cfff;transform:translateY(0) scale(1);"; });
-  addMood(function expRelieved() { eyeL.style.cssText=eyeR.style.cssText="width:18px;height:14px;border-radius:50%;transform:translateY(0);"; mouth.style.cssText="width:22px;height:8px;border-radius:10px;background:#00cfff;transform:translateY(1px) scale(1);"; });
-  addMood(function expAngry2() { eyeL.style.cssText="width:18px;height:6px;border-radius:4px;transform:translateY(1px) rotate(-12deg);"; eyeR.style.cssText="width:18px;height:6px;border-radius:4px;transform:translateY(1px) rotate(12deg);"; mouth.style.cssText="width:24px;height:4px;border-radius:4px;background:#ff4d4d;transform:translateY(2px) scale(1);"; });
-  addMood(function expExcited4() { eyeL.style.cssText=eyeR.style.cssText="width:20px;height:20px;border-radius:50%;transform:translateY(-1px);"; mouth.style.cssText="width:30px;height:12px;border-radius:20px;background:#00cfff;transform:translateY(-2px) scale(1.08);"; });
-  addMood(function expJoyful() { eyeL.style.cssText=eyeR.style.cssText="width:18px;height:18px;border-radius:50%;transform:translateY(-1px);"; mouth.style.cssText="width:28px;height:14px;border-radius:20px;background:#00cfff;transform:translateY(-2px) scale(1.05);"; });
-
-  /* ====================== MOOD SHUFFLE ====================== */
-  let moodTimer = null;
-  let moodQueue = [];
-
-  function shuffleMoods() {
-    moodQueue = moods.slice();
-    for (let i = moodQueue.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [moodQueue[i], moodQueue[j]] = [moodQueue[j], moodQueue[i]];
-    }
-  }
-
-  function startMoodCycle() {
-    if (moodTimer) clearInterval(moodTimer);
-    shuffleMoods();
-
-    moodTimer = setInterval(() => {
-      if (moodQueue.length === 0) shuffleMoods();
-      const nextMood = moodQueue.shift();
-      nextMood();
-    }, 2000);
-  }
-
-  function stopMoodCycle() {
-    if (moodTimer) clearInterval(moodTimer);
-    moodTimer = null;
-  }
-
-  startMoodCycle();
-  wrapper.addEventListener("mouseenter", () => stopMoodCycle());
-  wrapper.addEventListener("mouseleave", () => startMoodCycle());
-
-  /* ====================== SPEECH PANEL ====================== */
-  const messages = [
-    "CEK DATA BAPRO 📝",
-    "CEK DATA CETAK 📝",
-    "CEK DATA FINISHING 📝",
-    "CEK DATA LEM 📝",
-    "CEK DATA REGISTER 📝",
-    "MEETING DICATAT 🗂",
-    "CARI APA ❓",
-    "HALO 👋","AKU SIAP BANTU 🔍","KLIK AKU 👉","AI MODE ON ⚡","PERLU BANTUAN ❓",
-    "CARI DATA APA ❓","SEMANGAT! 💪","AYO IMPROVEMENT 🧠","BUTUH PETUNJUK 💡",
-    "STANDBY NICH 👀","BUTUH BANTUAN?",
-    "SELALU UPDATE DATA 💡","CEK KEMBALI SEBELUM INPUT ✅","CEK HASIL INPUTAN 🗒","AI SIAP BANTU ⏱"
-  ];
-
-  let speechTimer = null;
-  function showSpeech() {
-    panel.classList.add("show","talkShake");
-    const msg = messages[Math.floor(Math.random() * messages.length)];
-    panel.textContent = msg;
-    panel.style.minWidth = "auto";
-    panel.style.width = "auto";
-    panel.style.maxWidth = "300px";
-    setTimeout(() => panel.classList.remove("talkShake"), 300);
-    setTimeout(() => panel.classList.remove("show"), 2600);
-    clearTimeout(speechTimer);
-    speechTimer = setTimeout(showSpeech, 4000 + Math.random()*4000);
-  }
-  setTimeout(showSpeech, 600);
-
-  /* ====================== MENU MODAL HANDLERS ====================== */
-  function openMenuModal(){
-    menuModal.classList.add("open");
-    menuModal.setAttribute("aria-hidden","false");
-    menuModal.style.display = "grid";
-  }
-  function closeMenuModal(){
-    menuModal.classList.remove("open");
-    menuModal.setAttribute("aria-hidden","true");
-    menuModal.style.display = "none";
-  }
-
-  menuButtons.forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const ai = btn.dataset.ai;
-      selectedAI = ai;
-      closeMenuModal();
-      openPasswordModalForAI(ai);
-    });
-  });
-
-  menuCloseBtn.addEventListener("click", closeMenuModal);
-
-  /* ====================== PASSWORD MODAL (per-AI) ====================== */
-  function openPasswordModalForAI(ai){
-    pwTitle.innerText = "Password " + ai.toUpperCase();
-    pwInput.value = "";
-    modalPW.classList.add("open");
-    modalPW.setAttribute("aria-hidden","false");
-    setTimeout(()=> pwInput.focus(), 120);
-  }
-  function closePWModal(){
-    modalPW.classList.remove("open");
-    modalPW.setAttribute("aria-hidden","true");
-  }
-
-  function validateAndOpenAI(){
-    if(!selectedAI){ alert("AI belum dipilih."); return; }
-    const cfg = AI_CONFIG[selectedAI];
-    if(pwInput.value === cfg.pass || pwInput.value === SPV_PASSWORD){
-      closePWModal();
-      // jika url kosong beri peringatan, else buka
-      if(cfg.url && cfg.url.trim() !== ""){
-        window.open(cfg.url, "_blank");
-      } else {
-        alert("Link AI untuk '" + selectedAI + "' belum diisi.");
-      }
-    } else {
-      alert("Password salah! Akses ditolak.");
-      pwInput.value = "";
-      pwInput.focus();
-    }
-  }
-
-  pwOk.addEventListener("click", validateAndOpenAI);
-  pwCancel.addEventListener("click", closePWModal);
-  pwInput.addEventListener("keydown", (e)=>{ if(e.key === "Enter") validateAndOpenAI(); if(e.key === "Escape") closePWModal(); });
-
-  /* tutup modal saat klik diluar dialog */
-  menuModal.addEventListener("click", (e)=>{ if(e.target === menuModal) closeMenuModal(); });
-  modalPW.addEventListener("click", (e)=>{ if(e.target === modalPW) closePWModal(); });
-
-  /* ====================== INTEGRATE CLICK ROBOT -> OPEN MENU ====================== */
-  function activateWrapper(){
-    openMenuModal(); // opsi A: buka menu pilihan AI
-  }
-
-  wrapper.addEventListener("click", activateWrapper);
-  wrapper.addEventListener("keydown", (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); activateWrapper(); }});
-
-  /* ====================== CLEANUP ON UNLOAD ====================== */
-  window.addEventListener("unload", ()=>{ if(moodTimer) clearInterval(moodTimer); if(speechTimer) clearTimeout(speechTimer); });
+/* ========== PILIH AI ========== */
+document.querySelectorAll(".menu-ai-btn").forEach(btn => {
+  btn.onclick = () => {
+    selectedAI = btn.dataset.ai;
+    document.getElementById("menuModal").style.display = "none";
+    document.getElementById("pwModal").style.display = "flex";
+    document.getElementById("pwInput").focus();
+  };
 });
+
+/* ========== PASSWORD VALIDATE ========== */
+document.getElementById("pwOk").onclick = validatePw;
+document.getElementById("pwCancel").onclick = closePw;
+
+function validatePw() {
+  const input = document.getElementById("pwInput").value.trim();
+  if (!selectedAI) return;
+
+  if (input === AI_CONFIG[selectedAI].pass) {
+    window.open(AI_CONFIG[selectedAI].url, "_blank");
+    closePw();
+  } else {
+    alert("Password salah!");
+    document.getElementById("pwInput").value = "";
+    document.getElementById("pwInput").focus();
+  }
+}
+
+function closePw() {
+  document.getElementById("pwModal").style.display = "none";
+  document.getElementById("pwInput").value = "";
+}
+
+/* ========== ENTER / ESCAPE ========== */
+document.getElementById("pwInput").addEventListener("keydown", e => {
+  if (e.key === "Enter") validatePw();
+  if (e.key === "Escape") closePw();
+});
+
+/* ========== FACE ↔ TEXT LOOP ========== */
+let showFace = true;
+function swapFaceText() {
+  const face = document.getElementById("cbFace");
+  const text = document.getElementById("cbText");
+  if (showFace) {
+    face.style.opacity = "0";
+    text.style.opacity = "1";
+  } else {
+    text.style.opacity = "0";
+    face.style.opacity = "1";
+  }
+  showFace = !showFace;
+  setTimeout(swapFaceText, 2600);
+}
+setTimeout(swapFaceText, 1500);
 </script>
 
-
-
-
-
+<!-- =========================================
+      🟦 CSS ROBOT + MODAL
+========================================= -->
 <style>
-/* ===================== BASE WRAPPER ===================== */
-.chatbot-wrapper { width:120px;height:150px;position:fixed;bottom:78px;right:28px;z-index:9999;cursor:pointer;display:flex;justify-content:center;align-items:center;animation: float 4s ease-in-out infinite, idleTilt 6s ease-in-out infinite; outline:none; }
-.chatbot-wrapper:focus{ box-shadow:0 0 0 4px rgba(0,207,255,0.12); border-radius:12px; }
-
-/* ROBOT CHIBI */
-.robot-chibi{ position:relative;width:105px;height:140px; }
-
-/* SPEECH PANEL FLEXIBLE */
-.speech-panel{ position:absolute; top:-30px; right:160px; min-width:fit-content; max-width:300px; background:#fff; border:5px solid #000; padding:16px 22px; border-radius:18px; font-size:11px; font-weight:900; color:#000; line-height:1.45; opacity:0; transform:translateX(10px); pointer-events:none; transition:all 0.35s ease; box-shadow:0 0 16px rgba(0,0,0,0.32); word-wrap: break-word; }
-
-/* EKOR */
-/* SPEECH PANEL MODERN */
-.speech-panel {
-  position: absolute;
-  top: -30px;
-  right: 160px;
-  min-width: fit-content;
-  max-width: 300px;
-  padding: 14px 20px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #000; /* teks hitam */
-  line-height: 1.5;
-  background: rgba(0, 207, 255, 0.15); /* semi-transparent */
-  backdrop-filter: blur(8px); /* glass effect */
-  border-radius: 22px;
-  border: 1px solid rgba(0, 207, 255, 0.4);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  opacity: 0;
-  transform: translateX(10px);
-  pointer-events: none;
-  transition: all 0.35s ease;
-  word-wrap: break-word;
+/* ================== MODAL STYLE ================== */
+.pw-modal {
+  position: fixed;
+  top:0;
+  left:0;
+  width:100vw;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(4px);
+  z-index:99999;
 }
-
-/* Pointer / ekor modern */
-.speech-panel::before {
-  content: "";
-  position: absolute;
-  right: -24px;
-  top: 30px;
-  width: 0;
-  height: 0;
-  border-left: 24px solid rgba(0, 207, 255, 0.4);
-  border-top: 12px solid transparent;
-  border-bottom: 12px solid transparent;
-}
-.speech-panel::after {
-  content: "";
-  position: absolute;
-  right: -20px;
-  top: 30px;
-  width: 0;
-  height: 0;
-  border-left: 20px solid rgba(0, 207, 255, 0.15);
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-}
-
-/* Animasi muncul */
-.speech-panel.show {
-  opacity: 1;
-  transform: translateX(0);
-}
-.speech-panel.talkShake {
-  animation: talkShake 0.25s ease-in-out;
-}
-
-@keyframes talkShake{0%{transform:translateX(0);}35%{transform:translateX(2px);}70%{transform:translateX(-2px);}100%{transform:translateX(0);} }
-
-/* Floating & tilt */
-@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-@keyframes idleTilt{0%,100%{transform:rotate(0deg);}50%{transform:rotate(1.5deg);}}
-
-/* HEAD & VISOR */
-.head{ width:95px;height:75px;background:#fff;border:6px solid #000;border-radius:26px; position:absolute;top:10px;left:50%;transform:translateX(-50%);animation: headSway 3s ease-in-out infinite;box-shadow:0 0 12px rgba(0,207,255,0.4);}
-.visor{width:78px;height:46px;background:#111;border-radius:20px;position:absolute;top:10px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:4px;overflow:hidden; box-shadow:inset 0 0 18px rgba(0,207,255,0.28),0 6px 18px rgba(0,207,255,0.06);}
-.eyes-wrap{display:flex;gap:12px;margin-top:2px;}
-.eye-left,.eye-right{width:18px;height:18px;background:#00cfff;border-radius:50%;transition:all 0.25s ease-in-out;animation: blink 6s infinite, eyeMove 5s ease-in-out infinite, microMove 2.4s infinite ease-in-out;}
-@keyframes microMove{0%,100%{transform:translateY(0);}50%{transform:translateY(1px);}}
-@keyframes blink{0%,92%,100%{transform:scaleY(1);}95%{transform:scaleY(0.1);}}
-@keyframes eyeMove{0%,100%{transform:translateX(0);}40%{transform:translateX(2px);}70%{transform:translateX(-2px);}}
-
-.mouth{position:absolute;bottom:5px;width:22px;height:6px;background:#00cfff;border-radius:20px;transition:all 0.22s cubic-bezier(.2,.9,.2,1);animation:mouthBreath 3.5s ease-in-out infinite;}
-@keyframes mouthBreath{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
-
-.body{width:70px;height:55px;background:#fff;border:6px solid #000;border-radius:26px;position:absolute;top:82px;left:50%;transform:translateX(-50%);animation:bodyWobble 3s ease-in-out infinite,bodyBreath 4s ease-in-out infinite;}
-@keyframes bodyBreath{0%,100%{transform:translateX(-50%) scale(1);}50%{transform:translateX(-50%) scale(1.03);}}
-@keyframes bodyWobble{0%,100%{transform:translateX(-50%) rotate(0deg);}50%{transform:translateX(-50%) rotate(-1.5deg);}}
-
-.body-light {
-  width: auto;
-  min-width: 40px;          /* memastikan tidak terlalu kecil */
-  padding: 0 10px;          /* agar teks tidak mepet */
-  height: 32px;
-  background: linear-gradient(135deg, #00e0ff, #00cfff); /* gradasi biru lebih hidup */
-  border-radius: 14px;
-  position: absolute;
-  bottom: 6px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 22px;
-  font-weight: 900;
-  color: #000;
-  letter-spacing: 0.6px;
-  text-shadow: 
-    0 0 6px rgba(0, 207, 255, 0.8),
-    0 0 12px rgba(0, 207, 255, 0.6),
-    0 0 18px rgba(0, 207, 255, 0.4);
-  box-shadow: 0 0 8px rgba(0, 207, 255, 0.4), 0 0 16px rgba(0, 207, 255, 0.2);
-  animation: aiPulse 3s ease-in-out infinite, chargeGlow 2.8s ease-in-out infinite;
-  transition: all 0.3s ease-in-out; /* smooth scale saat hover */
-}
-
-/* Animasi pulse halus */
-@keyframes aiPulse {
-  0%, 100% { transform: translateX(-50%) scale(1); }
-  50% { transform: translateX(-50%) scale(1.08); } /* sedikit lebih terasa */
-}
-
-/* Animasi glow lebih natural */
-@keyframes chargeGlow {
-  0%, 100% { box-shadow: 0 0 8px #00cfff, 0 0 16px rgba(0, 207, 255, 0.3); }
-  50% { box-shadow: 0 0 18px #00eaff, 0 0 28px rgba(0, 224, 255, 0.35); }
-}
-
-
-/* ARMS */
-.arm {
-  width: 28px;
-  height: 40px;
+.pw-modal__dialog {
   background: #fff;
-  border: 6px solid #000;
-  border-radius: 20px;
-  position: absolute;
-  top: 90px;
-  transition: transform .22s ease-in-out;
-  animation: armIdle 3.5s ease-in-out infinite;
+  border-radius: 16px;
+  padding: 24px;
+  min-width: 280px;
+  max-width: 420px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+  animation: fadeIn 0.25s ease;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
+@keyframes fadeIn { from {opacity:0; transform:scale(0.85);} to{opacity:1; transform:scale(1);} }
 
-.arm.left {
-  left: -4px;
-  transform-origin: top left;
-  animation: armLeftAlive 3s ease-in-out infinite;
+/* ========== MODAL MENU AI ========== */
+.modal-menu h3 { margin-bottom:16px; font-size:1.2rem; text-align:center; color:#222; }
+.menu-btns { display:flex; flex-direction:column; gap:10px; }
+.menu-ai-btn {
+  padding:12px 0; border:none; border-radius:10px; font-weight:700; font-size:1rem; cursor:pointer;
+  transition: all 0.25s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.1); color:#fff;
 }
+.menu-ai-btn[data-ai="bapro"] { background: linear-gradient(90deg,#ff4b4b,#ff7474); }
+.menu-ai-btn[data-ai="cetak"] { background: linear-gradient(90deg,#ff9800,#ffc071); color:#000; }
+.menu-ai-btn[data-ai="finishing"] { background: linear-gradient(90deg,#4caf50,#7cd98a); }
+.menu-ai-btn[data-ai="lem"] { background: linear-gradient(90deg,#9b59b6,#c18cd9); }
+.menu-ai-btn[data-ai="register"] { background: linear-gradient(90deg,#00cfff,#62f0ff); color:#000; }
+.menu-ai-btn:hover { transform:translateY(-3px); box-shadow:0 6px 18px rgba(0,0,0,0.2); }
 
-.arm.right {
-  right: -4px;
-  transform-origin: top right;
-  animation: armRightAlive 3s ease-in-out infinite;
+.menu-cancel { margin-top:14px; text-align:center; }
+.menu-cancel button {
+  padding:8px 16px; border:none; border-radius:10px; background:#f2f2f2; cursor:pointer; font-weight:600; transition: all 0.2s ease;
 }
+.menu-cancel button:hover { background:#e0e0e0; }
 
-@keyframes armLeftAlive {
-  0%,100% { transform: rotate(0deg) translate(0,0); }
-  20% { transform: rotate(8deg) translate(0,-2px); }
-  40% { transform: rotate(4deg) translate(1px,-1px); }
-  60% { transform: rotate(-6deg) translate(-1px,1px); }
-  80% { transform: rotate(5deg) translate(0,-1px); }
+/* ========== MODAL PASSWORD ========== */
+.modal-pw h3 { text-align:center; margin-bottom:14px; font-size:1.2rem; }
+.modal-pw input {
+  width:100%; padding:10px 12px; border-radius:10px; border:1px solid #ccc; margin-bottom:12px;
+  font-size:1rem; transition: border 0.25s ease, box-shadow 0.25s ease;
 }
+.modal-pw input:focus { outline:none; border-color:#1976D2; box-shadow: 0 0 6px rgba(25,118,210,0.5); }
+.pw-actions { display:flex; justify-content:space-between; gap:10px; }
+.pw-actions button { flex:1; padding:10px 0; border:none; border-radius:10px; font-weight:700; cursor:pointer; transition: all 0.25s ease; }
+#pwOk { background:#1976D2; color:#fff; }
+#pwOk:hover { background:#145ca8; }
+#pwCancel { background:#eee; }
+#pwCancel:hover { background:#ccc; }
+.pw-note { margin-top:12px; font-size:12px; text-align:center; color:#555; }
 
-@keyframes armRightAlive {
-  0%,100% { transform: rotate(0deg) translate(0,0); }
-  20% { transform: rotate(-8deg) translate(0,-2px); }
-  40% { transform: rotate(-4deg) translate(-1px,-1px); }
-  60% { transform: rotate(6deg) translate(1px,1px); }
-  80% { transform: rotate(-5deg) translate(0,-1px); }
+/* ========== ROBOT CSS FULL ================== */
+.chatbot-wrapper {
+  position: fixed; bottom: 80px; right: 20px; width:78px; height:78px; border-radius:50%;
+  background: radial-gradient(circle at 30% 30%, #4b68ff, #1c2ca5); display:flex; align-items:center; justify-content:center;
+  box-shadow:0 8px 25px rgba(80,120,255,0.55); cursor:pointer; z-index:9999; overflow:hidden;
+  transition: transform 0.4s ease, box-shadow 0.4s ease; animation: idleFloat 5s ease-in-out infinite;
 }
+.chatbot-wrapper:hover { transform: scale(1.12) rotate3d(1,1,0,6deg); }
+.chatbot-wrapper::after { content:""; position:absolute; bottom:-6px; width:50%; height:10px; background: rgba(0,0,0,0.25); border-radius:50%; filter: blur(8px); animation: shadowMove 5s ease-in-out infinite; }
 
+.chatbot-bg { width:62px; height:62px; position:relative; border-radius:50%; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+.pulse-lines::before { content:""; position:absolute; width:200%; height:200%; background: repeating-conic-gradient(from 0deg, rgba(255,255,255,0.18) 0deg, rgba(255,255,255,0) 12deg); animation:pulseLines 6s linear infinite; opacity:0.4; }
+.bg-light { position:absolute; width:200%; height:200%; background: conic-gradient(from 0deg, #6e8cff,#3b56ff,#6e8cff); animation:rotateLight 8s linear infinite; opacity:0.25; }
+.chatbot-body { position:relative; width:40px; height:42px; background: linear-gradient(145deg,#f8faff,#cad3ff); border-radius:18px; box-shadow: inset 0 -4px 10px rgba(0,0,0,0.15),0 3px 6px rgba(0,0,0,0.1); display:flex; align-items:center; justify-content:center; animation:heartbeatGlow 4s ease-in-out infinite; }
 
-.chatbot-wrapper:hover .arm.left {
-  transform: rotate(20deg) translateY(-4px);
-}
-.chatbot-wrapper:hover .arm.right {
-  transform: rotate(-20deg) translateY(-4px);
-}
+.chatbot-face { width:30px; height:20px; background: linear-gradient(180deg,#193bff 0%,#132cad 100%); border-radius:10px; position:relative; overflow:hidden; box-shadow: inset 0 0 8px rgba(255,255,255,0.25); opacity:1; transition:opacity .55s ease; }
+.reflection { position:absolute; top:0; left:-40px; width:35px; height:20px; background:linear-gradient(100deg, transparent 0%, rgba(255,255,255,0.5) 50%, transparent 100%); transform:skewX(-20deg); animation: reflectionMove 4.5s ease-in-out infinite; opacity:0.35; }
+.eye { position:absolute; top:5px; width:5px; height:5px; background:radial-gradient(circle,#8cd2ff 40%,#3d7eff 100%); border-radius:50%; animation: blink 6s infinite, lookAround 5s ease-in-out infinite; transition: transform 0.2s ease; }
+.eye.left { left:6px; } .eye.right { right:6px; }
+.chatbot-wrapper:hover .eye { transform: scale(1.25); }
+.smile { position:absolute; bottom:2px; left:50%; transform:translateX(-50%); width:12px; height:5px; border-bottom:2px solid #6cb0ff; border-radius:0 0 10px 10px; animation:smileWiden 3s ease-in-out infinite; transition:width 0.2s ease; }
+.chatbot-wrapper:hover .smile { width:18px; }
+.chatbot-text { position:absolute; font-size:18px; font-weight:bold; color:#1976D2; text-shadow:0 0 8px rgba(255,255,255,0.8); opacity:0; transition:opacity .55s ease; }
+.flare { position:absolute; width:140%; height:140%; background:radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 70%); border-radius:50%; top:-20%; left:-20%; transform:scale(0); opacity:0; animation:flarePulse 6s ease-in-out infinite; }
 
-
-/* LEGS */
-.leg {
-  width: 35px;
-  height: 28px;
-  background: #fff;
-  border: 6px solid #000;
-  border-radius: 14px;
-  position: absolute;
-  top: 138px;
-  animation: legIdle 3s ease-in-out infinite;
-}
-
-.leg.left { left: 16px; }
-.leg.right { right: 16px; }
-
-@keyframes legIdle {
-  0%,100% { transform: translateY(0) rotate(0deg); }
-  25% { transform: translateY(2px) rotate(-2deg); }
-  50% { transform: translateY(3px) rotate(1deg); }
-  75% { transform: translateY(1px) rotate(-1deg); }
-}
-
-
-/* RESPONSIVE FLEX PANEL */
-@media (min-width:768px){.chatbot-wrapper{transform:scale(0.65) !important;transform-origin:bottom right !important;}.speech-panel{max-width:fit-content;font-size:20px;right:140px;padding:16px 20px;border-width:5px;}}
-@media (max-width:767px) and (min-width:481px){.chatbot-wrapper{transform:scale(0.85) !important;transform-origin:bottom right !important;}.speech-panel{max-width:fit-content;font-size:18px;right:120px;padding:14px 18px;border-width:4px;}}
-@media (max-width:480px){.chatbot-wrapper{transform:scale(0.45) !important;transform-origin:bottom right !important;}.speech-panel{top:-12px !important;right:calc(100% + 18px) !important;transform:none !important;max-width:fit-content !important;padding:12px 14px !important;}.speech-panel::before{right:-38px !important;top:22px !important;border-left-width:38px !important;border-top-width:12px !important;border-bottom-width:12px !important;transform:skewY(10deg) !important;}.speech-panel::after{right:-33px !important;top:24px !important;border-left-width:33px !important;border-top-width:10px !important;border-bottom-width:10px !important;transform:skewY(10deg) !important;}}
-
-
+/* Animasi robot */
+@keyframes idleFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+@keyframes shadowMove{0%,100%{transform:scale(1);}50%{transform:scale(1.25);} }
+@keyframes rotateLight{from{transform:rotate(0);}to{transform:rotate(360deg);} }
+@keyframes pulseLines{from{transform:rotate(0);}to{transform:rotate(-360deg);} }
+@keyframes heartbeatGlow{0%,100%{box-shadow:0 0 4px rgba(70,140,255,0.28);}50%{box-shadow:0 0 12px rgba(70,140,255,0.45);} }
+@keyframes reflectionMove{0%,100%{left:-40px;}50%{left:35px;} }
+@keyframes blink{0%,94%,100%{height:5px;}96%{height:1.5px;} }
+@keyframes lookAround{0%,100%{transform:translateX(0);}25%{transform:translateX(1.3px);}75%{transform:translateX(-1.3px);} }
+@keyframes smileWiden{0%,100%{width:12px;}50%{width:16px;} }
+@keyframes flarePulse{0%,40%{transform:scale(0);opacity:0;}50%{transform:scale(1.2);opacity:0.6;filter:blur(4px);}70%{transform:scale(1);opacity:0.3;}90%,100%{transform:scale(0);opacity:0;} }
 </style>
+
+
+
+
 
 
 
@@ -9165,5 +8591,4 @@ function goHome() {
 
 </body>
 </html>
-
 
