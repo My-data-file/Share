@@ -5457,6 +5457,40 @@ function deleteFinishing(index) {
   }, 8000);
 }
 
+// ======================= PASSWORD PROTECT DELETE FINISHING =======================
+const DELETE_FINISHING_PASSWORD = "qc123"; // ganti sesuai kebutuhan
+const finishingContainer = document.getElementById('gridFinishing');
+let bypassFinishingPassword = false;
+
+if (finishingContainer) {
+  finishingContainer.addEventListener('click', (e) => {
+    const btn = e.target.closest('.btn-delete');
+    if (!btn) return;
+
+    if (bypassFinishingPassword) {
+      // Klik asli, lewati password
+      bypassFinishingPassword = false;
+      return;
+    }
+
+    // cegah listener asli sementara
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    // Password prompt
+    const pwd = prompt("Masukkan password untuk menghapus item ini:");
+    if (pwd === null) return; // user cancel
+
+    if (pwd === DELETE_FINISHING_PASSWORD) {
+      // Password benar → set flag supaya klik asli tidak terintercept
+      bypassFinishingPassword = true;
+      // trigger klik asli
+      btn.click();
+    } else {
+      alert("Password salah. Aksi dibatalkan.");
+    }
+  }, true); // capture phase
+}
 
 // ====================== EDIT INLINE (FINISHING) ======================
 function editFinishingInline(index){
@@ -6116,6 +6150,40 @@ function deleteBapro(index) {
   }, 8000);
 }
 
+// ======================= PASSWORD PROTECT DELETE BAPRO TANPA UBAH KODE ASLI (FIX LOOP) =======================
+const DELETE_PASSWORD = "qc123"; 
+const container = document.getElementById('gridBapro');
+let bypassPassword = false; // flag untuk mencegah loop
+
+if (container) {
+  container.addEventListener('click', (e) => {
+    const btn = e.target.closest('.btn-delete');
+    if (!btn) return;
+
+    if (bypassPassword) {
+      // Klik asli, lewati password
+      bypassPassword = false; // reset flag
+      return; 
+    }
+
+    // cegah listener asli sementara
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    // Password prompt
+    const pwd = prompt("Masukkan password untuk menghapus item ini:");
+    if (pwd === null) return; // user cancel
+
+    if (pwd === DELETE_PASSWORD) {
+      // Password benar → set flag supaya klik asli tidak terintercept
+      bypassPassword = true;
+      // trigger klik asli
+      btn.click();
+    } else {
+      alert("Password salah. Aksi dibatalkan.");
+    }
+  }, true); // capture phase
+}
 
 // ====================== EDIT INLINE (BAPRO) ======================
 function editBaproInline(index){
@@ -6697,6 +6765,41 @@ function deletePA(index){
   },8000);
 }
 
+// ======================= PASSWORD PROTECT DELETE PA =======================
+const DELETE_PA_PASSWORD = "qc123"; // ganti sesuai kebutuhan
+const paContainer = document.getElementById('gridPA');
+let bypassPaPassword = false;
+
+if (paContainer) {
+  paContainer.addEventListener('click', (e) => {
+    const btn = e.target.closest('.btn-delete');
+    if (!btn) return;
+
+    if (bypassPaPassword) {
+      // Klik asli, lewati password
+      bypassPaPassword = false;
+      return;
+    }
+
+    // cegah listener asli sementara
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    // Password prompt
+    const pwd = prompt("Masukkan password untuk menghapus item ini:");
+    if (pwd === null) return; // user cancel
+
+    if (pwd === DELETE_PA_PASSWORD) {
+      // Password benar → set flag supaya klik asli tidak terintercept
+      bypassPaPassword = true;
+      // trigger klik asli
+      btn.click();
+    } else {
+      alert("Password salah. Aksi dibatalkan.");
+    }
+  }, true); // capture phase
+}
+
 // ====================== EDIT INLINE (PA) ======================
 function editPAInline(index){
   const item = paItems[index];
@@ -7263,6 +7366,41 @@ function deleteLem(index) {
     // Muat ulang data agar sinkron dengan Google Sheet
     loadLemItems();
   }, 8000);
+}
+
+// ======================= PASSWORD PROTECT DELETE LEM =======================
+const DELETE_LEM_PASSWORD = "qc123"; // ganti sesuai kebutuhan
+const lemContainer = document.getElementById('gridLem');
+let bypassLemPassword = false;
+
+if (lemContainer) {
+  lemContainer.addEventListener('click', (e) => {
+    const btn = e.target.closest('.btn-delete');
+    if (!btn) return;
+
+    if (bypassLemPassword) {
+      // Klik asli, lewati password
+      bypassLemPassword = false;
+      return;
+    }
+
+    // cegah listener asli sementara
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    // Password prompt
+    const pwd = prompt("Masukkan password untuk menghapus item ini:");
+    if (pwd === null) return; // user cancel
+
+    if (pwd === DELETE_LEM_PASSWORD) {
+      // Password benar → set flag supaya klik asli tidak terintercept
+      bypassLemPassword = true;
+      // trigger klik asli
+      btn.click();
+    } else {
+      alert("Password salah. Aksi dibatalkan.");
+    }
+  }, true); // capture phase
 }
 
 // ====================== EDIT INLINE (LEM) ======================
@@ -8581,7 +8719,7 @@ document.addEventListener('DOMContentLoaded', () => {
 /* ====================== HOME QC ====================== */
 function goHome() {
   // Password yang harus diinput
-  const correctPass = "sea123";   // <-- ubah sesuai kebutuhan
+  const correctPass = "spv123";   // <-- ubah sesuai kebutuhan
 
   // Popup password
   const input = prompt("Password Database QC :");
