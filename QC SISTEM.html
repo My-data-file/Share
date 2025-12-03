@@ -8580,15 +8580,26 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
 /* ====================== HOME QC ====================== */
 function goHome() {
-  // Hanya scroll halaman ke atas, tidak ubah menu aktif
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
+  // Password yang harus diinput
+  const correctPass = "sea123";   // <-- ubah sesuai kebutuhan
+
+  // Popup password
+  const input = prompt("Password Database QC :");
+
+  // Jika ditekan Cancel
+  if (input === null) return;
+
+  // Cek password
+  if (input === correctPass) {
+    // Jika benar → buka link
+    window.location.href = "https://docs.google.com/spreadsheets/d/e/2PACX-1vROGN48zxFvmG2HQTqJ0BLC4pWodmS3WlQ4lpavjI5juf8xDHs2bNfKYN6lluyfoFzzQSAR5SV2tNkA/pubhtml"; 
+  } else {
+    alert("Password salah!");
+  }
 }
 </script>
 
 
+
 </body>
 </html>
-
