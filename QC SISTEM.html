@@ -5082,7 +5082,7 @@ setTimeout(swapFaceText, 1500);
 
 <script>
 // ====================== KONFIGURASI ======================
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyrMQY9XSamRTpA6yX-xPDIkWMZYChjcKhvBTJPas2OIue92lSH5w0F2d6Tb3IrNxV2/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwpw2VWsSrkhuEEjvrYL8i75_us7ccoWss33EOV7ZBYJJQaWRjoiDBgNGguOgI1A09V/exec";
 
 // ====================== SPINNER GLOBAL JS ======================
 const spinner = document.getElementById('loadingSpinner');
@@ -5415,7 +5415,12 @@ function renderGridFinishing(query = "") {
         <span>Order: ${highlightHtmlSafe(item.order || '', q)}</span><br>
         <span>Isi/Dus: ${highlightHtmlSafe(item.isi || '', q)}</span><br>
         <span>Bagus: ${highlightHtmlSafe(item.bagus || '', q)}</span><br>
-        <span>BS: ${highlightHtmlSafe(item.jenisBS || '', q)}</span><br>
+        <span>Total BS: ${highlightHtmlSafe(item.jenisBS || '', q)}</span><br>
+        <span>BS Cetak: ${highlightHtmlSafe(item.jenisBS1 || '', q)}</span><br>
+        <span>BS Lem: ${highlightHtmlSafe(item.jenisBS2 || '', q)}</span><br>
+        <span>BS Ponch: ${highlightHtmlSafe(item.jenisBS3 || '', q)}</span><br>
+        <span>BS Varnish: ${highlightHtmlSafe(item.jenisBS4 || '', q)}</span><br>
+        <span>BS Potong: ${highlightHtmlSafe(item.jenisBS5 || '', q)}</span><br>
         <span>QC: ${highlightHtmlSafe(item.qc || '', q)}</span><br>
 
         <span><b>Keterangan:</b></span><br>
@@ -5851,8 +5856,8 @@ function renderDashboardFinishingCompact(query = "", safeMode = false) {
     else if (updateVal === "to") statusClass = "status-to";
 
     card.innerHTML = `
-      <strong>${highlightHtmlSafe(item.nama || '', query)}</strong><br>
-      <strong>QC: ${highlightHtmlSafe(item.qc || '', query)}</strong><br>
+      <strong>Nama : ${highlightHtmlSafe(item.nama || '', query)}</strong><br>
+      <strong>QC : ${highlightHtmlSafe(item.qc || '', query)}</strong><br>
       <span>📅 ${highlightHtmlSafe(tanggal, query)}</span><br>
       <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
     `;
@@ -5905,7 +5910,12 @@ function showDetailModal(item) {
     <strong>Order:</strong> ${item.order}<br>
     <strong>Isi:</strong> ${item.isi}<br>
     <strong>Bagus:</strong> ${item.bagus}<br>
-    <strong>BS:</strong> ${item.jenisBS}<br>
+    <strong>Total BS:</strong> ${item.jenisBS}<br>
+    <strong>BS Cetak:</strong> ${item.jenisBS1}<br>
+    <strong>BS Lem:</strong> ${item.jenisBS2}<br>
+    <strong>BS Ponch:</strong> ${item.jenisBS3}<br>
+    <strong>BS Varnish:</strong> ${item.jenisBS4}<br>
+    <strong>BS Potong:</strong> ${item.jenisBS5}<br>
     <strong>QC:</strong> ${item.qc}<br>
     <strong>Update:</strong> <span class="status-${(item.update || '').toLowerCase()}">${item.update}</span><br><br>
     <strong>Keterangan:</strong><br>
@@ -6184,8 +6194,8 @@ function addBaproItem() {
 5. ${document.getElementById("ket5").value}`;
 
   // Validasi wajib
-  if (!nama || !cso || !jenis || !kertas || !NamaTinta || !update) {
-    return alert('Nama Order, CSO, Jenis Kertas, Tebal Kertas, Nama Tinta, dan Proses wajib diisi!');
+  if (!nama || !cso || !jenis || !kertas || !NamaTinta || !update || !qc) {
+    return alert('Nama, CSO, Jenis Kertas, Tebal Kertas, Nama Tinta, QC dan Proses wajib diisi!');
   }
 
   const konfirmasi = confirm(`Yakin ingin menambah data baru?\n\nNama: ${nama}\nCSO: ${cso}`);
@@ -6545,8 +6555,9 @@ function renderDashboardBaproCompact(query = "", safeMode = false) {
     else if (updateVal === "to") statusClass = "status-to";
 
     card.innerHTML = `
-      <strong>${highlightHtmlSafe(item.nama || '', query)}</strong><br>
-      <strong>QC: ${highlightHtmlSafe(item.qc || '', query)}</strong><br>
+      <strong>Nama : ${highlightHtmlSafe(item.nama || '', query)}</strong><br>
+      <strong>CSO : ${highlightHtmlSafe(item.cso || '', query)}</strong><br>
+      <strong>QC : ${highlightHtmlSafe(item.qc || '', query)}</strong><br>
       <span>📅 ${highlightHtmlSafe(tanggal, query)}</span><br>
       <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
     `;
@@ -6816,8 +6827,8 @@ function addPAItem() {
 5. ${document.getElementById("ketPA5").value}`;
 
   // ===== VALIDASI =====
-  if (!nama || !noKS || !qc || !mesin || !update) {
-    return alert('Nama Order, No KS, QC, Mesin, dan Proses wajib diisi!');
+  if (!nama || !noKS || !qc || !mesin || !update || !order) {
+    return alert('Nama Order, No KS, Order, QC, Mesin, dan Proses wajib diisi!');
   }
 
   const konfirmasi = confirm(`Yakin ingin menambah data baru?\n\nNama: ${nama}\nNo KS: ${noKS}`);
@@ -7138,9 +7149,9 @@ function renderDashboardPACompact(query = "", safeMode = false) {
 
     // ===== CARD TEMPLATE DENGAN HIGHLIGHT (ACUAN BAPRO / FINISHING) =====
     card.innerHTML = `
-      <strong>${highlightHtmlSafe(item.nama || '', query)}</strong><br>
-      <strong>QC: ${highlightHtmlSafe(item.qc || '', query)}</strong><br>
-      <strong>Mesin: ${highlightHtmlSafe(item.mesin || '', query)}</strong><br>
+      <strong>Nama : ${highlightHtmlSafe(item.nama || '', query)}</strong><br>
+      <strong>QC : ${highlightHtmlSafe(item.qc || '', query)}</strong><br>
+      <strong>Mesin : ${highlightHtmlSafe(item.mesin || '', query)}</strong><br>
       <span>📅 ${highlightHtmlSafe(tanggal, query)}</span><br>
       <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
     `;
@@ -7356,12 +7367,12 @@ function renderGridLem(query = "") {
         <span>Order: ${highlightHtmlSafe(item.order || '', q)}</span><br>
         <span>Isi/Dus: ${highlightHtmlSafe(item.isi || '', q)}</span><br>
         <span>Bagus: ${highlightHtmlSafe(item.bagus || '', q)}</span><br>
-        <span>BS Total: ${highlightHtmlSafe(item.jenisBS || '', q)}</span><br>
-        <span>BS Cetak: ${highlightHtmlSafe(item.jenisBS1 || '', q)}</span><br>
-        <span>BS Lem: ${highlightHtmlSafe(item.jenisBS12 || '', q)}</span><br>
-        <span>BS Ponch: ${highlightHtmlSafe(item.jenisBS13 || '', q)}</span><br>
-        <span>BS Varnish: ${highlightHtmlSafe(item.jenisBS14 || '', q)}</span><br>
-        <span>BS Potong: ${highlightHtmlSafe(item.jenisBS15 || '', q)}</span><br>
+        <span>Total BS: ${highlightHtmlSafe(item.lemJenisBS || '', q)}</span><br>
+        <span>BS Cetak: ${highlightHtmlSafe(item.lemJenisBS1 || '', q)}</span><br>
+        <span>BS Lem: ${highlightHtmlSafe(item.lemJenisBS12 || '', q)}</span><br>
+        <span>BS Ponch: ${highlightHtmlSafe(item.lemJenisBS13 || '', q)}</span><br>
+        <span>BS Varnish: ${highlightHtmlSafe(item.lemJenisBS14 || '', q)}</span><br>
+        <span>BS Potong: ${highlightHtmlSafe(item.lemJenisBS15 || '', q)}</span><br>
         <span>QC: ${highlightHtmlSafe(item.qc || '', q)}</span><br>
 
         <span><b>Keterangan:</b></span><br>
@@ -7414,12 +7425,12 @@ function addLemItem() {
   const order = document.getElementById('lemOrder')?.value.trim() || '';
   const isi = document.getElementById('lemIsi')?.value.trim() || '';
   const bagus = document.getElementById('lemBagus')?.value.trim() || '';
-  const jenisBS = document.getElementById('lemJenisBS')?.value.trim() || '';
-  const jenisBS1 = document.getElementById('lemJenisBS1')?.value.trim() || '';
-  const jenisBS12 = document.getElementById('lemJenisBS12')?.value.trim() || '';
-  const jenisBS13 = document.getElementById('lemJenisBS13')?.value.trim() || '';
-  const jenisBS14 = document.getElementById('lemJenisBS14')?.value.trim() || '';
-  const jenisBS15 = document.getElementById('lemJenisBS15')?.value.trim() || '';
+  const lemJenisBS = document.getElementById('lemJenisBS')?.value.trim() || '';
+  const lemJenisBS1 = document.getElementById('lemJenisBS1')?.value.trim() || '';
+  const lemJenisBS12 = document.getElementById('lemJenisBS12')?.value.trim() || '';
+  const lemJenisBS13 = document.getElementById('lemJenisBS13')?.value.trim() || '';
+  const lemJenisBS14 = document.getElementById('lemJenisBS14')?.value.trim() || '';
+  const lemJenisBS15 = document.getElementById('lemJenisBS15')?.value.trim() || '';
   const qc = document.getElementById('lemQC')?.value.trim() || '';
   const update = document.getElementById('lemUpdate')?.value.trim() || '';
 
@@ -7448,7 +7459,7 @@ function addLemItem() {
     action:'add', 
     sheet:'Lem', 
     tanggal: tanggalFormatted,
-    nama,noKS,order,isi,bagus,jenisBS,jenisBS1,jenisBS12,jenisBS13,jenisBS14,jenisBS15,qc,update,keterangan
+    nama,noKS,order,isi,bagus,lemJenisBS,lemJenisBS1,lemJenisBS12,lemJenisBS13,lemJenisBS14,lemJenisBS15,qc,update,keterangan
   };
 
   const btnTambah = document.querySelector('#inputLem button');
@@ -7486,14 +7497,14 @@ function callLem(index){
   document.getElementById('lemOrder').value = item.order || '';
   document.getElementById('lemIsi').value = item.isi || '';
   document.getElementById('lemBagus').value = item.bagus || '';
-  document.getElementById('lemJenisBS').value = item.jenisBS || '';
+  document.getElementById('lemJenisBS').value = item.lemJenisBS || '';
 
   // BS detail baru
-  document.getElementById('lemJenisBS1').value = item.jenisBS1 || '';
-  document.getElementById('lemJenisBS12').value = item.jenisBS12 || '';
-  document.getElementById('lemJenisBS13').value = item.jenisBS13 || '';
-  document.getElementById('lemJenisBS14').value = item.jenisBS14 || '';
-  document.getElementById('lemJenisBS15').value = item.jenisBS15 || '';
+  document.getElementById('lemJenisBS1').value = item.lemJenisBS1 || '';
+  document.getElementById('lemJenisBS12').value = item.lemJenisBS12 || '';
+  document.getElementById('lemJenisBS13').value = item.lemJenisBS13 || '';
+  document.getElementById('lemJenisBS14').value = item.lemJenisBS14 || '';
+  document.getElementById('lemJenisBS15').value = item.lemJenisBS15 || '';
 
   document.getElementById('lemQC').value = item.qc || '';
   document.getElementById('lemUpdate').value = item.update || '';
@@ -7603,14 +7614,14 @@ function editLemInline(index){
       <input type="number" class="edit-inline" name="order" value="${escapeHtml(item.order||'')}" placeholder="Order">
       <input type="number" class="edit-inline" name="isi" value="${escapeHtml(item.isi||'')}" placeholder="Isi/Dus">
       <input type="number" class="edit-inline" name="bagus" value="${escapeHtml(item.bagus||'')}" placeholder="Bagus">
-      <input type="number" class="edit-inline" name="jenisBS" value="${escapeHtml(item.jenisBS||'')}" placeholder="Total BS">
+      <input type="number" class="edit-inline" name="jenisBS" value="${escapeHtml(item.lemJenisBS||'')}" placeholder="Total BS">
 
       <!-- BS detail baru -->
-      <input type="number" class="edit-inline" name="jenisBS1" value="${escapeHtml(item.jenisBS1||'')}" placeholder="BS Cetak">
-      <input type="number" class="edit-inline" name="jenisBS12" value="${escapeHtml(item.jenisBS12||'')}" placeholder="BS Lem">
-      <input type="number" class="edit-inline" name="jenisBS13" value="${escapeHtml(item.jenisBS13||'')}" placeholder="BS Ponch">
-      <input type="number" class="edit-inline" name="jenisBS14" value="${escapeHtml(item.jenisBS14||'')}" placeholder="BS Varnish">
-      <input type="number" class="edit-inline" name="jenisBS15" value="${escapeHtml(item.jenisBS15||'')}" placeholder="BS Potong">
+      <input type="number" class="edit-inline" name="jenisBS1" value="${escapeHtml(item.lemJenisBS1||'')}" placeholder="BS Cetak">
+      <input type="number" class="edit-inline" name="jenisBS12" value="${escapeHtml(item.lemJenisBS12||'')}" placeholder="BS Lem">
+      <input type="number" class="edit-inline" name="jenisBS13" value="${escapeHtml(item.lemJenisBS13||'')}" placeholder="BS Ponch">
+      <input type="number" class="edit-inline" name="jenisBS14" value="${escapeHtml(item.lemJenisBS14||'')}" placeholder="BS Varnish">
+      <input type="number" class="edit-inline" name="jenisBS15" value="${escapeHtml(item.lemJenisBS15||'')}" placeholder="BS Potong">
 
       <select class="edit-inline" name="qc">
         <option value="Martini" ${item.qc==='Martini'? 'selected':''}>Martini</option>
@@ -7784,8 +7795,8 @@ function renderDashboardLemCompact(query = "", safeMode = false) {
 
     // ===== CARD TEMPLATE DENGAN HIGHLIGHT (ACUAN FINISHING) =====
     card.innerHTML = `
-      <strong>${highlightHtmlSafe(item.nama || '', query)}</strong><br>
-      <strong>QC: ${highlightHtmlSafe(item.qc || '', query)}</strong><br>
+      <strong>Nama : ${highlightHtmlSafe(item.nama || '', query)}</strong><br>
+      <strong>QC : ${highlightHtmlSafe(item.qc || '', query)}</strong><br>
       <span>📅 ${highlightHtmlSafe(tanggal, query)}</span><br>
       <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
     `;
@@ -7838,7 +7849,12 @@ function showDetailModalLem(item) {
     <strong>Order:</strong> ${item.order || '-'}<br>
     <strong>Isi/Dus:</strong> ${item.isi || '-'}<br>
     <strong>Bagus:</strong> ${item.bagus || '-'}<br>
-    <strong>BS:</strong> ${item.jenisBS || '-'}<br>
+    <strong>Total BS:</strong> ${item.lemJenisBS}<br>
+    <strong>BS Cetak:</strong> ${item.lemJenisBS1}<br>
+    <strong>BS Lem:</strong> ${item.lemJenisBS12}<br>
+    <strong>BS Ponch:</strong> ${item.lemJenisBS13}<br>
+    <strong>BS Varnish:</strong> ${item.lemJenisBS14}<br>
+    <strong>BS Potong:</strong> ${item.lemJenisBS15}<br>
     <strong>QC:</strong> ${item.qc || '-'}<br>
     <strong>Update:</strong> 
       <span class="status-${(item.update || '').toLowerCase()}">
@@ -8940,4 +8956,3 @@ function goHome() {
 
 </body>
 </html>
-
