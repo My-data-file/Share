@@ -4975,11 +4975,27 @@ setTimeout(swapFaceText, 1500);
 .menu-ai-btn[data-ai="register"] { background: linear-gradient(90deg,#00cfff,#62f0ff); color:#000; }
 .menu-ai-btn:hover { transform:translateY(-3px); box-shadow:0 6px 18px rgba(0,0,0,0.2); }
 
-.menu-cancel { margin-top:14px; text-align:center; }
-.menu-cancel button {
-  padding:8px 16px; border:none; border-radius:10px; background:#f2f2f2; cursor:pointer; font-weight:600; transition: all 0.2s ease;
+.menu-cancel {
+  margin-top: 14px;
+  text-align: center;
 }
-.menu-cancel button:hover { background:#e0e0e0; }
+
+.menu-cancel button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 10px;
+  background: #000;           /* HITAM */
+  color: #fff;                /* Teks putih agar jelas */
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.menu-cancel button:hover {
+  background: #333;           /* Abu gelap saat hover */
+  color: #fff;
+}
+
 
 /* ========== MODAL PASSWORD ========== */
 .modal-pw h3 { text-align:center; margin-bottom:14px; font-size:1.2rem; }
