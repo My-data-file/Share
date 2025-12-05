@@ -5494,13 +5494,35 @@ function addFinishingItem() {
 4. ${document.getElementById("finKet4").value || ''}
 5. ${document.getElementById("finKet5").value || ''}`;
 
-  // Validasi
-  if (!nama || !noKS || !qc || !update) {
-    return alert('Nama Order, No KS, QC, dan Proses wajib diisi!');
-  }
+// ====== VALIDASI BARU: TAMPILKAN HANYA FIELD YANG KOSONG ======
+let kosong = [];
 
-  const konfirmasi = confirm(`Yakin ingin menambah data baru?\n\nNama: ${nama}\nNo KS: ${noKS}`);
-  if (!konfirmasi) return;
+if (!nama) kosong.push("Nama Order");
+if (!order) kosong.push("Nama Barang / Order");
+if (!noKS) kosong.push("No KS");
+if (!qc) kosong.push("QC");
+if (!update) kosong.push("Proses");
+
+if (kosong.length > 0) {
+  alert("Harap isi field berikut:\n- " + kosong.join("\n- "));
+  return;
+}
+// =================================================================
+
+
+// ====== KONFIRMASI INPUTAN (FORMAT RAPI TANPA ICON) ======
+const konfirmasi = confirm(
+  `Yakin ingin menambah data baru?\n\n` +
+  `Nama Order : ${nama}\n` +
+  `Order      : ${order}\n` +
+  `No KS      : ${noKS}\n` +
+  `QC         : ${qc}\n` +
+  `Proses     : ${update}`
+);
+
+if (!konfirmasi) return;
+// =================================================================
+
 
   const tanggalFormatted = new Date().toLocaleString('id-ID', {
     day:'2-digit', month:'long', year:'numeric',
@@ -6193,13 +6215,39 @@ function addBaproItem() {
 4. ${document.getElementById("ket4").value}
 5. ${document.getElementById("ket5").value}`;
 
-  // Validasi wajib
-  if (!nama || !cso || !jenis || !kertas || !NamaTinta || !update || !qc) {
-    return alert('Nama, CSO, Jenis Kertas, Tebal Kertas, Nama Tinta, QC dan Proses wajib diisi!');
-  }
+// ===== VALIDASI BARU: TAMPILKAN HANYA FIELD KOSONG =====
+let kosong = [];
 
-  const konfirmasi = confirm(`Yakin ingin menambah data baru?\n\nNama: ${nama}\nCSO: ${cso}`);
-  if (!konfirmasi) return;
+if (!nama)      kosong.push("Nama");
+if (!cso)       kosong.push("CSO");
+if (!jenis)     kosong.push("Jenis Kertas");
+if (!kertas)    kosong.push("Tebal Kertas");
+if (!NamaTinta) kosong.push("Nama Tinta");
+if (!qc)        kosong.push("QC");
+if (!update)    kosong.push("Proses");
+
+if (kosong.length > 0) {
+  alert("⚠️ Harap isi field berikut:\n- " + kosong.join("\n- "));
+  return;
+}
+// ============================================================
+
+
+// ===== KONFIRMASI (MENAMPILKAN SEMUA INPUT YANG WAJIB) =====
+const konfirmasi = confirm(
+  `Yakin ingin menambah data BAPRO baru?\n\n` +
+  `Nama        : ${nama}\n` +
+  `CSO         : ${cso}\n` +
+  `Jenis       : ${jenis}\n` +
+  `Tebal       : ${kertas}\n` +
+  `Nama Tinta  : ${NamaTinta}\n` +
+  `QC          : ${qc}\n` +
+  `Proses      : ${update}`
+);
+
+if (!konfirmasi) return;
+// ============================================================
+
 
   const tanggalFormatted = new Date().toLocaleString('id-ID', {
     day:'2-digit', month:'long', year:'numeric',
@@ -6826,13 +6874,37 @@ function addPAItem() {
 4. ${document.getElementById("ketPA4").value}
 5. ${document.getElementById("ketPA5").value}`;
 
-  // ===== VALIDASI =====
-  if (!nama || !noKS || !qc || !mesin || !update || !order) {
-    return alert('Nama Order, No KS, Order, QC, Mesin, dan Proses wajib diisi!');
-  }
+// ====== VALIDASI BARU: TAMPILKAN HANYA FIELD YANG KOSONG ======
+let kosong = [];
 
-  const konfirmasi = confirm(`Yakin ingin menambah data baru?\n\nNama: ${nama}\nNo KS: ${noKS}`);
-  if (!konfirmasi) return;
+if (!nama) kosong.push("Nama Order");
+if (!order) kosong.push("Nama Barang / Order");
+if (!noKS) kosong.push("No KS");
+if (!qc) kosong.push("QC");
+if (!mesin) kosong.push("Mesin");
+if (!update) kosong.push("Proses");
+
+if (kosong.length > 0) {
+  alert("Harap isi field berikut:\n- " + kosong.join("\n- "));
+  return;
+}
+// =================================================================
+
+
+// ====== KONFIRMASI INPUTAN (FORMAT RAPI TANPA ICON) ======
+const konfirmasi = confirm(
+  `Yakin ingin menambah data baru?\n\n` +
+  `Nama Order : ${nama}\n` +
+  `Order      : ${order}\n` +
+  `No KS      : ${noKS}\n` +
+  `QC         : ${qc}\n` +
+  `Mesin      : ${mesin}\n` +
+  `Proses     : ${update}`
+);
+
+if (!konfirmasi) return;
+// =================================================================
+
 
   const tanggalFormatted = new Date().toLocaleString('id-ID', {
     day:'2-digit', month:'long', year:'numeric',
@@ -7442,13 +7514,33 @@ function addLemItem() {
 4. ${document.getElementById("lemKet4")?.value || ''}
 5. ${document.getElementById("lemKet5")?.value || ''}`;
 
-  // Validasi wajib
-  if (!nama || !noKS || !qc || !update) {
-    return alert('Nama Order, No KS, QC, dan Proses wajib diisi!');
-  }
+// ====== VALIDASI BARU: TAMPILKAN HANYA FIELD YANG KOSONG ======
+let kosong = [];
 
-  const konfirmasi = confirm(`Yakin ingin menambah data baru?\n\nNama: ${nama}\nNo KS: ${noKS}`);
-  if (!konfirmasi) return;
+if (!nama) kosong.push("Nama Order");
+if (!noKS) kosong.push("No KS");
+if (!qc) kosong.push("QC");
+if (!update) kosong.push("Proses");
+
+if (kosong.length > 0) {
+  alert("Harap isi field berikut:\n- " + kosong.join("\n- "));
+  return;
+}
+// =================================================================
+
+
+// ====== KONFIRMASI INPUTAN (FORMAT RAPI TANPA ICON) ======
+const konfirmasi = confirm(
+  `Yakin ingin menambah data baru?\n\n` +
+  `Nama Order : ${nama}\n` +
+  `No KS      : ${noKS}\n` +
+  `QC         : ${qc}\n` +
+  `Proses     : ${update}`
+);
+
+if (!konfirmasi) return;
+// =================================================================
+
 
   const tanggalFormatted = new Date().toLocaleString('id-ID', {
     day:'2-digit', month:'long', year:'numeric',
