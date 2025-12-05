@@ -782,7 +782,7 @@ select {
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       transition: transform 0.2s;
   " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-    Total TO<br><strong id="countTOBapro">0</strong>
+    Total Pending<br><strong id="countTOBapro">0</strong>
   </div>
 
   <div style="
@@ -821,7 +821,7 @@ select {
     position: relative;
     overflow: hidden;
   ">
-    TO
+    Pending
     <span style="
       position: absolute;
       top: 0; left: 0; width: 100%; height: 50%;
@@ -1015,7 +1015,7 @@ select {
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       transition: transform 0.2s;
   " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-    Total TO<br><strong id="countTOPA">0</strong>
+    Total Pending<br><strong id="countTOPA">0</strong>
   </div>
 
   <div style="
@@ -1054,7 +1054,7 @@ select {
     position: relative;
     overflow: hidden;
   ">
-    TO
+    Pending
     <span style="
       position: absolute;
       top: 0; left: 0; width: 100%; height: 50%;
@@ -1247,7 +1247,7 @@ select {
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       transition: transform 0.2s;
   " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-    Total TO<br><strong id="countTOFinishing">0</strong>
+    Total Pending<br><strong id="countTOFinishing">0</strong>
   </div>
 
   <div style="
@@ -1286,7 +1286,7 @@ select {
     position: relative;
     overflow: hidden;
   ">
-    TO
+    Pending
     <span style="
       position: absolute;
       top: 0; left: 0; width: 100%; height: 50%;
@@ -1482,7 +1482,7 @@ select {
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       transition: transform 0.2s;
   " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-    Total TO<br><strong id="countTOLem">0</strong>
+    Total Pending<br><strong id="countTOLem">0</strong>
   </div>
 
   <div style="
@@ -1521,7 +1521,7 @@ select {
     position: relative;
     overflow: hidden;
   ">
-    TO
+    Pending
     <span style="
       position: absolute;
       top: 0; left: 0; width: 100%; height: 50%;
@@ -1767,7 +1767,7 @@ select {
     <select id="baproUpdate">
       <option value="Proses">Proses</option>
       <option value="Selesai">Selesai</option>
-      <option value="TO">TO</option>
+      <option value="Pending">Pending</option>
     </select>
   </div>
 
@@ -2055,7 +2055,7 @@ select {
     <select id="paUpdate">
       <option value="Proses">Proses</option>
       <option value="Selesai">Selesai</option>
-      <option value="TO">TO</option>
+      <option value="Pending">Pending</option>
     </select>
   </div>
 
@@ -2413,7 +2413,7 @@ paNoKS.addEventListener('input', function(e) {
     <select id="finishingUpdate">
       <option value="Proses">Proses</option>
       <option value="Selesai">Selesai</option>
-      <option value="TO">TO</option>
+      <option value="Pending">Pending</option>
     </select>
   </div>
 
@@ -2771,7 +2771,7 @@ finishingNoKS.addEventListener('input', function(e) {
     <select id="lemUpdate">
       <option value="Proses">Proses</option>
       <option value="Selesai">Selesai</option>
-      <option value="TO">TO</option>
+      <option value="Pending">Pending</option>
     </select>
   </div>
 
@@ -5370,7 +5370,7 @@ function renderGridFinishing(query = "") {
     const updateVal = (item.update || '').toString();
     if (updateVal === "Proses") statusClass = "status-proses";
     else if (updateVal === "Selesai") statusClass = "status-selesai";
-    else if (updateVal === "TO") statusClass = "status-to";
+    else if (updateVal === "Pending") statusClass = "status-to";
 
     // ===== TANGGAL =====
     const tanggal = item.tanggal
@@ -5686,7 +5686,7 @@ function editFinishingInline(index){
       </select>
 
       <select class="edit-inline" name="update">
-        <option value="TO" ${item.update==='TO'? 'selected':''}>TO</option>
+        <option value="Pending" ${item.update==='Pending'? 'selected':''}>Pending</option>
         <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
         <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
       </select>
@@ -5853,7 +5853,7 @@ function renderDashboardFinishingCompact(query = "", safeMode = false) {
     let statusClass = "";
     if (updateVal === "proses") statusClass = "status-proses";
     else if (updateVal === "selesai") statusClass = "status-selesai";
-    else if (updateVal === "to") statusClass = "status-to";
+    else if (updateVal === "pending") statusClass = "status-pending";
 
     card.innerHTML = `
       <strong>Nama : ${highlightHtmlSafe(item.nama || '', query)}</strong><br>
@@ -5867,7 +5867,7 @@ function renderDashboardFinishingCompact(query = "", safeMode = false) {
     // FILTER hanya berjalan jika NOT safe mode
     if (!safeMode && q && !cardText.includes(q)) return;
 
-    if (updateVal === 'to') {
+    if (updateVal === 'pending') {
       if (containerTO) containerTO.appendChild(card);
       totalTO++;
     } else if (updateVal === 'proses') {
@@ -6083,7 +6083,7 @@ function renderGridBapro(query = "") {
     const updateVal = (item.update || '').toString();
     if (updateVal === "Proses") statusClass = "status-proses";
     else if (updateVal === "Selesai") statusClass = "status-selesai";
-    else if (updateVal === "TO") statusClass = "status-to";
+    else if (updateVal === "Pending") statusClass = "status-to";
 
     // ===== TANGGAL =====
     const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, q)}</strong><br>` : '';
@@ -6402,7 +6402,7 @@ function editBaproInline(index){
       </select>
 
       <select class="edit-inline">
-        <option value="TO" ${item.update==='TO'? 'selected':''}>TO</option>
+        <option value="Pending" ${item.update==='Pending'? 'selected':''}>Pending</option>
         <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
         <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
       </select>
@@ -6552,7 +6552,7 @@ function renderDashboardBaproCompact(query = "", safeMode = false) {
     let statusClass = "";
     if (updateVal === "proses") statusClass = "status-proses";
     else if (updateVal === "selesai") statusClass = "status-selesai";
-    else if (updateVal === "to") statusClass = "status-to";
+    else if (updateVal === "pending") statusClass = "status-pending";
 
     card.innerHTML = `
       <strong>Nama : ${highlightHtmlSafe(item.nama || '', query)}</strong><br>
@@ -6565,7 +6565,7 @@ function renderDashboardBaproCompact(query = "", safeMode = false) {
     const cardText = card.textContent.toLowerCase();
     if (!safeMode && q && !cardText.includes(q)) return;
 
-    if (updateVal === 'to') {
+    if (updateVal === 'pending') {
       if (containerTO) containerTO.appendChild(card);
       totalTO++;
     } else if (updateVal === 'proses') {
@@ -6736,7 +6736,7 @@ function renderGridPA(query = "") {
     const updateVal = (item.update || '').toString();
     if (updateVal === "Proses") statusClass = "status-proses";
     else if (updateVal === "Selesai") statusClass = "status-selesai";
-    else if (updateVal === "TO") statusClass = "status-to";
+    else if (updateVal === "Pending") statusClass = "status-to";
 
     const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, q)}</strong><br>` : '';
 
@@ -7011,7 +7011,7 @@ function editPAInline(index){
       </select>
 
       <select class="edit-inline">
-        <option value="TO" ${item.update==='TO'? 'selected':''}>TO</option>
+        <option value="Pending" ${item.update==='Pending'? 'selected':''}>Pending</option>
         <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
         <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
       </select>
@@ -7145,7 +7145,7 @@ function renderDashboardPACompact(query = "", safeMode = false) {
     let statusClass = "";
     if (updateVal === "proses") statusClass = "status-proses";
     else if (updateVal === "selesai") statusClass = "status-selesai";
-    else if (updateVal === "to") statusClass = "status-to";
+    else if (updateVal === "pending") statusClass = "status-pending";
 
     // ===== CARD TEMPLATE DENGAN HIGHLIGHT (ACUAN BAPRO / FINISHING) =====
     card.innerHTML = `
@@ -7161,7 +7161,7 @@ function renderDashboardPACompact(query = "", safeMode = false) {
     if (!safeMode && q && !cardText.includes(q)) return;
 
     // ===== MASUKKAN KE KATEGORI =====
-    if (updateVal === 'to') {
+    if (updateVal === 'pending') {
       if (containerTO) containerTO.appendChild(card);
       totalTO++;
     } else if (updateVal === 'proses') {
@@ -7335,7 +7335,7 @@ function renderGridLem(query = "") {
     const updateVal = (item.update || '').toString();
     if (updateVal === "Proses") statusClass = "status-proses";
     else if (updateVal === "Selesai") statusClass = "status-selesai";
-    else if (updateVal === "TO") statusClass = "status-to";
+    else if (updateVal === "Pending") statusClass = "status-to";
 
     const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, q)}</strong><br>` : '';
 
@@ -7630,7 +7630,7 @@ function editLemInline(index){
       </select>
 
       <select class="edit-inline" name="update">
-        <option value="TO" ${item.update==='TO'? 'selected':''}>TO</option>
+        <option value="Pending" ${item.update==='Pending'? 'selected':''}>Pending</option>
         <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
         <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
       </select>
@@ -7791,7 +7791,7 @@ function renderDashboardLemCompact(query = "", safeMode = false) {
     let statusClass = "";
     if (updateVal === "proses") statusClass = "status-proses";
     else if (updateVal === "selesai") statusClass = "status-selesai";
-    else if (updateVal === "to") statusClass = "status-to";
+    else if (updateVal === "pending") statusClass = "status-pending";
 
     // ===== CARD TEMPLATE DENGAN HIGHLIGHT (ACUAN FINISHING) =====
     card.innerHTML = `
@@ -7806,7 +7806,7 @@ function renderDashboardLemCompact(query = "", safeMode = false) {
     if (!safeMode && q && !cardText.includes(q)) return;
 
     // ===== MASUKKAN KE KATEGORI =====
-    if (updateVal === 'to') {
+    if (updateVal === 'pending') {
       if (containerTO) containerTO.appendChild(card);
       totalTO++;
     } else if (updateVal === 'proses') {
