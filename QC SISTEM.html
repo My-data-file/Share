@@ -6012,7 +6012,13 @@ function editBaproInline(index){
   card.innerHTML = `
     <div class="edit-grid">
       <input type="text" class="edit-inline" value="${escapeHtml(item.nama||'')}" placeholder="Nama Order">
-      <input type="text" class="edit-inline" value="${escapeHtml(item.cso||'')}" placeholder="CSO">
+      <select class="edit-inline">
+        <option value="" disabled ${!item.cso ? 'selected' : ''}>Pilih CSO</option>
+        <option value="Yati" ${item.cso === 'Yati' ? 'selected' : ''}>Yati</option>
+        <option value="Retni" ${item.cso === 'Retni' ? 'selected' : ''}>Retni</option>
+        <option value="Aulia" ${item.cso === 'Aulia' ? 'selected' : ''}>Aulia</option>
+        <option value="Yuli" ${item.cso === 'Yuli' ? 'selected' : ''}>Yuli</option>
+      </select>
       <input type="text" class="edit-inline" value="${escapeHtml(item.jenisKertas||'')}" placeholder="Jenis Kertas">
       <input type="text" class="edit-inline" value="${escapeHtml(item.tebalKertas||'')}" placeholder="Tebal Kertas">
       <input type="text" class="edit-inline" value="${escapeHtml(item.NamaTinta||'')}" placeholder="Nama Tinta">
@@ -7346,12 +7352,12 @@ async function saveLemInline(index, btn) {
     order: inputs[2].value.trim(),
     isi: inputs[3].value.trim(),
     bagus: inputs[4].value.trim(),
-    jenisBS: inputs[5].value.trim(),       // Total BS
-    jenisBS1: inputs[6].value.trim(),      // BS Cetak
-    jenisBS12: inputs[7].value.trim(),     // BS Lem
-    jenisBS13: inputs[8].value.trim(),     // BS Ponch
-    jenisBS14: inputs[9].value.trim(),     // BS Varnish
-    jenisBS15: inputs[10].value.trim(),    // BS Potong
+    lemJenisBS: inputs[5].value.trim(),       // Total BS
+    lemJenisBS1: inputs[6].value.trim(),      // BS Cetak
+    lemJenisBS12: inputs[7].value.trim(),     // BS Lem
+    lemJenisBS13: inputs[8].value.trim(),     // BS Ponch
+    lemJenisBS14: inputs[9].value.trim(),     // BS Varnish
+    lemJenisBS15: inputs[10].value.trim(),    // BS Potong
     qc: inputs[11].value,
     update: inputs[12].value,
     keterangan: inputs[13].value.trim()
