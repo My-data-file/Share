@@ -118,46 +118,38 @@ select {
   transition: border .2s, box-shadow .2s;
 }
 
-/* ================= GRID GLOBAL RESPONSIVE ================= */
+/* ================= GRID GLOBAL ================= */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 12px;
-  padding: 6px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+  padding: 4px;
   width: 100%;
-  box-sizing: border-box;
 }
 
-/* Card kaca semi-transparan */
+/* Card kaca ultra-transparan seperti speech panel */
+.grid-container > div,
 .grid-card {
-  background: rgba(0, 207, 255, 0.15);
-  border-radius: 22px;
-  padding: 14px 20px;
+  background: rgba(0, 207, 255, 0.15);    /* semi-transparent biru acuan */
+  border-radius: 22px;                     /* lebih bulat seperti bubble */
+  padding: 14px 20px;                      /* mirip padding speech panel */
+  
+  /* Border ringan & semi-transparent */
   border: 1px solid rgba(0, 207, 255, 0.4);
+
+  /* efek glass/acrylic lembut */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+
   color: #002933;
   box-shadow: 0 8px 20px rgba(0, 0, 0, .25);
   transition: all 0.35s ease;
   position: relative;
-  font-size: 14px;
-  line-height: 1.35;
-
-  /* ================== FLEX KONTAINER DALAM CARD ================== */
-  display: flex;
-  flex-wrap: wrap;       /* biar bisa baris baru */
-  gap: 12px;             /* jarak antar item */
 }
 
-/* Item di dalam card */
-.grid-card > * {
-  flex: 1 1 48%;         /* dua kolom horizontal default */
-  min-width: 140px;      /* tetap responsif */
-  box-sizing: border-box;
-}
-
-/* Highlight kaca atas */
-.grid-card::before {
+/* Efek highlight kaca */
+.grid-card::before,
+.grid-container > div::before {
   content: "";
   position: absolute;
   top: 0;
@@ -165,24 +157,29 @@ select {
   width: 100%;
   height: 40%;
   border-radius: 22px 22px 0 0;
-  background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0)
+  );
   pointer-events: none;
 }
 
-/* Hover efek */
+/* Efek Hover (Glow Cyan + Gelap) */
+.grid-container > div:hover,
 .grid-card:hover {
   transform: translateY(-2px);
-  background: rgba(0, 207, 255, 0.25);
+  background: rgba(0, 207, 255, 0.25);   /* sedikit lebih terlihat */
   box-shadow:
-    0 10px 22px rgba(0,0,0,0.28),
-    0 0 18px rgba(0, 207, 255, 0.35);
+    0 10px 22px rgba(0, 0, 0, .28),      /* glow gelap */
+    0 0 18px rgba(0, 207, 255, .35);     /* glow cyan lembut */
 }
 
-/* Input di card */
+/* Input kaca */
 .grid-card input {
-  padding: 0.55rem 0.75rem;
-  border: 1px solid rgba(0,0,0,0.45);
-  background: rgba(0, 207, 255, 0.12);
+  padding: .55rem .75rem;
+  border: 1px solid rgba(0, 0, 0, 0.45); /* outline hitam */
+  background: rgba(0, 207, 255, 0.12);   /* semi-transparent biru acuan */
   border-radius: 10px;
   width: 100%;
   font-size: 14px;
@@ -191,71 +188,34 @@ select {
   transition: 0.2s ease;
 }
 
-/* Fokus input */
+/* Fokus efek glow cyan + hitam */
 .grid-card input:focus {
-  background: rgba(0, 207, 255, 0.2);
-  border-color: rgba(0,0,0,0.7);
-  box-shadow:
-    0 0 0 2px rgba(0,207,255,0.4),
-    0 0 8px rgba(0,207,255,0.35);
+  background: rgba(0, 207, 255, 0.20);   /* semi-transparent lebih terang */
+  border-color: rgba(0, 0, 0, 0.7);
+  box-shadow: 
+    0 0 0 2px rgba(0, 207, 255, 0.4),
+    0 0 8px rgba(0, 207, 255, 0.35);
   outline: none;
 }
 
-/* Card tambahan style (opsional) */
-.grid-card-inner {
-  background: #fff;
+
+
+/* ========================== CARD STYLE ========================== */
+.grid-card {
+  background: #ffffff;
   border-radius: 12px;
   padding: 14px 16px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.15);
   border-left: 6px solid #4b9cff;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform .2s ease, box-shadow .2s ease;
+  font-size: 14px;
+  line-height: 1.35;
 }
 
-/* Hover card inner */
-.grid-card-inner:hover {
+.grid-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 5px 14px rgba(0,0,0,0.22);
 }
-
-/* ================ MEDIA QUERY UNTUK HP/Tablet ================= */
-@media (max-width: 1024px) {
-  .grid-container {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 10px;
-  }
-  .grid-card > * {
-    flex: 1 1 48%;
-  }
-}
-
-@media (max-width: 768px) {
-  .grid-container {
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 8px;
-  }
-  .grid-card > * {
-    flex: 1 1 48%;
-  }
-}
-
-@media (max-width: 480px) {
-  .grid-container {
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap: 6px;
-  }
-  .grid-card {
-    padding: 10px 12px;
-    font-size: 13px;
-  }
-  .grid-card input {
-    font-size: 12px;
-  }
-  .grid-card > * {
-    flex: 1 1 100%;  /* jadi satu kolom full width di HP */
-  }
-}
-
-
 
 /* ========================== TEXT ========================== */
 .grid-card span,
@@ -2228,16 +2188,20 @@ paNoKS.addEventListener('input', function(e) {
 
 </section>
 
-<!-- Modal Detail -->
+<!-- ======================= MODAL DETAIL FINISHING ======================= -->
 <div id="detailFinishingModal" class="modal-fin">
   <div class="modal-fin-content">
     <div class="modal-fin-header">
       <span class="modal-fin-title">Detail QC Finishing</span>
-      <button class="modal-fin-close" onclick="closeDetailModalFinishing()">×</button>
+      <button class="modal-fin-close" onclick="closeDetailModal()">×</button>
     </div>
-    <div class="modal-fin-body" id="detailFinishingBody"></div>
+
+    <div class="modal-fin-body" id="detailFinishingBody">
+      <!-- data diisi otomatis -->
+    </div>
+
     <div class="modal-fin-footer">
-      <button class="modal-fin-btn" onclick="closeDetailModalFinishing()">Tutup</button>
+      <button class="modal-fin-btn" onclick="closeDetailModal()">Tutup</button>
     </div>
   </div>
 </div>
