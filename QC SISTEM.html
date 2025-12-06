@@ -7968,43 +7968,81 @@ function enableSPVEdit() {
   });
 }
 
-/* ====================== FILTER & HIGHLIGHT PER HURUF (AMAN UNTUK EDIT) ====================== */
-const spvSearchInput = document.getElementById('spvSearch');
-if (spvSearchInput) {
-  spvSearchInput.addEventListener('input', () => {
-    const filter = spvSearchInput.value.trim().toLowerCase();
-    const tbody = document.querySelector('#spvTable tbody');
-    if (!tbody) return;
+/* ====================== FILTER & HIGHLIGHT SPV (STABIL) ====================== */
+document.addEventListener("input", function (e) {
 
-    tbody.querySelectorAll('tr').forEach(tr => {
-      let rowMatches = false;
+  if (e.target.id !== "spvSearch") return;
 
-      tr.querySelectorAll('td').forEach((td, idx) => {
+  const filter = e.target.value.trim().toLowerCase();
+  const tbody = document.querySelector("#spvTable tbody");
+  if (!tbody) return;
 
-        // JANGAN UBRAK-ABRIK CELL AKSI (EDIT)
-        if (idx === 10) return;
+  tbody.querySelectorAll("tr").forEach(tr => {
 
-        const original = td.dataset.original || td.textContent;
-        td.dataset.original = original;
+    const tds = tr.querySelectorAll("td");
+    let rowMatches = false;
 
-        const lower = original.toLowerCase();
-
-        if (filter && lower.includes(filter)) {
-          rowMatches = true;
-
-          // highlight per huruf
-          const regex = new RegExp(`(${filter.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, 'gi');
-          td.innerHTML = original.replace(regex, `<span style="background:yellow;">$1</span>`);
-        } else {
-          td.innerHTML = original; // kembalikan isi asli
+    // === JIKA FILTER KOSONG → RESET & TAMPILKAN BARIS ===
+    if (!filter) {
+      tds.forEach((td, idx) => {
+        if (idx === 10) return;                // kolom aksi
+        if (td.dataset.originalHtml) {
+          td.innerHTML = td.dataset.originalHtml;
         }
       });
+      tr.style.display = "";                  // tampilkan baris
+      return;                                 // STOP di sini
+    }
 
-      // sembunyikan baris yang tidak cocok
-      tr.style.display = rowMatches || !filter ? '' : 'none';
+    // ========== JIKA FILTER ADA ========== 
+    tds.forEach((td, idx) => {
+
+      if (idx === 10) return; // kolom aksi
+
+      // Simpan HTML asli sekali
+      if (!td.dataset.originalHtml) {
+        td.dataset.originalHtml = td.innerHTML;
+      }
+
+      const originalHtml = td.dataset.originalHtml;
+      const plain = originalHtml.replace(/<[^>]+>/g, "").toLowerCase();
+
+      if (plain.includes(filter)) {
+        rowMatches = true;
+
+        /* --- Highlight aman --- */
+        const temp = document.createElement("div");
+        temp.innerHTML = originalHtml;
+
+        const walker = document.createTreeWalker(temp, NodeFilter.SHOW_TEXT);
+        const escaped = filter.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const regex = new RegExp(escaped, "gi");
+
+        let node;
+        while ((node = walker.nextNode())) {
+          if (node.nodeValue.toLowerCase().includes(filter)) {
+            const highlighted = node.nodeValue.replace(regex, m =>
+              `<span style="background:yellow">${m}</span>`
+            );
+
+            const wrap = document.createElement("span");
+            wrap.innerHTML = highlighted;
+            node.replaceWith(...wrap.childNodes);
+          }
+        }
+
+        td.innerHTML = temp.innerHTML;
+
+      } else {
+        td.innerHTML = originalHtml;
+      }
     });
+
+    tr.style.display = rowMatches ? "" : "none";
   });
-}
+
+});
+
 
 
 
@@ -8391,40 +8429,48 @@ function enableMeetingEdit(){
   });
 }
 
-// ====================== FILTER & HIGHLIGHT MEETING ======================
-document.addEventListener('DOMContentLoaded', () => {
-  const searchInput = document.getElementById('meetingSearch');
-  const tableBody = document.querySelector('#meetingTable tbody');
+// ====================== FILTER & HIGHLIGHT MEETING (LINK TETAP AMAN) ======================
+document.addEventListener("input", function (e) {
 
-  if(!searchInput || !tableBody) return;
+  if (e.target.id !== "meetingSearch") return;
 
-  searchInput.addEventListener('input', () => {
-    const filter = searchInput.value.toLowerCase();
-    const rows = tableBody.querySelectorAll('tr');
+  const filter = e.target.value.toLowerCase();
+  const tableBody = document.querySelector("#meetingTable tbody");
+  if (!tableBody) return;
 
-    rows.forEach(row => {
-      let match = false;
+  const rows = tableBody.querySelectorAll("tr");
 
-      // loop setiap cell kecuali aksi
-      row.querySelectorAll('td:not(.action-cell)').forEach(cell => {
-        const text = cell.textContent.toLowerCase();
+  rows.forEach(row => {
+    let match = false;
 
-        if(filter && text.includes(filter)){
-          // highlight
-          const regex = new RegExp(`(${filter.replace(/[-/\\^$*+?.()|[\]{}]/g,'\\$&')})`, 'gi');
-          cell.innerHTML = cell.textContent.replace(regex, '<span style="background:yellow">$1</span>');
-          match = true;
-        } else {
-          // reset highlight
-          cell.innerHTML = cell.textContent;
-        }
-      });
+    row.querySelectorAll("td:not(.action-cell)").forEach(cell => {
 
-      // show/hide row
-      row.style.display = match || !filter ? '' : 'none';
+      // Simpan HTML asli hanya sekali
+      if (!cell.dataset.originalHtml) {
+        cell.dataset.originalHtml = cell.innerHTML;
+      }
+
+      const originalHtml = cell.dataset.originalHtml;
+      const plainText = originalHtml.replace(/<[^>]+>/g, '').toLowerCase(); // hilangkan tag HTML saat compare
+
+      if (filter && plainText.includes(filter)) {
+        const regex = new RegExp("(" + filter.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&") + ")", "gi");
+
+        // highlight hanya pada teks, tidak merusak tag <a>
+        const highlighted = originalHtml.replace(regex, '<span style="background:yellow">$1</span>');
+        cell.innerHTML = highlighted;
+
+        match = true;
+      } else {
+        // Kembalikan HTML original secara aman
+        cell.innerHTML = originalHtml;
+      }
     });
+
+    row.style.display = match || !filter ? "" : "none";
   });
 });
+
 
 
 // ===== PASSWORD OTOMATIS TAB =====
