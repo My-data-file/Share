@@ -118,38 +118,34 @@ select {
   transition: border .2s, box-shadow .2s;
 }
 
-/* ================= GRID GLOBAL ================= */
+/* ================= GRID GLOBAL RESPONSIVE ================= */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 14px;
-  padding: 4px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  padding: 6px;
   width: 100%;
+  box-sizing: border-box;
 }
 
-/* Card kaca ultra-transparan seperti speech panel */
-.grid-container > div,
+/* Card kaca semi-transparan */
 .grid-card {
-  background: rgba(0, 207, 255, 0.15);    /* semi-transparent biru acuan */
-  border-radius: 22px;                     /* lebih bulat seperti bubble */
-  padding: 14px 20px;                      /* mirip padding speech panel */
-  
-  /* Border ringan & semi-transparent */
+  background: rgba(0, 207, 255, 0.15);
+  border-radius: 22px;
+  padding: 14px 20px;
   border: 1px solid rgba(0, 207, 255, 0.4);
-
-  /* efek glass/acrylic lembut */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-
   color: #002933;
   box-shadow: 0 8px 20px rgba(0, 0, 0, .25);
   transition: all 0.35s ease;
   position: relative;
+  font-size: 14px;
+  line-height: 1.35;
 }
 
-/* Efek highlight kaca */
-.grid-card::before,
-.grid-container > div::before {
+/* Highlight kaca atas */
+.grid-card::before {
   content: "";
   position: absolute;
   top: 0;
@@ -157,29 +153,24 @@ select {
   width: 100%;
   height: 40%;
   border-radius: 22px 22px 0 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.25),
-    rgba(255, 255, 255, 0)
-  );
+  background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
   pointer-events: none;
 }
 
-/* Efek Hover (Glow Cyan + Gelap) */
-.grid-container > div:hover,
+/* Hover efek */
 .grid-card:hover {
   transform: translateY(-2px);
-  background: rgba(0, 207, 255, 0.25);   /* sedikit lebih terlihat */
+  background: rgba(0, 207, 255, 0.25);
   box-shadow:
-    0 10px 22px rgba(0, 0, 0, .28),      /* glow gelap */
-    0 0 18px rgba(0, 207, 255, .35);     /* glow cyan lembut */
+    0 10px 22px rgba(0,0,0,0.28),
+    0 0 18px rgba(0, 207, 255, 0.35);
 }
 
-/* Input kaca */
+/* Input di card */
 .grid-card input {
-  padding: .55rem .75rem;
-  border: 1px solid rgba(0, 0, 0, 0.45); /* outline hitam */
-  background: rgba(0, 207, 255, 0.12);   /* semi-transparent biru acuan */
+  padding: 0.55rem 0.75rem;
+  border: 1px solid rgba(0,0,0,0.45);
+  background: rgba(0, 207, 255, 0.12);
   border-radius: 10px;
   width: 100%;
   font-size: 14px;
@@ -188,43 +179,61 @@ select {
   transition: 0.2s ease;
 }
 
-/* Fokus efek glow cyan + hitam */
+/* Fokus input */
 .grid-card input:focus {
-  background: rgba(0, 207, 255, 0.20);   /* semi-transparent lebih terang */
-  border-color: rgba(0, 0, 0, 0.7);
-  box-shadow: 
-    0 0 0 2px rgba(0, 207, 255, 0.4),
-    0 0 8px rgba(0, 207, 255, 0.35);
+  background: rgba(0, 207, 255, 0.2);
+  border-color: rgba(0,0,0,0.7);
+  box-shadow:
+    0 0 0 2px rgba(0,207,255,0.4),
+    0 0 8px rgba(0,207,255,0.35);
   outline: none;
 }
 
-
-
-/* ========================== WRAPPER GRID ========================== */
-#gridBapro {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 14px;
-  padding: 10px;
-  margin-top: 10px;
-}
-
-/* ========================== CARD STYLE ========================== */
-.grid-card {
-  background: #ffffff;
+/* Card tambahan style (opsional) */
+.grid-card-inner {
+  background: #fff;
   border-radius: 12px;
   padding: 14px 16px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.15);
   border-left: 6px solid #4b9cff;
-  transition: transform .2s ease, box-shadow .2s ease;
-  font-size: 14px;
-  line-height: 1.35;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.grid-card:hover {
+/* Hover card inner */
+.grid-card-inner:hover {
   transform: translateY(-3px);
   box-shadow: 0 5px 14px rgba(0,0,0,0.22);
 }
+
+/* ================ MEDIA QUERY UNTUK HP/Tablet ================= */
+@media (max-width: 1024px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 6px;
+  }
+  .grid-card {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  .grid-card input {
+    font-size: 12px;
+  }
+}
+
 
 /* ========================== TEXT ========================== */
 .grid-card span,
@@ -1658,13 +1667,13 @@ select {
 }
 </style>
 
-
-
-
-
-
-
 </section>
+
+
+
+
+
+
 
 <!-- ======================== QC BAPRO ======================== -->
 <section id="qcBapro" class="card qc-section" style="display:none;">
@@ -1673,9 +1682,9 @@ select {
     text-align:center; 
     color:#fff; 
     background: linear-gradient(to right, #D32F2F, #F44336); 
-    font-size:1.2rem; 
-    padding:6px 12px; 
-    border-radius:8px; 
+    font-size:1.2rem;
+    padding:6px 12px;
+    border-radius:8px;
     margin-bottom:12px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     position: relative;
@@ -1693,271 +1702,169 @@ select {
       pointer-events: none;"></span>
   </h2>
 
-  <!-- ===== Tabs ===== -->
+  <!-- Tabs -->
   <div class="tabs" style="display:flex; gap:8px; margin-bottom:10px;">
     <button class="tab-btn bapro active" data-tab="inputBapro" onclick="switchTab(this)">Inputan</button>
     <button class="tab-btn bapro" data-tab="hasilBapro" onclick="switchTab(this)">Hasil</button>
   </div>
 
-<!-- ===== Inputan ===== -->
-<div id="inputBapro" class="tab-content active">
+  <!-- Inputan -->
+  <div id="inputBapro" class="tab-content active">
+    <div class="form-group">
+      <label>Nama Order</label>
+      <input type="text" id="baproNama" placeholder="ETK GIV WHITE PEPAYA 72 GR">
+    </div>
 
-  <div class="form-group">
-    <label>Nama Order</label>
-    <input type="text" id="baproNama" placeholder="ETK GIV WHITE PEPAYA 72 GR">
+    <div class="form-group">
+      <label>CSO</label>
+      <select id="baprocso">
+        <option value="">Pilih CSO</option>
+        <option value="Yati">Yati</option>
+        <option value="Retni">Retni</option>
+        <option value="Aulia">Aulia</option>
+        <option value="Yuli">Yuli</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Jenis Kertas</label>
+      <input type="text" id="baproJenis" placeholder="Duplex">
+    </div>
+
+    <div class="form-group">
+      <label>Tebal Kertas (gsm)</label>
+      <input type="number" id="baproKertas" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label>Nama Tinta</label>
+      <input type="text" id="baproNamaTinta" placeholder="SP RED">
+    </div>
+
+    <div class="form-group">
+      <label>Dmax</label>
+      <input type="number" id="baproDmax" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label>L</label>
+      <input type="number" id="baproL" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label>A</label>
+      <input type="number" id="baproA" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label>B</label>
+      <input type="number" id="baproB" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label>QC</label>
+      <select id="baproQC">
+        <option value="">Pilih QC</option>
+        <option value="Marwan">Marwan</option>
+        <option value="Kiki">Kiki</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Update</label>
+      <select id="baproUpdate">
+        <option value="Proses">Proses</option>
+        <option value="Selesai">Selesai</option>
+        <option value="Pending">Pending</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Resep Tinta</label>
+      <div class="rowKet"><span>1.</span><input type="text" id="ket1" placeholder="Resep 1"></div>
+      <div class="rowKet"><span>2.</span><input type="text" id="ket2" placeholder="Resep 2"></div>
+      <div class="rowKet"><span>3.</span><input type="text" id="ket3" placeholder="Resep 3"></div>
+      <div class="rowKet"><span>4.</span><input type="text" id="ket4" placeholder="Resep 4"></div>
+      <div class="rowKet"><span>5.</span><input type="text" id="ket5" placeholder="Resep 5"></div>
+    </div>
+
+    <div class="form-group">
+      <button type="button" class="bapro-add-btn" onclick="addBaproItem()">➕ Tambah</button>
+    </div>
   </div>
 
-  <div class="form-group">
-    <label>CSO</label>
-    <select id="baprocso">
-      <option value="">Pilih CSO</option>
-      <option value="Yati">Yati</option>
-      <option value="Retni">Retni</option>
-      <option value="Aulia">Aulia</option>
-      <option value="Yuli">Yuli</option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>Jenis Kertas</label>
-    <input type="text" id="baproJenis" placeholder="Duplex">
-  </div>
-
-  <div class="form-group">
-    <label>Tebal Kertas (gsm)</label>
-    <input type="number" id="baproKertas" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>Nama Tinta</label>
-    <input type="text" id="baproNamaTinta" placeholder="SP RED">
-  </div>
-
-  <div class="form-group">
-    <label>Dmax</label>
-    <input type="number" id="baproDmax" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>L</label>
-    <input type="number" id="baproL" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>A</label>
-    <input type="number" id="baproA" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>B</label>
-    <input type="number" id="baproB" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>QC</label>
-    <select id="baproQC">
-      <option value="">Pilih QC</option>
-      <option value="Marwan">Marwan</option>
-      <option value="Kiki">Kiki</option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>Update</label>
-    <select id="baproUpdate">
-      <option value="Proses">Proses</option>
-      <option value="Selesai">Selesai</option>
-      <option value="Pending">Pending</option>
-    </select>
-  </div>
-
-<div class="form-group">
-  <label>Resep Tinta</label>
-
-  <div class="rowKet"><span>1.</span><input type="text" id="ket1" placeholder="Resep 1"></div>
-  <div class="rowKet"><span>2.</span><input type="text" id="ket2" placeholder="Resep 2"></div>
-  <div class="rowKet"><span>3.</span><input type="text" id="ket3" placeholder="Resep 3"></div>
-  <div class="rowKet"><span>4.</span><input type="text" id="ket4" placeholder="Resep 4"></div>
-  <div class="rowKet"><span>5.</span><input type="text" id="ket5" placeholder="Resep 5"></div>
-</div>
-
-<style>
-.rowKet {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  margin-bottom: 6px;
-}
-.rowKet input {
-  flex: 1;
-  padding: 4px 8px;
-}
-</style>
-
-
-
-
-  <!-- Tombol Tambah -->
-  <div class="form-group">
-    <button type="button" class="bapro-add-btn" onclick="addBaproItem()">➕ Tambah</button>
-  </div>
-</div>
-
-
-  <!-- ===== Hasil ===== -->
+  <!-- Hasil -->
   <div id="hasilBapro" class="tab-content">
-<input type="text" placeholder="🔍 Pencarian" oninput="renderGridBapro(this.value)">
-    <div id="gridBapro" class="grid-container"></div>
+    <input type="text" placeholder="🔍 Pencarian" oninput="renderGridBapro(this.value)" class="baproFilter">
+    <div class="baproGridScroll">
+      <div id="gridBapro" class="grid-container"></div>
+    </div>
   </div>
 
 </section>
 
-<!-- ======================= MODAL DETAIL BAPRO (SAMA PERSIS SEPERTI FINISHING) ======================= -->
+<!-- Modal Detail -->
 <div id="detailBaproModal" class="modal-fin">
   <div class="modal-fin-content">
     <div class="modal-fin-header">
       <span class="modal-fin-title">Detail QC Bapro</span>
       <button class="modal-fin-close" onclick="closeDetailModalBapro()">×</button>
     </div>
-
-    <div class="modal-fin-body" id="detailBaproBody">
-      <!-- Diisi otomatis -->
-    </div>
-
+    <div class="modal-fin-body" id="detailBaproBody"></div>
     <div class="modal-fin-footer">
       <button class="modal-fin-btn" onclick="closeDetailModalBapro()">Tutup</button>
     </div>
   </div>
 </div>
 
-<!-- ===== CSS Tab dan Style QC BAPRO ===== -->
+<!-- CSS BAPRO style konsisten dengan LEM -->
 <style>
-/* ===== Tab Button ===== */
 .tab-btn.bapro {
-  flex: 1;
-  padding: 6px 0;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid #000;
-  background: #e0e0e0 !important;
-  color: #000 !important;
-  transition: all 0.2s;
-  text-align: center;
+  flex:1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer;
+  border:1px solid #000; background:#e0e0e0 !important; color:#000 !important;
+  transition:all 0.2s; text-align:center;
 }
 .tab-btn.bapro.active {
-  background: #FF5252 !important;
-  color: #fff !important;
-  border: 1px solid #000 !important;
+  background: linear-gradient(to right,#D32F2F,#F44336) !important; color:#fff !important;
+  border:1px solid #000 !important;
 }
 .tab-btn.bapro:not(.active):hover {
-  background: #FFB3B3 !important;
-  color: #000 !important;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(255,82,82,0.3);
+  background:#F0625D !important; color:#fff !important;
+  transform: translateY(-1px); box-shadow:0 2px 6px rgba(211,47,47,0.3);
 }
-.tab-btn.bapro:focus {
-  outline: none;
-  box-shadow: none;
-}
+.tab-btn.bapro:focus { outline:none; box-shadow:none; }
 
-/* ===== Form Input & Tombol Tambah ===== */
 #inputBapro .form-group input,
-#inputBapro .form-group select,
-#inputBapro .form-group textarea {
-  width: 100%;
-  padding: 0.6rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  box-sizing: border-box;
+#inputBapro .form-group select {
+  width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:8px;
+  font-size:0.95rem; box-sizing:border-box;
 }
 
 .bapro-add-btn {
-  width: 100%;
-  padding: 0.6rem;
-  background: linear-gradient(135deg, #D32F2F, #F44336);
-  color: #fff;
-  font-weight: 600;
-  border: 1px solid #000;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  transition: all 0.25s;
+  width:100%; padding:0.6rem; background:linear-gradient(135deg,#D32F2F,#F44336);
+  color:#fff; font-weight:600; border:1px solid #000; border-radius:8px;
+  cursor:pointer; font-size:1rem; box-shadow:0 4px 8px rgba(0,0,0,0.3); transition:all 0.25s;
 }
 .bapro-add-btn:hover {
-  background: linear-gradient(135deg, #F44336, #D32F2F);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(244,67,54,0.4);
+  background:linear-gradient(135deg,#F44336,#D32F2F);
+  transform: translateY(-2px); box-shadow:0 6px 12px rgba(244,67,54,0.4);
 }
 
-/* ===== Section Layout ===== */
-#qcBapro {
-  display: flex;
-  flex-direction: column;
-  max-height: none;
-}
+#qcBapro { display:flex; flex-direction:column; max-height:none; }
+#qcBapro .tabs { position:sticky; top:0; z-index:50; background:#fff; padding:6px 0; }
+#inputBapro, #hasilBapro { overflow-y:auto; max-height:calc(80vh - 120px); padding-right:4px; }
 
-/* Sticky tabs */
-#qcBapro .tabs {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: #fff;
-  padding-top: 6px;
-  padding-bottom: 6px;
-}
+.baproFilter { position:sticky; top:0; z-index:1000; background:#fff; padding:6px; margin-bottom:8px; border:1px solid #ccc; }
+.baproGridScroll { max-height:calc(80vh - 180px); overflow-y:auto; padding-right:4px; }
 
-/* Scrollable input & hasil */
-#inputBapro,
-#hasilBapro {
-  overflow-y: auto;
-  max-height: calc(80vh - 120px);
-  padding-right: 4px;
-}
+.rowKet { display:flex; gap:6px; align-items:center; margin-bottom:6px; }
+.rowKet input { flex:1; padding:4px 8px; }
+.rowKet span { width:20px; text-align:right; font-weight:bold; }
 
-/* Filter hasil tetap di atas */
-#hasilBapro input[type="text"] {
-  position: sticky;
-  top: 0;
-  z-index: 999 !important;
-  background: #fff;
-  padding: 6px;
-  margin-bottom: 8px;
-  border: 1px solid #ccc;
-}
-
-/* Grid card z-index fix */
-#gridBapro .grid-card { position: relative; z-index:1 !important; }
-#gridBapro .grid-card * { z-index:1 !important; }
-
-/* Spinner (opsional) */
-.spinner {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 3px solid #ddd;
-  border-top: 3px solid #D32F2F;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  vertical-align: middle;
-  margin-right: 6px;
-}
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-#inputBapro .form-group label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 4px;
-  font-size: 0.9rem;
-  color: #333;
-}
-
+#inputBapro .form-group label { display:block; font-weight:600; margin-bottom:4px; font-size:0.9rem; color:#333; }
 </style>
+
+
 
 
 
@@ -1967,7 +1874,7 @@ select {
   <!-- Judul -->
   <h2 style="
     text-align:center; 
-    color:#000; 
+    color:#fff; 
     background: linear-gradient(to right, #FF9800, #FFB74D); 
     font-size:1.2rem; 
     padding:6px 12px; 
@@ -1996,251 +1903,158 @@ select {
   </div>
 
   <!-- Inputan -->
-<div id="inputPA" class="tab-content active">
+  <div id="inputPA" class="tab-content active">
+    <div class="form-group">
+      <label>Nama Order</label>
+      <input type="text" id="paNama" placeholder="ETK GIV WHITE PEPAYA 72 GR">
+    </div>
 
-  <div class="form-group">
-    <label>Nama Order</label>
-    <input type="text" id="paNama" placeholder="ETK GIV WHITE PEPAYA 72 GR">
+    <div class="form-group">
+      <label>No KS</label>
+      <input type="text" id="paNoKS" placeholder="KS-xxxx-xx">
+    </div>
+
+    <div class="form-group">
+      <label>Total Order (lembar)</label>
+      <input type="number" id="paOrder" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label>Bagus (lembar)</label>
+      <input type="number" id="paBagus" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label>Sortir (lembar)</label>
+      <input type="number" id="paSortir" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label>Problem (lembar)</label>
+      <input type="number" id="paProblem" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label>QC</label>
+      <select id="paQC">
+        <option value="">Pilih QC</option>
+        <option value="Suci">Suci</option>
+        <option value="Anjani">Anjani</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Mesin</label>
+      <select id="paMesin">
+        <option value="">Pilih Mesin</option>
+        <option value="KM 640">KM 640</option>
+        <option value="KM 644">KM 644</option>
+        <option value="KM 620">KM 620</option>
+        <option value="MT 430">MT 430</option>
+        <option value="KM 640 GL">KM 640 GL</option>
+        <option value="RL 140">RL 140</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Update</label>
+      <select id="paUpdate">
+        <option value="Proses">Proses</option>
+        <option value="Selesai">Selesai</option>
+        <option value="Pending">Pending</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Keterangan (opsional)</label>
+      <div class="rowKet"><span>1.</span><input type="text" id="ketPA1" placeholder="Isi keterangan 1"></div>
+      <div class="rowKet"><span>2.</span><input type="text" id="ketPA2" placeholder="Isi keterangan 2"></div>
+      <div class="rowKet"><span>3.</span><input type="text" id="ketPA3" placeholder="Isi keterangan 3"></div>
+      <div class="rowKet"><span>4.</span><input type="text" id="ketPA4" placeholder="Isi keterangan 4"></div>
+      <div class="rowKet"><span>5.</span><input type="text" id="ketPA5" placeholder="Isi keterangan 5"></div>
+    </div>
+
+    <div class="form-group">
+      <button type="button" class="pa-add-btn" onclick="addPAItem()">➕ Tambah</button>
+    </div>
   </div>
-
-  <div class="form-group">
-    <label>No KS</label>
-    <input type="text" id="paNoKS" placeholder="KS-xxxx-xx">
-  </div>
-
-  <div class="form-group">
-    <label>Total Order (lembar)</label>
-    <input type="number" id="paOrder" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>Bagus (lembar)</label>
-    <input type="number" id="paBagus" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>Sortir (lembar)</label>
-    <input type="number" id="paSortir" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>Problem (lembar)</label>
-    <input type="number" id="paProblem" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>QC</label>
-    <select id="paQC">
-      <option value="">Pilih QC</option>
-      <option value="Suci">Suci</option>
-      <option value="Anjani">Anjani</option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>Mesin</label>
-    <select id="paMesin">
-      <option value="">Pilih Mesin</option>
-      <option value="KM 640">KM 640</option>
-      <option value="KM 644">KM 644</option>
-      <option value="KM 620">KM 620</option>
-      <option value="MT 430">MT 430</option>
-      <option value="KM 640 GL">KM 640 GL</option>
-      <option value="RL 140">RL 140</option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>Update</label>
-    <select id="paUpdate">
-      <option value="Proses">Proses</option>
-      <option value="Selesai">Selesai</option>
-      <option value="Pending">Pending</option>
-    </select>
-  </div>
-
-<div class="form-group">
-  <label>Keterangan (opsional)</label>
-
-  <div class="rowKet"><span>1.</span><input type="text" id="ketPA1" placeholder="Isi keterangan 1"></div>
-  <div class="rowKet"><span>2.</span><input type="text" id="ketPA2" placeholder="Isi keterangan 2"></div>
-  <div class="rowKet"><span>3.</span><input type="text" id="ketPA3" placeholder="Isi keterangan 3"></div>
-  <div class="rowKet"><span>4.</span><input type="text" id="ketPA4" placeholder="Isi keterangan 4"></div>
-  <div class="rowKet"><span>5.</span><input type="text" id="ketPA5" placeholder="Isi keterangan 5"></div>
-</div>
-
-
-<style>
-.rowKet {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  margin-bottom: 6px;
-}
-.rowKet input {
-  flex: 1;
-  padding: 4px 8px;
-}
-.rowKet span {
-  width: 20px;
-  text-align: right;
-  font-weight: bold;
-}
-</style>
-
-
-
-  <div class="form-group">
-    <button type="button" class="pa-add-btn" onclick="addPAItem()">➕ Tambah</button>
-  </div>
-</div>
 
   <!-- Hasil -->
   <div id="hasilPA" class="tab-content">
-<input type="text" placeholder="🔍 Pencarian" oninput="renderGridPA(this.value)">
-    <div id="gridPA" class="grid-container"></div>
+    <input type="text" placeholder="🔍 Pencarian" oninput="renderGridPA(this.value)" class="baproFilter">
+    <div class="baproGridScroll">
+      <div id="gridPA" class="grid-container"></div>
+    </div>
   </div>
 
 </section>
 
-<!-- ======================= MODAL DETAIL CETAK (SAMA PERSIS SEPERTI FINISHING) ======================= -->
+<!-- Modal Detail -->
 <div id="detailCetakModal" class="modal-fin">
   <div class="modal-fin-content">
     <div class="modal-fin-header">
       <span class="modal-fin-title">Detail QC Cetak</span>
       <button class="modal-fin-close" onclick="closeDetailModalCetak()">×</button>
     </div>
-
-    <div class="modal-fin-body" id="detailCetakBody">
-      <!-- otomatis -->
-    </div>
-
+    <div class="modal-fin-body" id="detailCetakBody"></div>
     <div class="modal-fin-footer">
       <button class="modal-fin-btn" onclick="closeDetailModalCetak()">Tutup</button>
     </div>
   </div>
 </div>
 
-
-<!-- ===== CSS Tab dan Style QC CETAK (MEETING style) ===== -->
+<!-- CSS Tab & Form (acuan BAPRO) -->
 <style>
-/* Tab Buttons */
 .tab-btn.cetak {
-  flex: 1;
-  padding: 6px 0;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid #000;
-  background: #e0e0e0 !important;
-  color: #000 !important;
-  transition: all 0.2s;
-  text-align: center;
+  flex: 1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer;
+  border:1px solid #000; background:#e0e0e0 !important; color:#000 !important;
+  transition: all 0.2s; text-align:center;
 }
 .tab-btn.cetak.active {
-  background: linear-gradient(to right, #FF9800, #FFB74D) !important;
-  color: #fff !important;
-  border: 1px solid #000 !important;
+  background: linear-gradient(to right,#FF9800,#FFB74D) !important;
+  color:#fff !important; border:1px solid #000 !important;
 }
 .tab-btn.cetak:not(.active):hover {
-  background: #FFD180 !important;
-  color: #000 !important;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(255,152,0,0.3);
+  background:#FFD180 !important; color:#000 !important;
+  transform: translateY(-1px); box-shadow:0 2px 6px rgba(255,152,0,0.3);
 }
 .tab-btn.cetak:focus { outline:none; box-shadow:none; }
 
-/* Form Input, Select, Textarea style MEETING */
 #inputPA .form-group input,
 #inputPA .form-group select,
 #inputPA .form-group textarea {
-  width: 100%;
-  padding: 0.6rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  box-sizing: border-box;
+  width:100%; padding:0.6rem; border:1px solid #ccc;
+  border-radius:8px; font-size:0.95rem; box-sizing:border-box;
 }
 
-/* Tombol Tambah MEETING style */
 .pa-add-btn {
-  width: 100%;
-  padding: 0.6rem;
-  background: linear-gradient(135deg, #FF9800, #FFB74D);
-  color: #fff;
-  font-weight: 600;
-  border: 1px solid #000;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  width:100%; padding:0.6rem; background:linear-gradient(135deg,#FF9800,#FFB74D);
+  color:#fff; font-weight:600; border:1px solid #000; border-radius:8px;
+  cursor:pointer; font-size:1rem; box-shadow:0 4px 8px rgba(0,0,0,0.3);
   transition: all 0.25s;
 }
 .pa-add-btn:hover {
-  background: linear-gradient(135deg, #FFB74D, #FF9800);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(255,183,77,0.4);
+  background: linear-gradient(135deg,#FFB74D,#FF9800);
+  transform: translateY(-2px); box-shadow:0 6px 12px rgba(255,183,77,0.4);
 }
 
-/* Section Layout */
 #qcPA { display:flex; flex-direction:column; max-height:none; }
-
-/* Sticky Tabs */
-#qcPA .tabs {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: #fff;
-  padding-top:6px;
-  padding-bottom:6px;
-}
-
-/* Scrollable input & hasil */
-#inputPA,
-#hasilPA {
-  overflow-y:auto;
-  max-height: calc(80vh - 120px);
-  padding-right:4px;
-}
-
-/* Filter hasil tetap di atas */
-#hasilPA input[type="text"] {
-  position: sticky;
-  top: 0;
-  z-index: 999 !important;
-  background:#fff;
-  padding:6px;
-  margin-bottom:8px;
-  border:1px solid #ccc;
-}
-
-/* Grid z-index fix */
+#qcPA .tabs { position:sticky; top:0; z-index:50; background:#fff; padding:6px 0; }
+#inputPA, #hasilPA { overflow-y:auto; max-height:calc(80vh - 120px); padding-right:4px; }
+.baproFilter { position:sticky; top:0; z-index:1000; background:#fff; padding:6px; margin-bottom:8px; border:1px solid #ccc; }
+.baproGridScroll { max-height:calc(80vh - 180px); overflow-y:auto; padding-right:4px; }
 #gridPA .grid-card { position:relative; z-index:1 !important; }
 #gridPA .grid-card * { z-index:1 !important; }
 
-/* Spinner (opsional) */
-.spinner {
-  width: 18px;
-  height: 18px;
-  border:3px solid #ddd;
-  border-top:3px solid #00BCD4;
-  border-radius:50%;
-  display:inline-block;
-  vertical-align:middle;
-  animation: spin 0.8s linear infinite;
-  margin-right:6px;
-}
-@keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+.rowKet { display:flex; gap:6px; align-items:center; margin-bottom:6px; }
+.rowKet input { flex:1; padding:4px 8px; }
+.rowKet span { width:20px; text-align:right; font-weight:bold; }
 
 #inputPA .form-group label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 4px;
-  font-size: 0.9rem;
-  color: #333;
+  display:block; font-weight:600; margin-bottom:4px; font-size:0.9rem; color:#333;
 }
-
 </style>
+
 
 
 <script>
@@ -2269,7 +2083,7 @@ paNoKS.addEventListener('input', function(e) {
   <!-- Judul -->
   <h2 style="
     text-align:center; 
-    color:#000; 
+    color:#fff; 
     background: linear-gradient(to right, #22C55E, #4ADE80); 
     font-size:1.2rem; 
     padding:6px 12px; 
@@ -2297,305 +2111,179 @@ paNoKS.addEventListener('input', function(e) {
     <button class="tab-btn finishing" data-tab="hasilFinishing" onclick="switchTab(this)">Hasil</button>
   </div>
 
-<!-- Inputan -->
-<div id="inputFinishing" class="tab-content active">
+  <!-- Inputan -->
+  <div id="inputFinishing" class="tab-content active">
+    <div class="form-group">
+      <label>Nama Order</label>
+      <input type="text" id="finishingNama" placeholder="ETK GIV WHITE PEPAYA 72 GR">
+    </div>
 
-  <div class="form-group">
-    <label>Nama Order</label>
-    <input type="text" id="finishingNama" placeholder="ETK GIV WHITE PEPAYA 72 GR">
+    <div class="form-group">
+      <label>No KS</label>
+      <input type="text" id="finishingNoKS" placeholder="KS-xxxx-xx">
+    </div>
+
+    <div class="form-group">
+      <label>Total Order (lembar)</label>
+      <input type="number" id="finishingOrder" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label>Isi/Dus (pcs)</label>
+      <input type="number" id="finishingIsi" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label>Total Bagus (pcs)</label>
+      <input type="number" id="finishingBagus" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label>Total BS (pcs)</label>
+      <input type="number" id="finishingJenisBS" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label>BS Cetak (pcs)</label>
+      <input type="number" id="finishingJenisBS1" placeholder="0">
+    </div>
+    <div class="form-group">
+      <label>BS Lem (pcs)</label>
+      <input type="number" id="finishingJenisBS2" placeholder="0">
+    </div>
+    <div class="form-group">
+      <label>BS Ponch (pcs)</label>
+      <input type="number" id="finishingJenisBS3" placeholder="0">
+    </div>
+    <div class="form-group">
+      <label>BS Varnish (pcs)</label>
+      <input type="number" id="finishingJenisBS4" placeholder="0">
+    </div>
+    <div class="form-group">
+      <label>BS Potong (pcs)</label>
+      <input type="number" id="finishingJenisBS5" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label>QC</label>
+      <select id="finishingQC">
+        <option value="">Pilih QC</option>
+        <option value="Anom">Anom</option>
+        <option value="Irna">Irna</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Update</label>
+      <select id="finishingUpdate">
+        <option value="Proses">Proses</option>
+        <option value="Selesai">Selesai</option>
+        <option value="Pending">Pending</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Keterangan (opsional)</label>
+      <div class="rowKet"><span>1.</span><input type="text" id="finKet1" placeholder="Isi keterangan 1"></div>
+      <div class="rowKet"><span>2.</span><input type="text" id="finKet2" placeholder="Isi keterangan 2"></div>
+      <div class="rowKet"><span>3.</span><input type="text" id="finKet3" placeholder="Isi keterangan 3"></div>
+      <div class="rowKet"><span>4.</span><input type="text" id="finKet4" placeholder="Isi keterangan 4"></div>
+      <div class="rowKet"><span>5.</span><input type="text" id="finKet5" placeholder="Isi keterangan 5"></div>
+    </div>
+
+    <div class="form-group">
+      <button type="button" class="finishing-add-btn" onclick="addFinishingItem()">➕ Tambah</button>
+    </div>
   </div>
-
-  <div class="form-group">
-    <label>No KS</label>
-    <input type="text" id="finishingNoKS" placeholder="KS-xxxx-xx">
-  </div>
-
-  <div class="form-group">
-    <label>Total Order (lembar)</label>
-    <input type="number" id="finishingOrder" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>Isi/Dus (pcs)</label>
-    <input type="number" id="finishingIsi" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>Total Bagus (pcs)</label>
-    <input type="number" id="finishingBagus" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>Total BS (pcs)</label>
-    <input type="number" id="finishingJenisBS" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>BS Cetak (pcs)</label>
-    <input type="number" id="finishingJenisBS1" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>BS Lem (pcs)</label>
-    <input type="number" id="finishingJenisBS2" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>BS Ponch (pcs)</label>
-    <input type="number" id="finishingJenisBS3" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>BS Varnish (pcs)</label>
-    <input type="number" id="finishingJenisBS4" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>BS Potong (pcs)</label>
-    <input type="number" id="finishingJenisBS5" placeholder="0">
-  </div>
-
-<style>
-/* ====================== Total BS Merah Tua ====================== */
-#finishingJenisBS {
-  background-color: #ff6f91;  /* merah muda tua */
-  border: 1px solid #ff3366;
-  border-radius: 4px;
-  padding: 6px 8px;
-  width: 100%;
-  box-sizing: border-box;
-  font-size: 14px;
-}
-
-/* Placeholder tetap terbaca */
-#finishingJenisBS::placeholder {
-  color: #660022;
-  opacity: 1;
-}
-
-/* ====================== Kolom BS Lain Merah Muda Normal ====================== */
-#finishingJenisBS1,
-#finishingJenisBS2,
-#finishingJenisBS3,
-#finishingJenisBS4,
-#finishingJenisBS5 {
-  background-color: #ffc0cb;  /* merah muda cerah */
-  border: 1px solid #ff69b4;
-  border-radius: 4px;
-  padding: 6px 8px;
-  width: 100%;
-  box-sizing: border-box;
-  font-size: 14px;
-}
-
-#finishingJenisBS1::placeholder,
-#finishingJenisBS2::placeholder,
-#finishingJenisBS3::placeholder,
-#finishingJenisBS4::placeholder,
-#finishingJenisBS5::placeholder {
-  color: #990033;
-  opacity: 1;
-}
-
-</style>
-
-  <div class="form-group">
-    <label>QC</label>
-    <select id="finishingQC">
-      <option value="">Pilih QC</option>
-      <option value="Anom">Anom</option>
-      <option value="Irna">Irna</option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>Update</label>
-    <select id="finishingUpdate">
-      <option value="Proses">Proses</option>
-      <option value="Selesai">Selesai</option>
-      <option value="Pending">Pending</option>
-    </select>
-  </div>
-
-<div class="form-group">
-  <label>Keterangan (opsional)</label>
-
-  <div class="rowKet"><span>1.</span><input type="text" id="finKet1" placeholder="Isi keterangan 1"></div>
-  <div class="rowKet"><span>2.</span><input type="text" id="finKet2" placeholder="Isi keterangan 2"></div>
-  <div class="rowKet"><span>3.</span><input type="text" id="finKet3" placeholder="Isi keterangan 3"></div>
-  <div class="rowKet"><span>4.</span><input type="text" id="finKet4" placeholder="Isi keterangan 4"></div>
-  <div class="rowKet"><span>5.</span><input type="text" id="finKet5" placeholder="Isi keterangan 5"></div>
-</div>
-
-<style>
-.rowKet {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  margin-bottom: 6px;
-}
-.rowKet input {
-  flex: 1;
-  padding: 4px 8px;
-}
-</style>
-
-
-  <!-- Tombol Tambah -->
-  <div class="form-group">
-    <button type="button" class="finishing-add-btn" onclick="addFinishingItem()">➕ Tambah</button>
-  </div>
-
-</div>
-
 
   <!-- Hasil -->
   <div id="hasilFinishing" class="tab-content">
-<input type="text" placeholder="🔍 Pencarian" oninput="renderGridFinishing(this.value)">
-    <div id="gridFinishing" class="grid-container"></div>
+    <input type="text" placeholder="🔍 Pencarian" oninput="renderGridFinishing(this.value)" class="baproFilter">
+    <div class="baproGridScroll">
+      <div id="gridFinishing" class="grid-container"></div>
+    </div>
   </div>
 
 </section>
 
-<!-- ======================= MODAL DETAIL FINISHING ======================= -->
+<!-- Modal Detail -->
 <div id="detailFinishingModal" class="modal-fin">
   <div class="modal-fin-content">
     <div class="modal-fin-header">
       <span class="modal-fin-title">Detail QC Finishing</span>
-      <button class="modal-fin-close" onclick="closeDetailModal()">×</button>
+      <button class="modal-fin-close" onclick="closeDetailModalFinishing()">×</button>
     </div>
-
-    <div class="modal-fin-body" id="detailFinishingBody">
-      <!-- data diisi otomatis -->
-    </div>
-
+    <div class="modal-fin-body" id="detailFinishingBody"></div>
     <div class="modal-fin-footer">
-      <button class="modal-fin-btn" onclick="closeDetailModal()">Tutup</button>
+      <button class="modal-fin-btn" onclick="closeDetailModalFinishing()">Tutup</button>
     </div>
   </div>
 </div>
 
-
-
-<!-- ===== CSS Tab dan Style QC FINISHING (MEETING style) ===== -->
+<!-- CSS Tab & Form (acuan BAPRO) -->
 <style>
-/* Tab Buttons */
 .tab-btn.finishing {
-  flex: 1;
-  padding: 6px 0;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid #000;
-  background: #e0e0e0 !important;
-  color: #000 !important;
-  transition: all 0.2s;
-  text-align: center;
+  flex:1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer;
+  border:1px solid #000; background:#e0e0e0 !important; color:#000 !important;
+  transition:all 0.2s; text-align:center;
 }
 .tab-btn.finishing.active {
-  background: linear-gradient(to right, #22C55E, #4ADE80) !important;
-  color: #fff !important;
-  border: 1px solid #000 !important;
+  background: linear-gradient(to right,#22C55E,#4ADE80) !important; color:#fff !important;
+  border:1px solid #000 !important;
 }
 .tab-btn.finishing:not(.active):hover {
-  background: #86efac !important;
-  color: #000 !important;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(34,197,94,0.3);
+  background:#86efac !important; color:#000 !important;
+  transform: translateY(-1px); box-shadow:0 2px 6px rgba(34,197,94,0.3);
 }
 .tab-btn.finishing:focus { outline:none; box-shadow:none; }
 
-/* Form Input, Select, Textarea style MEETING */
 #inputFinishing .form-group input,
 #inputFinishing .form-group select,
 #inputFinishing .form-group textarea {
-  width: 100%;
-  padding: 0.6rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  box-sizing: border-box;
+  width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:8px;
+  font-size:0.95rem; box-sizing:border-box;
 }
 
-/* Tombol Tambah MEETING style */
 .finishing-add-btn {
-  width: 100%;
-  padding: 0.6rem;
-  background: linear-gradient(135deg, #22C55E, #4ADE80);
-  color: #fff;
-  font-weight: 600;
-  border: 1px solid #000;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  transition: all 0.25s;
+  width:100%; padding:0.6rem; background:linear-gradient(135deg,#22C55E,#4ADE80);
+  color:#fff; font-weight:600; border:1px solid #000; border-radius:8px;
+  cursor:pointer; font-size:1rem; box-shadow:0 4px 8px rgba(0,0,0,0.3); transition:all 0.25s;
 }
 .finishing-add-btn:hover {
-  background: linear-gradient(135deg, #4ADE80, #22C55E);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(74,222,128,0.4);
+  background: linear-gradient(135deg,#4ADE80,#22C55E);
+  transform: translateY(-2px); box-shadow:0 6px 12px rgba(74,222,128,0.4);
 }
 
-/* Section Layout */
 #qcFinishing { display:flex; flex-direction:column; max-height:none; }
+#qcFinishing .tabs { position:sticky; top:0; z-index:50; background:#fff; padding:6px 0; }
+#inputFinishing, #hasilFinishing { overflow-y:auto; max-height:calc(80vh - 120px); padding-right:4px; }
 
-/* Sticky Tabs */
-#qcFinishing .tabs {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: #fff;
-  padding-top:6px;
-  padding-bottom:6px;
-}
+.baproFilter { position:sticky; top:0; z-index:1000; background:#fff; padding:6px; margin-bottom:8px; border:1px solid #ccc; }
+.baproGridScroll { max-height:calc(80vh - 180px); overflow-y:auto; padding-right:4px; }
 
-/* Scrollable input & hasil */
-#inputFinishing,
-#hasilFinishing {
-  overflow-y:auto;
-  max-height: calc(80vh - 120px);
-  padding-right:4px;
-}
-
-/* Filter hasil tetap di atas */
-#hasilFinishing input[type="text"] {
-  position: sticky;
-  top: 0;
-  z-index: 999 !important;
-  background:#fff;
-  padding:6px;
-  margin-bottom:8px;
-  border:1px solid #ccc;
-}
-
-/* Grid z-index fix */
 #gridFinishing .grid-card { position:relative; z-index:1 !important; }
 #gridFinishing .grid-card * { z-index:1 !important; }
 
-/* Spinner (opsional) */
-.spinner {
-  width: 18px;
-  height: 18px;
-  border:3px solid #ddd;
-  border-top:3px solid #22C55E;
-  border-radius:50%;
-  display:inline-block;
-  vertical-align:middle;
-  animation: spin 0.8s linear infinite;
-  margin-right:6px;
+.rowKet { display:flex; gap:6px; align-items:center; margin-bottom:6px; }
+.rowKet input { flex:1; padding:4px 8px; }
+.rowKet span { width:20px; text-align:right; font-weight:bold; }
+
+#finishingJenisBS { background-color:#ff6f91; border:1px solid #ff3366; border-radius:4px; padding:6px 8px; width:100%; box-sizing:border-box; font-size:14px; }
+#finishingJenisBS::placeholder { color:#660022; opacity:1; }
+
+#finishingJenisBS1,#finishingJenisBS2,#finishingJenisBS3,#finishingJenisBS4,#finishingJenisBS5 {
+  background-color:#ffc0cb; border:1px solid #ff69b4; border-radius:4px; padding:6px 8px; width:100%; box-sizing:border-box; font-size:14px;
 }
+#finishingJenisBS1::placeholder,#finishingJenisBS2::placeholder,#finishingJenisBS3::placeholder,#finishingJenisBS4::placeholder,#finishingJenisBS5::placeholder {
+  color:#990033; opacity:1;
+}
+
+#inputFinishing .form-group label { display:block; font-weight:600; margin-bottom:4px; font-size:0.9rem; color:#333; }
+
+.spinner { width:18px; height:18px; border:3px solid #ddd; border-top:3px solid #22C55E; border-radius:50%; display:inline-block; vertical-align:middle; animation:spin 0.8s linear infinite; margin-right:6px; }
 @keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
-
-#inputFinishing .form-group label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 4px;
-  font-size: 0.9rem;
-  color: #333;
-}
-
 </style>
+
 
 
 
@@ -2626,7 +2314,7 @@ finishingNoKS.addEventListener('input', function(e) {
   <!-- Judul -->
   <h2 style="
     text-align:center; 
-    color:#000; 
+    color:#fff; 
     background: linear-gradient(to right, #9C27B0, #BA68C8); 
     font-size:1.2rem; 
     padding:6px 12px; 
@@ -2635,8 +2323,7 @@ finishingNoKS.addEventListener('input', function(e) {
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     border: 1px solid #000;
     position: relative;
-    overflow: hidden;
-  ">
+    overflow: hidden;">
     MENU QC LEM
     <span style="
       position: absolute;
@@ -2646,8 +2333,7 @@ finishingNoKS.addEventListener('input', function(e) {
       height: 50%;
       background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
       border-radius: 8px 8px 0 0;
-      pointer-events: none;
-    "></span>
+      pointer-events: none;"></span>
   </h2>
 
   <!-- Tabs -->
@@ -2656,305 +2342,180 @@ finishingNoKS.addEventListener('input', function(e) {
     <button class="tab-btn lem" data-tab="hasilLem" onclick="switchTab(this)">Hasil</button>
   </div>
 
-<!-- Inputan -->
-<div id="inputLem" class="tab-content active">
+  <!-- Inputan -->
+  <div id="inputLem" class="tab-content active">
+    <div class="form-group">
+      <label>Nama Order</label>
+      <input type="text" id="lemNama" placeholder="ETK GIV WHITE PEPAYA 72 GR">
+    </div>
 
-  <div class="form-group">
-    <label>Nama Order</label>
-    <input type="text" id="lemNama" placeholder="ETK GIV WHITE PEPAYA 72 GR">
+    <div class="form-group">
+      <label>No KS</label>
+      <input type="text" id="lemNoKS" placeholder="KS-xxxx-xx">
+    </div>
+
+    <div class="form-group">
+      <label>Total Order (lembar)</label>
+      <input type="number" id="lemOrder" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label>Isi/Dus (pcs)</label>
+      <input type="number" id="lemIsi" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label>Total Bagus (pcs)</label>
+      <input type="number" id="lemBagus" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label>Total BS (pcs)</label>
+      <input type="number" id="lemJenisBS" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label>BS Cetak (pcs)</label>
+      <input type="number" id="lemJenisBS1" placeholder="0">
+    </div>
+    <div class="form-group">
+      <label>BS Lem (pcs)</label>
+      <input type="number" id="lemJenisBS12" placeholder="0">
+    </div>
+    <div class="form-group">
+      <label>BS Ponch (pcs)</label>
+      <input type="number" id="lemJenisBS13" placeholder="0">
+    </div>
+    <div class="form-group">
+      <label>BS Varnish (pcs)</label>
+      <input type="number" id="lemJenisBS14" placeholder="0">
+    </div>
+    <div class="form-group">
+      <label>BS Potong (pcs)</label>
+      <input type="number" id="lemJenisBS15" placeholder="0">
+    </div>
+
+    <div class="form-group">
+      <label>QC</label>
+      <select id="lemQC">
+        <option value="">Pilih QC</option>
+        <option value="Martini">Martini</option>
+        <option value="Krestin">Krestin</option>
+        <option value="Ismie">Ismie</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Update</label>
+      <select id="lemUpdate">
+        <option value="Proses">Proses</option>
+        <option value="Selesai">Selesai</option>
+        <option value="Pending">Pending</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Keterangan (opsional)</label>
+      <div class="rowKet"><span>1.</span><input type="text" id="lemKet1" placeholder="Isi keterangan 1"></div>
+      <div class="rowKet"><span>2.</span><input type="text" id="lemKet2" placeholder="Isi keterangan 2"></div>
+      <div class="rowKet"><span>3.</span><input type="text" id="lemKet3" placeholder="Isi keterangan 3"></div>
+      <div class="rowKet"><span>4.</span><input type="text" id="lemKet4" placeholder="Isi keterangan 4"></div>
+      <div class="rowKet"><span>5.</span><input type="text" id="lemKet5" placeholder="Isi keterangan 5"></div>
+    </div>
+
+    <div class="form-group">
+      <button type="button" class="lem-add-btn" onclick="addLemItem()">➕ Tambah</button>
+    </div>
   </div>
-
-  <div class="form-group">
-    <label>No KS</label>
-    <input type="text" id="lemNoKS" placeholder="KS-xxxx-xx">
-  </div>
-
-  <div class="form-group">
-    <label>Total Order (lembar)</label>
-    <input type="number" id="lemOrder" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>Isi/Dus (pcs)</label>
-    <input type="number" id="lemIsi" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>Total Bagus (pcs)</label>
-    <input type="number" id="lemBagus" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>Total BS (pcs)</label>
-    <input type="number" id="lemJenisBS" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>BS Cetak (pcs)</label>
-    <input type="number" id="lemJenisBS1" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>BS Lem (pcs)</label>
-    <input type="number" id="lemJenisBS12" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>BS Ponch (pcs)</label>
-    <input type="number" id="lemJenisBS13" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>BS Varnish (pcs)</label>
-    <input type="number" id="lemJenisBS14" placeholder="0">
-  </div>
-
-  <div class="form-group">
-    <label>BS Potong (pcs)</label>
-    <input type="number" id="lemJenisBS15" placeholder="0">
-  </div>
-
-<style>
-/* ====================== Total BS LEM Merah Tua ====================== */
-#lemJenisBS {
-  background-color: #ff6f91;  /* merah muda tua */
-  border: 1px solid #ff3366;
-  border-radius: 4px;
-  padding: 6px 8px;
-  width: 100%;
-  box-sizing: border-box;
-  font-size: 14px;
-}
-
-#lemJenisBS::placeholder {
-  color: #660022;
-  opacity: 1;
-}
-
-/* ====================== Kolom BS Lain LEM Merah Muda Cerah ====================== */
-#lemJenisBS1,
-#lemJenisBS12,
-#lemJenisBS13,
-#lemJenisBS14,
-#lemJenisBS15 {
-  background-color: #ffc0cb;  /* merah muda cerah */
-  border: 1px solid #ff69b4;
-  border-radius: 4px;
-  padding: 6px 8px;
-  width: 100%;
-  box-sizing: border-box;
-  font-size: 14px;
-}
-
-#lemJenisBS1::placeholder,
-#lemJenisBS12::placeholder,
-#lemJenisBS13::placeholder,
-#lemJenisBS14::placeholder,
-#lemJenisBS15::placeholder {
-  color: #990033;
-  opacity: 1;
-}
-</style>
-
-  <div class="form-group">
-    <label>QC</label>
-    <select id="lemQC">
-      <option value="">Pilih QC</option>
-      <option value="Martini">Martini</option>
-      <option value="Krestin">Krestin</option>
-      <option value="Ismie">Ismie</option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>Update</label>
-    <select id="lemUpdate">
-      <option value="Proses">Proses</option>
-      <option value="Selesai">Selesai</option>
-      <option value="Pending">Pending</option>
-    </select>
-  </div>
-
-<div class="form-group">
-  <label>Keterangan (opsional)</label>
-
-  <div class="rowKet"><span>1.</span><input type="text" id="lemKet1" placeholder="Isi keterangan 1"></div>
-  <div class="rowKet"><span>2.</span><input type="text" id="lemKet2" placeholder="Isi keterangan 2"></div>
-  <div class="rowKet"><span>3.</span><input type="text" id="lemKet3" placeholder="Isi keterangan 3"></div>
-  <div class="rowKet"><span>4.</span><input type="text" id="lemKet4" placeholder="Isi keterangan 4"></div>
-  <div class="rowKet"><span>5.</span><input type="text" id="lemKet5" placeholder="Isi keterangan 5"></div>
-</div>
-
-<style>
-.rowKet {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  margin-bottom: 6px;
-}
-.rowKet input {
-  flex: 1;
-  padding: 4px 8px;
-}
-.rowKet span {
-  width: 20px;
-  text-align: right;
-  font-weight: bold;
-}
-</style>
-
-
-  <!-- Tombol Tambah -->
-  <div class="form-group">
-    <button type="button" class="lem-add-btn" onclick="addLemItem()">➕ Tambah</button>
-  </div>
-</div>
-
 
   <!-- Hasil -->
   <div id="hasilLem" class="tab-content">
-<input type="text" placeholder="🔍 Pencarian" oninput="renderGridLem(this.value)">
-    <div id="gridLem" class="grid-container"></div>
+    <input type="text" placeholder="🔍 Pencarian" oninput="renderGridLem(this.value)" class="baproFilter">
+    <div class="baproGridScroll">
+      <div id="gridLem" class="grid-container"></div>
+    </div>
   </div>
+
 </section>
 
-<!-- ======================= MODAL DETAIL LEM (SAMA PERSIS SEPERTI FINISHING) ======================= -->
+<!-- Modal Detail -->
 <div id="detailLemModal" class="modal-fin">
   <div class="modal-fin-content">
     <div class="modal-fin-header">
       <span class="modal-fin-title">Detail QC Lem</span>
       <button class="modal-fin-close" onclick="closeDetailModalLem()">×</button>
     </div>
-
-    <div class="modal-fin-body" id="detailLemBody">
-      <!-- otomatis -->
-    </div>
-
+    <div class="modal-fin-body" id="detailLemBody"></div>
     <div class="modal-fin-footer">
       <button class="modal-fin-btn" onclick="closeDetailModalLem()">Tutup</button>
     </div>
   </div>
 </div>
 
-<!-- ===== CSS Tab dan Style QC LEM (MEETING style) ===== -->
+<!-- CSS Tab & Form (acuan BAPRO) -->
 <style>
-/* Tombol tab */
 .tab-btn.lem {
-  flex: 1;
-  padding: 6px 0;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid #000;
-  background: #e0e0e0 !important;
-  color: #000 !important;
-  transition: all 0.2s;
-  text-align: center;
+  flex:1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer;
+  border:1px solid #000; background:#e0e0e0 !important; color:#000 !important;
+  transition:all 0.2s; text-align:center;
 }
 .tab-btn.lem.active {
-  background: linear-gradient(to right, #9C27B0, #BA68C8) !important;
-  color: #fff !important;
-  border: 1px solid #000 !important;
+  background: linear-gradient(to right,#9C27B0,#BA68C8) !important; color:#fff !important;
+  border:1px solid #000 !important;
 }
 .tab-btn.lem:not(.active):hover {
-  background: #D18FE0 !important; /* ungu muda */
-  color: #000 !important;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(156,39,176,0.3);
+  background:#D18FE0 !important; color:#000 !important;
+  transform: translateY(-1px); box-shadow:0 2px 6px rgba(156,39,176,0.3);
 }
 .tab-btn.lem:focus { outline:none; box-shadow:none; }
 
-/* Form input, select, textarea MEETING style */
 #inputLem .form-group input,
 #inputLem .form-group select,
 #inputLem .form-group textarea {
-  width: 100%;
-  padding: 0.6rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  box-sizing: border-box;
+  width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:8px;
+  font-size:0.95rem; box-sizing:border-box;
 }
 
-/* Tombol Tambah MEETING style */
 .lem-add-btn {
-  width: 100%;
-  padding: 0.6rem;
-  background: linear-gradient(135deg, #9C27B0, #BA68C8);
-  color: #fff;
-  font-weight: 600;
-  border: 1px solid #000;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  transition: all 0.25s;
+  width:100%; padding:0.6rem; background:linear-gradient(135deg,#9C27B0,#BA68C8);
+  color:#fff; font-weight:600; border:1px solid #000; border-radius:8px;
+  cursor:pointer; font-size:1rem; box-shadow:0 4px 8px rgba(0,0,0,0.3); transition:all 0.25s;
 }
 .lem-add-btn:hover {
-  background: linear-gradient(135deg, #BA68C8, #9C27B0);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(186,104,200,0.4);
+  background: linear-gradient(135deg,#BA68C8,#9C27B0);
+  transform: translateY(-2px); box-shadow:0 6px 12px rgba(186,104,200,0.4);
 }
 
-/* Layout section */
 #qcLem { display:flex; flex-direction:column; max-height:none; }
+#qcLem .tabs { position:sticky; top:0; z-index:50; background:#fff; padding:6px 0; }
+#inputLem, #hasilLem { overflow-y:auto; max-height:calc(80vh - 120px); padding-right:4px; }
 
-/* Sticky Tabs */
-#qcLem .tabs {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: #fff;
-  padding-top:6px;
-  padding-bottom:6px;
-}
+.baproFilter { position:sticky; top:0; z-index:1000; background:#fff; padding:6px; margin-bottom:8px; border:1px solid #ccc; }
+.baproGridScroll { max-height:calc(80vh - 180px); overflow-y:auto; padding-right:4px; }
 
-/* Scrollable input & hasil */
-#inputLem,
-#hasilLem {
-  overflow-y:auto;
-  max-height: calc(80vh - 120px);
-  padding-right:4px;
-}
-
-/* Filter hasil tetap di atas */
-#hasilLem input[type="text"] {
-  position: sticky;
-  top: 0;
-  z-index: 999 !important;
-  background:#fff;
-  padding:6px;
-  margin-bottom:8px;
-  border:1px solid #ccc;
-}
-
-/* Grid fix */
 #gridLem .grid-card { position:relative; z-index:1 !important; }
 #gridLem .grid-card * { z-index:1 !important; }
 
-/* Spinner */
-.spinner {
-  width: 18px;
-  height: 18px;
-  border:3px solid #ddd;
-  border-top:3px solid #9C27B0;
-  border-radius:50%;
-  display:inline-block;
-  vertical-align:middle;
-  animation: spin 0.8s linear infinite;
-  margin-right:6px;
+.rowKet { display:flex; gap:6px; align-items:center; margin-bottom:6px; }
+.rowKet input { flex:1; padding:4px 8px; }
+.rowKet span { width:20px; text-align:right; font-weight:bold; }
+
+#lemJenisBS { background-color:#ff6f91; border:1px solid #ff3366; border-radius:4px; padding:6px 8px; width:100%; box-sizing:border-box; font-size:14px; }
+#lemJenisBS::placeholder { color:#660022; opacity:1; }
+
+#lemJenisBS1,#lemJenisBS12,#lemJenisBS13,#lemJenisBS14,#lemJenisBS15 {
+  background-color:#ffc0cb; border:1px solid #ff69b4; border-radius:4px; padding:6px 8px; width:100%; box-sizing:border-box; font-size:14px;
 }
+#lemJenisBS1::placeholder,#lemJenisBS12::placeholder,#lemJenisBS13::placeholder,#lemJenisBS14::placeholder,#lemJenisBS15::placeholder {
+  color:#990033; opacity:1;
+}
+
+#inputLem .form-group label { display:block; font-weight:600; margin-bottom:4px; font-size:0.9rem; color:#333; }
+
+.spinner { width:18px; height:18px; border:3px solid #ddd; border-top:3px solid #9C27B0; border-radius:50%; display:inline-block; vertical-align:middle; animation:spin 0.8s linear infinite; margin-right:6px; }
 @keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
-
-#inputLem .form-group label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 4px;
-  font-size: 0.9rem;
-  color: #333;
-}
-
 </style>
+
 
 
 <script>
