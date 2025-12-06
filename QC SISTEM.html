@@ -5257,7 +5257,7 @@ function editFinishingInline(index){
   if(!card) return;
   if(card.querySelector('.edit-inline')) return;
 
-  // Simpan HTML lama untuk cancel (encode agar aman)
+  // Simpan HTML lama untuk cancel
   const originalHTML = card.innerHTML;
   card.innerHTML = '';
   card.dataset.oldHtml = encodeURIComponent(originalHTML);
@@ -5266,31 +5266,58 @@ function editFinishingInline(index){
 
   card.innerHTML = `
     <div class="edit-grid">
-      <input type="text" class="edit-inline" name="nama" value="${escapeHtml(item.nama||'')}" placeholder="Nama Order">
-      <input type="text" class="edit-inline" name="noKS" value="${escapeHtml(item.noKS||'')}" placeholder="No KS">
-      <input type="number" class="edit-inline" name="order" value="${escapeHtml(item.order||'')}" placeholder="Order">
-      <input type="number" class="edit-inline" name="isi" value="${escapeHtml(item.isi||'')}" placeholder="Isi/Dus">
-      <input type="number" class="edit-inline" name="bagus" value="${escapeHtml(item.bagus||'')}" placeholder="Bagus">
-      
-      <input type="number" class="edit-inline" name="jenisBS" value="${escapeHtml(item.jenisBS||'')}" placeholder="BS Total">
-      <input type="number" class="edit-inline" name="jenisBS1" value="${escapeHtml(item.jenisBS1||'')}" placeholder="BS Cetak">
-      <input type="number" class="edit-inline" name="jenisBS2" value="${escapeHtml(item.jenisBS2||'')}" placeholder="BS Lem">
-      <input type="number" class="edit-inline" name="jenisBS3" value="${escapeHtml(item.jenisBS3||'')}" placeholder="BS Ponch">
-      <input type="number" class="edit-inline" name="jenisBS4" value="${escapeHtml(item.jenisBS4||'')}" placeholder="BS Varnish">
-      <input type="number" class="edit-inline" name="jenisBS5" value="${escapeHtml(item.jenisBS5||'')}" placeholder="BS Potong">
 
+      <label>Nama Order</label>
+      <input type="text" class="edit-inline" name="nama" value="${escapeHtml(item.nama||'')}">
+
+      <label>No KS</label>
+      <input type="text" class="edit-inline" name="noKS" value="${escapeHtml(item.noKS||'')}">
+
+      <label>Order</label>
+      <input type="number" class="edit-inline" name="order" value="${escapeHtml(item.order||'')}">
+
+      <label>Isi/Dus</label>
+      <input type="number" class="edit-inline" name="isi" value="${escapeHtml(item.isi||'')}">
+
+      <label>Bagus</label>
+      <input type="number" class="edit-inline" name="bagus" value="${escapeHtml(item.bagus||'')}">
+
+
+      <label>BS Total</label>
+      <input type="number" class="edit-inline" name="jenisBS" value="${escapeHtml(item.jenisBS||'')}">
+
+      <label>BS Cetak</label>
+      <input type="number" class="edit-inline" name="jenisBS1" value="${escapeHtml(item.jenisBS1||'')}">
+
+      <label>BS Lem</label>
+      <input type="number" class="edit-inline" name="jenisBS2" value="${escapeHtml(item.jenisBS2||'')}">
+
+      <label>BS Ponch</label>
+      <input type="number" class="edit-inline" name="jenisBS3" value="${escapeHtml(item.jenisBS3||'')}">
+
+      <label>BS Varnish</label>
+      <input type="number" class="edit-inline" name="jenisBS4" value="${escapeHtml(item.jenisBS4||'')}">
+
+      <label>BS Potong</label>
+      <input type="number" class="edit-inline" name="jenisBS5" value="${escapeHtml(item.jenisBS5||'')}">
+
+
+      <label>QC</label>
       <select class="edit-inline" name="qc">
         <option value="Anom" ${item.qc==='Anom'? 'selected':''}>Anom</option>
         <option value="Irna" ${item.qc==='Irna'? 'selected':''}>Irna</option>
       </select>
 
+      <label>Status</label>
       <select class="edit-inline" name="update">
         <option value="Pending" ${item.update==='Pending'? 'selected':''}>Pending</option>
         <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
         <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
       </select>
 
-      <textarea class="edit-inline" name="keterangan" rows="3" placeholder="Keterangan">${escapeHtml(keteranganRaw)}</textarea>
+      <label>Keterangan</label>
+      <textarea class="edit-inline" name="keterangan" rows="3">${escapeHtml(keteranganRaw)}</textarea>
+
     </div>
 
     <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
@@ -5299,6 +5326,7 @@ function editFinishingInline(index){
     </div>
   `;
 }
+
 
 
 
@@ -6011,7 +6039,11 @@ function editBaproInline(index){
 
   card.innerHTML = `
     <div class="edit-grid">
+
+      <label class="edit-label">Nama Order</label>
       <input type="text" class="edit-inline" value="${escapeHtml(item.nama||'')}" placeholder="Nama Order">
+
+      <label class="edit-label">CSO</label>
       <select class="edit-inline">
         <option value="" disabled ${!item.cso ? 'selected' : ''}>Pilih CSO</option>
         <option value="Yati" ${item.cso === 'Yati' ? 'selected' : ''}>Yati</option>
@@ -6019,30 +6051,49 @@ function editBaproInline(index){
         <option value="Aulia" ${item.cso === 'Aulia' ? 'selected' : ''}>Aulia</option>
         <option value="Yuli" ${item.cso === 'Yuli' ? 'selected' : ''}>Yuli</option>
       </select>
+
+      <label class="edit-label">Jenis Kertas</label>
       <input type="text" class="edit-inline" value="${escapeHtml(item.jenisKertas||'')}" placeholder="Jenis Kertas">
+
+      <label class="edit-label">Tebal Kertas</label>
       <input type="text" class="edit-inline" value="${escapeHtml(item.tebalKertas||'')}" placeholder="Tebal Kertas">
+
+      <label class="edit-label">Nama Tinta</label>
       <input type="text" class="edit-inline" value="${escapeHtml(item.NamaTinta||'')}" placeholder="Nama Tinta">
+
+      <label class="edit-label">Dmax</label>
       <input type="text" class="edit-inline" value="${escapeHtml(item.dmax||'')}" placeholder="Dmax">
+
+      <label class="edit-label">L</label>
       <input type="text" class="edit-inline" value="${escapeHtml(item.l||'')}" placeholder="L">
+
+      <label class="edit-label">A</label>
       <input type="text" class="edit-inline" value="${escapeHtml(item.a||'')}" placeholder="A">
+
+      <label class="edit-label">B</label>
       <input type="text" class="edit-inline" value="${escapeHtml(item.b||'')}" placeholder="B">
 
+      <label class="edit-label">QC</label>
       <select class="edit-inline">
         <option value="Marwan" ${item.qc==='Marwan'? 'selected':''}>Marwan</option>
         <option value="Kiki" ${item.qc==='Kiki'? 'selected':''}>Kiki</option>
       </select>
 
+      <label class="edit-label">Update Status</label>
       <select class="edit-inline">
         <option value="Pending" ${item.update==='Pending'? 'selected':''}>Pending</option>
         <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
         <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
       </select>
+
+      <label class="edit-label">Keterangan</label>
       <textarea class="edit-inline" rows="2" placeholder="Keterangan">
 1. ${ketMap[1]}
 2. ${ketMap[2]}
 3. ${ketMap[3]}
 4. ${ketMap[4]}
 5. ${ketMap[5]}</textarea>
+
     </div>
 
     <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
@@ -6051,6 +6102,7 @@ function editBaproInline(index){
     </div>
   `;
 }
+
 
 
 // ====================== BATAL EDIT INLINE (BAPRO) ======================
@@ -6644,18 +6696,32 @@ function editPAInline(index){
 
   card.innerHTML = `
     <div class="edit-grid">
-      <input type="text" class="edit-inline" value="${escapeHtml(item.nama||'')}" placeholder="Nama Order">
-      <input type="text" class="edit-inline" value="${escapeHtml(item.noKS||'')}" placeholder="No KS">
-      <input type="number" class="edit-inline" value="${escapeHtml(item.order||'')}" placeholder="Order">
-      <input type="number" class="edit-inline" value="${escapeHtml(item.bagus||'')}" placeholder="Bagus">
-      <input type="text" class="edit-inline" value="${escapeHtml(item.sortir||'')}" placeholder="Sortir">
-      <input type="text" class="edit-inline" value="${escapeHtml(item.problem||'')}" placeholder="Problem">
 
+      <label>Nama Order</label>
+      <input type="text" class="edit-inline" value="${escapeHtml(item.nama||'')}">
+
+      <label>No KS</label>
+      <input type="text" class="edit-inline" value="${escapeHtml(item.noKS||'')}">
+
+      <label>Order</label>
+      <input type="number" class="edit-inline" value="${escapeHtml(item.order||'')}">
+
+      <label>Bagus</label>
+      <input type="number" class="edit-inline" value="${escapeHtml(item.bagus||'')}">
+
+      <label>Sortir</label>
+      <input type="text" class="edit-inline" value="${escapeHtml(item.sortir||'')}">
+
+      <label>Problem</label>
+      <input type="text" class="edit-inline" value="${escapeHtml(item.problem||'')}">
+
+      <label>QC</label>
       <select class="edit-inline">
         <option value="Suci" ${item.qc==='Suci'? 'selected':''}>Suci</option>
         <option value="Anjani" ${item.qc==='Anjani'? 'selected':''}>Anjani</option>
       </select>
 
+      <label>Mesin</label>
       <select class="edit-inline">
         <option value="KM 640" ${item.mesin==='KM 640'? 'selected':''}>KM 640</option>
         <option value="KM 644" ${item.mesin==='KM 644'? 'selected':''}>KM 644</option>
@@ -6665,20 +6731,25 @@ function editPAInline(index){
         <option value="RL 140" ${item.mesin==='RL 140'? 'selected':''}>RL 140</option>
       </select>
 
+      <label>Status</label>
       <select class="edit-inline">
         <option value="Pending" ${item.update==='Pending'? 'selected':''}>Pending</option>
         <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
         <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
       </select>
 
-      <textarea class="edit-inline" rows="2" placeholder="Keterangan">${escapeHtml(item.keterangan||'')}</textarea>
+      <label>Keterangan</label>
+      <textarea class="edit-inline" rows="2">${escapeHtml(item.keterangan||'')}</textarea>
+
     </div>
 
     <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
       <button class="btn-icon btn-save" title="Simpan" onclick="savePAInline(${index}, this)">💾</button>
       <button class="btn-icon btn-cancel" title="Batal" onclick="cancelPAInline(${index}, \`${encodeURIComponent(oldHtml)}\`)">❌</button>
-    </div>`;
+    </div>
+  `;
 }
+
 
 // ====================== BATAL EDIT INLINE (PA) ======================
 function cancelPAInline(index, oldHtmlEncoded){
@@ -7270,7 +7341,7 @@ if (lemContainer) {
   }, true); // capture phase
 }
 
-// ====================== EDIT INLINE (LEM) DENGAN BS DETAIL ======================
+// ====================== EDIT INLINE (LEM) DENGAN BS DETAIL + LABEL ======================
 function editLemInline(index){
   const item = lemItems[index];
   const container = document.getElementById('gridLem');
@@ -7279,45 +7350,70 @@ function editLemInline(index){
   if(!card) return;
   if(card.querySelector('.edit-inline')) return;
 
-  // simpan HTML lama untuk tombol cancel
   const oldHtml = card.innerHTML;
 
   card.innerHTML = `
     <div class="edit-grid">
-      <input type="text" class="edit-inline" name="nama" value="${escapeHtml(item.nama||'')}" placeholder="Nama Order">
-      <input type="text" class="edit-inline" name="noKS" value="${escapeHtml(item.noKS||'')}" placeholder="No KS">
-      <input type="number" class="edit-inline" name="order" value="${escapeHtml(item.order||'')}" placeholder="Order">
-      <input type="number" class="edit-inline" name="isi" value="${escapeHtml(item.isi||'')}" placeholder="Isi/Dus">
-      <input type="number" class="edit-inline" name="bagus" value="${escapeHtml(item.bagus||'')}" placeholder="Bagus">
-      <input type="number" class="edit-inline" name="jenisBS" value="${escapeHtml(item.lemJenisBS||'')}" placeholder="Total BS">
 
-      <!-- BS detail baru -->
-      <input type="number" class="edit-inline" name="jenisBS1" value="${escapeHtml(item.lemJenisBS1||'')}" placeholder="BS Cetak">
-      <input type="number" class="edit-inline" name="jenisBS12" value="${escapeHtml(item.lemJenisBS12||'')}" placeholder="BS Lem">
-      <input type="number" class="edit-inline" name="jenisBS13" value="${escapeHtml(item.lemJenisBS13||'')}" placeholder="BS Ponch">
-      <input type="number" class="edit-inline" name="jenisBS14" value="${escapeHtml(item.lemJenisBS14||'')}" placeholder="BS Varnish">
-      <input type="number" class="edit-inline" name="jenisBS15" value="${escapeHtml(item.lemJenisBS15||'')}" placeholder="BS Potong">
+      <label>Nama Order</label>
+      <input type="text" class="edit-inline" name="nama" value="${escapeHtml(item.nama||'')}">
 
+      <label>No KS</label>
+      <input type="text" class="edit-inline" name="noKS" value="${escapeHtml(item.noKS||'')}">
+
+      <label>Order</label>
+      <input type="number" class="edit-inline" name="order" value="${escapeHtml(item.order||'')}">
+
+      <label>Isi/Dus</label>
+      <input type="number" class="edit-inline" name="isi" value="${escapeHtml(item.isi||'')}">
+
+      <label>Bagus</label>
+      <input type="number" class="edit-inline" name="bagus" value="${escapeHtml(item.bagus||'')}">
+
+      <label>BS Total</label>
+      <input type="number" class="edit-inline" name="jenisBS" value="${escapeHtml(item.lemJenisBS||'')}">
+
+      <label>BS Cetak</label>
+      <input type="number" class="edit-inline" name="jenisBS1" value="${escapeHtml(item.lemJenisBS1||'')}">
+
+      <label>BS Lem</label>
+      <input type="number" class="edit-inline" name="jenisBS12" value="${escapeHtml(item.lemJenisBS12||'')}">
+
+      <label>BS Ponch</label>
+      <input type="number" class="edit-inline" name="jenisBS13" value="${escapeHtml(item.lemJenisBS13||'')}">
+
+      <label>BS Varnish</label>
+      <input type="number" class="edit-inline" name="jenisBS14" value="${escapeHtml(item.lemJenisBS14||'')}">
+
+      <label>BS Potong</label>
+      <input type="number" class="edit-inline" name="jenisBS15" value="${escapeHtml(item.lemJenisBS15||'')}">
+
+      <label>QC</label>
       <select class="edit-inline" name="qc">
         <option value="Martini" ${item.qc==='Martini'? 'selected':''}>Martini</option>
         <option value="Krestin" ${item.qc==='Krestin'? 'selected':''}>Krestin</option>
         <option value="Ismie" ${item.qc==='Ismie'? 'selected':''}>Ismie</option>
       </select>
 
+      <label>Status</label>
       <select class="edit-inline" name="update">
         <option value="Pending" ${item.update==='Pending'? 'selected':''}>Pending</option>
         <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
         <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
       </select>
 
-      <textarea class="edit-inline" name="keterangan" rows="2" placeholder="Keterangan">${escapeHtml(item.keterangan||'')}</textarea>
+      <label>Keterangan</label>
+      <textarea class="edit-inline" name="keterangan" rows="2">${escapeHtml(item.keterangan||'')}</textarea>
+
     </div>
 
     <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
       <button class="btn-icon btn-save" title="Simpan" onclick="saveLemInline(${index}, this)">💾</button>
       <button class="btn-icon btn-cancel" title="Batal" onclick="cancelLemInline(${index}, \`${encodeURIComponent(oldHtml)}\`)">❌</button>
-    </div>`;
+    </div>
+  `;
 }
+
 
 
 // ====================== BATAL EDIT INLINE (LEM) ======================
