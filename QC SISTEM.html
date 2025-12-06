@@ -118,17 +118,17 @@ select {
   transition: border .2s, box-shadow .2s;
 }
 
-/* ================= GRID GLOBAL ================= */
+/* ================= GRID GLOBAL RESPONSIVE ================= */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 12px;
   padding: 6px;
   width: 100%;
   box-sizing: border-box;
 }
 
-/* Card */
+/* Card kaca semi-transparan */
 .grid-card {
   background: rgba(0, 207, 255, 0.15);
   border-radius: 22px;
@@ -137,12 +137,23 @@ select {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   color: #002933;
-  box-shadow: 0 8px 20px rgba(0,0,0,.25);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .25);
   transition: all 0.35s ease;
   position: relative;
+  font-size: 14px;
+  line-height: 1.35;
+
+  /* ================== FLEX KONTAINER DALAM CARD ================== */
   display: flex;
-  flex-direction: column; /* default vertical */
-  gap: 10px;
+  flex-wrap: wrap;       /* biar bisa baris baru */
+  gap: 12px;             /* jarak antar item */
+}
+
+/* Item di dalam card */
+.grid-card > * {
+  flex: 1 1 48%;         /* dua kolom horizontal default */
+  min-width: 140px;      /* tetap responsif */
+  box-sizing: border-box;
 }
 
 /* Highlight kaca atas */
@@ -162,16 +173,16 @@ select {
 .grid-card:hover {
   transform: translateY(-2px);
   background: rgba(0, 207, 255, 0.25);
-  box-shadow: 
+  box-shadow:
     0 10px 22px rgba(0,0,0,0.28),
-    0 0 18px rgba(0,207,255,0.35);
+    0 0 18px rgba(0, 207, 255, 0.35);
 }
 
 /* Input di card */
 .grid-card input {
   padding: 0.55rem 0.75rem;
   border: 1px solid rgba(0,0,0,0.45);
-  background: rgba(0,207,255,0.12);
+  background: rgba(0, 207, 255, 0.12);
   border-radius: 10px;
   width: 100%;
   font-size: 14px;
@@ -182,32 +193,65 @@ select {
 
 /* Fokus input */
 .grid-card input:focus {
-  background: rgba(0,207,255,0.2);
+  background: rgba(0, 207, 255, 0.2);
   border-color: rgba(0,0,0,0.7);
-  box-shadow: 0 0 0 2px rgba(0,207,255,0.4), 0 0 8px rgba(0,207,255,0.35);
+  box-shadow:
+    0 0 0 2px rgba(0,207,255,0.4),
+    0 0 8px rgba(0,207,255,0.35);
   outline: none;
 }
 
-/* ================= HORIZONTAL SPLIT CARD (HP) ================= */
-@media (max-width: 768px) {
-  .grid-card {
-    flex-direction: row; /* split horizontal */
-    flex-wrap: wrap;
-    gap: 8px;
+/* Card tambahan style (opsional) */
+.grid-card-inner {
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  border-left: 6px solid #4b9cff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover card inner */
+.grid-card-inner:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 14px rgba(0,0,0,0.22);
+}
+
+/* ================ MEDIA QUERY UNTUK HP/Tablet ================= */
+@media (max-width: 1024px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
   }
-  .grid-card .form-group {
-    flex: 1 1 48%; /* dua kolom kira-kira 50% */
-  }
-  .grid-card input,
-  .grid-card select {
-    font-size: 13px;
+  .grid-card > * {
+    flex: 1 1 48%;
   }
 }
 
-/* Card smaller devices */
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+  }
+  .grid-card > * {
+    flex: 1 1 48%;
+  }
+}
+
 @media (max-width: 480px) {
-  .grid-card .form-group {
-    flex: 1 1 100%; /* kembali vertikal kalau terlalu kecil */
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 6px;
+  }
+  .grid-card {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+  .grid-card input {
+    font-size: 12px;
+  }
+  .grid-card > * {
+    flex: 1 1 100%;  /* jadi satu kolom full width di HP */
   }
 }
 
