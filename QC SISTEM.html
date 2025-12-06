@@ -470,7 +470,7 @@ select {
 
 
 /* ======================== Status ======================== */
-.status-to {
+.status-pending {
   background: #fee2e2;
   color: #b91c1c;
   font-weight: 600;
@@ -5400,7 +5400,7 @@ function renderGridFinishing(query = "") {
     const updateVal = (item.update || '').toString();
     if (updateVal === "Proses") statusClass = "status-proses";
     else if (updateVal === "Selesai") statusClass = "status-selesai";
-    else if (updateVal === "Pending") statusClass = "status-to";
+    else if (updateVal === "Pending") statusClass = "status-pending";
 
     // ===== TANGGAL =====
     const tanggal = item.tanggal
@@ -6135,7 +6135,7 @@ function renderGridBapro(query = "") {
     const updateVal = (item.update || '').toString();
     if (updateVal === "Proses") statusClass = "status-proses";
     else if (updateVal === "Selesai") statusClass = "status-selesai";
-    else if (updateVal === "Pending") statusClass = "status-to";
+    else if (updateVal === "Pending") statusClass = "status-pending";
 
     // ===== TANGGAL =====
     const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, q)}</strong><br>` : '';
@@ -6814,7 +6814,7 @@ function renderGridPA(query = "") {
     const updateVal = (item.update || '').toString();
     if (updateVal === "Proses") statusClass = "status-proses";
     else if (updateVal === "Selesai") statusClass = "status-selesai";
-    else if (updateVal === "Pending") statusClass = "status-to";
+    else if (updateVal === "Pending") statusClass = "status-pending";
 
     const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, q)}</strong><br>` : '';
 
@@ -7437,7 +7437,7 @@ function renderGridLem(query = "") {
     const updateVal = (item.update || '').toString();
     if (updateVal === "Proses") statusClass = "status-proses";
     else if (updateVal === "Selesai") statusClass = "status-selesai";
-    else if (updateVal === "Pending") statusClass = "status-to";
+    else if (updateVal === "Pending") statusClass = "status-pending";
 
     const tanggal = item.tanggal ? `<strong>${highlightHtmlSafe(item.tanggal, q)}</strong><br>` : '';
 
