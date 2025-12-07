@@ -2126,26 +2126,32 @@ paNoKS.addEventListener('input', function(e) {
       <label>Nama Order</label>
       <input type="text" id="finishingNama" placeholder="ETK GIV WHITE PEPAYA 72 GR">
     </div>
+
     <div class="form-group">
       <label>No KS</label>
       <input type="text" id="finishingNoKS" placeholder="KS-xxxx-xx">
     </div>
+
     <div class="form-group">
       <label>Total Order (lembar)</label>
       <input type="number" id="finishingOrder" placeholder="0">
     </div>
+
     <div class="form-group">
       <label>Isi/Dus (pcs)</label>
       <input type="number" id="finishingIsi" placeholder="0">
     </div>
+
     <div class="form-group">
       <label>Total Bagus (pcs)</label>
       <input type="number" id="finishingBagus" placeholder="0">
     </div>
+
     <div class="form-group">
       <label>Total BS (pcs)</label>
       <input type="number" id="finishingJenisBS" placeholder="0">
     </div>
+
     <div class="form-group">
       <label>BS Cetak (pcs)</label>
       <input type="number" id="finishingJenisBS1" placeholder="0">
@@ -2166,6 +2172,7 @@ paNoKS.addEventListener('input', function(e) {
       <label>BS Potong (pcs)</label>
       <input type="number" id="finishingJenisBS5" placeholder="0">
     </div>
+
     <div class="form-group">
       <label>QC</label>
       <select id="finishingQC">
@@ -2174,6 +2181,7 @@ paNoKS.addEventListener('input', function(e) {
         <option value="Irna">Irna</option>
       </select>
     </div>
+
     <div class="form-group">
       <label>Update</label>
       <select id="finishingUpdate">
@@ -2182,6 +2190,7 @@ paNoKS.addEventListener('input', function(e) {
         <option value="Pending">Pending</option>
       </select>
     </div>
+
     <div class="form-group">
       <label>Keterangan (opsional)</label>
       <div class="rowKet"><span>1.</span><input type="text" id="finKet1" placeholder="Isi keterangan 1"></div>
@@ -2190,6 +2199,7 @@ paNoKS.addEventListener('input', function(e) {
       <div class="rowKet"><span>4.</span><input type="text" id="finKet4" placeholder="Isi keterangan 4"></div>
       <div class="rowKet"><span>5.</span><input type="text" id="finKet5" placeholder="Isi keterangan 5"></div>
     </div>
+
     <div class="form-group">
       <button type="button" class="finishing-add-btn" onclick="addFinishingItem()">➕ Tambah</button>
     </div>
@@ -2204,6 +2214,8 @@ paNoKS.addEventListener('input', function(e) {
   </div>
 
 </section>
+
+
 
 <style>
 /* ======================== TAB FINISHING ======================== */
@@ -2291,7 +2303,9 @@ paNoKS.addEventListener('input', function(e) {
 }
 /* Responsif */
 @media (max-width: 768px) {
-  #hasilFinishing .grid-container { grid-template-columns: 1fr; gap:6px; }
+  /* Full-width grid di HP */
+  #hasilFinishing .baproGridScroll { padding: 0; }
+  #hasilFinishing .grid-container { grid-template-columns: 1fr !important; gap:4px; width:100%; }
 }
 @media (min-width: 769px) and (max-width: 1023px) {
   #hasilFinishing .grid-container { grid-template-columns: repeat(2, minmax(0, 1fr)); gap:8px; }
@@ -2302,7 +2316,6 @@ paNoKS.addEventListener('input', function(e) {
 /* Grid card full-width */
 #hasilFinishing .grid-card { width:100%; box-sizing:border-box; }
 </style>
-
 
 
 
