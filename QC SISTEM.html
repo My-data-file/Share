@@ -118,7 +118,7 @@ select {
   transition: border .2s, box-shadow .2s;
 }
 
-/* ================= GRID GLOBAL ================= */
+/* ======================== GRID GLOBAL ======================== */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -126,6 +126,29 @@ select {
   padding: 4px;
   width: 100%;
 }
+
+/* ======================== RESPONSIF GRID ======================== */
+/* HP: 2 kolom */
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Tablet: 3 kolom */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .grid-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Desktop: fleksibel sesuai minmax default */
+@media (min-width: 1024px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}
+
 
 /* Card kaca ultra-transparan seperti speech panel */
 .grid-container > div,
@@ -8738,3 +8761,4 @@ function goHome() {
 
 </body>
 </html>
+
