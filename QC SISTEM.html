@@ -2199,7 +2199,6 @@ paNoKS.addEventListener('input', function(e) {
   </div>
 </div>
 
-<!-- CSS Tab & Form (acuan BAPRO) -->
 <style>
 .tab-btn.finishing {
   flex:1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer;
@@ -2237,8 +2236,17 @@ paNoKS.addEventListener('input', function(e) {
 #qcFinishing .tabs { position:sticky; top:0; z-index:50; background:#fff; padding:6px 0; }
 #inputFinishing, #hasilFinishing { overflow-y:auto; max-height:calc(80vh - 120px); padding-right:4px; }
 
-.baproFilter { position:sticky; top:0; z-index:1000; background:#fff; padding:6px; margin-bottom:8px; border:1px solid #ccc; }
-.baproGridScroll { max-height:calc(80vh - 180px); overflow-y:auto; padding-right:4px; }
+.baproFilter { position:sticky; top:0; z-index:1000; background:#fff; padding:6px; margin-bottom:8px; border:1px solid #ccc; border-radius:6px; width:100%; box-sizing:border-box; }
+
+.baproGridScroll { max-height:calc(80vh - 180px); overflow-y:auto; padding-right:4px; overflow-x:hidden; }
+
+#gridFinishing {
+  display: grid;
+  gap:10px;
+  width:100%;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  box-sizing: border-box;
+}
 
 #gridFinishing .grid-card { position:relative; z-index:1 !important; }
 #gridFinishing .grid-card * { z-index:1 !important; }
@@ -2261,7 +2269,21 @@ paNoKS.addEventListener('input', function(e) {
 
 .spinner { width:18px; height:18px; border:3px solid #ddd; border-top:3px solid #22C55E; border-radius:50%; display:inline-block; vertical-align:middle; animation:spin 0.8s linear infinite; margin-right:6px; }
 @keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+
+/* =================== RESPONSIVE HP =================== */
+@media screen and (max-width:768px){
+  #gridFinishing { grid-template-columns: repeat(2, 1fr); gap:8px; }
+  .baproFilter { font-size:0.95rem; top:34px; }
+  .baproGridScroll { max-height: calc(75vh - 90px); }
+}
+
+@media screen and (max-width:480px){
+  #gridFinishing { grid-template-columns: 1fr; gap:6px; }
+  .baproFilter { font-size:0.9rem; top:32px; }
+  .baproGridScroll { max-height: calc(70vh - 80px); }
+}
 </style>
+
 
 
 
@@ -2408,12 +2430,14 @@ finishingNoKS.addEventListener('input', function(e) {
   </div>
 
   <!-- Hasil -->
-<div id="hasilLem" class="tab-content">
-  <input type="text" placeholder="🔍 Pencarian" oninput="renderGridLem(this.value)" class="baproFilter">
-  <div class="baproGridScroll">
-    <div id="gridLem" class="grid-lem-container"></div>
+  <div id="hasilLem" class="tab-content">
+    <input type="text" placeholder="🔍 Pencarian" oninput="renderGridLem(this.value)" class="baproFilter">
+    <div class="baproGridScroll">
+      <div id="gridLem" class="grid-container"></div>
+    </div>
   </div>
-</div>
+
+</section>
 
 <!-- Modal Detail -->
 <div id="detailLemModal" class="modal-fin">
@@ -2429,71 +2453,69 @@ finishingNoKS.addEventListener('input', function(e) {
   </div>
 </div>
 
+<!-- CSS Tab & Form (acuan BAPRO) -->
 <style>
-/* ================= Hasil QC Lem ================= */
+.tab-btn.lem {
+  flex:1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer;
+  border:1px solid #000; background:#e0e0e0 !important; color:#000 !important;
+  transition:all 0.2s; text-align:center;
+}
+.tab-btn.lem.active {
+  background: linear-gradient(to right,#9C27B0,#BA68C8) !important; color:#fff !important;
+  border:1px solid #000 !important;
+}
+.tab-btn.lem:not(.active):hover {
+  background:#D18FE0 !important; color:#000 !important;
+  transform: translateY(-1px); box-shadow:0 2px 6px rgba(156,39,176,0.3);
+}
+.tab-btn.lem:focus { outline:none; box-shadow:none; }
 
-/* Sticky filter */
-.baproFilter {
-  position: sticky;
-  top: 36px; /* sesuaikan posisi bawah tabs */
-  z-index: 1000;
-  background: #fff;
-  padding: 6px;
-  margin-bottom: 6px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  width: 100%;
-  box-sizing: border-box;
+#inputLem .form-group input,
+#inputLem .form-group select,
+#inputLem .form-group textarea {
+  width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:8px;
+  font-size:0.95rem; box-sizing:border-box;
 }
 
-/* Scrollable area untuk grid */
-.baproGridScroll {
-  overflow-y: auto;
-  overflow-x: hidden;
-  max-height: calc(80vh - 100px); /* tinggi bisa disesuaikan */
-  padding-right: 4px;
+.lem-add-btn {
+  width:100%; padding:0.6rem; background:linear-gradient(135deg,#9C27B0,#BA68C8);
+  color:#fff; font-weight:600; border:1px solid #000; border-radius:8px;
+  cursor:pointer; font-size:1rem; box-shadow:0 4px 8px rgba(0,0,0,0.3); transition:all 0.25s;
+}
+.lem-add-btn:hover {
+  background: linear-gradient(135deg,#BA68C8,#9C27B0);
+  transform: translateY(-2px); box-shadow:0 6px 12px rgba(186,104,200,0.4);
 }
 
-/* Grid unik untuk QC Lem */
-.grid-lem-container {
-  display: grid;
-  gap: 8px;
-  width: 100%;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* responsive */
+#qcLem { display:flex; flex-direction:column; max-height:none; }
+#qcLem .tabs { position:sticky; top:0; z-index:50; background:#fff; padding:6px 0; }
+#inputLem, #hasilLem { overflow-y:auto; max-height:calc(80vh - 120px); padding-right:4px; }
+
+.baproFilter { position:sticky; top:0; z-index:1000; background:#fff; padding:6px; margin-bottom:8px; border:1px solid #ccc; }
+.baproGridScroll { max-height:calc(80vh - 180px); overflow-y:auto; padding-right:4px; }
+
+#gridLem .grid-card { position:relative; z-index:1 !important; }
+#gridLem .grid-card * { z-index:1 !important; }
+
+.rowKet { display:flex; gap:6px; align-items:center; margin-bottom:6px; }
+.rowKet input { flex:1; padding:4px 8px; }
+.rowKet span { width:20px; text-align:right; font-weight:bold; }
+
+#lemJenisBS { background-color:#ff6f91; border:1px solid #ff3366; border-radius:4px; padding:6px 8px; width:100%; box-sizing:border-box; font-size:14px; }
+#lemJenisBS::placeholder { color:#660022; opacity:1; }
+
+#lemJenisBS1,#lemJenisBS12,#lemJenisBS13,#lemJenisBS14,#lemJenisBS15 {
+  background-color:#ffc0cb; border:1px solid #ff69b4; border-radius:4px; padding:6px 8px; width:100%; box-sizing:border-box; font-size:14px;
+}
+#lemJenisBS1::placeholder,#lemJenisBS12::placeholder,#lemJenisBS13::placeholder,#lemJenisBS14::placeholder,#lemJenisBS15::placeholder {
+  color:#990033; opacity:1;
 }
 
-/* Card di grid */
-.grid-lem-container .grid-card {
-  position: relative;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 6px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  overflow: hidden;
-}
+#inputLem .form-group label { display:block; font-weight:600; margin-bottom:4px; font-size:0.9rem; color:#333; }
 
-/* Z-index untuk elemen dalam card */
-.grid-lem-container .grid-card * {
-  z-index: 1 !important;
-}
-
-/* Responsive HP ≤480px */
-@media screen and (max-width: 480px) {
-  .grid-lem-container {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 6px;
-  }
-  .baproFilter {
-    top: 34px; /* sesuaikan jika tabs lebih tinggi */
-    font-size: 0.95rem;
-  }
-  .baproGridScroll {
-    max-height: calc(75vh - 90px);
-  }
-}
+.spinner { width:18px; height:18px; border:3px solid #ddd; border-top:3px solid #9C27B0; border-radius:50%; display:inline-block; vertical-align:middle; animation:spin 0.8s linear infinite; margin-right:6px; }
+@keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
 </style>
-
 
 
 
