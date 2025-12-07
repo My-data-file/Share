@@ -508,8 +508,10 @@ select {
   font-weight: 500;
   letter-spacing: 0.3px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.28);
-  position: sticky;
+  position: fixed; /* diubah dari sticky ke fixed */
   top: 0;
+  left: 0;
+  width: 100%;
   z-index: 1000;
   border-bottom: 1px solid rgba(255,255,255,0.18);
 ">
@@ -531,13 +533,34 @@ select {
   </div>
 </header>
 
+<!-- ======================== Footer Nav ======================== -->
+<nav class="footer-nav">
+  <div class="nav-inner">
+    <button onclick="showMenu('dashboard')" class="nav-btn active">DASHBOARD</button>
+    <button onclick="showMenu('qcBapro')" class="nav-btn">QC BAPRO</button>
+    <button onclick="showMenu('qcPA')" class="nav-btn">QC CETAK</button>
+    <button onclick="showMenu('qcFinishing')" class="nav-btn">QC FINISHING</button>
+    <button onclick="showMenu('qcLem')" class="nav-btn">QC LEM</button>
+    <button onclick="showMenu('qcSPV')" class="nav-btn">QC REGISTER</button>
+    <button onclick="showMenu('qcMeeting')" class="nav-btn">MEETING</button>
+    <button onclick="showMenu('manualSection')" class="nav-btn">MANUAL</button>
+  </div>
+</nav>
+
 <style>
+/* ======================== Body Padding untuk Header & Footer ======================== */
+body {
+  padding-top: 64px;   /* tinggi header */
+  padding-bottom: 64px; /* tinggi footer */
+  margin: 0;
+}
+
 /* ---------------- BACKGROUND QC ---------------- */
 .btnQC {
   position: relative;
   background: linear-gradient(120deg, #ffffff, #f4fbff, #d6f3ff, #ffffff);
   background-size: 230% 230%;
-  animation: qcBgMove 5.5s ease-in-out infinite;   /* dibuat lebih halus dan lambat */
+  animation: qcBgMove 5.5s ease-in-out infinite;
 
   color: #0078D7;
   font-weight: 800;
@@ -557,68 +580,37 @@ select {
   transform: scale(1.06);
 }
 
-/* ================= PULSE RING EXPAND — DIBUAT LEBIH HALUS ================= */
 .btnQC::before,
 .btnQC::after {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: 14px;
-  border: 2.6px solid rgba(0, 0, 0, 0.42);   /* sedikit lebih tipis & halus */
-  animation: pulseExpand 2.8s cubic-bezier(.25,.8,.35,1) infinite; /* GERAK HALUS */
+  border: 2.6px solid rgba(0, 0, 0, 0.42);
+  animation: pulseExpand 2.8s cubic-bezier(.25,.8,.35,1) infinite;
   z-index: -1;
 }
 
 .btnQC::after {
-  animation-delay: 1.4s; /* gelombang kedua tetap ada, lebih halus */
+  animation-delay: 1.4s;
 }
 
-/* ---------------- ANIMASI PULSE LEBIH SOFT ---------------- */
 @keyframes pulseExpand {
-  0% {
-    transform: scale(1);
-    opacity: 0.9;
-  }
-  60% {
-    transform: scale(1.30);    /* dulu 1.45 → sekarang lebih lembut */
-    opacity: 0.12;
-  }
-  100% {
-    transform: scale(1.45);    /* dulu 1.6 → diperhalus */
-    opacity: 0;
-  }
+  0% { transform: scale(1); opacity: 0.9; }
+  60% { transform: scale(1.30); opacity: 0.12; }
+  100% { transform: scale(1.45); opacity: 0; }
 }
 
-/* ---------------- KEYFRAMES BACKGROUND ---------------- */
 @keyframes qcBgMove {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
-</style>
 
-
-
-
-<!-- ======================== Footer Nav ======================== -->
-<nav class="footer-nav">
-  <div class="nav-inner">
-    <button onclick="showMenu('dashboard')" class="nav-btn active">DASHBOARD</button>
-    <button onclick="showMenu('qcBapro')" class="nav-btn">QC BAPRO</button>
-    <button onclick="showMenu('qcPA')" class="nav-btn">QC CETAK</button>
-    <button onclick="showMenu('qcFinishing')" class="nav-btn">QC FINISHING</button>
-    <button onclick="showMenu('qcLem')" class="nav-btn">QC LEM</button>
-    <button onclick="showMenu('qcSPV')" class="nav-btn">QC REGISTER</button>
-    <button onclick="showMenu('qcMeeting')" class="nav-btn">MEETING</button>
-    <button onclick="showMenu('manualSection')" class="nav-btn">MANUAL</button>
-  </div>
-</nav>
-
-<style>
 /* ======================== Footer Nav Wrapper ======================== */
 .footer-nav {
   position: fixed;
-  bottom: 0;
+  bottom: env(safe-area-inset-bottom, 0); /* aman untuk iPhone notch */
   left: 0;
   width: 100%;
   background: linear-gradient(to right, #0078D7, #1A86D1);
@@ -640,18 +632,12 @@ select {
   overflow-x: auto;
   white-space: nowrap;
   scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch; /* efek geser halus iOS */
+  -webkit-overflow-scrolling: touch;
   width: 100%;
+  scrollbar-width: none;          
+  -ms-overflow-style: none;       
 }
-
-/* 🔽 Sembunyikan scrollbar di semua browser */
-.nav-inner {
-  scrollbar-width: none;          /* Firefox */
-  -ms-overflow-style: none;       /* IE & Edge lama */
-}
-.nav-inner::-webkit-scrollbar {   /* Chrome, Safari, Opera */
-  display: none;
-}
+.nav-inner::-webkit-scrollbar { display: none; }
 
 /* ======================== Tombol Putih HD Modern ======================== */
 .nav-btn {
@@ -664,33 +650,21 @@ select {
   border: 1px solid rgba(255,255,255,0.7);
   background: #ffffff;
   text-shadow: none;
-  box-shadow:
-    0 2px 6px rgba(0,0,0,0.15),
-    inset 0 1px 0 rgba(255,255,255,0.3);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.3);
   transition: all 0.25s ease;
   cursor: pointer;
 }
-
-/* Hover efek lembut */
 .nav-btn:hover {
   background: #f5f9ff;
   transform: translateY(-2px);
-  box-shadow:
-    0 4px 10px rgba(0,0,0,0.2),
-    inset 0 1px 0 rgba(255,255,255,0.4);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.4);
 }
-
-/* Aktif: glow hijau elegan */
 .nav-btn.active {
   color: #fff;
   background: linear-gradient(145deg, #22c55e, #16a34a);
   border-color: rgba(34,197,94,0.6);
-  box-shadow:
-    0 0 15px rgba(34,197,94,0.6),
-    0 0 30px rgba(34,197,94,0.4);
+  box-shadow: 0 0 15px rgba(34,197,94,0.6), 0 0 30px rgba(34,197,94,0.4);
 }
-
-/* Klik efek */
 .nav-btn:active {
   transform: scale(0.97);
   box-shadow: 0 0 6px rgba(0,0,0,0.3);
@@ -698,24 +672,15 @@ select {
 
 /* ======================== Responsif ======================== */
 @media (max-width: 768px) {
-  .nav-inner {
-    justify-content: flex-start;
-  }
-  .nav-btn {
-    font-size: 14px;
-    padding: 9px 16px;
-  }
+  .nav-inner { justify-content: flex-start; }
+  .nav-btn { font-size: 14px; padding: 9px 16px; }
 }
 @media (min-width: 1024px) {
-  .nav-inner {
-    justify-content: center;
-  }
-  .nav-btn {
-    font-size: 15px;
-    padding: 11px 22px;
-  }
+  .nav-inner { justify-content: center; }
+  .nav-btn { font-size: 15px; padding: 11px 22px; }
 }
 </style>
+
 
 <!-- ======================== Main Section ======================== -->
 <main>
