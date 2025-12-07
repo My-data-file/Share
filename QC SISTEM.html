@@ -2327,32 +2327,26 @@ finishingNoKS.addEventListener('input', function(e) {
       <label>Nama Order</label>
       <input type="text" id="lemNama" placeholder="ETK GIV WHITE PEPAYA 72 GR">
     </div>
-
     <div class="form-group">
       <label>No KS</label>
       <input type="text" id="lemNoKS" placeholder="KS-xxxx-xx">
     </div>
-
     <div class="form-group">
       <label>Total Order (lembar)</label>
       <input type="number" id="lemOrder" placeholder="0">
     </div>
-
     <div class="form-group">
       <label>Isi/Dus (pcs)</label>
       <input type="number" id="lemIsi" placeholder="0">
     </div>
-
     <div class="form-group">
       <label>Total Bagus (pcs)</label>
       <input type="number" id="lemBagus" placeholder="0">
     </div>
-
     <div class="form-group">
       <label>Total BS (pcs)</label>
       <input type="number" id="lemJenisBS" placeholder="0">
     </div>
-
     <div class="form-group">
       <label>BS Cetak (pcs)</label>
       <input type="number" id="lemJenisBS1" placeholder="0">
@@ -2373,7 +2367,6 @@ finishingNoKS.addEventListener('input', function(e) {
       <label>BS Potong (pcs)</label>
       <input type="number" id="lemJenisBS15" placeholder="0">
     </div>
-
     <div class="form-group">
       <label>QC</label>
       <select id="lemQC">
@@ -2383,7 +2376,6 @@ finishingNoKS.addEventListener('input', function(e) {
         <option value="Ismie">Ismie</option>
       </select>
     </div>
-
     <div class="form-group">
       <label>Update</label>
       <select id="lemUpdate">
@@ -2392,7 +2384,6 @@ finishingNoKS.addEventListener('input', function(e) {
         <option value="Pending">Pending</option>
       </select>
     </div>
-
     <div class="form-group">
       <label>Keterangan (opsional)</label>
       <div class="rowKet"><span>1.</span><input type="text" id="lemKet1" placeholder="Isi keterangan 1"></div>
@@ -2401,7 +2392,6 @@ finishingNoKS.addEventListener('input', function(e) {
       <div class="rowKet"><span>4.</span><input type="text" id="lemKet4" placeholder="Isi keterangan 4"></div>
       <div class="rowKet"><span>5.</span><input type="text" id="lemKet5" placeholder="Isi keterangan 5"></div>
     </div>
-
     <div class="form-group">
       <button type="button" class="lem-add-btn" onclick="addLemItem()">➕ Tambah</button>
     </div>
@@ -2414,7 +2404,6 @@ finishingNoKS.addEventListener('input', function(e) {
       <div id="gridLem" class="grid-container"></div>
     </div>
   </div>
-
 </section>
 
 <!-- Modal Detail -->
@@ -2431,25 +2420,24 @@ finishingNoKS.addEventListener('input', function(e) {
   </div>
 </div>
 
-<!-- CSS Tab & Form (Responsive + Fix Scroll) -->
+<!-- ======================== CSS QC LEM ======================== -->
 <style>
-/* Tab Button */
+/* Tab Buttons */
 .tab-btn.lem {
   flex:1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer;
-  border:1px solid #000; background:#e0e0e0 !important; color:#000 !important;
-  transition:all 0.2s; text-align:center;
+  border:1px solid #000; background:#e0e0e0; color:#000;
+  transition: all 0.2s; text-align:center;
 }
 .tab-btn.lem.active {
-  background: linear-gradient(to right,#9C27B0,#BA68C8) !important; color:#fff !important;
-  border:1px solid #000 !important;
+  background: linear-gradient(to right,#9C27B0,#BA68C8); color:#fff; border:1px solid #000;
 }
 .tab-btn.lem:not(.active):hover {
-  background:#D18FE0 !important; color:#000 !important;
-  transform: translateY(-1px); box-shadow:0 2px 6px rgba(156,39,176,0.3);
+  background:#D18FE0; color:#000; transform: translateY(-1px);
+  box-shadow:0 2px 6px rgba(156,39,176,0.3);
 }
-.tab-btn.lem:focus { outline:none; box-shadow:none; }
+.tab-btn.lem:focus { outline:none; }
 
-/* Input Form */
+/* Form Inputs */
 #inputLem .form-group input,
 #inputLem .form-group select,
 #inputLem .form-group textarea {
@@ -2459,7 +2447,7 @@ finishingNoKS.addEventListener('input', function(e) {
 
 /* Add Button */
 .lem-add-btn {
-  width:100%; padding:0.6rem; background:linear-gradient(135deg,#9C27B0,#BA68C8);
+  width:100%; padding:0.6rem; background: linear-gradient(135deg,#9C27B0,#BA68C8);
   color:#fff; font-weight:600; border:1px solid #000; border-radius:8px;
   cursor:pointer; font-size:1rem; box-shadow:0 4px 8px rgba(0,0,0,0.3); transition:all 0.25s;
 }
@@ -2471,50 +2459,36 @@ finishingNoKS.addEventListener('input', function(e) {
 /* QC Lem Container */
 #qcLem { display:flex; flex-direction:column; }
 
-/* Tabs sticky */
+/* Tabs Sticky */
 #qcLem .tabs {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: #fff;
-  padding: 6px 0;
+  position: sticky; top:0; z-index:50; background:#fff; padding:6px 4px;
 }
 
 /* Tab Content Scroll */
 #inputLem, #hasilLem {
-  overflow-y:auto;
-  max-height: calc(80vh - 120px);
-  padding-right:4px;
+  overflow-y:auto; max-height: calc(80vh - 100px); padding:4px;
 }
 
 /* Filter Sticky */
 .baproFilter {
-  position: sticky;
-  top: 48px; /* tinggi tabs */
-  z-index: 1000;
-  background: #fff;
-  padding: 6px;
-  margin-bottom: 8px;
-  border: 1px solid #ccc;
+  position: sticky; top:44px; z-index:1000; background:#fff; padding:6px 4px;
+  margin-bottom:6px; border:1px solid #ccc;
 }
 
-/* Grid Scrollable + Horizontal */
+/* Grid Scrollable */
 .baproGridScroll {
-  max-height: calc(80vh - 180px);
-  overflow-y: auto;
-  overflow-x: auto;
-  padding-right:4px;
+  overflow-y:auto; overflow-x:auto; padding:4px;
 }
 
-/* Grid */
+/* Grid Cards Responsive */
 #gridLem {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 8px;
-  min-width: 600px; /* agar muncul scroll horizontal di HP */
+  grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
+  gap:8px;
 }
-#gridLem .grid-card { position:relative; z-index:1 !important; }
-#gridLem .grid-card * { z-index:1 !important; }
+
+/* Grid Card Inner */
+#gridLem .grid-card { position:relative; }
 
 /* Row Keterangan */
 .rowKet { display:flex; gap:6px; align-items:center; margin-bottom:6px; }
@@ -2522,39 +2496,22 @@ finishingNoKS.addEventListener('input', function(e) {
 .rowKet span { width:20px; text-align:right; font-weight:bold; }
 
 /* Warna Input BS */
-#lemJenisBS { background-color:#ff6f91; border:1px solid #ff3366; border-radius:4px; padding:6px 8px; width:100%; box-sizing:border-box; font-size:14px; }
-#lemJenisBS::placeholder { color:#660022; opacity:1; }
+#lemJenisBS { background-color:#ff6f91; border:1px solid #ff3366; border-radius:4px; padding:6px 8px; }
 #lemJenisBS1,#lemJenisBS12,#lemJenisBS13,#lemJenisBS14,#lemJenisBS15 {
-  background-color:#ffc0cb; border:1px solid #ff69b4; border-radius:4px; padding:6px 8px; width:100%; box-sizing:border-box; font-size:14px;
+  background-color:#ffc0cb; border:1px solid #ff69b4; border-radius:4px; padding:6px 8px;
 }
-#lemJenisBS1::placeholder,#lemJenisBS12::placeholder,#lemJenisBS13::placeholder,#lemJenisBS14::placeholder,#lemJenisBS15::placeholder {
-  color:#990033; opacity:1;
-}
-
-/* Label */
-#inputLem .form-group label { display:block; font-weight:600; margin-bottom:4px; font-size:0.9rem; color:#333; }
-
-/* Spinner */
-.spinner { width:18px; height:18px; border:3px solid #ddd; border-top:3px solid #9C27B0; border-radius:50%; display:inline-block; vertical-align:middle; animation:spin 0.8s linear infinite; margin-right:6px; }
-@keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
 
 /* Modal Footer Sticky */
-.modal-fin-footer {
-  position: sticky;
-  bottom: 0;
-  background: #fff;
-  padding: 8px;
-  z-index: 100;
-}
+.modal-fin-footer { position: sticky; bottom:0; background:#fff; padding:8px; z-index:100; }
 
-/* Responsive Fix */
-@media screen and (max-width:600px){
-  #gridLem { min-width: 500px; }
-  .baproFilter { top: 46px; }
+/* Responsive HP */
+@media screen and (max-width:480px){
+  #gridLem { grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); gap:6px; }
+  .baproFilter { top:42px; }
+  #inputLem, #hasilLem { max-height: calc(75vh - 100px); }
+  .lem-add-btn { font-size:0.95rem; }
 }
 </style>
-
-
 
 
 <script>
@@ -8860,5 +8817,6 @@ function goHome() {
 
 </body>
 </html>
+
 
 
