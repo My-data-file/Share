@@ -121,7 +121,7 @@ select {
 /* ================= GRID GLOBAL ================= */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(2, 1fr); /* 2 kolom ringkas */
   gap: 14px;
   padding: 4px;
   width: 100%;
@@ -145,6 +145,7 @@ select {
   box-shadow: 0 8px 20px rgba(0, 0, 0, .25);
   transition: all 0.35s ease;
   position: relative;
+  height: auto; /* tinggi fleksibel sesuai konten */
 }
 
 /* Efek highlight kaca */
@@ -172,7 +173,7 @@ select {
   background: rgba(0, 207, 255, 0.25);   /* sedikit lebih terlihat */
   box-shadow:
     0 10px 22px rgba(0, 0, 0, .28),      /* glow gelap */
-    0 0 18px rgba(0, 207, 255, .35);     /* glow cyan lembut */
+    0 0 18px rgba(0, 207, 255, 0.35);     /* glow cyan lembut */
 }
 
 /* Input kaca */
@@ -197,8 +198,6 @@ select {
     0 0 8px rgba(0, 207, 255, 0.35);
   outline: none;
 }
-
-
 
 /* ========================== CARD STYLE ========================== */
 .grid-card {
@@ -345,8 +344,6 @@ select {
   transform: scale(1.06);
 }
 
-
-
 /* ======================= DETAIL GLOBAL ======================= */
 .modal-fin {
   display: none;
@@ -458,8 +455,6 @@ select {
   margin-bottom: 3px;
 }
 
-
-
 /* ======================== Status ======================== */
 .status-pending {
   background: #fee2e2;
@@ -486,10 +481,8 @@ select {
 
 .form-group { margin-bottom: 10px; }
 
-
-
-  
 </style>
+
 
 </head>
 <body>
