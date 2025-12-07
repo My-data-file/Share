@@ -2282,57 +2282,56 @@ paNoKS.addEventListener('input', function(e) {
 @keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
 
 /* ======================== HASIL FINISHING RESPONSIF ======================== */
-/* Filter */
+/* Filter sticky */
 #hasilFinishing .baproFilter {
-  position: relative; /* hapus sticky agar tidak pecah di HP */
-  top: auto;
-  z-index: auto;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #fff;
+  padding: 6px;
   margin-bottom: 6px;
+  border: 1px solid #ccc;
 }
 
-/* Grid Scroll */
+/* Scrollable container */
 #hasilFinishing .baproGridScroll {
-  max-height: none; /* biarkan tinggi container menyesuaikan */
-  overflow-y: visible;
-  padding-right: 0;
+  max-height: calc(80vh - 60px); /* tinggi disesuaikan agar filter terlihat */
+  overflow-y: auto;
+  padding: 0 2px;
 }
 
 /* Grid Container */
 #hasilFinishing .grid-container {
   display: grid;
   gap: 10px;
-  padding: 2px;
   width: 100%;
   box-sizing: border-box;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 }
 
-/* ---------------- RESPONSIF ---------------- */
-/* HP ≤768px: 1 kolom full-width */
+/* RESPONSIF */
 @media (max-width: 768px) {
   #hasilFinishing .grid-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* full-width HP */
+    gap: 6px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1023px) {
+  #hasilFinishing .grid-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* tablet 2 kolom */
     gap: 8px;
   }
 }
 
-/* Tablet 769–1023px: 2 kolom */
-@media (min-width: 769px) and (max-width: 1023px) {
+@media (min-width: 1024px) {
   #hasilFinishing .grid-container {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* desktop fleksibel */
     gap: 10px;
   }
 }
 
-/* Desktop ≥1024px: fleksibel seperti dashboard */
-@media (min-width: 1024px) {
-  #hasilFinishing .grid-container {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 14px;
-  }
-}
-
-/* Card tetap full-width dan rapi */
+/* Card full-width */
 #hasilFinishing .grid-card {
   width: 100%;
   box-sizing: border-box;
