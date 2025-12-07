@@ -2431,8 +2431,9 @@ finishingNoKS.addEventListener('input', function(e) {
   </div>
 </div>
 
-<!-- CSS Tab & Form (acuan BAPRO) -->
+<!-- CSS Tab & Form (Responsive + Fix Scroll) -->
 <style>
+/* Tab Button */
 .tab-btn.lem {
   flex:1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer;
   border:1px solid #000; background:#e0e0e0 !important; color:#000 !important;
@@ -2448,6 +2449,7 @@ finishingNoKS.addEventListener('input', function(e) {
 }
 .tab-btn.lem:focus { outline:none; box-shadow:none; }
 
+/* Input Form */
 #inputLem .form-group input,
 #inputLem .form-group select,
 #inputLem .form-group textarea {
@@ -2455,6 +2457,7 @@ finishingNoKS.addEventListener('input', function(e) {
   font-size:0.95rem; box-sizing:border-box;
 }
 
+/* Add Button */
 .lem-add-btn {
   width:100%; padding:0.6rem; background:linear-gradient(135deg,#9C27B0,#BA68C8);
   color:#fff; font-weight:600; border:1px solid #000; border-radius:8px;
@@ -2465,23 +2468,62 @@ finishingNoKS.addEventListener('input', function(e) {
   transform: translateY(-2px); box-shadow:0 6px 12px rgba(186,104,200,0.4);
 }
 
-#qcLem { display:flex; flex-direction:column; max-height:none; }
-#qcLem .tabs { position:sticky; top:0; z-index:50; background:#fff; padding:6px 0; }
-#inputLem, #hasilLem { overflow-y:auto; max-height:calc(80vh - 120px); padding-right:4px; }
+/* QC Lem Container */
+#qcLem { display:flex; flex-direction:column; }
 
-.baproFilter { position:sticky; top:0; z-index:1000; background:#fff; padding:6px; margin-bottom:8px; border:1px solid #ccc; }
-.baproGridScroll { max-height:calc(80vh - 180px); overflow-y:auto; padding-right:4px; }
+/* Tabs sticky */
+#qcLem .tabs {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #fff;
+  padding: 6px 0;
+}
 
+/* Tab Content Scroll */
+#inputLem, #hasilLem {
+  overflow-y:auto;
+  max-height: calc(80vh - 120px);
+  padding-right:4px;
+}
+
+/* Filter Sticky */
+.baproFilter {
+  position: sticky;
+  top: 48px; /* tinggi tabs */
+  z-index: 1000;
+  background: #fff;
+  padding: 6px;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+}
+
+/* Grid Scrollable + Horizontal */
+.baproGridScroll {
+  max-height: calc(80vh - 180px);
+  overflow-y: auto;
+  overflow-x: auto;
+  padding-right:4px;
+}
+
+/* Grid */
+#gridLem {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+  min-width: 600px; /* agar muncul scroll horizontal di HP */
+}
 #gridLem .grid-card { position:relative; z-index:1 !important; }
 #gridLem .grid-card * { z-index:1 !important; }
 
+/* Row Keterangan */
 .rowKet { display:flex; gap:6px; align-items:center; margin-bottom:6px; }
 .rowKet input { flex:1; padding:4px 8px; }
 .rowKet span { width:20px; text-align:right; font-weight:bold; }
 
+/* Warna Input BS */
 #lemJenisBS { background-color:#ff6f91; border:1px solid #ff3366; border-radius:4px; padding:6px 8px; width:100%; box-sizing:border-box; font-size:14px; }
 #lemJenisBS::placeholder { color:#660022; opacity:1; }
-
 #lemJenisBS1,#lemJenisBS12,#lemJenisBS13,#lemJenisBS14,#lemJenisBS15 {
   background-color:#ffc0cb; border:1px solid #ff69b4; border-radius:4px; padding:6px 8px; width:100%; box-sizing:border-box; font-size:14px;
 }
@@ -2489,11 +2531,29 @@ finishingNoKS.addEventListener('input', function(e) {
   color:#990033; opacity:1;
 }
 
+/* Label */
 #inputLem .form-group label { display:block; font-weight:600; margin-bottom:4px; font-size:0.9rem; color:#333; }
 
+/* Spinner */
 .spinner { width:18px; height:18px; border:3px solid #ddd; border-top:3px solid #9C27B0; border-radius:50%; display:inline-block; vertical-align:middle; animation:spin 0.8s linear infinite; margin-right:6px; }
 @keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+
+/* Modal Footer Sticky */
+.modal-fin-footer {
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  padding: 8px;
+  z-index: 100;
+}
+
+/* Responsive Fix */
+@media screen and (max-width:600px){
+  #gridLem { min-width: 500px; }
+  .baproFilter { top: 46px; }
+}
 </style>
+
 
 
 
@@ -8800,4 +8860,5 @@ function goHome() {
 
 </body>
 </html>
+
 
