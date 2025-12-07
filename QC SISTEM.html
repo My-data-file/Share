@@ -2014,54 +2014,124 @@ body {
 
 <!-- CSS Tab & Form (acuan BAPRO) -->
 <style>
+/* ======================== TAB & FORM QC CETAK ======================== */
+
+/* Tombol Tab */
 .tab-btn.cetak {
-  flex: 1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer;
-  border:1px solid #000; background:#e0e0e0 !important; color:#000 !important;
-  transition: all 0.2s; text-align:center;
+  flex: 1;
+  padding: 6px 0;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #000;
+  background: #e0e0e0 !important;
+  color: #000 !important;
+  transition: all 0.2s;
+  text-align: center;
 }
 .tab-btn.cetak.active {
   background: linear-gradient(to right,#FF9800,#FFB74D) !important;
-  color:#fff !important; border:1px solid #000 !important;
+  color: #fff !important;
+  border: 1px solid #000 !important;
 }
 .tab-btn.cetak:not(.active):hover {
-  background:#FFD180 !important; color:#000 !important;
-  transform: translateY(-1px); box-shadow:0 2px 6px rgba(255,152,0,0.3);
+  background: #FFD180 !important;
+  color: #000 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(255,152,0,0.3);
 }
-.tab-btn.cetak:focus { outline:none; box-shadow:none; }
+.tab-btn.cetak:focus { outline: none; box-shadow: none; }
+
+/* Form Input */
+#inputPA, #hasilPA {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 120px); /* full height minus header/tabs */
+  padding: 0 4px;
+  overflow: hidden;
+}
 
 #inputPA .form-group input,
 #inputPA .form-group select,
 #inputPA .form-group textarea {
-  width:100%; padding:0.6rem; border:1px solid #ccc;
-  border-radius:8px; font-size:0.95rem; box-sizing:border-box;
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
 }
 
 .pa-add-btn {
-  width:100%; padding:0.6rem; background:linear-gradient(135deg,#FF9800,#FFB74D);
-  color:#fff; font-weight:600; border:1px solid #000; border-radius:8px;
-  cursor:pointer; font-size:1rem; box-shadow:0 4px 8px rgba(0,0,0,0.3);
+  width: 100%;
+  padding: 0.6rem;
+  background: linear-gradient(135deg,#FF9800,#FFB74D);
+  color: #fff;
+  font-weight: 600;
+  border: 1px solid #000;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
   transition: all 0.25s;
 }
 .pa-add-btn:hover {
   background: linear-gradient(135deg,#FFB74D,#FF9800);
-  transform: translateY(-2px); box-shadow:0 6px 12px rgba(255,183,77,0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(255,183,77,0.4);
 }
 
-#qcPA { display:flex; flex-direction:column; max-height:none; }
-#qcPA .tabs { position:sticky; top:0; z-index:50; background:#fff; padding:6px 0; }
-#inputPA, #hasilPA { overflow-y:auto; max-height:calc(80vh - 120px); padding-right:4px; }
-.baproFilter { position:sticky; top:0; z-index:1000; background:#fff; padding:6px; margin-bottom:8px; border:1px solid #ccc; }
-.baproGridScroll { max-height:calc(80vh - 180px); overflow-y:auto; padding-right:4px; }
-#gridPA .grid-card { position:relative; z-index:1 !important; }
-#gridPA .grid-card * { z-index:1 !important; }
-
-.rowKet { display:flex; gap:6px; align-items:center; margin-bottom:6px; }
-.rowKet input { flex:1; padding:4px 8px; }
-.rowKet span { width:20px; text-align:right; font-weight:bold; }
+/* Label & row keterangan */
+.rowKet { display: flex; gap: 6px; align-items: center; margin-bottom: 6px; }
+.rowKet input { flex: 1; padding: 4px 8px; }
+.rowKet span { width: 20px; text-align: right; font-weight: bold; }
 
 #inputPA .form-group label {
-  display:block; font-weight:600; margin-bottom:4px; font-size:0.9rem; color:#333;
+  display: block;
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+  color: #333;
 }
+
+/* ======================== TAB HASIL FULL HP ======================== */
+#hasilPA {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 120px); /* full height minus header/tabs */
+  padding: 0 4px;
+  overflow: hidden;
+}
+
+.baproFilter {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #fff;
+  padding: 6px;
+  margin: 0 0 8px 0;
+  border: 1px solid #ccc;
+}
+
+.baproGridScroll {
+  flex: 1; /* ambil sisa tinggi container */
+  overflow-y: auto; /* scroll vertikal di grid */
+  padding-right: 0;
+}
+
+/* Grid container */
+#gridPA {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+#gridPA .grid-card {
+  position: relative;
+  z-index: 1 !important;
+}
+#gridPA .grid-card * { z-index: 1 !important; }
+
 </style>
 
 
@@ -8806,3 +8876,4 @@ function goHome() {
 
 </body>
 </html>
+
