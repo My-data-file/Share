@@ -121,33 +121,34 @@ select {
 /* ======================== GRID GLOBAL ======================== */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 14px;
   padding: 4px;
   width: 100%;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* default desktop */
 }
 
-/* ======================== RESPONSIF GRID ======================== */
-/* HP: 2 kolom */
+/* ---------------- RESPONSIF ---------------- */
+/* HP ≤768px: 2 kolom */
 @media (max-width: 768px) {
   .grid-container {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr) !important;
   }
 }
 
-/* Tablet: 3 kolom */
+/* Tablet 769–1023px: 3 kolom */
 @media (min-width: 769px) and (max-width: 1023px) {
   .grid-container {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-/* Desktop: fleksibel sesuai minmax default */
+/* Desktop ≥1024px: fleksibel sesuai minmax */
 @media (min-width: 1024px) {
   .grid-container {
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   }
 }
+
 
 
 /* Card kaca ultra-transparan seperti speech panel */
@@ -8761,4 +8762,5 @@ function goHome() {
 
 </body>
 </html>
+
 
