@@ -890,6 +890,19 @@ body {
   </div>
 </div>
 
+<!-- Modal Detail -->
+<div id="detailBaproModal" class="modal-fin">
+  <div class="modal-fin-content">
+    <div class="modal-fin-header">
+      <span class="modal-fin-title">Detail QC Bapro</span>
+      <button class="modal-fin-close" onclick="closeDetailModalBapro()">×</button>
+    </div>
+    <div class="modal-fin-body" id="detailBaproBody"></div>
+    <div class="modal-fin-footer">
+      <button class="modal-fin-btn" onclick="closeDetailModalBapro()">Tutup</button>
+    </div>
+  </div>
+</div>
 
 <style>
 .filter-input {
@@ -1778,21 +1791,9 @@ body {
 
 </section>
 
-<!-- Modal Detail -->
-<div id="detailBaproModal" class="modal-fin">
-  <div class="modal-fin-content">
-    <div class="modal-fin-header">
-      <span class="modal-fin-title">Detail QC Bapro</span>
-      <button class="modal-fin-close" onclick="closeDetailModalBapro()">×</button>
-    </div>
-    <div class="modal-fin-body" id="detailBaproBody"></div>
-    <div class="modal-fin-footer">
-      <button class="modal-fin-btn" onclick="closeDetailModalBapro()">Tutup</button>
-    </div>
-  </div>
-</div>
 
-<!-- CSS BAPRO style konsisten dengan LEM + responsive Hasil HP -->
+
+<!-- CSS BAPRO style konsisten dengan LEM -->
 <style>
 .tab-btn.bapro {
   flex:1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer;
@@ -1837,42 +1838,7 @@ body {
 .rowKet span { width:20px; text-align:right; font-weight:bold; }
 
 #inputBapro .form-group label { display:block; font-weight:600; margin-bottom:4px; font-size:0.9rem; color:#333; }
-
-/* ===== RESPONSIVE UNTUK TAB HASIL HP ===== */
-@media only screen and (max-width: 768px) {
-  #hasilBapro {
-    display: flex;
-    flex-direction: column;
-    height: calc(80vh - 120px);
-    overflow: hidden;
-  }
-
-  .baproFilter {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: #fff;
-    padding: 6px;
-    margin-bottom: 8px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-  }
-
-  .baproGridScroll {
-    flex: 1;
-    overflow-y: auto;
-    padding-right: 4px;
-  }
-
-  #gridBapro {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 10px;
-    width: 100%;
-  }
-}
 </style>
-
 
 
 
