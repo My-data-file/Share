@@ -255,188 +255,55 @@ select {
   text-align: center;
 }
 
-
 /* ========================== BUTTON AREA ========================== */
-.btn-icon {
-  cursor: pointer;
-  border: none;
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: 0.2s;
-}
+.btn-icon { cursor: pointer; border: none; padding: 6px 10px; border-radius: 8px; font-size: 16px; transition: 0.2s; }
 .btn-call { background: #4aa3ff; color: white; }
 .btn-edit { background: #ffc93c; color: #4a3700; }
 .btn-delete { background: #ff4d4d; color: white; }
+.btn-icon:hover { opacity: 0.75; transform: scale(1.08); }
 
-.btn-icon:hover {
-  opacity: 0.75;
-  transform: scale(1.08);
-}
+.btn-save { background: #28c76f; color: #fff; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.2s ease; }
+.btn-save:hover { background: #22ad61; transform: scale(1.06); }
 
-/* ========================== TOMBOL SIMPAN ========================== */
-.btn-save {
-  background: #28c76f;
-  color: #ffffff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 14px;
-  transition: 0.2s ease;
-}
-.btn-save:hover {
-  background: #22ad61;
-  transform: scale(1.06);
-}
-
-/* ========================== TOMBOL BATAL ========================== */
-.btn-cancel {
-  background: #ff4d4d;
-  color: #ffffff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 14px;
-  transition: 0.2s ease;
-}
-.btn-cancel:hover {
-  background: #d63c3c;
-  transform: scale(1.06);
-}
-
-/* ======================= DETAIL GLOBAL ======================= */
-.modal-fin {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  backdrop-filter: blur(2px);
-  justify-content: center;
-  align-items: center;
-  z-index: 999999;
-}
-
-.modal-fin-content {
-  width: 92%;
-  max-width: 420px;
-  background: #fff;
-  border-radius: 14px;
-  padding: 0;
-  overflow: hidden;
-  animation: modalPop 0.25s ease;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-}
-
-@keyframes modalPop {
-  from { transform: scale(0.8); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
-}
-
-.modal-fin-header {
-  background: #3677FF;
-  color: white;
-  padding: 12px 18px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.modal-fin-title { font-size: 17px; font-weight: bold; }
-.modal-fin-close {
-  background: transparent;
-  color: white;
-  border: none;
-  font-size: 22px;
-  cursor: pointer;
-}
-.modal-fin-body {
-  padding: 16px 20px;
-  font-size: 15px;
-  line-height: 1.42;
-}
-.modal-fin-body strong { color: #0A3D62; }
-.modal-fin-footer {
-  padding: 12px 18px;
-  text-align: right;
-  background: #f5f5f5;
-}
-.modal-fin-btn {
-  background: #3677FF;
-  padding: 8px 16px;
-  border-radius: 8px;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-/* ======================== Edit Inline ======================== */
-.edit-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-}
-.edit-grid input,
-.edit-grid select {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #bbb;
-  border-radius: 6px;
-  font-size: 15px;
-}
-.edit-grid textarea {
-  width: 100%;
-  min-height: 110px;
-  border: 1px solid #bbb;
-  border-radius: 6px;
-  padding: 10px;
-  font-family: inherit;
-  resize: vertical;
-}
-.edit-grid label {
-  font-weight: 600;
-  margin-bottom: 3px;
-}
-
-/* ======================== Status ======================== */
-.status-pending {
-  background: #fee2e2;
-  color: #b91c1c;
-  font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 6px;
-  display: inline-block;
-}
-.status-proses {
-  background: var(--warning);
-  color: #111;
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-weight: 600;
-}
-.status-selesai {
-  background: var(--success);
-  color: #fff;
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-weight: 600;
-}
+.btn-cancel { background: #ff4d4d; color: #fff; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.2s ease; }
+.btn-cancel:hover { background: #d63c3c; transform: scale(1.06); }
 
 .form-group { margin-bottom: 10px; }
+
+/* ======================= DETAIL GLOBAL ======================= */
+.modal-fin { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); backdrop-filter: blur(2px); justify-content: center; align-items: center; z-index: 999999; }
+.modal-fin-content { width: 92%; max-width: 420px; background: #fff; border-radius: 14px; padding: 0; overflow: hidden; animation: modalPop 0.25s ease; box-shadow: 0 10px 25px rgba(0,0,0,0.25); }
+@keyframes modalPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.modal-fin-header { background: #3677FF; color: white; padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; }
+.modal-fin-title { font-size: 17px; font-weight: bold; }
+.modal-fin-close { background: transparent; color: white; border: none; font-size: 22px; cursor: pointer; }
+.modal-fin-body { padding: 16px 20px; font-size: 15px; line-height: 1.42; }
+.modal-fin-body strong { color: #0A3D62; }
+.modal-fin-footer { padding: 12px 18px; text-align: right; background: #f5f5f5; }
+.modal-fin-btn { background: #3677FF; padding: 8px 16px; border-radius: 8px; color: white; border: none; cursor: pointer; font-size: 14px; }
+
+/* ======================== Edit Inline ======================== */
+.edit-grid { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+.edit-grid input, .edit-grid select { width: 100%; padding: 8px; border: 1px solid #bbb; border-radius: 6px; font-size: 15px; }
+.edit-grid textarea { width: 100%; min-height: 110px; border: 1px solid #bbb; border-radius: 6px; padding: 10px; font-family: inherit; resize: vertical; }
+.edit-grid label { font-weight: 600; margin-bottom: 3px; }
 
 /* ============================================================
    ===================== RESPONSIVE SECTION =====================
    ============================================================ */
 
-/* ======== LAPTOP KECIL (769px – 1200px) ======== */
-@media (max-width: 1200px) {
-  .grid-container {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  }
+/* ======== HP KECIL (≤ 480px) ======== */
+@media (max-width: 480px) {
+  main { padding: 0.8rem; display: block; }
+  header { padding: 0.8rem 1rem; font-size: 1.1rem; }
+  #headerTitle { font-size: 1rem; }
+  #headerTime { font-size: 0.62rem; }
+  .tabs button { font-size: 0.75rem; padding: 0.45rem; }
+  .grid-container { grid-template-columns: repeat(2, 1fr); gap: 10px; } /* 2 kolom di HP */
+  .grid-card { padding: 12px; font-size: 13px; }
+  .grid-card input { font-size: 13px; padding: 0.45rem 0.6rem; }
+  .modal-fin-content { width: 95%; max-width: 360px; }
 }
 
 /* ======== TABLET (481px – 768px) ======== */
@@ -446,36 +313,9 @@ select {
   .grid-card { font-size: 14px; }
 }
 
-/* ======== HP KECIL (≤ 480px) ======== */
-@media (max-width: 480px) {
-  main { padding: 0.8rem; display: block; }
-  header { padding: 0.8rem 1rem; font-size: 1.1rem; }
-  #headerTitle { font-size: 1rem; }
-  #headerTime { font-size: 0.62rem; }
-  .tabs button { font-size: 0.75rem; padding: 0.45rem; }
-  .grid-container { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
-  .grid-card { padding: 12px; font-size: 13px; }
-  .grid-card input { font-size: 13px; padding: 0.45rem 0.6rem; }
-  .modal-fin-content { width: 95%; max-width: 360px; }
-}
-
-/* ======== GRID 2 KOLOM DI HP (≤ 600px) ======== */
-@media (max-width: 600px) {
-  .grid-container {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 10px !important;
-  }
-
-  .grid-card {
-    padding: 12px !important;
-    border-radius: 14px !important;
-    font-size: 13px !important;
-  }
-
-  .grid-card input {
-    font-size: 13px !important;
-    padding: 0.45rem 0.6rem !important;
-  }
+/* ======== LAPTOP KECIL (769px – 1200px) ======== */
+@media (max-width: 1200px) {
+  .grid-container { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
 }
 
 
