@@ -1839,8 +1839,8 @@ body {
 
 
 
-<!-- CSS BAPRO style konsisten dengan LEM -->
 <style>
+/* ======================== TAB BAPRO ======================== */
 .tab-btn.bapro {
   flex:1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer;
   border:1px solid #000; background:#e0e0e0 !important; color:#000 !important;
@@ -1856,12 +1856,13 @@ body {
 }
 .tab-btn.bapro:focus { outline:none; box-shadow:none; }
 
+/* Inputan Form */
 #inputBapro .form-group input,
-#inputBapro .form-group select {
+#inputBapro .form-group select,
+#inputBapro .form-group textarea {
   width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:8px;
   font-size:0.95rem; box-sizing:border-box;
 }
-
 .bapro-add-btn {
   width:100%; padding:0.6rem; background:linear-gradient(135deg,#D32F2F,#F44336);
   color:#fff; font-weight:600; border:1px solid #000; border-radius:8px;
@@ -1872,19 +1873,60 @@ body {
   transform: translateY(-2px); box-shadow:0 6px 12px rgba(244,67,54,0.4);
 }
 
+/* Container Tab */
 #qcBapro { display:flex; flex-direction:column; max-height:none; }
 #qcBapro .tabs { position:sticky; top:0; z-index:50; background:#fff; padding:6px 0; }
-#inputBapro, #hasilBapro { overflow-y:auto; max-height:calc(80vh - 120px); padding-right:4px; }
+#inputBapro, #hasilBapro { overflow-y:auto; max-height:none; padding-right:4px; }
 
-.baproFilter { position:sticky; top:0; z-index:1000; background:#fff; padding:6px; margin-bottom:8px; border:1px solid #ccc; }
-.baproGridScroll { max-height:calc(80vh - 180px); overflow-y:auto; padding-right:4px; }
-
+/* Row Keterangan */
 .rowKet { display:flex; gap:6px; align-items:center; margin-bottom:6px; }
 .rowKet input { flex:1; padding:4px 8px; }
 .rowKet span { width:20px; text-align:right; font-weight:bold; }
 
-#inputBapro .form-group label { display:block; font-weight:600; margin-bottom:4px; font-size:0.9rem; color:#333; }
+/* Filter sticky */
+#hasilBapro .baproFilter {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #fff;
+  padding: 6px;
+  margin-bottom: 6px;
+  border: 1px solid #ccc;
+}
+
+/* Scrollable container */
+#hasilBapro .baproGridScroll {
+  max-height: calc(80vh - 60px);
+  overflow-y: auto;
+  padding: 0 2px;
+}
+
+/* Grid container */
+#hasilBapro .grid-container {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+  #hasilBapro .baproGridScroll { padding: 0; }
+  #hasilBapro .grid-container { grid-template-columns: 1fr !important; gap:4px; width:100%; }
+}
+@media (min-width: 769px) and (max-width: 1023px) {
+  #hasilBapro .grid-container { grid-template-columns: repeat(2, minmax(0, 1fr)); gap:8px; }
+}
+@media (min-width: 1024px) {
+  #hasilBapro .grid-container { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:10px; }
+}
+
+/* Grid card full-width */
+#hasilBapro .grid-card { width:100%; box-sizing:border-box; }
+
 </style>
+
 
 
 
@@ -2012,12 +2054,12 @@ body {
 </section>
 
 
-<!-- CSS Tab & Form (acuan BAPRO) -->
 <style>
+/* ======================== TAB PA ======================== */
 .tab-btn.cetak {
-  flex: 1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer;
+  flex:1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer;
   border:1px solid #000; background:#e0e0e0 !important; color:#000 !important;
-  transition: all 0.2s; text-align:center;
+  transition:all 0.2s; text-align:center;
 }
 .tab-btn.cetak.active {
   background: linear-gradient(to right,#FF9800,#FFB74D) !important;
@@ -2029,13 +2071,13 @@ body {
 }
 .tab-btn.cetak:focus { outline:none; box-shadow:none; }
 
+/* Inputan Form */
 #inputPA .form-group input,
 #inputPA .form-group select,
 #inputPA .form-group textarea {
   width:100%; padding:0.6rem; border:1px solid #ccc;
   border-radius:8px; font-size:0.95rem; box-sizing:border-box;
 }
-
 .pa-add-btn {
   width:100%; padding:0.6rem; background:linear-gradient(135deg,#FF9800,#FFB74D);
   color:#fff; font-weight:600; border:1px solid #000; border-radius:8px;
@@ -2047,22 +2089,60 @@ body {
   transform: translateY(-2px); box-shadow:0 6px 12px rgba(255,183,77,0.4);
 }
 
+/* Container Tab */
 #qcPA { display:flex; flex-direction:column; max-height:none; }
 #qcPA .tabs { position:sticky; top:0; z-index:50; background:#fff; padding:6px 0; }
-#inputPA, #hasilPA { overflow-y:auto; max-height:calc(80vh - 120px); padding-right:4px; }
-.baproFilter { position:sticky; top:0; z-index:1000; background:#fff; padding:6px; margin-bottom:8px; border:1px solid #ccc; }
-.baproGridScroll { max-height:calc(80vh - 180px); overflow-y:auto; padding-right:4px; }
-#gridPA .grid-card { position:relative; z-index:1 !important; }
-#gridPA .grid-card * { z-index:1 !important; }
+#inputPA, #hasilPA { overflow-y:auto; max-height:none; padding-right:4px; }
 
+/* Row Keterangan */
 .rowKet { display:flex; gap:6px; align-items:center; margin-bottom:6px; }
 .rowKet input { flex:1; padding:4px 8px; }
 .rowKet span { width:20px; text-align:right; font-weight:bold; }
 
-#inputPA .form-group label {
-  display:block; font-weight:600; margin-bottom:4px; font-size:0.9rem; color:#333;
+/* Filter sticky */
+#hasilPA .baproFilter {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #fff;
+  padding: 6px;
+  margin-bottom: 6px;
+  border: 1px solid #ccc;
 }
+
+/* Scrollable container */
+#hasilPA .baproGridScroll {
+  max-height: calc(80vh - 60px);
+  overflow-y: auto;
+  padding: 0 2px;
+}
+
+/* Grid container */
+#hasilPA .grid-container {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
+/* Responsif */
+@media (max-width: 768px) {
+  #hasilPA .baproGridScroll { padding: 0; }
+  #hasilPA .grid-container { grid-template-columns: 1fr !important; gap:4px; width:100%; }
+}
+@media (min-width: 769px) and (max-width: 1023px) {
+  #hasilPA .grid-container { grid-template-columns: repeat(2, minmax(0, 1fr)); gap:8px; }
+}
+@media (min-width: 1024px) {
+  #hasilPA .grid-container { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:10px; }
+}
+
+/* Grid card full-width */
+#hasilPA .grid-card { width:100%; box-sizing:border-box; }
+
 </style>
+
 
 
 
@@ -2473,8 +2553,8 @@ finishingNoKS.addEventListener('input', function(e) {
 
 
 
-<!-- CSS Tab & Form (acuan BAPRO) -->
 <style>
+/* ======================== TAB LEM ======================== */
 .tab-btn.lem {
   flex:1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer;
   border:1px solid #000; background:#e0e0e0 !important; color:#000 !important;
@@ -2490,13 +2570,13 @@ finishingNoKS.addEventListener('input', function(e) {
 }
 .tab-btn.lem:focus { outline:none; box-shadow:none; }
 
+/* Inputan Form */
 #inputLem .form-group input,
 #inputLem .form-group select,
 #inputLem .form-group textarea {
   width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:8px;
   font-size:0.95rem; box-sizing:border-box;
 }
-
 .lem-add-btn {
   width:100%; padding:0.6rem; background:linear-gradient(135deg,#9C27B0,#BA68C8);
   color:#fff; font-weight:600; border:1px solid #000; border-radius:8px;
@@ -2507,20 +2587,17 @@ finishingNoKS.addEventListener('input', function(e) {
   transform: translateY(-2px); box-shadow:0 6px 12px rgba(186,104,200,0.4);
 }
 
+/* Container Tab */
 #qcLem { display:flex; flex-direction:column; max-height:none; }
 #qcLem .tabs { position:sticky; top:0; z-index:50; background:#fff; padding:6px 0; }
-#inputLem, #hasilLem { overflow-y:auto; max-height:calc(80vh - 120px); padding-right:4px; }
+#inputLem, #hasilLem { overflow-y:auto; max-height:none; padding-right:4px; }
 
-.baproFilter { position:sticky; top:0; z-index:1000; background:#fff; padding:6px; margin-bottom:8px; border:1px solid #ccc; }
-.baproGridScroll { max-height:calc(80vh - 180px); overflow-y:auto; padding-right:4px; }
-
-#gridLem .grid-card { position:relative; z-index:1 !important; }
-#gridLem .grid-card * { z-index:1 !important; }
-
+/* Row Keterangan */
 .rowKet { display:flex; gap:6px; align-items:center; margin-bottom:6px; }
 .rowKet input { flex:1; padding:4px 8px; }
 .rowKet span { width:20px; text-align:right; font-weight:bold; }
 
+/* BS Inputs */
 #lemJenisBS { background-color:#ff6f91; border:1px solid #ff3366; border-radius:4px; padding:6px 8px; width:100%; box-sizing:border-box; font-size:14px; }
 #lemJenisBS::placeholder { color:#660022; opacity:1; }
 
@@ -2533,9 +2610,51 @@ finishingNoKS.addEventListener('input', function(e) {
 
 #inputLem .form-group label { display:block; font-weight:600; margin-bottom:4px; font-size:0.9rem; color:#333; }
 
+/* Spinner */
 .spinner { width:18px; height:18px; border:3px solid #ddd; border-top:3px solid #9C27B0; border-radius:50%; display:inline-block; vertical-align:middle; animation:spin 0.8s linear infinite; margin-right:6px; }
 @keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+
+/* ======================== HASIL LEM FINAL ======================== */
+/* Filter sticky */
+#hasilLem .baproFilter {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #fff;
+  padding: 6px;
+  margin-bottom: 6px;
+  border: 1px solid #ccc;
+}
+/* Scrollable container */
+#hasilLem .baproGridScroll {
+  max-height: calc(80vh - 60px);
+  overflow-y: auto;
+  padding: 0 2px;
+}
+/* Grid container */
+#hasilLem .grid-container {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+/* Responsif */
+@media (max-width: 768px) {
+  /* Full-width grid di HP */
+  #hasilLem .baproGridScroll { padding: 0; }
+  #hasilLem .grid-container { grid-template-columns: 1fr !important; gap:4px; width:100%; }
+}
+@media (min-width: 769px) and (max-width: 1023px) {
+  #hasilLem .grid-container { grid-template-columns: repeat(2, minmax(0, 1fr)); gap:8px; }
+}
+@media (min-width: 1024px) {
+  #hasilLem .grid-container { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:10px; }
+}
+/* Grid card full-width */
+#hasilLem .grid-card { width:100%; box-sizing:border-box; }
 </style>
+
 
 
 
