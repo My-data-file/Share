@@ -2004,16 +2004,16 @@ body {
   <!-- Hasil -->
   <div id="hasilPA" class="tab-content">
     <input type="text" placeholder="🔍 Pencarian" oninput="renderGridPA(this.value)" class="baproFilter">
-    <div class="baproGridScrollWrapper">
-      <div class="baproGridScroll">
-        <div id="gridPA" class="grid-container"></div>
-      </div>
+    <div class="baproGridScroll">
+      <div id="gridPA" class="grid-container"></div>
     </div>
   </div>
 
 </section>
 
+
 <style>
+/* ---------------- TAB ---------------- */
 .tab-btn.cetak {
   flex: 1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer;
   border:1px solid #000; background:#e0e0e0 !important; color:#000 !important;
@@ -2029,13 +2029,13 @@ body {
 }
 .tab-btn.cetak:focus { outline:none; box-shadow:none; }
 
+/* ---------------- FORM ---------------- */
 #inputPA .form-group input,
 #inputPA .form-group select,
 #inputPA .form-group textarea {
   width:100%; padding:0.6rem; border:1px solid #ccc;
   border-radius:8px; font-size:0.95rem; box-sizing:border-box;
 }
-
 .pa-add-btn {
   width:100%; padding:0.6rem; background:linear-gradient(135deg,#FF9800,#FFB74D);
   color:#fff; font-weight:600; border:1px solid #000; border-radius:8px;
@@ -2047,34 +2047,61 @@ body {
   transform: translateY(-2px); box-shadow:0 6px 12px rgba(255,183,77,0.4);
 }
 
+/* ---------------- QC PA ---------------- */
 #qcPA { display:flex; flex-direction:column; max-height:none; }
 #qcPA .tabs { position:sticky; top:0; z-index:50; background:#fff; padding:6px 0; }
-#inputPA, #hasilPA { overflow-y:auto; max-height:calc(80vh - 120px); padding-right:4px; }
-.baproFilter { position:sticky; top:0; z-index:1000; background:#fff; padding:6px; margin-bottom:8px; border:1px solid #ccc; }
 
-/* Wrapper untuk flex scrollable */
-.baproGridScrollWrapper {
-  display:flex;
-  flex-direction:column;
-  height:100%;
-}
-.baproGridScroll {
-  flex:1;
+/* Tab content */
+#inputPA, #hasilPA {
+  display:none; /* default hide */
   overflow-y:auto;
+  max-height:calc(80vh - 120px);
   padding-right:4px;
 }
 
+/* Active tab */
+#inputPA.active, #hasilPA.active { display:block; }
+
+/* Search input */
+.baproFilter {
+  position:sticky; top:0; z-index:1000; background:#fff; padding:6px;
+  margin-bottom:8px; border:1px solid #ccc;
+}
+
+/* Grid scroll */
+.baproGridScroll { max-height:calc(80vh - 180px); overflow-y:auto; padding-right:4px; }
+
+/* Grid card */
 #gridPA .grid-card { position:relative; z-index:1 !important; }
 #gridPA .grid-card * { z-index:1 !important; }
 
+/* Keterangan */
 .rowKet { display:flex; gap:6px; align-items:center; margin-bottom:6px; }
 .rowKet input { flex:1; padding:4px 8px; }
 .rowKet span { width:20px; text-align:right; font-weight:bold; }
 
-#inputPA .form-group label {
-  display:block; font-weight:600; margin-bottom:4px; font-size:0.9rem; color:#333;
+/* Label */
+#inputPA .form-group label { display:block; font-weight:600; margin-bottom:4px; font-size:0.9rem; color:#333; }
+
+/* ---------------- RESPONSIVE HP ---------------- */
+@media (max-width:768px){
+  #qcPA { flex-direction:column; }
+  #inputPA, #hasilPA { max-height:none; }
+  .baproGridScroll { max-height:60vh; }
 }
 </style>
+
+<script>
+// ---------------- SWITCH TAB ----------------
+function switchTab(el){
+  const tab = el.dataset.tab;
+  document.querySelectorAll('.tab-btn.cetak').forEach(btn => btn.classList.remove('active'));
+  el.classList.add('active');
+  
+  document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+  document.getElementById(tab).classList.add('active');
+}
+</script>
 
 
 
