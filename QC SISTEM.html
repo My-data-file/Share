@@ -121,16 +121,10 @@ select {
 /* ================= GRID GLOBAL ================= */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 kolom horizontal */
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 14px;
   padding: 4px;
   width: 100%;
-}
-
-@media (max-width: 768px) {
-  .grid-container {
-    grid-template-columns: 1fr; /* responsive: 1 kolom */
-  }
 }
 
 /* Card kaca ultra-transparan seperti speech panel */
@@ -140,8 +134,10 @@ select {
   border-radius: 22px;                     /* lebih bulat seperti bubble */
   padding: 14px 20px;                      /* mirip padding speech panel */
   
+  /* Border ringan & semi-transparent */
   border: 1px solid rgba(0, 207, 255, 0.4);
 
+  /* efek glass/acrylic lembut */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 
@@ -173,17 +169,17 @@ select {
 .grid-container > div:hover,
 .grid-card:hover {
   transform: translateY(-2px);
-  background: rgba(0, 207, 255, 0.25);
+  background: rgba(0, 207, 255, 0.25);   /* sedikit lebih terlihat */
   box-shadow:
-    0 10px 22px rgba(0, 0, 0, .28),
-    0 0 18px rgba(0, 207, 255, .35);
+    0 10px 22px rgba(0, 0, 0, .28),      /* glow gelap */
+    0 0 18px rgba(0, 207, 255, .35);     /* glow cyan lembut */
 }
 
 /* Input kaca */
 .grid-card input {
   padding: .55rem .75rem;
-  border: 1px solid rgba(0, 0, 0, 0.45);
-  background: rgba(0, 207, 255, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.45); /* outline hitam */
+  background: rgba(0, 207, 255, 0.12);   /* semi-transparent biru acuan */
   border-radius: 10px;
   width: 100%;
   font-size: 14px;
@@ -194,13 +190,15 @@ select {
 
 /* Fokus efek glow cyan + hitam */
 .grid-card input:focus {
-  background: rgba(0, 207, 255, 0.20);
+  background: rgba(0, 207, 255, 0.20);   /* semi-transparent lebih terang */
   border-color: rgba(0, 0, 0, 0.7);
   box-shadow: 
     0 0 0 2px rgba(0, 207, 255, 0.4),
     0 0 8px rgba(0, 207, 255, 0.35);
   outline: none;
 }
+
+
 
 /* ========================== CARD STYLE ========================== */
 .grid-card {
@@ -234,18 +232,18 @@ select {
 .ket-list {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 4px;           /* Jarak antar baris nomor */
   margin-top: 4px;
 }
 
 .ket-list div {
-  padding: 3px 6px;
+  padding: 3px 6px;   /* Ruang dalam per baris */
   border-radius: 4px;
-  background: #f8f8f8;
-  border-left: 3px solid #00bcd4;
+  background: #f8f8f8;      /* Warna latar lembut */
+  border-left: 3px solid #00bcd4;  /* Garis kiri kecil sebagai indikator */
   font-size: 0.9rem;
   line-height: 1.3rem;
-  min-height: 20px;
+  min-height: 20px;   /* Agar baris yg kosong tetap rapi */
   display: flex;
   align-items: center;
 }
@@ -313,7 +311,7 @@ select {
 
 /* ========================== TOMBOL SIMPAN ========================== */
 .btn-save {
-  background: #28c76f;
+  background: #28c76f;      /* hijau */
   color: #ffffff;
   border: none;
   padding: 8px 14px;
@@ -331,7 +329,7 @@ select {
 
 /* ========================== TOMBOL BATAL ========================== */
 .btn-cancel {
-  background: #ff4d4d;
+  background: #ff4d4d;      /* merah */
   color: #ffffff;
   border: none;
   padding: 8px 14px;
@@ -346,6 +344,8 @@ select {
   background: #d63c3c;
   transform: scale(1.06);
 }
+
+
 
 /* ======================= DETAIL GLOBAL ======================= */
 .modal-fin {
@@ -426,11 +426,12 @@ select {
 /* ======================== Edit Inline ======================== */
 .edit-grid {
   display: flex;
-  flex-direction: column;
+  flex-direction: column;   /* 1 kolom semua */
   gap: 10px;
   width: 100%;
 }
 
+/* Input & Select full width */
 .edit-grid input,
 .edit-grid select {
   width: 100%;
@@ -440,9 +441,10 @@ select {
   font-size: 15px;
 }
 
+/* Textarea lebih besar */
 .edit-grid textarea {
   width: 100%;
-  min-height: 110px;
+  min-height: 110px;        /* dibuat jauh lebih besar */
   border: 1px solid #bbb;
   border-radius: 6px;
   padding: 10px;
@@ -450,10 +452,13 @@ select {
   resize: vertical;
 }
 
+/* Extra: Jarak antar label biar rapi */
 .edit-grid label {
   font-weight: 600;
   margin-bottom: 3px;
 }
+
+
 
 /* ======================== Status ======================== */
 .status-pending {
@@ -480,6 +485,10 @@ select {
 }
 
 .form-group { margin-bottom: 10px; }
+
+
+
+  
 </style>
 
 </head>
@@ -512,7 +521,7 @@ select {
     </button>
 
     <div id="headerTitle" style="font-size: 0.9rem; color: #e0f7fa;">
-      System @
+      System
     </div>
   </div>
 
