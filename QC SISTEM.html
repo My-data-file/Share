@@ -127,28 +127,21 @@ select {
   width: 100%;
 }
 
-/* Card kaca ultra-transparan seperti speech panel */
-.grid-container > div,
-.grid-card {
-  background: rgba(0, 207, 255, 0.15);    /* semi-transparent biru acuan */
-  border-radius: 22px;                     /* lebih bulat seperti bubble */
-  padding: 14px 20px;                      /* mirip padding speech panel */
-  
-  /* Border ringan & semi-transparent */
+/* ========================== GRID KACA / GLASS ========================== */
+.grid-container > div {
+  background: rgba(0, 207, 255, 0.15);
+  border-radius: 22px;
+  padding: 14px 20px;
   border: 1px solid rgba(0, 207, 255, 0.4);
-
-  /* efek glass/acrylic lembut */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-
   color: #002933;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, .25);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
   transition: all 0.35s ease;
   position: relative;
 }
 
-/* Efek highlight kaca */
-.grid-card::before,
+/* Highlight di atas kaca */
 .grid-container > div::before {
   content: "";
   position: absolute;
@@ -157,50 +150,20 @@ select {
   width: 100%;
   height: 40%;
   border-radius: 22px 22px 0 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.25),
-    rgba(255, 255, 255, 0)
-  );
+  background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
   pointer-events: none;
 }
 
-/* Efek Hover (Glow Cyan + Gelap) */
-.grid-container > div:hover,
-.grid-card:hover {
+/* Hover glow cyan */
+.grid-container > div:hover {
   transform: translateY(-2px);
-  background: rgba(0, 207, 255, 0.25);   /* sedikit lebih terlihat */
+  background: rgba(0, 207, 255, 0.25);
   box-shadow:
-    0 10px 22px rgba(0, 0, 0, .28),      /* glow gelap */
-    0 0 18px rgba(0, 207, 255, .35);     /* glow cyan lembut */
+    0 10px 22px rgba(0,0,0,0.28),
+    0 0 18px rgba(0,207,255,0.35);
 }
 
-/* Input kaca */
-.grid-card input {
-  padding: .55rem .75rem;
-  border: 1px solid rgba(0, 0, 0, 0.45); /* outline hitam */
-  background: rgba(0, 207, 255, 0.12);   /* semi-transparent biru acuan */
-  border-radius: 10px;
-  width: 100%;
-  font-size: 14px;
-  color: #003344;
-  backdrop-filter: blur(6px);
-  transition: 0.2s ease;
-}
-
-/* Fokus efek glow cyan + hitam */
-.grid-card input:focus {
-  background: rgba(0, 207, 255, 0.20);   /* semi-transparent lebih terang */
-  border-color: rgba(0, 0, 0, 0.7);
-  box-shadow: 
-    0 0 0 2px rgba(0, 207, 255, 0.4),
-    0 0 8px rgba(0, 207, 255, 0.35);
-  outline: none;
-}
-
-
-
-/* ========================== CARD STYLE ========================== */
+/* ========================== GRID CARD PUTIH ========================== */
 .grid-card {
   background: #ffffff;
   border-radius: 12px;
@@ -210,6 +173,7 @@ select {
   transition: transform .2s ease, box-shadow .2s ease;
   font-size: 14px;
   line-height: 1.35;
+  position: relative;
 }
 
 .grid-card:hover {
@@ -217,33 +181,55 @@ select {
   box-shadow: 0 5px 14px rgba(0,0,0,0.22);
 }
 
+/* ========================== INPUT ========================== */
+.grid-card input,
+.grid-container > div input {
+  padding: .55rem .75rem;
+  border: 1px solid rgba(0,0,0,0.45);
+  background: rgba(0,207,255,0.12);
+  border-radius: 10px;
+  width: 100%;
+  font-size: 14px;
+  color: #003344;
+  backdrop-filter: blur(6px);
+  transition: 0.2s ease;
+}
+
+.grid-card input:focus,
+.grid-container > div input:focus {
+  background: rgba(0,207,255,0.20);
+  border-color: rgba(0,0,0,0.7);
+  box-shadow:
+    0 0 0 2px rgba(0,207,255,0.4),
+    0 0 8px rgba(0,207,255,0.35);
+  outline: none;
+}
+
 /* ========================== TEXT ========================== */
 .grid-card span,
-.grid-card strong {
+.grid-card strong,
+.grid-container > div span,
+.grid-container > div strong {
   display: block;
   margin-bottom: 2px;
 }
 
-/* ===========================
-   GLOBAL STYLE KETERANGAN 1–5
-   Berlaku untuk Bapro, Cetak, Finishing, Lem, PA, dll
-   =========================== */
-
+/* ========================== GLOBAL KETERANGAN ========================== */
 .ket-list {
   display: flex;
   flex-direction: column;
-  gap: 4px;           /* Jarak antar baris nomor */
+  gap: 4px;
   margin-top: 4px;
 }
 
 .ket-list div {
-  padding: 3px 6px;   /* Ruang dalam per baris */
+  padding: 3px 6px;
   border-radius: 4px;
-  background: #f8f8f8;      /* Warna latar lembut */
-  border-left: 3px solid #00bcd4;  /* Garis kiri kecil sebagai indikator */
+  background: #f8f8f8;
+  border-left: 3px solid #00bcd4;
   font-size: 0.9rem;
   line-height: 1.3rem;
-  min-height: 20px;   /* Agar baris yg kosong tetap rapi */
+  min-height: 20px;
   display: flex;
   align-items: center;
 }
@@ -278,6 +264,7 @@ select {
   display: inline-block;
   margin-top: 6px;
 }
+
 
 /* ========================== BUTTON AREA ========================== */
 .btn-icon {
@@ -521,7 +508,7 @@ select {
     </button>
 
     <div id="headerTitle" style="font-size: 0.9rem; color: #e0f7fa;">
-      System
+      System.
     </div>
   </div>
 
