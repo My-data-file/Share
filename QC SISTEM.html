@@ -118,20 +118,17 @@ select {
   transition: border .2s, box-shadow .2s;
 }
 
-/* ======================== GRID DASHBOARD & HASIL ======================== */
-.grid-container,
-.grid-hasil-container {
+/* ================= GRID DASHBOARD ================= */
+.grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 14px;
   padding: 4px;
   width: 100%;
-  overflow-x: hidden; /* hilangkan scroll horizontal */
 }
 
 .grid-container > div,
-.grid-card,
-.grid-hasil-container > div {
+.grid-card {
   background: rgba(0, 207, 255, 0.15);
   border-radius: 22px;
   padding: 14px 20px;
@@ -142,13 +139,10 @@ select {
   box-shadow: 0 8px 20px rgba(0, 0, 0, .25);
   transition: all 0.35s ease;
   position: relative;
-  word-wrap: break-word;
-  min-height: 100px;
 }
 
 .grid-card::before,
-.grid-container > div::before,
-.grid-hasil-container > div::before {
+.grid-container > div::before {
   content: "";
   position: absolute;
   top: 0;
@@ -161,8 +155,7 @@ select {
 }
 
 .grid-container > div:hover,
-.grid-card:hover,
-.grid-hasil-container > div:hover {
+.grid-card:hover {
   transform: translateY(-2px);
   background: rgba(0, 207, 255, 0.25);
   box-shadow: 0 10px 22px rgba(0, 0, 0, .28), 0 0 18px rgba(0, 207, 255, .35);
@@ -231,265 +224,116 @@ select {
 }
 
 /* ========================== STATUS COLOR ========================== */
-.status-proses {
-  background: #ffe08a;
-  color: #886300;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-weight: bold;
-  display: inline-block;
-  margin-top: 6px;
-}
-.status-selesai {
-  background: #b7ffbf;
-  color: #005b1a;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-weight: bold;
-  display: inline-block;
-  margin-top: 6px;
-}
-.status-to {
-  background: #ffb6b6;
-  color: #850000;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-weight: bold;
-  display: inline-block;
-  margin-top: 6px;
-}
+.status-proses { background: #ffe08a; color: #886300; padding: 4px 8px; border-radius: 6px; font-weight: bold; display: inline-block; margin-top: 6px; }
+.status-selesai { background: #b7ffbf; color: #005b1a; padding: 4px 8px; border-radius: 6px; font-weight: bold; display: inline-block; margin-top: 6px; }
+.status-to { background: #ffb6b6; color: #850000; padding: 4px 8px; border-radius: 6px; font-weight: bold; display: inline-block; margin-top: 6px; }
 
 /* ========================== BUTTON AREA ========================== */
-.btn-icon {
-  cursor: pointer;
-  border: none;
-  padding: 6px 10px;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: 0.2s;
-}
+.btn-icon { cursor: pointer; border: none; padding: 6px 10px; border-radius: 8px; font-size: 16px; transition: 0.2s; }
 .btn-call { background: #4aa3ff; color: white; }
 .btn-edit { background: #ffc93c; color: #4a3700; }
 .btn-delete { background: #ff4d4d; color: white; }
 
-.btn-icon:hover {
-  opacity: 0.75;
-  transform: scale(1.08);
-}
+.btn-icon:hover { opacity: 0.75; transform: scale(1.08); }
 
 /* ========================== TOMBOL SIMPAN ========================== */
-.btn-save {
-  background: #28c76f;
-  color: #ffffff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 14px;
-  transition: 0.2s ease;
-}
-.btn-save:hover {
-  background: #22ad61;
-  transform: scale(1.06);
-}
+.btn-save { background: #28c76f; color: #ffffff; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.2s ease; }
+.btn-save:hover { background: #22ad61; transform: scale(1.06); }
 
 /* ========================== TOMBOL BATAL ========================== */
-.btn-cancel {
-  background: #ff4d4d;
-  color: #ffffff;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 14px;
-  transition: 0.2s ease;
-}
-.btn-cancel:hover {
-  background: #d63c3c;
-  transform: scale(1.06);
-}
+.btn-cancel { background: #ff4d4d; color: #ffffff; border: none; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.2s ease; }
+.btn-cancel:hover { background: #d63c3c; transform: scale(1.06); }
 
 /* ======================= DETAIL GLOBAL ======================= */
-.modal-fin {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  backdrop-filter: blur(2px);
-  justify-content: center;
-  align-items: center;
-  z-index: 999999;
-}
-
-.modal-fin-content {
-  width: 92%;
-  max-width: 420px;
-  background: #fff;
-  border-radius: 14px;
-  padding: 0;
-  overflow: hidden;
-  animation: modalPop 0.25s ease;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-}
-
-@keyframes modalPop {
-  from { transform: scale(0.8); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
-}
-
-.modal-fin-header {
-  background: #3677FF;
-  color: white;
-  padding: 12px 18px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+.modal-fin { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); backdrop-filter: blur(2px); justify-content: center; align-items: center; z-index: 999999; }
+.modal-fin-content { width: 92%; max-width: 420px; background: #fff; border-radius: 14px; padding: 0; overflow: hidden; animation: modalPop 0.25s ease; box-shadow: 0 10px 25px rgba(0,0,0,0.25); }
+@keyframes modalPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-fin-header { background: #3677FF; color: white; padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; }
 .modal-fin-title { font-size: 17px; font-weight: bold; }
-.modal-fin-close {
-  background: transparent;
-  color: white;
-  border: none;
-  font-size: 22px;
-  cursor: pointer;
-}
-.modal-fin-body {
-  padding: 16px 20px;
-  font-size: 15px;
-  line-height: 1.42;
-}
+.modal-fin-close { background: transparent; color: white; border: none; font-size: 22px; cursor: pointer; }
+.modal-fin-body { padding: 16px 20px; font-size: 15px; line-height: 1.42; }
 .modal-fin-body strong { color: #0A3D62; }
-.modal-fin-footer {
-  padding: 12px 18px;
-  text-align: right;
-  background: #f5f5f5;
-}
-.modal-fin-btn {
-  background: #3677FF;
-  padding: 8px 16px;
-  border-radius: 8px;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-}
+.modal-fin-footer { padding: 12px 18px; text-align: right; background: #f5f5f5; }
+.modal-fin-btn { background: #3677FF; padding: 8px 16px; border-radius: 8px; color: white; border: none; cursor: pointer; font-size: 14px; }
 
 /* ======================== Edit Inline ======================== */
-.edit-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-}
-.edit-grid input,
-.edit-grid select {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #bbb;
-  border-radius: 6px;
-  font-size: 15px;
-}
-.edit-grid textarea {
-  width: 100%;
-  min-height: 110px;
-  border: 1px solid #bbb;
-  border-radius: 6px;
-  padding: 10px;
-  font-family: inherit;
-  resize: vertical;
-}
-.edit-grid label {
-  font-weight: 600;
-  margin-bottom: 3px;
-}
+.edit-grid { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+.edit-grid input, .edit-grid select { width: 100%; padding: 8px; border: 1px solid #bbb; border-radius: 6px; font-size: 15px; }
+.edit-grid textarea { width: 100%; min-height: 110px; border: 1px solid #bbb; border-radius: 6px; padding: 10px; font-family: inherit; resize: vertical; }
+.edit-grid label { font-weight: 600; margin-bottom: 3px; }
 
 /* ======================== Status ======================== */
-.status-pending {
-  background: #fee2e2;
-  color: #b91c1c;
-  font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 6px;
-  display: inline-block;
-}
-.status-proses {
-  background: var(--warning);
-  color: #111;
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-weight: 600;
-}
-.status-selesai {
-  background: var(--success);
-  color: #fff;
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-weight: 600;
-}
+.status-pending { background: #fee2e2; color: #b91c1c; font-weight: 600; padding: 2px 6px; border-radius: 6px; display: inline-block; }
+.status-proses { background: var(--warning); color: #111; padding: 2px 6px; border-radius: 6px; font-weight: 600; }
+.status-selesai { background: var(--success); color: #fff; padding: 2px 6px; border-radius: 6px; font-weight: 600; }
 
 .form-group { margin-bottom: 10px; }
 
-/* ============================================================
-   ===================== RESPONSIVE SECTION =====================
-   ============================================================ */
-
-/* ======== LAPTOP KECIL (769px – 1200px) ======== */
-@media (max-width: 1200px) {
-  .grid-container,
-  .grid-hasil-container {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  }
+/* ======================== GRID HASIL ======================== */
+.grid-hasil-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  padding: 4px;
+  width: 100%;
 }
 
-/* ======== TABLET (481px – 768px) ======== */
+.grid-hasil-container > div {
+  background: rgba(0, 207, 255, 0.15);
+  border-radius: 22px;
+  padding: 14px 20px;
+  border: 1px solid rgba(0, 207, 255, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #002933;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .25);
+  transition: all 0.35s ease;
+  position: relative;
+  word-wrap: break-word;
+  min-height: 100px;
+}
+
+.grid-hasil-container > div::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 40%;
+  border-radius: 22px 22px 0 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+
+.grid-hasil-container > div:hover {
+  transform: translateY(-2px);
+  background: rgba(0, 207, 255, 0.25);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, .28), 0 0 18px rgba(0, 207, 255, .35);
+}
+
+/* ======================== RESPONSIVE GRID ======================== */
+@media (max-width: 1200px) { .grid-container { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); } }
 @media (max-width: 768px) {
   main { padding: 1rem; grid-template-columns: 1fr; }
-  .grid-container,
-  .grid-hasil-container {
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-    gap: 14px;
-  }
+  .grid-container { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; }
   .grid-card { font-size: 14px; }
+  .grid-hasil-container { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
 }
-
-/* ======== HP KECIL (≤ 480px) ======== */
+@media (max-width: 600px) {
+  .grid-container, .grid-hasil-container { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+  .grid-card { padding: 12px !important; border-radius: 14px !important; font-size: 13px !important; }
+  .grid-card input { font-size: 13px !important; padding: 0.45rem 0.6rem !important; }
+}
 @media (max-width: 480px) {
   main { padding: 0.8rem; display: block; }
   header { padding: 0.8rem 1rem; font-size: 1.1rem; }
   #headerTitle { font-size: 1rem; }
   #headerTime { font-size: 0.62rem; }
   .tabs button { font-size: 0.75rem; padding: 0.45rem; }
-  .grid-container,
-  .grid-hasil-container {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 10px;
-  }
-  .grid-card {
-    padding: 12px;
-    font-size: 13px;
-  }
+  .grid-container { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .grid-card { padding: 12px; font-size: 13px; }
   .grid-card input { font-size: 13px; padding: 0.45rem 0.6rem; }
   .modal-fin-content { width: 95%; max-width: 360px; }
-}
-
-/* ======== GRID 2 KOLOM DI HP (≤ 600px) ======== */
-@media (max-width: 600px) {
-  .grid-container,
-  .grid-hasil-container {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 10px !important;
-  }
-  .grid-card {
-    padding: 12px !important;
-    border-radius: 14px !important;
-    font-size: 13px !important;
-  }
-  .grid-card input {
-    font-size: 13px !important;
-    padding: 0.45rem 0.6rem !important;
-  }
 }
 
 
@@ -528,7 +372,7 @@ select {
     </button>
 
     <div id="headerTitle" style="font-size: 0.9rem; color: #e0f7fa;">
-      System 1.0
+      System
     </div>
   </div>
 
