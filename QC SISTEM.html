@@ -121,7 +121,7 @@ select {
 /* ================= GRID GLOBAL ================= */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 kolom ringkas */
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 14px;
   padding: 4px;
   width: 100%;
@@ -145,7 +145,6 @@ select {
   box-shadow: 0 8px 20px rgba(0, 0, 0, .25);
   transition: all 0.35s ease;
   position: relative;
-  height: auto; /* tinggi fleksibel sesuai konten */
 }
 
 /* Efek highlight kaca */
@@ -173,7 +172,7 @@ select {
   background: rgba(0, 207, 255, 0.25);   /* sedikit lebih terlihat */
   box-shadow:
     0 10px 22px rgba(0, 0, 0, .28),      /* glow gelap */
-    0 0 18px rgba(0, 207, 255, 0.35);     /* glow cyan lembut */
+    0 0 18px rgba(0, 207, 255, .35);     /* glow cyan lembut */
 }
 
 /* Input kaca */
@@ -223,26 +222,22 @@ select {
   margin-bottom: 2px;
 }
 
-/* ===========================
-   GLOBAL STYLE KETERANGAN 1–5
-   Berlaku untuk Bapro, Cetak, Finishing, Lem, PA, dll
-   =========================== */
-
+/* ========================= KETERANGAN ========================= */
 .ket-list {
   display: flex;
   flex-direction: column;
-  gap: 4px;           /* Jarak antar baris nomor */
+  gap: 4px;
   margin-top: 4px;
 }
 
 .ket-list div {
-  padding: 3px 6px;   /* Ruang dalam per baris */
+  padding: 3px 6px;
   border-radius: 4px;
-  background: #f8f8f8;      /* Warna latar lembut */
-  border-left: 3px solid #00bcd4;  /* Garis kiri kecil sebagai indikator */
+  background: #f8f8f8;
+  border-left: 3px solid #00bcd4;
   font-size: 0.9rem;
   line-height: 1.3rem;
-  min-height: 20px;   /* Agar baris yg kosong tetap rapi */
+  min-height: 20px;
   display: flex;
   align-items: center;
 }
@@ -310,7 +305,7 @@ select {
 
 /* ========================== TOMBOL SIMPAN ========================== */
 .btn-save {
-  background: #28c76f;      /* hijau */
+  background: #28c76f;
   color: #ffffff;
   border: none;
   padding: 8px 14px;
@@ -328,7 +323,7 @@ select {
 
 /* ========================== TOMBOL BATAL ========================== */
 .btn-cancel {
-  background: #ff4d4d;      /* merah */
+  background: #ff4d4d;
   color: #ffffff;
   border: none;
   padding: 8px 14px;
@@ -423,12 +418,11 @@ select {
 /* ======================== Edit Inline ======================== */
 .edit-grid {
   display: flex;
-  flex-direction: column;   /* 1 kolom semua */
+  flex-direction: column;
   gap: 10px;
   width: 100%;
 }
 
-/* Input & Select full width */
 .edit-grid input,
 .edit-grid select {
   width: 100%;
@@ -438,10 +432,9 @@ select {
   font-size: 15px;
 }
 
-/* Textarea lebih besar */
 .edit-grid textarea {
   width: 100%;
-  min-height: 110px;        /* dibuat jauh lebih besar */
+  min-height: 110px;
   border: 1px solid #bbb;
   border-radius: 6px;
   padding: 10px;
@@ -449,7 +442,6 @@ select {
   resize: vertical;
 }
 
-/* Extra: Jarak antar label biar rapi */
 .edit-grid label {
   font-weight: 600;
   margin-bottom: 3px;
@@ -481,6 +473,19 @@ select {
 
 .form-group { margin-bottom: 10px; }
 
+/* ======================= GRID CARD 2 KOLOM FIX ======================= */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 kolom tetap ringkas */
+  gap: 14px;
+  padding: 4px;
+  width: 100%;
+}
+
+.grid-container > div,
+.grid-card {
+  height: auto; /* tinggi fleksibel sesuai konten, tidak terpotong */
+}
 </style>
 
 
@@ -514,7 +519,7 @@ select {
     </button>
 
     <div id="headerTitle" style="font-size: 0.9rem; color: #e0f7fa;">
-      System
+      System@
     </div>
   </div>
 
