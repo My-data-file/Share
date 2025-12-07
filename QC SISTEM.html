@@ -118,31 +118,27 @@ select {
   transition: border .2s, box-shadow .2s;
 }
 
-/* ================= GRID GLOBAL ================= */
+/* ================== GRID GLOBAL UNIVERSAL ================== */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 2 kolom desktop, auto-fit */
   gap: 14px;
-  padding: 4px;
+  padding: 10px;
   width: 100%;
+  box-sizing: border-box;
 }
 
-/* Card kaca ultra-transparan seperti speech panel */
+/* Card kaca ultra-transparan */
 .grid-container > div,
 .grid-card {
-  background: rgba(0, 207, 255, 0.15);    /* semi-transparent biru acuan */
-  border-radius: 22px;                     /* lebih bulat seperti bubble */
-  padding: 14px 20px;                      /* mirip padding speech panel */
-  
-  /* Border ringan & semi-transparent */
+  background: rgba(0, 207, 255, 0.15);
+  border-radius: 22px;
+  padding: 14px 20px;
   border: 1px solid rgba(0, 207, 255, 0.4);
-
-  /* efek glass/acrylic lembut */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-
   color: #002933;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, .25);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
   transition: all 0.35s ease;
   position: relative;
 }
@@ -165,21 +161,19 @@ select {
   pointer-events: none;
 }
 
-/* Efek Hover (Glow Cyan + Gelap) */
+/* Hover effect */
 .grid-container > div:hover,
 .grid-card:hover {
   transform: translateY(-2px);
-  background: rgba(0, 207, 255, 0.25);   /* sedikit lebih terlihat */
-  box-shadow:
-    0 10px 22px rgba(0, 0, 0, .28),      /* glow gelap */
-    0 0 18px rgba(0, 207, 255, .35);     /* glow cyan lembut */
+  background: rgba(0, 207, 255, 0.25);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.28), 0 0 18px rgba(0,207,255,0.35);
 }
 
 /* Input kaca */
 .grid-card input {
   padding: .55rem .75rem;
-  border: 1px solid rgba(0, 0, 0, 0.45); /* outline hitam */
-  background: rgba(0, 207, 255, 0.12);   /* semi-transparent biru acuan */
+  border: 1px solid rgba(0,0,0,0.45);
+  background: rgba(0,207,255,0.12);
   border-radius: 10px;
   width: 100%;
   font-size: 14px;
@@ -188,19 +182,15 @@ select {
   transition: 0.2s ease;
 }
 
-/* Fokus efek glow cyan + hitam */
+/* Fokus input */
 .grid-card input:focus {
-  background: rgba(0, 207, 255, 0.20);   /* semi-transparent lebih terang */
-  border-color: rgba(0, 0, 0, 0.7);
-  box-shadow: 
-    0 0 0 2px rgba(0, 207, 255, 0.4),
-    0 0 8px rgba(0, 207, 255, 0.35);
+  background: rgba(0,207,255,0.20);
+  border-color: rgba(0,0,0,0.7);
+  box-shadow: 0 0 0 2px rgba(0,207,255,0.4), 0 0 8px rgba(0,207,255,0.35);
   outline: none;
 }
 
-
-
-/* ========================== CARD STYLE ========================== */
+/* ================== CARD STYLE ================== */
 .grid-card {
   background: #ffffff;
   border-radius: 12px;
@@ -216,6 +206,20 @@ select {
   transform: translateY(-3px);
   box-shadow: 0 5px 14px rgba(0,0,0,0.22);
 }
+
+/* ================== RESPONSIVE ================== */
+@media (max-width: 1024px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* tablet 1-2 kolom */
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-container {
+    grid-template-columns: 1fr; /* HP 1 kolom */
+  }
+}
+
 
 /* ========================== TEXT ========================== */
 .grid-card span,
@@ -521,7 +525,7 @@ select {
     </button>
 
     <div id="headerTitle" style="font-size: 0.9rem; color: #e0f7fa;">
-      System
+      System v
     </div>
   </div>
 
