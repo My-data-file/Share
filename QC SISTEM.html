@@ -30,7 +30,7 @@ body {
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
-  padding-bottom: 64px; /* beri ruang agar tidak tertutup footer */
+  padding-bottom: 64px;
 }
 
 /* ======================== Header ======================== */
@@ -127,27 +127,20 @@ select {
   width: 100%;
 }
 
-/* Card kaca ultra-transparan seperti speech panel */
 .grid-container > div,
 .grid-card {
-  background: rgba(0, 207, 255, 0.15);    /* semi-transparent biru acuan */
-  border-radius: 22px;                     /* lebih bulat seperti bubble */
-  padding: 14px 20px;                      /* mirip padding speech panel */
-  
-  /* Border ringan & semi-transparent */
+  background: rgba(0, 207, 255, 0.15);
+  border-radius: 22px;
+  padding: 14px 20px;
   border: 1px solid rgba(0, 207, 255, 0.4);
-
-  /* efek glass/acrylic lembut */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-
   color: #002933;
   box-shadow: 0 8px 20px rgba(0, 0, 0, .25);
   transition: all 0.35s ease;
   position: relative;
 }
 
-/* Efek highlight kaca */
 .grid-card::before,
 .grid-container > div::before {
   content: "";
@@ -157,29 +150,21 @@ select {
   width: 100%;
   height: 40%;
   border-radius: 22px 22px 0 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.25),
-    rgba(255, 255, 255, 0)
-  );
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0));
   pointer-events: none;
 }
 
-/* Efek Hover (Glow Cyan + Gelap) */
 .grid-container > div:hover,
 .grid-card:hover {
   transform: translateY(-2px);
-  background: rgba(0, 207, 255, 0.25);   /* sedikit lebih terlihat */
-  box-shadow:
-    0 10px 22px rgba(0, 0, 0, .28),      /* glow gelap */
-    0 0 18px rgba(0, 207, 255, .35);     /* glow cyan lembut */
+  background: rgba(0, 207, 255, 0.25);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, .28), 0 0 18px rgba(0, 207, 255, .35);
 }
 
-/* Input kaca */
 .grid-card input {
   padding: .55rem .75rem;
-  border: 1px solid rgba(0, 0, 0, 0.45); /* outline hitam */
-  background: rgba(0, 207, 255, 0.12);   /* semi-transparent biru acuan */
+  border: 1px solid rgba(0, 0, 0, 0.45);
+  background: rgba(0, 207, 255, 0.12);
   border-radius: 10px;
   width: 100%;
   font-size: 14px;
@@ -188,17 +173,12 @@ select {
   transition: 0.2s ease;
 }
 
-/* Fokus efek glow cyan + hitam */
 .grid-card input:focus {
-  background: rgba(0, 207, 255, 0.20);   /* semi-transparent lebih terang */
+  background: rgba(0, 207, 255, 0.20);
   border-color: rgba(0, 0, 0, 0.7);
-  box-shadow: 
-    0 0 0 2px rgba(0, 207, 255, 0.4),
-    0 0 8px rgba(0, 207, 255, 0.35);
+  box-shadow: 0 0 0 2px rgba(0, 207, 255, 0.4), 0 0 8px rgba(0, 207, 255, 0.35);
   outline: none;
 }
-
-
 
 /* ========================== CARD STYLE ========================== */
 .grid-card {
@@ -224,26 +204,21 @@ select {
   margin-bottom: 2px;
 }
 
-/* ===========================
-   GLOBAL STYLE KETERANGAN 1–5
-   Berlaku untuk Bapro, Cetak, Finishing, Lem, PA, dll
-   =========================== */
-
+/* =========================== LIST KETERANGAN =========================== */
 .ket-list {
   display: flex;
   flex-direction: column;
-  gap: 4px;           /* Jarak antar baris nomor */
+  gap: 4px;
   margin-top: 4px;
 }
-
 .ket-list div {
-  padding: 3px 6px;   /* Ruang dalam per baris */
+  padding: 3px 6px;
   border-radius: 4px;
-  background: #f8f8f8;      /* Warna latar lembut */
-  border-left: 3px solid #00bcd4;  /* Garis kiri kecil sebagai indikator */
+  background: #f8f8f8;
+  border-left: 3px solid #00bcd4;
   font-size: 0.9rem;
   line-height: 1.3rem;
-  min-height: 20px;   /* Agar baris yg kosong tetap rapi */
+  min-height: 20px;
   display: flex;
   align-items: center;
 }
@@ -257,8 +232,8 @@ select {
   font-weight: bold;
   display: inline-block;
   margin-top: 6px;
+  text-align: center;
 }
-
 .status-selesai {
   background: #b7ffbf;
   color: #005b1a;
@@ -267,8 +242,8 @@ select {
   font-weight: bold;
   display: inline-block;
   margin-top: 6px;
+  text-align: center;
 }
-
 .status-to {
   background: #ffb6b6;
   color: #850000;
@@ -277,7 +252,9 @@ select {
   font-weight: bold;
   display: inline-block;
   margin-top: 6px;
+  text-align: center;
 }
+
 
 /* ========================== BUTTON AREA ========================== */
 .btn-icon {
@@ -288,21 +265,9 @@ select {
   font-size: 16px;
   transition: 0.2s;
 }
-
-.btn-call {
-  background: #4aa3ff;
-  color: white;
-}
-
-.btn-edit {
-  background: #ffc93c;
-  color: #4a3700;
-}
-
-.btn-delete {
-  background: #ff4d4d;
-  color: white;
-}
+.btn-call { background: #4aa3ff; color: white; }
+.btn-edit { background: #ffc93c; color: #4a3700; }
+.btn-delete { background: #ff4d4d; color: white; }
 
 .btn-icon:hover {
   opacity: 0.75;
@@ -311,7 +276,7 @@ select {
 
 /* ========================== TOMBOL SIMPAN ========================== */
 .btn-save {
-  background: #28c76f;      /* hijau */
+  background: #28c76f;
   color: #ffffff;
   border: none;
   padding: 8px 14px;
@@ -321,7 +286,6 @@ select {
   font-size: 14px;
   transition: 0.2s ease;
 }
-
 .btn-save:hover {
   background: #22ad61;
   transform: scale(1.06);
@@ -329,7 +293,7 @@ select {
 
 /* ========================== TOMBOL BATAL ========================== */
 .btn-cancel {
-  background: #ff4d4d;      /* merah */
+  background: #ff4d4d;
   color: #ffffff;
   border: none;
   padding: 8px 14px;
@@ -339,13 +303,10 @@ select {
   font-size: 14px;
   transition: 0.2s ease;
 }
-
 .btn-cancel:hover {
   background: #d63c3c;
   transform: scale(1.06);
 }
-
-
 
 /* ======================= DETAIL GLOBAL ======================= */
 .modal-fin {
@@ -383,12 +344,7 @@ select {
   justify-content: space-between;
   align-items: center;
 }
-
-.modal-fin-title {
-  font-size: 17px;
-  font-weight: bold;
-}
-
+.modal-fin-title { font-size: 17px; font-weight: bold; }
 .modal-fin-close {
   background: transparent;
   color: white;
@@ -396,23 +352,17 @@ select {
   font-size: 22px;
   cursor: pointer;
 }
-
 .modal-fin-body {
   padding: 16px 20px;
   font-size: 15px;
   line-height: 1.42;
 }
-
-.modal-fin-body strong {
-  color: #0A3D62;
-}
-
+.modal-fin-body strong { color: #0A3D62; }
 .modal-fin-footer {
   padding: 12px 18px;
   text-align: right;
   background: #f5f5f5;
 }
-
 .modal-fin-btn {
   background: #3677FF;
   padding: 8px 16px;
@@ -426,12 +376,10 @@ select {
 /* ======================== Edit Inline ======================== */
 .edit-grid {
   display: flex;
-  flex-direction: column;   /* 1 kolom semua */
+  flex-direction: column;
   gap: 10px;
   width: 100%;
 }
-
-/* Input & Select full width */
 .edit-grid input,
 .edit-grid select {
   width: 100%;
@@ -440,25 +388,19 @@ select {
   border-radius: 6px;
   font-size: 15px;
 }
-
-/* Textarea lebih besar */
 .edit-grid textarea {
   width: 100%;
-  min-height: 110px;        /* dibuat jauh lebih besar */
+  min-height: 110px;
   border: 1px solid #bbb;
   border-radius: 6px;
   padding: 10px;
   font-family: inherit;
   resize: vertical;
 }
-
-/* Extra: Jarak antar label biar rapi */
 .edit-grid label {
   font-weight: 600;
   margin-bottom: 3px;
 }
-
-
 
 /* ======================== Status ======================== */
 .status-pending {
@@ -485,6 +427,57 @@ select {
 }
 
 .form-group { margin-bottom: 10px; }
+
+/* ============================================================
+   ===================== RESPONSIVE SECTION =====================
+   ============================================================ */
+
+/* ======== LAPTOP KECIL (769px – 1200px) ======== */
+@media (max-width: 1200px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+/* ======== TABLET (481px – 768px) ======== */
+@media (max-width: 768px) {
+  main { padding: 1rem; grid-template-columns: 1fr; }
+  .grid-container { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
+  .grid-card { font-size: 14px; }
+}
+
+/* ======== HP KECIL (≤ 480px) ======== */
+@media (max-width: 480px) {
+  main { padding: 0.8rem; display: block; }
+  header { padding: 0.8rem 1rem; font-size: 1.1rem; }
+  #headerTitle { font-size: 1rem; }
+  #headerTime { font-size: 0.62rem; }
+  .tabs button { font-size: 0.75rem; padding: 0.45rem; }
+  .grid-container { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .grid-card { padding: 12px; font-size: 13px; }
+  .grid-card input { font-size: 13px; padding: 0.45rem 0.6rem; }
+  .modal-fin-content { width: 95%; max-width: 360px; }
+}
+
+/* ======== GRID 2 KOLOM DI HP (≤ 600px) ======== */
+@media (max-width: 600px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .grid-card {
+    padding: 12px !important;
+    border-radius: 14px !important;
+    font-size: 13px !important;
+  }
+
+  .grid-card input {
+    font-size: 13px !important;
+    padding: 0.45rem 0.6rem !important;
+  }
+}
+
 
 
 
