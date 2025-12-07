@@ -1133,6 +1133,20 @@ body {
   </div>
 </div>
 
+<!-- Modal Detail -->
+<div id="detailCetakModal" class="modal-fin">
+  <div class="modal-fin-content">
+    <div class="modal-fin-header">
+      <span class="modal-fin-title">Detail QC Cetak</span>
+      <button class="modal-fin-close" onclick="closeDetailModalCetak()">×</button>
+    </div>
+    <div class="modal-fin-body" id="detailCetakBody"></div>
+    <div class="modal-fin-footer">
+      <button class="modal-fin-btn" onclick="closeDetailModalCetak()">Tutup</button>
+    </div>
+  </div>
+</div>
+
 <style>
 .filter-input {
   width: 100%;
@@ -1368,6 +1382,24 @@ body {
   </div>
 </div>
 
+<!-- ======================= MODAL DETAIL FINISHING ======================= -->
+<div id="detailFinishingModal" class="modal-fin">
+  <div class="modal-fin-content">
+    <div class="modal-fin-header">
+      <span class="modal-fin-title">Detail QC Finishing</span>
+      <button class="modal-fin-close" onclick="closeDetailModal()">×</button>
+    </div>
+
+    <div class="modal-fin-body" id="detailFinishingBody">
+      <!-- data diisi otomatis -->
+    </div>
+
+    <div class="modal-fin-footer">
+      <button class="modal-fin-btn" onclick="closeDetailModal()">Tutup</button>
+    </div>
+  </div>
+</div>
+
 <style>
 .filter-input {
   width: 100%;
@@ -1597,6 +1629,20 @@ body {
 
   <div class="grid-wrapper">
     <div id="dashboardLemSelesai" class="grid-container"></div>
+  </div>
+</div>
+
+<!-- Modal Detail -->
+<div id="detailLemModal" class="modal-fin">
+  <div class="modal-fin-content">
+    <div class="modal-fin-header">
+      <span class="modal-fin-title">Detail QC Lem</span>
+      <button class="modal-fin-close" onclick="closeDetailModalLem()">×</button>
+    </div>
+    <div class="modal-fin-body" id="detailLemBody"></div>
+    <div class="modal-fin-footer">
+      <button class="modal-fin-btn" onclick="closeDetailModalLem()">Tutup</button>
+    </div>
   </div>
 </div>
 
@@ -1965,19 +2011,6 @@ body {
 
 </section>
 
-<!-- Modal Detail -->
-<div id="detailCetakModal" class="modal-fin">
-  <div class="modal-fin-content">
-    <div class="modal-fin-header">
-      <span class="modal-fin-title">Detail QC Cetak</span>
-      <button class="modal-fin-close" onclick="closeDetailModalCetak()">×</button>
-    </div>
-    <div class="modal-fin-body" id="detailCetakBody"></div>
-    <div class="modal-fin-footer">
-      <button class="modal-fin-btn" onclick="closeDetailModalCetak()">Tutup</button>
-    </div>
-  </div>
-</div>
 
 <!-- CSS Tab & Form (acuan BAPRO) -->
 <style>
@@ -2182,23 +2215,7 @@ paNoKS.addEventListener('input', function(e) {
 
 </section>
 
-<!-- ======================= MODAL DETAIL FINISHING ======================= -->
-<div id="detailFinishingModal" class="modal-fin">
-  <div class="modal-fin-content">
-    <div class="modal-fin-header">
-      <span class="modal-fin-title">Detail QC Finishing</span>
-      <button class="modal-fin-close" onclick="closeDetailModal()">×</button>
-    </div>
 
-    <div class="modal-fin-body" id="detailFinishingBody">
-      <!-- data diisi otomatis -->
-    </div>
-
-    <div class="modal-fin-footer">
-      <button class="modal-fin-btn" onclick="closeDetailModal()">Tutup</button>
-    </div>
-  </div>
-</div>
 
 <!-- CSS Tab & Form (acuan BAPRO) -->
 <style>
@@ -2418,19 +2435,7 @@ finishingNoKS.addEventListener('input', function(e) {
 
 </section>
 
-<!-- Modal Detail -->
-<div id="detailLemModal" class="modal-fin">
-  <div class="modal-fin-content">
-    <div class="modal-fin-header">
-      <span class="modal-fin-title">Detail QC Lem</span>
-      <button class="modal-fin-close" onclick="closeDetailModalLem()">×</button>
-    </div>
-    <div class="modal-fin-body" id="detailLemBody"></div>
-    <div class="modal-fin-footer">
-      <button class="modal-fin-btn" onclick="closeDetailModalLem()">Tutup</button>
-    </div>
-  </div>
-</div>
+
 
 <!-- CSS Tab & Form (acuan BAPRO) -->
 <style>
