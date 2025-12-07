@@ -2004,18 +2004,16 @@ body {
   <!-- Hasil -->
   <div id="hasilPA" class="tab-content">
     <input type="text" placeholder="🔍 Pencarian" oninput="renderGridPA(this.value)" class="baproFilter">
-    <div class="baproGridScroll">
-      <div id="gridPA" class="grid-container"></div>
+    <div class="baproGridScrollWrapper">
+      <div class="baproGridScroll">
+        <div id="gridPA" class="grid-container"></div>
+      </div>
     </div>
   </div>
 
 </section>
 
-
 <style>
-/* ======================== TAB & FORM QC CETAK ======================== */
-
-/* Tombol Tab */
 .tab-btn.cetak {
   flex: 1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer;
   border:1px solid #000; background:#e0e0e0 !important; color:#000 !important;
@@ -2031,13 +2029,13 @@ body {
 }
 .tab-btn.cetak:focus { outline:none; box-shadow:none; }
 
-/* ==================== Input Tab (tetap sama) ==================== */
 #inputPA .form-group input,
 #inputPA .form-group select,
 #inputPA .form-group textarea {
   width:100%; padding:0.6rem; border:1px solid #ccc;
   border-radius:8px; font-size:0.95rem; box-sizing:border-box;
 }
+
 .pa-add-btn {
   width:100%; padding:0.6rem; background:linear-gradient(135deg,#FF9800,#FFB74D);
   color:#fff; font-weight:600; border:1px solid #000; border-radius:8px;
@@ -2049,51 +2047,30 @@ body {
   transform: translateY(-2px); box-shadow:0 6px 12px rgba(255,183,77,0.4);
 }
 
-/* Struktur utama QC PA */
 #qcPA { display:flex; flex-direction:column; max-height:none; }
 #qcPA .tabs { position:sticky; top:0; z-index:50; background:#fff; padding:6px 0; }
+#inputPA, #hasilPA { overflow-y:auto; max-height:calc(80vh - 120px); padding-right:4px; }
+.baproFilter { position:sticky; top:0; z-index:1000; background:#fff; padding:6px; margin-bottom:8px; border:1px solid #ccc; }
 
-/* Scroll default untuk Input tetap */
-#inputPA { overflow-y:auto; max-height:calc(80vh - 120px); padding-right:4px; }
-
-/* ==================== Hasil Tab FULL HEIGHT HP ==================== */
-#hasilPA {
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 120px); /* full height layar HP minus tabs/header */
-  padding: 0 4px;
-  overflow: hidden; /* scroll di dalam grid saja */
-}
-.baproFilter {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: #fff;
-  padding: 6px;
-  margin: 0 0 8px 0;
-  border: 1px solid #ccc;
+/* Wrapper untuk flex scrollable */
+.baproGridScrollWrapper {
+  display:flex;
+  flex-direction:column;
+  height:100%;
 }
 .baproGridScroll {
-  flex: 1; /* ambil sisa tinggi tab */
-  overflow-y: auto; /* scroll di grid */
-  padding-right: 0;
+  flex:1;
+  overflow-y:auto;
+  padding-right:4px;
 }
 
-/* Grid container */
-#gridPA {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 8px;
-}
 #gridPA .grid-card { position:relative; z-index:1 !important; }
 #gridPA .grid-card * { z-index:1 !important; }
 
-/* Keterangan / Row ket */
 .rowKet { display:flex; gap:6px; align-items:center; margin-bottom:6px; }
 .rowKet input { flex:1; padding:4px 8px; }
 .rowKet span { width:20px; text-align:right; font-weight:bold; }
 
-/* Label form */
 #inputPA .form-group label {
   display:block; font-weight:600; margin-bottom:4px; font-size:0.9rem; color:#333;
 }
@@ -8842,5 +8819,3 @@ function goHome() {
 
 </body>
 </html>
-
-
