@@ -118,15 +118,6 @@ select {
   transition: border .2s, box-shadow .2s;
 }
 
-/* ========================== WRAPPER GRID ========================== */
-#gridBapro {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 14px;
-  padding: 10px;
-  margin-top: 10px;
-}
-
 /* ======================== GRID GLOBAL ======================== */
 .grid-container {
   display: grid;
@@ -1801,7 +1792,7 @@ body {
   </div>
 </div>
 
-<!-- CSS BAPRO style konsisten dengan LEM -->
+<!-- CSS BAPRO style konsisten dengan LEM + responsive Hasil HP -->
 <style>
 .tab-btn.bapro {
   flex:1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer;
@@ -1846,7 +1837,42 @@ body {
 .rowKet span { width:20px; text-align:right; font-weight:bold; }
 
 #inputBapro .form-group label { display:block; font-weight:600; margin-bottom:4px; font-size:0.9rem; color:#333; }
+
+/* ===== RESPONSIVE UNTUK TAB HASIL HP ===== */
+@media only screen and (max-width: 768px) {
+  #hasilBapro {
+    display: flex;
+    flex-direction: column;
+    height: calc(80vh - 120px);
+    overflow: hidden;
+  }
+
+  .baproFilter {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #fff;
+    padding: 6px;
+    margin-bottom: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .baproGridScroll {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+
+  #gridBapro {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+    width: 100%;
+  }
+}
 </style>
+
 
 
 
