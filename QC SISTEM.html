@@ -118,7 +118,7 @@ select {
   transition: border .2s, box-shadow .2s;
 }
 
-/* ================= GRID GLOBAL ================= */
+/* ======================== GRID GLOBAL ======================== */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -127,20 +127,15 @@ select {
   width: 100%;
 }
 
-/* Card kaca ultra-transparan seperti speech panel */
+/* Card kaca ultra-transparan */
 .grid-container > div,
 .grid-card {
-  background: rgba(0, 207, 255, 0.15);    /* semi-transparent biru acuan */
-  border-radius: 22px;                     /* lebih bulat seperti bubble */
-  padding: 14px 20px;                      /* mirip padding speech panel */
-  
-  /* Border ringan & semi-transparent */
+  background: rgba(0, 207, 255, 0.15);
+  border-radius: 22px;
+  padding: 14px 20px;
   border: 1px solid rgba(0, 207, 255, 0.4);
-
-  /* efek glass/acrylic lembut */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-
   color: #002933;
   box-shadow: 0 8px 20px rgba(0, 0, 0, .25);
   transition: all 0.35s ease;
@@ -157,11 +152,7 @@ select {
   width: 100%;
   height: 40%;
   border-radius: 22px 22px 0 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.25),
-    rgba(255, 255, 255, 0)
-  );
+  background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
   pointer-events: none;
 }
 
@@ -169,17 +160,15 @@ select {
 .grid-container > div:hover,
 .grid-card:hover {
   transform: translateY(-2px);
-  background: rgba(0, 207, 255, 0.25);   /* sedikit lebih terlihat */
-  box-shadow:
-    0 10px 22px rgba(0, 0, 0, .28),      /* glow gelap */
-    0 0 18px rgba(0, 207, 255, .35);     /* glow cyan lembut */
+  background: rgba(0, 207, 255, 0.25);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.28), 0 0 18px rgba(0,207,255,0.35);
 }
 
-/* Input kaca */
+/* Input kaca di card */
 .grid-card input {
   padding: .55rem .75rem;
-  border: 1px solid rgba(0, 0, 0, 0.45); /* outline hitam */
-  background: rgba(0, 207, 255, 0.12);   /* semi-transparent biru acuan */
+  border: 1px solid rgba(0, 0, 0, 0.45);
+  background: rgba(0, 207, 255, 0.12);
   border-radius: 10px;
   width: 100%;
   font-size: 14px;
@@ -188,13 +177,10 @@ select {
   transition: 0.2s ease;
 }
 
-/* Fokus efek glow cyan + hitam */
 .grid-card input:focus {
-  background: rgba(0, 207, 255, 0.20);   /* semi-transparent lebih terang */
+  background: rgba(0, 207, 255, 0.20);
   border-color: rgba(0, 0, 0, 0.7);
-  box-shadow: 
-    0 0 0 2px rgba(0, 207, 255, 0.4),
-    0 0 8px rgba(0, 207, 255, 0.35);
+  box-shadow: 0 0 0 2px rgba(0, 207, 255, 0.4), 0 0 8px rgba(0, 207, 255, 0.35);
   outline: none;
 }
 
@@ -222,7 +208,7 @@ select {
   margin-bottom: 2px;
 }
 
-/* ========================= KETERANGAN ========================= */
+/* =========================== KETERANGAN GLOBAL =========================== */
 .ket-list {
   display: flex;
   flex-direction: column;
@@ -283,20 +269,9 @@ select {
   transition: 0.2s;
 }
 
-.btn-call {
-  background: #4aa3ff;
-  color: white;
-}
-
-.btn-edit {
-  background: #ffc93c;
-  color: #4a3700;
-}
-
-.btn-delete {
-  background: #ff4d4d;
-  color: white;
-}
+.btn-call { background: #4aa3ff; color: white; }
+.btn-edit { background: #ffc93c; color: #4a3700; }
+.btn-delete { background: #ff4d4d; color: white; }
 
 .btn-icon:hover {
   opacity: 0.75;
@@ -315,11 +290,7 @@ select {
   font-size: 14px;
   transition: 0.2s ease;
 }
-
-.btn-save:hover {
-  background: #22ad61;
-  transform: scale(1.06);
-}
+.btn-save:hover { background: #22ad61; transform: scale(1.06); }
 
 /* ========================== TOMBOL BATAL ========================== */
 .btn-cancel {
@@ -333,11 +304,7 @@ select {
   font-size: 14px;
   transition: 0.2s ease;
 }
-
-.btn-cancel:hover {
-  background: #d63c3c;
-  transform: scale(1.06);
-}
+.btn-cancel:hover { background: #d63c3c; transform: scale(1.06); }
 
 /* ======================= DETAIL GLOBAL ======================= */
 .modal-fin {
@@ -362,10 +329,7 @@ select {
   box-shadow: 0 10px 25px rgba(0,0,0,0.25);
 }
 
-@keyframes modalPop {
-  from { transform: scale(0.8); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
-}
+@keyframes modalPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
 .modal-fin-header {
   background: #3677FF;
@@ -376,11 +340,7 @@ select {
   align-items: center;
 }
 
-.modal-fin-title {
-  font-size: 17px;
-  font-weight: bold;
-}
-
+.modal-fin-title { font-size: 17px; font-weight: bold; }
 .modal-fin-close {
   background: transparent;
   color: white;
@@ -395,9 +355,7 @@ select {
   line-height: 1.42;
 }
 
-.modal-fin-body strong {
-  color: #0A3D62;
-}
+.modal-fin-body strong { color: #0A3D62; }
 
 .modal-fin-footer {
   padding: 12px 18px;
@@ -447,7 +405,7 @@ select {
   margin-bottom: 3px;
 }
 
-/* ======================== Status ======================== */
+/* ======================== STATUS ======================== */
 .status-pending {
   background: #fee2e2;
   color: #b91c1c;
@@ -473,18 +431,25 @@ select {
 
 .form-group { margin-bottom: 10px; }
 
-/* ======================= GRID CARD 2 KOLOM FIX ======================= */
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 kolom tetap ringkas */
-  gap: 14px;
-  padding: 4px;
-  width: 100%;
+/* ======================== RESPONSIVE GRID ======================== */
+@media (max-width: 1024px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 6px;
+  }
 }
 
-.grid-container > div,
-.grid-card {
-  height: auto; /* tinggi fleksibel sesuai konten, tidak terpotong */
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 8px;
+  }
+  .grid-container > div,
+  .grid-card {
+    width: 100%;
+  }
 }
 </style>
 
@@ -519,7 +484,7 @@ select {
     </button>
 
     <div id="headerTitle" style="font-size: 0.9rem; color: #e0f7fa;">
-      System@
+      System
     </div>
   </div>
 
