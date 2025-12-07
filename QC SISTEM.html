@@ -2401,7 +2401,7 @@ finishingNoKS.addEventListener('input', function(e) {
   <div id="hasilLem" class="tab-content">
     <input type="text" placeholder="🔍 Pencarian" oninput="renderGridLem(this.value)" class="baproFilter">
     <div class="baproGridScroll">
-      <div id="gridLem" class="grid-container"></div>
+      <div id="gridLem" class="grid-lem-container"></div>
     </div>
   </div>
 </section>
@@ -2480,15 +2480,15 @@ finishingNoKS.addEventListener('input', function(e) {
   overflow-y:auto; overflow-x:auto; padding:4px;
 }
 
-/* Grid Cards Responsive */
-#gridLem {
+/* Grid QC Lem unik */
+.grid-lem-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
   gap:8px;
 }
 
 /* Grid Card Inner */
-#gridLem .grid-card { position:relative; }
+.grid-lem-container .grid-card { position:relative; }
 
 /* Row Keterangan */
 .rowKet { display:flex; gap:6px; align-items:center; margin-bottom:6px; }
@@ -2506,7 +2506,7 @@ finishingNoKS.addEventListener('input', function(e) {
 
 /* Responsive HP */
 @media screen and (max-width:480px){
-  #gridLem { grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); gap:6px; }
+  .grid-lem-container { grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); gap:6px; }
   .baproFilter { top:42px; }
   #inputLem, #hasilLem { max-height: calc(75vh - 100px); }
   .lem-add-btn { font-size:0.95rem; }
@@ -8817,6 +8817,7 @@ function goHome() {
 
 </body>
 </html>
+
 
 
 
