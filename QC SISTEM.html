@@ -2012,8 +2012,8 @@ body {
 </section>
 
 
+<!-- CSS Tab & Form (acuan BAPRO) -->
 <style>
-/* ---------------- TAB ---------------- */
 .tab-btn.cetak {
   flex: 1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer;
   border:1px solid #000; background:#e0e0e0 !important; color:#000 !important;
@@ -2029,13 +2029,13 @@ body {
 }
 .tab-btn.cetak:focus { outline:none; box-shadow:none; }
 
-/* ---------------- FORM ---------------- */
 #inputPA .form-group input,
 #inputPA .form-group select,
 #inputPA .form-group textarea {
   width:100%; padding:0.6rem; border:1px solid #ccc;
   border-radius:8px; font-size:0.95rem; box-sizing:border-box;
 }
+
 .pa-add-btn {
   width:100%; padding:0.6rem; background:linear-gradient(135deg,#FF9800,#FFB74D);
   color:#fff; font-weight:600; border:1px solid #000; border-radius:8px;
@@ -2047,62 +2047,22 @@ body {
   transform: translateY(-2px); box-shadow:0 6px 12px rgba(255,183,77,0.4);
 }
 
-/* ---------------- QC PA ---------------- */
 #qcPA { display:flex; flex-direction:column; max-height:none; }
 #qcPA .tabs { position:sticky; top:0; z-index:50; background:#fff; padding:6px 0; }
-
-/* Tab content */
-#inputPA, #hasilPA {
-  display:none; /* default hide */
-  overflow-y:auto;
-  max-height:calc(80vh - 120px);
-  padding-right:4px;
-}
-
-/* Active tab */
-#inputPA.active, #hasilPA.active { display:block; }
-
-/* Search input */
-.baproFilter {
-  position:sticky; top:0; z-index:1000; background:#fff; padding:6px;
-  margin-bottom:8px; border:1px solid #ccc;
-}
-
-/* Grid scroll */
+#inputPA, #hasilPA { overflow-y:auto; max-height:calc(80vh - 120px); padding-right:4px; }
+.baproFilter { position:sticky; top:0; z-index:1000; background:#fff; padding:6px; margin-bottom:8px; border:1px solid #ccc; }
 .baproGridScroll { max-height:calc(80vh - 180px); overflow-y:auto; padding-right:4px; }
-
-/* Grid card */
 #gridPA .grid-card { position:relative; z-index:1 !important; }
 #gridPA .grid-card * { z-index:1 !important; }
 
-/* Keterangan */
 .rowKet { display:flex; gap:6px; align-items:center; margin-bottom:6px; }
 .rowKet input { flex:1; padding:4px 8px; }
 .rowKet span { width:20px; text-align:right; font-weight:bold; }
 
-/* Label */
-#inputPA .form-group label { display:block; font-weight:600; margin-bottom:4px; font-size:0.9rem; color:#333; }
-
-/* ---------------- RESPONSIVE HP ---------------- */
-@media (max-width:768px){
-  #qcPA { flex-direction:column; }
-  #inputPA, #hasilPA { max-height:none; }
-  .baproGridScroll { max-height:60vh; }
+#inputPA .form-group label {
+  display:block; font-weight:600; margin-bottom:4px; font-size:0.9rem; color:#333;
 }
 </style>
-
-<script>
-// ---------------- SWITCH TAB ----------------
-function switchTab(el){
-  const tab = el.dataset.tab;
-  document.querySelectorAll('.tab-btn.cetak').forEach(btn => btn.classList.remove('active'));
-  el.classList.add('active');
-  
-  document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-  document.getElementById(tab).classList.add('active');
-}
-</script>
-
 
 
 
@@ -2259,6 +2219,8 @@ paNoKS.addEventListener('input', function(e) {
 
 <!-- CSS Tab & Form (acuan BAPRO) -->
 <style>
+/* ======================== TAB FINISHING ======================== */
+/* Tab Buttons */
 .tab-btn.finishing {
   flex:1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer;
   border:1px solid #000; background:#e0e0e0 !important; color:#000 !important;
@@ -2274,6 +2236,7 @@ paNoKS.addEventListener('input', function(e) {
 }
 .tab-btn.finishing:focus { outline:none; box-shadow:none; }
 
+/* Inputan Form */
 #inputFinishing .form-group input,
 #inputFinishing .form-group select,
 #inputFinishing .form-group textarea {
@@ -2291,20 +2254,17 @@ paNoKS.addEventListener('input', function(e) {
   transform: translateY(-2px); box-shadow:0 6px 12px rgba(74,222,128,0.4);
 }
 
+/* Container Tab */
 #qcFinishing { display:flex; flex-direction:column; max-height:none; }
 #qcFinishing .tabs { position:sticky; top:0; z-index:50; background:#fff; padding:6px 0; }
 #inputFinishing, #hasilFinishing { overflow-y:auto; max-height:calc(80vh - 120px); padding-right:4px; }
 
-.baproFilter { position:sticky; top:0; z-index:1000; background:#fff; padding:6px; margin-bottom:8px; border:1px solid #ccc; }
-.baproGridScroll { max-height:calc(80vh - 180px); overflow-y:auto; padding-right:4px; }
-
-#gridFinishing .grid-card { position:relative; z-index:1 !important; }
-#gridFinishing .grid-card * { z-index:1 !important; }
-
+/* Row Keterangan */
 .rowKet { display:flex; gap:6px; align-items:center; margin-bottom:6px; }
 .rowKet input { flex:1; padding:4px 8px; }
 .rowKet span { width:20px; text-align:right; font-weight:bold; }
 
+/* BS Inputs */
 #finishingJenisBS { background-color:#ff6f91; border:1px solid #ff3366; border-radius:4px; padding:6px 8px; width:100%; box-sizing:border-box; font-size:14px; }
 #finishingJenisBS::placeholder { color:#660022; opacity:1; }
 
@@ -2317,8 +2277,67 @@ paNoKS.addEventListener('input', function(e) {
 
 #inputFinishing .form-group label { display:block; font-weight:600; margin-bottom:4px; font-size:0.9rem; color:#333; }
 
+/* Spinner */
 .spinner { width:18px; height:18px; border:3px solid #ddd; border-top:3px solid #22C55E; border-radius:50%; display:inline-block; vertical-align:middle; animation:spin 0.8s linear infinite; margin-right:6px; }
 @keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+
+/* ======================== HASIL FINISHING RESPONSIF ======================== */
+/* Filter */
+#hasilFinishing .baproFilter {
+  position: relative; /* hapus sticky agar tidak pecah di HP */
+  top: auto;
+  z-index: auto;
+  margin-bottom: 6px;
+}
+
+/* Grid Scroll */
+#hasilFinishing .baproGridScroll {
+  max-height: none; /* biarkan tinggi container menyesuaikan */
+  overflow-y: visible;
+  padding-right: 0;
+}
+
+/* Grid Container */
+#hasilFinishing .grid-container {
+  display: grid;
+  gap: 10px;
+  padding: 2px;
+  width: 100%;
+  box-sizing: border-box;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
+/* ---------------- RESPONSIF ---------------- */
+/* HP ≤768px: 1 kolom full-width */
+@media (max-width: 768px) {
+  #hasilFinishing .grid-container {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+/* Tablet 769–1023px: 2 kolom */
+@media (min-width: 769px) and (max-width: 1023px) {
+  #hasilFinishing .grid-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+}
+
+/* Desktop ≥1024px: fleksibel seperti dashboard */
+@media (min-width: 1024px) {
+  #hasilFinishing .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
+  }
+}
+
+/* Card tetap full-width dan rapi */
+#hasilFinishing .grid-card {
+  width: 100%;
+  box-sizing: border-box;
+}
+
 </style>
 
 
