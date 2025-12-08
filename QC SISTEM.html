@@ -5650,7 +5650,7 @@ function clearFinishingForm() {
 
 
 
-// ====================== DASHBOARD FINISHING COMPACT DENGAN HIGHLIGHT ======================
+// ====================== DASHBOARD FINISHING (AKURAT 100%) ======================
 function renderDashboardFinishingCompact(query = "", safeMode = false) {
   const q = query.toLowerCase().trim();
 
@@ -5666,9 +5666,44 @@ function renderDashboardFinishingCompact(query = "", safeMode = false) {
 
   let totalTO = 0, totalProses = 0, totalSelesai = 0;
 
+  // --- helper parse angka aman (hapus koma/spasi) ---
+  const num = (v) => {
+    if (!v) return 0;
+    const clean = String(v).replace(/[^0-9.-]/g, "");
+    const n = Number(clean);
+    return isNaN(n) ? 0 : n;
+  };
+
   finishingItems.forEach(item => {
     const updateVal = (item.update || "").trim().toLowerCase();
     const tanggal = item.tanggal || "-";
+
+    // ===========================
+    // NILAI FINISHING (FINAL)
+    // ===========================
+    const order = num(item.order);
+    const isi   = num(item.isi);
+    const bagus = num(item.bagus);
+
+    // Total BS = semua jenis BS FINISHING
+    const totalBS =
+        num(item.jenisBS)  +
+        num(item.jenisBS1) +
+        num(item.jenisBS2) +
+        num(item.jenisBS3) +
+        num(item.jenisBS4) +
+        num(item.jenisBS5);
+
+    // hasil bersih
+    let hasilBersih = bagus - totalBS;
+    if (hasilBersih < 0) hasilBersih = 0;
+
+    // persentase
+    const persen = order > 0 ? ((hasilBersih / order) * 100).toFixed(1) : "0.0";
+
+    // ===========================
+    // RENDER CARD
+    // ===========================
     const card = document.createElement('div');
     card.className = 'grid-card';
 
@@ -5681,33 +5716,49 @@ function renderDashboardFinishingCompact(query = "", safeMode = false) {
       <strong>Nama : ${highlightHtmlSafe(item.nama || '', query)}</strong><br>
       <strong>QC : ${highlightHtmlSafe(item.qc || '', query)}</strong><br>
       <span>📅 ${highlightHtmlSafe(tanggal, query)}</span><br>
-      <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
+
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin:4px 0 6px;
+        background:#9ac8ff;
+        padding:6px 10px;
+        border-radius:8px;
+        font-weight:700;
+        color:#003a80;
+        border:1px solid #5fa8ff;
+      ">
+        <span style="font-weight:600; font-size:0.92rem;">Hasil:</span>
+        <span style="display:inline-block; min-width:64px; text-align:right;">${persen}%</span>
+      </div>
+
+      <span class="${statusClass}">
+        ${highlightHtmlSafe(item.update || '', query)}
+      </span>
     `;
 
+    // FILTER
     const cardText = card.textContent.toLowerCase();
-
-    // FILTER hanya berjalan jika NOT safe mode
     if (!safeMode && q && !cardText.includes(q)) return;
 
-    if (updateVal === 'pending') {
-      if (containerTO) containerTO.appendChild(card);
-      totalTO++;
-    } else if (updateVal === 'proses') {
-      containerProses.appendChild(card);
-      totalProses++;
-    } else if (updateVal === 'selesai') {
-      containerSelesai.appendChild(card);
-      totalSelesai++;
-    }
+    // KATEGORI
+    if (updateVal === 'pending') { containerTO.appendChild(card); totalTO++; }
+    else if (updateVal === 'proses') { containerProses.appendChild(card); totalProses++; }
+    else if (updateVal === 'selesai') { containerSelesai.appendChild(card); totalSelesai++; }
 
     card.addEventListener('click', () => showDetailModal(item));
   });
 
+  // COUNTER
   document.getElementById('countFinishing').textContent = finishingItems.length;
   document.getElementById('countTOFinishing').textContent = totalTO;
   document.getElementById('countProsesFinishing').textContent = totalProses;
   document.getElementById('countSelesaiFinishing').textContent = totalSelesai;
 }
+
+
+
 
 // ====================== FILTER INPUT REAL-TIME UNTUK DASHBOARD ======================
 document.addEventListener('DOMContentLoaded', () => {
@@ -7040,7 +7091,7 @@ function clearPAForm(){
 }
 
 
-// ====================== DASHBOARD PA (COMPACT + FILTER + HIGHLIGHT) ======================
+// ====================== DASHBOARD PA (COMPACT + FILTER + HIGHLIGHT + % HASIL) ======================
 function renderDashboardPACompact(query = "", safeMode = false) {
   const q = query.toLowerCase().trim();
 
@@ -7056,10 +7107,31 @@ function renderDashboardPACompact(query = "", safeMode = false) {
 
   let totalTO = 0, totalProses = 0, totalSelesai = 0;
 
+  // helper angka aman
+  const num = (v) => {
+    if (!v) return 0;
+    const clean = String(v).replace(/[^0-9.-]/g, "");
+    const n = Number(clean);
+    return isNaN(n) ? 0 : n;
+  };
+
   paItems.forEach(item => {
     const updateVal = (item.update || "").trim().toLowerCase();
     const tanggal = item.tanggal || "-";
 
+    // ========== PERHITUNGAN PA ==========
+    const order   = num(item.order);
+    const bagus   = num(item.bagus);
+    const sortir  = num(item.sortir);
+    const problem = num(item.problem);
+
+    // hasil bersih = bagus - sortir - problem
+    let hasilBersih = bagus - sortir - problem;
+    if (hasilBersih < 0) hasilBersih = 0;
+
+    const persen = order > 0 ? ((hasilBersih / order) * 100).toFixed(1) : "0.0";
+
+    // ========== RENDER CARD ==========
     const card = document.createElement('div');
     card.className = 'grid-card';
 
@@ -7068,20 +7140,39 @@ function renderDashboardPACompact(query = "", safeMode = false) {
     else if (updateVal === "selesai") statusClass = "status-selesai";
     else if (updateVal === "pending") statusClass = "status-pending";
 
-    // ===== CARD TEMPLATE DENGAN HIGHLIGHT (ACUAN BAPRO / FINISHING) =====
     card.innerHTML = `
       <strong>Nama : ${highlightHtmlSafe(item.nama || '', query)}</strong><br>
       <strong>QC : ${highlightHtmlSafe(item.qc || '', query)}</strong><br>
       <strong>Mesin : ${highlightHtmlSafe(item.mesin || '', query)}</strong><br>
       <span>📅 ${highlightHtmlSafe(tanggal, query)}</span><br>
-      <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
+
+      <!-- ====== BOX PERSENTASE HASIL (ACUAN FINISHING) ====== -->
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin:6px 0 8px;
+        background:#9ac8ff;
+        padding:6px 10px;
+        border-radius:8px;
+        font-weight:700;
+        color:#003a80;
+        border:1px solid #5fa8ff;
+      ">
+        <span style="font-weight:600; font-size:0.92rem;">Hasil:</span>
+        <span style="display:inline-block; min-width:64px; text-align:right;">${persen}%</span>
+      </div>
+
+      <span class="${statusClass}">
+        ${highlightHtmlSafe(item.update || '', query)}
+      </span>
     `;
 
-    // ===== FILTER seperti Finishing / Bapro =====
+    // FILTER
     const cardText = card.textContent.toLowerCase();
     if (!safeMode && q && !cardText.includes(q)) return;
 
-    // ===== MASUKKAN KE KATEGORI =====
+    // KATEGORI
     if (updateVal === 'pending') {
       if (containerTO) containerTO.appendChild(card);
       totalTO++;
@@ -7093,6 +7184,7 @@ function renderDashboardPACompact(query = "", safeMode = false) {
       totalSelesai++;
     }
 
+    // click membuka modal detail
     card.addEventListener('click', () => showDetailModalPA(item));
   });
 
@@ -7102,6 +7194,7 @@ function renderDashboardPACompact(query = "", safeMode = false) {
   document.getElementById('countProsesPA').textContent = totalProses;
   document.getElementById('countSelesaiPA').textContent = totalSelesai;
 }
+
 
 // ====================== FILTER INPUT REAL-TIME PA ======================
 document.addEventListener('DOMContentLoaded', () => {
@@ -7731,7 +7824,7 @@ function clearLemForm() {
 
 
 
-// ====================== DASHBOARD LEM (COMPACT + FILTER + HIGHLIGHT) ======================
+// ====================== DASHBOARD LEM (AKURAT 100%) ======================
 function renderDashboardLemCompact(query = "", safeMode = false) {
   const q = query.toLowerCase().trim();
 
@@ -7747,10 +7840,43 @@ function renderDashboardLemCompact(query = "", safeMode = false) {
 
   let totalTO = 0, totalProses = 0, totalSelesai = 0;
 
+  // parsing angka aman
+  const num = v => {
+    if (!v) return 0;
+    const clean = String(v).replace(/[^0-9.\-]/g, '');
+    const n = Number(clean);
+    return isFinite(n) ? n : 0;
+  };
+
   lemItems.forEach(item => {
     const updateVal = (item.update || "").trim().toLowerCase();
     const tanggal = item.tanggal || "-";
 
+    // =======================
+    // NILAI LEM (FINAL)
+    // =======================
+    const order = num(item.order);
+    const isi   = num(item.isi);
+    const bagus = num(item.bagus);
+
+    // total BS = semua BS LEM
+    const totalBS =
+        num(item.lemJenisBS)  +
+        num(item.lemJenisBS1) +
+        num(item.lemJenisBS12) +
+        num(item.lemJenisBS13) +
+        num(item.lemJenisBS14) +
+        num(item.lemJenisBS15);
+
+    // hasil bersih
+    const hasilBersih = Math.max(0, bagus - totalBS);
+
+    // persentase
+    const persen = order > 0 ? ((hasilBersih / order) * 100).toFixed(1) : "0.0";
+
+    // =======================
+    // TEMPLATE CARD
+    // =======================
     const card = document.createElement('div');
     card.className = 'grid-card';
 
@@ -7759,29 +7885,41 @@ function renderDashboardLemCompact(query = "", safeMode = false) {
     else if (updateVal === "selesai") statusClass = "status-selesai";
     else if (updateVal === "pending") statusClass = "status-pending";
 
-    // ===== CARD TEMPLATE DENGAN HIGHLIGHT (ACUAN FINISHING) =====
     card.innerHTML = `
-      <strong>Nama : ${highlightHtmlSafe(item.nama || '', query)}</strong><br>
-      <strong>QC : ${highlightHtmlSafe(item.qc || '', query)}</strong><br>
-      <span>📅 ${highlightHtmlSafe(tanggal, query)}</span><br>
-      <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
+      <strong>Nama : ${highlightHtmlSafe(item.nama || '', q)}</strong><br>
+      <strong>QC : ${highlightHtmlSafe(item.qc || '', q)}</strong><br>
+      <span>📅 ${highlightHtmlSafe(tanggal, q)}</span><br>
+
+      <!-- HASIL -->
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin:4px 0 6px;
+        background:#9ac8ff;
+        padding:6px 10px;
+        border-radius:8px;
+        font-weight:700;
+        color:#003a80;
+        border:1px solid #5fa8ff;
+      ">
+        <span style="font-weight:600; font-size:0.92rem;">Hasil:</span>
+        <span style="display:inline-block; min-width:64px; text-align:right;">${persen}%</span>
+      </div>
+
+      <span class="${statusClass}">
+        ${highlightHtmlSafe(item.update || '', q)}
+      </span>
     `;
 
-    // ===== FILTER seperti Finishing / PA =====
+    // FILTER
     const cardText = card.textContent.toLowerCase();
     if (!safeMode && q && !cardText.includes(q)) return;
 
-    // ===== MASUKKAN KE KATEGORI =====
-    if (updateVal === 'pending') {
-      if (containerTO) containerTO.appendChild(card);
-      totalTO++;
-    } else if (updateVal === 'proses') {
-      containerProses.appendChild(card);
-      totalProses++;
-    } else if (updateVal === 'selesai') {
-      containerSelesai.appendChild(card);
-      totalSelesai++;
-    }
+    // KATEGORI
+    if (updateVal === 'pending') { containerTO.appendChild(card); totalTO++; }
+    else if (updateVal === 'proses') { containerProses.appendChild(card); totalProses++; }
+    else if (updateVal === 'selesai') { containerSelesai.appendChild(card); totalSelesai++; }
 
     card.addEventListener('click', () => showDetailModalLem(item));
   });
