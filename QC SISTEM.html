@@ -579,6 +579,7 @@ select {
     <button onclick="showMenu('qcSPV')" class="nav-btn">QC REGISTER</button>
     <button onclick="showMenu('qcMeeting')" class="nav-btn">MEETING</button>
     <button onclick="showMenu('manualSection')" class="nav-btn">MANUAL</button>
+    <button onclick="showMenu('reportSection')" class="nav-btn">REPORT</button>
   </div>
 </nav>
 
@@ -4496,8 +4497,153 @@ if (spvNoKS) {
 
   </style>
 
-
   </section>
+
+
+
+
+
+
+
+
+
+<!-- ======================== REPORT ======================== -->
+<section id="reportSection" class="card qc-section" style="display:none;">
+
+  <!-- Judul -->
+  <h2 style="
+    text-align:center; 
+    color:#000; 
+    background: linear-gradient(to right, #3B82F6, #60A5FA);
+    font-size:1.2rem; 
+    padding:6px 12px; 
+    border-radius:8px; 
+    margin-bottom:10px;
+  ">
+    REPORT QC
+  </h2>
+
+  <!-- Input ID -->
+  <div style="margin-bottom:12px;">
+    <input 
+      type="text" 
+      id="reportSearchID" 
+      placeholder="🔍 Masukkan No KS"
+      oninput="searchReportByID()"
+      style="
+        width:100%;
+        padding:10px;
+        border:1px solid #ccc;
+        border-radius:8px;
+        font-size:0.95rem;
+      "
+    />
+  </div>
+
+  <!-- Hasil Report -->
+  <div id="reportResult" style="padding:10px; border-radius:10px;"></div>
+
+</section>
+
+<style>
+/* ======================== REPORT CARD ======================== */
+
+/* Container report */
+#reportResult {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 900px;
+  margin: 0 auto; /* center di layar lebar */
+  padding: 0;
+}
+
+/* Card utama */
+#reportResult > div {
+  background: #ffffff;
+  padding: 18px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid #e2e8f0;
+}
+
+/* Hover effect */
+#reportResult > div:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+/* Judul card */
+#reportResult h3 {
+  margin: 0 0 12px;
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: #1e293b;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 6px;
+}
+
+/* Field labels & values */
+#reportResult p {
+  margin: 4px 0;
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+/* Keterangan list 1–5 */
+#reportResult .ket-list div {
+  margin-left: 10px;
+  line-height: 1.35;
+  color: #475569;
+}
+
+/* Status badge */
+#reportResult div[style*="STATUS:"] {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Responsive typography */
+@media screen and (max-width: 768px) {
+  #reportResult {
+    gap: 12px;
+    padding: 0 8px;
+  }
+  #reportResult > div {
+    padding: 14px;
+  }
+  #reportResult h3 {
+    font-size: 1.05rem;
+  }
+  #reportResult p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Optional: highlight No KS / Nama yang diketik */
+#reportResult mark {
+  background-color: #fde68a;
+  color: #78350f;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* Tambahan: card grid untuk layar lebar */
+@media screen and (min-width: 900px) {
+  #reportResult {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+  }
+}
+</style>
 
 
 
@@ -9105,6 +9251,256 @@ function goHome() {
   }
 }
 </script>
+
+
+
+
+
+
+<style>
+// ======================== REPORT (CETAK + LEM + FINISHING) ========================
+#reportResult {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 10px;
+}
+
+#reportResult .grid-card {
+  background: #f3f4f6;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#reportResult .grid-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+}
+
+#reportResult .grid-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+#reportResult .grid-card p {
+  margin: 4px 0;
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+#reportResult .grid-card .ket-list div {
+  margin-left: 8px;
+  line-height: 1.35;
+  color: #475569;
+}
+
+#reportResult .grid-card div[style*="STATUS:"] {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+#reportResult .section-title {
+  grid-column: 1 / -1;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 6px 12px;
+  border-radius: 8px;
+  margin-top: 20px;
+  margin-bottom: 6px;
+  color: #000; /* teks hitam */
+}
+
+#reportResult .cetak-title {
+  background: linear-gradient(to right, #FF9800, #FFB74D);
+}
+
+#reportResult .lem-title {
+  background: linear-gradient(to right, #9C27B0, #BA68C8);
+}
+
+#reportResult .finishing-title {
+  background: linear-gradient(to right, #22C55E, #4ADE80);
+}
+
+@media screen and (max-width: 768px) {
+  #reportResult {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  #reportResult .grid-card {
+    padding: 12px;
+  }
+
+  #reportResult .grid-card h3 {
+    font-size: 1.05rem;
+  }
+
+  #reportResult .grid-card p {
+    font-size: 0.9rem;
+  }
+
+  #reportResult .section-title {
+    font-size: 1.1rem;
+  }
+}
+</style>
+
+
+<script>
+
+// ======================== VALIDASI INPUT No KS ========================
+const reportSearchID = document.getElementById("reportSearchID");
+
+reportSearchID.addEventListener('input', function() {
+  let value = reportSearchID.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); // huruf & angka saja
+
+  // Tambahkan dash setelah 2 karakter
+  if (value.length > 2) value = value.slice(0, 2) + '-' + value.slice(2);
+
+  // Tambahkan dash setelah 7 karakter (2+5)
+  if (value.length > 7) value = value.slice(0, 7) + '-' + value.slice(7);
+
+  reportSearchID.value = value;
+});
+
+
+
+// ======================== REPORT (CETAK + LEM + FINISHING) ========================
+function searchReportByID() {
+  const key = reportSearchID.value.trim().toLowerCase();
+  const box = document.getElementById("reportResult");
+  if (!key) { box.innerHTML = ""; return; }
+
+  function normalizeKet(rawText="") {
+    const map = {1:"-",2:"-",3:"-",4:"-",5:"-"}; 
+    if(rawText){ rawText.split(/\r?\n/).forEach(line=>{
+      const m=line.match(/^\s*(\d+)\.\s*(.*)/);
+      if(m){ const no=parseInt(m[1]); if(no>=1&&no<=5) map[no]=m[2].trim()||"-"; }
+    }); }
+    return map;
+  }
+
+  function getStatusColor(updateVal=""){
+    const s=updateVal?.toLowerCase()||"";
+    if(s==="proses") return "#FB923C";
+    if(s==="selesai") return "#4ADE80";
+    if(s==="pending") return "#F87171";
+    return "#94A3B8";
+  }
+
+  function renderCard(title, item, extraFields=""){
+    if(!item?.noKS){
+      return `
+        <div class="grid-card">
+          <h3>${title}</h3>
+          <p><b>No KS:</b> <i style='color:#f59e0b;'>Proses belum ada</i></p>
+        </div>
+      `;
+    }
+
+    const color=getStatusColor(item?.update);
+    const k=normalizeKet(item?.keterangan);
+
+    return `
+      <div class="grid-card">
+        <h3>${title}</h3>
+        <p><b>No KS:</b> ${item.noKS}</p>
+        <p><b>Nama Order:</b> ${item?.nama||"-"}</p>
+        <p><b>Order:</b> ${item?.order||"-"}</p>
+        ${extraFields || ""}
+        <p><b>QC:</b> ${item?.qc||"-"}</p>
+        <p><b>Tanggal:</b> ${item?.tanggal||"-"}</p>
+        <p><b>Keterangan:</b></p>
+        <div class="ket-list">
+          <div>1. ${k[1]}</div>
+          <div>2. ${k[2]}</div>
+          <div>3. ${k[3]}</div>
+          <div>4. ${k[4]}</div>
+          <div>5. ${k[5]}</div>
+        </div>
+        <div style="display:inline-block;margin-top:10px;padding:6px 12px;border-radius:6px;
+                    color:#fff;font-weight:700;background:${color};">
+          STATUS: ${item?.update||"-"}
+        </div>
+      </div>`;
+  }
+
+  const cetakItems = paItems.filter(x=> (x.noKS||"").toLowerCase()===key);
+  const lemItemsMatch = lemItems.filter(x=> (x.noKS||"").toLowerCase()===key);
+  const finishingItemsMatch = finishingItems.filter(x=> (x.noKS||"").toLowerCase()===key);
+
+  let html = "";
+
+  // CETAK
+  html += `<div class="section-title cetak-title">CETAK</div>`;
+  if(cetakItems.length){
+    html += cetakItems.map(i=> renderCard("", i, `
+      <p><b>Bagus:</b> ${i?.bagus||"-"}</p>
+      <p><b>Sortir:</b> ${i?.sortir||"-"}</p>
+      <p><b>Problem:</b> ${i?.problem||"-"}</p>
+      <p><b>Mesin:</b> ${i?.mesin||"-"}</p>
+    `)).join('');
+  } else {
+    html += renderCard("", {update:"Proses"});
+  }
+
+  // LEM
+  html += `<div class="section-title lem-title">LEM</div>`;
+  if(lemItemsMatch.length){
+    html += lemItemsMatch.map(i=> renderCard("", i, `
+      <p><b>Isi/Dus:</b> ${i?.isi||"-"}</p>
+      <p><b>Bagus:</b> ${i?.bagus||"-"}</p>
+      <p><b>Total BS:</b> ${i?.lemJenisBS||"-"}</p>
+      <p><b>BS Cetak:</b> ${i?.lemJenisBS1||"-"}</p>
+      <p><b>BS Lem:</b> ${i?.lemJenisBS12||"-"}</p>
+      <p><b>BS Ponch:</b> ${i?.lemJenisBS13||"-"}</p>
+      <p><b>BS Varnish:</b> ${i?.lemJenisBS14||"-"}</p>
+      <p><b>BS Potong:</b> ${i?.lemJenisBS15||"-"}</p>
+    `)).join('');
+  } else {
+    html += renderCard("", {update:"Proses"});
+  }
+
+  // FINISHING
+  html += `<div class="section-title finishing-title">FINISHING</div>`;
+  if(finishingItemsMatch.length){
+    html += finishingItemsMatch.map(i=> renderCard("", i, `
+      <p><b>Isi/Dus:</b> ${i?.isi||"-"}</p>
+      <p><b>Bagus:</b> ${i?.bagus||"-"}</p>
+      <p><b>Total BS:</b> ${i?.jenisBS||"-"}</p>
+      <p><b>BS Cetak:</b> ${i?.jenisBS1||"-"}</p>
+      <p><b>BS Lem:</b> ${i?.jenisBS2||"-"}</p>
+      <p><b>BS Ponch:</b> ${i?.jenisBS3||"-"}</p>
+      <p><b>BS Varnish:</b> ${i?.jenisBS4||"-"}</p>
+      <p><b>BS Potong:</b> ${i?.jenisBS5||"-"}</p>
+    `)).join('');
+  } else {
+    html += renderCard("", {update:"Proses"});
+  }
+
+  box.innerHTML = html;
+}
+</script>
+
+
+
+
+
+
+
+
 
 
 
