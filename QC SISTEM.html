@@ -4727,8 +4727,8 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
           @page { size: A4; margin: 10mm; }
           body {
             font-family: Arial, sans-serif;
-            font-size: 14px;
-            line-height: 1.4;
+            font-size: 12px; /* lebih kecil untuk HP */
+            line-height: 1.3;
             margin: 0;
             padding: 10mm;
           }
@@ -4742,55 +4742,57 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
 
           .section-title {
             font-weight:700;
-            padding:12px;
-            font-size:1.4rem;
+            padding:10px;
+            font-size:1.2rem;
             text-align:center;
             border-radius:6px;
-            margin:30px 0 12px;
+            margin:20px 0 8px;
             page-break-after:avoid;
           }
 
           /* ===================== Grid ===================== */
           .card-grid {
             display:grid;
-            gap:12px;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap:8px;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* lebih ramping */
             page-break-inside: avoid;
           }
 
           .report-card {
             border:1px solid #e2e8f0;
-            border-radius:8px;
-            padding:14px 16px;
-            margin-bottom:12px;
-            box-shadow:0 2px 8px rgba(0,0,0,0.08);
+            border-radius:6px;
+            padding:8px 10px; /* lebih kecil */
+            margin-bottom:8px;
+            box-shadow:0 1px 4px rgba(0,0,0,0.08);
             page-break-inside: avoid;
           }
 
           .report-card h3 {
-            font-size:1.1rem;
+            font-size:1rem;
             font-weight:700;
-            margin-bottom:8px;
+            margin-bottom:6px;
             color:#1e293b;
             border-bottom:1px solid #e2e8f0;
-            padding-bottom:4px;
+            padding-bottom:3px;
             text-align:center;
           }
 
-          .report-field { margin:4px 0; font-size:0.95rem; color:#334155; }
-          .report-status { display:inline-block; margin-top:8px; padding:6px 12px; border-radius:6px; font-weight:700; color:#000; }
-          .report-percentage div { margin-top:4px; font-weight:600; font-size:0.95rem; }
-          .ket-list div { margin-left:10px; line-height:1.35; color:#475569; }
+          .report-field { margin:3px 0; font-size:0.85rem; color:#334155; }
+          .report-status { display:inline-block; margin-top:6px; padding:4px 8px; border-radius:6px; font-weight:700; color:#000; }
+          .report-percentage div { margin-top:3px; font-weight:600; font-size:0.85rem; }
+          .ket-list div { margin-left:8px; line-height:1.25; color:#475569; }
           .pending { background:#f8d7da; color:#721c24; }
           .done { background:#d4edda; color:#155724; }
           .proses { background:#fff3cd; color:#856404; }
 
           /* ===================== Print rules ===================== */
           @media print {
-            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; width:auto; }
-            .card-grid { grid-template-columns: 1fr !important; page-break-inside: avoid; }
-            .report-card { page-break-inside: avoid; }
-            .section-title { page-break-after: avoid; }
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; width:auto; font-size:12px; }
+            .card-grid { grid-template-columns: 1fr !important; gap:6px; page-break-inside: avoid; }
+            .report-card { page-break-inside: avoid; padding:6px 8px; }
+            .report-card h3 { font-size:0.95rem; margin-bottom:4px; padding-bottom:2px; }
+            .report-field, .report-percentage div { font-size:0.8rem; }
+            .section-title { page-break-after: avoid; padding:8px; font-size:1.1rem; margin:16px 0 6px; }
           }
         </style>
       </head>
@@ -4808,6 +4810,7 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
   // hapus iframe setelah print
   setTimeout(() => document.body.removeChild(iframe), 1000);
 });
+
 
 
 
@@ -9794,4 +9797,5 @@ function goHome() {
 
 </body>
 </html>
+
 
