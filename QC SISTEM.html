@@ -4510,7 +4510,7 @@ if (spvNoKS) {
 <!-- ======================== REPORT ======================== -->
 <section id="reportSection" class="card qc-section" style="display:none;">
 
-  <!-- Judul -->
+  <!-- Judul halaman utama -->
   <h2 style="
     text-align:center; 
     color:#000; 
@@ -4540,110 +4540,427 @@ if (spvNoKS) {
     />
   </div>
 
+  <!-- Tombol Preview -->
+  <div style="text-align:center; margin:12px 0;">
+    <button id="previewReportBtn" style="
+      padding:8px 20px;
+      border:none;
+      background: linear-gradient(to right,#3B82F6,#60A5FA);
+      color:#fff;
+      font-weight:600;
+      border-radius:6px;
+      cursor:pointer;
+      font-size:0.95rem;
+    ">
+      Preview Report
+    </button>
+  </div>
+
   <!-- Hasil Report -->
   <div id="reportResult" style="padding:10px; border-radius:10px;"></div>
+
+  <!-- Modal Preview -->
+  <div id="reportPreviewModal" style="
+    display:none;
+    position:fixed;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.5);
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+  ">
+    <div style="
+      background:#fff;
+      max-width:900px;
+      width:90%;
+      max-height:90%;
+      overflow:auto;
+      border-radius:12px;
+      padding:20px;
+      position:relative;
+      font-family:Arial, sans-serif;
+    ">
+
+      <!-- Modal header + tombol close SEKARANG di dalam header -->
+      <div class="modal-header">
+        REPORT QC
+        <button id="closePreviewBtn" style="
+          position:absolute;
+          top:50%;
+          right:12px;
+          transform:translateY(-50%);
+          background:#f87171;
+          color:#fff;
+          border:none;
+          border-radius:6px;
+          padding:4px 10px;
+          cursor:pointer;
+        ">✕</button>
+      </div>
+
+      <div id="previewContent" style="line-height:1.5;"></div>
+    </div>
+  </div>
 
 </section>
 
 <style>
-/* ======================== REPORT CARD ======================== */
-
-/* Container report */
+/* ======================== REPORT CARD GRID ======================== */
 #reportResult {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 16px;
-  max-width: 900px;
-  margin: 0 auto; /* center di layar lebar */
-  padding: 0;
+  margin-top: 10px;
 }
 
-/* Card utama */
-#reportResult > div {
-  background: #ffffff;
-  padding: 18px 20px;
+#reportResult .grid-card {
+  background: #f3f4f6;
+  padding: 16px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
   transition: transform 0.2s, box-shadow 0.2s;
-  border: 1px solid #e2e8f0;
 }
 
-/* Hover effect */
-#reportResult > div:hover {
+#reportResult .grid-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.12);
 }
 
-/* Judul card */
-#reportResult h3 {
-  margin: 0 0 12px;
-  font-size: 1.18rem;
+#reportResult .grid-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.15rem;
   font-weight: 700;
   color: #1e293b;
-  border-bottom: 1px solid #e2e8f0;
-  padding-bottom: 6px;
 }
 
-/* Field labels & values */
-#reportResult p {
+#reportResult .grid-card p {
   margin: 4px 0;
   font-size: 0.95rem;
   color: #334155;
 }
 
-/* Keterangan list 1–5 */
-#reportResult .ket-list div {
-  margin-left: 10px;
+#reportResult .grid-card .ket-list div {
+  margin-left: 8px;
   line-height: 1.35;
   color: #475569;
 }
 
-/* Status badge */
-#reportResult div[style*="STATUS:"] {
+#reportResult .grid-card div[style*="STATUS:"] {
   display: inline-block;
   margin-top: 10px;
-  padding: 6px 14px;
-  border-radius: 8px;
+  padding: 6px 12px;
+  border-radius: 6px;
   color: #fff;
   font-weight: 700;
   font-size: 0.95rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  white-space: nowrap;
 }
 
-/* Responsive typography */
+#reportResult .section-title {
+  grid-column: 1 / -1;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 6px 12px;
+  border-radius: 8px;
+  margin-top: 20px;
+  margin-bottom: 6px;
+  color: #000;
+}
+
+#reportResult .cetak-title { background: linear-gradient(to right, #FF9800, #FFB74D); }
+#reportResult .lem-title { background: linear-gradient(to right, #9C27B0, #BA68C8); }
+#reportResult .finishing-title { background: linear-gradient(to right, #22C55E, #4ADE80); }
+
+/* ======================== REPORT RAPIH (MODAL PREVIEW) ======================== */
+.report-card {
+  background:#fff;
+  border:1px solid #e2e8f0;
+  border-radius:8px;
+  padding:14px 16px;
+  margin-bottom:12px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+.report-card h3 {
+  font-size:1.1rem;
+  font-weight:700;
+  margin-bottom:8px;
+  color:#1e293b;
+  border-bottom:1px solid #e2e8f0;
+  padding-bottom:4px;
+  text-align:center;
+}
+
+.report-field {
+  margin:4px 0;
+  font-size:0.95rem;
+  color:#334155;
+}
+
+.report-status {
+  display:inline-block;
+  margin-top:8px;
+  padding:6px 12px;
+  border-radius:6px;
+  font-weight:700;
+  color:#000;
+}
+
+.report-percentage {
+  margin-top:6px;
+  font-weight:600;
+  font-size:0.95rem;
+}
+
+.ket-list div {
+  margin-left:10px;
+  line-height:1.35;
+  color:#475569;
+}
+
+/* ======================== HEADER MODAL PREVIEW ======================== */
+.modal-header {
+  text-align: center;
+  color: #000;
+  background: linear-gradient(to right, #3B82F6, #60A5FA);
+  font-size: 1.2rem;
+  padding: 6px 12px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  font-weight: 700;
+  position: relative;
+}
+
+/* Responsive */
 @media screen and (max-width: 768px) {
-  #reportResult {
-    gap: 12px;
-    padding: 0 8px;
-  }
-  #reportResult > div {
-    padding: 14px;
-  }
-  #reportResult h3 {
-    font-size: 1.05rem;
-  }
-  #reportResult p {
-    font-size: 0.9rem;
-  }
+  #reportResult { grid-template-columns: 1fr; gap: 12px; }
+  #reportResult .grid-card { padding: 12px; }
+  #reportResult .grid-card h3 { font-size: 1.05rem; }
+  #reportResult .grid-card p { font-size: 0.9rem; }
+  #reportResult .section-title { font-size: 1.1rem; }
 }
 
-/* Optional: highlight No KS / Nama yang diketik */
-#reportResult mark {
-  background-color: #fde68a;
-  color: #78350f;
-  padding: 0 2px;
-  border-radius: 2px;
+/* Modal preview section title */
+#reportPreviewModal .section-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 6px 12px;
+  border-radius: 8px;
+  margin-top: 12px;
+  margin-bottom: 6px;
+  color: #fff;
 }
 
-/* Tambahan: card grid untuk layar lebar */
-@media screen and (min-width: 900px) {
-  #reportResult {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 18px;
-  }
-}
+#reportPreviewModal .cetak-title { background: linear-gradient(to right, #FF9800, #FFB74D); }
+#reportPreviewModal .lem-title { background: linear-gradient(to right, #9C27B0, #BA68C8); }
+#reportPreviewModal .finishing-title { background: linear-gradient(to right, #22C55E, #4ADE80); }
+
 </style>
+
+
+<script>
+// ======================== HELPER ========================
+function formatNumber(num) {
+  if(num===undefined || num===null || num==="-" ) return "-";
+  const n = Number(num);
+  if(isNaN(n)) return num;
+  return n.toLocaleString('id-ID');
+}
+
+const reportSearchID = document.getElementById("reportSearchID");
+reportSearchID.addEventListener('input', function() {
+  let value = reportSearchID.value.toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(value.length>2) value = value.slice(0,2)+'-'+value.slice(2);
+  if(value.length>7) value = value.slice(0,7)+'-'+value.slice(7);
+  reportSearchID.value = value;
+});
+
+function normalizeKet(rawText="") {
+  const map={1:"-",2:"-",3:"-",4:"-",5:"-"};
+  if(rawText){ rawText.split(/\r?\n/).forEach(line=>{
+    const m=line.match(/^\s*(\d+)\.\s*(.*)/);
+    if(m){ const no=parseInt(m[1]); if(no>=1&&no<=5) map[no]=m[2].trim()||"-"; }
+  }); }
+  return map;
+}
+
+function getStatusColor(updateVal=""){
+  const s=(updateVal||"").toLowerCase();
+  if(s==="proses") return "#FB923C";
+  if(s==="selesai") return "#4ADE80";
+  if(s==="pending") return "#F87171";
+  return "#94A3B8";
+}
+
+// ======================== RENDER CARD GRID ========================
+function renderCard(title, item, extraFields="", processType="cetak"){
+  if(!item?.noKS){
+    return `<div class="grid-card"><h3>${title}</h3><p><b>No KS:</b> <i style='color:#f59e0b;'>Proses belum ada</i></p></div>`;
+  }
+  const color = getStatusColor(item?.update);
+  const k = normalizeKet(item?.keterangan);
+  const order = Number(item?.order) || 0;
+  const mesin = item?.mesin||"-";
+
+  let bagus=0,sortir=0,problem=0,totalBS=0;
+  if(processType==="cetak"){ bagus=Number(item?.bagus)||0; sortir=Number(item?.sortir)||0; problem=Number(item?.problem)||0; }
+  else{ bagus=Number(item?.bagus)||0; totalBS=Number(item?.lemJenisBS||item?.jenisBS||0); }
+
+  const hasilPerc=order?((bagus/order)*100).toFixed(1):"-";
+  const wastePerc=order?((processType==="cetak"?((sortir+problem)/order)*100:(totalBS/order)*100).toFixed(1)):"-";
+
+  return `
+    <div class="grid-card">
+      <h3>${title}</h3>
+      <p><b>Tanggal:</b> ${item?.tanggal||"-"}</p>
+      <p><b>No KS:</b> ${item.noKS}</p>
+      <p><b>Nama Order:</b> ${item?.nama||"-"}</p>
+      <p><b>Order:</b> ${formatNumber(order)}</p>
+      ${extraFields||""}
+      <p><b>Mesin:</b> ${mesin}</p>
+      <p><b>QC:</b> ${item?.qc||"-"}</p>
+      <p><b>Keterangan:</b></p>
+      <div class="ket-list">
+        <div>1. ${k[1]}</div>
+        <div>2. ${k[2]}</div>
+        <div>3. ${k[3]}</div>
+        <div>4. ${k[4]}</div>
+        <div>5. ${k[5]}</div>
+      </div>
+      <div style="display:inline-block;margin-top:10px;padding:6px 12px;border-radius:6px;color:#000;font-weight:700;background:${color};">
+        STATUS: ${item?.update||"-"}
+      </div>
+      <div style="margin-top:6px;font-weight:600;font-size:0.95rem;">
+        <p><b>Hasil (%):</b> ${hasilPerc} %</p>
+        <p><b>Waste (%):</b> ${wastePerc} %</p>
+      </div>
+    </div>`;
+}
+
+// ======================== RENDER CARD PREVIEW ========================
+function renderCardReport(title,item,extraFields="",processType="cetak"){
+  if(!item?.noKS){
+    return `<div class="report-card"><h3>${title}</h3><div class="report-field"><b>No KS:</b> <i style='color:#f59e0b;'>Proses belum ada</i></div></div>`;
+  }
+  const color=getStatusColor(item?.update);
+  const k=normalizeKet(item?.keterangan);
+  const order=Number(item?.order)||0;
+  const mesin=item?.mesin||"-";
+
+  let bagus=0,totalBS=0,sortir=0,problem=0;
+  if(processType==="cetak"){ bagus=Number(item?.bagus)||0; sortir=Number(item?.sortir)||0; problem=Number(item?.problem)||0; }
+  else{ bagus=Number(item?.bagus)||0; totalBS=Number(item?.lemJenisBS||item?.jenisBS||0); }
+
+  const hasilPerc=order?((bagus/order)*100).toFixed(1):"-";
+  const wastePerc=order?((processType==="cetak"?((sortir+problem)/order)*100:(totalBS/order)*100).toFixed(1)):"-";
+
+  return `
+  <div class="report-card">
+    <h3>${title}</h3>
+    <div class="report-field"><b>Tanggal:</b> ${item?.tanggal||"-"}</div>
+    <div class="report-field"><b>No KS:</b> ${item.noKS}</div>
+    <div class="report-field"><b>Nama Order:</b> ${item?.nama||"-"}</div>
+    <div class="report-field"><b>Order:</b> ${formatNumber(order)}</div>
+    ${extraFields||""}
+    <div class="report-field"><b>Mesin:</b> ${mesin}</div>
+    <div class="report-field"><b>QC:</b> ${item?.qc||"-"}</div>
+    <div class="report-field"><b>Keterangan:</b></div>
+    <div class="ket-list">
+      <div>1. ${k[1]}</div>
+      <div>2. ${k[2]}</div>
+      <div>3. ${k[3]}</div>
+      <div>4. ${k[4]}</div>
+      <div>5. ${k[5]}</div>
+    </div>
+    <div class="report-status" style="background:${color}">STATUS: ${item?.update||"-"}</div>
+    <div class="report-percentage">
+      <div><b>Hasil (%):</b> ${hasilPerc} %</div>
+      <div><b>Waste (%):</b> ${wastePerc} %</div>
+    </div>
+  </div>`;
+}
+
+// ======================== SEARCH REPORT ========================
+function searchReportByID(){
+  const key=reportSearchID.value.trim().toLowerCase();
+  const box=document.getElementById("reportResult");
+  if(!key){ box.innerHTML=""; return; }
+
+  const cetakItems=paItems.filter(x=> (x.noKS||"").toLowerCase()===key);
+  const lemItemsMatch=lemItems.filter(x=> (x.noKS||"").toLowerCase()===key);
+  const finishingItemsMatch=finishingItems.filter(x=> (x.noKS||"").toLowerCase()===key);
+
+  let html="";
+  html+=`<div class="section-title cetak-title">CETAK</div>`;
+  html+=cetakItems.length? cetakItems.map(i=>renderCard("",i,`
+    <p><b>Bagus:</b> ${formatNumber(i?.bagus)}</p>
+    <p><b>Sortir:</b> ${formatNumber(i?.sortir)}</p>
+    <p><b>Problem:</b> ${formatNumber(i?.problem)}</p>`,"cetak")).join('') : renderCard("",{update:"Proses"});
+
+  html+=`<div class="section-title lem-title">LEM</div>`;
+  html+=lemItemsMatch.length? lemItemsMatch.map(i=>renderCard("",i,`
+    <p><b>Isi/Dus:</b> ${formatNumber(i?.isi)}</p>
+    <p><b>Bagus:</b> ${formatNumber(i?.bagus)}</p>
+    <p><b>Total BS:</b> ${formatNumber(i?.lemJenisBS)}</p>`,"lem")).join('') : renderCard("",{update:"Proses"});
+
+  html+=`<div class="section-title finishing-title">FINISHING</div>`;
+  html+=finishingItemsMatch.length? finishingItemsMatch.map(i=>renderCard("",i,`
+    <p><b>Isi/Dus:</b> ${formatNumber(i?.isi)}</p>
+    <p><b>Bagus:</b> ${formatNumber(i?.bagus)}</p>
+    <p><b>Total BS:</b> ${formatNumber(i?.jenisBS)}</p>`,"finishing")).join('') : renderCard("",{update:"Proses"});
+
+  box.innerHTML=html;
+}
+
+// ======================== PREVIEW REPORT ========================
+const previewBtn=document.getElementById("previewReportBtn");
+const modal=document.getElementById("reportPreviewModal");
+const closeBtn=document.getElementById("closePreviewBtn");
+const previewContent=document.getElementById("previewContent");
+
+previewBtn.addEventListener("click",()=>{
+  const key=reportSearchID.value.trim().toLowerCase();
+  if(!key) return;
+  let html="";
+
+  // CETAK
+  html+=`<div class="section-title cetak-title">CETAK</div>`;
+  const cetakItems=paItems.filter(x=> (x.noKS||"").toLowerCase()===key);
+  html+=cetakItems.length? cetakItems.map(i=>renderCardReport("",i,`
+    <div class="report-field"><b>Bagus:</b> ${formatNumber(i?.bagus)}</div>
+    <div class="report-field"><b>Sortir:</b> ${formatNumber(i?.sortir)}</div>
+    <div class="report-field"><b>Problem:</b> ${formatNumber(i?.problem)}</div>`,"cetak")).join('') : renderCardReport("",{update:"Proses"});
+
+  // LEM
+  html+=`<div class="section-title lem-title">LEM</div>`;
+  const lemItemsMatch=lemItems.filter(x=> (x.noKS||"").toLowerCase()===key);
+  html+=lemItemsMatch.length? lemItemsMatch.map(i=>renderCardReport("",i,`
+    <div class="report-field"><b>Isi/Dus:</b> ${formatNumber(i?.isi)}</div>
+    <div class="report-field"><b>Bagus:</b> ${formatNumber(i?.bagus)}</div>
+    <div class="report-field"><b>Total BS:</b> ${formatNumber(i?.lemJenisBS)}</div>`,"lem")).join('') : renderCardReport("",{update:"Proses"});
+
+  // FINISHING
+  html+=`<div class="section-title finishing-title">FINISHING</div>`;
+  const finishingItemsMatch=finishingItems.filter(x=> (x.noKS||"").toLowerCase()===key);
+  html+=finishingItemsMatch.length? finishingItemsMatch.map(i=>renderCardReport("",i,`
+    <div class="report-field"><b>Isi/Dus:</b> ${formatNumber(i?.isi)}</div>
+    <div class="report-field"><b>Bagus:</b> ${formatNumber(i?.bagus)}</div>
+    <div class="report-field"><b>Total BS:</b> ${formatNumber(i?.jenisBS)}</div>`,"finishing")).join('') : renderCardReport("",{update:"Proses"});
+
+  previewContent.innerHTML=html;
+  modal.style.display="flex";
+});
+
+closeBtn.addEventListener("click",()=>{ modal.style.display="none"; });
+window.addEventListener("click",e=>{ if(e.target===modal) modal.style.display="none"; });
+</script>
+
+
+
+
+
 
 
 
@@ -9251,252 +9568,6 @@ function goHome() {
   }
 }
 </script>
-
-
-
-
-
-
-<style>
-// ======================== REPORT (CETAK + LEM + FINISHING) ========================
-#reportResult {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 16px;
-  margin-top: 10px;
-}
-
-#reportResult .grid-card {
-  background: #f3f4f6;
-  padding: 16px;
-  border-radius: 12px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-#reportResult .grid-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.12);
-}
-
-#reportResult .grid-card h3 {
-  margin: 0 0 10px;
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: #1e293b;
-}
-
-#reportResult .grid-card p {
-  margin: 4px 0;
-  font-size: 0.95rem;
-  color: #334155;
-}
-
-#reportResult .grid-card .ket-list div {
-  margin-left: 8px;
-  line-height: 1.35;
-  color: #475569;
-}
-
-#reportResult .grid-card div[style*="STATUS:"] {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 6px 12px;
-  border-radius: 6px;
-  color: #fff;
-  font-weight: 700;
-  font-size: 0.95rem;
-  white-space: nowrap;
-}
-
-#reportResult .section-title {
-  grid-column: 1 / -1;
-  font-size: 1.2rem;
-  font-weight: 700;
-  text-align: center;
-  padding: 6px 12px;
-  border-radius: 8px;
-  margin-top: 20px;
-  margin-bottom: 6px;
-  color: #000; /* teks hitam */
-}
-
-#reportResult .cetak-title {
-  background: linear-gradient(to right, #FF9800, #FFB74D);
-}
-
-#reportResult .lem-title {
-  background: linear-gradient(to right, #9C27B0, #BA68C8);
-}
-
-#reportResult .finishing-title {
-  background: linear-gradient(to right, #22C55E, #4ADE80);
-}
-
-@media screen and (max-width: 768px) {
-  #reportResult {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  #reportResult .grid-card {
-    padding: 12px;
-  }
-
-  #reportResult .grid-card h3 {
-    font-size: 1.05rem;
-  }
-
-  #reportResult .grid-card p {
-    font-size: 0.9rem;
-  }
-
-  #reportResult .section-title {
-    font-size: 1.1rem;
-  }
-}
-</style>
-
-
-<script>
-
-// ======================== VALIDASI INPUT No KS ========================
-const reportSearchID = document.getElementById("reportSearchID");
-
-reportSearchID.addEventListener('input', function() {
-  let value = reportSearchID.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); // huruf & angka saja
-
-  // Tambahkan dash setelah 2 karakter
-  if (value.length > 2) value = value.slice(0, 2) + '-' + value.slice(2);
-
-  // Tambahkan dash setelah 7 karakter (2+5)
-  if (value.length > 7) value = value.slice(0, 7) + '-' + value.slice(7);
-
-  reportSearchID.value = value;
-});
-
-
-
-// ======================== REPORT (CETAK + LEM + FINISHING) ========================
-function searchReportByID() {
-  const key = reportSearchID.value.trim().toLowerCase();
-  const box = document.getElementById("reportResult");
-  if (!key) { box.innerHTML = ""; return; }
-
-  function normalizeKet(rawText="") {
-    const map = {1:"-",2:"-",3:"-",4:"-",5:"-"}; 
-    if(rawText){ rawText.split(/\r?\n/).forEach(line=>{
-      const m=line.match(/^\s*(\d+)\.\s*(.*)/);
-      if(m){ const no=parseInt(m[1]); if(no>=1&&no<=5) map[no]=m[2].trim()||"-"; }
-    }); }
-    return map;
-  }
-
-  function getStatusColor(updateVal=""){
-    const s=updateVal?.toLowerCase()||"";
-    if(s==="proses") return "#FB923C";
-    if(s==="selesai") return "#4ADE80";
-    if(s==="pending") return "#F87171";
-    return "#94A3B8";
-  }
-
-  function renderCard(title, item, extraFields=""){
-    if(!item?.noKS){
-      return `
-        <div class="grid-card">
-          <h3>${title}</h3>
-          <p><b>No KS:</b> <i style='color:#f59e0b;'>Proses belum ada</i></p>
-        </div>
-      `;
-    }
-
-    const color=getStatusColor(item?.update);
-    const k=normalizeKet(item?.keterangan);
-
-    return `
-      <div class="grid-card">
-        <h3>${title}</h3>
-        <p><b>No KS:</b> ${item.noKS}</p>
-        <p><b>Nama Order:</b> ${item?.nama||"-"}</p>
-        <p><b>Order:</b> ${item?.order||"-"}</p>
-        ${extraFields || ""}
-        <p><b>QC:</b> ${item?.qc||"-"}</p>
-        <p><b>Tanggal:</b> ${item?.tanggal||"-"}</p>
-        <p><b>Keterangan:</b></p>
-        <div class="ket-list">
-          <div>1. ${k[1]}</div>
-          <div>2. ${k[2]}</div>
-          <div>3. ${k[3]}</div>
-          <div>4. ${k[4]}</div>
-          <div>5. ${k[5]}</div>
-        </div>
-        <div style="display:inline-block;margin-top:10px;padding:6px 12px;border-radius:6px;
-                    color:#fff;font-weight:700;background:${color};">
-          STATUS: ${item?.update||"-"}
-        </div>
-      </div>`;
-  }
-
-  const cetakItems = paItems.filter(x=> (x.noKS||"").toLowerCase()===key);
-  const lemItemsMatch = lemItems.filter(x=> (x.noKS||"").toLowerCase()===key);
-  const finishingItemsMatch = finishingItems.filter(x=> (x.noKS||"").toLowerCase()===key);
-
-  let html = "";
-
-  // CETAK
-  html += `<div class="section-title cetak-title">CETAK</div>`;
-  if(cetakItems.length){
-    html += cetakItems.map(i=> renderCard("", i, `
-      <p><b>Bagus:</b> ${i?.bagus||"-"}</p>
-      <p><b>Sortir:</b> ${i?.sortir||"-"}</p>
-      <p><b>Problem:</b> ${i?.problem||"-"}</p>
-      <p><b>Mesin:</b> ${i?.mesin||"-"}</p>
-    `)).join('');
-  } else {
-    html += renderCard("", {update:"Proses"});
-  }
-
-  // LEM
-  html += `<div class="section-title lem-title">LEM</div>`;
-  if(lemItemsMatch.length){
-    html += lemItemsMatch.map(i=> renderCard("", i, `
-      <p><b>Isi/Dus:</b> ${i?.isi||"-"}</p>
-      <p><b>Bagus:</b> ${i?.bagus||"-"}</p>
-      <p><b>Total BS:</b> ${i?.lemJenisBS||"-"}</p>
-      <p><b>BS Cetak:</b> ${i?.lemJenisBS1||"-"}</p>
-      <p><b>BS Lem:</b> ${i?.lemJenisBS12||"-"}</p>
-      <p><b>BS Ponch:</b> ${i?.lemJenisBS13||"-"}</p>
-      <p><b>BS Varnish:</b> ${i?.lemJenisBS14||"-"}</p>
-      <p><b>BS Potong:</b> ${i?.lemJenisBS15||"-"}</p>
-    `)).join('');
-  } else {
-    html += renderCard("", {update:"Proses"});
-  }
-
-  // FINISHING
-  html += `<div class="section-title finishing-title">FINISHING</div>`;
-  if(finishingItemsMatch.length){
-    html += finishingItemsMatch.map(i=> renderCard("", i, `
-      <p><b>Isi/Dus:</b> ${i?.isi||"-"}</p>
-      <p><b>Bagus:</b> ${i?.bagus||"-"}</p>
-      <p><b>Total BS:</b> ${i?.jenisBS||"-"}</p>
-      <p><b>BS Cetak:</b> ${i?.jenisBS1||"-"}</p>
-      <p><b>BS Lem:</b> ${i?.jenisBS2||"-"}</p>
-      <p><b>BS Ponch:</b> ${i?.jenisBS3||"-"}</p>
-      <p><b>BS Varnish:</b> ${i?.jenisBS4||"-"}</p>
-      <p><b>BS Potong:</b> ${i?.jenisBS5||"-"}</p>
-    `)).join('');
-  } else {
-    html += renderCard("", {update:"Proses"});
-  }
-
-  box.innerHTML = html;
-}
-</script>
-
-
-
-
 
 
 
