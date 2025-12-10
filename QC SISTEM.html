@@ -4754,7 +4754,7 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
           .card-grid {
             display:grid;
             gap:12px;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             page-break-inside: avoid;
           }
 
@@ -4808,6 +4808,7 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
   // hapus iframe setelah print
   setTimeout(() => document.body.removeChild(iframe), 1000);
 });
+
 
 
 
@@ -9794,3 +9795,4 @@ function goHome() {
 
 </body>
 </html>
+
