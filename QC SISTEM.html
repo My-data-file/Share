@@ -4685,7 +4685,7 @@ document.getElementById("shareWaBtn").addEventListener("click", () => {
   window.open(url, "_blank");
 });
 
-// ======================== DOWNLOAD PDF FINAL (IFRAME) ========================
+// ======================== DOWNLOAD PDF FINAL (IFRAME, LAYOUT MOBILE-FIX) ========================
 document.getElementById("downloadPdfBtn").addEventListener("click", () => {
   // buat iframe tersembunyi
   const iframe = document.createElement('iframe');
@@ -4722,7 +4722,8 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
       <head>
         <title>Report QC</title>
         <style>
-          body { font-family: Arial, sans-serif; padding:25px; font-size:14px; line-height:1.4; margin:0; }
+          body { font-family: Arial, sans-serif; padding:25px; font-size:14px; line-height:1.4; margin:0; width: 900px; }
+
           h1,h2,h3 { text-align:center; margin-bottom:10px; }
 
           /* HEADER PROSES SESUAI PREVIEW */
@@ -4731,6 +4732,7 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
           .finishing-title { background: linear-gradient(to right, #22C55E, #4ADE80); color:#fff; }
 
           .section-title { font-weight:700; padding:12px; font-size:1.4rem; text-align:center; border-radius:6px; margin:30px 0 12px; page-break-after:avoid; }
+
           .card-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; page-break-inside: avoid; }
 
           .report-card { border:1px solid #e2e8f0; border-radius:8px; padding:14px 16px; margin-bottom:12px; box-shadow:0 2px 8px rgba(0,0,0,0.08); page-break-inside: avoid; }
@@ -4744,10 +4746,10 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
           .proses { background:#fff3cd; color:#856404; }
 
           @media print {
-            body {-webkit-print-color-adjust: exact; print-color-adjust: exact;}
+            body { width: 900px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .card-grid { grid-template-columns: repeat(2, 1fr); }
             .report-card { page-break-inside: avoid; }
             .section-title { page-break-after: avoid; }
-            .card-grid { page-break-inside: avoid; }
           }
         </style>
       </head>
@@ -4765,6 +4767,7 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
   // hapus iframe setelah print (opsional)
   setTimeout(() => document.body.removeChild(iframe), 1000);
 });
+
 
 </script>
 
