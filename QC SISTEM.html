@@ -4685,7 +4685,8 @@ document.getElementById("shareWaBtn").addEventListener("click", () => {
   window.open(url, "_blank");
 });
 
-// ======================== DOWNLOAD PDF FINAL (IFRAME, LAYOUT MOBILE-FIX) ========================
+
+// ======================== DOWNLOAD PDF FINAL (IFRAME) ========================
 document.getElementById("downloadPdfBtn").addEventListener("click", () => {
   // buat iframe tersembunyi
   const iframe = document.createElement('iframe');
@@ -4722,8 +4723,14 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
       <head>
         <title>Report QC</title>
         <style>
-          body { font-family: Arial, sans-serif; padding:25px; font-size:14px; line-height:1.4; margin:0; width: 900px; }
-
+          /* A4 size in mm, supaya sama HP & laptop */
+          body {
+            font-family: Arial, sans-serif;
+            width: 190mm;
+            margin: 10mm auto;
+            font-size: 14px;
+            line-height: 1.4;
+          }
           h1,h2,h3 { text-align:center; margin-bottom:10px; }
 
           /* HEADER PROSES SESUAI PREVIEW */
@@ -4731,12 +4738,41 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
           .lem-title { background: linear-gradient(to right, #9C27B0, #BA68C8); color:#fff; }
           .finishing-title { background: linear-gradient(to right, #22C55E, #4ADE80); color:#fff; }
 
-          .section-title { font-weight:700; padding:12px; font-size:1.4rem; text-align:center; border-radius:6px; margin:30px 0 12px; page-break-after:avoid; }
+          .section-title {
+            font-weight:700;
+            padding:12px;
+            font-size:1.4rem;
+            text-align:center;
+            border-radius:6px;
+            margin:30px 0 12px;
+            page-break-after:avoid;
+          }
 
-          .card-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; page-break-inside: avoid; }
+          /* Grid 2 kolom */
+          .card-grid {
+            display:grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap:12px;
+            page-break-inside: avoid;
+          }
 
-          .report-card { border:1px solid #e2e8f0; border-radius:8px; padding:14px 16px; margin-bottom:12px; box-shadow:0 2px 8px rgba(0,0,0,0.08); page-break-inside: avoid; }
-          .report-card h3 { font-size:1.1rem; font-weight:700; margin-bottom:8px; color:#1e293b; border-bottom:1px solid #e2e8f0; padding-bottom:4px; text-align:center; }
+          .report-card {
+            border:1px solid #e2e8f0;
+            border-radius:8px;
+            padding:14px 16px;
+            margin-bottom:12px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.08);
+            page-break-inside: avoid;
+          }
+          .report-card h3 {
+            font-size:1.1rem;
+            font-weight:700;
+            margin-bottom:8px;
+            color:#1e293b;
+            border-bottom:1px solid #e2e8f0;
+            padding-bottom:4px;
+            text-align:center;
+          }
           .report-field { margin:4px 0; font-size:0.95rem; color:#334155; }
           .report-status { display:inline-block; margin-top:8px; padding:6px 12px; border-radius:6px; font-weight:700; color:#000; }
           .report-percentage div { margin-top:4px; font-weight:600; font-size:0.95rem; }
@@ -4745,11 +4781,12 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
           .done { background:#d4edda; color:#155724; }
           .proses { background:#fff3cd; color:#856404; }
 
+          /* Print rules */
           @media print {
-            body { width: 900px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .card-grid { grid-template-columns: repeat(2, 1fr); }
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .report-card { page-break-inside: avoid; }
             .section-title { page-break-after: avoid; }
+            .card-grid { page-break-inside: avoid; }
           }
         </style>
       </head>
@@ -4764,12 +4801,11 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
   iframe.contentWindow.focus();
   iframe.contentWindow.print();
 
-  // hapus iframe setelah print (opsional)
+  // hapus iframe setelah print
   setTimeout(() => document.body.removeChild(iframe), 1000);
 });
-
-
 </script>
+
 
 
 
