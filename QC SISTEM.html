@@ -4581,9 +4581,10 @@ if (spvNoKS) {
       font-family:Arial, sans-serif;
     ">
 
-      <!-- Modal header + tombol close SEKARANG di dalam header -->
+      <!-- Modal header -->
       <div class="modal-header">
         REPORT QC
+
         <button id="closePreviewBtn" style="
           position:absolute;
           top:50%;
@@ -4598,11 +4599,180 @@ if (spvNoKS) {
         ">✕</button>
       </div>
 
+      <!-- Tombol WA + PDF -->
+      <div style="text-align:center; margin-bottom:15px;">
+        
+        <button id="shareWaBtn" style="
+          padding:8px 14px;
+          background:#25D366;
+          color:#fff;
+          border:none;
+          border-radius:6px;
+          font-weight:600;
+          cursor:pointer;
+          margin-right:10px;
+        ">Share WA</button>
+
+        <button id="downloadPdfBtn" style="
+          padding:8px 14px;
+          background:#EF4444;
+          color:#fff;
+          border:none;
+          border-radius:6px;
+          font-weight:600;
+          cursor:pointer;
+        ">Download PDF</button>
+
+      </div>
+
       <div id="previewContent" style="line-height:1.5;"></div>
     </div>
   </div>
-
 </section>
+
+
+<script>
+// ======================== SHARE WA FINAL ========================
+document.getElementById("shareWaBtn").addEventListener("click", () => {
+  let text = "*REPORT QC*\n\n"; // Judul paling atas bold
+
+  const cleanText = t =>
+    t.replace(/\u00A0/g, " ")
+     .replace(/[^\x00-\x7F]/g, "")
+     .replace(/\n{3,}/g, "\n")
+     .trim();
+
+  // Ambil section-title (judul proses)
+  const sections = previewContent.querySelectorAll(".section-title");
+  sections.forEach(section => {
+    const title = cleanText(section.innerText);
+    text += `=======\n*${title}*\n=======\n\n`;
+
+    // Ambil semua report-card setelah section ini sampai section berikutnya
+    let next = section.nextElementSibling;
+    while(next && !next.classList.contains("section-title")){
+      if(next.classList.contains("report-card")){
+        // Ambil semua report-field dan ket-list
+        next.querySelectorAll(".report-field, .ket-list div").forEach(el => {
+          const l = cleanText(el.innerText);
+          if(l) text += "• " + l + "\n";
+        });
+
+        // Ambil status
+        const statusEl = next.querySelector(".report-status");
+        if(statusEl){
+          text += "• STATUS: " + cleanText(statusEl.innerText.replace(/^STATUS:\s*/i,"")) + "\n";
+        }
+
+        // Ambil persentase
+        const percEl = next.querySelector(".report-percentage");
+        if(percEl){
+          percEl.querySelectorAll("div").forEach(d=>{
+            const l = cleanText(d.innerText);
+            if(l) text += "• " + l + "\n";
+          });
+        }
+
+        text += "\n"; // gap antar card
+      }
+      next = next.nextElementSibling;
+    }
+
+    text += "\n"; // gap antar proses
+  });
+
+  const url = "https://wa.me/?text=" + encodeURIComponent(text);
+  window.open(url, "_blank");
+});
+
+// ======================== DOWNLOAD PDF FINAL (IFRAME) ========================
+document.getElementById("downloadPdfBtn").addEventListener("click", () => {
+  // buat iframe tersembunyi
+  const iframe = document.createElement('iframe');
+  iframe.style.position = 'fixed';
+  iframe.style.width = '0';
+  iframe.style.height = '0';
+  iframe.style.border = '0';
+  document.body.appendChild(iframe);
+
+  const doc = iframe.contentDocument || iframe.contentWindow.document;
+
+  // buat HTML section per proses, minimal 4 card per halaman
+  const htmlSections = [...previewContent.querySelectorAll('.section-title')].map(section => {
+    let html = `<div class="section-title ${section.className}">${section.innerHTML}</div><div class="card-grid">`;
+
+    let next = section.nextElementSibling;
+    let cardCount = 0;
+    while (next && !next.classList.contains("section-title")) {
+      if (next.classList.contains("report-card")) {
+        html += next.outerHTML;
+        cardCount++;
+        if (cardCount % 4 === 0) html += '<div style="page-break-after: always;"></div>';
+      }
+      next = next.nextElementSibling;
+    }
+
+    html += '</div>';
+    return html;
+  }).join('');
+
+  doc.open();
+  doc.write(`
+    <html>
+      <head>
+        <title>Report QC</title>
+        <style>
+          body { font-family: Arial, sans-serif; padding:25px; font-size:14px; line-height:1.4; margin:0; }
+          h1,h2,h3 { text-align:center; margin-bottom:10px; }
+
+          /* HEADER PROSES SESUAI PREVIEW */
+          .cetak-title { background: linear-gradient(to right, #FF9800, #FFB74D); color:#fff; }
+          .lem-title { background: linear-gradient(to right, #9C27B0, #BA68C8); color:#fff; }
+          .finishing-title { background: linear-gradient(to right, #22C55E, #4ADE80); color:#fff; }
+
+          .section-title { font-weight:700; padding:12px; font-size:1.4rem; text-align:center; border-radius:6px; margin:30px 0 12px; page-break-after:avoid; }
+          .card-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; page-break-inside: avoid; }
+
+          .report-card { border:1px solid #e2e8f0; border-radius:8px; padding:14px 16px; margin-bottom:12px; box-shadow:0 2px 8px rgba(0,0,0,0.08); page-break-inside: avoid; }
+          .report-card h3 { font-size:1.1rem; font-weight:700; margin-bottom:8px; color:#1e293b; border-bottom:1px solid #e2e8f0; padding-bottom:4px; text-align:center; }
+          .report-field { margin:4px 0; font-size:0.95rem; color:#334155; }
+          .report-status { display:inline-block; margin-top:8px; padding:6px 12px; border-radius:6px; font-weight:700; color:#000; }
+          .report-percentage div { margin-top:4px; font-weight:600; font-size:0.95rem; }
+          .ket-list div { margin-left:10px; line-height:1.35; color:#475569; }
+          .pending { background:#f8d7da; color:#721c24; }
+          .done { background:#d4edda; color:#155724; }
+          .proses { background:#fff3cd; color:#856404; }
+
+          @media print {
+            body {-webkit-print-color-adjust: exact; print-color-adjust: exact;}
+            .report-card { page-break-inside: avoid; }
+            .section-title { page-break-after: avoid; }
+            .card-grid { page-break-inside: avoid; }
+          }
+        </style>
+      </head>
+      <body>
+        ${htmlSections}
+      </body>
+    </html>
+  `);
+  doc.close();
+
+  // fokus dan print
+  iframe.contentWindow.focus();
+  iframe.contentWindow.print();
+
+  // hapus iframe setelah print (opsional)
+  setTimeout(() => document.body.removeChild(iframe), 1000);
+});
+
+</script>
+
+
+
+
+
+
 
 <style>
 /* ======================== REPORT CARD GRID ======================== */
