@@ -4723,17 +4723,19 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
       <head>
         <title>Report QC</title>
         <style>
-          /* A4 size in mm, supaya sama HP & laptop */
+          /* ===================== Ukuran & Font ===================== */
+          @page { size: A4; margin: 10mm; }
           body {
             font-family: Arial, sans-serif;
-            width: 190mm;
-            margin: 10mm auto;
             font-size: 14px;
             line-height: 1.4;
+            margin: 0;
+            padding: 10mm;
           }
+
           h1,h2,h3 { text-align:center; margin-bottom:10px; }
 
-          /* HEADER PROSES SESUAI PREVIEW */
+          /* ===================== Section Header ===================== */
           .cetak-title { background: linear-gradient(to right, #FF9800, #FFB74D); color:#fff; }
           .lem-title { background: linear-gradient(to right, #9C27B0, #BA68C8); color:#fff; }
           .finishing-title { background: linear-gradient(to right, #22C55E, #4ADE80); color:#fff; }
@@ -4748,11 +4750,11 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
             page-break-after:avoid;
           }
 
-          /* Grid 2 kolom */
+          /* ===================== Grid ===================== */
           .card-grid {
             display:grid;
-            grid-template-columns: repeat(2, 1fr);
             gap:12px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             page-break-inside: avoid;
           }
 
@@ -4764,6 +4766,7 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
             box-shadow:0 2px 8px rgba(0,0,0,0.08);
             page-break-inside: avoid;
           }
+
           .report-card h3 {
             font-size:1.1rem;
             font-weight:700;
@@ -4773,6 +4776,7 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
             padding-bottom:4px;
             text-align:center;
           }
+
           .report-field { margin:4px 0; font-size:0.95rem; color:#334155; }
           .report-status { display:inline-block; margin-top:8px; padding:6px 12px; border-radius:6px; font-weight:700; color:#000; }
           .report-percentage div { margin-top:4px; font-weight:600; font-size:0.95rem; }
@@ -4781,12 +4785,12 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
           .done { background:#d4edda; color:#155724; }
           .proses { background:#fff3cd; color:#856404; }
 
-          /* Print rules */
+          /* ===================== Print rules ===================== */
           @media print {
-            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; width:auto; }
+            .card-grid { grid-template-columns: 1fr !important; page-break-inside: avoid; }
             .report-card { page-break-inside: avoid; }
             .section-title { page-break-after: avoid; }
-            .card-grid { page-break-inside: avoid; }
           }
         </style>
       </head>
@@ -4804,6 +4808,10 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
   // hapus iframe setelah print
   setTimeout(() => document.body.removeChild(iframe), 1000);
 });
+
+
+
+  
 </script>
 
 
@@ -9786,3 +9794,4 @@ function goHome() {
 
 </body>
 </html>
+
