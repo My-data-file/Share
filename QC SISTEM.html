@@ -4625,6 +4625,10 @@ if (spvNoKS) {
 <script>
 // ======================== DOWNLOAD PDF CEPAT + SPINNER LANGSUNG ========================
 document.getElementById("downloadPdfBtn").addEventListener("click", () => {
+
+  // 🔥 KONFIRMASI DOWNLOAD
+  if (!confirm("Yakin ingin mendownload PDF laporan ini?")) return;
+
   const btn = document.getElementById("downloadPdfBtn");
   const originalText = btn.innerHTML;
 
@@ -4710,7 +4714,7 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
       btn.innerHTML = originalText;
     });
 
-  }, 50); // delay sangat kecil supaya spinner sempat render
+  }, 50);
 });
 
 
@@ -4727,19 +4731,20 @@ document.getElementById("closePreviewBtn").addEventListener("click", () => {
 
 // ======================== Tombol Share WA ========================
 document.getElementById("shareWaBtn").addEventListener("click", () => {
+
+  // 🔥 KONFIRMASI SHARE WA
+  if (!confirm("Bagikan laporan ini ke WhatsApp?")) return;
+
   const sections = previewContent.querySelectorAll(".section-title");
 
   const headerLine = "==============================";
 
-  // ✅ 25 SPASI sebelum REPORT QC — HANYA HEADER UTAMA
   let text = `${headerLine}\n                         *REPORT QC*\n${headerLine}\n\n`;
-  //                        ^^^^^^^^^^^^^^^^^ 25 spasi
 
   sections.forEach(section => {
     const line = "====================";
     const title = section.innerText.trim();
 
-    // ❌ Judul proses TIDAK digeser
     text += `${line}\n*${title}*\n${line}\n\n`;
 
     let next = section.nextElementSibling;
@@ -4751,19 +4756,14 @@ document.getElementById("shareWaBtn").addEventListener("click", () => {
         lines.forEach(l => {
           const trimmed = l.trim();
 
-          // 🔹 "Keterangan:"
           if (/^Keterangan:?$/i.test(trimmed)) {
             text += `* ${trimmed}\n`;
             return;
           }
 
-          // 🔹 Nomor (1., 2., dst) → tanpa bullet + indent 8 spasi
           if (/^\d+\./.test(trimmed)) {
-            text += `        ${trimmed}\n`; // 8 spasi
-          }
-
-          // 🔹 Baris biasa → bullet
-          else {
+            text += `        ${trimmed}\n`;
+          } else {
             text += `* ${trimmed}\n`;
           }
         });
@@ -4774,7 +4774,7 @@ document.getElementById("shareWaBtn").addEventListener("click", () => {
       next = next.nextElementSibling;
     }
 
-    text += "\n"; // GAP antar proses
+    text += "\n";
   });
 
   const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
