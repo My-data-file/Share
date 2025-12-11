@@ -4510,7 +4510,6 @@ if (spvNoKS) {
 <!-- ======================== REPORT ======================== -->
 <section id="reportSection" class="card qc-section" style="display:none;">
 
-  <!-- Judul halaman utama -->
   <h2 style="
     text-align:center; 
     color:#000; 
@@ -4523,7 +4522,6 @@ if (spvNoKS) {
     REPORT QC
   </h2>
 
-  <!-- Input ID -->
   <div style="margin-bottom:12px;">
     <input 
       type="text" 
@@ -4540,7 +4538,6 @@ if (spvNoKS) {
     />
   </div>
 
-  <!-- Tombol Preview -->
   <div style="text-align:center; margin:12px 0;">
     <button id="previewReportBtn" style="
       padding:8px 20px;
@@ -4556,10 +4553,8 @@ if (spvNoKS) {
     </button>
   </div>
 
-  <!-- Hasil Report -->
   <div id="reportResult" style="padding:10px; border-radius:10px;"></div>
 
-  <!-- Modal Preview -->
   <div id="reportPreviewModal" style="
     display:none;
     position:fixed;
@@ -4581,10 +4576,8 @@ if (spvNoKS) {
       font-family:Arial, sans-serif;
     ">
 
-      <!-- Modal header -->
       <div class="modal-header">
         REPORT QC
-
         <button id="closePreviewBtn" style="
           position:absolute;
           top:50%;
@@ -4599,9 +4592,7 @@ if (spvNoKS) {
         ">✕</button>
       </div>
 
-      <!-- Tombol WA + PDF -->
       <div style="text-align:center; margin-bottom:15px;">
-        
         <button id="shareWaBtn" style="
           padding:8px 14px;
           background:#25D366;
@@ -4622,7 +4613,6 @@ if (spvNoKS) {
           font-weight:600;
           cursor:pointer;
         ">Download PDF</button>
-
       </div>
 
       <div id="previewContent" style="line-height:1.5;"></div>
@@ -4630,191 +4620,133 @@ if (spvNoKS) {
   </div>
 </section>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <script>
-// ======================== SHARE WA FINAL ========================
+// ======================== DOWNLOAD PDF CEPAT + SPINNER LANGSUNG ========================
+document.getElementById("downloadPdfBtn").addEventListener("click", () => {
+  const btn = document.getElementById("downloadPdfBtn");
+  const originalText = btn.innerHTML;
+
+  // tampilkan spinner / disable tombol
+  btn.disabled = true;
+  btn.innerHTML = "Generating PDF... ⏳";
+
+  // jalankan generate PDF setelah browser sempat render spinner
+  setTimeout(() => {
+    // wrapper PDF
+    const pdfWrapper = document.createElement("div");
+    pdfWrapper.style.padding = "8px";
+    pdfWrapper.style.boxSizing = "border-box";
+
+    const sections = [...previewContent.querySelectorAll(".section-title")];
+
+    sections.forEach((section, idx) => {
+      const secDiv = document.createElement("div");
+      secDiv.className = section.className + " section-title";
+      secDiv.innerHTML = section.innerHTML;
+      if(idx !== 0) secDiv.style.pageBreakBefore = "always";
+      pdfWrapper.appendChild(secDiv);
+
+      let next = section.nextElementSibling;
+      let cardCount = 0;
+
+      while(next && !next.classList.contains("section-title")){
+        if(next.classList.contains("report-card")){
+          const card = next.cloneNode(true);
+
+          // styling PDF ringan → hilangkan shadow & border-radius
+          card.style.pageBreakInside = "avoid";
+          card.style.marginBottom = "4px";
+          card.style.fontSize = "0.8rem";
+          card.querySelectorAll("h3").forEach(h => h.style.fontSize = "0.9rem");
+
+          card.style.maxWidth = "calc(100% - 4px)";
+          card.style.boxSizing = "border-box";
+          card.style.boxShadow = "none";
+          card.style.borderRadius = "4px";
+
+          pdfWrapper.appendChild(card);
+          cardCount++;
+
+          if(cardCount % 4 === 0){
+            const pb = document.createElement("div");
+            pb.style.pageBreakAfter = "always";
+            pdfWrapper.appendChild(pb);
+          }
+        }
+        next = next.nextElementSibling;
+      }
+    });
+
+    // style PDF
+    const style = document.createElement("style");
+    style.innerHTML = `
+      body, div { font-family: Arial, sans-serif; box-sizing: border-box; }
+      body { padding: 8px; }
+      .section-title { font-weight:700; padding:6px 0; font-size:1rem; text-align:center; border-radius:4px; margin:12px 0 4px; page-break-after: avoid; }
+      .report-card { border:1px solid #e2e8f0; padding:4px 6px; margin-bottom:4px; page-break-inside: avoid; max-width:calc(100% - 4px); box-sizing:border-box; }
+      .report-card h3 { font-size:0.9rem; font-weight:700; margin-bottom:3px; color:#1e293b; border-bottom:1px solid #e2e8f0; padding-bottom:2px; text-align:center; }
+      .report-field { margin:1px 0; font-size:0.75rem; color:#334155; }
+      .report-status { display:inline-block; margin-top:2px; padding:2px 4px; border-radius:4px; font-weight:700; color:#000; }
+      .report-percentage div { margin-top:2px; font-weight:600; font-size:0.75rem; }
+      .ket-list div { margin-left:4px; line-height:1.2; color:#475569; }
+      .pending { background:#f8d7da; color:#721c24; }
+      .done { background:#d4edda; color:#155724; }
+      .proses { background:#fff3cd; color:#856404; }
+    `;
+    pdfWrapper.prepend(style);
+
+    // generate PDF
+    html2pdf().set({
+      margin: 15,
+      filename:'report-qc.pdf',
+      image:{type:'jpeg', quality:0.85},
+      html2canvas:{scale:1.2, logging:false},
+      jsPDF:{unit:'mm', format:'a4', orientation:'portrait'}
+    }).from(pdfWrapper).save().then(() => {
+      // selesai → kembalikan tombol
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+    });
+
+  }, 50); // delay sangat kecil supaya spinner sempat render
+});
+
+
+// ======================== Tombol Preview ========================
+document.getElementById("previewReportBtn").addEventListener("click", () => {
+  document.getElementById("reportPreviewModal").style.display = "flex";
+});
+
+// ======================== Close Preview Modal ========================
+document.getElementById("closePreviewBtn").addEventListener("click", () => {
+  document.getElementById("reportPreviewModal").style.display = "none";
+});
+
+// ======================== Tombol Share WA ========================
 document.getElementById("shareWaBtn").addEventListener("click", () => {
-  let text = "*REPORT QC*\n\n"; // Judul paling atas bold
-
-  const cleanText = t =>
-    t.replace(/\u00A0/g, " ")
-     .replace(/[^\x00-\x7F]/g, "")
-     .replace(/\n{3,}/g, "\n")
-     .trim();
-
-  // Ambil section-title (judul proses)
   const sections = previewContent.querySelectorAll(".section-title");
-  sections.forEach(section => {
-    const title = cleanText(section.innerText);
-    text += `=======\n*${title}*\n=======\n\n`;
+  let text = "*REPORT QC*\n\n";
 
-    // Ambil semua report-card setelah section ini sampai section berikutnya
+  sections.forEach(section => {
+    text += section.innerText + "\n";
     let next = section.nextElementSibling;
     while(next && !next.classList.contains("section-title")){
       if(next.classList.contains("report-card")){
-        // Ambil semua report-field dan ket-list
-        next.querySelectorAll(".report-field, .ket-list div").forEach(el => {
-          const l = cleanText(el.innerText);
-          if(l) text += "• " + l + "\n";
-        });
-
-        // Ambil status
-        const statusEl = next.querySelector(".report-status");
-        if(statusEl){
-          text += "• STATUS: " + cleanText(statusEl.innerText.replace(/^STATUS:\s*/i,"")) + "\n";
-        }
-
-        // Ambil persentase
-        const percEl = next.querySelector(".report-percentage");
-        if(percEl){
-          percEl.querySelectorAll("div").forEach(d=>{
-            const l = cleanText(d.innerText);
-            if(l) text += "• " + l + "\n";
-          });
-        }
-
-        text += "\n"; // gap antar card
+        text += next.innerText + "\n\n";
       }
       next = next.nextElementSibling;
     }
-
-    text += "\n"; // gap antar proses
   });
 
-  const url = "https://wa.me/?text=" + encodeURIComponent(text);
+  const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
   window.open(url, "_blank");
 });
 
 
-// ======================== DOWNLOAD PDF FINAL (IFRAME) ========================
-document.getElementById("downloadPdfBtn").addEventListener("click", () => {
-  // buat iframe tersembunyi
-  const iframe = document.createElement('iframe');
-  iframe.style.position = 'fixed';
-  iframe.style.width = '0';
-  iframe.style.height = '0';
-  iframe.style.border = '0';
-  document.body.appendChild(iframe);
-
-  const doc = iframe.contentDocument || iframe.contentWindow.document;
-
-  // buat HTML section per proses, minimal 4 card per halaman
-  const htmlSections = [...previewContent.querySelectorAll('.section-title')].map(section => {
-    let html = `<div class="section-title ${section.className}">${section.innerHTML}</div><div class="card-grid">`;
-
-    let next = section.nextElementSibling;
-    let cardCount = 0;
-    while (next && !next.classList.contains("section-title")) {
-      if (next.classList.contains("report-card")) {
-        html += next.outerHTML;
-        cardCount++;
-        if (cardCount % 4 === 0) html += '<div style="page-break-after: always;"></div>';
-      }
-      next = next.nextElementSibling;
-    }
-
-    html += '</div>';
-    return html;
-  }).join('');
-
-  doc.open();
-  doc.write(`
-    <html>
-      <head>
-        <title>Report QC</title>
-        <style>
-          /* ===================== Ukuran & Font ===================== */
-          @page { size: A4; margin: 10mm; }
-          body {
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            line-height: 1.4;
-            margin: 0;
-            padding: 10mm;
-          }
-
-          h1,h2,h3 { text-align:center; margin-bottom:10px; }
-
-          /* ===================== Section Header ===================== */
-          .cetak-title { background: linear-gradient(to right, #FF9800, #FFB74D); color:#fff; }
-          .lem-title { background: linear-gradient(to right, #9C27B0, #BA68C8); color:#fff; }
-          .finishing-title { background: linear-gradient(to right, #22C55E, #4ADE80); color:#fff; }
-
-          .section-title {
-            font-weight:700;
-            padding:12px;
-            font-size:1.4rem;
-            text-align:center;
-            border-radius:6px;
-            margin:30px 0 12px;
-            page-break-after:avoid;
-          }
-
-          /* ===================== Grid ===================== */
-          .card-grid {
-            display:grid;
-            gap:12px;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            page-break-inside: avoid;
-          }
-
-          .report-card {
-            border:1px solid #e2e8f0;
-            border-radius:8px;
-            padding:14px 16px;
-            margin-bottom:12px;
-            box-shadow:0 2px 8px rgba(0,0,0,0.08);
-            page-break-inside: avoid;
-          }
-
-          .report-card h3 {
-            font-size:1.1rem;
-            font-weight:700;
-            margin-bottom:8px;
-            color:#1e293b;
-            border-bottom:1px solid #e2e8f0;
-            padding-bottom:4px;
-            text-align:center;
-          }
-
-          .report-field { margin:4px 0; font-size:0.95rem; color:#334155; }
-          .report-status { display:inline-block; margin-top:8px; padding:6px 12px; border-radius:6px; font-weight:700; color:#000; }
-          .report-percentage div { margin-top:4px; font-weight:600; font-size:0.95rem; }
-          .ket-list div { margin-left:10px; line-height:1.35; color:#475569; }
-          .pending { background:#f8d7da; color:#721c24; }
-          .done { background:#d4edda; color:#155724; }
-          .proses { background:#fff3cd; color:#856404; }
-
-          /* ===================== Print rules ===================== */
-          @media print {
-            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; width:auto; }
-            .card-grid { grid-template-columns: 1fr !important; page-break-inside: avoid; }
-            .report-card { page-break-inside: avoid; }
-            .section-title { page-break-after: avoid; }
-          }
-        </style>
-      </head>
-      <body>
-        ${htmlSections}
-      </body>
-    </html>
-  `);
-  doc.close();
-
-  // fokus dan print
-  iframe.contentWindow.focus();
-  iframe.contentWindow.print();
-
-  // hapus iframe setelah print
-  setTimeout(() => document.body.removeChild(iframe), 1000);
-});
-
-
-
-
-
-  
 </script>
+
 
 
 
@@ -9796,5 +9728,4 @@ function goHome() {
 
 </body>
 </html>
-
 
