@@ -2414,46 +2414,35 @@ paNoKS.addEventListener('input', function(e) {
 
 <script>
 const finishingNoKS = document.getElementById('finishingNoKS');
-
 if (finishingNoKS) {
-  let lastValue = "";
+  let lastClean = "";
 
   finishingNoKS.addEventListener('input', function() {
     let raw = finishingNoKS.value.toUpperCase();
-
-    // Bersihkan input (A–Z & 0–9)
     let clean = raw.replace(/[^A-Z0-9]/g, '');
 
-    // Format KS-XXXX-XX
+    // Jangan update kalau input belum berubah
+    if (clean === lastClean) return;
+    lastClean = clean;
+
+    // Format strip
     let formatted = clean;
     if (clean.length > 2) formatted = clean.slice(0, 2) + '-' + clean.slice(2);
     if (clean.length > 6) formatted = formatted.slice(0, 7) + '-' + formatted.slice(7);
 
-    // Cegah render ulang jika sama
-    if (formatted === lastValue) return;
-    lastValue = formatted;
-
-    // Simpan posisi cursor asli
     let cursorPos = finishingNoKS.selectionStart;
 
-    // Hitung perbedaan panjang
-    let diff = formatted.length - raw.length;
-
-    // Delay update value agar keyboard Vivo tidak reset
     setTimeout(() => {
       finishingNoKS.value = formatted;
 
-      // Koreksi cursor: tetap dekat posisi user mengetik
-      let newPos = cursorPos + diff;
-
-      // Jangan biarkan cursor melebihi panjang input
+      // Cursor di posisi aman
+      let newPos = cursorPos;
       if (newPos > formatted.length) newPos = formatted.length;
-      if (newPos < 0) newPos = 0;
-
       finishingNoKS.setSelectionRange(newPos, newPos);
     }, 0);
   });
 }
+
 </script>
 
 
@@ -9816,6 +9805,7 @@ function goHome() {
 
 </body>
 </html>
+
 
 
 
