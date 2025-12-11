@@ -2161,20 +2161,47 @@ body {
 <script>
 const paNoKS = document.getElementById('paNoKS');
 
-paNoKS.addEventListener('input', function(e) {
-  let value = paNoKS.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); // huruf & angka saja, uppercase
+if (paNoKS) {
+  let lastValue = "";
 
-  if (value.length > 2) {
-    value = value.slice(0,2) + '-' + value.slice(2);
-  }
+  paNoKS.addEventListener('input', function() {
+    let raw = paNoKS.value.toUpperCase();
 
-  if (value.length > 7) {
-    value = value.slice(0,7) + '-' + value.slice(7); // sisanya bebas
-  }
+    // Bersihkan input (A–Z & 0–9)
+    let clean = raw.replace(/[^A-Z0-9]/g, '');
 
-  paNoKS.value = value;
-});
+    // Format KS-XXXX-XX
+    let formatted = clean;
+    if (clean.length > 2) formatted = clean.slice(0, 2) + '-' + clean.slice(2);
+    if (clean.length > 6) formatted = formatted.slice(0, 7) + '-' + formatted.slice(7);
+
+    // Cegah re-render bila sama
+    if (formatted === lastValue) return;
+    lastValue = formatted;
+
+    // Simpan posisi cursor asli
+    let cursorPos = paNoKS.selectionStart;
+
+    // Hitung selisih panjang
+    let diff = formatted.length - raw.length;
+
+    // Delay update agar tidak bug di HP Vivo
+    setTimeout(() => {
+      paNoKS.value = formatted;
+
+      // Koreksi posisi cursor
+      let newPos = cursorPos + diff;
+      if (newPos > formatted.length) newPos = formatted.length;
+      if (newPos < 0) newPos = 0;
+
+      paNoKS.setSelectionRange(newPos, newPos);
+    }, 0);
+  });
+}
 </script>
+
+
+
 
 
 
@@ -2462,6 +2489,8 @@ if (finishingNoKS) {
 
 
 
+
+
 <!-- ======================== QC LEM ======================== -->
 <section id="qcLem" class="card qc-section" style="display:none;">
 
@@ -2703,21 +2732,46 @@ if (finishingNoKS) {
 const lemNoKS = document.getElementById('lemNoKS');
 
 if (lemNoKS) {
+  let lastValue = "";
+
   lemNoKS.addEventListener('input', function() {
-    let value = lemNoKS.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); // huruf & angka saja, uppercase
+    let raw = lemNoKS.value.toUpperCase();
 
-    if (value.length > 2) {
-      value = value.slice(0,2) + '-' + value.slice(2);
-    }
+    // Bersihkan input (A–Z & 0–9)
+    let clean = raw.replace(/[^A-Z0-9]/g, '');
 
-    if (value.length > 7) {
-      value = value.slice(0,7) + '-' + value.slice(7); // sisanya bebas
-    }
+    // Format KS-XXXX-XX
+    let formatted = clean;
+    if (clean.length > 2) formatted = clean.slice(0, 2) + '-' + clean.slice(2);
+    if (clean.length > 6) formatted = formatted.slice(0, 7) + '-' + formatted.slice(7);
 
-    lemNoKS.value = value;
+    // Cegah render ulang jika sama
+    if (formatted === lastValue) return;
+    lastValue = formatted;
+
+    // Simpan posisi cursor asli
+    let cursorPos = lemNoKS.selectionStart;
+
+    // Hitung perbedaan panjang
+    let diff = formatted.length - raw.length;
+
+    // Delay update agar tidak bug di HP Vivo/OPPO
+    setTimeout(() => {
+      lemNoKS.value = formatted;
+
+      // Koreksi posisi cursor
+      let newPos = cursorPos + diff;
+      if (newPos > formatted.length) newPos = formatted.length;
+      if (newPos < 0) newPos = 0;
+
+      lemNoKS.setSelectionRange(newPos, newPos);
+    }, 0);
   });
 }
 </script>
+
+
+
 
 
 <!-- ======================== MENU MANUAL ======================== --> 
@@ -4079,21 +4133,45 @@ body {
 const spvNoKS = document.getElementById('spvNoKS');
 
 if (spvNoKS) {
+  let lastValue = "";
+
   spvNoKS.addEventListener('input', function() {
-    let value = spvNoKS.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); // hanya huruf & angka, uppercase
+    let raw = spvNoKS.value.toUpperCase();
 
-    if (value.length > 2) {
-      value = value.slice(0,2) + '-' + value.slice(2);
-    }
+    // Bersihkan input (A–Z & 0–9)
+    let clean = raw.replace(/[^A-Z0-9]/g, '');
 
-    if (value.length > 7) {
-      value = value.slice(0,7) + '-' + value.slice(7); // sisanya bebas
-    }
+    // Format KS-XXXX-XX
+    let formatted = clean;
+    if (clean.length > 2) formatted = clean.slice(0, 2) + '-' + clean.slice(2);
+    if (clean.length > 6) formatted = formatted.slice(0, 7) + '-' + formatted.slice(7);
 
-    spvNoKS.value = value;
+    // Cegah render ulang jika sama
+    if (formatted === lastValue) return;
+    lastValue = formatted;
+
+    // Simpan posisi cursor asli
+    let cursorPos = spvNoKS.selectionStart;
+
+    // Hitung perubahan panjang
+    let diff = formatted.length - raw.length;
+
+    // Delay update untuk fix bug keyboard Vivo
+    setTimeout(() => {
+      spvNoKS.value = formatted;
+
+      // Koreksi posisi cursor
+      let newPos = cursorPos + diff;
+      if (newPos > formatted.length) newPos = formatted.length;
+      if (newPos < 0) newPos = 0;
+
+      spvNoKS.setSelectionRange(newPos, newPos);
+    }, 0);
   });
 }
 </script>
+
+
 
 
 
@@ -9817,8 +9895,3 @@ function goHome() {
 
 </body>
 </html>
-
-
-
-
-
