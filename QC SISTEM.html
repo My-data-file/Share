@@ -4724,20 +4724,57 @@ document.getElementById("closePreviewBtn").addEventListener("click", () => {
   document.getElementById("reportPreviewModal").style.display = "none";
 });
 
+
 // ======================== Tombol Share WA ========================
 document.getElementById("shareWaBtn").addEventListener("click", () => {
   const sections = previewContent.querySelectorAll(".section-title");
-  let text = "*REPORT QC*\n\n";
+
+  const headerLine = "==============================";
+
+  // ✅ 25 SPASI sebelum REPORT QC — HANYA HEADER UTAMA
+  let text = `${headerLine}\n                         *REPORT QC*\n${headerLine}\n\n`;
+  //                        ^^^^^^^^^^^^^^^^^ 25 spasi
 
   sections.forEach(section => {
-    text += section.innerText + "\n";
+    const line = "====================";
+    const title = section.innerText.trim();
+
+    // ❌ Judul proses TIDAK digeser
+    text += `${line}\n*${title}*\n${line}\n\n`;
+
     let next = section.nextElementSibling;
-    while(next && !next.classList.contains("section-title")){
-      if(next.classList.contains("report-card")){
-        text += next.innerText + "\n\n";
+    while (next && !next.classList.contains("section-title")) {
+
+      if (next.classList.contains("report-card")) {
+        const lines = next.innerText.trim().split("\n");
+
+        lines.forEach(l => {
+          const trimmed = l.trim();
+
+          // 🔹 "Keterangan:"
+          if (/^Keterangan:?$/i.test(trimmed)) {
+            text += `* ${trimmed}\n`;
+            return;
+          }
+
+          // 🔹 Nomor (1., 2., dst) → tanpa bullet + indent 8 spasi
+          if (/^\d+\./.test(trimmed)) {
+            text += `        ${trimmed}\n`; // 8 spasi
+          }
+
+          // 🔹 Baris biasa → bullet
+          else {
+            text += `* ${trimmed}\n`;
+          }
+        });
+
+        text += "\n";
       }
+
       next = next.nextElementSibling;
     }
+
+    text += "\n"; // GAP antar proses
   });
 
   const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
@@ -4745,8 +4782,31 @@ document.getElementById("shareWaBtn").addEventListener("click", () => {
 });
 
 
+
+
+
 </script>
 
+<script>
+// ===========================================
+// AUTO FOCUS SAAT MENU REPORT DIBUKA
+// ===========================================
+const reportSection = document.getElementById("reportSection");
+const reportInput = document.getElementById("reportSearchID");
+
+// Observer untuk mendeteksi saat reportSection ditampilkan
+const obs = new MutationObserver(() => {
+  if (reportSection.style.display !== "none") {
+    setTimeout(() => {
+      reportInput.focus();
+      reportInput.select(); // pilih isi kalau ada
+    }, 50);
+  }
+});
+
+// Pantau perubahan style
+obs.observe(reportSection, { attributes: true, attributeFilter: ["style"] });
+</script>
 
 
 
@@ -9728,4 +9788,3 @@ function goHome() {
 
 </body>
 </html>
-
