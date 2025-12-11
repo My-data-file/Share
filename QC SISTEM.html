@@ -2415,20 +2415,44 @@ paNoKS.addEventListener('input', function(e) {
 <script>
 const finishingNoKS = document.getElementById('finishingNoKS');
 
-finishingNoKS.addEventListener('input', function(e) {
-  let value = finishingNoKS.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); // huruf & angka saja, uppercase
+if (finishingNoKS) {
+  let lastValue = "";
 
-  if (value.length > 2) {
-    value = value.slice(0,2) + '-' + value.slice(2);
-  }
+  finishingNoKS.addEventListener('input', function() {
+    let raw = finishingNoKS.value;
 
-  if (value.length > 7) {
-    value = value.slice(0,7) + '-' + value.slice(7); // sisanya bebas
-  }
+    // Bersihkan input (A-Z & 0-9)
+    let clean = raw.toUpperCase().replace(/[^A-Z0-9]/g, '');
 
-  finishingNoKS.value = value;
-});
+    // Format KS-XXXX-XX
+    let formatted = clean;
+
+    if (clean.length > 2) {
+      formatted = clean.slice(0, 2) + '-' + clean.slice(2);
+    }
+
+    if (clean.length > 7) {
+      formatted = formatted.slice(0, 7) + '-' + formatted.slice(7);
+    }
+
+    // Jika nilai tidak berubah, jangan re-render (mencegah bug HP Vivo)
+    if (formatted === lastValue) return;
+
+    // Simpan posisi cursor
+    let pos = finishingNoKS.selectionStart;
+
+    // Hitung selisih panjang sebelum vs sesudah formatting
+    let diff = formatted.length - raw.length;
+
+    finishingNoKS.value = formatted;
+    lastValue = formatted;
+
+    // Set ulang posisi cursor agar tidak lompat
+    finishingNoKS.setSelectionRange(pos + diff, pos + diff);
+  });
+}
 </script>
+
 
 
 
@@ -9788,3 +9812,4 @@ function goHome() {
 
 </body>
 </html>
+
