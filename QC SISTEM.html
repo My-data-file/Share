@@ -2421,33 +2421,33 @@ if (finishingNoKS) {
   finishingNoKS.addEventListener('input', function() {
     let raw = finishingNoKS.value;
 
-    // Bersihkan input (A-Z & 0-9)
+    // Bersihkan input (A–Z & 0–9)
     let clean = raw.toUpperCase().replace(/[^A-Z0-9]/g, '');
 
-    // Format KS-XXXX-XX
+    // Format KS-XXXX-XX (strip kedua muncul lebih cepat)
     let formatted = clean;
 
+    // Strip pertama setelah 2 huruf
     if (clean.length > 2) {
       formatted = clean.slice(0, 2) + '-' + clean.slice(2);
     }
 
-    if (clean.length > 7) {
+    // Strip kedua sesudah 6 karakter (bukan 7)
+    if (clean.length > 6) {
       formatted = formatted.slice(0, 7) + '-' + formatted.slice(7);
     }
 
-    // Jika nilai tidak berubah, jangan re-render (mencegah bug HP Vivo)
+    // Jika hasil sama, jangan render ulang (menghindari bug HP Vivo)
     if (formatted === lastValue) return;
 
     // Simpan posisi cursor
     let pos = finishingNoKS.selectionStart;
-
-    // Hitung selisih panjang sebelum vs sesudah formatting
     let diff = formatted.length - raw.length;
 
     finishingNoKS.value = formatted;
     lastValue = formatted;
 
-    // Set ulang posisi cursor agar tidak lompat
+    // Kembalikan posisi cursor agar tidak lompat
     finishingNoKS.setSelectionRange(pos + diff, pos + diff);
   });
 }
@@ -9812,4 +9812,5 @@ function goHome() {
 
 </body>
 </html>
+
 
