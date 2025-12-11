@@ -2419,39 +2419,43 @@ if (finishingNoKS) {
   let lastValue = "";
 
   finishingNoKS.addEventListener('input', function() {
-    let raw = finishingNoKS.value;
+    let raw = finishingNoKS.value.toUpperCase();
 
     // Bersihkan input (A–Z & 0–9)
-    let clean = raw.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    let clean = raw.replace(/[^A-Z0-9]/g, '');
 
-    // Format KS-XXXX-XX (strip kedua muncul lebih cepat)
+    // Format KS-XXXX-XX
     let formatted = clean;
+    if (clean.length > 2) formatted = clean.slice(0, 2) + '-' + clean.slice(2);
+    if (clean.length > 6) formatted = formatted.slice(0, 7) + '-' + formatted.slice(7);
 
-    // Strip pertama setelah 2 huruf
-    if (clean.length > 2) {
-      formatted = clean.slice(0, 2) + '-' + clean.slice(2);
-    }
-
-    // Strip kedua sesudah 6 karakter (bukan 7)
-    if (clean.length > 6) {
-      formatted = formatted.slice(0, 7) + '-' + formatted.slice(7);
-    }
-
-    // Jika hasil sama, jangan render ulang (menghindari bug HP Vivo)
+    // Cegah render ulang jika sama
     if (formatted === lastValue) return;
-
-    // Simpan posisi cursor
-    let pos = finishingNoKS.selectionStart;
-    let diff = formatted.length - raw.length;
-
-    finishingNoKS.value = formatted;
     lastValue = formatted;
 
-    // Kembalikan posisi cursor agar tidak lompat
-    finishingNoKS.setSelectionRange(pos + diff, pos + diff);
+    // Simpan posisi cursor asli
+    let cursorPos = finishingNoKS.selectionStart;
+
+    // Hitung perbedaan panjang
+    let diff = formatted.length - raw.length;
+
+    // Delay update value agar keyboard Vivo tidak reset
+    setTimeout(() => {
+      finishingNoKS.value = formatted;
+
+      // Koreksi cursor: tetap dekat posisi user mengetik
+      let newPos = cursorPos + diff;
+
+      // Jangan biarkan cursor melebihi panjang input
+      if (newPos > formatted.length) newPos = formatted.length;
+      if (newPos < 0) newPos = 0;
+
+      finishingNoKS.setSelectionRange(newPos, newPos);
+    }, 0);
   });
 }
 </script>
+
 
 
 
@@ -9812,5 +9816,6 @@ function goHome() {
 
 </body>
 </html>
+
 
 
