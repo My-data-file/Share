@@ -4879,24 +4879,106 @@ document.getElementById("shareWaBtn").addEventListener("click", () => {
 
 <script>
 // ===========================================
-// AUTO FOCUS SAAT MENU REPORT DIBUKA
+// REPORT INPUT – DATA READY INDICATOR (CENTER)
 // ===========================================
 const reportSection = document.getElementById("reportSection");
-const reportInput = document.getElementById("reportSearchID");
+const reportInput   = document.getElementById("reportSearchID");
 
-// Observer untuk mendeteksi saat reportSection ditampilkan
+// flag global
+window.__REPORT_DATA_READY__ = false;
+
+// ===========================================
+// BUAT INDIKATOR DI ATAS INPUT (CENTER)
+// ===========================================
+const indicator = document.createElement("div");
+indicator.style.fontSize = "0.8rem";
+indicator.style.fontWeight = "700";
+indicator.style.marginBottom = "6px";
+indicator.style.textAlign = "center";
+indicator.style.color = "#f59e0b";
+indicator.innerText = "⏳ Memuat data...";
+
+// sisipkan sebelum input
+reportInput.parentElement.insertBefore(indicator, reportInput);
+
+// ===========================================
+// UPDATE STATUS + AUTO FOCUS
+// ===========================================
+function setReportReady(ready){
+  window.__REPORT_DATA_READY__ = ready;
+
+  if(ready){
+    indicator.innerText = "✅ Data siap";
+    indicator.style.color = "#22c55e";
+    reportInput.placeholder = "Masukkan No KS";
+
+    // 🎯 AUTO FOCUS LANGSUNG SAAT READY
+    setTimeout(() => {
+      if (reportSection.style.display !== "none") {
+        reportInput.focus();
+        reportInput.select();
+      }
+    }, 50);
+
+  }else{
+    indicator.innerText = "⏳ Memuat data...";
+    indicator.style.color = "#f59e0b";
+    reportInput.placeholder = "Memuat data...";
+  }
+}
+
+// ===========================================
+// LOAD DATA – SINKRON DENGAN KODE B
+// ===========================================
+async function loadAllDataWithStatus(){
+  setReportReady(false);
+
+  try{
+    showSpinner?.();
+
+    await Promise.all([
+      Promise.resolve(loadBaproItems?.()),
+      Promise.resolve(loadPAItems?.()),
+      Promise.resolve(loadFinishingItems?.()),
+      Promise.resolve(loadLemItems?.()),
+      Promise.resolve(loadSPV?.())
+    ]);
+
+    // ✅ DATA BENAR-BENAR SELESAI
+    setReportReady(true);
+
+  }catch(err){
+    console.error("❌ Gagal load report:", err);
+  }finally{
+    hideSpinner?.();
+  }
+}
+
+// jalankan saat halaman load
+window.addEventListener("load", loadAllDataWithStatus);
+
+// ===========================================
+// OBSERVER: JIKA MENU REPORT DIBUKA SETELAH READY
+// ===========================================
 const obs = new MutationObserver(() => {
-  if (reportSection.style.display !== "none") {
+  if (
+    reportSection.style.display !== "none" &&
+    window.__REPORT_DATA_READY__ === true
+  ) {
     setTimeout(() => {
       reportInput.focus();
-      reportInput.select(); // pilih isi kalau ada
+      reportInput.select();
     }, 50);
   }
 });
 
-// Pantau perubahan style
-obs.observe(reportSection, { attributes: true, attributeFilter: ["style"] });
+obs.observe(reportSection, {
+  attributes: true,
+  attributeFilter: ["style"]
+});
 </script>
+
+
 
 
 
