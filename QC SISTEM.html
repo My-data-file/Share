@@ -4730,57 +4730,57 @@ if (spvNoKS) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <script>
-// ======================== DOWNLOAD PDF CEPAT + SPINNER LANGSUNG ========================
+/* ======================== UTIL: PASTIKAN PREVIEW TERISI ======================== */
+function ensurePreviewReady(){
+  // trigger preview jika belum ada SPV
+  if (!previewContent.querySelector(".spv-title")) {
+    if (typeof previewBtn !== "undefined") {
+      previewBtn.click();
+    }
+  }
+}
+
+/* ======================== DOWNLOAD PDF ======================== */
 document.getElementById("downloadPdfBtn").addEventListener("click", () => {
 
-  // 🔥 KONFIRMASI DOWNLOAD
   if (!confirm("Yakin ingin mendownload PDF laporan ini?")) return;
+
+  ensurePreviewReady();
 
   const btn = document.getElementById("downloadPdfBtn");
   const originalText = btn.innerHTML;
 
-  // tampilkan spinner / disable tombol
   btn.disabled = true;
   btn.innerHTML = "Generating PDF... ⏳";
 
-  // jalankan generate PDF setelah browser sempat render spinner
   setTimeout(() => {
-    // wrapper PDF
+
     const pdfWrapper = document.createElement("div");
     pdfWrapper.style.padding = "8px";
-    pdfWrapper.style.boxSizing = "border-box";
 
     const sections = [...previewContent.querySelectorAll(".section-title")];
 
     sections.forEach((section, idx) => {
-      const secDiv = document.createElement("div");
-      secDiv.className = section.className + " section-title";
-      secDiv.innerHTML = section.innerHTML;
-      if(idx !== 0) secDiv.style.pageBreakBefore = "always";
-      pdfWrapper.appendChild(secDiv);
+      const title = document.createElement("div");
+      title.className = section.className;
+      title.innerHTML = section.innerHTML;
+      if(idx !== 0) title.style.pageBreakBefore = "always";
+      pdfWrapper.appendChild(title);
 
       let next = section.nextElementSibling;
-      let cardCount = 0;
+      let count = 0;
 
       while(next && !next.classList.contains("section-title")){
         if(next.classList.contains("report-card")){
           const card = next.cloneNode(true);
-
-          // styling PDF ringan → hilangkan shadow & border-radius
           card.style.pageBreakInside = "avoid";
-          card.style.marginBottom = "4px";
-          card.style.fontSize = "0.8rem";
-          card.querySelectorAll("h3").forEach(h => h.style.fontSize = "0.9rem");
-
-          card.style.maxWidth = "calc(100% - 4px)";
-          card.style.boxSizing = "border-box";
           card.style.boxShadow = "none";
           card.style.borderRadius = "4px";
-
+          card.style.fontSize = "0.8rem";
           pdfWrapper.appendChild(card);
-          cardCount++;
+          count++;
 
-          if(cardCount % 4 === 0){
+          if(count % 4 === 0){
             const pb = document.createElement("div");
             pb.style.pageBreakAfter = "always";
             pdfWrapper.appendChild(pb);
@@ -4790,88 +4790,68 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
       }
     });
 
-    // style PDF
     const style = document.createElement("style");
     style.innerHTML = `
-      body, div { font-family: Arial, sans-serif; box-sizing: border-box; }
-      body { padding: 8px; }
-      .section-title { font-weight:700; padding:6px 0; font-size:1rem; text-align:center; border-radius:4px; margin:12px 0 4px; page-break-after: avoid; }
-      .report-card { border:1px solid #e2e8f0; padding:4px 6px; margin-bottom:4px; page-break-inside: avoid; max-width:calc(100% - 4px); box-sizing:border-box; }
-      .report-card h3 { font-size:0.9rem; font-weight:700; margin-bottom:3px; color:#1e293b; border-bottom:1px solid #e2e8f0; padding-bottom:2px; text-align:center; }
-      .report-field { margin:1px 0; font-size:0.75rem; color:#334155; }
-      .report-status { display:inline-block; margin-top:2px; padding:2px 4px; border-radius:4px; font-weight:700; color:#000; }
-      .report-percentage div { margin-top:2px; font-weight:600; font-size:0.75rem; }
-      .ket-list div { margin-left:4px; line-height:1.2; color:#475569; }
-      .pending { background:#f8d7da; color:#721c24; }
-      .done { background:#d4edda; color:#155724; }
-      .proses { background:#fff3cd; color:#856404; }
+      body { font-family: Arial, sans-serif; }
+      .section-title { text-align:center; font-weight:700; margin:10px 0 4px; }
+      .report-card { border:1px solid #e2e8f0; padding:4px 6px; margin-bottom:4px; }
+      .report-card h3 { text-align:center; border-bottom:1px solid #e2e8f0; }
+      .report-field { font-size:0.75rem; margin:1px 0; }
     `;
     pdfWrapper.prepend(style);
 
-    // generate PDF
     html2pdf().set({
       margin: 15,
       filename:'report-qc.pdf',
       image:{type:'jpeg', quality:0.85},
-      html2canvas:{scale:1.2, logging:false},
+      html2canvas:{scale:1.2},
       jsPDF:{unit:'mm', format:'a4', orientation:'portrait'}
     }).from(pdfWrapper).save().then(() => {
-      // selesai → kembalikan tombol
       btn.disabled = false;
       btn.innerHTML = originalText;
     });
 
-  }, 50);
+  }, 80);
 });
 
-
-// ======================== Tombol Preview ========================
-document.getElementById("previewReportBtn").addEventListener("click", () => {
-  document.getElementById("reportPreviewModal").style.display = "flex";
-});
-
-// ======================== Close Preview Modal ========================
-document.getElementById("closePreviewBtn").addEventListener("click", () => {
-  document.getElementById("reportPreviewModal").style.display = "none";
-});
-
-
-// ======================== Tombol Share WA ========================
+/* ======================== SHARE WA ======================== */
 document.getElementById("shareWaBtn").addEventListener("click", () => {
 
-  // 🔥 KONFIRMASI SHARE WA
   if (!confirm("Bagikan laporan ini ke WhatsApp?")) return;
+
+  // pastikan preview sudah terisi
+  if (!previewContent.querySelector(".section-title")) {
+    if (typeof previewBtn !== "undefined") previewBtn.click();
+  }
 
   const sections = previewContent.querySelectorAll(".section-title");
 
-  const headerLine = "==============================";
-
-  let text = `${headerLine}\n                         *REPORT QC*\n${headerLine}\n\n`;
+  let text = `==============================\n*REPORT QC*\n==============================\n\n`;
 
   sections.forEach(section => {
-    const line = "====================";
     const title = section.innerText.trim();
-
-    text += `${line}\n*${title}*\n${line}\n\n`;
+    text += `====================\n*${title}*\n====================\n\n`;
 
     let next = section.nextElementSibling;
+
     while (next && !next.classList.contains("section-title")) {
 
       if (next.classList.contains("report-card")) {
-        const lines = next.innerText.trim().split("\n");
 
-        lines.forEach(l => {
-          const trimmed = l.trim();
+        // ===== JUDUL KARTU =====
+        const h3 = next.querySelector("h3");
+        if (h3) text += `*${h3.innerText.trim()}*\n`;
 
-          if (/^Keterangan:?$/i.test(trimmed)) {
-            text += `* ${trimmed}\n`;
-            return;
-          }
+        // ===== FIELD =====
+        next.querySelectorAll(".report-field").forEach(f => {
+          const label = f.querySelector("b")?.innerText || "";
+          const link  = f.querySelector("a");
 
-          if (/^\d+\./.test(trimmed)) {
-            text += `        ${trimmed}\n`;
+          if (link && link.href) {
+            text += `• ${label} ${link.href}\n`;
           } else {
-            text += `* ${trimmed}\n`;
+            const val = f.innerText.replace(label, "").trim();
+            text += `• ${label} ${val}\n`;
           }
         });
 
@@ -4881,18 +4861,21 @@ document.getElementById("shareWaBtn").addEventListener("click", () => {
       next = next.nextElementSibling;
     }
 
-    text += "\n";
   });
 
-  const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
-  window.open(url, "_blank");
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
 });
 
 
 
-
-
 </script>
+
+
+
+
+
+
+
 
 <script>
 // ===========================================
@@ -5074,6 +5057,24 @@ obs.observe(reportSection, { attributes: true, attributeFilter: ["style"] });
 #reportPreviewModal .cetak-title { background: linear-gradient(to right, #FF9800, #FFB74D); }
 #reportPreviewModal .lem-title { background: linear-gradient(to right, #9C27B0, #BA68C8); }
 #reportPreviewModal .finishing-title { background: linear-gradient(to right, #22C55E, #4ADE80); }
+
+
+/* ======================== SECTION TITLE – SPV (BIRU MUDA) ======================== */
+.section-title.spv-title {
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding: 6px 12px;
+  border-radius: 8px;
+  margin: 14px 0 6px;
+  color: #fff;
+
+  /* 🔵 BIRU MUDA */
+  background: linear-gradient(to right, #38BDF8, #7DD3FC);
+
+  box-shadow: 0 4px 10px rgba(56,189,248,0.35);
+}
+
 
 </style>
 
@@ -5273,6 +5274,163 @@ previewBtn.addEventListener("click",()=>{
 
 closeBtn.addEventListener("click",()=>{ modal.style.display="none"; });
 window.addEventListener("click",e=>{ if(e.target===modal) modal.style.display="none"; });
+
+
+
+
+
+
+
+
+
+
+/* ======================== DATA SPV GLOBAL ======================== */
+let spvItems = [];
+
+/* ======================== LOAD DATA SPV (FINAL FIX) ======================== */
+function loadSPV() {
+  fetch(WEBAPP_URL + '?action=get&sheet=Register')
+    .then(r => r.text())
+    .then(txt => {
+      let data;
+      try {
+        data = JSON.parse(txt);
+      } catch {
+        const m = txt.match(/\((.*)\)/);
+        if (m) data = JSON.parse(m[1]);
+      }
+
+      const arr = data?.data || data || [];
+
+      spvItems = arr.map(v => ({
+        // ===== TANGGAL & JAM =====
+        tanggal   : v.tanggal || v["Tanggal"] || "-",
+        jam       : v.jam || v["Jam"] || "-",
+
+        // ===== ORDER =====
+        namaOrder : v.namaOrder || v["Nama Order"] || "-",
+        noKS      : (v.noKS || v["No KS"] || "")
+                      .toString()
+                      .trim()
+                      .toUpperCase(),
+
+        // ===== KETERANGAN =====
+        ket       : v.ket || v["Keterangan Acuan"] || "-",
+        ket1      : v.ket1 || v["Keterangan Temuan"] || "-",
+
+        // ===== QC & PROSES =====
+        namaQC    : v.namaQC || v["Nama QC"] || "-",
+        proses    : v.proses || v["Proses"] || "-",
+
+        // ===== FOTO =====
+        fotoUrl   : v.fotoUrl || v.foto || v["Link Acuan"] || v["Foto Acuan"] || "",
+        fotoUrl1  : v.fotoUrl1 || v.foto1 || v["Link Temuan"] || v["Foto Temuan"] || ""
+      }));
+
+      console.log("✅ SPV Loaded:", spvItems);
+    })
+    .catch(err => console.error("❌ Gagal load SPV:", err));
+}
+
+/* ======================== AUTO LOAD ======================== */
+document.addEventListener("DOMContentLoaded", loadSPV);
+
+
+/* ======================== RENDER SPV – GRID ======================== */
+function renderSPVCard(item){
+  return `
+  <div class="grid-card">
+    <h3></h3>
+    <p><b>Tanggal:</b> ${item.tanggal || "-"}</p>
+    <p><b>No KS:</b> ${item.noKS || "-"}</p>
+    <p><b>Nama Order:</b> ${item.namaOrder || "-"}</p>
+    <p><b>Jam:</b> ${item.jam || "-"}</p>
+    <p><b>Acuan:</b> ${item.ket || "-"}</p>
+    <p><b>Temuan:</b> ${item.ket1 || "-"}</p>
+    <p><b>QC:</b> ${item.namaQC || "-"}</p>
+    <p><b>Proses:</b> ${item.proses || "-"}</p>
+    <p><b>Foto Acuan:</b> ${
+      item.fotoUrl ? `<a href="${item.fotoUrl}" target="_blank">📷 Lihat</a>` : "-"
+    }</p>
+    <p><b>Foto Temuan:</b> ${
+      item.fotoUrl1 ? `<a href="${item.fotoUrl1}" target="_blank">📷 Lihat</a>` : "-"
+    }</p>
+  </div>`;
+}
+
+/* ======================== RENDER SPV – PREVIEW ======================== */
+function renderSPVPreview(item){
+  return `
+  <div class="report-card">
+    <h3></h3>
+    <div class="report-field"><b>Tanggal:</b> ${item.tanggal || "-"}</div>
+    <div class="report-field"><b>No KS:</b> ${item.noKS || "-"}</div>
+    <div class="report-field"><b>Nama Order:</b> ${item.namaOrder || "-"}</div>
+    <div class="report-field"><b>Jam:</b> ${item.jam || "-"}</div>
+    <div class="report-field"><b>Acuan:</b> ${item.ket || "-"}</div>
+    <div class="report-field"><b>Temuan:</b> ${item.ket1 || "-"}</div>
+    <div class="report-field"><b>QC:</b> ${item.namaQC || "-"}</div>
+    <div class="report-field"><b>Proses:</b> ${item.proses || "-"}</div>
+    <div class="report-field"><b>Foto Acuan:</b> ${
+      item.fotoUrl ? `<a href="${item.fotoUrl}" target="_blank">📷 Lihat</a>` : "-"
+    }</div>
+    <div class="report-field"><b>Foto Temuan:</b> ${
+      item.fotoUrl1 ? `<a href="${item.fotoUrl1}" target="_blank">📷 Lihat</a>` : "-"
+    }</div>
+  </div>`;
+}
+
+/* ======================== INJEK KE SEARCH REPORT ======================== */
+const _oldSearch = typeof searchReportByID === "function" ? searchReportByID : null;
+
+searchReportByID = function(){
+  if (_oldSearch) _oldSearch();
+
+  const key = reportSearchID.value.trim().toUpperCase();
+  if (!key) return;
+
+  const box = document.getElementById("reportResult");
+  if (!box) return;
+
+  const spvMatch = spvItems.filter(x => x.noKS === key);
+
+  let html = box.innerHTML;
+  html += `<div class="section-title spv-title">SPV</div>`;
+  html += spvMatch.length
+    ? spvMatch.map(renderSPVCard).join("")
+    : renderSPVCard({ noKS: key });
+
+  box.innerHTML = html;
+};
+
+/* ======================== INJEK KE PREVIEW ======================== */
+const _oldPreview = previewBtn.onclick || null;
+
+previewBtn.addEventListener("click", () => {
+  if (_oldPreview) _oldPreview();
+
+  const key = reportSearchID.value.trim().toUpperCase();
+  if (!key) return;
+
+  const matched = spvItems.filter(x => x.noKS === key);
+
+  let html = previewContent.innerHTML;
+  html += `<div class="section-title spv-title">SPV</div>`;
+  html += matched.length
+    ? matched.map(renderSPVPreview).join("")
+    : renderSPVPreview({ noKS: key });
+
+  previewContent.innerHTML = html;
+});
+
+/* ======================== AUTO LOAD SPV ======================== */
+document.addEventListener("DOMContentLoaded", () => {
+  loadSPV();
+});
+
+
+
+
 </script>
 
 
