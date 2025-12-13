@@ -1141,19 +1141,97 @@ body {
   </div>
 </div>
 
-<!-- Modal Detail -->
-<div id="detailCetakModal" class="modal-fin">
+<!-- ====================== MODAL DETAIL QC CETAK ====================== -->
+<div id="detailCetakModal" class="modal-fin" style="display:none;">
   <div class="modal-fin-content">
     <div class="modal-fin-header">
       <span class="modal-fin-title">Detail QC Cetak</span>
       <button class="modal-fin-close" onclick="closeDetailModalCetak()">×</button>
     </div>
+
     <div class="modal-fin-body" id="detailCetakBody"></div>
+
     <div class="modal-fin-footer">
+      <button 
+        class="modal-fin-btn"
+        id="openReportFromDetailBtn"
+        style="background:#25D366;color:#fff;"
+
+      >
+        📄 Report
+      </button>
+
       <button class="modal-fin-btn" onclick="closeDetailModalCetak()">Tutup</button>
     </div>
   </div>
 </div>
+
+
+
+<script>
+// =======================================================
+// DETAIL QC CETAK → REPORT QC (PAKAI SISTEM MENU ASLI)
+// =======================================================
+document.addEventListener("DOMContentLoaded", () => {
+
+  const reportBtn = document.getElementById("openReportFromDetailBtn");
+  if (!reportBtn) return;
+
+  reportBtn.addEventListener("click", () => {
+
+    // ===============================
+    // 1️⃣ AMBIL NO KS DARI DETAIL
+    // ===============================
+    const detailBody = document.getElementById("detailCetakBody");
+    const text = detailBody?.innerText || "";
+    const match = text.match(/KS-\d{4}-\d+/i);
+
+    if (!match) {
+      alert("Tidak Ada Data Register");
+      return;
+    }
+
+    const noKS = match[0];
+
+    // ===============================
+    // 2️⃣ PINDAH MENU KE REPORT (INI KUNCI)
+    // ===============================
+    if (typeof showMenu === "function") {
+      showMenu("reportSection"); // 🔥 SAMA SEPERTI KLIK MENU REPORT
+    } else {
+      console.warn("showMenu() tidak ditemukan");
+    }
+
+    // ===============================
+    // 3️⃣ ISI INPUT & FILTER REPORT
+    // ===============================
+    setTimeout(() => {
+      const reportInput = document.getElementById("reportSearchID");
+      if (!reportInput) return;
+
+      reportInput.value = noKS;
+
+      if (typeof searchReportByID === "function") {
+        searchReportByID();
+      }
+
+      reportInput.focus();
+      reportInput.select();
+    }, 150); // tunggu menu selesai render
+
+    // ===============================
+    // 4️⃣ TUTUP MODAL DETAIL
+    // ===============================
+    closeDetailModalCetak();
+
+  });
+
+});
+</script>
+
+
+
+
 
 <style>
 .filter-input {
@@ -1388,19 +1466,92 @@ body {
   </div>
 </div>
 
-<!-- Modal Detail -->
-<div id="detailLemModal" class="modal-fin">
+<!-- ====================== MODAL DETAIL QC LEM ====================== -->
+<div id="detailLemModal" class="modal-fin" style="display:none;">
   <div class="modal-fin-content">
     <div class="modal-fin-header">
       <span class="modal-fin-title">Detail QC Lem</span>
       <button class="modal-fin-close" onclick="closeDetailModalLem()">×</button>
     </div>
+
     <div class="modal-fin-body" id="detailLemBody"></div>
+
     <div class="modal-fin-footer">
+      <button 
+        class="modal-fin-btn"
+        id="openReportFromDetailLemBtn"
+        style="background:#25D366;color:#fff;"
+      >
+        📄 Report
+      </button>
+
       <button class="modal-fin-btn" onclick="closeDetailModalLem()">Tutup</button>
     </div>
   </div>
 </div>
+
+
+<script>
+// =======================================================
+// DETAIL QC LEM → REPORT QC (PAKAI SISTEM MENU ASLI)
+// =======================================================
+document.addEventListener("DOMContentLoaded", () => {
+
+  const reportBtn = document.getElementById("openReportFromDetailLemBtn");
+  if (!reportBtn) return;
+
+  reportBtn.addEventListener("click", () => {
+
+    // ===============================
+    // 1️⃣ AMBIL NO KS DARI DETAIL LEM
+    // ===============================
+    const detailBody = document.getElementById("detailLemBody");
+    const text = detailBody?.innerText || "";
+    const match = text.match(/KS-\d{4}-\d+/i);
+
+    if (!match) {
+      alert("Tidak Ada Data Register");
+      return;
+    }
+
+    const noKS = match[0];
+
+    // ===============================
+    // 2️⃣ PINDAH MENU KE REPORT
+    // ===============================
+    if (typeof showMenu === "function") {
+      showMenu("reportSection");
+    } else {
+      console.warn("showMenu() tidak ditemukan");
+    }
+
+    // ===============================
+    // 3️⃣ ISI INPUT & FILTER REPORT
+    // ===============================
+    setTimeout(() => {
+      const reportInput = document.getElementById("reportSearchID");
+      if (!reportInput) return;
+
+      reportInput.value = noKS;
+
+      if (typeof searchReportByID === "function") {
+        searchReportByID();
+      }
+
+      reportInput.focus();
+      reportInput.select();
+    }, 150);
+
+    // ===============================
+    // 4️⃣ TUTUP MODAL DETAIL LEM
+    // ===============================
+    closeDetailModalLem();
+
+  });
+
+});
+</script>
+
 
 <style>
 .filter-input {
@@ -1635,12 +1786,12 @@ body {
   </div>
 </div>
 
-<!-- ======================= MODAL DETAIL FINISHING ======================= -->
-<div id="detailFinishingModal" class="modal-fin">
+<!-- ====================== MODAL DETAIL QC FINISHING ====================== -->
+<div id="detailFinishingModal" class="modal-fin" style="display:none;">
   <div class="modal-fin-content">
     <div class="modal-fin-header">
       <span class="modal-fin-title">Detail QC Finishing</span>
-      <button class="modal-fin-close" onclick="closeDetailModal()">×</button>
+      <button class="modal-fin-close" onclick="closeDetailModalFinishing()">×</button>
     </div>
 
     <div class="modal-fin-body" id="detailFinishingBody">
@@ -1648,10 +1799,81 @@ body {
     </div>
 
     <div class="modal-fin-footer">
-      <button class="modal-fin-btn" onclick="closeDetailModal()">Tutup</button>
+      <button 
+        class="modal-fin-btn"
+        id="openReportFromDetailFinishingBtn"
+        style="background:#25D366;color:#fff;"
+      >
+        📄 Report
+      </button>
+
+      <button class="modal-fin-btn" onclick="closeDetailModalFinishing()">Tutup</button>
     </div>
   </div>
 </div>
+
+
+<script>
+// =======================================================
+// DETAIL QC FINISHING → REPORT QC (PAKAI SISTEM MENU ASLI)
+// =======================================================
+document.addEventListener("DOMContentLoaded", () => {
+
+  const reportBtn = document.getElementById("openReportFromDetailFinishingBtn");
+  if (!reportBtn) return;
+
+  reportBtn.addEventListener("click", () => {
+
+    // ===============================
+    // 1️⃣ AMBIL NO KS DARI DETAIL FINISHING
+    // ===============================
+    const detailBody = document.getElementById("detailFinishingBody");
+    const text = detailBody?.innerText || "";
+    const match = text.match(/KS-\d{4}-\d+/i);
+
+    if (!match) {
+      alert("Tidak Ada Data Register");
+      return;
+    }
+
+    const noKS = match[0];
+
+    // ===============================
+    // 2️⃣ PINDAH MENU KE REPORT
+    // ===============================
+    if (typeof showMenu === "function") {
+      showMenu("reportSection"); // sama seperti klik menu REPORT
+    } else {
+      console.warn("showMenu() tidak ditemukan");
+    }
+
+    // ===============================
+    // 3️⃣ ISI INPUT & FILTER REPORT
+    // ===============================
+    setTimeout(() => {
+      const reportInput = document.getElementById("reportSearchID");
+      if (!reportInput) return;
+
+      reportInput.value = noKS;
+
+      if (typeof searchReportByID === "function") {
+        searchReportByID();
+      }
+
+      reportInput.focus();
+      reportInput.select();
+    }, 150);
+
+    // ===============================
+    // 4️⃣ TUTUP MODAL DETAIL FINISHING
+    // ===============================
+    closeDetailModalFinishing();
+
+  });
+
+});
+</script>
+
 
 <style>
 .filter-input {
@@ -8350,6 +8572,7 @@ function showDetailModalPA(item){
 function closeDetailModalCetak(){
   document.getElementById('detailCetakModal').style.display = 'none';
 }
+
 
 
 // ====================== TOGGLE VIEW + FILTER QC PA ======================
