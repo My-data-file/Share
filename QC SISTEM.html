@@ -5178,6 +5178,15 @@ reportSearchID.addEventListener('input', function() {
   reportSearchID.value = value;
 });
 
+// ======================== DEBOUNCE SEARCH (ANTI DELAY HP) ========================
+let searchTimer = null;
+reportSearchID.addEventListener("input", function () {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    searchReportByID(); // fungsi search asli kamu
+  }, 300); // 300ms aman untuk HP dan laptop
+});
+
 function normalizeKet(rawText="") {
   const map={1:"-",2:"-",3:"-",4:"-",5:"-"};
   if(rawText){ rawText.split(/\r?\n/).forEach(line=>{
