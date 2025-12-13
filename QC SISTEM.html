@@ -5513,13 +5513,22 @@ searchReportByID = function(){
   const spvMatch = spvItems.filter(x => matchKS(x.noKS));
 
   let html = box.innerHTML;
-  html += `<div class="section-title spv-title">SPV</div>`;
-  html += spvMatch.length
-    ? spvMatch.map(renderSPVCard).join("")
-    : renderSPVCard({ noKS: key });
+  html += `<div class="section-title spv-title">REGISTER</div>`;
+
+  // ✅ PERBAIKAN UTAMA DI SINI
+  if (spvMatch.length) {
+    html += spvMatch.map(renderSPVCard).join("");
+  } else {
+    html += `
+      <div class="grid-card">
+        <p><b>No KS:</b> <i style="color:#f59e0b;">Proses belum ada</i></p>
+      </div>
+    `;
+  }
 
   box.innerHTML = html;
 };
+
 
 
 /* ======================== INJEK KE PREVIEW ======================== */
