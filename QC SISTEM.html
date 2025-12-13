@@ -5285,35 +5285,59 @@ function renderCardReport(title,item,extraFields="",processType="cetak"){
 
 // ======================== SEARCH REPORT ========================
 function searchReportByID(){
-  const key=reportSearchID.value.trim().toLowerCase();
-  const box=document.getElementById("reportResult");
+  const key = reportSearchID.value.trim().toLowerCase();
+  const box = document.getElementById("reportResult");
   if(!key){ box.innerHTML=""; return; }
 
-  const cetakItems=paItems.filter(x=> (x.noKS||"").toLowerCase()===key);
-  const lemItemsMatch=lemItems.filter(x=> (x.noKS||"").toLowerCase()===key);
-  const finishingItemsMatch=finishingItems.filter(x=> (x.noKS||"").toLowerCase()===key);
+  // 🔧 FLEXIBLE MATCH: KS-2510-31 → KS-2510-31A / 31B / 31C
+  const matchKS = (dataKS="") => {
+    const data = dataKS.toString().trim().toLowerCase();
+    if(!data) return false;
 
-  let html="";
-  html+=`<div class="section-title cetak-title">CETAK</div>`;
-  html+=cetakItems.length? cetakItems.map(i=>renderCard("",i,`
-    <p><b>Bagus:</b> ${formatNumber(i?.bagus)}</p>
-    <p><b>Sortir:</b> ${formatNumber(i?.sortir)}</p>
-    <p><b>Problem:</b> ${formatNumber(i?.problem)}</p>`,"cetak")).join('') : renderCard("",{update:"Proses"});
+    // exact match
+    if(data === key) return true;
 
-  html+=`<div class="section-title lem-title">LEM</div>`;
-  html+=lemItemsMatch.length? lemItemsMatch.map(i=>renderCard("",i,`
-    <p><b>Isi/Dus:</b> ${formatNumber(i?.isi)}</p>
-    <p><b>Bagus:</b> ${formatNumber(i?.bagus)}</p>
-    <p><b>Total BS:</b> ${formatNumber(i?.lemJenisBS)}</p>`,"lem")).join('') : renderCard("",{update:"Proses"});
+    // allow suffix huruf / angka setelah key
+    // contoh: key = ks-2510-31 → ks-2510-31a
+    return data.startsWith(key);
+  };
 
-  html+=`<div class="section-title finishing-title">FINISHING</div>`;
-  html+=finishingItemsMatch.length? finishingItemsMatch.map(i=>renderCard("",i,`
-    <p><b>Isi/Dus:</b> ${formatNumber(i?.isi)}</p>
-    <p><b>Bagus:</b> ${formatNumber(i?.bagus)}</p>
-    <p><b>Total BS:</b> ${formatNumber(i?.jenisBS)}</p>`,"finishing")).join('') : renderCard("",{update:"Proses"});
+  const cetakItems = paItems.filter(x => matchKS(x.noKS));
+  const lemItemsMatch = lemItems.filter(x => matchKS(x.noKS));
+  const finishingItemsMatch = finishingItems.filter(x => matchKS(x.noKS));
 
-  box.innerHTML=html;
+  let html = "";
+
+  html += `<div class="section-title cetak-title">CETAK</div>`;
+  html += cetakItems.length
+    ? cetakItems.map(i=>renderCard("",i,`
+        <p><b>Bagus:</b> ${formatNumber(i?.bagus)}</p>
+        <p><b>Sortir:</b> ${formatNumber(i?.sortir)}</p>
+        <p><b>Problem:</b> ${formatNumber(i?.problem)}</p>
+      `,"cetak")).join('')
+    : renderCard("",{update:"Proses"});
+
+  html += `<div class="section-title lem-title">LEM</div>`;
+  html += lemItemsMatch.length
+    ? lemItemsMatch.map(i=>renderCard("",i,`
+        <p><b>Isi/Dus:</b> ${formatNumber(i?.isi)}</p>
+        <p><b>Bagus:</b> ${formatNumber(i?.bagus)}</p>
+        <p><b>Total BS:</b> ${formatNumber(i?.lemJenisBS)}</p>
+      `,"lem")).join('')
+    : renderCard("",{update:"Proses"});
+
+  html += `<div class="section-title finishing-title">FINISHING</div>`;
+  html += finishingItemsMatch.length
+    ? finishingItemsMatch.map(i=>renderCard("",i,`
+        <p><b>Isi/Dus:</b> ${formatNumber(i?.isi)}</p>
+        <p><b>Bagus:</b> ${formatNumber(i?.bagus)}</p>
+        <p><b>Total BS:</b> ${formatNumber(i?.jenisBS)}</p>
+      `,"finishing")).join('')
+    : renderCard("",{update:"Proses"});
+
+  box.innerHTML = html;
 }
+
 
 // ======================== PREVIEW REPORT ========================
 const previewBtn=document.getElementById("previewReportBtn");
@@ -5468,13 +5492,25 @@ const _oldSearch = typeof searchReportByID === "function" ? searchReportByID : n
 searchReportByID = function(){
   if (_oldSearch) _oldSearch();
 
-  const key = reportSearchID.value.trim().toUpperCase();
+  const key = reportSearchID.value.trim().toLowerCase();
   if (!key) return;
 
   const box = document.getElementById("reportResult");
   if (!box) return;
 
-  const spvMatch = spvItems.filter(x => x.noKS === key);
+  // 🔧 FLEXIBLE MATCH KHUSUS SPV
+  const matchKS = (dataKS="") => {
+    const data = dataKS.toString().trim().toLowerCase();
+    if (!data) return false;
+
+    // exact
+    if (data === key) return true;
+
+    // allow suffix: KS-2510-31 → KS-2510-31A / 31B / 31C
+    return data.startsWith(key);
+  };
+
+  const spvMatch = spvItems.filter(x => matchKS(x.noKS));
 
   let html = box.innerHTML;
   html += `<div class="section-title spv-title">SPV</div>`;
@@ -5484,6 +5520,7 @@ searchReportByID = function(){
 
   box.innerHTML = html;
 };
+
 
 /* ======================== INJEK KE PREVIEW ======================== */
 const _oldPreview = previewBtn.onclick || null;
