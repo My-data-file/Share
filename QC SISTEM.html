@@ -5178,14 +5178,25 @@ reportSearchID.addEventListener('input', function() {
   reportSearchID.value = value;
 });
 
-// ======================== DEBOUNCE SEARCH (ANTI DELAY HP) ========================
+// ======================== DEBOUNCE SEARCH (ANTI DELAY HP, MIN 8 DIGIT) ========================
 let searchTimer = null;
 reportSearchID.addEventListener("input", function () {
+  // ambil input tanpa strip
+  const rawKey = reportSearchID.value.replace(/[^A-Z0-9]/g,'');
+
+  // jika kurang dari 8 karakter, kosongkan hasil langsung
+  if(rawKey.length < 8){
+    document.getElementById("reportResult").innerHTML = "";
+    return;
+  }
+
+  // debounce search
   clearTimeout(searchTimer);
   searchTimer = setTimeout(() => {
     searchReportByID(); // fungsi search asli kamu
-  }, 300); // 300ms aman untuk HP dan laptop
+  }, 500); // 300ms aman untuk HP dan laptop
 });
+
 
 function normalizeKet(rawText="") {
   const map={1:"-",2:"-",3:"-",4:"-",5:"-"};
@@ -5473,61 +5484,49 @@ function renderSPVCard(item){
   </div>`;
 }
 
-/* ======================== INJEK KE PREVIEW SPV ======================== */
-previewBtn.addEventListener("click", () => {
-  if (_oldPreview) _oldPreview();
+/* ======================== RENDER SPV – PREVIEW ======================== */
+function renderSPVPreview(item){
+  // jika item tidak ada data selain noKS
+  const hasData = item && (
+    (item.tanggal && item.tanggal !== "-") ||
+    (item.namaOrder && item.namaOrder !== "-") ||
+    (item.jam && item.jam !== "-") ||
+    (item.ket && item.ket !== "-") ||
+    (item.ket1 && item.ket1 !== "-") ||
+    (item.namaQC && item.namaQC !== "-") ||
+    (item.proses && item.proses !== "-") ||
+    (item.fotoUrl && item.fotoUrl !== "") ||
+    (item.fotoUrl1 && item.fotoUrl1 !== "")
+  );
 
-  const key = reportSearchID.value.trim().toLowerCase();
-  if (!key) return;
-
-  const matchKS = (dataKS = "") => {
-    const d = dataKS.toString().trim().toLowerCase();
-    return d && (d === key || d.startsWith(key));
-  };
-
-  // ambil semua yg match KS
-  const rawMatch = spvItems.filter(x => matchKS(x.noKS));
-
-  // 🔥 VALIDATOR DATA NYATA
-  const hasRealData = (v) => {
-    const valid = (x) =>
-      x !== undefined &&
-      x !== null &&
-      x !== "" &&
-      x !== "-";
-
-    return (
-      valid(v.tanggal) ||
-      valid(v.namaOrder) ||
-      valid(v.ket) ||
-      valid(v.ket1) ||
-      valid(v.namaQC) ||
-      valid(v.proses) ||
-      valid(v.fotoUrl) ||
-      valid(v.fotoUrl1)
-    );
-  };
-
-  // hanya SPV yg BENAR2 ada isinya
-  const matched = rawMatch.filter(hasRealData);
-
-  let html = previewContent.innerHTML;
-  html += `<div class="section-title spv-title">SPV</div>`;
-
-  if (matched.length) {
-    html += matched.map(renderSPVPreview).join("");
-  } else {
-    html += `
-      <div class="report-card">
-        <div class="report-field">
-          <b>No KS:</b> <i style="color:#f59e0b;">Proses belum ada</i>
-        </div>
+  if(!hasData){
+    return `<div class="report-card">
+      <div class="report-field">
+        <b>No KS:</b> <i style="color:#f59e0b;">Proses belum ada</i>
       </div>
-    `;
+    </div>`;
   }
 
-  previewContent.innerHTML = html;
-});
+  return `
+  <div class="report-card">
+    <h3></h3>
+    <div class="report-field"><b>Tanggal:</b> ${item.tanggal || "-"}</div>
+    <div class="report-field"><b>No KS:</b> ${item.noKS || "-"}</div>
+    <div class="report-field"><b>Nama Order:</b> ${item.namaOrder || "-"}</div>
+    <div class="report-field"><b>Jam:</b> ${item.jam || "-"}</div>
+    <div class="report-field"><b>Acuan:</b> ${item.ket || "-"}</div>
+    <div class="report-field"><b>Temuan:</b> ${item.ket1 || "-"}</div>
+    <div class="report-field"><b>QC:</b> ${item.namaQC || "-"}</div>
+    <div class="report-field"><b>Proses:</b> ${item.proses || "-"}</div>
+    <div class="report-field"><b>Foto Acuan:</b> ${
+      item.fotoUrl ? `<a href="${item.fotoUrl}" target="_blank">📷 Lihat</a>` : "-"
+    }</div>
+    <div class="report-field"><b>Foto Temuan:</b> ${
+      item.fotoUrl1 ? `<a href="${item.fotoUrl1}" target="_blank">📷 Lihat</a>` : "-"
+    }</div>
+  </div>`;
+}
+
 
 
 /* ======================== INJEK KE SEARCH REPORT ======================== */
