@@ -6865,7 +6865,7 @@ function checkStatusFinishing(selectEl){
   const bagusInput = inputs[4]; // posisi Bagus di FINISHING
   const bagus = Number(bagusInput.value || 0);
 
-  if(selectEl.value === "Selesai" && bagus <= 0){
+  if(selectEl.value === "Selesai" && bagus <= 1){
     alert("Tolong isi hasil Bagus");
     selectEl.value = "Proses"; // rollback
     bagusInput.focus();
@@ -7643,48 +7643,48 @@ function editBaproInline(index){
       <label class="edit-label">CSO</label>
       <select class="edit-inline">
         <option value="" disabled ${!item.cso ? 'selected' : ''}>Pilih CSO</option>
-        <option value="Yati" ${item.cso === 'Yati' ? 'selected' : ''}>Yati</option>
-        <option value="Retni" ${item.cso === 'Retni' ? 'selected' : ''}>Retni</option>
-        <option value="Aulia" ${item.cso === 'Aulia' ? 'selected' : ''}>Aulia</option>
-        <option value="Yuli" ${item.cso === 'Yuli' ? 'selected' : ''}>Yuli</option>
+        <option value="Yati" ${item.cso==='Yati'?'selected':''}>Yati</option>
+        <option value="Retni" ${item.cso==='Retni'?'selected':''}>Retni</option>
+        <option value="Aulia" ${item.cso==='Aulia'?'selected':''}>Aulia</option>
+        <option value="Yuli" ${item.cso==='Yuli'?'selected':''}>Yuli</option>
       </select>
 
       <label class="edit-label">Jenis Kertas</label>
-      <input type="text" class="edit-inline" value="${escapeHtml(item.jenisKertas||'')}" placeholder="Jenis Kertas">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.jenisKertas||'')}">
 
       <label class="edit-label">Tebal Kertas</label>
-      <input type="text" class="edit-inline" value="${escapeHtml(item.tebalKertas||'')}" placeholder="Tebal Kertas">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.tebalKertas||'')}">
 
       <label class="edit-label">Nama Tinta</label>
-      <input type="text" class="edit-inline" value="${escapeHtml(item.NamaTinta||'')}" placeholder="Nama Tinta">
+      <input type="text" class="edit-inline" value="${escapeHtml(item.NamaTinta||'')}">
 
       <label class="edit-label">Dmax</label>
-      <input type="text" class="edit-inline" value="${escapeHtml(item.dmax||'')}" placeholder="Dmax">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.dmax||'')}" placeholder="Dmax">
 
       <label class="edit-label">L</label>
-      <input type="text" class="edit-inline" value="${escapeHtml(item.l||'')}" placeholder="L">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.l||'')}" placeholder="L">
 
       <label class="edit-label">A</label>
-      <input type="text" class="edit-inline" value="${escapeHtml(item.a||'')}" placeholder="A">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.a||'')}" placeholder="A">
 
       <label class="edit-label">B</label>
-      <input type="text" class="edit-inline" value="${escapeHtml(item.b||'')}" placeholder="B">
+      <input type="number" class="edit-inline" value="${escapeHtml(item.b||'')}" placeholder="B">
 
       <label class="edit-label">QC</label>
       <select class="edit-inline">
-        <option value="Marwan" ${item.qc==='Marwan'? 'selected':''}>Marwan</option>
-        <option value="Kiki" ${item.qc==='Kiki'? 'selected':''}>Kiki</option>
+        <option value="Marwan" ${item.qc==='Marwan'?'selected':''}>Marwan</option>
+        <option value="Kiki" ${item.qc==='Kiki'?'selected':''}>Kiki</option>
       </select>
 
       <label class="edit-label">Update Status</label>
-      <select class="edit-inline">
-        <option value="Pending" ${item.update==='Pending'? 'selected':''}>Pending</option>
-        <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
-        <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
+      <select class="edit-inline" onchange="checkStatusBapro(this)">
+        <option value="Pending" ${item.update==='Pending'?'selected':''}>Pending</option>
+        <option value="Proses" ${item.update==='Proses'?'selected':''}>Proses</option>
+        <option value="Selesai" ${item.update==='Selesai'?'selected':''}>Selesai</option>
       </select>
 
       <label class="edit-label">Keterangan</label>
-      <textarea class="edit-inline" rows="2" placeholder="Keterangan">
+      <textarea class="edit-inline" rows="2">
 1. ${ketMap[1]}
 2. ${ketMap[2]}
 3. ${ketMap[3]}
@@ -7694,11 +7694,44 @@ function editBaproInline(index){
     </div>
 
     <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
-      <button class="btn-icon btn-save" title="Simpan" onclick="saveBaproInline(${index}, this)">💾</button>
-      <button class="btn-icon btn-cancel" title="Batal" onclick="cancelBaproInline(${index}, \`${encodeURIComponent(oldHtml)}\`)">❌</button>
+      <button class="btn-icon btn-save" onclick="saveBaproInline(${index}, this)">💾</button>
+      <button class="btn-icon btn-cancel" onclick="cancelBaproInline(${index}, \`${encodeURIComponent(oldHtml)}\`)">❌</button>
     </div>
   `;
 }
+
+// ====================== VALIDASI STATUS (BAPRO) ======================
+function checkStatusBapro(selectEl){
+  const card = selectEl.closest('.grid-card');
+  if(!card) return;
+
+  const inputs = card.querySelectorAll('.edit-inline');
+
+  // index sesuai urutan input di atas
+  const dmaxInput = inputs[6];
+  const lInput    = inputs[7];
+  const aInput    = inputs[8];
+  const bInput    = inputs[9];
+
+  const dmax = Number(dmaxInput.value || 0);
+  const l    = Number(lInput.value || 0);
+  const a    = Number(aInput.value || 0);
+  const b    = Number(bInput.value || 0);
+
+  if(
+    selectEl.value === "Selesai" &&
+    (dmax <= 1 || l <= 1 || a <= 1 || b <= 1)
+  ){
+    alert("Tolong isi Dmax, L, A, dan B");
+    selectEl.value = "Proses";
+
+    if(dmax <= 1) dmaxInput.focus();
+    else if(l <= 1) lInput.focus();
+    else if(a <= 1) aInput.focus();
+    else bInput.focus();
+  }
+}
+
 
 
 
@@ -9080,7 +9113,7 @@ function checkStatusLem(selectEl){
   const bagusInput = inputs[4]; // posisi Bagus di LEM
   const bagus = Number(bagusInput.value || 0);
 
-  if(selectEl.value === "Selesai" && bagus <= 0){
+  if(selectEl.value === "Selesai" && bagus <= 1){
     alert("Tolong isi hasil Bagus");
     selectEl.value = "Proses";
     bagusInput.focus();
