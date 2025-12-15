@@ -6813,7 +6813,6 @@ function editFinishingInline(index){
       <label>Bagus</label>
       <input type="number" class="edit-inline" name="bagus" value="${escapeHtml(item.bagus||'')}">
 
-
       <label>BS Total</label>
       <input type="number" class="edit-inline" name="jenisBS" value="${escapeHtml(item.jenisBS||'')}">
 
@@ -6832,7 +6831,6 @@ function editFinishingInline(index){
       <label>BS Potong</label>
       <input type="number" class="edit-inline" name="jenisBS5" value="${escapeHtml(item.jenisBS5||'')}">
 
-
       <label>QC</label>
       <select class="edit-inline" name="qc">
         <option value="Anom" ${item.qc==='Anom'? 'selected':''}>Anom</option>
@@ -6840,7 +6838,7 @@ function editFinishingInline(index){
       </select>
 
       <label>Status</label>
-      <select class="edit-inline" name="update">
+      <select class="edit-inline" name="update" onchange="checkStatusFinishing(this)">
         <option value="Pending" ${item.update==='Pending'? 'selected':''}>Pending</option>
         <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
         <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
@@ -6857,6 +6855,23 @@ function editFinishingInline(index){
     </div>
   `;
 }
+
+// ====================== VALIDASI STATUS (FINISHING) ======================
+function checkStatusFinishing(selectEl){
+  const card = selectEl.closest('.grid-card');
+  if(!card) return;
+
+  const inputs = card.querySelectorAll('.edit-inline');
+  const bagusInput = inputs[4]; // posisi Bagus di FINISHING
+  const bagus = Number(bagusInput.value || 0);
+
+  if(selectEl.value === "Selesai" && bagus <= 0){
+    alert("Tolong isi hasil Bagus");
+    selectEl.value = "Proses"; // rollback
+    bagusInput.focus();
+  }
+}
+
 
 
 
@@ -8314,7 +8329,7 @@ function editPAInline(index){
       </select>
 
       <label>Status</label>
-      <select class="edit-inline">
+      <select class="edit-inline" onchange="checkStatusPA(this)">
         <option value="Pending" ${item.update==='Pending'? 'selected':''}>Pending</option>
         <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
         <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
@@ -8331,6 +8346,23 @@ function editPAInline(index){
     </div>
   `;
 }
+
+// ====================== VALIDASI STATUS (PA) ======================
+function checkStatusPA(selectEl){
+  const card = selectEl.closest('.grid-card');
+  if(!card) return;
+
+  const inputs = card.querySelectorAll('.edit-inline');
+  const bagusInput = inputs[3]; // posisi Bagus
+  const bagus = Number(bagusInput.value || 0);
+
+  if(selectEl.value === "Selesai" && bagus <= 1){
+    alert("Tolong isi hasil bagus");
+    selectEl.value = "Proses"; // rollback
+    bagusInput.focus();
+  }
+}
+
 
 
 // ====================== BATAL EDIT INLINE (PA) ======================
@@ -9021,7 +9053,7 @@ function editLemInline(index){
       </select>
 
       <label>Status</label>
-      <select class="edit-inline" name="update">
+      <select class="edit-inline" name="update" onchange="checkStatusLem(this)">
         <option value="Pending" ${item.update==='Pending'? 'selected':''}>Pending</option>
         <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
         <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
@@ -9038,6 +9070,23 @@ function editLemInline(index){
     </div>
   `;
 }
+
+// ====================== VALIDASI STATUS (LEM) ======================
+function checkStatusLem(selectEl){
+  const card = selectEl.closest('.grid-card');
+  if(!card) return;
+
+  const inputs = card.querySelectorAll('.edit-inline');
+  const bagusInput = inputs[4]; // posisi Bagus di LEM
+  const bagus = Number(bagusInput.value || 0);
+
+  if(selectEl.value === "Selesai" && bagus <= 0){
+    alert("Tolong isi hasil Bagus");
+    selectEl.value = "Proses";
+    bagusInput.focus();
+  }
+}
+
 
 
 
