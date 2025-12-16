@@ -522,6 +522,34 @@ select {
 .form-group { margin-bottom: 10px; }
 
 
+/* ================== BUTTON KIRIM KE FINISHING ================== */
+.btn-call-finishing {
+  background: linear-gradient(135deg, #10b981, #34d399);
+  border: none;
+  color: #000; /* teks hitam */
+  font-size: 0.85rem;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center; /* center text */
+  gap: 4px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  text-align: center; /* tambahan jaga center */
+}
+
+.btn-call-finishing:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+.btn-call-finishing:active {
+  transform: scale(0.97);
+}
+
 
   
 </style>
@@ -8997,6 +9025,10 @@ function renderGridLem(query = "") {
         <button class="btn-icon btn-call" title="Panggil" onclick="callLem(${i})">📤</button>
         <button class="btn-icon btn-edit" title="Edit Inline" onclick="editLemInline(${i})">✏️</button>
         <button class="btn-icon btn-delete" title="Hapus" onclick="deleteLem(${i})">🗑️</button>
+        <button class="btn-call-finishing" title="Kirim ke Finishing"
+          onclick="sendLemToFinishing(${i})">
+          ➜ Sortir Finishing
+        </button>
       </div>
     `;
 
@@ -9150,6 +9182,67 @@ function callLem(index){
   const tabBtn = document.querySelector('#qcLem .tabs button[data-tab="inputLem"]');
   if(tabBtn) switchTab(tabBtn);
 }
+
+
+
+// ====================== PANGGIL KE FINISHING ======================
+function sendLemToFinishing(index){
+  const item = lemItems[index];
+  if (!item) return;
+
+  // ================== KONFIRMASI ==================
+  const ok = confirm(
+    "Kirim data LEM ke proses FINISHING?\n\n" +
+    `Nama Order : ${item.nama || '-'}\n` +
+    `No KS      : ${item.noKS || '-'}\n` +
+    `QC         : ${item.qc || '-'}`
+  );
+  if (!ok) return;
+
+  // ================== PINDAH KE FINISHING ==================
+  showMenu('qcFinishing');
+
+  const tabBtn = document.querySelector(
+    '#qcFinishing .tabs button[data-tab="inputFinishing"]'
+  );
+  if (tabBtn) switchTab(tabBtn);
+
+  // ================== ISI FORM ==================
+  setTimeout(() => {
+
+    document.getElementById('finishingNama').value   = item.nama || '';
+    document.getElementById('finishingNoKS').value   = item.noKS || '';
+    document.getElementById('finishingOrder').value  = item.order || '';
+    document.getElementById('finishingIsi').value    = item.isi || '';
+    document.getElementById('finishingBagus').value  = item.bagus || '';
+    document.getElementById('finishingQC').value     = item.qc || '';
+    document.getElementById('finishingUpdate').value = 'Proses';
+
+    // Total BS
+    document.getElementById('finishingJenisBS').value =
+      item.lemJenisBS || '';
+
+    // BS detail
+    document.getElementById('finishingJenisBS1').value = item.lemJenisBS1  || '';
+    document.getElementById('finishingJenisBS2').value = item.lemJenisBS12 || '';
+    document.getElementById('finishingJenisBS3').value = item.lemJenisBS13 || '';
+    document.getElementById('finishingJenisBS4').value = item.lemJenisBS14 || '';
+    document.getElementById('finishingJenisBS5').value = item.lemJenisBS15 || '';
+
+    // Keterangan 1–5
+    const lines = (item.keterangan || '').split(/\r?\n/);
+    for (let i = 1; i <= 5; i++) {
+      const el = document.getElementById('finKet' + i);
+      if (el) el.value = (lines[i-1] || '').replace(/^\s*\d+\.\s*/, '');
+    }
+
+    // scroll ke form
+    document.getElementById('inputFinishing')
+      ?.scrollIntoView({ behavior: 'smooth' });
+
+  }, 300);
+}
+
 
 
 // ====================== HAPUS ITEM (LEM) ======================
