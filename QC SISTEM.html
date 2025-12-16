@@ -4962,79 +4962,111 @@ function ensurePreviewReady(){
   }
 }
 
-/* ======================== DOWNLOAD PDF ======================== */
+/* ======================== DOWNLOAD PDF – FINAL FIX ======================== */
 document.getElementById("downloadPdfBtn").addEventListener("click", () => {
 
   if (!confirm("Yakin ingin mendownload PDF laporan ini?")) return;
 
-  ensurePreviewReady();
-
   const btn = document.getElementById("downloadPdfBtn");
   const originalText = btn.innerHTML;
-
   btn.disabled = true;
   btn.innerHTML = "Generating PDF... ⏳";
 
   setTimeout(() => {
 
+    /* ================= CONTAINER PDF ================= */
     const pdfWrapper = document.createElement("div");
-    pdfWrapper.style.padding = "8px";
+    pdfWrapper.style.background = "#fff";
+    pdfWrapper.style.padding = "16px";
 
-    const sections = [...previewContent.querySelectorAll(".section-title")];
+    /* ================= HEADER REPORT ================= */
+    const header = document.createElement("div");
+    header.innerHTML = `
+      <h1 style="
+        text-align:center;
+        font-size:18px;
+        font-weight:800;
+        margin-bottom:14px;
+      ">
+        REPORT QC PRODUKSI
+      </h1>
+    `;
+    pdfWrapper.appendChild(header);
 
-    sections.forEach((section, idx) => {
-      const title = document.createElement("div");
-      title.className = section.className;
-      title.innerHTML = section.innerHTML;
-      if(idx !== 0) title.style.pageBreakBefore = "always";
-      pdfWrapper.appendChild(title);
+    /* ================= CLONE PREVIEW ================= */
+    const clone = previewContent.cloneNode(true);
 
-      let next = section.nextElementSibling;
-      let count = 0;
+    /* ================= FIX LAYOUT KHUSUS PDF ================= */
+    clone.style.display = "block";
 
-      while(next && !next.classList.contains("section-title")){
-        if(next.classList.contains("report-card")){
-          const card = next.cloneNode(true);
-          card.style.pageBreakInside = "avoid";
-          card.style.boxShadow = "none";
-          card.style.borderRadius = "4px";
-          card.style.fontSize = "0.8rem";
-          pdfWrapper.appendChild(card);
-          count++;
-
-          if(count % 4 === 0){
-            const pb = document.createElement("div");
-            pb.style.pageBreakAfter = "always";
-            pdfWrapper.appendChild(pb);
-          }
-        }
-        next = next.nextElementSibling;
-      }
+    clone.querySelectorAll(".report-card").forEach(card => {
+      card.style.pageBreakInside = "avoid";
+      card.style.breakInside = "avoid";
+      card.style.marginBottom = "10px";
     });
 
+    clone.querySelectorAll(".section-title").forEach((sec, i) => {
+      sec.style.display = "block";
+      sec.style.textAlign = "center";
+      sec.style.margin = "16px 0 8px";
+      if (i !== 0) sec.style.pageBreakBefore = "always";
+    });
+
+    pdfWrapper.appendChild(clone);
+
+    /* ================= CSS KHUSUS PDF ================= */
     const style = document.createElement("style");
     style.innerHTML = `
       body { font-family: Arial, sans-serif; }
-      .section-title { text-align:center; font-weight:700; margin:10px 0 4px; }
-      .report-card { border:1px solid #e2e8f0; padding:4px 6px; margin-bottom:4px; }
-      .report-card h3 { text-align:center; border-bottom:1px solid #e2e8f0; }
-      .report-field { font-size:0.75rem; margin:1px 0; }
+
+      #previewContent {
+        display: block !important;
+      }
+
+      .report-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 12px;
+        box-shadow: none !important;
+      }
+
+      .report-field {
+        display: grid;
+        grid-template-columns: 130px 1fr;
+        font-size: 11px;
+      }
+
+      .report-status {
+        text-align: center;
+        margin: 10px auto;
+      }
+
+      .report-percentage {
+        display: block;
+        text-align: left;
+        font-size: 11px;
+      }
     `;
     pdfWrapper.prepend(style);
 
+    /* ================= EXPORT ================= */
     html2pdf().set({
-      margin: 15,
-      filename:'report-qc.pdf',
-      image:{type:'jpeg', quality:0.85},
-      html2canvas:{scale:1.2},
-      jsPDF:{unit:'mm', format:'a4', orientation:'portrait'}
-    }).from(pdfWrapper).save().then(() => {
+      margin: 12,
+      filename: "REPORT-QC.pdf",
+      image: { type: "jpeg", quality: 0.95 },
+      html2canvas: { scale: 1.8, useCORS: true },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+    })
+    .from(pdfWrapper)
+    .save()
+    .then(() => {
       btn.disabled = false;
       btn.innerHTML = originalText;
     });
 
-  }, 80);
+  }, 120);
 });
+
 
 /* ======================== SHARE WA ======================== */
 document.getElementById("shareWaBtn").addEventListener("click", () => {
@@ -5379,6 +5411,130 @@ obs.observe(reportSection, {
   box-shadow: 0 4px 10px rgba(56,189,248,0.35);
 }
 
+/* ======================== PREVIEW REPORT – RESMI ======================== */
+#previewContent {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  font-family: "Arial", sans-serif;
+}
+
+/* CARD PREVIEW */
+.report-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 14px 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  page-break-inside: avoid;
+}
+
+/* JUDUL CARD */
+.report-card h3 {
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #e5e7eb;
+  color: #111827;
+}
+
+/* FIELD GRID */
+.report-field {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 6px;
+  font-size: 0.95rem;
+  margin: 3px 0;
+  color: #1f2937;
+}
+
+.report-field b {
+  color: #374151;
+  font-weight: 600;
+}
+
+/* KETERANGAN LIST */
+.report-card .ket-list {
+  margin-top: 4px;
+  padding-left: 6px;
+}
+
+.report-card .ket-list div {
+  font-size: 0.9rem;
+  margin: 2px 0;
+  color: #374151;
+}
+
+/* ======================== STATUS (CENTER) ======================== */
+.report-status {
+  display: block;
+  width: fit-content;
+  margin: 12px auto 8px; /* CENTER */
+  padding: 6px 18px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #111;
+  text-align: center;
+}
+
+/* ======================== PERSENTASE (RATA KIRI) ======================== */
+.report-percentage {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #111827;
+  text-align: left;
+}
+
+.report-percentage div {
+  margin: 2px 0;
+}
+
+/* ======================== SECTION TITLE PREVIEW ======================== */
+#reportPreviewModal .section-title {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  padding: 6px 12px;
+  border-radius: 8px;
+  margin-top: 14px;
+  margin-bottom: 6px;
+  color: #fff;
+}
+
+/* ======================== RESPONSIVE ======================== */
+@media (min-width: 768px) {
+  #previewContent {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ======================== PRINT MODE ======================== */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #reportPreviewModal,
+  #reportPreviewModal * {
+    visibility: visible;
+  }
+
+  #reportPreviewModal {
+    position: static;
+    background: none;
+  }
+
+  .report-card {
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+}
 
 </style>
 
