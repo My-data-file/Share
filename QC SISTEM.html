@@ -4962,6 +4962,7 @@ function ensurePreviewReady(){
   }
 }
 
+
 /* ======================== DOWNLOAD PDF – FINAL FIX ======================== */
 document.getElementById("downloadPdfBtn").addEventListener("click", () => {
 
@@ -4973,6 +4974,20 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
   btn.innerHTML = "Generating PDF... ⏳";
 
   setTimeout(() => {
+
+    /* ================= NAMA FILE PDF (AMBIL DARI PREVIEW / PROSES CETAK) ================= */
+    const previewText = previewContent.innerText || "";
+
+    const noKSMatch = previewText.match(/No\s*KS\s*[:\-]?\s*(.+)/i);
+    const noKS = noKSMatch ? noKSMatch[1].split("\n")[0].trim() : "NO-KS";
+
+    const orderMatch = previewText.match(/Nama\s*Order\s*[:\-]?\s*(.+)/i);
+    const namaOrder = orderMatch ? orderMatch[1].split("\n")[0].trim() : "ORDER";
+
+    const safeNoKS = noKS.replace(/[^a-zA-Z0-9-_]/g, "_");
+    const safeOrder = namaOrder.replace(/[^a-zA-Z0-9-_]/g, "_");
+
+    const fileNamePDF = `${safeNoKS}_${safeOrder}.pdf`;
 
     /* ================= CONTAINER PDF ================= */
     const pdfWrapper = document.createElement("div");
@@ -4995,6 +5010,23 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
 
     /* ================= CLONE PREVIEW ================= */
     const clone = previewContent.cloneNode(true);
+
+    /* ================= SAMAKAN WARNA JUDUL PROSES DENGAN PREVIEW ================= */
+    const previewTitles = previewContent.querySelectorAll(".section-title");
+    const pdfTitles = clone.querySelectorAll(".section-title");
+
+    pdfTitles.forEach((title, i) => {
+      const previewTitle = previewTitles[i];
+      if (!previewTitle) return;
+
+      const stylePreview = window.getComputedStyle(previewTitle);
+
+      title.style.background = stylePreview.background;
+      title.style.color = stylePreview.color;
+      title.style.padding = "6px 10px";
+      title.style.borderRadius = "6px";
+      title.style.fontWeight = "700";
+    });
 
     /* ================= FIX LAYOUT KHUSUS PDF ================= */
     clone.style.display = "block";
@@ -5052,7 +5084,7 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
     /* ================= EXPORT ================= */
     html2pdf().set({
       margin: 12,
-      filename: "REPORT-QC.pdf",
+      filename: fileNamePDF,
       image: { type: "jpeg", quality: 0.95 },
       html2canvas: { scale: 1.8, useCORS: true },
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
@@ -5066,6 +5098,8 @@ document.getElementById("downloadPdfBtn").addEventListener("click", () => {
 
   }, 120);
 });
+
+
 
 
 /* ======================== SHARE WA ======================== */
