@@ -5808,7 +5808,7 @@ previewBtn.addEventListener("click", () => {
   const matched = spvItems.filter(x => x.noKS === key);
 
   let html = previewContent.innerHTML;
-  html += `<div class="section-title spv-title">SPV</div>`;
+  html += `<div class="section-title spv-title">REGISTER</div>`;
   html += matched.length
     ? matched.map(renderSPVPreview).join("")
     : renderSPVPreview({ noKS: key });
