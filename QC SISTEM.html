@@ -5800,46 +5800,108 @@ function searchReportByID(){
 
 
 // ======================== PREVIEW REPORT ========================
-const previewBtn=document.getElementById("previewReportBtn");
-const modal=document.getElementById("reportPreviewModal");
-const closeBtn=document.getElementById("closePreviewBtn");
-const previewContent=document.getElementById("previewContent");
+document.addEventListener("DOMContentLoaded", () => {
 
-previewBtn.addEventListener("click",()=>{
-  const key=reportSearchID.value.trim().toLowerCase();
-  if(!key) return;
-  let html="";
+  const previewBtn = document.getElementById("previewReportBtn");
+  const modal = document.getElementById("reportPreviewModal");
+  const closeBtn = document.getElementById("closePreviewBtn");
+  const previewContent = document.getElementById("previewContent");
+  const reportSearchID = document.getElementById("reportSearchID");
 
-  // CETAK
-  html+=`<div class="section-title cetak-title">CETAK</div>`;
-  const cetakItems=paItems.filter(x=> (x.noKS||"").toLowerCase()===key);
-  html+=cetakItems.length? cetakItems.map(i=>renderCardReport("",i,`
-    <div class="report-field"><b>Bagus:</b> ${formatNumber(i?.bagus)}</div>
-    <div class="report-field"><b>Sortir:</b> ${formatNumber(i?.sortir)}</div>
-    <div class="report-field"><b>Problem:</b> ${formatNumber(i?.problem)}</div>`,"cetak")).join('') : renderCardReport("",{update:"Proses"});
+  if (!previewBtn || !reportSearchID) {
+    console.error("Elemen preview / input No KS tidak ditemukan");
+    return;
+  }
 
-  // LEM
-  html+=`<div class="section-title lem-title">LEM</div>`;
-  const lemItemsMatch=lemItems.filter(x=> (x.noKS||"").toLowerCase()===key);
-  html+=lemItemsMatch.length? lemItemsMatch.map(i=>renderCardReport("",i,`
-    <div class="report-field"><b>Isi/Dus:</b> ${formatNumber(i?.isi)}</div>
-    <div class="report-field"><b>Bagus:</b> ${formatNumber(i?.bagus)}</div>
-    <div class="report-field"><b>Total BS:</b> ${formatNumber(i?.lemJenisBS)}</div>`,"lem")).join('') : renderCardReport("",{update:"Proses"});
+  previewBtn.addEventListener("click", (e) => {
+    e.preventDefault();
 
-  // FINISHING
-  html+=`<div class="section-title finishing-title">FINISHING</div>`;
-  const finishingItemsMatch=finishingItems.filter(x=> (x.noKS||"").toLowerCase()===key);
-  html+=finishingItemsMatch.length? finishingItemsMatch.map(i=>renderCardReport("",i,`
-    <div class="report-field"><b>Isi/Dus:</b> ${formatNumber(i?.isi)}</div>
-    <div class="report-field"><b>Bagus:</b> ${formatNumber(i?.bagus)}</div>
-    <div class="report-field"><b>Total BS:</b> ${formatNumber(i?.jenisBS)}</div>`,"finishing")).join('') : renderCardReport("",{update:"Proses"});
+    const key = reportSearchID.value.trim().toLowerCase();
+    if (!key) {
+      alert("Masukkan No KS terlebih dahulu");
+      return;
+    }
 
-  previewContent.innerHTML=html;
-  modal.style.display="flex";
+    let html = "";
+    let hasRealData = false;
+
+    // ================= CETAK =================
+    html += `<div class="section-title cetak-title">CETAK</div>`;
+    const cetakItems = paItems.filter(
+      x => (x.noKS || "").toLowerCase() === key
+    );
+    if (cetakItems.length) hasRealData = true;
+
+    html += cetakItems.length
+      ? cetakItems.map(i => renderCardReport("", i, `
+          <div class="report-field"><b>Bagus:</b> ${formatNumber(i?.bagus)}</div>
+          <div class="report-field"><b>Sortir:</b> ${formatNumber(i?.sortir)}</div>
+          <div class="report-field"><b>Problem:</b> ${formatNumber(i?.problem)}</div>
+        `, "cetak")).join('')
+      : renderCardReport("", { update: "Proses" });
+
+    // ================= LEM =================
+    html += `<div class="section-title lem-title">LEM</div>`;
+    const lemItemsMatch = lemItems.filter(
+      x => (x.noKS || "").toLowerCase() === key
+    );
+    if (lemItemsMatch.length) hasRealData = true;
+
+    html += lemItemsMatch.length
+      ? lemItemsMatch.map(i => renderCardReport("", i, `
+          <div class="report-field"><b>Isi/Dus:</b> ${formatNumber(i?.isi)}</div>
+          <div class="report-field"><b>Bagus:</b> ${formatNumber(i?.bagus)}</div>
+          <div class="report-field"><b>Total BS:</b> ${formatNumber(i?.lemJenisBS)}</div>
+        `, "lem")).join('')
+      : renderCardReport("", { update: "Proses" });
+
+    // ================= FINISHING =================
+    html += `<div class="section-title finishing-title">FINISHING</div>`;
+    const finishingItemsMatch = finishingItems.filter(
+      x => (x.noKS || "").toLowerCase() === key
+    );
+    if (finishingItemsMatch.length) hasRealData = true;
+
+    html += finishingItemsMatch.length
+      ? finishingItemsMatch.map(i => renderCardReport("", i, `
+          <div class="report-field"><b>Isi/Dus:</b> ${formatNumber(i?.isi)}</div>
+          <div class="report-field"><b>Bagus:</b> ${formatNumber(i?.bagus)}</div>
+          <div class="report-field"><b>Total BS:</b> ${formatNumber(i?.jenisBS)}</div>
+        `, "finishing")).join('')
+      : renderCardReport("", { update: "Proses" });
+
+    // ================= REGISTER (SPV) =================
+    html += `<div class="section-title spv-title">REGISTER</div>`;
+    const spvMatch = spvItems.filter(
+      x => (x.noKS || "").toLowerCase() === key
+    );
+    if (spvMatch.length) hasRealData = true;
+
+    html += spvMatch.length
+      ? spvMatch.map(renderSPVPreview).join('')
+      : renderSPVPreview({ noKS: key });
+
+    // ❗ NOTIF JIKA SEMUA KOSONG (TERMASUK REGISTER)
+    if (!hasRealData) {
+      alert("Belum ada hasil report untuk No KS ini");
+      return;
+    }
+
+    previewContent.innerHTML = html;
+    modal.style.display = "flex";
+  });
+
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  window.addEventListener("click", e => {
+    if (e.target === modal) modal.style.display = "none";
+  });
+
 });
 
-closeBtn.addEventListener("click",()=>{ modal.style.display="none"; });
-window.addEventListener("click",e=>{ if(e.target===modal) modal.style.display="none"; });
+
 
 
 
@@ -6013,27 +6075,6 @@ searchReportByID = function(){
 };
 
 
-
-/* ======================== INJEK KE PREVIEW ======================== */
-const _oldPreview = previewBtn.onclick || null;
-
-previewBtn.addEventListener("click", () => {
-  if (_oldPreview) _oldPreview();
-
-  const key = reportSearchID.value.trim().toUpperCase();
-  if (!key) return;
-
-  const matched = spvItems.filter(x => x.noKS === key);
-
-  let html = previewContent.innerHTML;
-  html += `<div class="section-title spv-title">REGISTER</div>`;
-  html += matched.length
-    ? matched.map(renderSPVPreview).join("")
-    : renderSPVPreview({ noKS: key });
-
-  previewContent.innerHTML = html;
-});
-
 /* ======================== AUTO LOAD SPV ======================== */
 document.addEventListener("DOMContentLoaded", () => {
   loadSPV();
@@ -6042,9 +6083,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
 </script>
-
-
 
 
 
@@ -10815,3 +10855,4 @@ function goHome() {
 
 </body>
 </html>
+
