@@ -7126,39 +7126,41 @@ document.addEventListener('DOMContentLoaded', () => {
 // ====================== DETAIL ======================
 function showDetailModal(item) {
   const body = document.getElementById("detailFinishingBody");
+  if (!body) return;
 
   body.innerHTML = `
     <strong>Tanggal:</strong> ${item.tanggal || '-'}<br>
-    <strong>Nama:</strong> ${item.nama}<br>
-    <strong>No KS:</strong> ${item.noKS}<br>
-    <strong>Order:</strong> ${item.order}<br>
-    <strong>Isi:</strong> ${item.isi}<br>
-    <strong>Bagus:</strong> ${item.bagus}<br>
-    <strong>Total BS:</strong> ${item.jenisBS}<br>
-    <strong>BS Cetak:</strong> ${item.jenisBS1}<br>
-    <strong>BS Lem:</strong> ${item.jenisBS2}<br>
-    <strong>BS Ponch:</strong> ${item.jenisBS3}<br>
-    <strong>BS Varnish:</strong> ${item.jenisBS4}<br>
-    <strong>BS Potong:</strong> ${item.jenisBS5}<br>
-    <strong>QC:</strong> ${item.qc}<br>
-    <strong>Update:</strong> <span class="status-${(item.update || '').toLowerCase()}">${item.update}</span><br><br>
+    <strong>Nama:</strong> ${item.nama || '-'}<br>
+    <strong>No KS:</strong> ${item.noKS || '-'}<br>
+    <strong>Order:</strong> ${item.order || '-'}<br>
+    <strong>Isi:</strong> ${item.isi || '-'}<br>
+    <strong>Bagus:</strong> ${item.bagus || '-'}<br>
+    <strong>Total BS:</strong> ${item.jenisBS || '-'}<br>
+    <strong>BS Cetak:</strong> ${item.jenisBS1 || '-'}<br>
+    <strong>BS Lem:</strong> ${item.jenisBS2 || '-'}<br>
+    <strong>BS Ponch:</strong> ${item.jenisBS3 || '-'}<br>
+    <strong>BS Varnish:</strong> ${item.jenisBS4 || '-'}<br>
+    <strong>BS Potong:</strong> ${item.jenisBS5 || '-'}<br>
+    <strong>QC:</strong> ${item.qc || '-'}<br>
+    <strong>Update:</strong>
+    <span class="status-${(item.update || '').toLowerCase()}">
+      ${item.update || '-'}
+    </span><br><br>
     <strong>Keterangan:</strong><br>
     ${(item.keterangan || "-").replace(/\n/g, "<br>")}
   `;
 
-  document.getElementById("detailFinishingModal").style.display = "flex";
+  const modal = document.getElementById("detailFinishingModal");
+  if (modal) modal.style.display = "flex";
 }
 
-function closeDetailModal() {
-  document.getElementById("detailFinishingModal").style.display = "none";
-}
-
-function closeDetailModal() {   // << SAMA seperti yang dipanggil HTML
+// 🔒 SESUAI DENGAN HTML: onclick="closeDetailModalFinishing()"
+function closeDetailModalFinishing() {
   const modal = document.getElementById("detailFinishingModal");
   if (modal) modal.style.display = "none";
 }
 
-// Close modal jika klik area luar
+// Tutup modal jika klik area luar (background)
 document.addEventListener("click", (e) => {
   const modal = document.getElementById("detailFinishingModal");
   if (!modal) return;
@@ -7167,6 +7169,7 @@ document.addEventListener("click", (e) => {
     modal.style.display = "none";
   }
 });
+
 
 
 // ====================== TOGGLE VIEW + FILTER QC FINISHING ======================
