@@ -7431,7 +7431,7 @@ document.addEventListener("click", (e) => {
 
 
 
-// ====================== TOGGLE VIEW + FILTER QC FINISHING ======================
+// ====================== TOGGLE VIEW + FILTER QC FINISHING (FINAL FIX) ======================
 document.addEventListener("DOMContentLoaded", () => {
 
   // Tombol toggle
@@ -7444,56 +7444,88 @@ document.addEventListener("DOMContentLoaded", () => {
   const sectionProses = document.getElementById("sectionFinishingProses");
   const sectionSelesai = document.getElementById("sectionFinishingSelesai");
 
-  // Filter input (ID diperbaiki sesuai HTML)
+  // Filter input
   const filterTO = document.getElementById("filterFinishingTO");
   const filterProses = document.getElementById("filterFinishingProses");
   const filterSelesai = document.getElementById("filterFinishingSelesai");
 
-  // Grid container
-  const gridTO = document.getElementById("dashboardFinishingTO");
-  const gridProses = document.getElementById("dashboardFinishingProses");
-  const gridSelesai = document.getElementById("dashboardFinishingSelesai");
-
-  // Fungsi filter
+  // ================= FILTER VISUAL (tetap dipakai kode lain) =================
   function filterCards(container, keyword) {
     if (!container) return;
     const cards = container.querySelectorAll(".grid-card");
-    const term = keyword.toLowerCase().trim();
+    const term = (keyword || "").toLowerCase().trim();
+
     cards.forEach(card => {
-      const text = card.textContent.toLowerCase();
-      card.style.display = text.includes(term) ? "" : "none";
+      card.style.display = card.textContent
+        .toLowerCase()
+        .includes(term)
+        ? ""
+        : "none";
     });
   }
 
-  // Filter real time
+  // realtime filter (TIDAK DIHAPUS)
   [
-    { input: filterTO, grid: gridTO },
-    { input: filterProses, grid: gridProses },
-    { input: filterSelesai, grid: gridSelesai }
-  ].forEach(({ input, grid }) => {
+    { input: filterTO, gridId: "dashboardFinishingTO" },
+    { input: filterProses, gridId: "dashboardFinishingProses" },
+    { input: filterSelesai, gridId: "dashboardFinishingSelesai" }
+  ].forEach(({ input, gridId }) => {
     if (input) {
-      input.addEventListener("input", () => filterCards(grid, input.value));
+      input.addEventListener("input", () => {
+        const grid = document.getElementById(gridId);
+        filterCards(grid, input.value);
+      });
     }
   });
 
-  // Tetap filter setelah data dirender ulang
+  // tetap dipakai kode lain (TIDAK DIUBAH)
   window.applyFinishingFilters = function () {
-    filterCards(gridTO, filterTO?.value || "");
-    filterCards(gridProses, filterProses?.value || "");
-    filterCards(gridSelesai, filterSelesai?.value || "");
+    filterCards(
+      document.getElementById("dashboardFinishingTO"),
+      filterTO?.value || ""
+    );
+    filterCards(
+      document.getElementById("dashboardFinishingProses"),
+      filterProses?.value || ""
+    );
+    filterCards(
+      document.getElementById("dashboardFinishingSelesai"),
+      filterSelesai?.value || ""
+    );
   };
 
-  // Toggle section
-  function toggleSection(section, btn) {
+  // ================= TOGGLE SECTION (KUNCI RESET GRID) =================
+  function toggleSection(section, btn, input) {
     const visible = section.style.display !== "none";
+
+    // ⬅️ reset input
+    if (input) input.value = "";
+
+    // ⬅️ RESET DASHBOARD FINISHING DARI SOURCE DATA
+    if (typeof renderDashboardFinishingCompact === "function") {
+      renderDashboardFinishingCompact("", true);
+    }
+
     section.style.display = visible ? "none" : "block";
     btn.textContent = visible ? "Show" : "Hide";
   }
 
-  if (btnTO) btnTO.addEventListener("click", () => toggleSection(sectionTO, btnTO));
-  if (btnProses) btnProses.addEventListener("click", () => toggleSection(sectionProses, btnProses));
-  if (btnSelesai) btnSelesai.addEventListener("click", () => toggleSection(sectionSelesai, btnSelesai));
+  if (btnTO)
+    btnTO.addEventListener("click", () =>
+      toggleSection(sectionTO, btnTO, filterTO)
+    );
+
+  if (btnProses)
+    btnProses.addEventListener("click", () =>
+      toggleSection(sectionProses, btnProses, filterProses)
+    );
+
+  if (btnSelesai)
+    btnSelesai.addEventListener("click", () =>
+      toggleSection(sectionSelesai, btnSelesai, filterSelesai)
+    );
 });
+
 
 
 // ====================== PASSWORD PROTECT QC FINISHING ======================
@@ -8202,7 +8234,7 @@ function closeDetailModalBapro() {
   document.getElementById("detailBaproModal").style.display = "none";
 }
 
-// ====================== TOGGLE VIEW + FILTER QC BAPRO ======================
+// ====================== TOGGLE VIEW + FILTER QC BAPRO (FINAL FIX) ======================
 document.addEventListener('DOMContentLoaded', () => {
   const btnTO = document.getElementById('toggleBaproTO');
   const btnProses = document.getElementById('toggleBaproProses');
@@ -8216,41 +8248,37 @@ document.addEventListener('DOMContentLoaded', () => {
   const filterProses = document.getElementById('filterProsesBapro');
   const filterSelesai = document.getElementById('filterSelesaiBapro');
 
-  const gridTO = document.getElementById('dashboardBaproTO');
-  const gridProses = document.getElementById('dashboardBaproProses');
-  const gridSelesai = document.getElementById('dashboardBaproSelesai');
-
-  function filterCards(container, keyword) {
-    if (!container) return;
-    const cards = container.querySelectorAll('.grid-card');
-    const term = keyword.toLowerCase().trim();
-    cards.forEach(card => card.style.display = card.textContent.toLowerCase().includes(term) ? '' : 'none');
-  }
-
-  [
-    {input: filterTO, grid: gridTO},
-    {input: filterProses, grid: gridProses},
-    {input: filterSelesai, grid: gridSelesai}
-  ].forEach(({input, grid}) => {
-    if (input) input.addEventListener('input', () => filterCards(grid, input.value));
-  });
-
-  window.applyBaproFilters = function() {
-    filterCards(gridTO, filterTO.value);
-    filterCards(gridProses, filterProses.value);
-    filterCards(gridSelesai, filterSelesai.value);
-  };
-
-  function toggleSection(section, btn) {
+  function toggleSection(section, btn, input) {
     const visible = section.style.display !== 'none';
+
+    // ⬅️ RESET INPUT
+    if (input) input.value = '';
+
+    // ⬅️ RESET DASHBOARD (INI KUNCI)
+    if (typeof renderDashboardBaproCompact === 'function') {
+      renderDashboardBaproCompact('', true);
+    }
+
     section.style.display = visible ? 'none' : 'block';
     btn.textContent = visible ? 'Show' : 'Hide';
   }
 
-  if (btnTO) btnTO.addEventListener('click', () => toggleSection(sectionTO, btnTO));
-  if (btnProses) btnProses.addEventListener('click', () => toggleSection(sectionProses, btnProses));
-  if (btnSelesai) btnSelesai.addEventListener('click', () => toggleSection(sectionSelesai, btnSelesai));
+  if (btnTO)
+    btnTO.addEventListener('click', () =>
+      toggleSection(sectionTO, btnTO, filterTO)
+    );
+
+  if (btnProses)
+    btnProses.addEventListener('click', () =>
+      toggleSection(sectionProses, btnProses, filterProses)
+    );
+
+  if (btnSelesai)
+    btnSelesai.addEventListener('click', () =>
+      toggleSection(sectionSelesai, btnSelesai, filterSelesai)
+    );
 });
+
 
 // ===== Password untuk QC BAPRO (ubah sesuai kebutuhan) =====
 const QC_BAPRO_PASSWORD = 'qc123';
@@ -8902,55 +8930,98 @@ function closeDetailModalCetak(){
 
 
 
-// ====================== TOGGLE VIEW + FILTER QC PA ======================
-document.addEventListener('DOMContentLoaded', ()=>{
-  const btnTO=document.getElementById('togglePATO');
-  const btnProses=document.getElementById('togglePAProses');
-  const btnSelesai=document.getElementById('togglePASelesai');
+// ====================== TOGGLE VIEW + FILTER QC PA (FINAL FIX) ======================
+document.addEventListener('DOMContentLoaded', () => {
 
-  const sectionTO=document.getElementById('sectionPATO');
-  const sectionProses=document.getElementById('sectionPAProses');
-  const sectionSelesai=document.getElementById('sectionPASelesai');
+  const btnTO = document.getElementById('togglePATO');
+  const btnProses = document.getElementById('togglePAProses');
+  const btnSelesai = document.getElementById('togglePASelesai');
 
-  const filterTO=document.getElementById('filterPATO');
-  const filterProses=document.getElementById('filterPAProses');
-  const filterSelesai=document.getElementById('filterPASelesai');
+  const sectionTO = document.getElementById('sectionPATO');
+  const sectionProses = document.getElementById('sectionPAProses');
+  const sectionSelesai = document.getElementById('sectionPASelesai');
 
-  const gridTO=document.getElementById('dashboardPATO');
-  const gridProses=document.getElementById('dashboardPAProses');
-  const gridSelesai=document.getElementById('dashboardPASelesai');
+  const filterTO = document.getElementById('filterPATO');
+  const filterProses = document.getElementById('filterPAProses');
+  const filterSelesai = document.getElementById('filterPASelesai');
 
-  function filterCards(container, keyword){
-    if(!container) return;
-    const cards=container.querySelectorAll('.grid-card');
-    const term=keyword.toLowerCase().trim();
-    cards.forEach(card=>{
-      const text=card.textContent.toLowerCase();
-      card.style.display=text.includes(term)?'':'none';
+  // ================= FILTER VISUAL (TETAP DIPAKAI) =================
+  function filterCards(container, keyword) {
+    if (!container) return;
+    const cards = container.querySelectorAll('.grid-card');
+    const term = (keyword || '').toLowerCase().trim();
+
+    cards.forEach(card => {
+      card.style.display = card.textContent
+        .toLowerCase()
+        .includes(term)
+        ? ''
+        : 'none';
     });
   }
 
-  [{input:filterTO,grid:gridTO},{input:filterProses,grid:gridProses},{input:filterSelesai,grid:gridSelesai}]
-  .forEach(({input,grid})=>{
-    if(input) input.addEventListener('input',()=>filterCards(grid,input.value));
+  // realtime filter (TIDAK DIHAPUS)
+  [
+    { input: filterTO, gridId: 'dashboardPATO' },
+    { input: filterProses, gridId: 'dashboardPAProses' },
+    { input: filterSelesai, gridId: 'dashboardPASelesai' }
+  ].forEach(({ input, gridId }) => {
+    if (input) {
+      input.addEventListener('input', () => {
+        const grid = document.getElementById(gridId);
+        filterCards(grid, input.value);
+      });
+    }
   });
 
-  window.applyPAFilters=function(){
-    filterCards(gridTO,filterTO.value);
-    filterCards(gridProses,filterProses.value);
-    filterCards(gridSelesai,filterSelesai.value);
+  // dipakai kode lain (TIDAK DIUBAH)
+  window.applyPAFilters = function () {
+    filterCards(
+      document.getElementById('dashboardPATO'),
+      filterTO?.value || ''
+    );
+    filterCards(
+      document.getElementById('dashboardPAProses'),
+      filterProses?.value || ''
+    );
+    filterCards(
+      document.getElementById('dashboardPASelesai'),
+      filterSelesai?.value || ''
+    );
   };
 
-  function toggleSection(section,btn){
-    const visible=section.style.display!=='none';
-    section.style.display=visible?'none':'block';
-    btn.textContent=visible?'Show':'Hide';
+  // ================= TOGGLE SECTION (KUNCI RESET GRID) =================
+  function toggleSection(section, btn, input) {
+    const visible = section.style.display !== 'none';
+
+    // ⬅️ reset input
+    if (input) input.value = '';
+
+    // ⬅️ RESET DASHBOARD PA DARI SOURCE DATA
+    if (typeof renderDashboardPACompact === 'function') {
+      renderDashboardPACompact('', true);
+    }
+
+    section.style.display = visible ? 'none' : 'block';
+    btn.textContent = visible ? 'Show' : 'Hide';
   }
 
-  if(btnTO) btnTO.addEventListener('click',()=>toggleSection(sectionTO,btnTO));
-  if(btnProses) btnProses.addEventListener('click',()=>toggleSection(sectionProses,btnProses));
-  if(btnSelesai) btnSelesai.addEventListener('click',()=>toggleSection(sectionSelesai,btnSelesai));
+  if (btnTO)
+    btnTO.addEventListener('click', () =>
+      toggleSection(sectionTO, btnTO, filterTO)
+    );
+
+  if (btnProses)
+    btnProses.addEventListener('click', () =>
+      toggleSection(sectionProses, btnProses, filterProses)
+    );
+
+  if (btnSelesai)
+    btnSelesai.addEventListener('click', () =>
+      toggleSection(sectionSelesai, btnSelesai, filterSelesai)
+    );
 });
+
 
 // ===== Password untuk QC PA (ubah sesuai kebutuhan) =====
 const QC_PA_PASSWORD='qc123';
@@ -9723,8 +9794,9 @@ function closeDetailModalLem() {
 }
 
 
-// ====================== TOGGLE VIEW + FILTER QC LEM ======================
+// ====================== TOGGLE VIEW + FILTER QC LEM (FINAL FIX) ======================
 document.addEventListener('DOMContentLoaded', () => {
+
   // Tombol
   const btnTO = document.getElementById('toggleLemTO');
   const btnProses = document.getElementById('toggleLemProses');
@@ -9740,51 +9812,83 @@ document.addEventListener('DOMContentLoaded', () => {
   const filterProses = document.getElementById('filterProsesLem');
   const filterSelesai = document.getElementById('filterSelesaiLem');
 
-  // Grid container
-  const gridTO = document.getElementById('dashboardLemTO');
-  const gridProses = document.getElementById('dashboardLemProses');
-  const gridSelesai = document.getElementById('dashboardLemSelesai');
-
-  // 🔍 Fungsi filter universal (per grid)
+  // ================= FILTER VISUAL (TETAP DIPAKAI) =================
   function filterCards(container, keyword) {
     if (!container) return;
     const cards = container.querySelectorAll('.grid-card');
-    const term = keyword.toLowerCase().trim();
+    const term = (keyword || '').toLowerCase().trim();
+
     cards.forEach(card => {
-      const text = card.textContent.toLowerCase();
-      card.style.display = text.includes(term) ? '' : 'none';
+      card.style.display = card.textContent
+        .toLowerCase()
+        .includes(term)
+        ? ''
+        : 'none';
     });
   }
 
-  // Event input untuk filter real-time
+  // realtime filter (TIDAK DIHAPUS)
   [
-    {input: filterTO, grid: gridTO},
-    {input: filterProses, grid: gridProses},
-    {input: filterSelesai, grid: gridSelesai}
-  ].forEach(({input, grid}) => {
+    { input: filterTO, gridId: 'dashboardLemTO' },
+    { input: filterProses, gridId: 'dashboardLemProses' },
+    { input: filterSelesai, gridId: 'dashboardLemSelesai' }
+  ].forEach(({ input, gridId }) => {
     if (input) {
-      input.addEventListener('input', () => filterCards(grid, input.value));
+      input.addEventListener('input', () => {
+        const grid = document.getElementById(gridId);
+        filterCards(grid, input.value);
+      });
     }
   });
 
-  // Fungsi supaya filter tetap aktif setelah reload data
-  window.applyLemFilters = function() {
-    filterCards(gridTO, filterTO.value);
-    filterCards(gridProses, filterProses.value);
-    filterCards(gridSelesai, filterSelesai.value);
+  // dipakai kode lain (TIDAK DIUBAH)
+  window.applyLemFilters = function () {
+    filterCards(
+      document.getElementById('dashboardLemTO'),
+      filterTO?.value || ''
+    );
+    filterCards(
+      document.getElementById('dashboardLemProses'),
+      filterProses?.value || ''
+    );
+    filterCards(
+      document.getElementById('dashboardLemSelesai'),
+      filterSelesai?.value || ''
+    );
   };
 
-  // Toggle show/hide tiap section
-  function toggleSection(section, btn) {
+  // ================= TOGGLE SECTION (KUNCI RESET GRID) =================
+  function toggleSection(section, btn, input) {
     const visible = section.style.display !== 'none';
+
+    // ⬅️ reset input
+    if (input) input.value = '';
+
+    // ⬅️ RESET DASHBOARD LEM DARI SOURCE DATA
+    if (typeof renderDashboardLemCompact === 'function') {
+      renderDashboardLemCompact('', true);
+    }
+
     section.style.display = visible ? 'none' : 'block';
     btn.textContent = visible ? 'Show' : 'Hide';
   }
 
-  if (btnTO) btnTO.addEventListener('click', () => toggleSection(sectionTO, btnTO));
-  if (btnProses) btnProses.addEventListener('click', () => toggleSection(sectionProses, btnProses));
-  if (btnSelesai) btnSelesai.addEventListener('click', () => toggleSection(sectionSelesai, btnSelesai));
+  if (btnTO)
+    btnTO.addEventListener('click', () =>
+      toggleSection(sectionTO, btnTO, filterTO)
+    );
+
+  if (btnProses)
+    btnProses.addEventListener('click', () =>
+      toggleSection(sectionProses, btnProses, filterProses)
+    );
+
+  if (btnSelesai)
+    btnSelesai.addEventListener('click', () =>
+      toggleSection(sectionSelesai, btnSelesai, filterSelesai)
+    );
 });
+
 
 
 
