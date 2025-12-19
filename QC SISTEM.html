@@ -7387,24 +7387,34 @@ function showDetailModal(item) {
   const body = document.getElementById("detailFinishingBody");
   if (!body) return;
 
+  // helper format angka Indonesia (1.000, 10.000)
+  const formatID = (val) => {
+    if (val === null || val === undefined || val === '' || isNaN(val)) return val || '-';
+    return Number(val).toLocaleString('id-ID');
+  };
+
   body.innerHTML = `
     <strong>Tanggal:</strong> ${item.tanggal || '-'}<br>
     <strong>Nama:</strong> ${item.nama || '-'}<br>
     <strong>No KS:</strong> ${item.noKS || '-'}<br>
-    <strong>Order:</strong> ${item.order || '-'}<br>
-    <strong>Isi:</strong> ${item.isi || '-'}<br>
-    <strong>Bagus:</strong> ${item.bagus || '-'}<br>
-    <strong>Total BS:</strong> ${item.jenisBS || '-'}<br>
-    <strong>BS Cetak:</strong> ${item.jenisBS1 || '-'}<br>
-    <strong>BS Lem:</strong> ${item.jenisBS2 || '-'}<br>
-    <strong>BS Ponch:</strong> ${item.jenisBS3 || '-'}<br>
-    <strong>BS Varnish:</strong> ${item.jenisBS4 || '-'}<br>
-    <strong>BS Potong:</strong> ${item.jenisBS5 || '-'}<br>
+
+    <strong>Order:</strong> ${formatID(item.order)}<br>
+    <strong>Isi:</strong> ${formatID(item.isi)}<br>
+    <strong>Bagus:</strong> ${formatID(item.bagus)}<br>
+
+    <strong>Total BS:</strong> ${formatID(item.jenisBS)}<br>
+    <strong>BS Cetak:</strong> ${formatID(item.jenisBS1)}<br>
+    <strong>BS Lem:</strong> ${formatID(item.jenisBS2)}<br>
+    <strong>BS Ponch:</strong> ${formatID(item.jenisBS3)}<br>
+    <strong>BS Varnish:</strong> ${formatID(item.jenisBS4)}<br>
+    <strong>BS Potong:</strong> ${formatID(item.jenisBS5)}<br>
+
     <strong>QC:</strong> ${item.qc || '-'}<br>
     <strong>Update:</strong>
-    <span class="status-${(item.update || '').toLowerCase()}">
-      ${item.update || '-'}
-    </span><br><br>
+      <span class="status-${(item.update || '').toLowerCase()}">
+        ${item.update || '-'}
+      </span><br><br>
+
     <strong>Keterangan:</strong><br>
     ${(item.keterangan || "-").replace(/\n/g, "<br>")}
   `;
@@ -7428,6 +7438,7 @@ document.addEventListener("click", (e) => {
     modal.style.display = "none";
   }
 });
+
 
 
 
@@ -8902,14 +8913,22 @@ document.addEventListener('DOMContentLoaded', () => {
 function showDetailModalPA(item){
   const body = document.getElementById('detailCetakBody');
 
+  // helper format angka Indonesia (1.000, 10.000)
+  const formatID = (val) => {
+    if (val === null || val === undefined || val === '' || isNaN(val)) return val || '-';
+    return Number(val).toLocaleString('id-ID');
+  };
+
   body.innerHTML = `
     <strong>Tanggal:</strong> ${item.tanggal || '-'}<br>
     <strong>Nama:</strong> ${item.nama || '-'}<br>
     <strong>No KS:</strong> ${item.noKS || '-'}<br>
-    <strong>Order:</strong> ${item.order || '-'}<br>
-    <strong>Bagus:</strong> ${item.bagus || '-'}<br>
-    <strong>Sortir:</strong> ${item.sortir || '-'}<br>
-    <strong>Problem:</strong> ${item.problem || '-'}<br>
+
+    <strong>Order:</strong> ${formatID(item.order)}<br>
+    <strong>Bagus:</strong> ${formatID(item.bagus)}<br>
+    <strong>Sortir:</strong> ${formatID(item.sortir)}<br>
+    <strong>Problem:</strong> ${formatID(item.problem)}<br>
+
     <strong>QC:</strong> ${item.qc || '-'}<br>
     <strong>Mesin:</strong> ${item.mesin || '-'}<br>
     <strong>Update:</strong>
@@ -8927,6 +8946,7 @@ function showDetailModalPA(item){
 function closeDetailModalCetak(){
   document.getElementById('detailCetakModal').style.display = 'none';
 }
+
 
 
 
@@ -9763,19 +9783,28 @@ document.addEventListener('DOMContentLoaded', () => {
 function showDetailModalLem(item) {
   const body = document.getElementById("detailLemBody");
 
+  // helper format angka Indonesia (1.000, 10.000)
+  const formatID = (val) => {
+    if (val === null || val === undefined || val === '' || isNaN(val)) return val || '-';
+    return Number(val).toLocaleString('id-ID');
+  };
+
   body.innerHTML = `
     <strong>Tanggal:</strong> ${item.tanggal || '-'}<br>
     <strong>Nama:</strong> ${item.nama || '-'}<br>
     <strong>No KS:</strong> ${item.noKS || '-'}<br>
-    <strong>Order:</strong> ${item.order || '-'}<br>
-    <strong>Isi/Dus:</strong> ${item.isi || '-'}<br>
-    <strong>Bagus:</strong> ${item.bagus || '-'}<br>
-    <strong>Total BS:</strong> ${item.lemJenisBS}<br>
-    <strong>BS Cetak:</strong> ${item.lemJenisBS1}<br>
-    <strong>BS Lem:</strong> ${item.lemJenisBS12}<br>
-    <strong>BS Ponch:</strong> ${item.lemJenisBS13}<br>
-    <strong>BS Varnish:</strong> ${item.lemJenisBS14}<br>
-    <strong>BS Potong:</strong> ${item.lemJenisBS15}<br>
+
+    <strong>Order:</strong> ${formatID(item.order)}<br>
+    <strong>Isi/Dus:</strong> ${formatID(item.isi)}<br>
+    <strong>Bagus:</strong> ${formatID(item.bagus)}<br>
+
+    <strong>Total BS:</strong> ${formatID(item.lemJenisBS)}<br>
+    <strong>BS Cetak:</strong> ${formatID(item.lemJenisBS1)}<br>
+    <strong>BS Lem:</strong> ${formatID(item.lemJenisBS12)}<br>
+    <strong>BS Ponch:</strong> ${formatID(item.lemJenisBS13)}<br>
+    <strong>BS Varnish:</strong> ${formatID(item.lemJenisBS14)}<br>
+    <strong>BS Potong:</strong> ${formatID(item.lemJenisBS15)}<br>
+
     <strong>QC:</strong> ${item.qc || '-'}<br>
     <strong>Update:</strong> 
       <span class="status-${(item.update || '').toLowerCase()}">
@@ -9792,6 +9821,7 @@ function showDetailModalLem(item) {
 function closeDetailModalLem() {
   document.getElementById("detailLemModal").style.display = "none";
 }
+
 
 
 // ====================== TOGGLE VIEW + FILTER QC LEM (FINAL FIX) ======================
