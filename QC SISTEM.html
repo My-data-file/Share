@@ -7276,7 +7276,7 @@ function renderDashboardFinishingCompact(query = "", safeMode = false) {
 
   let totalTO = 0, totalProses = 0, totalSelesai = 0;
 
-  // --- helper parse angka aman (hapus koma/spasi) ---
+  // --- helper parse angka aman ---
   const num = (v) => {
     if (!v) return 0;
     const clean = String(v).replace(/[^0-9.-]/g, "");
@@ -7284,32 +7284,50 @@ function renderDashboardFinishingCompact(query = "", safeMode = false) {
     return isNaN(n) ? 0 : n;
   };
 
+  // --- helper format angka ribuan ---
+  const fmt = (n) => Number(n || 0).toLocaleString('id-ID');
+
   finishingItems.forEach(item => {
     const updateVal = (item.update || "").trim().toLowerCase();
     const tanggal = item.tanggal || "-";
 
     // ===========================
-    // NILAI FINISHING (FINAL)
+    // NILAI FINISHING
     // ===========================
     const order = num(item.order);
-    const isi   = num(item.isi);
     const bagus = num(item.bagus);
 
-    // Total BS = semua jenis BS FINISHING
-    const totalBS =
-        num(item.jenisBS)  +
-        num(item.jenisBS1) +
-        num(item.jenisBS2) +
-        num(item.jenisBS3) +
-        num(item.jenisBS4) +
-        num(item.jenisBS5);
+    // ===========================
+    // TOTAL BS (ANTI DOBEL)
+    // ===========================
+    const bsDetail =
+      num(item.jenisBS1) +
+      num(item.jenisBS2) +
+      num(item.jenisBS3) +
+      num(item.jenisBS4) +
+      num(item.jenisBS5);
 
-    // hasil bersih
-    let hasilBersih = bagus - totalBS;
-    if (hasilBersih < 0) hasilBersih = 0;
+    const totalBS = bsDetail > 0 ? bsDetail : num(item.jenisBS);
 
-    // persentase
-    const persen = order > 0 ? ((hasilBersih / order) * 100).toFixed(1) : "0.0";
+    // ===========================
+    // PERSENTASE HASIL (BAGUS / ORDER)
+    // ===========================
+    const persen = order > 0
+      ? ((bagus / order) * 100).toFixed(1)
+      : "0.0";
+
+    // ===========================
+    // KURANG / LEBIH (ORDER vs BAGUS)
+    // ===========================
+    const selisih = bagus - order;
+    let kurangBarang = 0;
+    let lebihBarang = 0;
+
+    if (selisih < 0) {
+      kurangBarang = Math.abs(selisih);
+    } else if (selisih > 0) {
+      lebihBarang = selisih;
+    }
 
     // ===========================
     // RENDER CARD
@@ -7339,9 +7357,43 @@ function renderDashboardFinishingCompact(query = "", safeMode = false) {
         color:#003a80;
         border:1px solid #5fa8ff;
       ">
-        <span style="font-weight:600; font-size:0.92rem;">Hasil:</span>
-        <span style="display:inline-block; min-width:64px; text-align:right;">${persen}%</span>
+        <span>Hasil:</span>
+        <span>${persen}%</span>
       </div>
+
+      ${kurangBarang > 0 ? `
+        <div style="
+          margin:4px 0 6px;
+          padding:6px 10px;
+          background:#fff4e5;
+          border:1px solid #ffb020;
+          border-radius:8px;
+          font-weight:700;
+          color:#8a4b00;
+          display:flex;
+          justify-content:space-between;
+        ">
+          <span>Kurang:</span>
+          <span>${fmt(kurangBarang)}</span>
+        </div>
+      ` : ``}
+
+      ${lebihBarang > 0 ? `
+        <div style="
+          margin:4px 0 6px;
+          padding:6px 10px;
+          background:#e6fff3;
+          border:1px solid #10b981;
+          border-radius:8px;
+          font-weight:700;
+          color:#065f46;
+          display:flex;
+          justify-content:space-between;
+        ">
+          <span>Lebih:</span>
+          <span>${fmt(lebihBarang)}</span>
+        </div>
+      ` : ``}
 
       <span class="${statusClass}">
         ${highlightHtmlSafe(item.update || '', query)}
@@ -7349,13 +7401,16 @@ function renderDashboardFinishingCompact(query = "", safeMode = false) {
     `;
 
     // FILTER
-    const cardText = card.textContent.toLowerCase();
-    if (!safeMode && q && !cardText.includes(q)) return;
+    if (!safeMode && q && !card.textContent.toLowerCase().includes(q)) return;
 
     // KATEGORI
-    if (updateVal === 'pending') { containerTO.appendChild(card); totalTO++; }
-    else if (updateVal === 'proses') { containerProses.appendChild(card); totalProses++; }
-    else if (updateVal === 'selesai') { containerSelesai.appendChild(card); totalSelesai++; }
+    if (updateVal === 'pending') {
+      containerTO.appendChild(card); totalTO++;
+    } else if (updateVal === 'proses') {
+      containerProses.appendChild(card); totalProses++;
+    } else if (updateVal === 'selesai') {
+      containerSelesai.appendChild(card); totalSelesai++;
+    }
 
     card.addEventListener('click', () => showDetailModal(item));
   });
@@ -7366,6 +7421,7 @@ function renderDashboardFinishingCompact(query = "", safeMode = false) {
   document.getElementById('countProsesFinishing').textContent = totalProses;
   document.getElementById('countSelesaiFinishing').textContent = totalSelesai;
 }
+
 
 
 
@@ -8793,7 +8849,7 @@ function clearPAForm(){
 }
 
 
-// ====================== DASHBOARD PA (COMPACT + FILTER + HIGHLIGHT + % HASIL) ======================
+// ====================== DASHBOARD PA (AKURAT 100%) ======================
 function renderDashboardPACompact(query = "", safeMode = false) {
   const q = query.toLowerCase().trim();
 
@@ -8817,23 +8873,40 @@ function renderDashboardPACompact(query = "", safeMode = false) {
     return isNaN(n) ? 0 : n;
   };
 
+  const fmt = (n) => Number(n || 0).toLocaleString('id-ID');
+
   paItems.forEach(item => {
     const updateVal = (item.update || "").trim().toLowerCase();
     const tanggal = item.tanggal || "-";
 
-    // ========== PERHITUNGAN PA ==========
-    const order   = num(item.order);
-    const bagus   = num(item.bagus);
-    const sortir  = num(item.sortir);
-    const problem = num(item.problem);
+    // ===========================
+    // NILAI CETAK
+    // ===========================
+    const order  = num(item.order);
+    const bagus  = num(item.bagus);
+    const sortir = num(item.sortir);
 
-    // hasil bersih = bagus - sortir - problem
-    let hasilBersih = bagus - sortir - problem;
-    if (hasilBersih < 0) hasilBersih = 0;
+    // ===========================
+    // HASIL (BAGUS + SORTIR)
+    // ===========================
+    const totalHasil = bagus + sortir;
 
-    const persen = order > 0 ? ((hasilBersih / order) * 100).toFixed(1) : "0.0";
+    const persen = order > 0
+      ? ((totalHasil / order) * 100).toFixed(1)
+      : "0.0";
 
-    // ========== RENDER CARD ==========
+    // ===========================
+    // KURANG & LEBIH
+    // ===========================
+    let kurangBarang = order - totalHasil;
+    if (kurangBarang < 0) kurangBarang = 0;
+
+    let lebihBarang = totalHasil - order;
+    if (lebihBarang < 0) lebihBarang = 0;
+
+    // ===========================
+    // RENDER CARD
+    // ===========================
     const card = document.createElement('div');
     card.className = 'grid-card';
 
@@ -8848,12 +8921,12 @@ function renderDashboardPACompact(query = "", safeMode = false) {
       <strong>Mesin : ${highlightHtmlSafe(item.mesin || '', query)}</strong><br>
       <span>📅 ${highlightHtmlSafe(tanggal, query)}</span><br>
 
-      <!-- ====== BOX PERSENTASE HASIL (ACUAN FINISHING) ====== -->
+      <!-- HASIL -->
       <div style="
         display:flex;
         justify-content:space-between;
         align-items:center;
-        margin:6px 0 8px;
+        margin:4px 0 6px;
         background:#9ac8ff;
         padding:6px 10px;
         border-radius:8px;
@@ -8861,9 +8934,43 @@ function renderDashboardPACompact(query = "", safeMode = false) {
         color:#003a80;
         border:1px solid #5fa8ff;
       ">
-        <span style="font-weight:600; font-size:0.92rem;">Hasil:</span>
-        <span style="display:inline-block; min-width:64px; text-align:right;">${persen}%</span>
+        <span>Hasil:</span>
+        <span>${persen}%</span>
       </div>
+
+      ${kurangBarang > 0 ? `
+        <div style="
+          margin:4px 0 6px;
+          padding:6px 10px;
+          background:#fff4e5;
+          border:1px solid #ffb020;
+          border-radius:8px;
+          font-weight:700;
+          color:#8a4b00;
+          display:flex;
+          justify-content:space-between;
+        ">
+          <span>Kurang:</span>
+          <span>${fmt(kurangBarang)}</span>
+        </div>
+      ` : ``}
+
+      ${lebihBarang > 0 ? `
+        <div style="
+          margin:4px 0 6px;
+          padding:6px 10px;
+          background:#e6fff4;
+          border:1px solid #34d399;
+          border-radius:8px;
+          font-weight:700;
+          color:#065f46;
+          display:flex;
+          justify-content:space-between;
+        ">
+          <span>Lebih:</span>
+          <span>${fmt(lebihBarang)}</span>
+        </div>
+      ` : ``}
 
       <span class="${statusClass}">
         ${highlightHtmlSafe(item.update || '', query)}
@@ -8871,8 +8978,7 @@ function renderDashboardPACompact(query = "", safeMode = false) {
     `;
 
     // FILTER
-    const cardText = card.textContent.toLowerCase();
-    if (!safeMode && q && !cardText.includes(q)) return;
+    if (!safeMode && q && !card.textContent.toLowerCase().includes(q)) return;
 
     // KATEGORI
     if (updateVal === 'pending') {
@@ -8886,7 +8992,6 @@ function renderDashboardPACompact(query = "", safeMode = false) {
       totalSelesai++;
     }
 
-    // click membuka modal detail
     card.addEventListener('click', () => showDetailModalPA(item));
   });
 
@@ -8896,6 +9001,7 @@ function renderDashboardPACompact(query = "", safeMode = false) {
   document.getElementById('countProsesPA').textContent = totalProses;
   document.getElementById('countSelesaiPA').textContent = totalSelesai;
 }
+
 
 
 // ====================== FILTER INPUT REAL-TIME PA ======================
@@ -9677,43 +9783,61 @@ function renderDashboardLemCompact(query = "", safeMode = false) {
 
   let totalTO = 0, totalProses = 0, totalSelesai = 0;
 
-  // parsing angka aman
-  const num = v => {
+  // --- helper parse angka aman ---
+  const num = (v) => {
     if (!v) return 0;
-    const clean = String(v).replace(/[^0-9.\-]/g, '');
+    const clean = String(v).replace(/[^0-9.-]/g, "");
     const n = Number(clean);
-    return isFinite(n) ? n : 0;
+    return isNaN(n) ? 0 : n;
   };
+
+  // --- helper format ribuan ---
+  const fmt = (n) => Number(n || 0).toLocaleString('id-ID');
 
   lemItems.forEach(item => {
     const updateVal = (item.update || "").trim().toLowerCase();
     const tanggal = item.tanggal || "-";
 
-    // =======================
-    // NILAI LEM (FINAL)
-    // =======================
+    // ===========================
+    // NILAI LEM
+    // ===========================
     const order = num(item.order);
-    const isi   = num(item.isi);
     const bagus = num(item.bagus);
 
-    // total BS = semua BS LEM
+    // ===========================
+    // TOTAL BS LEM (DATA SAJA)
+    // ===========================
     const totalBS =
-        num(item.lemJenisBS)  +
-        num(item.lemJenisBS1) +
-        num(item.lemJenisBS12) +
-        num(item.lemJenisBS13) +
-        num(item.lemJenisBS14) +
-        num(item.lemJenisBS15);
+      num(item.lemJenisBS) +
+      num(item.lemJenisBS1) +
+      num(item.lemJenisBS12) +
+      num(item.lemJenisBS13) +
+      num(item.lemJenisBS14) +
+      num(item.lemJenisBS15);
 
-    // hasil bersih
-    const hasilBersih = Math.max(0, bagus - totalBS);
+    // ===========================
+    // PERSENTASE HASIL (BAGUS / ORDER)
+    // ===========================
+    const persen = order > 0
+      ? ((bagus / order) * 100).toFixed(1)
+      : "0.0";
 
-    // persentase
-    const persen = order > 0 ? ((hasilBersih / order) * 100).toFixed(1) : "0.0";
+    // ===========================
+    // KURANG / LEBIH (ORDER vs BAGUS)
+    // ===========================
+    const selisih = bagus - order;
+    let kurangBarang = 0;
+    let lebihBarang = 0;
 
-    // =======================
-    // TEMPLATE CARD
-    // =======================
+    if (selisih < 0) {
+      kurangBarang = Math.abs(selisih);
+    } else if (selisih > 0) {
+      lebihBarang = selisih;
+    }
+
+    // ===========================
+    // RENDER CARD
+    // ===========================
     const card = document.createElement('div');
     card.className = 'grid-card';
 
@@ -9727,7 +9851,6 @@ function renderDashboardLemCompact(query = "", safeMode = false) {
       <strong>QC : ${highlightHtmlSafe(item.qc || '', q)}</strong><br>
       <span>📅 ${highlightHtmlSafe(tanggal, q)}</span><br>
 
-      <!-- HASIL -->
       <div style="
         display:flex;
         justify-content:space-between;
@@ -9740,9 +9863,43 @@ function renderDashboardLemCompact(query = "", safeMode = false) {
         color:#003a80;
         border:1px solid #5fa8ff;
       ">
-        <span style="font-weight:600; font-size:0.92rem;">Hasil:</span>
-        <span style="display:inline-block; min-width:64px; text-align:right;">${persen}%</span>
+        <span>Hasil:</span>
+        <span>${persen}%</span>
       </div>
+
+      ${kurangBarang > 0 ? `
+        <div style="
+          margin:4px 0 6px;
+          padding:6px 10px;
+          background:#fff4e5;
+          border:1px solid #ffb020;
+          border-radius:8px;
+          font-weight:700;
+          color:#8a4b00;
+          display:flex;
+          justify-content:space-between;
+        ">
+          <span>Kurang:</span>
+          <span>${fmt(kurangBarang)}</span>
+        </div>
+      ` : ``}
+
+      ${lebihBarang > 0 ? `
+        <div style="
+          margin:4px 0 6px;
+          padding:6px 10px;
+          background:#e6fff3;
+          border:1px solid #10b981;
+          border-radius:8px;
+          font-weight:700;
+          color:#065f46;
+          display:flex;
+          justify-content:space-between;
+        ">
+          <span>Lebih:</span>
+          <span>${fmt(lebihBarang)}</span>
+        </div>
+      ` : ``}
 
       <span class="${statusClass}">
         ${highlightHtmlSafe(item.update || '', q)}
@@ -9750,13 +9907,16 @@ function renderDashboardLemCompact(query = "", safeMode = false) {
     `;
 
     // FILTER
-    const cardText = card.textContent.toLowerCase();
-    if (!safeMode && q && !cardText.includes(q)) return;
+    if (!safeMode && q && !card.textContent.toLowerCase().includes(q)) return;
 
     // KATEGORI
-    if (updateVal === 'pending') { containerTO.appendChild(card); totalTO++; }
-    else if (updateVal === 'proses') { containerProses.appendChild(card); totalProses++; }
-    else if (updateVal === 'selesai') { containerSelesai.appendChild(card); totalSelesai++; }
+    if (updateVal === 'pending') {
+      containerTO.appendChild(card); totalTO++;
+    } else if (updateVal === 'proses') {
+      containerProses.appendChild(card); totalProses++;
+    } else if (updateVal === 'selesai') {
+      containerSelesai.appendChild(card); totalSelesai++;
+    }
 
     card.addEventListener('click', () => showDetailModalLem(item));
   });
@@ -9767,6 +9927,7 @@ function renderDashboardLemCompact(query = "", safeMode = false) {
   document.getElementById('countProsesLem').textContent = totalProses;
   document.getElementById('countSelesaiLem').textContent = totalSelesai;
 }
+
 
 // ====================== FILTER INPUT REAL-TIME LEM ======================
 document.addEventListener('DOMContentLoaded', () => {
