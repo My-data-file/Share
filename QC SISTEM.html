@@ -30,7 +30,7 @@ body {
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
-  padding-bottom: 64px; /* beri ruang agar tidak tertutup footer */
+  padding-bottom: 64px;
 }
 
 /* ======================== Header ======================== */
@@ -118,53 +118,41 @@ select {
   transition: border .2s, box-shadow .2s;
 }
 
-/* ======================== GRID DASBOARD ======================== */
+/* ======================== GRID DASHBOARD ======================== */
 .grid-container {
   display: grid;
   gap: 14px;
   padding: 4px;
   width: 100%;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* default desktop */
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 }
 
 /* ---------------- RESPONSIF ---------------- */
-/* HP ≤768px: 2 kolom */
 @media (max-width: 768px) {
   .grid-container {
     grid-template-columns: repeat(2, 1fr) !important;
   }
 }
-
-/* Tablet 769–1023px: 3 kolom */
 @media (min-width: 769px) and (max-width: 1023px) {
   .grid-container {
     grid-template-columns: repeat(3, 1fr);
   }
 }
-
-/* Desktop ≥1024px: fleksibel sesuai minmax */
 @media (min-width: 1024px) {
   .grid-container {
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   }
 }
 
-
 /* ======================== CARD GLOBAL ======================== */
-/* Card kaca ultra-transparan seperti speech panel */
 .grid-container > div,
 .grid-card {
-  background: rgba(0, 207, 255, 0.15);    /* semi-transparent biru acuan */
-  border-radius: 22px;                     /* lebih bulat seperti bubble */
-  padding: 14px 20px;                      /* mirip padding speech panel */
-  
-  /* Border ringan & semi-transparent */
+  background: rgba(0, 207, 255, 0.15);
+  border-radius: 22px;
+  padding: 14px 20px;
   border: 1px solid rgba(0, 207, 255, 0.4);
-
-  /* efek glass/acrylic lembut */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-
   color: #002933;
   box-shadow: 0 8px 20px rgba(0, 0, 0, .25);
   transition: all 0.35s ease;
@@ -189,21 +177,21 @@ select {
   pointer-events: none;
 }
 
-/* Efek Hover (Glow Cyan + Gelap) */
+/* Efek Hover */
 .grid-container > div:hover,
 .grid-card:hover {
   transform: translateY(-2px);
-  background: rgba(0, 207, 255, 0.25);   /* sedikit lebih terlihat */
+  background: rgba(0, 207, 255, 0.25);
   box-shadow:
-    0 10px 22px rgba(0, 0, 0, .28),      /* glow gelap */
-    0 0 18px rgba(0, 207, 255, .35);     /* glow cyan lembut */
+    0 10px 22px rgba(0, 0, 0, .28),
+    0 0 18px rgba(0, 207, 255, .35);
 }
 
 /* Input kaca */
 .grid-card input {
   padding: .55rem .75rem;
-  border: 1px solid rgba(0, 0, 0, 0.45); /* outline hitam */
-  background: rgba(0, 207, 255, 0.12);   /* semi-transparent biru acuan */
+  border: 1px solid rgba(0, 0, 0, 0.45);
+  background: rgba(0, 207, 255, 0.12);
   border-radius: 10px;
   width: 100%;
   font-size: 14px;
@@ -212,17 +200,14 @@ select {
   transition: 0.2s ease;
 }
 
-/* Fokus efek glow cyan + hitam */
 .grid-card input:focus {
-  background: rgba(0, 207, 255, 0.20);   /* semi-transparent lebih terang */
+  background: rgba(0, 207, 255, 0.20);
   border-color: rgba(0, 0, 0, 0.7);
   box-shadow: 
     0 0 0 2px rgba(0, 207, 255, 0.4),
     0 0 8px rgba(0, 207, 255, 0.35);
   outline: none;
 }
-
-
 
 /* ========================== CARD STYLE ========================== */
 .grid-card {
@@ -248,31 +233,27 @@ select {
   margin-bottom: 2px;
 }
 
-/* ===========================
-   GLOBAL STYLE KETERANGAN 1–5
-   Berlaku untuk Bapro, Cetak, Finishing, Lem, PA, dll
-   =========================== */
-
+/* =========================== GLOBAL KETERANGAN =========================== */
 .ket-list {
   display: flex;
   flex-direction: column;
-  gap: 4px;           /* Jarak antar baris nomor */
+  gap: 4px;
   margin-top: 4px;
 }
 
 .ket-list div {
-  padding: 3px 6px;   /* Ruang dalam per baris */
+  padding: 3px 6px;
   border-radius: 4px;
-  background: #f8f8f8;      /* Warna latar lembut */
-  border-left: 3px solid #00bcd4;  /* Garis kiri kecil sebagai indikator */
+  background: #f8f8f8;
+  border-left: 3px solid #00bcd4;
   font-size: 0.9rem;
   line-height: 1.3rem;
-  min-height: 20px;   /* Agar baris yg kosong tetap rapi */
+  min-height: 20px;
   display: flex;
   align-items: center;
 }
 
-/* ========================== STATUS COLOR CENTER ========================== */
+/* ========================== STATUS COLOR ========================== */
 .status-proses {
   background: #ffe08a;
   color: #886300;
@@ -280,10 +261,9 @@ select {
   border-radius: 6px;
   font-weight: bold;
   display: inline-block;
-  margin: 6px auto 0 auto; /* auto kiri & kanan → center */
+  margin: 6px auto 0 auto;
   text-align: center;
 }
-
 .status-selesai {
   background: #b7ffbf;
   color: #005b1a;
@@ -291,10 +271,9 @@ select {
   border-radius: 6px;
   font-weight: bold;
   display: inline-block;
-  margin: 6px auto 0 auto; /* center */
+  margin: 6px auto 0 auto;
   text-align: center;
 }
-
 .status-pending {
   background: #ffb6b6;
   color: #850000;
@@ -302,12 +281,11 @@ select {
   border-radius: 6px;
   font-weight: bold;
   display: inline-block;
-  margin: 6px auto 0 auto; /* center */
+  margin: 6px auto 0 auto;
   text-align: center;
 }
 
-
-/* ========================== BUTTON AREA ========================== */
+/* ========================== BUTTON ========================== */
 .btn-icon {
   cursor: pointer;
   border: none;
@@ -315,33 +293,17 @@ select {
   border-radius: 8px;
   font-size: 16px;
   transition: 0.2s;
-  display: block;       /* center tombol */
-  margin: 6px auto;     /* center horizontal */
+  display: block;
+  margin: 6px auto;
 }
+.btn-call { background: #4aa3ff; color: white; }
+.btn-edit { background: #ffc93c; color: #4a3700; }
+.btn-delete { background: #ff4d4d; color: white; }
 
-.btn-call {
-  background: #4aa3ff;
-  color: white;
-}
+.btn-icon:hover { opacity: 0.75; transform: scale(1.08); }
 
-.btn-edit {
-  background: #ffc93c;
-  color: #4a3700;
-}
-
-.btn-delete {
-  background: #ff4d4d;
-  color: white;
-}
-
-.btn-icon:hover {
-  opacity: 0.75;
-  transform: scale(1.08);
-}
-
-/* ========================== TOMBOL SIMPAN ========================== */
 .btn-save {
-  background: #28c76f;      /* hijau */
+  background: #28c76f;
   color: #ffffff;
   border: none;
   padding: 8px 14px;
@@ -349,19 +311,14 @@ select {
   cursor: pointer;
   font-weight: bold;
   font-size: 14px;
+  display: block;
+  margin: 6px auto;
   transition: 0.2s ease;
-  display: block;       /* center tombol */
-  margin: 6px auto;     /* center horizontal */
 }
+.btn-save:hover { background: #22ad61; transform: scale(1.06); }
 
-.btn-save:hover {
-  background: #22ad61;
-  transform: scale(1.06);
-}
-
-/* ========================== TOMBOL BATAL ========================== */
 .btn-cancel {
-  background: #ff4d4d;      /* merah */
+  background: #ff4d4d;
   color: #ffffff;
   border: none;
   padding: 8px 14px;
@@ -369,18 +326,11 @@ select {
   cursor: pointer;
   font-weight: bold;
   font-size: 14px;
+  display: block;
+  margin: 6px auto;
   transition: 0.2s ease;
-  display: block;       /* center tombol */
-  margin: 6px auto;     /* center horizontal */
 }
-
-.btn-cancel:hover {
-  background: #d63c3c;
-  transform: scale(1.06);
-}
-
-
-
+.btn-cancel:hover { background: #d63c3c; transform: scale(1.06); }
 
 /* ======================= DETAIL GLOBAL ======================= */
 .modal-fin {
@@ -419,114 +369,40 @@ select {
   align-items: center;
 }
 
-.modal-fin-title {
-  font-size: 17px;
-  font-weight: bold;
-}
+.modal-fin-title { font-size: 17px; font-weight: bold; }
+.modal-fin-close { background: transparent; color: white; border: none; font-size: 22px; cursor: pointer; }
 
-.modal-fin-close {
-  background: transparent;
-  color: white;
-  border: none;
-  font-size: 22px;
-  cursor: pointer;
-}
+.modal-fin-body { padding: 16px 20px; font-size: 15px; line-height: 1.42; }
+.modal-fin-body strong { color: #0A3D62; }
 
-.modal-fin-body {
-  padding: 16px 20px;
-  font-size: 15px;
-  line-height: 1.42;
-}
-
-.modal-fin-body strong {
-  color: #0A3D62;
-}
-
-.modal-fin-footer {
-  padding: 12px 18px;
-  text-align: right;
-  background: #f5f5f5;
-}
-
-.modal-fin-btn {
-  background: #3677FF;
-  padding: 8px 16px;
-  border-radius: 8px;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-}
+.modal-fin-footer { padding: 12px 18px; text-align: right; background: #f5f5f5; }
+.modal-fin-btn { background: #3677FF; padding: 8px 16px; border-radius: 8px; color: white; border: none; cursor: pointer; font-size: 14px; }
 
 /* ======================== Edit Inline ======================== */
 .edit-grid {
   display: flex;
-  flex-direction: column;   /* 1 kolom semua */
+  flex-direction: column;
   gap: 10px;
   width: 100%;
 }
 
-/* Input & Select full width */
 .edit-grid input,
-.edit-grid select {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #bbb;
-  border-radius: 6px;
-  font-size: 15px;
-}
-
-/* Textarea lebih besar */
-.edit-grid textarea {
-  width: 100%;
-  min-height: 110px;        /* dibuat jauh lebih besar */
-  border: 1px solid #bbb;
-  border-radius: 6px;
-  padding: 10px;
-  font-family: inherit;
-  resize: vertical;
-}
-
-/* Extra: Jarak antar label biar rapi */
-.edit-grid label {
-  font-weight: 600;
-  margin-bottom: 3px;
-}
-
-
+.edit-grid select { width: 100%; padding: 8px; border: 1px solid #bbb; border-radius: 6px; font-size: 15px; }
+.edit-grid textarea { width: 100%; min-height: 110px; border: 1px solid #bbb; border-radius: 6px; padding: 10px; font-family: inherit; resize: vertical; }
+.edit-grid label { font-weight: 600; margin-bottom: 3px; }
 
 /* ======================== Status ======================== */
-.status-pending {
-  background: #fee2e2;
-  color: #b91c1c;
-  font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 6px;
-  display: inline-block;
-}
-.status-proses {
-  background: var(--warning);
-  color: #111;
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-weight: 600;
-}
-.status-selesai {
-  background: var(--success);
-  color: #fff;
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-weight: 600;
-}
+.status-pending { background: #fee2e2; color: #b91c1c; font-weight: 600; padding: 2px 6px; border-radius: 6px; display: inline-block; }
+.status-proses { background: var(--warning); color: #111; padding: 2px 6px; border-radius: 6px; font-weight: 600; }
+.status-selesai { background: var(--success); color: #fff; padding: 2px 6px; border-radius: 6px; font-weight: 600; }
 
 .form-group { margin-bottom: 10px; }
-
 
 /* ================== BUTTON KIRIM KE FINISHING ================== */
 .btn-call-finishing {
   background: linear-gradient(135deg, #10b981, #34d399);
   border: none;
-  color: #000; /* teks hitam */
+  color: #000;
   font-size: 0.85rem;
   padding: 6px 10px;
   border-radius: 8px;
@@ -534,21 +410,14 @@ select {
   font-weight: 600;
   display: inline-flex;
   align-items: center;
-  justify-content: center; /* center text */
+  justify-content: center;
   gap: 4px;
   transition: all 0.2s ease;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  text-align: center; /* tambahan jaga center */
+  text-align: center;
 }
-
-.btn-call-finishing:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-}
-
-.btn-call-finishing:active {
-  transform: scale(0.97);
-}
+.btn-call-finishing:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,0.25); }
+.btn-call-finishing:active { transform: scale(0.97); }
 
 /* ================= FULLSCREEN REVIEW MODE GLOBAL ================= */
 .fullscreen-review {
@@ -566,27 +435,24 @@ select {
   animation: fadeInFullscreen 0.2s ease;
 }
 
-/* wrapper scroll tinggi maksimal */
 .fullscreen-review .grid-wrapper {
   flex: 1 1 auto;
-  max-height: calc(100vh - 160px); /* space untuk filter + tombol */
+  max-height: calc(100vh - 160px);
   overflow-y: auto;
   min-height: 0;
-  padding: 0 6px; /* kiri kanan ada padding supaya grid tidak nabrak */
+  padding: 0 6px;
   box-sizing: border-box;
 }
 
-/* grid lebih lega */
 .fullscreen-review .grid-container {
   display: grid;
   gap: 8px;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   width: 100%;
   box-sizing: border-box;
-  padding: 0 6px; /* ekstra spacing kiri-kanan */
+  padding: 0 6px;
 }
 
-/* filter tetap sticky */
 .fullscreen-review .filter-input {
   position: sticky;
   top: 0;
@@ -599,14 +465,9 @@ select {
   box-sizing: border-box;
 }
 
-/* card lebih nyaman dibaca */
 .fullscreen-review .grid-card,
-.fullscreen-review .card {
-  font-size: 0.95rem;
-  box-sizing: border-box;
-}
+.fullscreen-review .card { font-size: 0.95rem; box-sizing: border-box; }
 
-/* tombol exit fullscreen – bawah filter, center */
 .exit-fullscreen-btn {
   display: block;
   margin: 0 auto 12px auto;
@@ -621,36 +482,17 @@ select {
   transition: transform 0.2s, background 0.2s;
   z-index: 10000;
 }
-.exit-fullscreen-btn:hover {
-  background: linear-gradient(to bottom, #ffffff, #d6d6d6);
-  transform: translateY(-2px);
-}
+.exit-fullscreen-btn:hover { background: linear-gradient(to bottom, #ffffff, #d6d6d6); transform: translateY(-2px); }
 
-/* sembunyikan elemen lain saat fullscreen */
-.hide-while-fullscreen {
-  display: none !important;
-}
+.hide-while-fullscreen { display: none !important; }
 
 /* responsive HP */
 @media (max-width: 480px) {
-  .fullscreen-review {
-    padding: 6px;
-  }
-  .fullscreen-review .grid-wrapper {
-    padding: 0 6px; /* space kiri-kanan */
-  }
-  .fullscreen-review .grid-container {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    padding: 0 6px; /* space kiri-kanan */
-  }
-  .fullscreen-review .filter-input {
-    margin-bottom: 6px;
-    padding: 4px 6px;
-  }
-  .exit-fullscreen-btn {
-    font-size: 0.75rem;
-    padding: 4px 10px;
-  }
+  .fullscreen-review { padding: 6px; }
+  .fullscreen-review .grid-wrapper { padding: 0 4px; }
+  .fullscreen-review .grid-container { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); padding: 0 4px; }
+  .fullscreen-review .filter-input { margin-bottom: 6px; padding: 4px 6px; }
+  .exit-fullscreen-btn { font-size: 0.75rem; padding: 4px 10px; }
 }
 
 /* ====================== ANIMASI ====================== */
@@ -658,9 +500,8 @@ select {
   from { opacity: 0; transform: scale(0.98); }
   to   { opacity: 1; transform: scale(1); }
 }
-
-  
 </style>
+
 
 </head>
 <body>
