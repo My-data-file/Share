@@ -5900,25 +5900,18 @@ document.addEventListener("DOMContentLoaded", () => {
   let selectedOrders = [];
   let showAllOrders = true;
 
-  // ===== NORMALIZE STRING (ANTI SPASI / CASE ISSUE) =====
   function normalize(val){
-    return (val || "")
-      .toString()
-      .trim()
-      .toLowerCase();
+    return (val || "").toString().trim().toLowerCase();
   }
 
-  // ===== HELPER NAMA ORDER (SEMUA PROSES) =====
   function getOrderName(o){
     return normalize(o?.nama || o?.namaOrder);
   }
 
-  // ================= BUILD PREVIEW =================
   function buildPreview(key, orders = []) {
     let html = "";
     let hasRealData = false;
 
-    // ❗ JIKA FILTER AKTIF TAPI TIDAK ADA PILIHAN → KOSONG
     if (!showAllOrders && orders.length === 0) {
       previewContent.innerHTML = `
         <div style="padding:10px;color:#888;">
@@ -5984,9 +5977,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (spvMatch.length) {
       hasRealData = true;
       html += spvMatch.map(renderSPVPreview).join("");
-    } else if (showAllOrders) {
-      // ⚠️ fallback hanya saat SHOW ALL
-      html += renderSPVPreview({ noKS: key });
+    } else {
+      // ✅ FIX UTAMA: JANGAN KIRIM noKS JIKA DATA BELUM ADA
+      html += renderCardReport("", { update: "Proses" }, "", "spv");
     }
 
     if (!hasRealData) {
@@ -6010,7 +6003,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // 🔧 KUMPULKAN ORDER DARI SEMUA PROSES (TERMASUK SPV)
     const orders = [
       ...paItems,
       ...lemItems,
@@ -6023,7 +6015,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const uniqueOrders = [...new Set(orders)];
 
-    // ===== BUILD CHECKBOX LIST =====
     orderList.innerHTML = uniqueOrders.map(o => `
       <label style="font-size:12px;cursor:pointer;">
         <input type="checkbox" value="${o}" checked> ${o}
@@ -6040,18 +6031,14 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.style.display = "flex";
   });
 
-  // ================= SELECT ALL =================
   orderSelectAll.addEventListener("change", () => {
     const checks = orderList.querySelectorAll("input[type=checkbox]");
     checks.forEach(c => c.checked = orderSelectAll.checked);
-
     showAllOrders = orderSelectAll.checked;
     selectedOrders = [];
-
     buildPreview(activeKey);
   });
 
-  // ================= CHECKBOX CHANGE =================
   orderList.addEventListener("change", () => {
     selectedOrders = [...orderList.querySelectorAll("input:checked")]
       .map(c => c.value);
@@ -6063,7 +6050,6 @@ document.addEventListener("DOMContentLoaded", () => {
     buildPreview(activeKey, selectedOrders);
   });
 
-  // ================= CLOSE MODAL =================
   closeBtn.addEventListener("click", () => {
     modal.style.display = "none";
   });
@@ -6073,6 +6059,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
+
 
 
 
