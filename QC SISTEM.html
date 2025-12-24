@@ -996,7 +996,7 @@ body {
   transform: translateY(-2px);
 }
 
-/* ================= FULLSCREEN REVIEW MODE ================= */
+/* ================= FULLSCREEN REVIEW MODE (BAPRO STYLE) ================= */
 .fullscreen-review {
   position: fixed !important;
   inset: 0;
@@ -1012,12 +1012,16 @@ body {
 
 /* wrapper scroll tinggi maksimal */
 .fullscreen-review .grid-wrapper {
+  flex: 1 1 auto;
   max-height: calc(100vh - 140px);
   overflow-y: auto;
+  min-height: 0; /* penting untuk flex */
 }
 
 /* grid lebih lega */
 .fullscreen-review .grid-container {
+  display: grid;
+  gap: 8px;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 }
 
@@ -1027,6 +1031,12 @@ body {
   top: 0;
   z-index: 20;
   background: #fff;
+}
+
+/* card lebih nyaman dibaca */
+.fullscreen-review .grid-card,
+.fullscreen-review .card {
+  font-size: 0.95rem;
 }
 
 /* tombol exit fullscreen */
@@ -1042,6 +1052,7 @@ body {
   font-size: 0.8rem;
   cursor: pointer;
   box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+  z-index: 10000;
 }
 .exit-fullscreen-btn:hover {
   background: #c62828;
@@ -1051,6 +1062,23 @@ body {
 .hide-while-fullscreen {
   display: none !important;
 }
+
+/* responsive HP */
+@media (max-width: 480px) {
+  .fullscreen-review .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+  .exit-fullscreen-btn {
+    top: 6px;
+    right: 6px;
+    font-size: 0.7rem;
+    padding: 4px 8px;
+  }
+  .fullscreen-review {
+    padding: 6px;
+  }
+}
+
 
 </style>
 
@@ -11837,3 +11865,4 @@ function goHome() {
 
 </body>
 </html>
+
