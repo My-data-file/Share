@@ -562,6 +562,7 @@ select {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
   animation: fadeInFullscreen 0.2s ease;
 }
 
@@ -571,7 +572,8 @@ select {
   max-height: calc(100vh - 160px); /* space untuk filter + tombol */
   overflow-y: auto;
   min-height: 0;
-  padding-right: 6px;
+  padding: 0 6px; /* kiri kanan ada padding supaya grid tidak nabrak */
+  box-sizing: border-box;
 }
 
 /* grid lebih lega */
@@ -580,6 +582,8 @@ select {
   gap: 8px;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   width: 100%;
+  box-sizing: border-box;
+  padding: 0 6px; /* ekstra spacing kiri-kanan */
 }
 
 /* filter tetap sticky */
@@ -592,18 +596,20 @@ select {
   padding: 6px 8px;
   border-radius: 4px;
   border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 
 /* card lebih nyaman dibaca */
 .fullscreen-review .grid-card,
 .fullscreen-review .card {
   font-size: 0.95rem;
+  box-sizing: border-box;
 }
 
 /* tombol exit fullscreen – bawah filter, center */
 .exit-fullscreen-btn {
   display: block;
-  margin: 0 auto 12px auto; /* center horizontal, jarak bawah 12px */
+  margin: 0 auto 12px auto;
   background: linear-gradient(to bottom, #f0f0f0, #bdbdbd);
   color: #000;
   border: 1px solid #000;
@@ -627,19 +633,23 @@ select {
 
 /* responsive HP */
 @media (max-width: 480px) {
-  .fullscreen-review .grid-container {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  }
-  .exit-fullscreen-btn {
-    font-size: 0.75rem;
-    padding: 4px 10px;
-  }
   .fullscreen-review {
     padding: 6px;
+  }
+  .fullscreen-review .grid-wrapper {
+    padding: 0 6px; /* space kiri-kanan */
+  }
+  .fullscreen-review .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    padding: 0 6px; /* space kiri-kanan */
   }
   .fullscreen-review .filter-input {
     margin-bottom: 6px;
     padding: 4px 6px;
+  }
+  .exit-fullscreen-btn {
+    font-size: 0.75rem;
+    padding: 4px 10px;
   }
 }
 
@@ -648,6 +658,7 @@ select {
   from { opacity: 0; transform: scale(0.98); }
   to   { opacity: 1; transform: scale(1); }
 }
+
   
 </style>
 
