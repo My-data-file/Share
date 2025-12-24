@@ -1402,38 +1402,22 @@ document.addEventListener("DOMContentLoaded", () => {
   transform: translateY(-2px);
 }
 
-/* ================= FULLSCREEN REVIEW MODE (CETAK / BAPRO STYLE – FULLSCREEN HP) ================= */
+/* ================= FULLSCREEN REVIEW MODE – GLOBAL (BAPRO / CETAK / LEM / FINISHING) ================= */
 .fullscreen-review {
   position: fixed !important;
   inset: 0;
   width: 100vw;
-  height: 100dvh; /* gunakan dynamic viewport height di HP */
+  height: 100dvh; /* full layar HP */
   background: #f5f5f5;
   z-index: 9999;
   padding: 12px;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   animation: fadeInFullscreen 0.2s ease;
 }
 
-/* wrapper scroll tinggi maksimal */
-.fullscreen-review .grid-wrapper {
-  flex: 1 1 auto;
-  min-height: 0; /* penting agar flex bisa scroll */
-  overflow-y: auto;
-  padding-right: 6px;
-}
-
-/* grid lebih lega */
-.fullscreen-review .grid-container {
-  display: grid;
-  gap: 8px;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  width: 100%;
-}
-
-/* filter tetap sticky */
+/* filter sticky di atas */
 .fullscreen-review .filter-input {
   position: sticky;
   top: 0;
@@ -1445,22 +1429,15 @@ document.addEventListener("DOMContentLoaded", () => {
   border: 1px solid #ccc;
 }
 
-/* card lebih nyaman dibaca */
-.fullscreen-review .grid-card,
-.fullscreen-review .card {
-  font-size: 0.95rem;
-}
-
-/* tombol exit fullscreen – bawah filter, center */
+/* tombol exit fullscreen – di bawah filter, center */
 .exit-fullscreen-btn {
   display: block;
-  margin: 0 auto 12px auto; /* center horizontal, jarak bawah 12px */
-  background: linear-gradient(to bottom, #f0f0f0, #bdbdbd);
-  color: #000;
-  border: 1px solid #000;
-  border-radius: 6px;
+  margin: 0 auto 12px auto;
   padding: 6px 12px;
   font-size: 0.85rem;
+  border-radius: 6px;
+  border: 1px solid #000;
+  background: linear-gradient(to bottom, #f0f0f0, #bdbdbd);
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0,0,0,0.35);
   transition: transform 0.2s, background 0.2s;
@@ -1471,22 +1448,47 @@ document.addEventListener("DOMContentLoaded", () => {
   transform: translateY(-2px);
 }
 
+/* wrapper grid, selalu stretch */
+.fullscreen-review .grid-wrapper {
+  flex: 1 1 auto; /* isi sisa layar */
+  min-height: 0; /* penting agar flex bisa scroll */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+/* grid – rapi & stretch */
+.fullscreen-review .grid-container {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  width: 100%;
+  flex: 1; /* stretch grid jika card sedikit */
+}
+
+/* card lebih nyaman dibaca */
+.fullscreen-review .grid-card,
+.fullscreen-review .card {
+  font-size: 0.95rem;
+}
+
 /* sembunyikan elemen lain saat fullscreen */
 .hide-while-fullscreen {
   display: none !important;
 }
 
-/* responsive HP */
+/* ====================== RESPONSIVE HP ====================== */
 @media (max-width: 480px) {
   .fullscreen-review {
     padding: 6px;
   }
-  .fullscreen-review .grid-container {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  }
   .fullscreen-review .filter-input {
     margin-bottom: 6px;
     padding: 4px 6px;
+  }
+  .fullscreen-review .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   }
   .exit-fullscreen-btn {
     font-size: 0.75rem;
@@ -11950,5 +11952,6 @@ function goHome() {
 
 </body>
 </html>
+
 
 
