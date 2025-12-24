@@ -1402,12 +1402,12 @@ document.addEventListener("DOMContentLoaded", () => {
   transform: translateY(-2px);
 }
 
-/* ================= FULLSCREEN REVIEW MODE (CETAK / BAPRO STYLE) ================= */
+/* ================= FULLSCREEN REVIEW MODE (CETAK / BAPRO STYLE – FULLSCREEN HP) ================= */
 .fullscreen-review {
   position: fixed !important;
   inset: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh; /* gunakan dynamic viewport height di HP */
   background: #f5f5f5;
   z-index: 9999;
   padding: 12px;
@@ -1478,19 +1478,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* responsive HP */
 @media (max-width: 480px) {
-  .fullscreen-review .grid-container {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  }
-  .exit-fullscreen-btn {
-    font-size: 0.75rem;
-    padding: 4px 10px;
-  }
   .fullscreen-review {
     padding: 6px;
+  }
+  .fullscreen-review .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   }
   .fullscreen-review .filter-input {
     margin-bottom: 6px;
     padding: 4px 6px;
+  }
+  .exit-fullscreen-btn {
+    font-size: 0.75rem;
+    padding: 4px 10px;
   }
 }
 
@@ -11950,4 +11950,5 @@ function goHome() {
 
 </body>
 </html>
+
 
