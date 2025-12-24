@@ -1080,7 +1080,6 @@ body {
 }
 
 
-
 </style>
 
 
@@ -1403,27 +1402,36 @@ document.addEventListener("DOMContentLoaded", () => {
   transform: translateY(-2px);
 }
 
-/* ====================== FULLSCREEN REVIEW (GLOBAL – BAPRO STYLE) ====================== */
+/* ================= FULLSCREEN REVIEW MODE (CETAK / BAPRO STYLE) ================= */
 .fullscreen-review {
-  position: fixed;
+  position: fixed !important;
   inset: 0;
-  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
   background: #f5f5f5;
+  z-index: 9999;
   padding: 12px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
   animation: fadeInFullscreen 0.2s ease;
 }
 
-/* area grid saat fullscreen */
+/* wrapper scroll tinggi maksimal */
 .fullscreen-review .grid-wrapper {
-  max-height: calc(100vh - 130px);
+  flex: 1 1 auto;
+  max-height: calc(100vh - 160px); /* space untuk filter + tombol */
   overflow-y: auto;
+  min-height: 0;
   padding-right: 6px;
 }
 
-/* grid lebih rapat & lebar */
+/* grid lebih lega */
 .fullscreen-review .grid-container {
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  width: 100%;
 }
 
 /* filter tetap sticky */
@@ -1432,6 +1440,10 @@ document.addEventListener("DOMContentLoaded", () => {
   top: 0;
   z-index: 20;
   background: #fff;
+  margin-bottom: 8px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 
 /* card lebih nyaman dibaca */
@@ -1440,26 +1452,47 @@ document.addEventListener("DOMContentLoaded", () => {
   font-size: 0.95rem;
 }
 
-/* ====================== EXIT FULLSCREEN BUTTON ====================== */
+/* tombol exit fullscreen – bawah filter, center */
 .exit-fullscreen-btn {
-  position: fixed;
-  top: 12px;
-  right: 12px;
-  z-index: 10000;
-  padding: 6px 12px;
-  font-size: 0.9rem;
-  border-radius: 6px;
-  border: 1px solid #000;
+  display: block;
+  margin: 0 auto 12px auto; /* center horizontal, jarak bawah 12px */
   background: linear-gradient(to bottom, #f0f0f0, #bdbdbd);
   color: #000;
+  border: 1px solid #000;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0,0,0,0.35);
   transition: transform 0.2s, background 0.2s;
+  z-index: 10000;
 }
-
 .exit-fullscreen-btn:hover {
   background: linear-gradient(to bottom, #ffffff, #d6d6d6);
   transform: translateY(-2px);
+}
+
+/* sembunyikan elemen lain saat fullscreen */
+.hide-while-fullscreen {
+  display: none !important;
+}
+
+/* responsive HP */
+@media (max-width: 480px) {
+  .fullscreen-review .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+  .exit-fullscreen-btn {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+  }
+  .fullscreen-review {
+    padding: 6px;
+  }
+  .fullscreen-review .filter-input {
+    margin-bottom: 6px;
+    padding: 4px 6px;
+  }
 }
 
 /* ====================== ANIMASI ====================== */
@@ -1473,6 +1506,7 @@ document.addEventListener("DOMContentLoaded", () => {
     transform: scale(1);
   }
 }
+
 
 
 </style>
@@ -1794,66 +1828,105 @@ document.addEventListener("DOMContentLoaded", () => {
   transform: translateY(-2px);
 }
 
-/* ====================== FULLSCREEN REVIEW (GLOBAL) ====================== */
+/* ================= FULLSCREEN REVIEW MODE (LEM STYLE – FINAL) ================= */
 .fullscreen-review {
-  position: fixed;
+  position: fixed !important;
   inset: 0;
-  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
   background: #f5f5f5;
+  z-index: 9999;
   padding: 12px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
   animation: fadeInFullscreen 0.2s ease;
 }
 
-/* area grid */
+/* wrapper scroll tinggi maksimal */
 .fullscreen-review .grid-wrapper {
-  max-height: calc(100vh - 130px);
+  flex: 1 1 auto;
+  max-height: calc(100vh - 160px); /* space untuk filter + tombol */
   overflow-y: auto;
+  min-height: 0;
   padding-right: 6px;
 }
 
-/* grid lebih lebar (INI YANG MEMBUAT SAMA DENGAN CETAK) */
+/* grid lebih lega */
 .fullscreen-review .grid-container {
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  width: 100%;
 }
 
-/* filter tetap kelihatan */
+/* filter tetap sticky */
 .fullscreen-review .filter-input {
   position: sticky;
   top: 0;
   z-index: 20;
   background: #fff;
+  margin-bottom: 8px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 
-/* ukuran card */
+/* card lebih nyaman dibaca */
 .fullscreen-review .grid-card,
 .fullscreen-review .card {
   font-size: 0.95rem;
 }
 
-/* tombol keluar */
+/* tombol exit fullscreen – bawah filter, center */
 .exit-fullscreen-btn {
-  position: fixed;
-  top: 12px;
-  right: 12px;
-  z-index: 10000;
-  padding: 6px 12px;
-  font-size: 0.9rem;
-  border-radius: 6px;
-  border: 1px solid #000;
+  display: block;
+  margin: 0 auto 12px auto; /* center horizontal, jarak bawah 12px */
   background: linear-gradient(to bottom, #f0f0f0, #bdbdbd);
+  color: #000;
+  border: 1px solid #000;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
   cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.35);
+  transition: transform 0.2s, background 0.2s;
+  z-index: 10000;
 }
-
 .exit-fullscreen-btn:hover {
   background: linear-gradient(to bottom, #ffffff, #d6d6d6);
   transform: translateY(-2px);
 }
 
+/* sembunyikan elemen lain saat fullscreen */
+.hide-while-fullscreen {
+  display: none !important;
+}
+
+/* responsive HP */
+@media (max-width: 480px) {
+  .fullscreen-review .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+  .exit-fullscreen-btn {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+  }
+  .fullscreen-review {
+    padding: 6px;
+  }
+  .fullscreen-review .filter-input {
+    margin-bottom: 6px;
+    padding: 4px 6px;
+  }
+}
+
+/* ====================== ANIMASI ====================== */
 @keyframes fadeInFullscreen {
   from { opacity: 0; transform: scale(0.98); }
   to   { opacity: 1; transform: scale(1); }
 }
+
 
 </style>
 
@@ -2181,76 +2254,105 @@ document.addEventListener("DOMContentLoaded", () => {
   transform: translateY(-2px);
 }
 
-/* ====================== FULLSCREEN REVIEW (BAPRO STYLE) ====================== */
+/* ================= FULLSCREEN REVIEW MODE (FINISHING STYLE – FINAL) ================= */
 .fullscreen-review {
-  position: fixed;
+  position: fixed !important;
   inset: 0;
-  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
   background: #f5f5f5;
+  z-index: 9999;
   padding: 12px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
   animation: fadeInFullscreen 0.2s ease;
 }
 
-/* grid wrapper fullscreen */
+/* wrapper scroll tinggi maksimal */
 .fullscreen-review .grid-wrapper {
-  max-height: calc(100vh - 130px);
+  flex: 1 1 auto;
+  max-height: calc(100vh - 160px); /* space untuk filter + tombol */
   overflow-y: auto;
+  min-height: 0;
   padding-right: 6px;
 }
 
-/* grid lebih lebar saat fullscreen */
+/* grid lebih lega */
 .fullscreen-review .grid-container {
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  width: 100%;
 }
 
-/* filter input tetap sticky */
+/* filter tetap sticky */
 .fullscreen-review .filter-input {
   position: sticky;
   top: 0;
   z-index: 20;
   background: #fff;
+  margin-bottom: 8px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 
-/* card sedikit lebih besar */
+/* card lebih nyaman dibaca */
 .fullscreen-review .grid-card,
 .fullscreen-review .card {
   font-size: 0.95rem;
 }
 
-/* ====================== EXIT FULLSCREEN BUTTON ====================== */
+/* tombol exit fullscreen – bawah filter, center */
 .exit-fullscreen-btn {
-  position: fixed;
-  top: 12px;
-  right: 12px;
-  z-index: 10000;
-  padding: 6px 12px;
-  font-size: 0.9rem;
-  border-radius: 6px;
-  border: 1px solid #000;
+  display: block;
+  margin: 0 auto 12px auto; /* center horizontal, jarak bawah 12px */
   background: linear-gradient(to bottom, #f0f0f0, #bdbdbd);
   color: #000;
+  border: 1px solid #000;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0,0,0,0.35);
   transition: transform 0.2s, background 0.2s;
+  z-index: 10000;
 }
-
 .exit-fullscreen-btn:hover {
   background: linear-gradient(to bottom, #ffffff, #d6d6d6);
   transform: translateY(-2px);
 }
 
-/* ====================== ANIMATION ====================== */
-@keyframes fadeInFullscreen {
-  from {
-    opacity: 0;
-    transform: scale(0.98);
+/* sembunyikan elemen lain saat fullscreen */
+.hide-while-fullscreen {
+  display: none !important;
+}
+
+/* responsive HP */
+@media (max-width: 480px) {
+  .fullscreen-review .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   }
-  to {
-    opacity: 1;
-    transform: scale(1);
+  .exit-fullscreen-btn {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+  }
+  .fullscreen-review {
+    padding: 6px;
+  }
+  .fullscreen-review .filter-input {
+    margin-bottom: 6px;
+    padding: 4px 6px;
   }
 }
+
+/* ====================== ANIMASI ====================== */
+@keyframes fadeInFullscreen {
+  from { opacity: 0; transform: scale(0.98); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
 
 </style>
 
@@ -7952,33 +8054,28 @@ document.addEventListener("click", (e) => {
 
 
 
-// ====================== TOGGLE VIEW + FILTER + FULLSCREEN QC FINISHING (FINAL) ======================
+// ====================== TOGGLE VIEW + FILTER + FULLSCREEN QC FINISHING (BAPRO STYLE) ======================
 document.addEventListener("DOMContentLoaded", () => {
 
-  // Tombol toggle
   const btnTO = document.getElementById("toggleFinishingTO");
   const btnProses = document.getElementById("toggleFinishingProses");
   const btnSelesai = document.getElementById("toggleFinishingSelesai");
 
-  // Section
   const sectionTO = document.getElementById("sectionFinishingTO");
   const sectionProses = document.getElementById("sectionFinishingProses");
   const sectionSelesai = document.getElementById("sectionFinishingSelesai");
 
-  // Filter input
   const filterTO = document.getElementById("filterFinishingTO");
   const filterProses = document.getElementById("filterFinishingProses");
   const filterSelesai = document.getElementById("filterFinishingSelesai");
 
   let activeFullscreenSection = null;
 
-  // ================= FILTER VISUAL =================
+  // ================= FILTER =================
   function filterCards(container, keyword) {
     if (!container) return;
-    const cards = container.querySelectorAll(".grid-card, .card");
     const term = (keyword || "").toLowerCase().trim();
-
-    cards.forEach(card => {
+    container.querySelectorAll(".grid-card, .card").forEach(card => {
       card.style.display = card.textContent.toLowerCase().includes(term) ? "" : "none";
     });
   }
@@ -7988,12 +8085,10 @@ document.addEventListener("DOMContentLoaded", () => {
     { input: filterProses, gridId: "dashboardFinishingProses" },
     { input: filterSelesai, gridId: "dashboardFinishingSelesai" }
   ].forEach(({ input, gridId }) => {
-    if (input) {
-      input.addEventListener("input", () => {
-        const grid = document.getElementById(gridId);
-        filterCards(grid, input.value);
-      });
-    }
+    if (!input) return;
+    input.addEventListener("input", () =>
+      filterCards(document.getElementById(gridId), input.value)
+    );
   });
 
   window.applyFinishingFilters = function () {
@@ -8002,18 +8097,15 @@ document.addEventListener("DOMContentLoaded", () => {
     filterCards(document.getElementById("dashboardFinishingSelesai"), filterSelesai?.value || "");
   };
 
-  // ================= TOGGLE + FULLSCREEN =================
+  // ================= TOGGLE =================
   function toggleSection(section, btn, input) {
     const isOpen = section.style.display !== "none";
-
     if (input) input.value = "";
     if (typeof renderDashboardFinishingCompact === "function") renderDashboardFinishingCompact("", true);
-
-    if (isOpen) exitFullscreen(section, btn);
-    else enterFullscreen(section, btn);
+    isOpen ? exitFullscreen(section, btn) : enterFullscreen(section, btn, input);
   }
 
-  function enterFullscreen(section, btn) {
+  function enterFullscreen(section, btn, input) {
     section.style.display = "block";
     section.classList.add("fullscreen-review");
     document.body.style.overflow = "hidden";
@@ -8023,12 +8115,18 @@ document.addEventListener("DOMContentLoaded", () => {
       if (sec && sec !== section) sec.style.display = "none";
     });
 
-    if (!document.querySelector(".exit-fullscreen-btn")) {
+    // tombol ❌ di bawah filter, center
+    if (!section.querySelector(".exit-fullscreen-btn")) {
       const exitBtn = document.createElement("button");
       exitBtn.className = "exit-fullscreen-btn";
-      exitBtn.textContent = "❌ Keluar";
+      exitBtn.textContent = "✕";
       exitBtn.onclick = () => exitFullscreen(section, btn);
-      document.body.appendChild(exitBtn); // fixed di body
+
+      if (input && input.parentNode) {
+        input.parentNode.insertBefore(exitBtn, input.nextSibling);
+      } else {
+        section.appendChild(exitBtn);
+      }
     }
 
     if (btn) btn.textContent = "Hide";
@@ -8038,11 +8136,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!section) return;
     section.classList.remove("fullscreen-review");
     section.style.display = "none";
+    section.querySelector(".exit-fullscreen-btn")?.remove();
     document.body.style.overflow = "";
     activeFullscreenSection = null;
-
-    document.querySelectorAll(".exit-fullscreen-btn").forEach(b => b.remove());
-
     if (btn) btn.textContent = "Show";
   }
 
@@ -8053,7 +8149,6 @@ document.addEventListener("DOMContentLoaded", () => {
       sec.classList.remove("fullscreen-review");
       sec.style.display = "none";
     });
-
     document.querySelectorAll(".exit-fullscreen-btn").forEach(b => b.remove());
     document.body.style.overflow = "";
     activeFullscreenSection = null;
@@ -8064,9 +8159,11 @@ document.addEventListener("DOMContentLoaded", () => {
   btnProses?.addEventListener("click", () => toggleSection(sectionProses, btnProses, filterProses));
   btnSelesai?.addEventListener("click", () => toggleSection(sectionSelesai, btnSelesai, filterSelesai));
 
-  // ESC KELUAR FULLSCREEN
+  // ESC keluar fullscreen
   document.addEventListener("keydown", e => {
-    if (e.key === "Escape") window.forceExitFullscreenFinishing();
+    if (e.key === "Escape" && activeFullscreenSection) {
+      window.forceExitFullscreenFinishing();
+    }
   });
 
   // ================= REPORT BUTTON =================
@@ -8091,11 +8188,8 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => {
         const reportInput = document.getElementById("reportSearchID");
         if (!reportInput) return;
-
         reportInput.value = noKS;
-
         if (typeof searchReportByID === "function") searchReportByID();
-
         reportInput.focus();
         reportInput.select();
       }, 150);
@@ -8105,6 +8199,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 });
+
 
 
 
@@ -8815,7 +8910,7 @@ function closeDetailModalBapro() {
   document.getElementById("detailBaproModal").style.display = "none";
 }
 
-// ====================== TOGGLE VIEW + FILTER + FULLSCREEN QC BAPRO (MERGED) ======================
+// ====================== TOGGLE VIEW + FILTER + FULLSCREEN QC BAPRO (MERGED – FINAL) ======================
 document.addEventListener('DOMContentLoaded', () => {
   const btnTO = document.getElementById('toggleBaproTO');
   const btnProses = document.getElementById('toggleBaproProses');
@@ -8845,11 +8940,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isOpen) {
       exitFullscreen(section, btn);
     } else {
-      enterFullscreen(section, btn);
+      enterFullscreen(section, btn, input);
     }
   }
 
-  function enterFullscreen(section, btn) {
+  function enterFullscreen(section, btn, input) {
     section.style.display = 'block';
     section.classList.add('fullscreen-review');
     document.body.style.overflow = 'hidden';
@@ -8860,13 +8955,21 @@ document.addEventListener('DOMContentLoaded', () => {
       if (sec && sec !== section) sec.style.display = 'none';
     });
 
-    // tombol keluar
+    // tombol keluar – hanya sekali
     if (!section.querySelector('.exit-fullscreen-btn')) {
       const exitBtn = document.createElement('button');
       exitBtn.className = 'exit-fullscreen-btn';
-      exitBtn.textContent = '❌ Keluar';
       exitBtn.onclick = () => exitFullscreen(section, btn);
-      section.appendChild(exitBtn);
+
+      // hanya icon X
+      exitBtn.textContent = '✕';
+
+      // insert setelah filter input, kalau ada
+      if (input && input.parentNode) {
+        input.parentNode.insertBefore(exitBtn, input.nextSibling);
+      } else {
+        section.appendChild(exitBtn);
+      }
     }
 
     btn.textContent = 'Hide';
@@ -8912,6 +9015,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
 
 
 
@@ -9637,7 +9741,7 @@ function closeDetailModalCetak(){
 
 
 
-// ====================== TOGGLE VIEW + FILTER + FULLSCREEN QC PA (FINAL – FULL LEM LOGIC) ======================
+// ====================== TOGGLE VIEW + FILTER + FULLSCREEN QC PA (FINAL – BAPRO STYLE) ======================
 document.addEventListener('DOMContentLoaded', () => {
 
   const btnTO = document.getElementById('togglePATO');
@@ -9685,10 +9789,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const isOpen = section.style.display !== 'none';
     if (input) input.value = '';
     if (typeof renderDashboardPACompact === 'function') renderDashboardPACompact('', true);
-    isOpen ? exitFullscreen(section, btn) : enterFullscreen(section, btn);
+    isOpen ? exitFullscreen(section, btn) : enterFullscreen(section, btn, input);
   }
 
-  function enterFullscreen(section, btn) {
+  function enterFullscreen(section, btn, input) {
     section.style.display = 'block';
     section.classList.add('fullscreen-review');
     document.body.style.overflow = 'hidden';
@@ -9698,12 +9802,18 @@ document.addEventListener('DOMContentLoaded', () => {
       if (sec && sec !== section) sec.style.display = 'none';
     });
 
-    if (!document.querySelector('.exit-fullscreen-btn')) {
+    // tombol ❌ di bawah filter, center
+    if (!section.querySelector('.exit-fullscreen-btn')) {
       const exitBtn = document.createElement('button');
       exitBtn.className = 'exit-fullscreen-btn';
-      exitBtn.textContent = '❌ Keluar';
+      exitBtn.textContent = '✕';
       exitBtn.onclick = () => exitFullscreen(section, btn);
-      document.body.appendChild(exitBtn); // fixed di body
+
+      if (input && input.parentNode) {
+        input.parentNode.insertBefore(exitBtn, input.nextSibling);
+      } else {
+        section.appendChild(exitBtn);
+      }
     }
 
     if (btn) btn.textContent = 'Hide';
@@ -9714,14 +9824,13 @@ document.addEventListener('DOMContentLoaded', () => {
     section.classList.remove('fullscreen-review');
     section.style.display = 'none';
     document.querySelectorAll('.exit-fullscreen-btn').forEach(b => b.remove());
-
     document.body.style.overflow = '';
     activeFullscreenSection = null;
 
     if (btn) btn.textContent = 'Show';
   }
 
-  // ================= GLOBAL FORCE EXIT (SEMUA SECTION) =================
+  // ================= GLOBAL FORCE EXIT =================
   window.forceExitFullscreenPA = function () {
     [sectionTO, sectionProses, sectionSelesai].forEach(sec => {
       if (!sec) return;
@@ -9747,11 +9856,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const reportBtn = document.getElementById("openReportFromDetailPABtn") || document.getElementById("openReportFromDetailBtn");
   if (reportBtn) {
     reportBtn.addEventListener("click", () => {
-
-      // 🔴 PASTIKAN SEMUA FULLSCREEN KELUAR
       window.forceExitFullscreenPA();
 
-      // Ambil no KS
       const detailBody = document.getElementById("detailPABody") || document.getElementById("detailCetakBody");
       const text = detailBody?.innerText || "";
       const match = text.match(/KS-\d{4}-\d+/i);
@@ -9763,29 +9869,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const noKS = match[0];
 
-      // Pindah ke menu report
       if (typeof showMenu === "function") showMenu("reportSection");
 
-      // Isi input report
       setTimeout(() => {
         const reportInput = document.getElementById("reportSearchID");
         if (!reportInput) return;
-
         reportInput.value = noKS;
-
         if (typeof searchReportByID === "function") searchReportByID();
-
         reportInput.focus();
         reportInput.select();
       }, 150);
 
-      // Tutup modal detail
       if (typeof closeDetailModalPA === "function") closeDetailModalPA();
       if (typeof closeDetailModalCetak === "function") closeDetailModalCetak();
     });
   }
 
 });
+
 
 
 
@@ -10626,7 +10727,7 @@ function closeDetailModalLem() {
 
 
 
-// ====================== TOGGLE VIEW + FILTER + FULLSCREEN QC LEM (MERGED FINAL) ======================
+// ====================== TOGGLE VIEW + FILTER + FULLSCREEN QC LEM (BAPRO STYLE) ======================
 document.addEventListener('DOMContentLoaded', () => {
 
   const btnTO = document.getElementById('toggleLemTO');
@@ -10648,9 +10749,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!container) return;
     const term = (keyword || '').toLowerCase().trim();
     container.querySelectorAll('.grid-card').forEach(card => {
-      card.style.display = card.textContent.toLowerCase().includes(term)
-        ? ''
-        : 'none';
+      card.style.display = card.textContent.toLowerCase().includes(term) ? '' : 'none';
     });
   }
 
@@ -10668,17 +10767,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // ================= TOGGLE =================
   function toggleSection(section, btn, input) {
     const isOpen = section.style.display !== 'none';
-
     if (input) input.value = '';
-
-    if (typeof renderDashboardLemCompact === 'function') {
-      renderDashboardLemCompact('', true);
-    }
-
-    isOpen ? exitFullscreen(section, btn) : enterFullscreen(section, btn);
+    if (typeof renderDashboardLemCompact === 'function') renderDashboardLemCompact('', true);
+    isOpen ? exitFullscreen(section, btn) : enterFullscreen(section, btn, input);
   }
 
-  function enterFullscreen(section, btn) {
+  function enterFullscreen(section, btn, input) {
     section.style.display = 'block';
     section.classList.add('fullscreen-review');
     document.body.style.overflow = 'hidden';
@@ -10688,29 +10782,35 @@ document.addEventListener('DOMContentLoaded', () => {
       if (sec && sec !== section) sec.style.display = 'none';
     });
 
+    // tombol ❌ di bawah filter, center
     if (!section.querySelector('.exit-fullscreen-btn')) {
       const exitBtn = document.createElement('button');
       exitBtn.className = 'exit-fullscreen-btn';
-      exitBtn.textContent = '❌ Keluar';
+      exitBtn.textContent = '✕';
       exitBtn.onclick = () => exitFullscreen(section, btn);
-      section.appendChild(exitBtn);
+
+      if (input && input.parentNode) {
+        input.parentNode.insertBefore(exitBtn, input.nextSibling);
+      } else {
+        section.appendChild(exitBtn);
+      }
     }
 
-    btn.textContent = 'Hide';
+    if (btn) btn.textContent = 'Hide';
   }
 
   function exitFullscreen(section, btn) {
+    if (!section) return;
     section.classList.remove('fullscreen-review');
-    section.querySelector('.exit-fullscreen-btn')?.remove();
     section.style.display = 'none';
-
+    section.querySelector('.exit-fullscreen-btn')?.remove();
     document.body.style.overflow = '';
     activeFullscreenSection = null;
 
     if (btn) btn.textContent = 'Show';
   }
 
-  // ================= GLOBAL FORCE EXIT (DIPAKAI REPORT) =================
+  // ================= GLOBAL FORCE EXIT =================
   window.forceExitFullscreenLem = function () {
     if (activeFullscreenSection) {
       exitFullscreen(
@@ -10731,15 +10831,9 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // ================= EVENT =================
-  btnTO?.addEventListener('click', () =>
-    toggleSection(sectionTO, btnTO, filterTO)
-  );
-  btnProses?.addEventListener('click', () =>
-    toggleSection(sectionProses, btnProses, filterProses)
-  );
-  btnSelesai?.addEventListener('click', () =>
-    toggleSection(sectionSelesai, btnSelesai, filterSelesai)
-  );
+  btnTO?.addEventListener('click', () => toggleSection(sectionTO, btnTO, filterTO));
+  btnProses?.addEventListener('click', () => toggleSection(sectionProses, btnProses, filterProses));
+  btnSelesai?.addEventListener('click', () => toggleSection(sectionSelesai, btnSelesai, filterSelesai));
 
   // ESC keluar fullscreen
   document.addEventListener('keydown', e => {
@@ -10748,12 +10842,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ================= REPORT BUTTON (AUTO EXIT FULLSCREEN) =================
+  // ================= REPORT BUTTON =================
   const reportBtn = document.getElementById("openReportFromDetailLemBtn");
   if (reportBtn) {
     reportBtn.addEventListener("click", () => {
-
-      // 🔴 PASTIKAN FULLSCREEN KELUAR
       window.forceExitFullscreenLem();
 
       const detailBody = document.getElementById("detailLemBody");
@@ -10767,31 +10859,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const noKS = match[0];
 
-      if (typeof showMenu === "function") {
-        showMenu("reportSection");
-      }
+      if (typeof showMenu === "function") showMenu("reportSection");
 
       setTimeout(() => {
         const reportInput = document.getElementById("reportSearchID");
         if (!reportInput) return;
-
         reportInput.value = noKS;
-
-        if (typeof searchReportByID === "function") {
-          searchReportByID();
-        }
-
+        if (typeof searchReportByID === "function") searchReportByID();
         reportInput.focus();
         reportInput.select();
       }, 150);
 
-      if (typeof closeDetailModalLem === "function") {
-        closeDetailModalLem();
-      }
+      if (typeof closeDetailModalLem === "function") closeDetailModalLem();
     });
   }
 
 });
+
 
 
 
@@ -11866,5 +11950,3 @@ function goHome() {
 
 </body>
 </html>
-
-
