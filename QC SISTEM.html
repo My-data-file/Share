@@ -1420,9 +1420,8 @@ document.addEventListener("DOMContentLoaded", () => {
 /* wrapper scroll tinggi maksimal */
 .fullscreen-review .grid-wrapper {
   flex: 1 1 auto;
-  max-height: calc(100vh - 160px); /* space untuk filter + tombol */
+  min-height: 0; /* penting agar flex bisa scroll */
   overflow-y: auto;
-  min-height: 0;
   padding-right: 6px;
 }
 
@@ -1506,6 +1505,7 @@ document.addEventListener("DOMContentLoaded", () => {
     transform: scale(1);
   }
 }
+
 
 
 
@@ -11950,3 +11950,4 @@ function goHome() {
 
 </body>
 </html>
+
