@@ -4972,9 +4972,28 @@ if (spvNoKS) {
         ">Download PDF</button>
       </div>
 
+<!-- ======================== FILTER NAMA ORDER (MULTI) ======================== -->
+<div id="orderFilterWrapper" style="display:none;margin-bottom:10px;">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+    <label style="font-weight:600;font-size:13px;">Filter Nama Order</label>
+    <label style="font-size:12px;cursor:pointer;">
+      <input type="checkbox" id="orderSelectAll" checked>
+      Tampilkan Semua
+    </label>
+  </div>
+
+  <div id="orderCheckboxList"
+       style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:6px;">
+  </div>
+</div>
+
+
       <div id="previewContent" style="line-height:1.5;"></div>
     </div>
   </div>
+
+
+
 </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -5597,6 +5616,70 @@ obs.observe(reportSection, {
   }
 }
 
+/* ======================== FILTER ORDER PREVIEW ======================== */
+#orderFilterWrapper {
+  display: none;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+/* HEADER FILTER */
+#orderFilterWrapper > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+#orderFilterWrapper label {
+  font-size: 13px;
+  color: #111827;
+}
+
+#orderFilterWrapper label:first-child {
+  font-weight: 600;
+}
+
+/* CHECKBOX SELECT ALL */
+#orderSelectAll {
+  accent-color: #2563eb;
+  cursor: pointer;
+}
+
+/* LIST CHECKBOX ORDER */
+#orderCheckboxList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 6px;
+}
+
+/* ITEM CHECKBOX */
+#orderCheckboxList label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+#orderCheckboxList label:hover {
+  background: #eff6ff;
+}
+
+#orderCheckboxList input[type="checkbox"] {
+  accent-color: #2563eb;
+  cursor: pointer;
+}
+
 </style>
 
 
@@ -5798,7 +5881,7 @@ function searchReportByID(){
 }
 
 
-// ======================== PREVIEW REPORT ========================
+// ======================== PREVIEW REPORT (MULTI ORDER FILTER) ========================
 document.addEventListener("DOMContentLoaded", () => {
 
   const previewBtn = document.getElementById("previewReportBtn");
@@ -5807,27 +5890,50 @@ document.addEventListener("DOMContentLoaded", () => {
   const previewContent = document.getElementById("previewContent");
   const reportSearchID = document.getElementById("reportSearchID");
 
-  if (!previewBtn || !reportSearchID) {
-    console.error("Elemen preview / input No KS tidak ditemukan");
-    return;
+  const orderWrapper = document.getElementById("orderFilterWrapper");
+  const orderList = document.getElementById("orderCheckboxList");
+  const orderSelectAll = document.getElementById("orderSelectAll");
+
+  if (!previewBtn || !reportSearchID) return;
+
+  let activeKey = "";
+  let selectedOrders = [];
+  let showAllOrders = true;
+
+  // ===== NORMALIZE STRING (ANTI SPASI / CASE ISSUE) =====
+  function normalize(val){
+    return (val || "")
+      .toString()
+      .trim()
+      .toLowerCase();
   }
 
-  previewBtn.addEventListener("click", (e) => {
-    e.preventDefault();
+  // ===== HELPER NAMA ORDER (SEMUA PROSES) =====
+  function getOrderName(o){
+    return normalize(o?.nama || o?.namaOrder);
+  }
 
-    const key = reportSearchID.value.trim().toLowerCase();
-    if (!key) {
-      alert("Masukkan No KS terlebih dahulu");
-      return;
-    }
-
+  // ================= BUILD PREVIEW =================
+  function buildPreview(key, orders = []) {
     let html = "";
     let hasRealData = false;
 
+    // ❗ JIKA FILTER AKTIF TAPI TIDAK ADA PILIHAN → KOSONG
+    if (!showAllOrders && orders.length === 0) {
+      previewContent.innerHTML = `
+        <div style="padding:10px;color:#888;">
+          Tidak ada order dipilih
+        </div>`;
+      return;
+    }
+
+    const orderFilter = o =>
+      showAllOrders || orders.includes(getOrderName(o));
+
     // ================= CETAK =================
     html += `<div class="section-title cetak-title">CETAK</div>`;
-    const cetakItems = paItems.filter(
-      x => (x.noKS || "").toLowerCase() === key
+    const cetakItems = paItems.filter(x =>
+      normalize(x.noKS) === key && orderFilter(x)
     );
     if (cetakItems.length) hasRealData = true;
 
@@ -5836,60 +5942,128 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="report-field"><b>Bagus:</b> ${formatNumber(i?.bagus)}</div>
           <div class="report-field"><b>Sortir:</b> ${formatNumber(i?.sortir)}</div>
           <div class="report-field"><b>Problem:</b> ${formatNumber(i?.problem)}</div>
-        `, "cetak")).join('')
+        `, "cetak")).join("")
       : renderCardReport("", { update: "Proses" });
 
     // ================= LEM =================
     html += `<div class="section-title lem-title">LEM</div>`;
-    const lemItemsMatch = lemItems.filter(
-      x => (x.noKS || "").toLowerCase() === key
+    const lemMatch = lemItems.filter(x =>
+      normalize(x.noKS) === key && orderFilter(x)
     );
-    if (lemItemsMatch.length) hasRealData = true;
+    if (lemMatch.length) hasRealData = true;
 
-    html += lemItemsMatch.length
-      ? lemItemsMatch.map(i => renderCardReport("", i, `
+    html += lemMatch.length
+      ? lemMatch.map(i => renderCardReport("", i, `
           <div class="report-field"><b>Isi/Dus:</b> ${formatNumber(i?.isi)}</div>
           <div class="report-field"><b>Bagus:</b> ${formatNumber(i?.bagus)}</div>
           <div class="report-field"><b>Total BS:</b> ${formatNumber(i?.lemJenisBS)}</div>
-        `, "lem")).join('')
+        `, "lem")).join("")
       : renderCardReport("", { update: "Proses" });
 
     // ================= FINISHING =================
     html += `<div class="section-title finishing-title">FINISHING</div>`;
-    const finishingItemsMatch = finishingItems.filter(
-      x => (x.noKS || "").toLowerCase() === key
+    const finishingMatch = finishingItems.filter(x =>
+      normalize(x.noKS) === key && orderFilter(x)
     );
-    if (finishingItemsMatch.length) hasRealData = true;
+    if (finishingMatch.length) hasRealData = true;
 
-    html += finishingItemsMatch.length
-      ? finishingItemsMatch.map(i => renderCardReport("", i, `
+    html += finishingMatch.length
+      ? finishingMatch.map(i => renderCardReport("", i, `
           <div class="report-field"><b>Isi/Dus:</b> ${formatNumber(i?.isi)}</div>
           <div class="report-field"><b>Bagus:</b> ${formatNumber(i?.bagus)}</div>
           <div class="report-field"><b>Total BS:</b> ${formatNumber(i?.jenisBS)}</div>
-        `, "finishing")).join('')
+        `, "finishing")).join("")
       : renderCardReport("", { update: "Proses" });
 
     // ================= REGISTER (SPV) =================
     html += `<div class="section-title spv-title">REGISTER</div>`;
-    const spvMatch = spvItems.filter(
-      x => (x.noKS || "").toLowerCase() === key
+    const spvMatch = spvItems.filter(x =>
+      normalize(x.noKS) === key && orderFilter(x)
     );
-    if (spvMatch.length) hasRealData = true;
 
-    html += spvMatch.length
-      ? spvMatch.map(renderSPVPreview).join('')
-      : renderSPVPreview({ noKS: key });
+    if (spvMatch.length) {
+      hasRealData = true;
+      html += spvMatch.map(renderSPVPreview).join("");
+    } else if (showAllOrders) {
+      // ⚠️ fallback hanya saat SHOW ALL
+      html += renderSPVPreview({ noKS: key });
+    }
 
-    // ❗ NOTIF JIKA SEMUA KOSONG (TERMASUK REGISTER)
     if (!hasRealData) {
-      alert("Belum ada hasil report untuk No KS ini");
+      previewContent.innerHTML = `
+        <div style="padding:10px;color:#888;">
+          Tidak ada data untuk filter ini
+        </div>`;
       return;
     }
 
     previewContent.innerHTML = html;
+  }
+
+  // ================= PREVIEW BUTTON =================
+  previewBtn.addEventListener("click", e => {
+    e.preventDefault();
+
+    activeKey = normalize(reportSearchID.value);
+    if (!activeKey) {
+      alert("Masukkan No KS terlebih dahulu");
+      return;
+    }
+
+    // 🔧 KUMPULKAN ORDER DARI SEMUA PROSES (TERMASUK SPV)
+    const orders = [
+      ...paItems,
+      ...lemItems,
+      ...finishingItems,
+      ...spvItems
+    ]
+      .filter(x => normalize(x.noKS) === activeKey)
+      .map(getOrderName)
+      .filter(Boolean);
+
+    const uniqueOrders = [...new Set(orders)];
+
+    // ===== BUILD CHECKBOX LIST =====
+    orderList.innerHTML = uniqueOrders.map(o => `
+      <label style="font-size:12px;cursor:pointer;">
+        <input type="checkbox" value="${o}" checked> ${o}
+      </label>
+    `).join("");
+
+    orderWrapper.style.display = uniqueOrders.length ? "block" : "none";
+
+    showAllOrders = true;
+    selectedOrders = [];
+    orderSelectAll.checked = true;
+
+    buildPreview(activeKey);
     modal.style.display = "flex";
   });
 
+  // ================= SELECT ALL =================
+  orderSelectAll.addEventListener("change", () => {
+    const checks = orderList.querySelectorAll("input[type=checkbox]");
+    checks.forEach(c => c.checked = orderSelectAll.checked);
+
+    showAllOrders = orderSelectAll.checked;
+    selectedOrders = [];
+
+    buildPreview(activeKey);
+  });
+
+  // ================= CHECKBOX CHANGE =================
+  orderList.addEventListener("change", () => {
+    selectedOrders = [...orderList.querySelectorAll("input:checked")]
+      .map(c => c.value);
+
+    showAllOrders = false;
+    orderSelectAll.checked =
+      selectedOrders.length === orderList.querySelectorAll("input").length;
+
+    buildPreview(activeKey, selectedOrders);
+  });
+
+  // ================= CLOSE MODAL =================
   closeBtn.addEventListener("click", () => {
     modal.style.display = "none";
   });
