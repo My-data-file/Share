@@ -555,10 +555,9 @@ select {
   position: fixed !important;
   inset: 0;
   width: 100vw;
-  height: 100vh; /* akan di-set via JS untuk HP */
+  height: 100vh;
   background: #f5f5f5;
   z-index: 9999;
-  padding: 0; 
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -566,60 +565,78 @@ select {
   animation: fadeInFullscreen 0.2s ease;
 }
 
+/* wrapper grid */
 .fullscreen-review .grid-wrapper {
   flex: 1 1 auto;
-  max-height: 100%; /* mengikuti height container fullscreen */
+  max-height: 100%;
   overflow-y: auto;
   min-height: 0;
   padding: 12px;
   box-sizing: border-box;
 }
 
+/* grid card */
 .fullscreen-review .grid-container {
   display: grid;
   gap: 12px;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  grid-auto-rows: min-content; /* menyesuaikan tinggi card */
+  grid-auto-rows: min-content;
   width: 100%;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-.fullscreen-review .filter-input {
+/* wrapper filter + tombol */
+.fullscreen-review .filter-wrapper {
   position: sticky;
-  top: 0;
-  z-index: 20;
-  background: #fff;
-  margin-bottom: 8px;
-  padding: 6px 8px;
-  border-radius: 4px;
+  top: 12px;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: #ffffffaa; /* transparan agar terlihat kartu di bawah */
+  padding: 6px 0;
+  border-radius: 8px;
+  margin: 0 auto 8px auto;
+  width: 100%;
+  max-width: 480px;
+  box-sizing: border-box;
+}
+
+/* filter input */
+.fullscreen-review .filter-input {
+  width: 90%;
+  max-width: 480px;
+  padding: 8px 12px;
+  border-radius: 8px;
   border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-
-.fullscreen-review .grid-card,
-.fullscreen-review .card {
   font-size: 0.95rem;
-  box-sizing: border-box;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.fullscreen-review .filter-input:focus {
+  outline: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  transform: translateY(-2px);
 }
 
+/* tombol exit */
 .exit-fullscreen-btn {
-  display: block;
-  margin: 0 auto 12px auto;
-  background: linear-gradient(to bottom, #f0f0f0, #bdbdbd);
+  background: linear-gradient(to bottom, #ffdddd, #ffbbbb);
   color: #000;
-  border: 1px solid #000;
-  border-radius: 6px;
+  border: 1px solid #900;
+  border-radius: 8px;
   padding: 6px 12px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.35);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.35);
   transition: transform 0.2s, background 0.2s;
-  z-index: 10000;
+  z-index: 99999;
 }
 .exit-fullscreen-btn:hover {
-  background: linear-gradient(to bottom, #ffffff, #d6d6d6);
+  background: linear-gradient(to bottom, #ffefef, #ffcaca);
   transform: translateY(-2px);
 }
 
@@ -633,8 +650,19 @@ select {
     padding: 0;
     gap: 8px;
   }
-  .fullscreen-review .filter-input { margin-bottom: 6px; padding: 4px 6px; }
-  .exit-fullscreen-btn { font-size: 0.75rem; padding: 4px 10px; }
+  .fullscreen-review .filter-wrapper {
+    gap: 6px;
+    width: 90%;
+  }
+  .fullscreen-review .filter-input {
+    padding: 6px 8px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+  }
+  .exit-fullscreen-btn {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+  }
 }
 
 /* ====================== ANIMASI ====================== */
@@ -642,6 +670,7 @@ select {
   from { opacity: 0; transform: scale(0.98); }
   to   { opacity: 1; transform: scale(1); }
 }
+
 
 
 
@@ -7776,7 +7805,6 @@ document.addEventListener("click", (e) => {
 
 // ====================== TOGGLE VIEW + FILTER + FULLSCREEN QC FINISHING (BAPRO STYLE) ======================
 document.addEventListener("DOMContentLoaded", () => {
-
   const btnTO = document.getElementById("toggleFinishingTO");
   const btnProses = document.getElementById("toggleFinishingProses");
   const btnSelesai = document.getElementById("toggleFinishingSelesai");
@@ -7817,6 +7845,18 @@ document.addEventListener("DOMContentLoaded", () => {
     filterCards(document.getElementById("dashboardFinishingSelesai"), filterSelesai?.value || "");
   };
 
+  // ================= FULLSCREEN HEIGHT FIX HP =================
+  function setFullscreenHeight(section) {
+    if (!section) return;
+    section.style.height = `${window.innerHeight}px`;
+  }
+  window.addEventListener('resize', () => {
+    if (activeFullscreenSection) setFullscreenHeight(activeFullscreenSection);
+  });
+  window.addEventListener('orientationchange', () => {
+    if (activeFullscreenSection) setFullscreenHeight(activeFullscreenSection);
+  });
+
   // ================= TOGGLE =================
   function toggleSection(section, btn, input) {
     const isOpen = section.style.display !== "none";
@@ -7828,6 +7868,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function enterFullscreen(section, btn, input) {
     section.style.display = "block";
     section.classList.add("fullscreen-review");
+    setFullscreenHeight(section);
     document.body.style.overflow = "hidden";
     activeFullscreenSection = section;
 
@@ -7835,28 +7876,35 @@ document.addEventListener("DOMContentLoaded", () => {
       if (sec && sec !== section) sec.style.display = "none";
     });
 
-    // tombol ❌ di bawah filter, center
-    if (!section.querySelector(".exit-fullscreen-btn")) {
+    // tombol ❌ FIXED
+    if (!document.querySelector(".exit-fullscreen-btn")) {
       const exitBtn = document.createElement("button");
       exitBtn.className = "exit-fullscreen-btn";
       exitBtn.textContent = "✕";
       exitBtn.onclick = () => exitFullscreen(section, btn);
 
-      if (input && input.parentNode) {
-        input.parentNode.insertBefore(exitBtn, input.nextSibling);
-      } else {
-        section.appendChild(exitBtn);
-      }
+      exitBtn.style.position = "fixed";
+      exitBtn.style.top = "12px";
+      exitBtn.style.right = "12px";
+      exitBtn.style.zIndex = 99999;
+
+      document.body.appendChild(exitBtn);
     }
 
     if (btn) btn.textContent = "Hide";
+
+    const wrapper = section.querySelector('.grid-wrapper');
+    if (wrapper) {
+      const lastCard = wrapper.querySelector('.grid-card:last-child, .card:last-child');
+      if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
   }
 
   function exitFullscreen(section, btn) {
     if (!section) return;
     section.classList.remove("fullscreen-review");
     section.style.display = "none";
-    section.querySelector(".exit-fullscreen-btn")?.remove();
+    document.querySelector(".exit-fullscreen-btn")?.remove();
     document.body.style.overflow = "";
     activeFullscreenSection = null;
     if (btn) btn.textContent = "Show";
@@ -7868,7 +7916,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!sec) return;
       sec.classList.remove("fullscreen-review");
       sec.style.display = "none";
+
+      const input = sec.querySelector(".filter-input");
+      if (input) input.value = "";
+
+      const wrapper = sec.querySelector(".grid-wrapper");
+      if (wrapper) wrapper.scrollTop = 0;
     });
+
     document.querySelectorAll(".exit-fullscreen-btn").forEach(b => b.remove());
     document.body.style.overflow = "";
     activeFullscreenSection = null;
@@ -7917,8 +7972,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (typeof closeDetailModalFinishing === "function") closeDetailModalFinishing();
     });
   }
-
 });
+
+
 
 
 
@@ -8646,95 +8702,120 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let activeFullscreenSection = null;
 
+  function filterCards(container, keyword) {
+    if (!container) return;
+    const term = (keyword || '').toLowerCase().trim();
+    container.querySelectorAll('.grid-card, .card').forEach(card => {
+      card.style.display = card.textContent.toLowerCase().includes(term) ? '' : 'none';
+    });
+  }
+
+  [
+    { input: filterTO, gridId: 'dashboardBaproTO' },
+    { input: filterProses, gridId: 'dashboardBaproProses' },
+    { input: filterSelesai, gridId: 'dashboardBaproSelesai' }
+  ].forEach(({ input, gridId }) => {
+    if (!input) return;
+    input.addEventListener('input', () =>
+      filterCards(document.getElementById(gridId), input.value)
+    );
+  });
+
+  window.applyBaproFilters = function () {
+    filterCards(document.getElementById('dashboardBaproTO'), filterTO?.value || '');
+    filterCards(document.getElementById('dashboardBaproProses'), filterProses?.value || '');
+    filterCards(document.getElementById('dashboardBaproSelesai'), filterSelesai?.value || '');
+  };
+
+  function setFullscreenHeight(section) {
+    if (!section) return;
+    section.style.height = `${window.innerHeight}px`;
+  }
+  window.addEventListener('resize', () => {
+    if (activeFullscreenSection) setFullscreenHeight(activeFullscreenSection);
+  });
+  window.addEventListener('orientationchange', () => {
+    if (activeFullscreenSection) setFullscreenHeight(activeFullscreenSection);
+  });
+
   function toggleSection(section, btn, input) {
     const isOpen = section.style.display !== 'none';
-
-    // reset input filter
     if (input) input.value = '';
-
-    // reset dashboard (PENTING)
-    if (typeof renderDashboardBaproCompact === 'function') {
-      renderDashboardBaproCompact('', true);
-    }
-
-    if (isOpen) {
-      exitFullscreen(section, btn);
-    } else {
-      enterFullscreen(section, btn, input);
-    }
+    if (typeof renderDashboardBaproCompact === 'function') renderDashboardBaproCompact('', true);
+    isOpen ? exitFullscreen(section, btn) : enterFullscreen(section, btn, input);
   }
 
   function enterFullscreen(section, btn, input) {
     section.style.display = 'block';
     section.classList.add('fullscreen-review');
+    setFullscreenHeight(section);
     document.body.style.overflow = 'hidden';
     activeFullscreenSection = section;
 
-    // sembunyikan section lain
     [sectionTO, sectionProses, sectionSelesai].forEach(sec => {
       if (sec && sec !== section) sec.style.display = 'none';
     });
 
-    // tombol keluar – hanya sekali
     if (!section.querySelector('.exit-fullscreen-btn')) {
       const exitBtn = document.createElement('button');
       exitBtn.className = 'exit-fullscreen-btn';
+      exitBtn.textContent = '✕';
       exitBtn.onclick = () => exitFullscreen(section, btn);
 
-      // hanya icon X
-      exitBtn.textContent = '✕';
+      // FIXED supaya selalu muncul di atas grid
+      exitBtn.style.position = 'fixed';
+      exitBtn.style.top = '12px';
+      exitBtn.style.right = '12px';
+      exitBtn.style.zIndex = 99999;
 
-      // insert setelah filter input, kalau ada
-      if (input && input.parentNode) {
-        input.parentNode.insertBefore(exitBtn, input.nextSibling);
-      } else {
-        section.appendChild(exitBtn);
-      }
+      document.body.appendChild(exitBtn);
     }
 
-    btn.textContent = 'Hide';
+    if (btn) btn.textContent = 'Hide';
+
+    const wrapper = section.querySelector('.grid-wrapper');
+    if (wrapper) {
+      const lastCard = wrapper.querySelector('.grid-card:last-child, .card:last-child');
+      if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
   }
 
   function exitFullscreen(section, btn) {
+    if (!section) return;
     section.classList.remove('fullscreen-review');
+    section.style.display = 'none';
+    document.querySelector('.exit-fullscreen-btn')?.remove();
     document.body.style.overflow = '';
     activeFullscreenSection = null;
-
-    const exitBtn = section.querySelector('.exit-fullscreen-btn');
-    if (exitBtn) exitBtn.remove();
-
-    section.style.display = 'none';
-    btn.textContent = 'Show';
+    if (btn) btn.textContent = 'Show';
   }
 
-  // === EVENT BUTTON ===
-  if (btnTO)
-    btnTO.addEventListener('click', () =>
-      toggleSection(sectionTO, btnTO, filterTO)
-    );
+  window.forceExitFullscreenBapro = function () {
+    [sectionTO, sectionProses, sectionSelesai].forEach(sec => {
+      if (!sec) return;
+      sec.classList.remove('fullscreen-review');
+      sec.style.display = 'none';
+      const input = sec.querySelector('.filter-input');
+      if (input) input.value = '';
+      const wrapper = sec.querySelector('.grid-wrapper');
+      if (wrapper) wrapper.scrollTop = 0;
+    });
+    document.querySelectorAll('.exit-fullscreen-btn').forEach(b => b.remove());
+    document.body.style.overflow = '';
+    activeFullscreenSection = null;
+  };
 
-  if (btnProses)
-    btnProses.addEventListener('click', () =>
-      toggleSection(sectionProses, btnProses, filterProses)
-    );
+  btnTO?.addEventListener('click', () => toggleSection(sectionTO, btnTO, filterTO));
+  btnProses?.addEventListener('click', () => toggleSection(sectionProses, btnProses, filterProses));
+  btnSelesai?.addEventListener('click', () => toggleSection(sectionSelesai, btnSelesai, filterSelesai));
 
-  if (btnSelesai)
-    btnSelesai.addEventListener('click', () =>
-      toggleSection(sectionSelesai, btnSelesai, filterSelesai)
-    );
-
-  // === ESC untuk keluar fullscreen ===
-  document.addEventListener('keydown', (e) => {
+  document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && activeFullscreenSection) {
-      const btn =
-        activeFullscreenSection === sectionTO ? btnTO :
-        activeFullscreenSection === sectionProses ? btnProses :
-        btnSelesai;
-
-      exitFullscreen(activeFullscreenSection, btn);
+      window.forceExitFullscreenBapro();
     }
   });
 });
+
 
 
 
@@ -9486,7 +9567,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  [ { input: filterTO, gridId: 'dashboardPATO' },
+  [ 
+    { input: filterTO, gridId: 'dashboardPATO' },
     { input: filterProses, gridId: 'dashboardPAProses' },
     { input: filterSelesai, gridId: 'dashboardPASelesai' }
   ].forEach(({ input, gridId }) => {
@@ -9502,7 +9584,7 @@ document.addEventListener('DOMContentLoaded', () => {
     filterCards(document.getElementById('dashboardPASelesai'), filterSelesai?.value || '');
   };
 
-  // ================= FULLSCREEN HEIGHT FIX HP =================
+  // ================= FULLSCREEN HEIGHT =================
   function setFullscreenHeight(section) {
     if (!section) return;
     section.style.height = `${window.innerHeight}px`;
@@ -9533,20 +9615,29 @@ document.addEventListener('DOMContentLoaded', () => {
       if (sec && sec !== section) sec.style.display = 'none';
     });
 
-    if (!section.querySelector('.exit-fullscreen-btn')) {
+    // tombol ❌ FIXED
+    if (!document.querySelector('.exit-fullscreen-btn')) {
       const exitBtn = document.createElement('button');
       exitBtn.className = 'exit-fullscreen-btn';
       exitBtn.textContent = '✕';
       exitBtn.onclick = () => exitFullscreen(section, btn);
 
-      if (input && input.parentNode) {
-        input.parentNode.insertBefore(exitBtn, input.nextSibling);
-      } else {
-        section.appendChild(exitBtn);
-      }
+      exitBtn.style.position = 'fixed';
+      exitBtn.style.top = '12px';
+      exitBtn.style.right = '12px';
+      exitBtn.style.zIndex = 99999;
+
+      document.body.appendChild(exitBtn);
     }
 
     if (btn) btn.textContent = 'Hide';
+
+    // auto-scroll ke last card
+    const wrapper = section.querySelector('.grid-wrapper');
+    if (wrapper) {
+      const lastCard = wrapper.querySelector('.grid-card:last-child, .card:last-child');
+      if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
   }
 
   function exitFullscreen(section, btn) {
@@ -9556,7 +9647,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.exit-fullscreen-btn').forEach(b => b.remove());
     document.body.style.overflow = '';
     activeFullscreenSection = null;
-
     if (btn) btn.textContent = 'Show';
   }
 
@@ -9567,12 +9657,11 @@ document.addEventListener('DOMContentLoaded', () => {
       sec.classList.remove('fullscreen-review');
       sec.style.display = 'none';
 
-      // reset filter & scroll
       const input = sec.querySelector('.filter-input');
       if (input) input.value = '';
 
-      const grid = sec.querySelector('.grid-wrapper');
-      if (grid) grid.scrollTop = 0;
+      const wrapper = sec.querySelector('.grid-wrapper');
+      if (wrapper) wrapper.scrollTop = 0;
     });
 
     document.querySelectorAll('.exit-fullscreen-btn').forEach(b => b.remove());
@@ -9586,15 +9675,13 @@ document.addEventListener('DOMContentLoaded', () => {
   btnSelesai?.addEventListener('click', () => toggleSection(sectionSelesai, btnSelesai, filterSelesai));
 
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') window.forceExitFullscreenPA();
+    if (e.key === 'Escape' && activeFullscreenSection) window.forceExitFullscreenPA();
   });
 
   // ================= REPORT BUTTON =================
   const reportBtn = document.getElementById("openReportFromDetailPABtn") || document.getElementById("openReportFromDetailBtn");
   if (reportBtn) {
     reportBtn.addEventListener("click", () => {
-
-      // ✅ reset fullscreen sebelum report
       window.forceExitFullscreenPA();
 
       const detailBody = document.getElementById("detailPABody") || document.getElementById("detailCetakBody");
@@ -9625,6 +9712,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
 
 
 
@@ -10505,6 +10593,18 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   });
 
+  // ================= FULLSCREEN HEIGHT FIX HP =================
+  function setFullscreenHeight(section) {
+    if (!section) return;
+    section.style.height = `${window.innerHeight}px`;
+  }
+  window.addEventListener('resize', () => {
+    if (activeFullscreenSection) setFullscreenHeight(activeFullscreenSection);
+  });
+  window.addEventListener('orientationchange', () => {
+    if (activeFullscreenSection) setFullscreenHeight(activeFullscreenSection);
+  });
+
   // ================= TOGGLE =================
   function toggleSection(section, btn, input) {
     const isOpen = section.style.display !== 'none';
@@ -10516,6 +10616,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function enterFullscreen(section, btn, input) {
     section.style.display = 'block';
     section.classList.add('fullscreen-review');
+    setFullscreenHeight(section);
     document.body.style.overflow = 'hidden';
     activeFullscreenSection = section;
 
@@ -10523,52 +10624,58 @@ document.addEventListener('DOMContentLoaded', () => {
       if (sec && sec !== section) sec.style.display = 'none';
     });
 
-    // tombol ❌ di bawah filter, center
-    if (!section.querySelector('.exit-fullscreen-btn')) {
+    // tombol ❌ FIXED
+    if (!document.querySelector('.exit-fullscreen-btn')) {
       const exitBtn = document.createElement('button');
       exitBtn.className = 'exit-fullscreen-btn';
       exitBtn.textContent = '✕';
       exitBtn.onclick = () => exitFullscreen(section, btn);
 
-      if (input && input.parentNode) {
-        input.parentNode.insertBefore(exitBtn, input.nextSibling);
-      } else {
-        section.appendChild(exitBtn);
-      }
+      exitBtn.style.position = 'fixed';
+      exitBtn.style.top = '12px';
+      exitBtn.style.right = '12px';
+      exitBtn.style.zIndex = 99999;
+
+      document.body.appendChild(exitBtn);
     }
 
     if (btn) btn.textContent = 'Hide';
+
+    // auto-scroll ke last card
+    const wrapper = section.querySelector('.grid-wrapper');
+    if (wrapper) {
+      const lastCard = wrapper.querySelector('.grid-card:last-child');
+      if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
   }
 
   function exitFullscreen(section, btn) {
     if (!section) return;
     section.classList.remove('fullscreen-review');
     section.style.display = 'none';
-    section.querySelector('.exit-fullscreen-btn')?.remove();
+    document.querySelectorAll('.exit-fullscreen-btn').forEach(b => b.remove());
     document.body.style.overflow = '';
     activeFullscreenSection = null;
-
     if (btn) btn.textContent = 'Show';
   }
 
   // ================= GLOBAL FORCE EXIT =================
   window.forceExitFullscreenLem = function () {
-    if (activeFullscreenSection) {
-      exitFullscreen(
-        activeFullscreenSection,
-        activeFullscreenSection === sectionTO
-          ? btnTO
-          : activeFullscreenSection === sectionProses
-          ? btnProses
-          : btnSelesai
-      );
-    } else {
-      document.body.style.overflow = '';
-      document.querySelectorAll('.fullscreen-review').forEach(el => {
-        el.classList.remove('fullscreen-review');
-        el.querySelector('.exit-fullscreen-btn')?.remove();
-      });
-    }
+    [sectionTO, sectionProses, sectionSelesai].forEach(sec => {
+      if (!sec) return;
+      sec.classList.remove('fullscreen-review');
+      sec.style.display = 'none';
+
+      const input = sec.querySelector('.filter-input');
+      if (input) input.value = '';
+
+      const wrapper = sec.querySelector('.grid-wrapper');
+      if (wrapper) wrapper.scrollTop = 0;
+    });
+
+    document.querySelectorAll('.exit-fullscreen-btn').forEach(b => b.remove());
+    document.body.style.overflow = '';
+    activeFullscreenSection = null;
   };
 
   // ================= EVENT =================
@@ -10576,7 +10683,6 @@ document.addEventListener('DOMContentLoaded', () => {
   btnProses?.addEventListener('click', () => toggleSection(sectionProses, btnProses, filterProses));
   btnSelesai?.addEventListener('click', () => toggleSection(sectionSelesai, btnSelesai, filterSelesai));
 
-  // ESC keluar fullscreen
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && activeFullscreenSection) {
       window.forceExitFullscreenLem();
@@ -10587,6 +10693,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const reportBtn = document.getElementById("openReportFromDetailLemBtn");
   if (reportBtn) {
     reportBtn.addEventListener("click", () => {
+
+      // ✅ reset fullscreen sebelum report
       window.forceExitFullscreenLem();
 
       const detailBody = document.getElementById("detailLemBody");
@@ -10616,6 +10724,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
+
 
 
 
