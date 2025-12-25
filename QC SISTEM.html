@@ -555,33 +555,34 @@ select {
   position: fixed !important;
   inset: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100vh; /* akan di-set via JS untuk HP */
   background: #f5f5f5;
   z-index: 9999;
-  padding: 0; /* Hapus padding luar */
-  overflow: hidden;
+  padding: 0; 
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  overflow: hidden;
   animation: fadeInFullscreen 0.2s ease;
 }
 
 .fullscreen-review .grid-wrapper {
   flex: 1 1 auto;
-  max-height: calc(100vh - 160px); /* space filter + tombol */
+  max-height: 100%; /* mengikuti height container fullscreen */
   overflow-y: auto;
   min-height: 0;
-  padding: 12px; /* padding internal untuk spacing grid */
+  padding: 12px;
   box-sizing: border-box;
 }
 
 .fullscreen-review .grid-container {
   display: grid;
-  gap: 12px; /* jarak antar card */
+  gap: 12px;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  width: 100%; /* full lebar */
-  margin: 0;    /* pastikan tidak ada margin luar */
-  padding: 0;   /* padding diatur di wrapper */
+  grid-auto-rows: min-content; /* menyesuaikan tinggi card */
+  width: 100%;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -626,7 +627,6 @@ select {
 
 /* responsive HP */
 @media (max-width: 480px) {
-  .fullscreen-review { padding: 0; }
   .fullscreen-review .grid-wrapper { padding: 6px; }
   .fullscreen-review .grid-container {
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -642,6 +642,7 @@ select {
   from { opacity: 0; transform: scale(0.98); }
   to   { opacity: 1; transform: scale(1); }
 }
+
 
 
 
@@ -9459,7 +9460,6 @@ function closeDetailModalCetak(){
 
 
 
-
 // ====================== TOGGLE VIEW + FILTER + FULLSCREEN QC PA (FINAL – BAPRO STYLE) ======================
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -9486,8 +9486,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  [
-    { input: filterTO, gridId: 'dashboardPATO' },
+  [ { input: filterTO, gridId: 'dashboardPATO' },
     { input: filterProses, gridId: 'dashboardPAProses' },
     { input: filterSelesai, gridId: 'dashboardPASelesai' }
   ].forEach(({ input, gridId }) => {
@@ -9503,6 +9502,18 @@ document.addEventListener('DOMContentLoaded', () => {
     filterCards(document.getElementById('dashboardPASelesai'), filterSelesai?.value || '');
   };
 
+  // ================= FULLSCREEN HEIGHT FIX HP =================
+  function setFullscreenHeight(section) {
+    if (!section) return;
+    section.style.height = `${window.innerHeight}px`;
+  }
+  window.addEventListener('resize', () => {
+    if (activeFullscreenSection) setFullscreenHeight(activeFullscreenSection);
+  });
+  window.addEventListener('orientationchange', () => {
+    if (activeFullscreenSection) setFullscreenHeight(activeFullscreenSection);
+  });
+
   // ================= TOGGLE =================
   function toggleSection(section, btn, input) {
     const isOpen = section.style.display !== 'none';
@@ -9514,6 +9525,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function enterFullscreen(section, btn, input) {
     section.style.display = 'block';
     section.classList.add('fullscreen-review');
+    setFullscreenHeight(section);
     document.body.style.overflow = 'hidden';
     activeFullscreenSection = section;
 
@@ -9521,7 +9533,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (sec && sec !== section) sec.style.display = 'none';
     });
 
-    // tombol ❌ di bawah filter, center
     if (!section.querySelector('.exit-fullscreen-btn')) {
       const exitBtn = document.createElement('button');
       exitBtn.className = 'exit-fullscreen-btn';
@@ -9555,6 +9566,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!sec) return;
       sec.classList.remove('fullscreen-review');
       sec.style.display = 'none';
+
+      // reset filter & scroll
+      const input = sec.querySelector('.filter-input');
+      if (input) input.value = '';
+
+      const grid = sec.querySelector('.grid-wrapper');
+      if (grid) grid.scrollTop = 0;
     });
 
     document.querySelectorAll('.exit-fullscreen-btn').forEach(b => b.remove());
@@ -9575,6 +9593,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const reportBtn = document.getElementById("openReportFromDetailPABtn") || document.getElementById("openReportFromDetailBtn");
   if (reportBtn) {
     reportBtn.addEventListener("click", () => {
+
+      // ✅ reset fullscreen sebelum report
       window.forceExitFullscreenPA();
 
       const detailBody = document.getElementById("detailPABody") || document.getElementById("detailCetakBody");
@@ -9605,6 +9625,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
+
 
 
 
