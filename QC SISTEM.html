@@ -519,6 +519,8 @@ select {
   transform: scale(0.97);
 }
 
+
+
 /* ================= FULLSCREEN REVIEW MODE ================= */
 .fullscreen-review {
   position: fixed !important;
@@ -561,7 +563,7 @@ select {
 
 /* ================= GRID WRAPPER ================= */
 .fullscreen-review .grid-wrapper {
-  padding: 96px 12px 12px; /* RUANG UNTUK FILTER */
+  padding: 96px 12px 12px; /* ruang aman untuk filter */
   box-sizing: border-box;
 }
 
@@ -574,12 +576,13 @@ select {
 
 /* ================= FILTER INPUT ================= */
 .filter-input {
-  width: 60%;
-  max-width: 480px;
+  width: 100%;
+  max-width: 420px; /* desktop limit */
   padding: 8px 12px;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 0.95rem;
+  box-sizing: border-box;
 }
 
 /* ================= EXIT BUTTON ================= */
@@ -594,10 +597,12 @@ select {
   border-radius: 8px;
   padding: 6px 12px;
   cursor: pointer;
+  font-weight: 600;
 }
 
-/* ================= MOBILE ================= */
+/* ================= MOBILE (ANTI NABRAK ❌) ================= */
 @media (max-width: 480px) {
+
   .fullscreen-review {
     padding: 6px;
   }
@@ -611,8 +616,24 @@ select {
     gap: 8px;
   }
 
+  /* 🔴 FIX UTAMA: sisakan ruang tombol close */
   .filter-fixed-global {
-    width: calc(100% - 12px);
+    left: 8px;
+    right: 56px;     /* ruang aman tombol ❌ */
+    transform: none;
+
+    width: auto;
+    max-width: none;
+  }
+
+  .filter-input {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .exit-fullscreen-btn {
+    padding: 5px 10px;
+    font-size: 14px;
   }
 }
 
@@ -621,6 +642,7 @@ select {
   from { opacity: 0; transform: scale(0.98); }
   to   { opacity: 1; transform: scale(1); }
 }
+
 
 
 
