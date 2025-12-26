@@ -600,7 +600,7 @@ select {
   font-weight: 600;
 }
 
-/* ================= MOBILE (ANTI NABRAK ❌) ================= */
+/* ================= MOBILE (CENTER + ANTI NABRAK ❌) ================= */
 @media (max-width: 480px) {
 
   .fullscreen-review {
@@ -616,26 +616,41 @@ select {
     gap: 8px;
   }
 
-  /* 🔴 FIX UTAMA: sisakan ruang tombol close */
+  /* ================= FILTER FIX (AMAN DARI ❌) ================= */
   .filter-fixed-global {
+    position: fixed;
+    top: 8px;
+
     left: 8px;
-    right: 56px;     /* ruang aman tombol ❌ */
+    right: 56px;          /* ruang aman tombol close */
     transform: none;
 
     width: auto;
     max-width: none;
+
+    display: flex;
+    justify-content: center; /* ⬅️ CENTER HORIZONTAL */
+    align-items: center;
+
+    padding: 6px 8px;
+    border-radius: 10px;
   }
 
+  /* ================= INPUT CENTER ================= */
   .filter-input {
     width: 100%;
-    max-width: 60%;
+    max-width: 260px;     /* ukuran aman HP */
+    margin: 0 auto;       /* ⬅️ KUNCI CENTER */
+    font-size: 0.9rem;
   }
 
+  /* ================= EXIT BUTTON ================= */
   .exit-fullscreen-btn {
     padding: 5px 10px;
     font-size: 14px;
   }
 }
+
 
 /* ================= ANIMATION ================= */
 @keyframes fadeInFullscreen {
@@ -11692,4 +11707,3 @@ function goHome() {
 
 </body>
 </html>
-
