@@ -6265,26 +6265,33 @@ function jsonpGet(url, params = {}) {
     const cbName = 'jsonp_cb_' + Math.random().toString(36).slice(2, 9);
     params = params || {};
     params.callback = cbName;
-    const q = Object.entries(params).map(([k,v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join('&');
+    const q = Object.entries(params)
+      .map(([k,v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+      .join('&');
+
     const script = document.createElement('script');
     script.src = `${url}?${q}`;
+
     script.onerror = () => {
       cleanup();
       reject(new Error('JSONP load error'));
     };
+
     window[cbName] = (res) => {
       cleanup();
       resolve(res);
     };
+
     function cleanup(){
       delete window[cbName];
       script.remove();
     }
+
     document.body.appendChild(script);
   });
 }
 
-// ===== SCROLL OTOMATIS SETELAH DASHBOARD DIBUKA =====
+// ===== SCROLL OTOMATIS (LANGSUNG KE GRID TERAKHIR) SETELAH DASHBOARD DIBUKA =====
 function autoScrollDashboardMenu(menu) {
   const sections = [
     `section${menu}TO`,
@@ -6300,12 +6307,16 @@ function autoScrollDashboardMenu(menu) {
       if (section.style.display !== 'none') {
         const cards = section.querySelectorAll('.grid-card');
         if (cards.length > 0) {
-          cards[cards.length - 1].scrollIntoView({ behavior: 'smooth', block: 'end' });
+          // ⬇️ LANGSUNG lompat ke card terakhir (tanpa smooth)
+          cards[cards.length - 1].scrollIntoView({ block: 'end' });
         }
       }
     });
 
-    observer.observe(section, { attributes: true, attributeFilter: ['style'] });
+    observer.observe(section, {
+      attributes: true,
+      attributeFilter: ['style']
+    });
   });
 }
 
@@ -6314,26 +6325,32 @@ document.addEventListener('DOMContentLoaded', () => {
   ['Finishing','Bapro','PA','Lem'].forEach(menu => autoScrollDashboardMenu(menu));
 });
 
-// ===== SCROLL OTOMATIS KE BAWAH SAAT TAB HASIL DIBUKA =====
+// ===== SCROLL LANGSUNG KE GRID TERAKHIR SAAT TAB HASIL DIBUKA =====
 function scrollGridToBottom(menu) {
   const container = document.getElementById(`grid${menu}`);
   if (!container) return;
+
   const cards = container.querySelectorAll('.grid-card');
   if (cards.length === 0) return;
-  cards[cards.length - 1].scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+  // ⬇️ LANGSUNG ke card terakhir
+  cards[cards.length - 1].scrollIntoView({ block: 'end' });
 }
 
-// Tambahkan di fungsi switchTab
+// ===== SWITCH TAB (TETAP, HANYA SCROLL DIUPDATE) =====
 function switchTab(btn) {
   const tabName = btn.dataset.tab;
   if (!tabName) return;
 
   // Hapus active class dari semua tab
-  btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+  btn.parentElement.querySelectorAll('button')
+    .forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 
   // Tampilkan konten tab
-  btn.parentElement.parentElement.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+  btn.parentElement.parentElement.querySelectorAll('.tab-content')
+    .forEach(tab => tab.classList.remove('active'));
+
   const content = document.getElementById(tabName);
   if (content) content.classList.add('active');
 
@@ -6344,6 +6361,7 @@ function switchTab(btn) {
     }
   });
 }
+
 
 // ====================== ESCAPE HTML ======================
 function escapeHtml(s) {
@@ -10647,7 +10665,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-/* ====================== SCROLL OTOMATIS KE BARIS TERAKHIR ====================== */
+/* ====================== SCROLL OTOMATIS REGISTER (LANGSUNG KE BARIS TERAKHIR) ====================== */
 document.addEventListener('DOMContentLoaded', () => {
   const tbody = document.querySelector('#spvTable tbody');
   if (!tbody) return;
@@ -10656,12 +10674,13 @@ document.addEventListener('DOMContentLoaded', () => {
     mutations.forEach(mutation => {
       if (mutation.addedNodes.length > 0) {
         const rows = tbody.querySelectorAll('tr');
-        if (rows.length) {
+        if (!rows.length) return;
+
+        // scroll hanya jika tidak ada input aktif di table
+        if (!tbody.querySelector('input:focus, textarea:focus, select:focus')) {
           const lastRow = rows[rows.length - 1];
-          // scroll hanya jika tidak ada input aktif di table
-          if (!tbody.querySelector('input:focus, textarea:focus, select:focus')) {
-            lastRow.scrollIntoView({ behavior: 'smooth', block: 'end' });
-          }
+          // ⬇️ LANGSUNG lompat ke baris terakhir (tanpa smooth)
+          lastRow.scrollIntoView({ block: 'end' });
         }
       }
     });
@@ -10669,6 +10688,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   observer.observe(tbody, { childList: true });
 });
+
 
 </script>
 
@@ -11063,7 +11083,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 
 
-/* ====================== SCROLL OTOMATIS QC MEETING ====================== */
+/* ====================== SCROLL OTOMATIS QC MEETING (LANGSUNG KE BARIS TERAKHIR) ====================== */
 document.addEventListener('DOMContentLoaded', () => {
   const tbody = document.querySelector('#meetingTable tbody');
   if (!tbody) return;
@@ -11072,12 +11092,13 @@ document.addEventListener('DOMContentLoaded', () => {
     mutations.forEach(mutation => {
       if (mutation.addedNodes.length > 0) {
         const rows = tbody.querySelectorAll('tr');
-        if (rows.length) {
+        if (!rows.length) return;
+
+        // scroll hanya jika tidak ada input/textarea/select aktif
+        if (!tbody.querySelector('input:focus, textarea:focus, select:focus')) {
           const lastRow = rows[rows.length - 1];
-          // scroll hanya jika tidak ada input/textarea/select aktif
-          if (!tbody.querySelector('input:focus, textarea:focus, select:focus')) {
-            lastRow.scrollIntoView({ behavior: 'smooth', block: 'end' });
-          }
+          // ⬇️ LANGSUNG lompat ke baris terakhir (tanpa smooth)
+          lastRow.scrollIntoView({ block: 'end' });
         }
       }
     });
@@ -11085,6 +11106,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   observer.observe(tbody, { childList: true });
 });
+
 
 </script>
 
@@ -11253,4 +11275,3 @@ function goHome() {
 
 </body>
 </html>
-
