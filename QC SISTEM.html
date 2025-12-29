@@ -586,30 +586,33 @@ select {
 
 
 /* =========================================================
-   GLOBAL QC CSS (ORI DIGABUNG – TANPA PERUBAHAN LOGIKA)
+   GLOBAL QC CSS (FIX WARNA – SESUAI STRUKTUR HTML ASLI)
    BAPRO | CETAK | LEM | FINISHING
    ========================================================= */
 
-/* ===================== QC TITLE ===================== */
+/* ===================== QC TITLE BASE ===================== */
 .qc-title{
   text-align:center;
-  padding:8px;
+  padding:6px 12px;
+  font-size:1.2rem;
   border-radius:8px;
+  margin-bottom:12px;
   box-shadow:0 4px 8px rgba(0,0,0,.3);
-}
-
-/* CETAK */
-.qc-title{
-  background:linear-gradient(to right,#FF9800,#FFB74D);
   color:#000;
 }
 
-/* LEM */
-.qc-lem{
-  background:linear-gradient(to right,#9C27B0,#BA68C8);
+/* ===================== QC CETAK ===================== */
+h2.qc-title:not(.qc-lem):not(.qc-finishing){
+  background:linear-gradient(to right,#FF9800,#FFB74D);
 }
 
-/* FINISHING */
+/* ===================== QC LEM ===================== */
+.qc-lem{
+  background:linear-gradient(to right,#9C27B0,#BA68C8);
+  color:#fff;
+}
+
+/* ===================== QC FINISHING ===================== */
 .qc-finishing{
   background:linear-gradient(to right,#22C55E,#4ADE80);
 }
@@ -623,72 +626,70 @@ select {
   margin-bottom:12px;
 }
 
-/* ===================== TOTAL BOX (DEFAULT) ===================== */
-.total-box{
-  min-width:120px;
-  padding:8px;
-  border-radius:8px;
-  text-align:center;
-}
-
-/* ===================== BAPRO TOTAL ===================== */
+/* ===================== TOTAL BOX BASE ===================== */
 .total-box{
   flex:1;
-  background: rgba(255,82,82,0.25);
-  border: 2px solid rgba(255,82,82,0.6);
+  min-width:120px;
   padding:6px 10px;
-  color:#000;
+  border-radius:8px;
+  text-align:center;
   font-weight:500;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  transition: transform 0.2s, background 0.2s;
-}
-
-.total-box.clickable{
-  cursor:pointer;
-}
-.total-box.clickable:hover{
-  transform: translateY(-3px);
-  background: rgba(255,82,82,0.4);
-}
-
-/* ===================== CETAK TOTAL ===================== */
-.total-box{
-  background:rgba(255,152,0,.25);
-  border:2px solid rgba(255,152,0,.6);
-  font-size:13px;
+  color:#000;
+  box-shadow:0 4px 12px rgba(0,0,0,.3);
+  transition:.2s;
 }
 
 .total-box strong{
   font-size:18px;
 }
 
-.total-click{
-  cursor:pointer;
-  transition:.2s;
+.total-box:hover{
+  transform:translateY(-3px);
 }
 
-.total-click:hover{
-  transform:translateY(-3px);
+/* ===================== CLICKABLE ===================== */
+.total-click,
+.total-box.clickable{
+  cursor:pointer;
+}
+
+/* =========================================================
+   WARNA TOTAL BOX (BERDASARKAN STRUKTUR HTML)
+   ========================================================= */
+
+/* 🔴 BAPRO (TOTAL WRAPPER PERTAMA) */
+.qc-section > h2:first-of-type + .total-wrapper .total-box{
+  background:rgba(255,82,82,.25);
+  border:2px solid rgba(255,82,82,.6);
+}
+.qc-section > h2:first-of-type + .total-wrapper .total-box:hover{
+  background:rgba(255,82,82,.4);
+}
+
+/* 🟠 CETAK */
+h2.qc-title:not(.qc-lem):not(.qc-finishing) + .total-wrapper .total-box{
+  background:rgba(255,152,0,.25);
+  border:2px solid rgba(255,152,0,.6);
+}
+h2.qc-title:not(.qc-lem):not(.qc-finishing) + .total-wrapper .total-box:hover{
   background:rgba(255,152,0,.45);
 }
 
-/* ===================== LEM TOTAL ===================== */
+/* 🟣 LEM */
 .total-box.lem{
   background:rgba(156,39,176,.25);
   border:2px solid rgba(156,39,176,.6);
 }
-
-.total-click:hover{
+.total-box.lem:hover{
   background:rgba(156,39,176,.45);
 }
 
-/* ===================== FINISHING TOTAL ===================== */
+/* 🟢 FINISHING */
 .total-box.finishing{
   background:rgba(34,197,94,.25);
   border:2px solid rgba(34,197,94,.6);
 }
-
-.total-click:hover{
+.total-box.finishing:hover{
   background:rgba(34,197,94,.45);
 }
 
@@ -701,20 +702,20 @@ select {
   height:0;
 }
 
-/* ===================== TOGGLE BUTTON (BAPRO) ===================== */
+/* ===================== TOGGLE BUTTON ===================== */
 .toggle-btn{
-  padding: 2px 6px;
-  font-size: 0.8rem;
-  height: 32px;
-  background: linear-gradient(to bottom, #f0f0f0, #bdbdbd);
-  color: #000;
-  border: 1px solid #000;
-  border-radius: 4px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+  padding:2px 6px;
+  font-size:.8rem;
+  height:32px;
+  background:linear-gradient(to bottom,#f0f0f0,#bdbdbd);
+  color:#000;
+  border:1px solid #000;
+  border-radius:4px;
+  box-shadow:0 3px 6px rgba(0,0,0,.25);
 }
 
 /* =========================================================
-   MODAL (CETAK / LEM / FINISHING – SESUAI ORI)
+   MODAL (TETAP SESUAI ORI)
    ========================================================= */
 .modal-fin{
   position:fixed;
@@ -727,7 +728,6 @@ select {
 }
 .modal-fin.show{ display:flex; }
 
-/* CONTENT */
 .modal-fin-content{
   background:#fff;
   width:92%;
@@ -743,9 +743,8 @@ select {
   to{ transform:scale(1); opacity:1; }
 }
 
-/* HEADER */
 .modal-fin-header{
-  background:linear-gradient(to right,#2563EB,#1E40AF) !important;
+  background:linear-gradient(to right,#2563EB,#1E40AF);
   padding:10px 14px;
   display:flex;
   justify-content:space-between;
@@ -753,43 +752,26 @@ select {
   color:#fff;
 }
 
-.modal-fin-header span{
-  font-weight:600;
-  font-size:15px;
-}
-
-/* ❌ HILANGKAN TOMBOL X (ORI CETAK) */
 .modal-fin-header button{
-  display:none !important;
+  display:none;
 }
 
-/* BODY */
 .modal-fin-body{
   padding:14px 16px;
   font-size:14px;
-  line-height:1.5;
   color:#222;
 }
 
-.modal-fin-body strong{
-  display:inline-block;
-  min-width:85px;
-  color:#1E3A8A;
-}
-
-/* FOOTER */
 .modal-fin-footer{
   padding:10px 14px;
-  background:#E0E7FF !important;
+  background:#E0E7FF;
   display:flex;
   gap:8px;
   justify-content:flex-end;
   border-top:1px solid #CBD5E1;
 }
 
-/* BUTTON */
 .modal-fin-footer button,
-.modal-fin-btn,
 .btn-report{
   padding:7px 14px;
   font-size:13px;
@@ -797,27 +779,16 @@ select {
   border-radius:6px;
   cursor:pointer;
   font-weight:600;
-  transition:.2s;
 }
 
-/* REPORT */
 .btn-report{
   background:linear-gradient(to bottom,#22C55E,#15803D);
   color:#fff;
 }
 
-/* KELUAR */
 .modal-fin-footer button:last-child{
   background:linear-gradient(to bottom,#EF4444,#B91C1C);
   color:#fff;
-}
-
-/* RESPONSIVE */
-@media (max-width:480px){
-  .modal-fin-body{ font-size:13.5px; }
-  .modal-fin-body strong{ min-width:75px; }
-  .modal-fin-footer{ flex-direction:column; }
-  .modal-fin-footer button{ width:100%; }
 }
 
 
@@ -11278,3 +11249,4 @@ function goHome() {
 
 </body>
 </html>
+
