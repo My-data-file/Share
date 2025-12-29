@@ -351,81 +351,7 @@ select {
 
 
 
-/* ======================= DETAIL GLOBAL ======================= */
-.modal-fin {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  backdrop-filter: blur(2px);
-  justify-content: center;
-  align-items: center;
-  z-index: 999999;
-}
 
-.modal-fin-content {
-  width: 92%;
-  max-width: 420px;
-  background: #fff;
-  border-radius: 14px;
-  padding: 0;
-  overflow: hidden;
-  animation: modalPop 0.25s ease;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-}
-
-@keyframes modalPop {
-  from { transform: scale(0.8); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
-}
-
-.modal-fin-header {
-  background: #3677FF;
-  color: white;
-  padding: 12px 18px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.modal-fin-title {
-  font-size: 17px;
-  font-weight: bold;
-}
-
-.modal-fin-close {
-  background: transparent;
-  color: white;
-  border: none;
-  font-size: 22px;
-  cursor: pointer;
-}
-
-.modal-fin-body {
-  padding: 16px 20px;
-  font-size: 15px;
-  line-height: 1.42;
-}
-
-.modal-fin-body strong {
-  color: #0A3D62;
-}
-
-.modal-fin-footer {
-  padding: 12px 18px;
-  text-align: right;
-  background: #f5f5f5;
-}
-
-.modal-fin-btn {
-  background: #3677FF;
-  padding: 8px 16px;
-  border-radius: 8px;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 14px;
-}
 
 /* ======================== Edit Inline ======================== */
 .edit-grid {
@@ -658,6 +584,268 @@ select {
   to   { opacity: 1; transform: scale(1); }
 }
 
+
+/* =========================================================
+   GLOBAL QC CSS (ORI DIGABUNG – TANPA PERUBAHAN LOGIKA)
+   BAPRO | CETAK | LEM | FINISHING
+   ========================================================= */
+
+/* ===================== QC TITLE ===================== */
+.qc-title{
+  text-align:center;
+  padding:8px;
+  border-radius:8px;
+  box-shadow:0 4px 8px rgba(0,0,0,.3);
+}
+
+/* CETAK */
+.qc-title{
+  background:linear-gradient(to right,#FF9800,#FFB74D);
+  color:#000;
+}
+
+/* LEM */
+.qc-lem{
+  background:linear-gradient(to right,#9C27B0,#BA68C8);
+}
+
+/* FINISHING */
+.qc-finishing{
+  background:linear-gradient(to right,#22C55E,#4ADE80);
+}
+
+/* ===================== TOTAL WRAPPER ===================== */
+.total-wrapper{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin-bottom:12px;
+}
+
+/* ===================== TOTAL BOX (DEFAULT) ===================== */
+.total-box{
+  min-width:120px;
+  padding:8px;
+  border-radius:8px;
+  text-align:center;
+}
+
+/* ===================== BAPRO TOTAL ===================== */
+.total-box{
+  flex:1;
+  background: rgba(255,82,82,0.25);
+  border: 2px solid rgba(255,82,82,0.6);
+  padding:6px 10px;
+  color:#000;
+  font-weight:500;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.total-box.clickable{
+  cursor:pointer;
+}
+.total-box.clickable:hover{
+  transform: translateY(-3px);
+  background: rgba(255,82,82,0.4);
+}
+
+/* ===================== CETAK TOTAL ===================== */
+.total-box{
+  background:rgba(255,152,0,.25);
+  border:2px solid rgba(255,152,0,.6);
+  font-size:13px;
+}
+
+.total-box strong{
+  font-size:18px;
+}
+
+.total-click{
+  cursor:pointer;
+  transition:.2s;
+}
+
+.total-click:hover{
+  transform:translateY(-3px);
+  background:rgba(255,152,0,.45);
+}
+
+/* ===================== LEM TOTAL ===================== */
+.total-box.lem{
+  background:rgba(156,39,176,.25);
+  border:2px solid rgba(156,39,176,.6);
+}
+
+.total-click:hover{
+  background:rgba(156,39,176,.45);
+}
+
+/* ===================== FINISHING TOTAL ===================== */
+.total-box.finishing{
+  background:rgba(34,197,94,.25);
+  border:2px solid rgba(34,197,94,.6);
+}
+
+.total-click:hover{
+  background:rgba(34,197,94,.45);
+}
+
+/* ===================== HIDDEN TOGGLE ===================== */
+.hidden-toggle{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+  width:0;
+  height:0;
+}
+
+/* ===================== TOGGLE BUTTON (BAPRO) ===================== */
+.toggle-btn{
+  padding: 2px 6px;
+  font-size: 0.8rem;
+  height: 32px;
+  background: linear-gradient(to bottom, #f0f0f0, #bdbdbd);
+  color: #000;
+  border: 1px solid #000;
+  border-radius: 4px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+}
+
+/* =========================================================
+   MODAL (CETAK / LEM / FINISHING – SESUAI ORI)
+   ========================================================= */
+.modal-fin{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:999999;
+}
+.modal-fin.show{ display:flex; }
+
+/* CONTENT */
+.modal-fin-content{
+  background:#fff;
+  width:92%;
+  max-width:420px;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 10px 25px rgba(0,0,0,.3);
+  animation:modalPop .25s ease;
+}
+
+@keyframes modalPop{
+  from{ transform:scale(.9); opacity:0; }
+  to{ transform:scale(1); opacity:1; }
+}
+
+/* HEADER */
+.modal-fin-header{
+  background:linear-gradient(to right,#2563EB,#1E40AF) !important;
+  padding:10px 14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  color:#fff;
+}
+
+.modal-fin-header span{
+  font-weight:600;
+  font-size:15px;
+}
+
+/* ❌ HILANGKAN TOMBOL X (ORI CETAK) */
+.modal-fin-header button{
+  display:none !important;
+}
+
+/* BODY */
+.modal-fin-body{
+  padding:14px 16px;
+  font-size:14px;
+  line-height:1.5;
+  color:#222;
+}
+
+.modal-fin-body strong{
+  display:inline-block;
+  min-width:85px;
+  color:#1E3A8A;
+}
+
+/* FOOTER */
+.modal-fin-footer{
+  padding:10px 14px;
+  background:#E0E7FF !important;
+  display:flex;
+  gap:8px;
+  justify-content:flex-end;
+  border-top:1px solid #CBD5E1;
+}
+
+/* BUTTON */
+.modal-fin-footer button,
+.modal-fin-btn,
+.btn-report{
+  padding:7px 14px;
+  font-size:13px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:600;
+  transition:.2s;
+}
+
+/* REPORT */
+.btn-report{
+  background:linear-gradient(to bottom,#22C55E,#15803D);
+  color:#fff;
+}
+
+/* KELUAR */
+.modal-fin-footer button:last-child{
+  background:linear-gradient(to bottom,#EF4444,#B91C1C);
+  color:#fff;
+}
+
+/* RESPONSIVE */
+@media (max-width:480px){
+  .modal-fin-body{ font-size:13.5px; }
+  .modal-fin-body strong{ min-width:75px; }
+  .modal-fin-footer{ flex-direction:column; }
+  .modal-fin-footer button{ width:100%; }
+}
+
+
+
+
+/* ===================== GAP ANTAR PROSES (LEBIH LEBAR) ===================== */
+
+/* jarak antar blok QC (Bapro / Cetak / Lem / Finishing) */
+.qc-title{
+  margin-top:40px;
+  margin-bottom:20px;
+}
+
+/* jarak setelah info total */
+.total-wrapper{
+  margin-bottom:26px;
+}
+
+/* jarak antar Pending / Proses / Selesai */
+[id^="section"]{
+  margin-bottom:38px;
+}
+
+/* jarak grid ke section lain */
+.grid-wrapper{
+  margin-top:14px;
+  margin-bottom:28px;
+}
 
 
 
@@ -899,154 +1087,66 @@ body {
   "></span>
 </h2>
 
-<!-- Info Total -->
-<div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
-  <div style="
-      flex:1; min-width:120px; 
-      background: rgba(255,82,82,0.25); /* merah transparan */
-      border: 2px solid rgba(255,82,82,0.6); /* outline merah */
-      padding:6px 10px; border-radius:8px; 
-      text-align:center; color:#000; font-weight:500;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-    Total Order<br><strong id="countBapro">0</strong>
+<!-- ================= INFO TOTAL ================= -->
+<div class="total-wrapper">
+
+  <!-- TOTAL ORDER (TIDAK INTERAKTIF) -->
+  <div class="total-box">
+    Total Order<br>
+    <strong id="countBapro">0</strong>
   </div>
 
-  <div style="
-      flex:1; min-width:120px; 
-      background: rgba(255,82,82,0.25); /* merah transparan */
-      border: 2px solid rgba(255,82,82,0.6); /* outline merah */
-      padding:6px 10px; border-radius:8px; 
-      text-align:center; color:#000; font-weight:500;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-    Total Pending<br><strong id="countTOBapro">0</strong>
-  </div>
+  <!-- TOTAL PENDING (KLIK = TOGGLE PENDING) -->
+  <label class="total-box clickable" for="toggleBaproTO">
+    Total Pending<br>
+    <strong id="countTOBapro">0</strong>
+  </label>
 
-  <div style="
-      flex:1; min-width:120px; 
-      background: rgba(255,82,82,0.25); /* merah transparan */
-      border: 2px solid rgba(255,82,82,0.6); /* outline merah */
-      padding:6px 10px; border-radius:8px; 
-      text-align:center; color:#000; font-weight:500;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-    Total Proses<br><strong id="countProsesBapro">0</strong>
-  </div>
+  <!-- TOTAL PROSES (KLIK = TOGGLE PROSES) -->
+  <label class="total-box clickable" for="toggleBaproProses">
+    Total Proses<br>
+    <strong id="countProsesBapro">0</strong>
+  </label>
 
-  <div style="
-      flex:1; min-width:120px; 
-      background: rgba(255,82,82,0.25); /* merah transparan */
-      border: 2px solid rgba(255,82,82,0.6); /* outline merah */
-      padding:6px 10px; border-radius:8px; 
-      text-align:center; color:#000; font-weight:500;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-    Total Selesai<br><strong id="countSelesaiBapro">0</strong>
-  </div>
+  <!-- TOTAL SELESAI (KLIK = TOGGLE SELESAI) -->
+  <label class="total-box clickable" for="toggleBaproSelesai">
+    Total Selesai<br>
+    <strong id="countSelesaiBapro">0</strong>
+  </label>
+
 </div>
 
-<!-- ========== TO ========== -->
-<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
-  <h4 style="
-    margin:0; 
-    color:#000; 
-    background: linear-gradient(to right, #FF5252, #FF1744); 
-    padding:4px 10px; border-radius:6px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    position: relative;
-    overflow: hidden;
-  ">
-    Pending
-    <span style="
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 50%;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
-      border-radius:6px 6px 0 0;
-      pointer-events: none;
-    "></span>
-  </h4>
-  <button id="toggleBaproTO" class="toggle-btn">Show</button>
-</div>
+<!-- ================= PENDING ================= -->
+<button id="toggleBaproTO" class="toggle-btn hidden-toggle">Show</button>
 
 <div id="sectionBaproTO" style="display:none;">
   <input id="filterTOBapro" type="text" placeholder="🔍 Pencarian" class="filter-input">
-
-  <!-- WRAPPER SCROLL -->
   <div class="grid-wrapper">
     <div id="dashboardBaproTO" class="grid-container"></div>
   </div>
 </div>
 
-<!-- ========== PROSES ========== -->
-<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
-  <h4 style="
-    margin:0; 
-    color:#000; 
-    background: linear-gradient(to right, #FF6F61, #FF3B30); 
-    padding:4px 10px; border-radius:6px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    position: relative;
-    overflow: hidden;
-  ">
-    Proses
-    <span style="
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 50%;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
-      border-radius:6px 6px 0 0;
-      pointer-events: none;
-    "></span>
-  </h4>
-  <button id="toggleBaproProses" class="toggle-btn">Show</button>
-</div>
+<!-- ================= PROSES ================= -->
+<button id="toggleBaproProses" class="toggle-btn hidden-toggle">Show</button>
 
 <div id="sectionBaproProses" style="display:none;">
   <input id="filterProsesBapro" type="text" placeholder="🔍 Pencarian" class="filter-input">
-
-  <!-- WRAPPER SCROLL -->
   <div class="grid-wrapper">
     <div id="dashboardBaproProses" class="grid-container"></div>
   </div>
 </div>
 
-<!-- ========== SELESAI ========== -->
-<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
-  <h4 style="
-    margin:0; 
-    color:#000; 
-    background: linear-gradient(to right, #FF7F7F, #FF4444); 
-    padding:4px 10px; border-radius:6px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    position: relative;
-    overflow: hidden;
-  ">
-    Selesai
-    <span style="
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 50%;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
-      border-radius:6px 6px 0 0;
-      pointer-events: none;
-    "></span>
-  </h4>
-  <button id="toggleBaproSelesai" class="toggle-btn">Show</button>
-</div>
+<!-- ================= SELESAI ================= -->
+<button id="toggleBaproSelesai" class="toggle-btn hidden-toggle">Show</button>
 
 <div id="sectionBaproSelesai" style="display:none;">
   <input id="filterSelesaiBapro" type="text" placeholder="🔍 Pencarian" class="filter-input">
-
-  <!-- WRAPPER SCROLL -->
   <div class="grid-wrapper">
     <div id="dashboardBaproSelesai" class="grid-container"></div>
   </div>
 </div>
 
-<!-- Modal Detail -->
+<!-- ================= MODAL DETAIL ================= -->
 <div id="detailBaproModal" class="modal-fin">
   <div class="modal-fin-content">
     <div class="modal-fin-header">
@@ -1060,314 +1160,143 @@ body {
   </div>
 </div>
 
-<style>
 
-/* ========== Tombol Show/Hide Abu-abu Elegan ========== */
-.toggle-btn {
-  padding: 2px 6px;
-  font-size: 0.8rem;
-  height: 32px;
-  background: linear-gradient(to bottom, #f0f0f0, #bdbdbd);
-  color: #000;
-  border: 1px solid #000;
-  border-radius: 4px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-  cursor: pointer;
-  transition: transform 0.2s, background 0.2s;
-}
-.toggle-btn:hover {
-  background: linear-gradient(to bottom, #ffffff, #cfcfcf);
-  transform: translateY(-2px);
-}
 
-</style>
+
 
 
 
 <!-- ======================== QC CETAK ======================== -->
-<h2 style="
-  text-align:center; 
-  color:#000; 
-  background: linear-gradient(to right, #FF9800, #FFB74D); 
-  font-size:1.2rem; 
-  padding:6px 12px; 
-  border-radius:8px; 
-  margin-bottom:12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  position: relative;
-  overflow: hidden;
-">
-  QC CETAK
-  <span style="
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 50%;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
-    border-radius: 8px 8px 0 0;
-    pointer-events: none;
-  "></span>
-</h2>
+<h2 class="qc-title">QC CETAK</h2>
 
-<!-- Info Total -->
-<div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
-  <div style="
-      flex:1; min-width:120px; 
-      background: rgba(255,152,0,0.25); /* oranye transparan */
-      border: 2px solid rgba(255,152,0,0.6); /* outline oranye */
-      padding:6px 10px; border-radius:8px; 
-      text-align:center; color:#000; font-weight:500;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-    Total Order<br><strong id="countPA">0</strong>
+<!-- ================= INFO TOTAL (CLICKABLE) ================= -->
+<div class="total-wrapper">
+
+  <div class="total-box">
+    Total Order<br>
+    <strong id="countPA">0</strong>
   </div>
 
-  <div style="
-      flex:1; min-width:120px; 
-      background: rgba(255,152,0,0.25); /* oranye transparan */
-      border: 2px solid rgba(255,152,0,0.6); /* outline oranye */
-      padding:6px 10px; border-radius:8px; 
-      text-align:center; color:#000; font-weight:500;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-    Total Pending<br><strong id="countTOPA">0</strong>
+  <div class="total-box total-click"
+       onclick="document.getElementById('togglePATO').click()">
+    Total Pending<br>
+    <strong id="countTOPA">0</strong>
   </div>
 
-  <div style="
-      flex:1; min-width:120px; 
-      background: rgba(255,152,0,0.25); /* oranye transparan */
-      border: 2px solid rgba(255,152,0,0.6); /* outline oranye */
-      padding:6px 10px; border-radius:8px; 
-      text-align:center; color:#000; font-weight:500;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-    Total Proses<br><strong id="countProsesPA">0</strong>
+  <div class="total-box total-click"
+       onclick="document.getElementById('togglePAProses').click()">
+    Total Proses<br>
+    <strong id="countProsesPA">0</strong>
   </div>
 
-  <div style="
-      flex:1; min-width:120px; 
-      background: rgba(255,152,0,0.25); /* oranye transparan */
-      border: 2px solid rgba(255,152,0,0.6); /* outline oranye */
-      padding:6px 10px; border-radius:8px; 
-      text-align:center; color:#000; font-weight:500;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-    Total Selesai<br><strong id="countSelesaiPA">0</strong>
+  <div class="total-box total-click"
+       onclick="document.getElementById('togglePASelesai').click()">
+    Total Selesai<br>
+    <strong id="countSelesaiPA">0</strong>
   </div>
+
 </div>
 
-<!-- ========== TO ========== -->
-<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
-  <h4 style="
-    margin:0; 
-    color:#000; 
-    background: linear-gradient(to right, #FFB74D, #FF9800); 
-    padding:4px 10px; border-radius:6px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    position: relative;
-    overflow: hidden;
-  ">
-    Pending
-    <span style="
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 50%;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
-      border-radius:6px 6px 0 0;
-      pointer-events: none;
-    "></span>
-  </h4>
-  <button id="togglePATO" class="toggle-btn">Show</button>
-</div>
-
+<!-- ================= PENDING ================= -->
+<button id="togglePATO" class="toggle-btn hidden-toggle">Show</button>
 <div id="sectionPATO" style="display:none;">
-  <input id="filterPATO" type="text" placeholder="🔍 Pencarian" class="filter-input">
-
+  <input id="filterPATO" class="filter-input" placeholder="🔍 Pencarian">
   <div class="grid-wrapper">
     <div id="dashboardPATO" class="grid-container"></div>
   </div>
 </div>
 
-<!-- ========== PROSES ========== -->
-<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
-  <h4 style="
-    margin:0; 
-    color:#000; 
-    background: linear-gradient(to right, #FFB266, #FF9933); 
-    padding:4px 10px; border-radius:6px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    position: relative;
-    overflow: hidden;
-  ">
-    Proses
-    <span style="
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 50%;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
-      border-radius:6px 6px 0 0;
-      pointer-events: none;
-    "></span>
-  </h4>
-  <button id="togglePAProses" class="toggle-btn">Show</button>
-</div>
-
+<!-- ================= PROSES ================= -->
+<button id="togglePAProses" class="toggle-btn hidden-toggle">Show</button>
 <div id="sectionPAProses" style="display:none;">
-  <input id="filterPAProses" type="text" placeholder="🔍 Pencarian" class="filter-input">
-
+  <input id="filterPAProses" class="filter-input" placeholder="🔍 Pencarian">
   <div class="grid-wrapper">
     <div id="dashboardPAProses" class="grid-container"></div>
   </div>
 </div>
 
-<!-- ========== SELESAI ========== -->
-<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
-  <h4 style="
-    margin:0; 
-    color:#000; 
-    background: linear-gradient(to right, #FFD090, #FFB266); 
-    padding:4px 10px; border-radius:6px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    position: relative;
-    overflow: hidden;
-  ">
-    Selesai
-    <span style="
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 50%;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
-      border-radius:6px 6px 0 0;
-      pointer-events: none;
-    "></span>
-  </h4>
-  <button id="togglePASelesai" class="toggle-btn">Show</button>
-</div>
-
+<!-- ================= SELESAI ================= -->
+<button id="togglePASelesai" class="toggle-btn hidden-toggle">Show</button>
 <div id="sectionPASelesai" style="display:none;">
-  <input id="filterPASelesai" type="text" placeholder="🔍 Pencarian" class="filter-input">
-
+  <input id="filterPASelesai" class="filter-input" placeholder="🔍 Pencarian">
   <div class="grid-wrapper">
     <div id="dashboardPASelesai" class="grid-container"></div>
   </div>
 </div>
 
-<!-- ====================== MODAL DETAIL QC CETAK ====================== -->
-<div id="detailCetakModal" class="modal-fin" style="display:none;">
+<!-- ================= MODAL DETAIL ================= -->
+<div id="detailCetakModal" class="modal-fin">
   <div class="modal-fin-content">
     <div class="modal-fin-header">
-      <span class="modal-fin-title">Detail QC Cetak</span>
-      <button class="modal-fin-close" onclick="closeDetailModalCetak()">×</button>
+      <span>Detail QC Cetak</span>
+      <button onclick="closeDetailModalCetak()">×</button>
     </div>
 
     <div class="modal-fin-body" id="detailCetakBody"></div>
 
     <div class="modal-fin-footer">
-      <button 
-        class="modal-fin-btn"
-        id="openReportFromDetailBtn"
-        style="background:#25D366;color:#fff;"
-
-      >
-        📄 Report
-      </button>
-
-      <button class="modal-fin-btn" onclick="closeDetailModalCetak()">Tutup</button>
+      <button id="openReportFromDetailBtn" class="btn-report">📄 Report</button>
+      <button onclick="closeDetailModalCetak()">Tutup</button>
     </div>
   </div>
 </div>
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
-// =======================================================
-// DETAIL QC CETAK → REPORT QC (PAKAI SISTEM MENU ASLI)
-// =======================================================
-document.addEventListener("DOMContentLoaded", () => {
+// ================== BUKA DETAIL ==================
+function showDetailModalCetak(item){
+  const body = document.getElementById("detailCetakBody");
 
-  const reportBtn = document.getElementById("openReportFromDetailBtn");
-  if (!reportBtn) return;
+  body.innerHTML = `
+    <strong>No KS:</strong> ${item.noKS}<br>
+    <strong>Nama:</strong> ${item.nama}<br>
+    <strong>Tanggal:</strong> ${item.tanggal || '-'}<br>
+    <strong>Status:</strong> ${item.status}
+  `;
 
-  reportBtn.addEventListener("click", () => {
+  document.getElementById("detailCetakModal").classList.add("show");
+}
 
-    // ===============================
-    // 1️⃣ AMBIL NO KS DARI DETAIL
-    // ===============================
-    const detailBody = document.getElementById("detailCetakBody");
-    const text = detailBody?.innerText || "";
-    const match = text.match(/KS-\d{4}-\d+/i);
+function closeDetailModalCetak(){
+  document.getElementById("detailCetakModal").classList.remove("show");
+}
 
-    if (!match) {
-      alert("Tidak Ada Data Register");
-      return;
-    }
+/* ===================================================
+   CONTOH RENDER GRID (WAJIB ADA onclick DI CARD)
+   =================================================== */
+function renderCetakGrid(data, containerId){
+  const el = document.getElementById(containerId);
+  el.innerHTML = "";
 
-    const noKS = match[0];
-
-    // ===============================
-    // 2️⃣ PINDAH MENU KE REPORT (INI KUNCI)
-    // ===============================
-    if (typeof showMenu === "function") {
-      showMenu("reportSection"); // 🔥 SAMA SEPERTI KLIK MENU REPORT
-    } else {
-      console.warn("showMenu() tidak ditemukan");
-    }
-
-    // ===============================
-    // 3️⃣ ISI INPUT & FILTER REPORT
-    // ===============================
-    setTimeout(() => {
-      const reportInput = document.getElementById("reportSearchID");
-      if (!reportInput) return;
-
-      reportInput.value = noKS;
-
-      if (typeof searchReportByID === "function") {
-        searchReportByID();
-      }
-
-      reportInput.focus();
-      reportInput.select();
-    }, 150); // tunggu menu selesai render
-
-    // ===============================
-    // 4️⃣ TUTUP MODAL DETAIL
-    // ===============================
-    closeDetailModalCetak();
-
+  data.forEach(item=>{
+    const card = document.createElement("div");
+    card.className = "grid-card";
+    card.innerHTML = `
+      <strong>${item.noKS}</strong><br>
+      ${item.nama}
+    `;
+    card.onclick = ()=>showDetailModalCetak(item);
+    el.appendChild(card);
   });
-
-});
+}
 </script>
-
-
-
-
-
-<style>
-
-/* Tombol Show/Hide */
-.toggle-btn {
-  padding: 2px 6px;
-  font-size: 0.8rem;
-  height: 32px;
-  background: linear-gradient(to bottom, #f0f0f0, #bdbdbd);
-  color: #000;
-  border: 1px solid #000;
-  border-radius: 4px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-  cursor: pointer;
-  transition: transform 0.2s, background 0.2s;
-}
-.toggle-btn:hover {
-  background: linear-gradient(to bottom, #ffffff, #cfcfcf);
-  transform: translateY(-2px);
-}
-
-</style>
-
 
 
 
@@ -1375,572 +1304,214 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 <!-- ======================== QC LEM ======================== -->
-<h2 style="
-  text-align:center; 
-  color:#000; 
-  background: linear-gradient(to right, #9C27B0, #BA68C8); 
-  font-size:1.2rem; 
-  padding:6px 12px; 
-  border-radius:8px; 
-  margin-bottom:12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  position: relative;
-  overflow: hidden;
-">
-  QC LEM
-  <span style="
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 50%;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
-    border-radius: 8px 8px 0 0;
-    pointer-events: none;
-  "></span>
-</h2>
+<h2 class="qc-title qc-lem">QC LEM</h2>
 
-<!-- Info Total -->
-<div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
-  <div style="
-      flex:1; min-width:120px; 
-      background: rgba(156,39,176,0.25); /* ungu transparan */
-      border: 2px solid rgba(156,39,176,0.6); /* outline ungu */
-      padding:6px 10px; border-radius:8px; 
-      text-align:center; color:#000; font-weight:500;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-    Total Order<br><strong id="countLem">0</strong>
+<!-- ================= INFO TOTAL ================= -->
+<div class="total-wrapper">
+
+  <div class="total-box lem">
+    Total Order<br>
+    <strong id="countLem">0</strong>
   </div>
 
-  <div style="
-      flex:1; min-width:120px; 
-      background: rgba(156,39,176,0.25); /* ungu transparan */
-      border: 2px solid rgba(156,39,176,0.6); /* outline ungu */
-      padding:6px 10px; border-radius:8px; 
-      text-align:center; color:#000; font-weight:500;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-    Total Pending<br><strong id="countTOLem">0</strong>
+  <div class="total-box lem total-click"
+       onclick="document.getElementById('toggleLemTO').click()">
+    Total Pending<br>
+    <strong id="countTOLem">0</strong>
   </div>
 
-  <div style="
-      flex:1; min-width:120px; 
-      background: rgba(156,39,176,0.25); /* ungu transparan */
-      border: 2px solid rgba(156,39,176,0.6); /* outline ungu */
-      padding:6px 10px; border-radius:8px; 
-      text-align:center; color:#000; font-weight:500;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-    Total Proses<br><strong id="countProsesLem">0</strong>
+  <div class="total-box lem total-click"
+       onclick="document.getElementById('toggleLemProses').click()">
+    Total Proses<br>
+    <strong id="countProsesLem">0</strong>
   </div>
 
-  <div style="
-      flex:1; min-width:120px; 
-      background: rgba(156,39,176,0.25); /* ungu transparan */
-      border: 2px solid rgba(156,39,176,0.6); /* outline ungu */
-      padding:6px 10px; border-radius:8px; 
-      text-align:center; color:#000; font-weight:500;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-    Total Selesai<br><strong id="countSelesaiLem">0</strong>
+  <div class="total-box lem total-click"
+       onclick="document.getElementById('toggleLemSelesai').click()">
+    Total Selesai<br>
+    <strong id="countSelesaiLem">0</strong>
   </div>
+
 </div>
 
-<!-- ========== TO ========== -->
-<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
-  <h4 style="
-    margin:0; 
-    color:#000; 
-    background: linear-gradient(to right, #C084FC, #9C27B0); 
-    padding:4px 10px; border-radius:6px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    position: relative;
-    overflow: hidden;
-  ">
-    Pending
-    <span style="
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 50%;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
-      border-radius:6px 6px 0 0;
-      pointer-events: none;
-    "></span>
-  </h4>
-  <button id="toggleLemTO" class="toggle-btn">Show</button>
-</div>
-
+<!-- ================= PENDING ================= -->
+<button id="toggleLemTO" class="toggle-btn hidden-toggle">Show</button>
 <div id="sectionLemTO" style="display:none;">
-  <input id="filterTOLem" type="text" placeholder="🔍 Pencarian" class="filter-input">
-
+  <input id="filterTOLem" class="filter-input" placeholder="🔍 Pencarian">
   <div class="grid-wrapper">
     <div id="dashboardLemTO" class="grid-container"></div>
   </div>
 </div>
 
-<!-- ========== PROSES ========== -->
-<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
-  <h4 style="
-    margin:0; 
-    color:#000; 
-    background: linear-gradient(to right, #D8B4FE, #9C27B0); 
-    padding:4px 10px; border-radius:6px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    position: relative;
-    overflow: hidden;
-  ">
-    Proses
-    <span style="
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 50%;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
-      border-radius:6px 6px 0 0;
-      pointer-events: none;
-    "></span>
-  </h4>
-  <button id="toggleLemProses" class="toggle-btn">Show</button>
-</div>
-
+<!-- ================= PROSES ================= -->
+<button id="toggleLemProses" class="toggle-btn hidden-toggle">Show</button>
 <div id="sectionLemProses" style="display:none;">
-  <input id="filterProsesLem" type="text" placeholder="🔍 Pencarian" class="filter-input">
-
+  <input id="filterProsesLem" class="filter-input" placeholder="🔍 Pencarian">
   <div class="grid-wrapper">
     <div id="dashboardLemProses" class="grid-container"></div>
   </div>
 </div>
 
-<!-- ========== SELESAI ========== -->
-<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
-  <h4 style="
-    margin:0; 
-    color:#000; 
-    background: linear-gradient(to right, #E9D5FF, #BA68C8); 
-    padding:4px 10px; border-radius:6px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    position: relative;
-    overflow: hidden;
-  ">
-    Selesai
-    <span style="
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 50%;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
-      border-radius:6px 6px 0 0;
-      pointer-events: none;
-    "></span>
-  </h4>
-  <button id="toggleLemSelesai" class="toggle-btn">Show</button>
-</div>
-
+<!-- ================= SELESAI ================= -->
+<button id="toggleLemSelesai" class="toggle-btn hidden-toggle">Show</button>
 <div id="sectionLemSelesai" style="display:none;">
-  <input id="filterSelesaiLem" type="text" placeholder="🔍 Pencarian" class="filter-input">
-
+  <input id="filterSelesaiLem" class="filter-input" placeholder="🔍 Pencarian">
   <div class="grid-wrapper">
     <div id="dashboardLemSelesai" class="grid-container"></div>
   </div>
 </div>
 
-<!-- ====================== MODAL DETAIL QC LEM ====================== -->
-<div id="detailLemModal" class="modal-fin" style="display:none;">
+<!-- ================= MODAL DETAIL ================= -->
+<div id="detailLemModal" class="modal-fin">
   <div class="modal-fin-content">
     <div class="modal-fin-header">
-      <span class="modal-fin-title">Detail QC Lem</span>
-      <button class="modal-fin-close" onclick="closeDetailModalLem()">×</button>
+      <span>Detail QC Lem</span>
+      <button onclick="closeDetailModalLem()">×</button>
     </div>
 
     <div class="modal-fin-body" id="detailLemBody"></div>
 
     <div class="modal-fin-footer">
-      <button 
-        class="modal-fin-btn"
-        id="openReportFromDetailLemBtn"
-        style="background:#25D366;color:#fff;"
-      >
-        📄 Report
-      </button>
-
-      <button class="modal-fin-btn" onclick="closeDetailModalLem()">Tutup</button>
+      <button id="openReportFromDetailLemBtn" class="btn-report">📄 Report</button>
+      <button onclick="closeDetailModalLem()">Tutup</button>
     </div>
   </div>
 </div>
 
 
+
+
+
+
 <script>
-// =======================================================
-// DETAIL QC LEM → REPORT QC (PAKAI SISTEM MENU ASLI)
-// =======================================================
-document.addEventListener("DOMContentLoaded", () => {
+// ================== BUKA DETAIL ==================
+function showDetailModalLem(item){
+  const body = document.getElementById("detailLemBody");
 
-  const reportBtn = document.getElementById("openReportFromDetailLemBtn");
-  if (!reportBtn) return;
+  body.innerHTML = `
+    <strong>No KS:</strong> ${item.noKS}<br>
+    <strong>Nama:</strong> ${item.nama}<br>
+    <strong>Status:</strong> ${item.status || '-'}
+  `;
 
-  reportBtn.addEventListener("click", () => {
+  document.getElementById("detailLemModal").classList.add("show");
+}
 
-    // ===============================
-    // 1️⃣ AMBIL NO KS DARI DETAIL LEM
-    // ===============================
-    const detailBody = document.getElementById("detailLemBody");
-    const text = detailBody?.innerText || "";
-    const match = text.match(/KS-\d{4}-\d+/i);
-
-    if (!match) {
-      alert("Tidak Ada Data Register");
-      return;
-    }
-
-    const noKS = match[0];
-
-    // ===============================
-    // 2️⃣ PINDAH MENU KE REPORT
-    // ===============================
-    if (typeof showMenu === "function") {
-      showMenu("reportSection");
-    } else {
-      console.warn("showMenu() tidak ditemukan");
-    }
-
-    // ===============================
-    // 3️⃣ ISI INPUT & FILTER REPORT
-    // ===============================
-    setTimeout(() => {
-      const reportInput = document.getElementById("reportSearchID");
-      if (!reportInput) return;
-
-      reportInput.value = noKS;
-
-      if (typeof searchReportByID === "function") {
-        searchReportByID();
-      }
-
-      reportInput.focus();
-      reportInput.select();
-    }, 150);
-
-    // ===============================
-    // 4️⃣ TUTUP MODAL DETAIL LEM
-    // ===============================
-    closeDetailModalLem();
-
-  });
-
-});
+// ================== TUTUP DETAIL ==================
+function closeDetailModalLem(){
+  document.getElementById("detailLemModal").classList.remove("show");
+}
 </script>
-
-
-<style>
-
-.toggle-btn {
-  padding: 2px 6px;
-  font-size: 0.8rem;
-  height: 32px;
-  background: linear-gradient(to bottom, #f0f0f0, #bdbdbd) !important;
-  color: #000 !important;
-  border: 1px solid #000 !important;
-  border-radius: 4px !important;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.25) !important;
-  cursor: pointer;
-  transition: transform 0.2s, background 0.2s !important;
-}
-.toggle-btn:hover {
-  background: linear-gradient(to bottom, #ffffff, #d6d6d6) !important;
-  transform: translateY(-2px);
-}
-
-</style>
-
 
 
 
 
 
 <!-- ======================== QC FINISHING ======================== -->
-<h2 style="
-  text-align:center; 
-  color:#000; 
-  background: linear-gradient(to right, #22C55E, #4ADE80); 
-  font-size:1.2rem; 
-  padding:6px 12px; 
-  border-radius:8px; 
-  margin-bottom:12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  position: relative;
-  overflow: hidden;
-">
-  QC FINISHING
-  <span style="
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 50%;
-    background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
-    border-radius: 8px 8px 0 0;
-    pointer-events: none;
-  "></span>
-</h2>
+<h2 class="qc-title qc-finishing">QC FINISHING</h2>
 
-<!-- Info Total -->
-<div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; justify-content:center;">
-  <div style="
-      flex:1; min-width:120px; 
-      background: rgba(34,197,94,0.25); /* hijau transparan */
-      border: 2px solid rgba(34,197,94,0.6); /* outline hijau */
-      padding:6px 10px; border-radius:8px; 
-      text-align:center; color:#000; font-weight:500;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-    Total Order<br><strong id="countFinishing">0</strong>
+<!-- ================= INFO TOTAL ================= -->
+<div class="total-wrapper">
+
+  <div class="total-box finishing">
+    Total Order<br>
+    <strong id="countFinishing">0</strong>
   </div>
 
-  <div style="
-      flex:1; min-width:120px; 
-      background: rgba(34,197,94,0.25); /* hijau transparan */
-      border: 2px solid rgba(34,197,94,0.6); /* outline hijau */
-      padding:6px 10px; border-radius:8px; 
-      text-align:center; color:#000; font-weight:500;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-    Total Pending<br><strong id="countTOFinishing">0</strong>
+  <div class="total-box finishing total-click"
+       onclick="document.getElementById('toggleFinishingTO').click()">
+    Total Pending<br>
+    <strong id="countTOFinishing">0</strong>
   </div>
 
-  <div style="
-      flex:1; min-width:120px; 
-      background: rgba(34,197,94,0.25); /* hijau transparan */
-      border: 2px solid rgba(34,197,94,0.6); /* outline hijau */
-      padding:6px 10px; border-radius:8px; 
-      text-align:center; color:#000; font-weight:500;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-    Total Proses<br><strong id="countProsesFinishing">0</strong>
+  <div class="total-box finishing total-click"
+       onclick="document.getElementById('toggleFinishingProses').click()">
+    Total Proses<br>
+    <strong id="countProsesFinishing">0</strong>
   </div>
 
-  <div style="
-      flex:1; min-width:120px; 
-      background: rgba(34,197,94,0.25); /* hijau transparan */
-      border: 2px solid rgba(34,197,94,0.6); /* outline hijau */
-      padding:6px 10px; border-radius:8px; 
-      text-align:center; color:#000; font-weight:500;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
-  " onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
-    Total Selesai<br><strong id="countSelesaiFinishing">0</strong>
+  <div class="total-box finishing total-click"
+       onclick="document.getElementById('toggleFinishingSelesai').click()">
+    Total Selesai<br>
+    <strong id="countSelesaiFinishing">0</strong>
   </div>
+
 </div>
 
-<!-- ========== TO ========== -->
-<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
-  <h4 style="
-    margin:0; 
-    color:#000; 
-    background: linear-gradient(to right, #4ADE80, #22C55E); 
-    padding:4px 10px; border-radius:6px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    position: relative;
-    overflow: hidden;
-  ">
-    Pending
-    <span style="
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 50%;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
-      border-radius:6px 6px 0 0;
-      pointer-events: none;
-    "></span>
-  </h4>
-  <button id="toggleFinishingTO" class="toggle-btn">Show</button>
-</div>
-
+<!-- ================= PENDING ================= -->
+<button id="toggleFinishingTO" class="toggle-btn hidden-toggle">Show</button>
 <div id="sectionFinishingTO" style="display:none;">
-  <input id="filterFinishingTO" type="text" placeholder="🔍 Pencarian" class="filter-input">
-
-  <!-- WRAPPER SCROLL (ditambahkan) -->
+  <input id="filterFinishingTO" class="filter-input" placeholder="🔍 Pencarian">
   <div class="grid-wrapper">
     <div id="dashboardFinishingTO" class="grid-container"></div>
   </div>
 </div>
 
-<!-- ========== PROSES ========== -->
-<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
-  <h4 style="
-    margin:0; 
-    color:#000; 
-    background: linear-gradient(to right, #38D39F, #22C55E); 
-    padding:4px 10px; border-radius:6px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    position: relative;
-    overflow: hidden;
-  ">
-    Proses
-    <span style="
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 50%;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
-      border-radius:6px 6px 0 0;
-      pointer-events: none;
-    "></span>
-  </h4>
-  <button id="toggleFinishingProses" class="toggle-btn">Show</button>
-</div>
-
+<!-- ================= PROSES ================= -->
+<button id="toggleFinishingProses" class="toggle-btn hidden-toggle">Show</button>
 <div id="sectionFinishingProses" style="display:none;">
-  <input id="filterFinishingProses" type="text" placeholder="🔍 Pencarian" class="filter-input">
-
-  <!-- WRAPPER SCROLL -->
+  <input id="filterFinishingProses" class="filter-input" placeholder="🔍 Pencarian">
   <div class="grid-wrapper">
     <div id="dashboardFinishingProses" class="grid-container"></div>
   </div>
 </div>
 
-<!-- ========== SELESAI ========== -->
-<div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px;">
-  <h4 style="
-    margin:0; 
-    color:#000; 
-    background: linear-gradient(to right, #6EE7B7, #22C55E); 
-    padding:4px 10px; border-radius:6px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.25);
-    position: relative;
-    overflow: hidden;
-  ">
-    Selesai
-    <span style="
-      position: absolute;
-      top: 0; left: 0; width: 100%; height: 50%;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
-      border-radius:6px 6px 0 0;
-      pointer-events: none;
-    "></span>
-  </h4>
-  <button id="toggleFinishingSelesai" class="toggle-btn">Show</button>
-</div>
-
+<!-- ================= SELESAI ================= -->
+<button id="toggleFinishingSelesai" class="toggle-btn hidden-toggle">Show</button>
 <div id="sectionFinishingSelesai" style="display:none;">
-  <input id="filterFinishingSelesai" type="text" placeholder="🔍 Pencarian" class="filter-input">
-
-  <!-- WRAPPER SCROLL -->
+  <input id="filterFinishingSelesai" class="filter-input" placeholder="🔍 Pencarian">
   <div class="grid-wrapper">
     <div id="dashboardFinishingSelesai" class="grid-container"></div>
   </div>
 </div>
 
-<!-- ====================== MODAL DETAIL QC FINISHING ====================== -->
-<div id="detailFinishingModal" class="modal-fin" style="display:none;">
+<!-- ================= MODAL DETAIL ================= -->
+<div id="detailFinishingModal" class="modal-fin">
   <div class="modal-fin-content">
     <div class="modal-fin-header">
-      <span class="modal-fin-title">Detail QC Finishing</span>
-      <button class="modal-fin-close" onclick="closeDetailModalFinishing()">×</button>
+      <span>Detail QC Finishing</span>
+      <button onclick="closeDetailModalFinishing()">×</button>
     </div>
 
-    <div class="modal-fin-body" id="detailFinishingBody">
-      <!-- data diisi otomatis -->
-    </div>
+    <div class="modal-fin-body" id="detailFinishingBody"></div>
 
     <div class="modal-fin-footer">
-      <button 
-        class="modal-fin-btn"
-        id="openReportFromDetailFinishingBtn"
-        style="background:#25D366;color:#fff;"
-      >
-        📄 Report
-      </button>
-
-      <button class="modal-fin-btn" onclick="closeDetailModalFinishing()">Tutup</button>
+      <button id="openReportFromDetailFinishingBtn" class="btn-report">📄 Report</button>
+      <button onclick="closeDetailModalFinishing()">Tutup</button>
     </div>
   </div>
 </div>
 
 
+
+
+
+
+
+
 <script>
-// =======================================================
-// DETAIL QC FINISHING → REPORT QC (PAKAI SISTEM MENU ASLI)
-// =======================================================
-document.addEventListener("DOMContentLoaded", () => {
+// ================== BUKA DETAIL ==================
+function showDetailModalFinishing(item){
+  const body = document.getElementById("detailFinishingBody");
 
-  const reportBtn = document.getElementById("openReportFromDetailFinishingBtn");
-  if (!reportBtn) return;
+  body.innerHTML = `
+    <strong>No KS:</strong> ${item.noKS}<br>
+    <strong>Nama:</strong> ${item.nama}<br>
+    <strong>Status:</strong> ${item.status || '-'}
+  `;
 
-  reportBtn.addEventListener("click", () => {
+  document.getElementById("detailFinishingModal").classList.add("show");
+}
 
-    // ===============================
-    // 1️⃣ AMBIL NO KS DARI DETAIL FINISHING
-    // ===============================
-    const detailBody = document.getElementById("detailFinishingBody");
-    const text = detailBody?.innerText || "";
-    const match = text.match(/KS-\d{4}-\d+/i);
-
-    if (!match) {
-      alert("Tidak Ada Data Register");
-      return;
-    }
-
-    const noKS = match[0];
-
-    // ===============================
-    // 2️⃣ PINDAH MENU KE REPORT
-    // ===============================
-    if (typeof showMenu === "function") {
-      showMenu("reportSection"); // sama seperti klik menu REPORT
-    } else {
-      console.warn("showMenu() tidak ditemukan");
-    }
-
-    // ===============================
-    // 3️⃣ ISI INPUT & FILTER REPORT
-    // ===============================
-    setTimeout(() => {
-      const reportInput = document.getElementById("reportSearchID");
-      if (!reportInput) return;
-
-      reportInput.value = noKS;
-
-      if (typeof searchReportByID === "function") {
-        searchReportByID();
-      }
-
-      reportInput.focus();
-      reportInput.select();
-    }, 150);
-
-    // ===============================
-    // 4️⃣ TUTUP MODAL DETAIL FINISHING
-    // ===============================
-    closeDetailModalFinishing();
-
-  });
-
-});
+// ================== TUTUP DETAIL ==================
+function closeDetailModalFinishing(){
+  document.getElementById("detailFinishingModal").classList.remove("show");
+}
 </script>
 
 
-<style>
 
-/* Tombol Show/Hide */
-.toggle-btn {
-  padding: 2px 6px;
-  font-size: 0.8rem;
-  height: 32px;
-  background: linear-gradient(to bottom, #f0f0f0, #bdbdbd) !important;
-  color: #000 !important;
-  border: 1px solid #000 !important;
-  border-radius: 4px !important;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.25) !important;
-  cursor: pointer;
-  transition: transform 0.2s, background 0.2s !important;
-}
 
-.toggle-btn:hover {
-  background: linear-gradient(to bottom, #ffffff, #d6d6d6) !important;
-  transform: translateY(-2px);
-}
-
-</style>
 
 
 
