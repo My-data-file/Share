@@ -7858,40 +7858,6 @@ function editBaproInline(index){
   `;
 }
 
-// ====================== VALIDASI STATUS (BAPRO) ======================
-function checkStatusBapro(selectEl){
-  const card = selectEl.closest('.grid-card');
-  if(!card) return;
-
-  const inputs = card.querySelectorAll('.edit-inline');
-
-  // index sesuai urutan input di atas
-  const dmaxInput = inputs[6];
-  const lInput    = inputs[7];
-  const aInput    = inputs[8];
-  const bInput    = inputs[9];
-
-  const dmax = Number(dmaxInput.value || 0);
-  const l    = Number(lInput.value || 0);
-  const a    = Number(aInput.value || 0);
-  const b    = Number(bInput.value || 0);
-
-  if(
-    selectEl.value === "Selesai" &&
-    (dmax <= 1 || l <= 1 || a <= 1 || b <= 1)
-  ){
-    alert("Tolong isi Dmax, L, A, dan B");
-    selectEl.value = "Proses";
-
-    if(dmax <= 1) dmaxInput.focus();
-    else if(l <= 1) lInput.focus();
-    else if(a <= 1) aInput.focus();
-    else bInput.focus();
-  }
-}
-
-
-
 
 // ====================== BATAL EDIT INLINE (BAPRO) ======================
 function cancelBaproInline(index, oldHtmlEncoded) {
