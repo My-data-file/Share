@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+<base target="_top">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+
+body{
+  margin:0;
+  font-family:'Segoe UI',system-ui;
+  background:linear-gradient(135deg,#1e88e5,#1565c0);
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* ===== APP CONTAINER ===== */
+.app{
+  display:flex;
+  flex-direction:column;
+  height:100%;
+  backdrop-filter: blur(8px);
+}
+
+/* ===== HEADER ===== */
+header{
+  padding:16px;
+  color:white;
+  font-weight:600;
+  font-size:18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+header button{
+  background:rgba(255,255,255,.2);
+  border:none;
+  color:white;
+  padding:6px 12px;
+  border-radius:20px;
+  cursor:pointer;
+}
+
+/* ===== CHAT AREA ===== */
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:15px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+/* ===== MESSAGE BUBBLE ===== */
+.msg{
+  max-width:80%;
+  padding:12px 16px;
+  border-radius:20px;
+  font-size:14px;
+  line-height:1.5;
+  word-wrap:break-word;
+  animation:fadeIn .2s ease-in;
+}
+
+.user{
+  align-self:flex-end;
+  background:white;
+  color:#1565c0;
+  border-bottom-right-radius:6px;
+  box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+.bot{
+  align-self:flex-start;
+  background:rgba(255,255,255,.2);
+  color:white;
+  backdrop-filter:blur(10px);
+  border-bottom-left-radius:6px;
+}
+
+/* ===== INPUT AREA ===== */
+.input-area{
+  background:white;
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  border-top-left-radius:20px;
+  border-top-right-radius:20px;
+}
+
+select{
+  padding:10px;
+  border-radius:20px;
+  border:1px solid #ddd;
+  font-size:14px;
+}
+
+.input-row{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+
+input{
+  flex:1;
+  padding:12px;
+  border-radius:25px;
+  border:1px solid #ddd;
+  font-size:14px;
+}
+
+button.action{
+  padding:10px 16px;
+  border:none;
+  border-radius:25px;
+  font-weight:600;
+  cursor:pointer;
+  color:white;
+  transition:.2s;
+}
+
+.save-btn{background:#43a047;}
+.ask-btn{background:#1e88e5;}
+
+button.action:disabled{
+  opacity:.5;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(5px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* ===== MOBILE OPTIMIZATION ===== */
+@media(max-width:600px){
+  header{font-size:16px;}
+  .msg{font-size:13px;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+  AI Memory QC
+  <button onclick="clearChat()">Clear</button>
+</header>
+
+<div id="chat"></div>
+
+<div class="input-area">
+
+<select id="user">
+  <option value="none">-- Pilih User --</option>
+  <option value="QC-Bapro">QC-Bapro</option>
+  <option value="QC-Cetak">QC-Cetak</option>
+  <option value="QC-Finishing">QC-Finishing</option>
+  <option value="QC-Lem">QC-Lem</option>
+  <option value="QC-SPV">QC-SPV</option>
+  <option value="QC-Manager">QC-Manager</option>
+</select>
+
+<div class="input-row">
+  <input type="text" id="text" placeholder="Tulis pesan...">
+</div>
+
+<div class="input-row">
+  <button class="action save-btn" onclick="save()">Simpan</button>
+  <button class="action ask-btn" onclick="ask()">Tanya</button>
+</div>
+
+</div>
+
+</div>
+
+<script>
+const URL="https://script.google.com/macros/s/AKfycbxLRmShvpg8WiQyrPDubTNwYPz9eDE0Q4foTZpxOeQ8Vujui5Y38vaoBtG15tlV0TQmKw/exec";
+
+const chat=document.getElementById("chat");
+const textInput=document.getElementById("text");
+const userSelect=document.getElementById("user");
+
+let isLoading=false;
+
+/* RESTORE */
+window.onload=function(){
+  const savedChat=localStorage.getItem("chatHistory");
+  if(savedChat) chat.innerHTML=savedChat;
+  scrollBottom();
+};
+
+/* ENTER */
+textInput.addEventListener("keydown",function(e){
+  if(e.key==="Enter"){
+    e.preventDefault();
+    ask();
+  }
+});
+
+/* VALIDATION */
+function validate(text){
+  if(userSelect.value==="none"){alert("Pilih user dulu.");return false;}
+  if(!text.trim()){alert("Teks kosong.");return false;}
+  return true;
+}
+
+/* SAVE */
+function save(){
+  if(isLoading) return;
+  const text=textInput.value;
+  if(!validate(text)) return;
+
+  isLoading=true;
+  const loading=addMsg("Menyimpan...","bot");
+
+  fetch(URL,{
+    method:"POST",
+    body:JSON.stringify({type:"save",text:text,user:userSelect.value})
+  })
+  .then(res=>res.json())
+  .then(()=>{
+    loading.remove();
+    addMsg("✅ Disimpan","bot");
+    textInput.value="";
+  })
+  .catch(()=>{
+    loading.remove();
+    addMsg("❌ Gagal","bot");
+  })
+  .finally(()=>isLoading=false);
+}
+
+/* ASK */
+function ask(){
+  if(isLoading) return;
+  const text=textInput.value;
+  if(!validate(text)) return;
+
+  addMsg(userSelect.value+": "+text,"user");
+  textInput.value="";
+
+  isLoading=true;
+  const loading=addMsg("AI sedang berpikir...","bot");
+
+  fetch(URL,{
+    method:"POST",
+    body:JSON.stringify({type:"ask",text:text,user:userSelect.value})
+  })
+  .then(res=>res.json())
+  .then(data=>{
+    loading.remove();
+    addMsg(data.answer||"Tidak ada jawaban.","bot");
+  })
+  .catch(()=>{
+    loading.remove();
+    addMsg("❌ Server error","bot");
+  })
+  .finally(()=>isLoading=false);
+}
+
+/* UTIL */
+function addMsg(text,type){
+  const div=document.createElement("div");
+  div.className="msg "+type;
+  div.innerText=text;
+  chat.appendChild(div);
+  localStorage.setItem("chatHistory",chat.innerHTML);
+  scrollBottom();
+  return div;
+}
+
+function clearChat(){
+  if(confirm("Hapus semua chat?")){
+    chat.innerHTML="";
+    localStorage.removeItem("chatHistory");
+  }
+}
+
+function scrollBottom(){
+  setTimeout(()=>chat.scrollTop=chat.scrollHeight,50);
+}
+</script>
+
+</body>
+</html>
