@@ -164,7 +164,7 @@ button.action{
 <div class="input-area">
 
 <select id="user">
-  <option value="none">-- Pilih User --</option>
+  <option value="none">Pilih User</option>
   <option value="QC-Bapro">QC-Bapro</option>
   <option value="QC-Cetak">QC-Cetak</option>
   <option value="QC-Finishing">QC-Finishing</option>
@@ -177,7 +177,7 @@ button.action{
 <div id="fileInfo" class="file-info"></div>
 
 <div class="input-row">
-  <textarea id="text" placeholder="TULIS PERTANYAAN/SIMPAN DATA AI"></textarea>
+  <textarea id="text" placeholder="TULIS PERTANYAAN / SIMPAN DATA AI"></textarea>
 </div>
 
 <div class="input-row">
@@ -307,7 +307,7 @@ function addMsg(text,type){
 
       // Separator hanya untuk BOT dan bukan loading
       if(type === "bot" && !cleanText.includes("AI sedang berpikir")){
-        finalHTML += '<div style="margin:8px 0;font-weight:bold;">================================</div>';
+        finalHTML += '<div style="margin:8px 0;font-weight:bold;">==========================</div>';
       }
 
     }else{
