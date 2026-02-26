@@ -6,7 +6,6 @@
 
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-
 body{
   margin:0;
   font-family:'Segoe UI',system-ui;
@@ -15,15 +14,12 @@ body{
   display:flex;
   flex-direction:column;
 }
-
 .app{
   display:flex;
   flex-direction:column;
   height:100%;
   backdrop-filter: blur(8px);
 }
-
-/* HEADER */
 header{
   padding:16px;
   color:white;
@@ -36,7 +32,6 @@ header{
   background:rgba(255,255,255,0.15);
   border-bottom:1px solid rgba(255,255,255,0.2);
 }
-
 header button{
   background:rgba(255,255,255,.2);
   border:none;
@@ -44,13 +39,7 @@ header button{
   padding:6px 14px;
   border-radius:20px;
   cursor:pointer;
-  transition:.2s;
 }
-header button:hover{
-  background:rgba(255,255,255,.35);
-}
-
-/* CHAT */
 #chat{
   flex:1;
   overflow-y:auto;
@@ -58,56 +47,29 @@ header button:hover{
   display:flex;
   flex-direction:column;
   gap:12px;
-  scroll-behavior:smooth;
 }
-
 .msg{
   max-width:80%;
   padding:12px 16px;
   border-radius:20px;
   font-size:14px;
   line-height:1.5;
-  word-wrap:break-word;
   white-space:pre-wrap;
+  word-wrap:break-word;
   box-shadow:0 4px 12px rgba(0,0,0,0.15);
-  transition:.2s;
 }
-.msg:hover{
-  transform:translateY(-2px);
-}
-
-.msg a{
-  color:#ffeb3b;
-  text-decoration:underline;
-  word-break:break-all;
-  font-weight:600;
-}
-
-.msg.user a{ color:#1565c0; }
-
 .user{
   align-self:flex-end;
   background:white;
   color:#1565c0;
   border-bottom-right-radius:6px;
 }
-
 .bot{
   align-self:flex-start;
   background:rgba(255,255,255,.2);
   color:white;
   border-bottom-left-radius:6px;
 }
-
-/* timestamp */
-.time{
-  font-size:10px;
-  opacity:.6;
-  margin-top:4px;
-  text-align:right;
-}
-
-/* loading dots */
 .dot::after{
   content:''; 
   animation:dots 1.5s infinite;
@@ -118,8 +80,6 @@ header button:hover{
   66%{content:'..';}
   100%{content:'...';}
 }
-
-/* INPUT AREA */
 .input-area{
   background:white;
   padding:14px;
@@ -128,33 +88,12 @@ header button:hover{
   gap:10px;
   border-top-left-radius:20px;
   border-top-right-radius:20px;
-  box-shadow:0 -4px 20px rgba(0,0,0,0.2);
 }
-
 select,input[type="file"]{
   padding:10px;
   border-radius:20px;
   border:1px solid #ddd;
-  font-size:14px;
 }
-
-select:focus, textarea:focus{
-  border:1px solid #1e88e5;
-  box-shadow:0 0 0 3px rgba(30,136,229,.2);
-  outline:none;
-}
-
-.file-info{
-  font-size:12px;
-  color:#666;
-  padding-left:6px;
-}
-
-.input-row{
-  display:flex;
-  gap:8px;
-}
-
 textarea{
   flex:1;
   padding:12px;
@@ -167,7 +106,10 @@ textarea{
   overflow-y:auto;
   font-family:inherit;
 }
-
+.input-row{
+  display:flex;
+  gap:8px;
+}
 button.action{
   padding:10px 18px;
   border:none;
@@ -175,21 +117,9 @@ button.action{
   font-weight:600;
   cursor:pointer;
   color:white;
-  transition:.2s;
 }
-
-button.action:hover{
-  transform:translateY(-2px);
-  box-shadow:0 6px 16px rgba(0,0,0,0.2);
-}
-button.action:active{
-  transform:scale(.95);
-}
-
 .save-btn{background:#43a047;}
 .ask-btn{background:#1e88e5;}
-
-/* COPYRIGHT */
 .footer{
   text-align:center;
   font-size:11px;
@@ -197,42 +127,6 @@ button.action:active{
   background:rgba(255,255,255,0.15);
   color:white;
 }
-
- /* ===== META BOX RAPAT ===== */
-.meta-box {
-  font-family: Consolas, monospace;
-  font-size: 13px;
-  margin: 0;        /* hilangkan margin bawah default */
-  padding: 0;       /* hapus padding ekstra */
-}
-
-.meta-row {
-  display: grid;
-  grid-template-columns: 80px 5px auto; /* label : ":" : value, label diperbesar jadi 80px */
-  gap: 0;           /* hilangkan semua jarak antar kolom */
-  margin: 0;        /* hilangkan jarak vertikal antar row */
-  line-height: 1.2; /* rapatkan tinggi baris */
-  padding: 0;
-}
-
-.meta-label,
-.meta-sep,
-.meta-value {
-  margin: 0;
-  padding: 0;
-}
-
-/* ===== GAP SETELAH USER ===== */
-.meta-box + div {
-  margin-top: 4px;  /* memberi jarak setelah blok meta-box (setelah User) */
-}
-
-/* ===== GAP SEBELUM FILE ===== */
-body div.msg div a[href*="drive.google.com"] {
-  display: block;
-  margin-top: 4px;  /* memberi jarak sebelum link File */
-}
-
 </style>
 </head>
 
@@ -259,8 +153,7 @@ body div.msg div a[href*="drive.google.com"] {
   <option value="QC-Manager">QC-Manager</option>
 </select>
 
-<input type="file" id="file" accept="image/*,video/*">
-<div id="fileInfo" class="file-info"></div>
+<input type="file" id="file" multiple>
 
 <div class="input-row">
   <textarea id="text" placeholder="Tulis pertanyaan atau simpan data AI..."></textarea>
@@ -281,138 +174,52 @@ body div.msg div a[href*="drive.google.com"] {
 
 <script>
 
-const URL="https://script.google.com/macros/s/AKfycbyDuKOqTOIJ_-U5ToZrr-GgGF9-A2u5hUn9r96NqIGjkDu3jrz_w7m5PFWkdJnxvEuXWw/exec";
+const URL="https://script.google.com/macros/s/AKfycbzLuOp30L7No-Nd3vIi-omDpG_fXq2RGBZzB2Tk9_frIjlhCK4WwwJZvpGA5n586lQ7Og/exec";
 
 const chat=document.getElementById("chat");
 const textInput=document.getElementById("text");
 const userSelect=document.getElementById("user");
 const fileInput=document.getElementById("file");
-const fileInfo=document.getElementById("fileInfo");
 
 let isLoading=false;
 
-/* AUTO RESIZE */
-textInput.addEventListener("input",function(){
-  this.style.height="auto";
-  this.style.height=this.scrollHeight+"px";
-});
+/* ================= ADD MESSAGE ================= */
+function addMsg(text,type,raw=false){
+  const div=document.createElement("div");
+  div.className="msg "+type;
 
-/* CTRL + ENTER */
-textInput.addEventListener("keydown",function(e){
-  if(e.key==="Enter" && e.ctrlKey){
-    e.preventDefault();
-    ask();
-  }
-});
-
-/* FILE INFO */
-fileInput.addEventListener("change",function(){
-  const file=this.files[0];
-  if(!file){fileInfo.innerText="";return;}
-
-  if(file.size > 5*1024*1024){
-    alert("Maksimal file 5MB");
-    fileInput.value="";
-    return;
+  if(raw){
+    div.innerHTML=text;
+  }else{
+    // Ubah URL jadi clickable link dengan warna oranye
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const linkedText = text.replace(urlRegex, function(url){
+      return `<a href="${url}" target="_blank" style="color:orange; text-decoration:underline;">${url}</a>`;
+    });
+    div.innerHTML = linkedText;
   }
 
-  fileInfo.innerText="File: "+file.name+" ("+(file.size/1024/1024).toFixed(2)+" MB)";
-});
+  chat.appendChild(div);
+  chat.scrollTop=chat.scrollHeight;
+  return div;
+}
 
-/* VALIDATION */
+/* ================= RESET INPUT ================= */
+function resetInput(){
+  textInput.value="";
+  fileInput.value="";
+}
+
+/* ================= CLEAR CHAT ================= */
+function clearChat(){
+  chat.innerHTML="";
+}
+
+/* ================= VALIDATION ================= */
 function validate(text){
   if(userSelect.value==="none"){alert("Pilih user dulu.");return false;}
   if(!text.trim()){alert("Teks kosong.");return false;}
   return true;
-}
-
-/* ESCAPE + LINKIFY */
-function escapeHTML(str){
-  return str.replace(/[&<>"']/g,m=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  })[m]);
-}
-
-function linkify(text){
-  let safeText = escapeHTML(text);
-  const urlPattern = /((https?:\/\/|www\.)[^\s]+)/g;
-  return safeText.replace(urlPattern,function(url){
-    let href = url.startsWith("http") ? url : "https://" + url;
-    return '<a href="'+href+'" target="_blank">'+url+'</a>';
-  });
-}
-
-/* ADD MESSAGE (FORMAT META RAPAT FIX) */
-function addMsg(text,type,isHTML=false){
-
-  const div=document.createElement("div");
-  div.className="msg "+type;
-
-  if(isHTML){
-    div.innerHTML = text;
-  }else{
-
-    const cleanText = text.replace(/=+/g,"").trim();
-    const blocks = cleanText.split(/(?=Tanggal)/g);
-
-    let finalHTML = "";
-
-    blocks.forEach(block=>{
-
-      const lines = block.split("\n").filter(l => l.trim() !== "");
-      let metaHTML = "";
-      let bodyLines = [];
-
-      lines.forEach(line=>{
-        const trimmed = line.trim();
-
-        if(
-          trimmed.startsWith("Tanggal") ||
-          trimmed.startsWith("ID") ||
-          trimmed.startsWith("User")
-        ){
-
-          const parts = trimmed.split(":");
-          const label = parts[0].trim();
-          const value = parts.slice(1).join(":").trim();
-
-          // RAPAT TANPA SPASI
-          metaHTML += `<div class="meta-row"><div class="meta-label">${label}</div><div class="meta-sep">:</div><div class="meta-value">${linkify(value)}</div></div>`;
-
-        }else{
-          bodyLines.push(trimmed);
-        }
-      });
-
-      if(metaHTML){
-
-        finalHTML += `<div class="meta-box">${metaHTML}</div>`;
-
-        if(bodyLines.length){
-          finalHTML += `<div style="margin-top:4px">${linkify(bodyLines.join("\n"))}</div>`;
-        }
-
-        if(type==="bot" && !cleanText.includes("AI sedang")){
-          finalHTML += `<div style="margin:8px 0;font-weight:bold;">==========================</div>`;
-        }
-
-      }else{
-        finalHTML += linkify(block);
-      }
-
-    });
-
-    div.innerHTML = finalHTML;
-  }
-
-  const time=document.createElement("div");
-  time.className="time";
-  time.innerText=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-  div.appendChild(time);
-
-  chat.appendChild(div);
-  scrollBottom();
-  return div;
 }
 
 /* ================= SAVE ================= */
@@ -428,29 +235,30 @@ async function save(){
 
   try{
 
-    let fileData=null;
-    let fileName=null;
-    let mimeType=null;
+    const files=fileInput.files;
+    let fileArray=[];
 
-    const file=fileInput.files[0];
+    for(let file of files){
 
-    if(file){
       const reader=new FileReader();
-      fileData=await new Promise(resolve=>{
+
+      const base64=await new Promise(resolve=>{
         reader.onload=()=>resolve(reader.result.split(",")[1]);
         reader.readAsDataURL(file);
       });
-      fileName=file.name;
-      mimeType=file.type;
+
+      fileArray.push({
+        fileName:file.name,
+        mimeType:file.type,
+        fileData:base64
+      });
     }
 
     const payload={
       action:"add",
       user:userSelect.value,
       text:text,
-      fileData:fileData,
-      fileName:fileName,
-      mimeType:mimeType
+      files:fileArray
     };
 
     const response=await fetch(URL,{
@@ -464,7 +272,7 @@ async function save(){
     loading.remove();
 
     if(result.status==="success"){
-      addMsg("✅ Data berhasil disimpan","bot");
+      addMsg("✅ Data & file berhasil disimpan","bot");
       resetInput();
     }else{
       addMsg("❌ "+(result.error||"Gagal menyimpan"),"bot");
@@ -486,13 +294,20 @@ async function ask(){
   const text=textInput.value;
   if(!validate(text)) return;
 
-  addMsg(userSelect.value+": "+text,"user");
-
   isLoading=true;
-  const loading=addMsg("AI sedang menulis<span class='dot'></span>","bot",true);
+
+  addMsg(userSelect.value+": "+text,"user");
+  textInput.value="";
+
+  const loading=addMsg("Mencari jawaban<span class='dot'></span>","bot",true);
 
   try{
-    const payload={action:"ask",text:text};
+
+    const payload={
+      action:"ask",
+      text:text
+    };
+
     const response=await fetch(URL,{
       method:"POST",
       body:new URLSearchParams({
@@ -500,12 +315,16 @@ async function ask(){
       })
     });
 
-    const data=await response.json();
+    const result=await response.json();
     loading.remove();
-    addMsg(data.answer||"Tidak ada jawaban.","bot");
-    resetInput();
 
-  }catch{
+    if(result.answer){
+      addMsg(result.answer,"bot");
+    }else{
+      addMsg("❌ Tidak ada jawaban","bot");
+    }
+
+  }catch(err){
     loading.remove();
     addMsg("❌ Server error","bot");
   }
@@ -513,24 +332,9 @@ async function ask(){
   isLoading=false;
 }
 
-/* UTIL */
-function resetInput(){
-  textInput.value="";
-  textInput.style.height="auto";
-  fileInput.value="";
-  fileInfo.innerText="";
-}
-
-function clearChat(){
-  if(confirm("Hapus semua chat?")){
-    chat.innerHTML="";
-  }
-}
-
-function scrollBottom(){
-  setTimeout(()=>chat.scrollTop=chat.scrollHeight,50);
-}
-
 </script>
+
+
+
 </body>
 </html>
