@@ -16,7 +16,6 @@ body{
   flex-direction:column;
 }
 
-/* ===== APP CONTAINER ===== */
 .app{
   display:flex;
   flex-direction:column;
@@ -24,7 +23,6 @@ body{
   backdrop-filter: blur(8px);
 }
 
-/* ===== HEADER ===== */
 header{
   padding:16px;
   color:white;
@@ -44,7 +42,6 @@ header button{
   cursor:pointer;
 }
 
-/* ===== CHAT AREA ===== */
 #chat{
   flex:1;
   overflow-y:auto;
@@ -54,7 +51,6 @@ header button{
   gap:10px;
 }
 
-/* ===== MESSAGE BUBBLE ===== */
 .msg{
   max-width:80%;
   padding:12px 16px;
@@ -62,7 +58,18 @@ header button{
   font-size:14px;
   line-height:1.5;
   word-wrap:break-word;
-  animation:fadeIn .2s ease-in;
+  white-space:pre-wrap;
+}
+
+.msg a{
+  color:#ffeb3b;
+  text-decoration:underline;
+  word-break:break-all;
+  font-weight:600;
+}
+
+.msg.user a{
+  color:#1565c0;
 }
 
 .user{
@@ -70,15 +77,21 @@ header button{
   background:white;
   color:#1565c0;
   border-bottom-right-radius:6px;
-  box-shadow:0 4px 10px rgba(0,0,0,.1);
 }
 
 .bot{
   align-self:flex-start;
   background:rgba(255,255,255,.2);
   color:white;
-  backdrop-filter:blur(10px);
   border-bottom-left-radius:6px;
+}
+
+/* ===== METADATA MONOSPACE ===== */
+.meta{
+  font-family:Consolas,monospace;
+  white-space:pre;
+  font-size:13px;
+  line-height:1.4;
 }
 
 /* ===== INPUT AREA ===== */
@@ -92,25 +105,35 @@ header button{
   border-top-right-radius:20px;
 }
 
-select{
+select,input[type="file"]{
   padding:10px;
   border-radius:20px;
   border:1px solid #ddd;
   font-size:14px;
 }
 
+.file-info{
+  font-size:12px;
+  color:#666;
+  padding-left:6px;
+}
+
 .input-row{
   display:flex;
   gap:8px;
-  align-items:center;
 }
 
-input{
+textarea{
   flex:1;
   padding:12px;
-  border-radius:25px;
+  border-radius:20px;
   border:1px solid #ddd;
   font-size:14px;
+  resize:none;
+  min-height:40px;
+  max-height:120px;
+  overflow-y:auto;
+  font-family:inherit;
 }
 
 button.action{
@@ -120,26 +143,10 @@ button.action{
   font-weight:600;
   cursor:pointer;
   color:white;
-  transition:.2s;
 }
 
 .save-btn{background:#43a047;}
 .ask-btn{background:#1e88e5;}
-
-button.action:disabled{
-  opacity:.5;
-}
-
-@keyframes fadeIn{
-  from{opacity:0;transform:translateY(5px);}
-  to{opacity:1;transform:translateY(0);}
-}
-
-/* ===== MOBILE OPTIMIZATION ===== */
-@media(max-width:600px){
-  header{font-size:16px;}
-  .msg{font-size:13px;}
-}
 </style>
 </head>
 
@@ -166,8 +173,11 @@ button.action:disabled{
   <option value="QC-Manager">QC-Manager</option>
 </select>
 
+<input type="file" id="file" accept="image/*,video/*">
+<div id="fileInfo" class="file-info"></div>
+
 <div class="input-row">
-  <input type="text" id="text" placeholder="Tulis pesan...">
+  <textarea id="text" placeholder="KALIMAT HARUS JELAS DAN RAPI"></textarea>
 </div>
 
 <div class="input-row">
@@ -176,31 +186,46 @@ button.action:disabled{
 </div>
 
 </div>
-
 </div>
 
 <script>
-const URL="https://script.google.com/macros/s/AKfycbxLRmShvpg8WiQyrPDubTNwYPz9eDE0Q4foTZpxOeQ8Vujui5Y38vaoBtG15tlV0TQmKw/exec";
+
+const URL="https://script.google.com/macros/s/AKfycbyV5xrmV5uvHmKVokTD7eN2p4NJiOpjDdqaJW-iJw1qQDbYL853fdeD56czbpwh0dl0/exec";
 
 const chat=document.getElementById("chat");
 const textInput=document.getElementById("text");
 const userSelect=document.getElementById("user");
+const fileInput=document.getElementById("file");
+const fileInfo=document.getElementById("fileInfo");
 
 let isLoading=false;
 
-/* RESTORE */
-window.onload=function(){
-  const savedChat=localStorage.getItem("chatHistory");
-  if(savedChat) chat.innerHTML=savedChat;
-  scrollBottom();
-};
+/* AUTO RESIZE */
+textInput.addEventListener("input",function(){
+  this.style.height="auto";
+  this.style.height=this.scrollHeight+"px";
+});
 
-/* ENTER */
+/* CTRL + ENTER */
 textInput.addEventListener("keydown",function(e){
-  if(e.key==="Enter"){
+  if(e.key==="Enter" && e.ctrlKey){
     e.preventDefault();
     ask();
   }
+});
+
+/* FILE INFO */
+fileInput.addEventListener("change",function(){
+  const file=this.files[0];
+  if(!file){fileInfo.innerText="";return;}
+
+  if(file.size > 5*1024*1024){
+    alert("Maksimal file 5MB");
+    fileInput.value="";
+    return;
+  }
+
+  fileInfo.innerText="File: "+file.name+" ("+(file.size/1024/1024).toFixed(2)+" MB)";
 });
 
 /* VALIDATION */
@@ -210,81 +235,200 @@ function validate(text){
   return true;
 }
 
+/* ESCAPE */
+function escapeHTML(str){
+  return str.replace(/[&<>"']/g,function(m){
+    return ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+    })[m];
+  });
+}
+
+/* LINKIFY */
+function linkify(text){
+  let safeText = escapeHTML(text);
+  const urlPattern = /((https?:\/\/|www\.)[^\s]+)/g;
+
+  return safeText.replace(urlPattern,function(url){
+    let href = url;
+    if(!href.startsWith("http")){
+      href = "https://" + href;
+    }
+    return '<a href="'+href+'" target="_blank">'+url+'</a>';
+  });
+}
+
+/* ADD MESSAGE (UPDATED METADATA SUPPORT) */
+function addMsg(text,type){
+
+  const div=document.createElement("div");
+  div.className="msg "+type;
+
+  const lines = text.split("\n");
+  let metaLines = [];
+  let bodyLines = [];
+  let readingMeta = true;
+
+  for(let line of lines){
+
+    const trimmed = line.trimStart(); // hilangkan spasi depan
+
+    if(
+      readingMeta &&
+      (
+        trimmed.startsWith("Tanggal") ||
+        trimmed.startsWith("ID") ||
+        trimmed.startsWith("User")
+      )
+    ){
+      metaLines.push(trimmed);
+    }else{
+      readingMeta = false;
+      bodyLines.push(line);
+    }
+  }
+
+  if(metaLines.length >= 2){
+    div.innerHTML =
+      '<div class="meta">'+linkify(metaLines.join("\n"))+'</div>' +
+      (bodyLines.length
+        ? '<div style="margin-top:8px">'+linkify(bodyLines.join("\n"))+'</div>'
+        : '');
+  }else{
+    div.innerHTML = linkify(text);
+  }
+
+  chat.appendChild(div);
+  scrollBottom();
+  return div;
+}
+
 /* SAVE */
-function save(){
+async function save(){
+
   if(isLoading) return;
+
   const text=textInput.value;
   if(!validate(text)) return;
 
   isLoading=true;
   const loading=addMsg("Menyimpan...","bot");
 
-  fetch(URL,{
-    method:"POST",
-    body:JSON.stringify({type:"save",text:text,user:userSelect.value})
-  })
-  .then(res=>res.json())
-  .then(()=>{
+  try{
+
+    let fileData=null;
+    let fileName=null;
+    let mimeType=null;
+
+    const file=fileInput.files[0];
+
+    if(file){
+      const reader=new FileReader();
+      fileData=await new Promise(resolve=>{
+        reader.onload=()=>resolve(reader.result.split(",")[1]);
+        reader.readAsDataURL(file);
+      });
+      fileName=file.name;
+      mimeType=file.type;
+    }
+
+    const payload={
+      action:"add",
+      user:userSelect.value,
+      text:text,
+      fileData:fileData,
+      fileName:fileName,
+      mimeType:mimeType
+    };
+
+    const response=await fetch(URL,{
+      method:"POST",
+      body:new URLSearchParams({
+        payload:JSON.stringify(payload)
+      })
+    });
+
+    const result=await response.json();
     loading.remove();
-    addMsg("✅ Disimpan","bot");
-    textInput.value="";
-  })
-  .catch(()=>{
+
+    if(result.status==="success"){
+      addMsg("✅ Disimpan","bot");
+      resetInput();
+    }else{
+      addMsg("❌ "+(result.error||"Gagal menyimpan"),"bot");
+    }
+
+  }catch(err){
     loading.remove();
-    addMsg("❌ Gagal","bot");
-  })
-  .finally(()=>isLoading=false);
+    addMsg("❌ Server error","bot");
+  }
+
+  isLoading=false;
 }
 
 /* ASK */
-function ask(){
+async function ask(){
+
   if(isLoading) return;
+
   const text=textInput.value;
   if(!validate(text)) return;
 
   addMsg(userSelect.value+": "+text,"user");
-  textInput.value="";
 
   isLoading=true;
   const loading=addMsg("AI sedang berpikir...","bot");
 
-  fetch(URL,{
-    method:"POST",
-    body:JSON.stringify({type:"ask",text:text,user:userSelect.value})
-  })
-  .then(res=>res.json())
-  .then(data=>{
+  try{
+
+    const payload={
+      action:"ask",
+      text:text
+    };
+
+    const response=await fetch(URL,{
+      method:"POST",
+      body:new URLSearchParams({
+        payload:JSON.stringify(payload)
+      })
+    });
+
+    const data=await response.json();
+
     loading.remove();
     addMsg(data.answer||"Tidak ada jawaban.","bot");
-  })
-  .catch(()=>{
+    resetInput();
+
+  }catch(err){
     loading.remove();
     addMsg("❌ Server error","bot");
-  })
-  .finally(()=>isLoading=false);
+  }
+
+  isLoading=false;
 }
 
 /* UTIL */
-function addMsg(text,type){
-  const div=document.createElement("div");
-  div.className="msg "+type;
-  div.innerText=text;
-  chat.appendChild(div);
-  localStorage.setItem("chatHistory",chat.innerHTML);
-  scrollBottom();
-  return div;
+function resetInput(){
+  textInput.value="";
+  textInput.style.height="auto";
+  fileInput.value="";
+  fileInfo.innerText="";
 }
 
 function clearChat(){
   if(confirm("Hapus semua chat?")){
     chat.innerHTML="";
-    localStorage.removeItem("chatHistory");
   }
 }
 
 function scrollBottom(){
   setTimeout(()=>chat.scrollTop=chat.scrollHeight,50);
 }
+
 </script>
 
 </body>
