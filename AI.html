@@ -109,7 +109,7 @@ header button:hover{
 
 /* loading dots */
 .dot::after{
-  content:'';
+  content:''; 
   animation:dots 1.5s infinite;
 }
 @keyframes dots{
@@ -198,28 +198,39 @@ button.action:active{
   color:white;
 }
 
-.meta-box{
-  font-family:Consolas,monospace;
-  font-size:13px;
-  margin-bottom:4px;
+ /* ===== META BOX RAPAT ===== */
+.meta-box {
+  font-family: Consolas, monospace;
+  font-size: 13px;
+  margin: 0;        /* hilangkan margin bawah default */
+  padding: 0;       /* hapus padding ekstra */
 }
 
-.meta-row{
-  display:grid;
-  grid-template-columns:80px 10px 1fr;
-  gap:4px;
+.meta-row {
+  display: grid;
+  grid-template-columns: 80px 5px auto; /* label : ":" : value, label diperbesar jadi 80px */
+  gap: 0;           /* hilangkan semua jarak antar kolom */
+  margin: 0;        /* hilangkan jarak vertikal antar row */
+  line-height: 1.2; /* rapatkan tinggi baris */
+  padding: 0;
 }
 
-.meta-label{
-  text-align:left;
+.meta-label,
+.meta-sep,
+.meta-value {
+  margin: 0;
+  padding: 0;
 }
 
-.meta-sep{
-  text-align:center;
+/* ===== GAP SETELAH USER ===== */
+.meta-box + div {
+  margin-top: 4px;  /* memberi jarak setelah blok meta-box (setelah User) */
 }
 
-.meta-value{
-  text-align:left;
+/* ===== GAP SEBELUM FILE ===== */
+body div.msg div a[href*="drive.google.com"] {
+  display: block;
+  margin-top: 4px;  /* memberi jarak sebelum link File */
 }
 
 </style>
@@ -331,7 +342,7 @@ function linkify(text){
   });
 }
 
-/* ADD MESSAGE (FORMAT META SEJAJAR FIX) */
+/* ADD MESSAGE (FORMAT META RAPAT FIX) */
 function addMsg(text,type,isHTML=false){
 
   const div=document.createElement("div");
@@ -365,13 +376,8 @@ function addMsg(text,type,isHTML=false){
           const label = parts[0].trim();
           const value = parts.slice(1).join(":").trim();
 
-          metaHTML += `
-            <div class="meta-row">
-              <div class="meta-label">${label}</div>
-              <div class="meta-sep">:</div>
-              <div class="meta-value">${linkify(value)}</div>
-            </div>
-          `;
+          // RAPAT TANPA SPASI
+          metaHTML += `<div class="meta-row"><div class="meta-label">${label}</div><div class="meta-sep">:</div><div class="meta-value">${linkify(value)}</div></div>`;
 
         }else{
           bodyLines.push(trimmed);
@@ -383,7 +389,7 @@ function addMsg(text,type,isHTML=false){
         finalHTML += `<div class="meta-box">${metaHTML}</div>`;
 
         if(bodyLines.length){
-          finalHTML += `<div style="margin-top:6px">${linkify(bodyLines.join("\n"))}</div>`;
+          finalHTML += `<div style="margin-top:4px">${linkify(bodyLines.join("\n"))}</div>`;
         }
 
         if(type==="bot" && !cleanText.includes("AI sedang")){
@@ -528,4 +534,3 @@ function scrollBottom(){
 </script>
 </body>
 </html>
-
