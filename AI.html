@@ -23,6 +23,7 @@ body{
   backdrop-filter: blur(8px);
 }
 
+/* HEADER */
 header{
   padding:16px;
   color:white;
@@ -31,24 +32,33 @@ header{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  backdrop-filter: blur(10px);
+  background:rgba(255,255,255,0.15);
+  border-bottom:1px solid rgba(255,255,255,0.2);
 }
 
 header button{
   background:rgba(255,255,255,.2);
   border:none;
   color:white;
-  padding:6px 12px;
+  padding:6px 14px;
   border-radius:20px;
   cursor:pointer;
+  transition:.2s;
+}
+header button:hover{
+  background:rgba(255,255,255,.35);
 }
 
+/* CHAT */
 #chat{
   flex:1;
   overflow-y:auto;
   padding:15px;
   display:flex;
   flex-direction:column;
-  gap:10px;
+  gap:12px;
+  scroll-behavior:smooth;
 }
 
 .msg{
@@ -59,6 +69,11 @@ header button{
   line-height:1.5;
   word-wrap:break-word;
   white-space:pre-wrap;
+  box-shadow:0 4px 12px rgba(0,0,0,0.15);
+  transition:.2s;
+}
+.msg:hover{
+  transform:translateY(-2px);
 }
 
 .msg a{
@@ -68,9 +83,7 @@ header button{
   font-weight:600;
 }
 
-.msg.user a{
-  color:#1565c0;
-}
+.msg.user a{ color:#1565c0; }
 
 .user{
   align-self:flex-end;
@@ -86,23 +99,36 @@ header button{
   border-bottom-left-radius:6px;
 }
 
-/* ===== METADATA MONOSPACE ===== */
-.meta{
-  font-family:Consolas,monospace;
-  white-space:pre;
-  font-size:13px;
-  line-height:1.4;
+/* timestamp */
+.time{
+  font-size:10px;
+  opacity:.6;
+  margin-top:4px;
+  text-align:right;
 }
 
-/* ===== INPUT AREA ===== */
+/* loading dots */
+.dot::after{
+  content:'';
+  animation:dots 1.5s infinite;
+}
+@keyframes dots{
+  0%{content:'';}
+  33%{content:'.';}
+  66%{content:'..';}
+  100%{content:'...';}
+}
+
+/* INPUT AREA */
 .input-area{
   background:white;
-  padding:12px;
+  padding:14px;
   display:flex;
   flex-direction:column;
-  gap:8px;
+  gap:10px;
   border-top-left-radius:20px;
   border-top-right-radius:20px;
+  box-shadow:0 -4px 20px rgba(0,0,0,0.2);
 }
 
 select,input[type="file"]{
@@ -110,6 +136,12 @@ select,input[type="file"]{
   border-radius:20px;
   border:1px solid #ddd;
   font-size:14px;
+}
+
+select:focus, textarea:focus{
+  border:1px solid #1e88e5;
+  box-shadow:0 0 0 3px rgba(30,136,229,.2);
+  outline:none;
 }
 
 .file-info{
@@ -137,16 +169,59 @@ textarea{
 }
 
 button.action{
-  padding:10px 16px;
+  padding:10px 18px;
   border:none;
   border-radius:25px;
   font-weight:600;
   cursor:pointer;
   color:white;
+  transition:.2s;
+}
+
+button.action:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 16px rgba(0,0,0,0.2);
+}
+button.action:active{
+  transform:scale(.95);
 }
 
 .save-btn{background:#43a047;}
 .ask-btn{background:#1e88e5;}
+
+/* COPYRIGHT */
+.footer{
+  text-align:center;
+  font-size:11px;
+  padding:6px;
+  background:rgba(255,255,255,0.15);
+  color:white;
+}
+
+.meta-box{
+  font-family:Consolas,monospace;
+  font-size:13px;
+  margin-bottom:4px;
+}
+
+.meta-row{
+  display:grid;
+  grid-template-columns:80px 10px 1fr;
+  gap:4px;
+}
+
+.meta-label{
+  text-align:left;
+}
+
+.meta-sep{
+  text-align:center;
+}
+
+.meta-value{
+  text-align:left;
+}
+
 </style>
 </head>
 
@@ -155,7 +230,7 @@ button.action{
 <div class="app">
 
 <header>
-  AI Memory QC
+  🤖 AI Memory QC
   <button onclick="clearChat()">Clear</button>
 </header>
 
@@ -177,15 +252,20 @@ button.action{
 <div id="fileInfo" class="file-info"></div>
 
 <div class="input-row">
-  <textarea id="text" placeholder="TULIS PERTANYAAN / SIMPAN DATA AI"></textarea>
+  <textarea id="text" placeholder="Tulis pertanyaan atau simpan data AI..."></textarea>
 </div>
 
 <div class="input-row">
-  <button class="action save-btn" onclick="save()">Simpan</button>
-  <button class="action ask-btn" onclick="ask()">Tanya</button>
+  <button class="action save-btn" onclick="save()">💾 Simpan</button>
+  <button class="action ask-btn" onclick="ask()">🚀 Tanya</button>
 </div>
 
 </div>
+
+<div class="footer">
+  © 2026 QC Digital System
+</div>
+
 </div>
 
 <script>
@@ -235,95 +315,101 @@ function validate(text){
   return true;
 }
 
-/* ESCAPE */
+/* ESCAPE + LINKIFY */
 function escapeHTML(str){
-  return str.replace(/[&<>"']/g,function(m){
-    return ({
-      "&":"&amp;",
-      "<":"&lt;",
-      ">":"&gt;",
-      '"':"&quot;",
-      "'":"&#039;"
-    })[m];
-  });
+  return str.replace(/[&<>"']/g,m=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  })[m]);
 }
 
-/* LINKIFY */
 function linkify(text){
   let safeText = escapeHTML(text);
   const urlPattern = /((https?:\/\/|www\.)[^\s]+)/g;
-
   return safeText.replace(urlPattern,function(url){
-    let href = url;
-    if(!href.startsWith("http")){
-      href = "https://" + href;
-    }
+    let href = url.startsWith("http") ? url : "https://" + url;
     return '<a href="'+href+'" target="_blank">'+url+'</a>';
   });
 }
 
-/* ADD MESSAGE (STABLE - SPLIT BY TANGGAL) */
-function addMsg(text,type){
+/* ADD MESSAGE (FORMAT META SEJAJAR FIX) */
+function addMsg(text,type,isHTML=false){
 
   const div=document.createElement("div");
   div.className="msg "+type;
 
-  const cleanText = text.replace(/=+/g,"").trim();
+  if(isHTML){
+    div.innerHTML = text;
+  }else{
 
-  // Pecah berdasarkan setiap "Tanggal"
-  const blocks = cleanText.split(/(?=Tanggal)/g);
+    const cleanText = text.replace(/=+/g,"").trim();
+    const blocks = cleanText.split(/(?=Tanggal)/g);
 
-  let finalHTML = "";
+    let finalHTML = "";
 
-  blocks.forEach(block=>{
+    blocks.forEach(block=>{
 
-    const lines = block.split("\n").filter(l => l.trim() !== "");
-    let metaLines = [];
-    let bodyLines = [];
+      const lines = block.split("\n").filter(l => l.trim() !== "");
+      let metaHTML = "";
+      let bodyLines = [];
 
-    lines.forEach(line=>{
-      const trimmed = line.trim();
+      lines.forEach(line=>{
+        const trimmed = line.trim();
 
-      if(
-        trimmed.startsWith("Tanggal") ||
-        trimmed.startsWith("ID") ||
-        trimmed.startsWith("User")
-      ){
-        metaLines.push(trimmed);
+        if(
+          trimmed.startsWith("Tanggal") ||
+          trimmed.startsWith("ID") ||
+          trimmed.startsWith("User")
+        ){
+
+          const parts = trimmed.split(":");
+          const label = parts[0].trim();
+          const value = parts.slice(1).join(":").trim();
+
+          metaHTML += `
+            <div class="meta-row">
+              <div class="meta-label">${label}</div>
+              <div class="meta-sep">:</div>
+              <div class="meta-value">${linkify(value)}</div>
+            </div>
+          `;
+
+        }else{
+          bodyLines.push(trimmed);
+        }
+      });
+
+      if(metaHTML){
+
+        finalHTML += `<div class="meta-box">${metaHTML}</div>`;
+
+        if(bodyLines.length){
+          finalHTML += `<div style="margin-top:6px">${linkify(bodyLines.join("\n"))}</div>`;
+        }
+
+        if(type==="bot" && !cleanText.includes("AI sedang")){
+          finalHTML += `<div style="margin:8px 0;font-weight:bold;">==========================</div>`;
+        }
+
       }else{
-        bodyLines.push(trimmed);
+        finalHTML += linkify(block);
       }
+
     });
 
-    if(metaLines.length >= 2){
+    div.innerHTML = finalHTML;
+  }
 
-      // Metadata
-      finalHTML += '<div class="meta">'+linkify(metaLines.join("\n"))+'</div>';
-
-      // Isi langsung di bawah metadata
-      if(bodyLines.length){
-        finalHTML += '<div style="margin-top:6px">'+linkify(bodyLines.join("\n"))+'</div>';
-      }
-
-      // Separator hanya untuk BOT dan bukan loading
-      if(type === "bot" && !cleanText.includes("AI sedang berpikir")){
-        finalHTML += '<div style="margin:8px 0;font-weight:bold;">==========================</div>';
-      }
-
-    }else{
-      finalHTML += linkify(block);
-    }
-
-  });
-
-  div.innerHTML = finalHTML;
+  const time=document.createElement("div");
+  time.className="time";
+  time.innerText=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  div.appendChild(time);
 
   chat.appendChild(div);
   scrollBottom();
   return div;
 }
 
-/* SAVE */
+/* ================= SAVE ================= */
 async function save(){
 
   if(isLoading) return;
@@ -332,7 +418,7 @@ async function save(){
   if(!validate(text)) return;
 
   isLoading=true;
-  const loading=addMsg("Menyimpan...","bot");
+  const loading=addMsg("Menyimpan<span class='dot'></span>","bot",true);
 
   try{
 
@@ -372,7 +458,7 @@ async function save(){
     loading.remove();
 
     if(result.status==="success"){
-      addMsg("✅ Disimpan","bot");
+      addMsg("✅ Data berhasil disimpan","bot");
       resetInput();
     }else{
       addMsg("❌ "+(result.error||"Gagal menyimpan"),"bot");
@@ -386,7 +472,7 @@ async function save(){
   isLoading=false;
 }
 
-/* ASK */
+/* ================= ASK ================= */
 async function ask(){
 
   if(isLoading) return;
@@ -397,15 +483,10 @@ async function ask(){
   addMsg(userSelect.value+": "+text,"user");
 
   isLoading=true;
-  const loading=addMsg("AI sedang berpikir...","bot");
+  const loading=addMsg("AI sedang menulis<span class='dot'></span>","bot",true);
 
   try{
-
-    const payload={
-      action:"ask",
-      text:text
-    };
-
+    const payload={action:"ask",text:text};
     const response=await fetch(URL,{
       method:"POST",
       body:new URLSearchParams({
@@ -414,12 +495,11 @@ async function ask(){
     });
 
     const data=await response.json();
-
     loading.remove();
     addMsg(data.answer||"Tidak ada jawaban.","bot");
     resetInput();
 
-  }catch(err){
+  }catch{
     loading.remove();
     addMsg("❌ Server error","bot");
   }
@@ -446,6 +526,5 @@ function scrollBottom(){
 }
 
 </script>
-
 </body>
 </html>
