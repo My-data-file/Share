@@ -228,7 +228,7 @@ button.action {
 </div>
 
 <script>
-const URL="https://script.google.com/macros/s/AKfycbzLuOp30L7No-Nd3vIi-omDpG_fXq2RGBZzB2Tk9_frIjlhCK4WwwJZvpGA5n586lQ7Og/exec";
+const URL="https://script.google.com/macros/s/AKfycbx_KMLHhB9cvA_99Eafm9B6HrOjVs1SmOH6oPGxnJ5AlPy0FJRBwPu-XRrSRhVVYnE3/exec";
 
 const chat=document.getElementById("chat");
 const textInput=document.getElementById("text");
@@ -240,32 +240,55 @@ let isLoading=false;
 function addMsg(text,type,raw=false){
   const div=document.createElement("div");
   div.className="msg "+type;
+
   if(raw){ 
     div.innerHTML=text; 
   } else {
+
     const urlRegex=/(https?:\/\/[^\s]+)/g;
-    let formatted=text.replace(urlRegex,url=>`<a href="${url}" target="_blank" style="color:orange;text-decoration:underline;">${url}</a>`);
+    let formatted=text.replace(urlRegex,url=>
+      `<a href="${url}" target="_blank" style="color:orange;text-decoration:underline;">${url}</a>`
+    );
 
-    formatted = formatted.split("\n").map(line=>{
-      if(!line.trim()) return "";
+    const lines = formatted.split("\n");
+    let result = [];
 
-      // Tambahkan gap ekstra sebelum baris Tanggal
-      if(type==="bot" && line.trim().startsWith("Tanggal")){
-        return `<div style="height:16px;"></div>` + 
-               `<div class="row"><span class="label">Tanggal :</span><span class="value">${line.split(":")[1]?.trim()||""}</span></div>`;
+    for(let i=0;i<lines.length;i++){
+
+      let line = lines[i].trim();
+      if(!line) continue;
+
+      // Jika format:
+      // Label :
+      // Value
+      if(type==="bot" && line.endsWith(":") && lines[i+1]){
+        const label = line.replace(":","").trim();
+        const value = lines[i+1].trim();
+        i++;
+
+        result.push(
+          `<div class="row"><span class="label">${label} :</span><span class="value">${value}</span></div>`
+        );
+        continue;
       }
 
-      // bot: label: value lainnya
+      // Format normal: Label : Value
       if(type==="bot" && line.includes(":")){
-        const [label, ...rest]=line.split(":");
-        return `<div class="row"><span class="label">${label} :</span><span class="value">${rest.join(":").trim()}</span></div>`;
+        const index = line.indexOf(":");
+        const label = line.substring(0,index).trim();
+        const value = line.substring(index+1).trim();
+
+        result.push(
+          `<div class="row"><span class="label">${label} :</span><span class="value">${value}</span></div>`
+        );
+        continue;
       }
 
-      // nomor urut atau teks panjang: tampil ke bawah
-      return `<div class="value">${line.trim()}</div>`;
-    }).join("");
+      // teks biasa
+      result.push(`<div class="value">${line}</div>`);
+    }
 
-    div.innerHTML = formatted;
+    div.innerHTML = result.join("");
   }
 
   chat.appendChild(div);
