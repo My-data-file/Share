@@ -132,6 +132,7 @@ header button:hover{
 /* LABEL FORMAT */
 .msg.bot .row{
   display:flex;
+  flex-wrap:wrap;              /* FIX MOBILE */
   gap:6px;
   margin-bottom:4px;
 }
@@ -139,10 +140,21 @@ header button:hover{
 .msg.bot .label{
   font-weight:600;
   color:#00acc1;
+  min-width:75px;              /* Rapi sejajar */
 }
 
 .msg.bot .value{
-  flex:1;
+  flex:1 1 100%;               /* Boleh turun baris */
+  word-break:break-word;       /* Pecah kata panjang */
+  overflow-wrap:anywhere;
+}
+
+/* FIX LINK PANJANG */
+.msg.bot a{
+  word-break:break-all;
+  overflow-wrap:anywhere;
+  display:inline-block;
+  max-width:100%;
 }
 
 /* ========================= */
