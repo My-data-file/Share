@@ -366,10 +366,11 @@ const AI = {
 
   init(){
     this.loadChat();
+
+    // ENTER hanya untuk baris baru
     this.text.addEventListener("keydown",(e)=>{
-      if(e.key==="Enter" && !e.shiftKey){
-        e.preventDefault();
-        this.ask();
+      if(e.key==="Enter"){
+        return;
       }
     });
   },
@@ -448,9 +449,19 @@ const AI = {
 
   async ask(){
     if(this.isLoading) return;
+
     const text=this.text.value.trim();
-    if(!text) return;
-    if(this.user.value==="none"){alert("Pilih user dulu");return;}
+
+    // ✅ Tambahan validasi teks kosong
+    if(!text){
+      alert("Teks kosong");
+      return;
+    }
+
+    if(this.user.value==="none"){
+      alert("Pilih user dulu");
+      return;
+    }
 
     this.isLoading=true;
     this.addMessage(text,"user");
@@ -477,9 +488,17 @@ const AI = {
 
   async save(){
     if(this.isLoading) return;
+
     const text=this.text.value.trim();
-    if(!text){alert("Teks kosong");return;}
-    if(this.user.value==="none"){alert("Pilih user dulu");return;}
+    if(!text){
+      alert("Teks kosong");
+      return;
+    }
+
+    if(this.user.value==="none"){
+      alert("Pilih user dulu");
+      return;
+    }
 
     this.isLoading=true;
     this.typingIndicator();
@@ -525,6 +544,7 @@ const AI = {
 
   async checkReminder(){
     if(this.isLoading) return;
+
     this.isLoading=true;
     this.typingIndicator();
 
@@ -566,8 +586,10 @@ const AI = {
   },
 
   clearChat(){
-    localStorage.removeItem("ai_chat");
-    this.chat.innerHTML="";
+    if(confirm("Yakin ingin menghapus semua chat?")){
+      localStorage.removeItem("ai_chat");
+      this.chat.innerHTML="";
+    }
   }
 };
 
