@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Memory QC</title>
+<title>AI Memory</title>
 
 <style>
 *{
@@ -205,6 +205,36 @@ textarea{
   overflow-y:auto;
 }
 
+/* ================= DATE FIX ================= */
+
+.date-wrapper{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  width:100%;
+}
+
+.date-wrapper label{
+  font-size:12px;
+  font-weight:600;
+  color:#0097a7;
+  padding-left:4px;
+}
+
+.date-wrapper input{
+  width:100%;
+  min-height:48px;
+}
+
+input[type="datetime-local"]{
+  width:100%;
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator{
+  opacity:0.7;
+  cursor:pointer;
+}
+
 /* ================= BUTTONS ================= */
 
 .actions{
@@ -287,7 +317,7 @@ button.action:disabled{
 <div class="app">
 
 <header>
-  <span>🤖 AI Memory QC</span>
+  <span>🤖 AI Memory</span>
   <button onclick="AI.clearChat()">Clear</button>
 </header>
 
@@ -305,8 +335,13 @@ button.action:disabled{
   </select>
 
   <textarea id="text" placeholder="Tulis pertanyaan atau simpan data..."></textarea>
+
   <input type="file" id="file" multiple>
-  <input type="datetime-local" id="reminder">
+
+  <div class="date-wrapper">
+    <label for="reminder">⏰ Set Reminder</label>
+    <input type="datetime-local" id="reminder">
+  </div>
 
   <div class="actions">
     <button class="action save-btn" onclick="AI.save()">💾 Simpan</button>
@@ -316,6 +351,8 @@ button.action:disabled{
 </div>
 
 </div>
+
+
 
 <script>
 const AI = {
