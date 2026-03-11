@@ -101,10 +101,8 @@ gap:18px;
 
 .message{
 display:flex;
-
 gap:10px;
-
-max-width:85%;
+max-width:92%;
 }
 
 .message.user{
@@ -150,6 +148,10 @@ line-height:1.6;
 background:white;
 
 white-space:pre-wrap;
+
+max-width:100%;
+word-wrap:break-word;
+overflow-wrap:break-word;
 
 box-shadow:0 6px 14px rgba(0,0,0,0.05);
 }
@@ -201,6 +203,17 @@ width:100%;
 textarea{
 min-height:70px;
 resize:none;
+}
+
+/* DATE MEMO PLACEHOLDER */
+
+input[type="datetime-local"]:invalid{
+color:#777;
+}
+
+input[type="datetime-local"]:invalid:before{
+content:"Memo";
+color:#777;
 }
 
 /* ACTION */
@@ -374,6 +387,10 @@ padding:16px;
 gap:14px;
 }
 
+.message{
+max-width:95%;
+}
+
 .bubble{
 font-size:13px;
 }
@@ -406,8 +423,8 @@ max-height:85vh;
 
 }
 
-
 </style>
+
 </head>
 
 <body>
