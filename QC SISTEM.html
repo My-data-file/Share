@@ -5828,6 +5828,8 @@ document.addEventListener("DOMContentLoaded", () => {
       <button class="menu-ai-btn" data-ai="finishing">AI QC FINISHING</button>
       <button class="menu-ai-btn" data-ai="lem">AI QC LEM</button>
       <button class="menu-ai-btn" data-ai="register">AI QC REGISTER</button>
+      <!-- Tombol AI MEMORY baru -->
+      <button class="menu-ai-btn" data-ai="memory">AI MEMORY</button>
     </div>
     <div class="menu-cancel">
       <button id="menuCloseBtn">Batal</button>
@@ -5859,7 +5861,8 @@ const AI_CONFIG = {
   cetak:      { pass: "spv123", url: "https://www.chatbase.co/chatbot-iframe/xC4UNODh6Z_N6c5NrdqnJ" },
   finishing:  { pass: "spv123", url: "https://www.chatbase.co/chatbot-iframe/h8G0LYCfSqbKPrEGZO91-" },
   lem:        { pass: "spv123", url: "https://www.chatbase.co/chatbot-iframe/Bg84DJJ43GDzYAbU9o30O" },
-  register:   { pass: "spv123", url: "https://www.chatbase.co/chatbot-iframe/HOzp5h4l66C3iJbun33x-" }
+  register:   { pass: "spv123", url: "https://www.chatbase.co/chatbot-iframe/HOzp5h4l66C3iJbun33x-" },
+  memory:     { pass: "spv123", url: "https://my-data-file.github.io/Share/AI.html" } // AI MEMORY baru
 };
 
 let selectedAI = null;
@@ -5971,6 +5974,7 @@ setTimeout(swapFaceText, 1500);
 .menu-ai-btn[data-ai="finishing"] { background: linear-gradient(90deg,#4caf50,#7cd98a); color:#000; }
 .menu-ai-btn[data-ai="lem"] { background: linear-gradient(90deg,#9b59b6,#c18cd9); color:#000; }
 .menu-ai-btn[data-ai="register"] { background: linear-gradient(90deg,#00cfff,#62f0ff); color:#000; }
+.menu-ai-btn[data-ai="memory"] { background: linear-gradient(90deg,#c0c0c0,#e0e0e0); color:#000; } /* tombol AI MEMORY silver */
 .menu-ai-btn:hover { transform:translateY(-3px); box-shadow:0 6px 18px rgba(0,0,0,0.2); }
 
 .menu-cancel {
