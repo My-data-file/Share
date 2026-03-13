@@ -71,12 +71,18 @@ display:none;
 
 .app.full .actions{
 justify-content:center;
-flex-wrap:nowrap;
 }
 
-.app.full button.action{
+/* sembunyikan tombol simpan dan tanya */
+.app.full .save-btn,
+.app.full .ask-btn{
+display:none;
+}
+
+/* tampilkan hanya tombol cek */
+.app.full .check-btn{
 flex:0 0 auto;
-min-width:140px;
+min-width:160px;
 }
 
 /* HEADER */
@@ -183,6 +189,14 @@ box-shadow:0 6px 16px rgba(0,0,0,0.08);
 .message.user .bubble{
 background:linear-gradient(135deg,#00c6ff,#0072ff);
 color:white;
+}
+
+/* REMINDER HIGHLIGHT */
+
+.message.reminder .bubble{
+background:#fff3cd;
+border:1px solid #ffeeba;
+color:#856404;
 }
 
 /* TIME */
@@ -363,8 +377,6 @@ opacity:1;
 
 </style>
 
-
-
 </head>
 
 <body>
@@ -447,6 +459,12 @@ isLoading:false,
 
 init(){
 this.loadChat();
+
+/* AUTO CEK REMINDER */
+setInterval(()=>{
+this.checkReminder();
+},60000);
+
 },
 
 toggleFull(){
@@ -465,10 +483,17 @@ btn.innerText="Full";
 },
 
 formatText(text){
-return text
+
+text = text
 .replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/(https?:\/\/[^\s]+)/g,'<a href="$1" target="_blank">$1</a>');
+.replace(/>/g,"&gt;");
+
+text = text.replace(/https?:\/\/[^\s]+/g,function(url){
+return '<a href="'+url+'" target="_blank" style="display:inline-block;background:#667eea;color:white;padding:6px 10px;border-radius:8px;font-size:12px;text-decoration:none;">🔗 Buka File</a>';
+});
+
+return text;
+
 },
 
 addMessage(text,type){
@@ -484,7 +509,7 @@ const bubble=document.createElement("div");
 bubble.className="bubble";
 bubble.innerHTML=this.formatText(text);
 
-if(type==="bot"){
+if(type!=="user"){
 bubble.style.cursor="pointer";
 bubble.onclick=()=>this.openPopup(text);
 }
@@ -499,6 +524,7 @@ msg.appendChild(bubble);
 
 this.chat.appendChild(msg);
 this.chat.scrollTop=this.chat.scrollHeight;
+
 this.saveChat();
 },
 
@@ -671,7 +697,7 @@ let message="🔔 "+n.text+"\n"+n.reminder;
 if(n.file){
 message+="\n"+n.file;
 }
-this.addMessage(message,"bot");
+this.addMessage(message,"bot reminder");
 });
 
 }else{
@@ -700,6 +726,12 @@ const saved=localStorage.getItem("ai_chat");
 if(saved){
 this.chat.innerHTML=saved;
 this.rebindPopup();
+
+/* AUTO SCROLL SAAT RELOAD */
+setTimeout(()=>{
+this.chat.scrollTop=this.chat.scrollHeight;
+},100);
+
 }
 },
 
