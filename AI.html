@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -127,6 +128,28 @@ box-shadow:0 3px 8px rgba(0,0,0,0.08);
 header button:hover{
 background:#f4f6fb;
 transform:translateY(-1px);
+}
+
+/* FILTER CHAT */
+
+.filter-box{
+display:none;
+gap:6px;
+margin-right:6px;
+}
+
+.filter-box input{
+padding:6px 10px;
+border-radius:12px;
+border:1px solid #dbe4f0;
+font-size:12px;
+}
+
+.highlight{
+background:#fff176;
+color:#000;
+padding:2px 4px;
+border-radius:4px;
 }
 
 /* CHAT */
@@ -378,6 +401,46 @@ opacity:1;
 }
 }
 
+#filterNav{
+display:flex;
+align-items:center;
+gap:6px;
+margin-left:6px;
+}
+
+#filterNav button{
+border:none;
+background:#eee;
+padding:4px 8px;
+border-radius:6px;
+cursor:pointer;
+font-size:12px;
+}
+
+#filterNav span{
+font-size:12px;
+color:#333;
+min-width:40px;
+text-align:center;
+}
+
+/* highlight semua hasil */
+
+.highlight{
+background:#fff176;
+color:#000;
+padding:2px 4px;
+border-radius:4px;
+}
+
+/* highlight hasil yang sedang dipilih */
+
+.highlight.active{
+background:#ff9800;
+color:#fff;
+box-shadow:0 0 0 2px rgba(255,152,0,0.4);
+}
+
 </style>
 
 </head>
@@ -389,9 +452,26 @@ opacity:1;
 <header>
 <span>🤖 AI Memory</span>
 
-<div style="display:flex;gap:8px;">
+<div style="display:flex;gap:8px;align-items:center;">
+
+<div class="filter-box" id="filterBox">
+
+<input id="filterText" placeholder="Filter chat..." oninput="filterChat()">
+
+<div id="filterNav">
+
+<button onclick="prevMatch()">◀</button>
+<span id="filterCount">0/0</span>
+<button onclick="nextMatch()">▶</button>
+
+</div>
+
+</div>
+
+<button onclick="toggleFilter()">Filter</button>
 <button onclick="AI.toggleFull()">Full</button>
 <button onclick="AI.clearChat()">Clear</button>
+
 </div>
 
 </header>
@@ -449,6 +529,151 @@ word-break:break-word;
 </div>
 
 <script>
+
+/* ================= FILTER CHAT ADVANCED ================= */
+
+let matches=[];
+let currentMatch=0;
+
+function toggleFilter(){
+
+const box=document.getElementById("filterBox");
+
+if(box.style.display==="flex"){
+box.style.display="none";
+clearHighlight();
+}else{
+box.style.display="flex";
+document.getElementById("filterText").focus();
+}
+
+}
+
+function filterChat(){
+
+const keyword=document.getElementById("filterText").value.trim();
+
+clearHighlight();
+
+matches=[];
+currentMatch=0;
+
+if(!keyword){
+updateCounter();
+return;
+}
+
+const bubbles=document.querySelectorAll("#chat .bubble");
+
+bubbles.forEach(bubble=>{
+highlightText(bubble,keyword);
+});
+
+matches=[...document.querySelectorAll(".highlight")];
+
+updateCounter();
+
+if(matches.length){
+scrollToMatch(0);
+}
+
+}
+
+function highlightText(element,keyword){
+
+const walk=document.createTreeWalker(
+element,
+NodeFilter.SHOW_TEXT,
+null,
+false
+);
+
+let node;
+const regex=new RegExp(keyword,"gi");
+
+while(node=walk.nextNode()){
+
+if(node.nodeValue.trim()!==""){
+
+const span=document.createElement("span");
+
+span.innerHTML=node.nodeValue.replace(regex,
+m=>`<span class="highlight">${m}</span>`
+);
+
+node.replaceWith(...span.childNodes);
+
+}
+
+}
+
+}
+
+function nextMatch(){
+
+if(!matches.length) return;
+
+currentMatch++;
+
+if(currentMatch>=matches.length) currentMatch=0;
+
+scrollToMatch(currentMatch);
+
+}
+
+function prevMatch(){
+
+if(!matches.length) return;
+
+currentMatch--;
+
+if(currentMatch<0) currentMatch=matches.length-1;
+
+scrollToMatch(currentMatch);
+
+}
+
+function scrollToMatch(index){
+
+document.querySelectorAll(".highlight").forEach(el=>{
+el.classList.remove("active");
+});
+
+matches[index].classList.add("active");
+
+matches[index].scrollIntoView({
+behavior:"smooth",
+block:"center"
+});
+
+updateCounter();
+
+}
+
+function updateCounter(){
+
+const counter=document.getElementById("filterCount");
+
+if(!matches.length){
+counter.textContent="0/0";
+}else{
+counter.textContent=(currentMatch+1)+"/"+matches.length;
+}
+
+}
+
+function clearHighlight(){
+
+document.querySelectorAll(".highlight").forEach(el=>{
+const parent=el.parentNode;
+parent.replaceChild(document.createTextNode(el.textContent),el);
+parent.normalize();
+});
+
+matches=[];
+updateCounter();
+
+}
 
 const AI = {
 
