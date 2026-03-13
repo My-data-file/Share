@@ -91,6 +91,8 @@ header{
 background:linear-gradient(135deg,#667eea,#764ba2);
 color:white;
 
+position:relative;
+
 padding:18px 22px;
 
 font-weight:600;
@@ -133,8 +135,22 @@ transform:translateY(-1px);
 
 .filter-box{
 display:none;
-gap:6px;
-margin-right:6px;
+
+position:absolute;
+top:60px;
+right:12px;
+
+background:#ffffff;
+border-radius:14px;
+
+padding:10px;
+
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+
+flex-direction:column;
+gap:8px;
+
+z-index:999;
 }
 
 .filter-box input{
@@ -993,4 +1009,3 @@ AI.init();
 
 </body>
 </html>
-
