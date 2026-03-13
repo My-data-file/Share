@@ -460,10 +460,10 @@ isLoading:false,
 init(){
 this.loadChat();
 
-/* AUTO CEK REMINDER */
-setInterval(()=>{
+/* AUTO CEK REMINDER SEKALI SAAT HALAMAN DIBUKA */
+setTimeout(()=>{
 this.checkReminder();
-},60000);
+},800);
 
 },
 
