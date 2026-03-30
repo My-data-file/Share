@@ -1834,7 +1834,15 @@ function closeDetailModalFinishing(){
 
   <!-- Hasil -->
   <div id="hasilPA" class="tab-content">
-    <input type="text" placeholder="🔍 Pencarian" oninput="renderGridPA(this.value)" class="baproFilter">
+<input type="text" placeholder="🔍 Pencarian" oninput="renderGridPA(this.value)" class="baproFilter">
+
+<!-- FILTER STATUS -->
+<div style="display:flex; gap:6px; margin-bottom:6px;">
+  <button onclick="setStatusFilterPA('')" class="paFilterBtn active">Semua</button>
+  <button onclick="setStatusFilterPA('Proses')" class="paFilterBtn">Proses</button>
+  <button onclick="setStatusFilterPA('Selesai')" class="paFilterBtn">Selesai</button>
+  <button onclick="setStatusFilterPA('Pending')" class="paFilterBtn">Pending</button>
+</div>
     <div class="baproGridScroll">
       <div id="gridPA" class="grid-container"></div>
     </div>
@@ -1930,6 +1938,26 @@ function closeDetailModalFinishing(){
 /* Grid card full-width */
 #hasilPA .grid-card { width:100%; box-sizing:border-box; }
 
+.paFilterBtn{
+  flex:1;
+  padding:5px;
+  border-radius:6px;
+  border:1px solid #000;
+  background:#e0e0e0;
+  cursor:pointer;
+  font-weight:600;
+  transition:0.2s;
+}
+
+.paFilterBtn.active{
+  background: linear-gradient(to right,#FF9800,#FFB74D);
+  color:#fff;
+}
+
+.paFilterBtn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+}
 </style>
 
 
@@ -1974,6 +2002,27 @@ if (paNoKS) {
       paNoKS.setSelectionRange(newPos, newPos);
     }, 0);
   });
+}
+
+// ================= FILTER STATUS CETAK =================
+let statusFilterPA = "";
+
+function setStatusFilterPA(status){
+  statusFilterPA = status;
+
+  document.querySelectorAll(".paFilterBtn").forEach(btn=>{
+    btn.classList.remove("active");
+
+    if(
+      (status === "" && btn.innerText === "Semua") ||
+      btn.innerText === status
+    ){
+      btn.classList.add("active");
+    }
+  });
+
+  const keyword = document.querySelector("#hasilPA .baproFilter").value;
+  renderGridPA(keyword);
 }
 </script>
 
@@ -2444,7 +2493,15 @@ function setStatusFilter(status){
 
   <!-- Hasil -->
   <div id="hasilLem" class="tab-content">
-    <input type="text" placeholder="🔍 Pencarian" oninput="renderGridLem(this.value)" class="baproFilter">
+<input type="text" placeholder="🔍 Pencarian" oninput="renderGridLem(this.value)" class="baproFilter">
+
+<!-- FILTER STATUS -->
+<div style="display:flex; gap:6px; margin-bottom:6px;">
+  <button onclick="setStatusFilterLem('')" class="lemFilterBtn active">Semua</button>
+  <button onclick="setStatusFilterLem('Proses')" class="lemFilterBtn">Proses</button>
+  <button onclick="setStatusFilterLem('Selesai')" class="lemFilterBtn">Selesai</button>
+  <button onclick="setStatusFilterLem('Pending')" class="lemFilterBtn">Pending</button>
+</div>
     <div class="baproGridScroll">
       <div id="gridLem" class="grid-container"></div>
     </div>
@@ -2554,6 +2611,27 @@ function setStatusFilter(status){
 }
 /* Grid card full-width */
 #hasilLem .grid-card { width:100%; box-sizing:border-box; }
+
+.lemFilterBtn{
+  flex:1;
+  padding:5px;
+  border-radius:6px;
+  border:1px solid #000;
+  background:#e0e0e0;
+  cursor:pointer;
+  font-weight:600;
+  transition:0.2s;
+}
+
+.lemFilterBtn.active{
+  background: linear-gradient(to right,#9C27B0,#BA68C8);
+  color:#fff;
+}
+
+.lemFilterBtn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+}
 </style>
 
 
@@ -2598,6 +2676,27 @@ if (lemNoKS) {
       lemNoKS.setSelectionRange(newPos, newPos);
     }, 0);
   });
+}
+
+// ================= FILTER STATUS LEM =================
+let statusFilterLem = "";
+
+function setStatusFilterLem(status){
+  statusFilterLem = status;
+
+  document.querySelectorAll(".lemFilterBtn").forEach(btn=>{
+    btn.classList.remove("active");
+
+    if(
+      (status === "" && btn.innerText === "Semua") ||
+      btn.innerText === status
+    ){
+      btn.classList.add("active");
+    }
+  });
+
+  const keyword = document.querySelector("#hasilLem .baproFilter").value;
+  renderGridLem(keyword);
 }
 </script>
 
@@ -8339,15 +8438,22 @@ function renderGridPA(query = "") {
 
   const q = (query || '').toLowerCase();
 
-  paItems.forEach((item, i) => {
+paItems.forEach((item, i) => {
 
-    // Filter pencarian
-    if (q && !(
-      (item.nama || '').toLowerCase().includes(q) ||
-      (item.noKS || '').toLowerCase().includes(q) ||
-      (item.qc || '').toLowerCase().includes(q) ||
-      (item.keterangan || '').toLowerCase().includes(q)
-    )) return;
+  // ===== FILTER PENCARIAN =====
+  if (q && !(
+    (item.nama || '').toLowerCase().includes(q) ||
+    (item.noKS || '').toLowerCase().includes(q) ||
+    (item.qc || '').toLowerCase().includes(q) ||
+    (item.keterangan || '').toLowerCase().includes(q)
+  )) return;
+
+  // ===== FILTER STATUS (TAMBAHAN) =====
+  if (
+    statusFilterPA &&
+    (item.update || '').toLowerCase() !== statusFilterPA.toLowerCase()
+  ) return;
+
 
     const card = document.createElement('div');
     card.className = 'grid-card';
@@ -9250,15 +9356,22 @@ function renderGridLem(query = "") {
 
   const q = (query || '').toLowerCase();
 
-  lemItems.forEach((item, i) => {
+lemItems.forEach((item, i) => {
 
-    // Filter pencarian
-    if (q && !(
-      (item.nama || '').toLowerCase().includes(q) ||
-      (item.noKS || '').toLowerCase().includes(q) ||
-      (item.qc || '').toLowerCase().includes(q) ||
-      (item.keterangan || '').toLowerCase().includes(q)
-    )) return;
+  // ===== FILTER PENCARIAN =====
+  if (q && !(
+    (item.nama || '').toLowerCase().includes(q) ||
+    (item.noKS || '').toLowerCase().includes(q) ||
+    (item.qc || '').toLowerCase().includes(q) ||
+    (item.keterangan || '').toLowerCase().includes(q)
+  )) return;
+
+  // ===== FILTER STATUS (TAMBAHAN) =====
+  if (
+    statusFilterLem &&
+    (item.update || '').toLowerCase() !== statusFilterLem.toLowerCase()
+  ) return;
+
 
     const card = document.createElement('div');
     card.className = 'grid-card';
