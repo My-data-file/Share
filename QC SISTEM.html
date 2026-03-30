@@ -2103,7 +2103,15 @@ if (paNoKS) {
 
   <!-- Hasil -->
   <div id="hasilFinishing" class="tab-content">
-    <input type="text" placeholder="🔍 Pencarian" oninput="renderGridFinishing(this.value)" class="baproFilter">
+<input type="text" placeholder="🔍 Pencarian" oninput="renderGridFinishing(this.value)" class="baproFilter">
+
+<!-- FILTER STATUS -->
+<div style="display:flex; gap:6px; margin-bottom:6px;">
+  <button onclick="setStatusFilter('')" class="finFilterBtn active">Semua</button>
+  <button onclick="setStatusFilter('Proses')" class="finFilterBtn">Proses</button>
+  <button onclick="setStatusFilter('Selesai')" class="finFilterBtn">Selesai</button>
+  <button onclick="setStatusFilter('Pending')" class="finFilterBtn">Pending</button>
+</div>
     <div class="baproGridScroll">
       <div id="gridFinishing" class="grid-container"></div>
     </div>
@@ -2211,6 +2219,27 @@ if (paNoKS) {
 }
 /* Grid card full-width */
 #hasilFinishing .grid-card { width:100%; box-sizing:border-box; }
+
+.finFilterBtn{
+  flex:1;
+  padding:5px;
+  border-radius:6px;
+  border:1px solid #000;
+  background:#e0e0e0;
+  cursor:pointer;
+  font-weight:600;
+  transition:0.2s;
+}
+
+.finFilterBtn.active{
+  background: linear-gradient(to right,#22C55E,#4ADE80);
+  color:#fff;
+}
+
+.finFilterBtn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+}
 </style>
 
 
@@ -2258,6 +2287,31 @@ if (finishingNoKS) {
     }, 0);
   });
 }
+
+// ================= FILTER STATUS FINISHING =================
+let statusFilterFinishing = "";
+
+// klik tombol filter
+function setStatusFilter(status){
+  statusFilterFinishing = status;
+
+  // update tombol aktif
+  document.querySelectorAll(".finFilterBtn").forEach(btn=>{
+    btn.classList.remove("active");
+
+    if(
+      (status === "" && btn.innerText === "Semua") ||
+      btn.innerText === status
+    ){
+      btn.classList.add("active");
+    }
+  });
+
+  // ambil keyword pencarian aktif
+  const keyword = document.querySelector(".baproFilter").value;
+  renderGridFinishing(keyword);
+}
+
 </script>
 
 
@@ -6434,15 +6488,22 @@ function renderGridFinishing(query = "") {
 
   const q = (query || '').toLowerCase();
 
-  finishingItems.forEach((item, i) => {
+finishingItems.forEach((item, i) => {
 
-    // ===== FILTER =====
-    if (q && !(
-      (item.nama || '').toLowerCase().includes(q) ||
-      (item.noKS || '').toLowerCase().includes(q) ||
-      (item.qc || '').toLowerCase().includes(q) ||
-      (item.keterangan || '').toLowerCase().includes(q)
-    )) return;
+  // ===== FILTER TEXT =====
+  if (q && !(
+    (item.nama || '').toLowerCase().includes(q) ||
+    (item.noKS || '').toLowerCase().includes(q) ||
+    (item.qc || '').toLowerCase().includes(q) ||
+    (item.keterangan || '').toLowerCase().includes(q)
+  )) return;
+
+  // ===== FILTER STATUS (INI YANG PENTING) =====
+  if (
+    statusFilterFinishing &&
+    (item.update || '').toLowerCase() !== statusFilterFinishing.toLowerCase()
+  ) return;
+
 
     const card = document.createElement('div');
     card.className = 'grid-card';
