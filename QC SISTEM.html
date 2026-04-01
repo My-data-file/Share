@@ -303,6 +303,12 @@ select {
   color: white;
 }
 
+/* Tambahan tombol Detail */
+.btn-detail {
+  background: #6f42c1; /* ungu biar beda & elegan */
+  color: white;
+}
+
 .btn-icon:hover {
   opacity: 0.75;
   transform: scale(1.08);
@@ -823,8 +829,109 @@ h2.qc-title:not(.qc-lem):not(.qc-finishing) + .total-wrapper .total-box:hover{
 }
 
 
+/* ===================== DETAIL GRID ===================== */
+/* ================= MODAL OVERLAY ================= */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(4px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  z-index: 9999;
+  animation: fadeIn 0.2s ease;
+}
 
+/* ================= MODAL BOX ================= */
+.modal-content {
+  background: #ffffff;
+  padding: 18px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  animation: scaleIn 0.2s ease;
+}
 
+/* ================= TITLE ================= */
+.modal-content h3 {
+  margin: 0 0 10px;
+  font-size: 1.2rem;
+  color: #333;
+  text-align: center;
+}
+
+/* ================= TEXT ================= */
+.modal-content p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* ================= LIST ================= */
+.modal-content ul {
+  padding-left: 16px;
+  margin: 6px 0;
+}
+
+.modal-content li {
+  font-size: 0.9rem;
+  margin-bottom: 3px;
+}
+
+/* ================= BUTTON ================= */
+.modal-content button {
+  margin-top: 12px;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: linear-gradient(135deg, #2196F3, #42A5F5);
+  color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: 0.2s;
+}
+
+.modal-content button:hover {
+  transform: scale(1.03);
+}
+
+/* ================= ANIMATION ================= */
+@keyframes fadeIn {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.9); opacity: 0 }
+  to { transform: scale(1); opacity: 1 }
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 480px) {
+  .modal-content {
+    border-radius: 14px;
+    padding: 14px;
+    max-height: 90vh;
+  }
+
+  .modal-content h3 {
+    font-size: 1.05rem;
+  }
+
+  .modal-content p,
+  .modal-content li {
+    font-size: 0.85rem;
+  }
+}
 
 
 
@@ -2289,6 +2396,8 @@ function setStatusFilterPA(status){
   transform:translateY(-1px);
   box-shadow:0 2px 6px rgba(0,0,0,0.2);
 }
+
+
 </style>
 
 
@@ -6680,11 +6789,12 @@ finishingItems.forEach((item, i) => {
         <span class="${statusClass}">${highlightHtmlSafe(item.update || '', q)}</span>
       </div>
 
-      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
-        <button class="btn-icon btn-call" title="Panggil" onclick="callFinishing(${i})">📤</button>
-        <button class="btn-icon btn-edit" title="Edit Inline" onclick="editFinishingInline(${i})">✏️</button>
-        <button class="btn-icon btn-delete" title="Hapus" onclick="deleteFinishing(${i})">🗑️</button>
-      </div>
+<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
+  <button class="btn-icon btn-detail" title="Detail" onclick="showDetailFinishing(${i})">🔍</button>
+  <button class="btn-icon btn-call" title="Panggil" onclick="callFinishing(${i})">📤</button>
+  <button class="btn-icon btn-edit" title="Edit Inline" onclick="editFinishingInline(${i})">✏️</button>
+  <button class="btn-icon btn-delete" title="Hapus" onclick="deleteFinishing(${i})">🗑️</button>
+</div>
     `;
 
     container.appendChild(card);
@@ -6698,6 +6808,81 @@ finishingItems.forEach((item, i) => {
   // Auto scroll ke item terakhir
   const lastCard = container.querySelector('.grid-card:last-child');
   if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
+}
+
+// ====================== DETAIL GRID ======================
+function showDetailFinishing(index){
+  const item = finishingItems[index];
+  if(!item) return;
+
+  const raw = (item.keterangan || "").toString().trim();
+  const ketMap = {1:"-",2:"-",3:"-",4:"-",5:"-"};
+
+  raw.split(/\r?\n/).forEach(line => {
+    const m = line.match(/^\s*(\d+)\.\s*(.*)/);
+    if(m){
+      const no = parseInt(m[1]);
+      if(no >=1 && no <=5){
+        ketMap[no] = m[2] || "-";
+      }
+    }
+  });
+
+  const html = `
+    <div class="modal-content">
+      <h3>📋 Detail</h3>
+
+      <p><b>Tanggal:</b> ${item.tanggal || '-'}</p>
+      <p><b>Nama Order:</b> ${item.nama || '-'}</p>
+      <p><b>No KS:</b> ${item.noKS || '-'}</p>
+      <p><b>Order:</b> ${item.order || '-'}</p>
+      <p><b>Isi/Dus:</b> ${item.isi || '-'}</p>
+      <p><b>Bagus:</b> ${item.bagus || '-'}</p>
+
+      <hr>
+
+      <p><b>Total BS:</b> ${item.jenisBS || '-'}</p>
+      <p><b>BS Cetak:</b> ${item.jenisBS1 || '-'}</p>
+      <p><b>BS Lem:</b> ${item.jenisBS2 || '-'}</p>
+      <p><b>BS Ponch:</b> ${item.jenisBS3 || '-'}</p>
+      <p><b>BS Varnish:</b> ${item.jenisBS4 || '-'}</p>
+      <p><b>BS Potong:</b> ${item.jenisBS5 || '-'}</p>
+
+      <hr>
+
+      <p><b>QC:</b> ${item.qc || '-'}</p>
+      <p><b>Status:</b> ${item.update || '-'}</p>
+
+      <hr>
+
+      <p><b>Keterangan:</b></p>
+      <ul>
+        <li>1. ${ketMap[1]}</li>
+        <li>2. ${ketMap[2]}</li>
+        <li>3. ${ketMap[3]}</li>
+        <li>4. ${ketMap[4]}</li>
+        <li>5. ${ketMap[5]}</li>
+      </ul>
+
+      <button onclick="closeModalFinishing()">Tutup</button>
+    </div>
+  `;
+
+  let modal = document.getElementById('modalFinishing');
+  if(!modal){
+    modal = document.createElement('div');
+    modal.id = 'modalFinishing';
+    modal.className = 'modal';
+    document.body.appendChild(modal);
+  }
+
+  modal.innerHTML = html;
+  modal.style.display = 'flex';
+}
+
+function closeModalFinishing(){
+  const modal = document.getElementById('modalFinishing');
+  if(modal) modal.style.display = 'none';
 }
 
 
@@ -7691,6 +7876,7 @@ function renderGridBapro(query = "") {
       </div>
 
       <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
+        <button class="btn-icon btn-detail" title="Detail" onclick="showDetailBapro(${i})">🔍</button>
         <button class="btn-icon btn-call" title="Panggil" onclick="callBapro(${i})">📤</button>
         <button class="btn-icon btn-edit" title="Edit Inline" onclick="editBaproInline(${i})">✏️</button>
         <button class="btn-icon btn-delete" title="Hapus" onclick="deleteBapro(${i})">🗑️</button>
@@ -7709,6 +7895,81 @@ function renderGridBapro(query = "") {
   const lastCard = container.querySelector('.grid-card:last-child');
   if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
+
+// ====================== DETAIL GRID BAPRO ======================
+function showDetailBapro(index){
+  const item = baproItems[index];
+  if(!item) return;
+
+  const raw = (item.keterangan || "").toString().trim();
+  const ketMap = {1:"-",2:"-",3:"-",4:"-",5:"-"};
+
+  raw.split(/\r?\n/).forEach(line => {
+    const m = line.match(/^\s*(\d+)\.\s*(.*)/);
+    if(m){
+      const no = parseInt(m[1]);
+      if(no >=1 && no <=5){
+        ketMap[no] = m[2] || "-";
+      }
+    }
+  });
+
+  const html = `
+    <div class="modal-content">
+      <h3>📋 Detail</h3>
+
+      <p><b>Tanggal:</b> ${item.tanggal || '-'}</p>
+      <p><b>Nama Order:</b> ${item.nama || '-'}</p>
+      <p><b>CSO:</b> ${item.cso || '-'}</p>
+      <p><b>Jenis:</b> ${item.jenisKertas || '-'}</p>
+      <p><b>GSM:</b> ${item.tebalKertas || '-'}</p>
+
+      <hr>
+
+      <p><b>Nama Tinta:</b> ${item.NamaTinta || '-'}</p>
+      <p><b>Dmax:</b> ${item.dmax || '-'}</p>
+      <p><b>L:</b> ${item.l || '-'}</p>
+      <p><b>A:</b> ${item.a || '-'}</p>
+      <p><b>B:</b> ${item.b || '-'}</p>
+
+      <hr>
+
+      <p><b>QC:</b> ${item.qc || '-'}</p>
+      <p><b>Status:</b> ${item.update || '-'}</p>
+
+      <hr>
+
+      <p><b>Keterangan:</b></p>
+      <ul>
+        <li>1. ${ketMap[1]}</li>
+        <li>2. ${ketMap[2]}</li>
+        <li>3. ${ketMap[3]}</li>
+        <li>4. ${ketMap[4]}</li>
+        <li>5. ${ketMap[5]}</li>
+      </ul>
+
+      <button onclick="closeModalBapro()">Tutup</button>
+    </div>
+  `;
+
+  let modal = document.getElementById('modalBapro');
+  if(!modal){
+    modal = document.createElement('div');
+    modal.id = 'modalBapro';
+    modal.className = 'modal';
+    document.body.appendChild(modal);
+  }
+
+  modal.innerHTML = html;
+  modal.style.display = 'flex';
+}
+
+// ====================== CLOSE MODAL ======================
+function closeModalBapro(){
+  const modal = document.getElementById('modalBapro');
+  if(modal) modal.style.display = 'none';
+}
+
 
 // ====================== LOAD DATA DARI SPREADSHEET (BAPRO) – MENGIKUTI QC LEM ======================
 async function loadBaproItems(){
@@ -8507,11 +8768,12 @@ paItems.forEach((item, i) => {
         <span class="${statusClass}">${highlightHtmlSafe(item.update || '', q)}</span>
       </div>
 
-      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
-        <button class="btn-icon btn-call" title="Panggil" onclick="callPA(${i})">📤</button>
-        <button class="btn-icon btn-edit" title="Edit Inline" onclick="editPAInline(${i})">✏️</button>
-        <button class="btn-icon btn-delete" title="Hapus" onclick="deletePA(${i})">🗑️</button>
-      </div>
+<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
+  <button class="btn-icon btn-detail" title="Detail" onclick="showDetailPA(${i})">🔍</button>
+  <button class="btn-icon btn-call" title="Panggil" onclick="callPA(${i})">📤</button>
+  <button class="btn-icon btn-edit" title="Edit Inline" onclick="editPAInline(${i})">✏️</button>
+  <button class="btn-icon btn-delete" title="Hapus" onclick="deletePA(${i})">🗑️</button>
+</div>
     `;
 
     container.appendChild(card);
@@ -8521,6 +8783,78 @@ paItems.forEach((item, i) => {
 
   const lastCard = container.querySelector('.grid-card:last-child');
   if(lastCard) lastCard.scrollIntoView({behavior:'smooth',block:'end'});
+}
+
+// ====================== DETAIL GRID PA ======================
+function showDetailPA(index){
+  const item = paItems[index];
+  if(!item) return;
+
+  const raw = (item.keterangan || "").toString().trim();
+  const ketMap = {1:"-",2:"-",3:"-",4:"-",5:"-"};
+
+  raw.split(/\r?\n/).forEach(line => {
+    const m = line.match(/^\s*(\d+)\.\s*(.*)/);
+    if(m){
+      const no = parseInt(m[1]);
+      if(no >=1 && no <=5){
+        ketMap[no] = m[2] || "-";
+      }
+    }
+  });
+
+  const html = `
+    <div class="modal-content">
+      <h3>📋 Detail</h3>
+
+      <p><b>Tanggal:</b> ${item.tanggal || '-'}</p>
+      <p><b>Nama Order:</b> ${item.nama || '-'}</p>
+      <p><b>No KS:</b> ${item.noKS || '-'}</p>
+      <p><b>Order:</b> ${item.order || '-'}</p>
+
+      <hr>
+
+      <p><b>Bagus:</b> ${item.bagus || '-'}</p>
+      <p><b>Sortir:</b> ${item.sortir || '-'}</p>
+      <p><b>Problem:</b> ${item.problem || '-'}</p>
+
+      <hr>
+
+      <p><b>QC:</b> ${item.qc || '-'}</p>
+      <p><b>Mesin:</b> ${item.mesin || '-'}</p>
+      <p><b>Status:</b> ${item.update || '-'}</p>
+
+      <hr>
+
+      <p><b>Keterangan:</b></p>
+      <ul>
+        <li>1. ${ketMap[1]}</li>
+        <li>2. ${ketMap[2]}</li>
+        <li>3. ${ketMap[3]}</li>
+        <li>4. ${ketMap[4]}</li>
+        <li>5. ${ketMap[5]}</li>
+      </ul>
+
+      <button onclick="closeModalPA()">Tutup</button>
+    </div>
+  `;
+
+  let modal = document.getElementById('modalPA');
+  if(!modal){
+    modal = document.createElement('div');
+    modal.id = 'modalPA';
+    modal.className = 'modal';
+    document.body.appendChild(modal);
+  }
+
+  modal.innerHTML = html;
+  modal.style.display = 'flex';
+}
+
+// ====================== CLOSE MODAL ======================
+function closeModalPA(){
+  const modal = document.getElementById('modalPA');
+  if(modal) modal.style.display = 'none';
 }
 
 // ====================== LOAD DATA DARI SPREADSHEET (PA) ======================
@@ -9432,9 +9766,10 @@ lemItems.forEach((item, i) => {
       </div>
 
       <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
-        <button class="btn-icon btn-call" title="Panggil" onclick="callLem(${i})">📤</button>
-        <button class="btn-icon btn-edit" title="Edit Inline" onclick="editLemInline(${i})">✏️</button>
-        <button class="btn-icon btn-delete" title="Hapus" onclick="deleteLem(${i})">🗑️</button>
+  <button class="btn-icon btn-detail" title="Detail" onclick="showDetailLem(${i})">🔍</button>
+  <button class="btn-icon btn-call" title="Panggil" onclick="callLem(${i})">📤</button>
+  <button class="btn-icon btn-edit" title="Edit Inline" onclick="editLemInline(${i})">✏️</button>
+  <button class="btn-icon btn-delete" title="Hapus" onclick="deleteLem(${i})">🗑️</button>
         <button class="btn-call-finishing" title="Kirim ke Finishing"
           onclick="sendLemToFinishing(${i})">
           ➜ Sortir Finishing
@@ -9452,7 +9787,81 @@ lemItems.forEach((item, i) => {
   if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
 
+// ====================== DETAIL GRID LEM ======================
+function showDetailLem(index){
+  const item = lemItems[index];
+  if(!item) return;
 
+  const raw = (item.keterangan || "").toString().trim();
+  const ketMap = {1:"-",2:"-",3:"-",4:"-",5:"-"};
+
+  raw.split(/\r?\n/).forEach(line => {
+    const m = line.match(/^\s*(\d+)\.\s*(.*)/);
+    if(m){
+      const no = parseInt(m[1]);
+      if(no >=1 && no <=5){
+        ketMap[no] = m[2] || "-";
+      }
+    }
+  });
+
+  const html = `
+    <div class="modal-content">
+      <h3>📋 Detail</h3>
+
+      <p><b>Tanggal:</b> ${item.tanggal || '-'}</p>
+      <p><b>Nama Order:</b> ${item.nama || '-'}</p>
+      <p><b>No KS:</b> ${item.noKS || '-'}</p>
+      <p><b>Order:</b> ${item.order || '-'}</p>
+      <p><b>Isi/Dus:</b> ${item.isi || '-'}</p>
+      <p><b>Bagus:</b> ${item.bagus || '-'}</p>
+
+      <hr>
+
+      <p><b>Total BS:</b> ${item.lemJenisBS || '-'}</p>
+      <p><b>BS Cetak:</b> ${item.lemJenisBS1 || '-'}</p>
+      <p><b>BS Lem:</b> ${item.lemJenisBS12 || '-'}</p>
+      <p><b>BS Ponch:</b> ${item.lemJenisBS13 || '-'}</p>
+      <p><b>BS Varnish:</b> ${item.lemJenisBS14 || '-'}</p>
+      <p><b>BS Potong:</b> ${item.lemJenisBS15 || '-'}</p>
+
+      <hr>
+
+      <p><b>QC:</b> ${item.qc || '-'}</p>
+      <p><b>Status:</b> ${item.update || '-'}</p>
+
+      <hr>
+
+      <p><b>Keterangan:</b></p>
+      <ul>
+        <li>1. ${ketMap[1]}</li>
+        <li>2. ${ketMap[2]}</li>
+        <li>3. ${ketMap[3]}</li>
+        <li>4. ${ketMap[4]}</li>
+        <li>5. ${ketMap[5]}</li>
+      </ul>
+
+      <button onclick="closeModalLem()">Tutup</button>
+    </div>
+  `;
+
+  let modal = document.getElementById('modalLem');
+  if(!modal){
+    modal = document.createElement('div');
+    modal.id = 'modalLem';
+    modal.className = 'modal';
+    document.body.appendChild(modal);
+  }
+
+  modal.innerHTML = html;
+  modal.style.display = 'flex';
+}
+
+// ====================== CLOSE MODAL ======================
+function closeModalLem(){
+  const modal = document.getElementById('modalLem');
+  if(modal) modal.style.display = 'none';
+}
 
 
 
@@ -10530,7 +10939,10 @@ function loadSPV() {
           <td>${item.fotoUrl1 ? `<a href="${item.fotoUrl1}" target="_blank">📷 Lihat Foto</a>` : '-'}</td>
           <td>${item.namaQC || item['Nama QC'] || ''}</td>
           <td>${item.proses || item['Proses'] || ''}</td>
-          <td class="action-cell"><button class="edit-btn">✏️ Edit</button></td>
+<td class="action-cell">
+  <button class="btn-icon btn-detail" title="Detail" onclick="showDetailSPV(${index})">🔍</button>
+  <button class="edit-btn">✏️ Edit</button>
+</td>
         `;
         tbody.appendChild(tr);
       });
@@ -10540,6 +10952,86 @@ function loadSPV() {
     .catch(err => console.error("Gagal memuat data SPV:", err))
     .finally(() => spinner.style.display = "none");
 }
+
+
+// ====================== DETAIL GRID SPV ======================
+function showDetailSPV(index){
+  const tbody = document.querySelector('#spvTable tbody');
+  if(!tbody) return;
+
+  const row = tbody.querySelectorAll('tr')[index];
+  if(!row) return;
+
+  const cells = row.querySelectorAll('td');
+
+  // Ambil data dari tabel
+  const data = {
+    tanggal: cells[0].textContent || '-',
+    namaOrder: cells[1].textContent || '-',
+    noKS: cells[2].textContent || '-',
+    jam: cells[3].textContent || '-',
+    ket: cells[4].textContent || '-',
+    foto: cells[5].querySelector('a')?.href || null,
+    ket1: cells[6].textContent || '-',
+    foto1: cells[7].querySelector('a')?.href || null,
+    namaQC: cells[8].textContent || '-',
+    proses: cells[9].textContent || '-'
+  };
+
+  const html = `
+    <div class="modal-content">
+      <h3>📋 Detail</h3>
+
+      <p><b>Tanggal:</b> ${data.tanggal}</p>
+      <p><b>Jam:</b> ${data.jam}</p>
+      <p><b>Nama Order:</b> ${data.namaOrder}</p>
+      <p><b>No KS:</b> ${data.noKS}</p>
+
+      <hr>
+
+      <p><b>Keterangan Acuan:</b></p>
+      <p>${data.ket}</p>
+
+      <p><b>Foto Acuan:</b> 
+        ${data.foto ? `<a href="${data.foto}" target="_blank">📷 Lihat Foto</a>` : '-'}
+      </p>
+
+      <hr>
+
+      <p><b>Keterangan Temuan:</b></p>
+      <p>${data.ket1}</p>
+
+      <p><b>Foto Temuan:</b> 
+        ${data.foto1 ? `<a href="${data.foto1}" target="_blank">📷 Lihat Foto</a>` : '-'}
+      </p>
+
+      <hr>
+
+      <p><b>QC:</b> ${data.namaQC}</p>
+      <p><b>Proses:</b> ${data.proses}</p>
+
+      <button onclick="closeModalSPV()">Tutup</button>
+    </div>
+  `;
+
+  let modal = document.getElementById('modalSPV');
+  if(!modal){
+    modal = document.createElement('div');
+    modal.id = 'modalSPV';
+    modal.className = 'modal';
+    document.body.appendChild(modal);
+  }
+
+  modal.innerHTML = html;
+  modal.style.display = 'flex';
+}
+
+// ====================== CLOSE MODAL ======================
+function closeModalSPV(){
+  const modal = document.getElementById('modalSPV');
+  if(modal) modal.style.display = 'none';
+}
+
 
 /* ====================== ENABLE EDIT ====================== */
 function enableSPVEdit() {
@@ -11020,10 +11512,11 @@ async function loadMeeting(){
         <td>${item.tindakan || ''}</td>
         <td>${item.catatan || ''}</td>
         <td>${item.peserta || ''}</td>
-        <td class="action-cell">
-          <button class="edit-btn">✏️ Edit</button>
-          <button class="share-btn">📤 Share WA</button>
-        </td>
+<td class="action-cell">
+  <button class="btn-icon btn-detail" title="Detail" onclick="showDetailMeeting(${index})">🔍</button>
+  <button class="edit-btn">✏️ Edit</button>
+  <button class="share-btn">📤 Share WA</button>
+</td>
       `;
       tbody.appendChild(tr);
 
@@ -11057,6 +11550,82 @@ async function loadMeeting(){
     enableMeetingEdit();
   }catch(err){ console.error(err); }
   finally{ if(spinner) spinner.style.display="none"; }
+}
+
+// ====================== DETAIL GRID MEETING ======================
+function showDetailMeeting(index){
+  const tbody = document.querySelector('#meetingTable tbody');
+  if(!tbody) return;
+
+  const row = tbody.querySelectorAll('tr')[index];
+  if(!row) return;
+
+  const cells = row.querySelectorAll('td');
+
+  const data = {
+    tanggal: cells[0].textContent || '-',
+    namaMeeting: cells[1].textContent || '-',
+    jam: cells[2].textContent || '-',
+    ket: cells[3].textContent || '-',
+    foto: cells[4].querySelector('a')?.href || null,
+    akar: cells[5].textContent || '-',
+    tindakan: cells[6].textContent || '-',
+    catatan: cells[7].textContent || '-',
+    peserta: cells[8].textContent || '-'
+  };
+
+  const html = `
+    <div class="modal-content">
+      <h3>📋 Detail</h3>
+
+      <p><b>Tanggal:</b> ${data.tanggal}</p>
+      <p><b>Jam:</b> ${data.jam}</p>
+      <p><b>Nama Meeting:</b> ${data.namaMeeting}</p>
+
+      <hr>
+
+      <p><b>Keterangan:</b></p>
+      <p>${data.ket}</p>
+
+      <p><b>Foto:</b> 
+        ${data.foto ? `<a href="${data.foto}" target="_blank">📷 Lihat Foto</a>` : '-'}
+      </p>
+
+      <hr>
+
+      <p><b>Akar Masalah:</b></p>
+      <p>${data.akar}</p>
+
+      <p><b>Tindakan:</b></p>
+      <p>${data.tindakan}</p>
+
+      <p><b>Catatan:</b></p>
+      <p>${data.catatan}</p>
+
+      <hr>
+
+      <p><b>Peserta:</b> ${data.peserta}</p>
+
+      <button onclick="closeModalMeeting()">Tutup</button>
+    </div>
+  `;
+
+  let modal = document.getElementById('modalMeeting');
+  if(!modal){
+    modal = document.createElement('div');
+    modal.id = 'modalMeeting';
+    modal.className = 'modal';
+    document.body.appendChild(modal);
+  }
+
+  modal.innerHTML = html;
+  modal.style.display = 'flex';
+}
+
+// ====================== CLOSE MODAL ======================
+function closeModalMeeting(){
+  const modal = document.getElementById('modalMeeting');
+  if(modal) modal.style.display = 'none';
 }
 
 // ===== ENABLE EDIT =====
