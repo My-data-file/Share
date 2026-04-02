@@ -7817,7 +7817,7 @@ function renderGridBapro(query = "") {
 
         <span>QC: ${highlightHtmlSafe(item.qc || '', q)}</span><br>
 
-        <span><b>Keterangan:</b></span><br>
+        <span><b>Resep Tinta:</b></span><br>
         <div class="ket-list">
           ${ketsHtml}
         </div>
@@ -7883,7 +7883,7 @@ function showDetailBapro(index){
 
       <hr>
 
-      <p><b>Keterangan:</b></p>
+      <p><b>Resep Tinta:</b></p>
       <ul>
         <li>1. ${ketMap[1]}</li>
         <li>2. ${ketMap[2]}</li>
@@ -8162,7 +8162,7 @@ function editBaproInline(index){
         <option value="Selesai" ${item.update==='Selesai'?'selected':''}>Selesai</option>
       </select>
 
-      <label class="edit-label">Keterangan</label>
+      <label class="edit-label">Resep Tinta</label>
       <textarea class="edit-inline" rows="2">
 1. ${ketMap[1]}
 2. ${ketMap[2]}
