@@ -1634,13 +1634,11 @@ function closeDetailModalFinishing(){
       pointer-events: none;"></span>
   </h2>
 
-  <!-- Tabs -->
   <div class="tabs" style="display:flex; gap:8px; margin-bottom:10px;">
     <button class="tab-btn bapro active" data-tab="inputBapro" onclick="switchTab(this)">Inputan</button>
     <button class="tab-btn bapro" data-tab="hasilBapro" onclick="switchTab(this)">Hasil</button>
   </div>
 
-  <!-- Inputan -->
   <div id="inputBapro" class="tab-content active">
     <div class="form-group">
       <label>Nama Order</label>
@@ -1684,105 +1682,179 @@ function closeDetailModalFinishing(){
     </div>
   </div>
 
-  <!-- Hasil -->
   <div id="hasilBapro" class="tab-content">
-    <input type="text" placeholder="🔍 Pencarian" oninput="renderGridBapro(this.value)" class="baproFilter">
-    <div class="baproGridScroll">
+    <div class="hasil-header">
+      <input type="text" placeholder="🔍 Pencarian" oninput="filterSemuaBapro(this.value)" class="baproFilter">
+      
+      <div class="view-switcher">
+        <button onclick="setBaproView('grid')" id="btnViewGrid" class="view-btn active" title="Mode Grid">🔳</button>
+        <button onclick="setBaproView('table')" id="btnViewTable" class="view-btn" title="Mode Tabel">≡</button>
+      </div>
+    </div>
+
+    <div class="baproDisplayScroll">
       <div id="gridBapro" class="grid-container"></div>
+
+      <div id="tableWrapperBapro" class="table-wrapper" style="display:none;">
+        <table class="bapro-table">
+          <thead>
+            <tr>
+              <th>Order & Tinta</th>
+              <th>QC</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="tableBodyBapro"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
 </section>
 
-
-
 <style>
-/* ======================== TAB BAPRO ======================== */
-.tab-btn.bapro {
-  flex:1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer;
-  border:1px solid #000; background:#e0e0e0 !important; color:#000 !important;
-  transition:all 0.2s; text-align:center;
-}
-.tab-btn.bapro.active {
-  background: linear-gradient(to right,#D32F2F,#F44336) !important; color:#fff !important;
-  border:1px solid #000 !important;
-}
-.tab-btn.bapro:not(.active):hover {
-  background:#F0625D !important; color:#fff !important;
-  transform: translateY(-1px); box-shadow:0 2px 6px rgba(211,47,47,0.3);
-}
-.tab-btn.bapro:focus { outline:none; box-shadow:none; }
-
-/* Inputan Form */
-#inputBapro .form-group input,
-#inputBapro .form-group select,
-#inputBapro .form-group textarea {
-  width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:8px;
-  font-size:0.95rem; box-sizing:border-box;
-}
-.bapro-add-btn {
-  width:100%; padding:0.6rem; background:linear-gradient(135deg,#D32F2F,#F44336);
-  color:#fff; font-weight:600; border:1px solid #000; border-radius:8px;
-  cursor:pointer; font-size:1rem; box-shadow:0 4px 8px rgba(0,0,0,0.3); transition:all 0.25s;
-}
-.bapro-add-btn:hover {
-  background:linear-gradient(135deg,#F44336,#D32F2F);
-  transform: translateY(-2px); box-shadow:0 6px 12px rgba(244,67,54,0.4);
-}
-
-/* Container Tab */
-#qcBapro { display:flex; flex-direction:column; max-height:none; }
-#qcBapro .tabs { position:sticky; top:0; z-index:50; background:#fff; padding:6px 0; }
-#inputBapro, #hasilBapro { overflow-y:auto; max-height:none; padding-right:4px; }
-
-/* Row Keterangan */
+/* CSS tetap sama dengan tambahan sedikit untuk baris tabel */
+.tab-btn.bapro { flex:1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer; border:1px solid #000; background:#e0e0e0 !important; color:#000 !important; transition:all 0.2s; text-align:center; }
+.tab-btn.bapro.active { background: linear-gradient(to right,#D32F2F,#F44336) !important; color:#fff !important; border:1px solid #000 !important; }
+.hasil-header { position: sticky; top: 0; z-index: 50; background: #fff; display: flex; gap: 8px; padding: 6px 0; margin-bottom: 8px; border-bottom: 1px solid #eee; }
+.baproFilter { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 8px; }
+.view-switcher { display: flex; border: 1px solid #ccc; border-radius: 8px; overflow: hidden; }
+.view-btn { padding: 4px 12px; background: #f4f4f4; border: none; cursor: pointer; font-size: 1.1rem; transition: 0.2s; }
+.view-btn.active { background: #D32F2F; color: white; }
+#inputBapro .form-group input, #inputBapro .form-group select { width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:8px; font-size:0.95rem; box-sizing:border-box; }
+.bapro-add-btn { width:100%; padding:0.6rem; background:linear-gradient(135deg,#D32F2F,#F44336); color:#fff; font-weight:600; border:1px solid #000; border-radius:8px; cursor:pointer; font-size:1rem; box-shadow:0 4px 8px rgba(0,0,0,0.3); }
 .rowKet { display:flex; gap:6px; align-items:center; margin-bottom:6px; }
-.rowKet input { flex:1; padding:4px 8px; }
+.rowKet input { flex:1; padding:4px 8px; border-radius:4px; border:1px solid #ccc; }
 .rowKet span { width:20px; text-align:right; font-weight:bold; }
-
-/* Filter sticky */
-#hasilBapro .baproFilter {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: #fff;
-  padding: 6px;
-  margin-bottom: 6px;
-  border: 1px solid #ccc;
-}
-
-/* Scrollable container */
-#hasilBapro .baproGridScroll {
-  max-height: calc(80vh - 60px);
-  overflow-y: auto;
-  padding: 0 2px;
-}
-
-/* Grid container */
-#hasilBapro .grid-container {
-  display: grid;
-  gap: 10px;
-  width: 100%;
-  box-sizing: border-box;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-}
-
-/* Responsif */
-@media (max-width: 768px) {
-  #hasilBapro .baproGridScroll { padding: 0; }
-  #hasilBapro .grid-container { grid-template-columns: 1fr !important; gap:4px; width:100%; }
-}
-@media (min-width: 769px) and (max-width: 1023px) {
-  #hasilBapro .grid-container { grid-template-columns: repeat(2, minmax(0, 1fr)); gap:8px; }
-}
-@media (min-width: 1024px) {
-  #hasilBapro .grid-container { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:10px; }
-}
-
-/* Grid card full-width */
-#hasilBapro .grid-card { width:100%; box-sizing:border-box; }
-
+.baproDisplayScroll { max-height: calc(80vh - 100px); overflow-y: auto; }
+.table-wrapper { width: 100%; overflow-x: auto; border: 1px solid #ddd; border-radius: 8px; background: white; }
+.bapro-table { width: 100%; border-collapse: collapse; min-width: 450px; font-size: 0.85rem; }
+.bapro-table th { background: #f8f9fa; padding: 10px; text-align: left; border-bottom: 2px solid #D32F2F; color: #333; }
+.bapro-table td { padding: 10px; border-bottom: 1px solid #eee; vertical-align: top; }
+.grid-container { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+@media (max-width: 768px) { .grid-container { grid-template-columns: 1fr !important; } }
 </style>
+
+<script>
+/**
+ * JS BARU: UPDATE TABEL DENGAN KOLOM TANGGAL
+ */
+
+function renderTableBapro(query = "") {
+  const tbody = document.getElementById('tableBodyBapro');
+  const thead = document.querySelector('.bapro-table thead tr');
+  if (!tbody) return;
+
+  // Update Header Tabel agar ada kolom Tanggal
+  if (thead) {
+    thead.innerHTML = `
+      <th>Tanggal</th>
+      <th>Order & Tinta</th>
+      <th>QC</th>
+      <th>Status</th>
+      <th>Aksi</th>
+    `;
+  }
+
+  tbody.innerHTML = '';
+  const q = (query || '').toLowerCase();
+
+  if (typeof baproItems === "undefined" || baproItems.length === 0) return;
+
+  baproItems.forEach((item, i) => {
+    // Filter Pencarian
+    if (q && !(
+      (item.nama || '').toLowerCase().includes(q) ||
+      (item.NamaTinta || '').toLowerCase().includes(q) ||
+      (item.qc || '').toLowerCase().includes(q) ||
+      (item.tanggal || '').toLowerCase().includes(q)
+    )) return;
+
+    // Logika Status Warna
+    let statusClass = '';
+    const updateVal = (item.update || '').toString();
+    if (updateVal === "Proses") statusClass = "status-proses";
+    else if (updateVal === "Selesai") statusClass = "status-selesai";
+    else if (updateVal === "Pending") statusClass = "status-pending";
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="font-size: 0.75rem; color: #555; white-space: nowrap;">
+        ${highlightHtmlSafe(item.tanggal || '-', q)}
+      </td>
+      <td>
+        <div style="font-weight:bold;">${highlightHtmlSafe(item.nama || '', q)}</div>
+        <div style="font-size:0.75rem; color:#666;">Tinta: ${highlightHtmlSafe(item.NamaTinta || '', q)}</div>
+      </td>
+      <td>${highlightHtmlSafe(item.qc || '', q)}</td>
+      <td><span class="${statusClass}" style="font-weight:bold;">${item.update || ''}</span></td>
+      <td>
+        <div style="display:flex; gap:6px;">
+          <button class="btn-icon" title="Detail" onclick="showDetailBapro(${i})">📋</button>
+          <button class="btn-icon" title="Panggil" onclick="callBapro(${i})">📤</button>
+          <button class="btn-icon" title="Edit" onclick="handleEditTable(${i})">✏️</button>
+          <button class="btn-icon" title="Hapus" onclick="deleteBapro(${i})" style="color:red;">🗑️</button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+/**
+ * Handle Edit dari Tabel ke Grid
+ */
+function handleEditTable(index) {
+  setBaproView('grid');
+  if (typeof editBaproInline === "function") {
+    editBaproInline(index);
+    const card = document.querySelector(`.grid-card[data-index="${index}"]`);
+    if(card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+/**
+ * Switcher View
+ */
+function setBaproView(mode) {
+  const grid = document.getElementById('gridBapro');
+  const table = document.getElementById('tableWrapperBapro');
+  const btnGrid = document.getElementById('btnViewGrid');
+  const btnTable = document.getElementById('btnViewTable');
+  const currentSearch = document.querySelector('.baproFilter')?.value || "";
+
+  if (mode === 'grid') {
+    grid.style.display = 'grid';
+    table.style.display = 'none';
+    btnGrid.classList.add('active');
+    btnTable.classList.remove('active');
+    if (typeof renderGridBapro === "function") renderGridBapro(currentSearch);
+  } else {
+    grid.style.display = 'none';
+    table.style.display = 'block';
+    btnGrid.classList.remove('active');
+    btnTable.classList.add('active');
+    renderTableBapro(currentSearch);
+  }
+}
+
+/**
+ * Sinkronisasi Filter & Load
+ */
+function filterSemuaBapro(val) {
+  if (typeof renderGridBapro === "function") renderGridBapro(val);
+  renderTableBapro(val);
+}
+
+if(typeof loadBaproItems === "function"){
+    const originalLoad = loadBaproItems;
+    loadBaproItems = async function() {
+        await originalLoad();
+        renderTableBapro();
+    };
+}
+</script>
 
 
 
@@ -8532,7 +8604,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const originalOnClick = btn.getAttribute('onclick');
     btn.onclick = function(e) {
       e.preventDefault();
-      const input = prompt('Masukkan password untuk QC BAPRO:');
+      const input = prompt('Masukkan password untuk QC TINTA:');
       if (input === null) return;
       if (input === QC_BAPRO_PASSWORD) eval(originalOnClick);
       else alert('Password salah!');
