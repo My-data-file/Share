@@ -1653,6 +1653,11 @@ function closeDetailModalFinishing(){
     </div>
 
     <div class="form-group">
+      <label>Jenis Kertas</label>
+      <input type="text" id="baproJenis" placeholder="Duplex 350">
+    </div>
+
+    <div class="form-group">
       <label>QC</label>
       <select id="baproQC">
         <option value="">Pilih QC</option>
@@ -6370,7 +6375,7 @@ document.querySelector(".spinner-accelerator").innerHTML =
 
 <script>
 // ====================== KONFIGURASI ======================
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxhU_JujJ8KXjEtkbEAseqsoir4LPsZnKvmWUgKQ2zZ478sPE-14DSY7FLa7KqALslp/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzw1iMveBFc3Wehlh3NgqYdLQei8vI1py4hIezum4bzrCPHk0LSAM6dRXRWuiIVlTh1/exec";
 
 // ====================== SPINNER GLOBAL JS ======================
 const spinner = document.getElementById('loadingSpinner');
@@ -7768,6 +7773,7 @@ function renderGridBapro(query = "") {
     if (q && !(
       (item.nama || '').toLowerCase().includes(q) ||
       (item.NamaTinta || '').toLowerCase().includes(q) ||
+      (item.jenisKertas || '').toLowerCase().includes(q) ||
       (item.qc || '').toLowerCase().includes(q) ||
       (item.keterangan || '').toLowerCase().includes(q)
     )) return;
@@ -7816,7 +7822,7 @@ function renderGridBapro(query = "") {
 
         <span>Nama Order: ${highlightHtmlSafe(item.nama || '', q)}</span><br>
         <span>Nama Tinta: ${highlightHtmlSafe(item.NamaTinta || '', q)}</span><br>
-
+        <span>Jenis Kertas: ${highlightHtmlSafe(item.jenisKertas || '', q)}</span><br>
         <span>QC: ${highlightHtmlSafe(item.qc || '', q)}</span><br>
 
         <span><b>Resep Tinta:</b></span><br>
@@ -7877,6 +7883,7 @@ function showDetailBapro(index){
       <hr>
 
       <p><b>Nama Tinta:</b> ${item.NamaTinta || '-'}</p>
+      <p><b>Jenis Kertas:</b> ${item.jenisKertas || '-'}</p>
 
       <hr>
 
@@ -7934,6 +7941,7 @@ async function loadBaproItems(){
 function addBaproItem() {
   const nama = document.getElementById('baproNama').value.trim();
   const NamaTinta = document.getElementById('baproNamaTinta') ? document.getElementById('baproNamaTinta').value.trim() : '';
+  const jenis = document.getElementById('baproJenis') ? document.getElementById('baproJenis').value.trim() : '';
   const qc = document.getElementById('baproQC') ? document.getElementById('baproQC').value.trim() : '';
   const update = document.getElementById('baproUpdate') ? document.getElementById('baproUpdate').value.trim() : '';
 
@@ -7950,6 +7958,7 @@ let kosong = [];
 
 if (!nama)      kosong.push("Nama");
 if (!NamaTinta) kosong.push("Nama Tinta");
+if (!jenis)     kosong.push("Jenis Kertas");
 if (!qc)        kosong.push("QC");
 if (!update)    kosong.push("Proses");
 
@@ -7965,6 +7974,7 @@ const konfirmasi = confirm(
   `Yakin ingin menambah data BAPRO baru?\n\n` +
   `Nama        : ${nama}\n` +
   `Nama Tinta  : ${NamaTinta}\n` +
+  `Jenis       : ${jenis}\n` +
   `QC          : ${qc}\n` +
   `Proses      : ${update}`
 );
@@ -7984,6 +7994,7 @@ if (!konfirmasi) return;
     tanggal: tanggalFormatted,
     nama,
     NamaTinta: NamaTinta,
+    jenisKertas: jenis,
     qc,
     update,
     keterangan
@@ -8022,6 +8033,7 @@ function callBapro(index){
   // Field normal
   document.getElementById('baproNama').value = item.nama || '';
   document.getElementById('baproNamaTinta').value = item.NamaTinta || '';
+  document.getElementById('baproJenis').value = item.jenisKertas || '';
   document.getElementById('baproQC').value = item.qc || '';
   document.getElementById('baproUpdate').value = item.update || '';
 
@@ -8151,6 +8163,9 @@ function editBaproInline(index){
       <label class="edit-label">Nama Tinta</label>
       <input type="text" class="edit-inline" value="${escapeHtml(item.NamaTinta||'')}">
 
+      <label class="edit-label">Jenis Kertas</label>
+      <input type="text" class="edit-inline" value="${escapeHtml(item.jenisKertas||'')}">
+
       <label class="edit-label">QC</label>
       <select class="edit-inline">
         <option value="Marwan" ${item.qc==='Marwan'?'selected':''}>Marwan</option>
@@ -8206,9 +8221,10 @@ async function saveBaproInline(index, btn) {
   const updated = {
     nama: inputs[0].value.trim(),
     NamaTinta: inputs[1].value.trim(),
-    qc: inputs[2].value.trim(),
-    update: inputs[3].value.trim(),
-    keterangan: inputs[4].value.trim()
+    jenisKertas: inputs[2].value.trim(),
+    qc: inputs[3].value.trim(),
+    update: inputs[4].value.trim(),
+    keterangan: inputs[5].value.trim()
   };
 
   const orig = baproItems[index];
@@ -8310,6 +8326,7 @@ function renderDashboardBaproCompact(query = "", safeMode = false) {
     card.innerHTML = `
       <strong>Nama : ${highlightHtmlSafe(item.nama || '', query)}</strong><br>
       <strong>Nama Tinta : ${highlightHtmlSafe(item.NamaTinta || '', query)}</strong><br>
+      <strong>Jenis Kertas : ${highlightHtmlSafe(item.jenisKertas || '', query)}</strong><br>
       <strong>QC : ${highlightHtmlSafe(item.qc || '', query)}</strong><br>
       <span>📅 ${highlightHtmlSafe(tanggal, query)}</span><br>
       <span class="${statusClass}">${highlightHtmlSafe(item.update || '', query)}</span>
@@ -8357,6 +8374,7 @@ function showDetailModalBapro(item) {
     <strong>Tanggal:</strong> ${item.tanggal || '-'}<br>
     <strong>Nama:</strong> ${item.nama || '-'}<br>
     <strong>Nama Tinta:</strong> ${item.NamaTinta || '-'}<br>
+    <strong>Jenis Kertas:</strong> ${item.jenisKertas || '-'}<br>
     <strong>QC:</strong> ${item.qc || '-'}<br>
     <strong>Update:</strong> 
       <span class="status-${(item.update || '').toLowerCase()}">
