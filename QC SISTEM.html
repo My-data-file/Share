@@ -1662,7 +1662,7 @@ function closeDetailModalFinishing(){
       <select id="baproQC">
         <option value="">Pilih QC</option>
         <option value="Marwan">Marwan</option>
-        <option value="Kiki">Kiki</option>
+        <option value="Risa">Risa</option>
       </select>
     </div>
 
@@ -3351,7 +3351,7 @@ function filterManualList(input, tabId) {
         <option value="ANOM">ANOM</option>
         <option value="IRNA">IRNA</option>
         <option value="MARWAN">MARWAN</option>
-        <option value="KIKI">KIKI</option>
+        <option value="RISA">RISA</option>
         <option value="MARTINI">MARTINI</option>
         <option value="KRESTIN">KRESTIN</option>
         <option value="ISMIE">ISMIE</option>
@@ -4422,7 +4422,7 @@ if (spvNoKS) {
           <label><input type="checkbox" value="ANOM"> ANOM</label>
           <label><input type="checkbox" value="IRNA"> IRNA</label>
           <label><input type="checkbox" value="MARWAN"> MARWAN</label>
-          <label><input type="checkbox" value="KIKI"> KIKI</label>
+          <label><input type="checkbox" value="RISA"> RISA</label>
           <label><input type="checkbox" value="MARTINI"> MARTINI</label>
           <label><input type="checkbox" value="KRESTIN"> KRESTIN</label>
           <label><input type="checkbox" value="ISMIE"> ISMIE</label>
@@ -8239,7 +8239,7 @@ function editBaproInline(index){
       <label class="edit-label">QC</label>
       <select class="edit-inline">
         <option value="Marwan" ${item.qc==='Marwan'?'selected':''}>Marwan</option>
-        <option value="Kiki" ${item.qc==='Kiki'?'selected':''}>Kiki</option>
+        <option value="Risa" ${item.qc==='Risa'?'selected':''}>Risa</option>
       </select>
 
       <label class="edit-label">Update Status</label>
@@ -11077,7 +11077,7 @@ function enableSPVEdit() {
           select.style.fontSize = "13px";
 
           let options = [];
-          if (i === 8) options = ["IKA","ERLY","SUSANTI","DINDA","AMEL","YOLA","NANI","ANJANI","SUCI","ANOM","IRNA","MARWAN","KIKI","MARTINI","KRESTIN","ISMIE"];
+          if (i === 8) options = ["IKA","ERLY","SUSANTI","DINDA","AMEL","YOLA","NANI","ANJANI","SUCI","ANOM","IRNA","MARWAN","RISA","MARTINI","KRESTIN","ISMIE"];
           else options = ["QC BAPRO","QC CETAK","QC FINISHING","QC LEM","RETUR"];
 
           options.forEach(opt => {
@@ -11614,7 +11614,7 @@ function enableMeetingEdit(){
         if(key==='peserta'){
           const wrapper = document.createElement("div");
           wrapper.style.display="flex"; wrapper.style.flexWrap="wrap"; wrapper.style.gap="6px";
-          const pesertaList = ["NANI","ANJANI","SUCI","ANOM","IRNA","MARWAN","KIKI","MARTINI","KRESTIN","ISMIE"];
+          const pesertaList = ["NANI","ANJANI","SUCI","ANOM","IRNA","MARWAN","RISA","MARTINI","KRESTIN","ISMIE"];
           pesertaList.forEach(name=>{
             const label = document.createElement("label");
             label.style.fontSize="12px"; label.style.cursor="pointer";
