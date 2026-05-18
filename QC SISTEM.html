@@ -598,7 +598,7 @@ select {
 
 /* =========================================================
    GLOBAL QC CSS (FIX WARNA – SESUAI STRUKTUR HTML ASLI)
-   BAPRO | CETAK | LEM | FINISHING
+   BAPRO | CETAK | INSPEKSI | LEM | FINISHING
    ========================================================= */
 
 /* ===================== QC TITLE BASE ===================== */
@@ -613,8 +613,13 @@ select {
 }
 
 /* ===================== QC CETAK ===================== */
-h2.qc-title:not(.qc-lem):not(.qc-finishing){
+h2.qc-title:not(.qc-lem):not(.qc-finishing):not(.qc-inspek){
   background:linear-gradient(to right,#FF9800,#FFB74D);
+}
+
+/* ===================== QC INSPEKSI ===================== */
+.qc-inspek{
+  background:linear-gradient(to right,#2196F3,#64B5F6);
 }
 
 /* ===================== QC LEM ===================== */
@@ -677,12 +682,21 @@ h2.qc-title:not(.qc-lem):not(.qc-finishing){
 }
 
 /* 🟠 CETAK */
-h2.qc-title:not(.qc-lem):not(.qc-finishing) + .total-wrapper .total-box{
+h2.qc-title:not(.qc-lem):not(.qc-finishing):not(.qc-inspek) + .total-wrapper .total-box{
   background:rgba(255,152,0,.25);
   border:2px solid rgba(255,152,0,.6);
 }
-h2.qc-title:not(.qc-lem):not(.qc-finishing) + .total-wrapper .total-box:hover{
+h2.qc-title:not(.qc-lem):not(.qc-finishing):not(.qc-inspek) + .total-wrapper .total-box:hover{
   background:rgba(255,152,0,.45);
+}
+
+/* 🔵 INSPEKSI */
+h2.qc-title.qc-inspek + .total-wrapper .total-box{
+  background:rgba(33,150,243,.25);
+  border:2px solid rgba(33,150,243,.6);
+}
+h2.qc-title.qc-inspek + .total-wrapper .total-box:hover{
+  background:rgba(33,150,243,.45);
 }
 
 /* 🟣 LEM */
@@ -988,6 +1002,7 @@ h2.qc-title:not(.qc-lem):not(.qc-finishing) + .total-wrapper .total-box:hover{
     <button onclick="showMenu('reportSection')" class="nav-btn">REPORT</button>
     <button onclick="showMenu('qcBapro')" class="nav-btn">QC TINTA</button>
     <button onclick="showMenu('qcPA')" class="nav-btn">QC CETAK</button>
+    <button onclick="showMenu('qcInspek')" class="nav-btn">QC INSPEK</button>
     <button onclick="showMenu('qcLem')" class="nav-btn">QC LEM</button>
     <button onclick="showMenu('qcFinishing')" class="nav-btn">QC FINISHING</button>
     <button onclick="showMenu('qcSPV')" class="nav-btn">REGISTER</button>
@@ -1381,6 +1396,176 @@ function renderCetakGrid(data, containerId){
   });
 }
 </script>
+
+
+
+
+<!-- ======================== QC INSPEK ======================== -->
+<h2 class="qc-title qc-inspek">QC INSPEKSI</h2>
+
+<!-- ================= INFO TOTAL (CLICKABLE) ================= -->
+<div class="total-wrapper">
+
+  <div class="total-box">
+    Total Order<br>
+    <strong id="countInspek">0</strong>
+  </div>
+
+  <div class="total-box total-click"
+       onclick="document.getElementById('toggleInspekTO').click()">
+    Total Pending<br>
+    <strong id="countTOInspek">0</strong>
+  </div>
+
+  <div class="total-box total-click"
+       onclick="document.getElementById('toggleInspekProses').click()">
+    Total Proses<br>
+    <strong id="countProsesInspek">0</strong>
+  </div>
+
+  <div class="total-box total-click"
+       onclick="document.getElementById('toggleInspekSelesai').click()">
+    Total Selesai<br>
+    <strong id="countSelesaiInspek">0</strong>
+  </div>
+
+</div>
+
+<!-- ================= PENDING ================= -->
+<button id="toggleInspekTO" class="toggle-btn hidden-toggle">Show</button>
+
+<div id="sectionInspekTO" style="display:none;">
+  <input
+    id="filterInspekTO"
+    class="filter-input"
+    placeholder="🔍 Pencarian"
+  >
+
+  <div class="grid-wrapper">
+    <div id="dashboardInspekTO" class="grid-container"></div>
+  </div>
+</div>
+
+<!-- ================= PROSES ================= -->
+<button id="toggleInspekProses" class="toggle-btn hidden-toggle">Show</button>
+
+<div id="sectionInspekProses" style="display:none;">
+  <input
+    id="filterInspekProses"
+    class="filter-input"
+    placeholder="🔍 Pencarian"
+  >
+
+  <div class="grid-wrapper">
+    <div id="dashboardInspekProses" class="grid-container"></div>
+  </div>
+</div>
+
+<!-- ================= SELESAI ================= -->
+<button id="toggleInspekSelesai" class="toggle-btn hidden-toggle">Show</button>
+
+<div id="sectionInspekSelesai" style="display:none;">
+  <input
+    id="filterInspekSelesai"
+    class="filter-input"
+    placeholder="🔍 Pencarian"
+  >
+
+  <div class="grid-wrapper">
+    <div id="dashboardInspekSelesai" class="grid-container"></div>
+  </div>
+</div>
+
+<!-- ================= MODAL DETAIL ================= -->
+<div id="detailInspekModal" class="modal-fin">
+
+  <div class="modal-fin-content">
+
+    <div class="modal-fin-header">
+      <span>Detail QC Inspek</span>
+
+      <button onclick="closeDetailModalInspek()">×</button>
+    </div>
+
+    <div
+      class="modal-fin-body"
+      id="detailInspekBody"
+    ></div>
+
+    <div class="modal-fin-footer">
+      <button
+        id="openReportFromDetailBtnInspek"
+        class="btn-report"
+      >
+        📄 Report
+      </button>
+
+      <button onclick="closeDetailModalInspek()">
+        Tutup
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+<script>
+// ================== BUKA DETAIL ==================
+function showDetailModalInspek(item){
+  const body = document.getElementById("detailInspekBody");
+
+  body.innerHTML = `
+    <strong>No KS:</strong> ${item.noKS}<br>
+    <strong>Nama:</strong> ${item.nama}<br>
+    <strong>Tanggal:</strong> ${item.tanggal || '-'}<br>
+    <strong>Status:</strong> ${item.status}
+  `;
+
+  document
+    .getElementById("detailInspekModal")
+    .classList.add("show");
+}
+
+// ================== TUTUP DETAIL ==================
+function closeDetailModalInspek(){
+  document
+    .getElementById("detailInspekModal")
+    .classList.remove("show");
+}
+
+/* ===================================================
+   RENDER GRID QC INSPEK
+   =================================================== */
+function renderInspekGrid(data, containerId){
+
+  const el = document.getElementById(containerId);
+
+  el.innerHTML = "";
+
+  data.forEach(item => {
+
+    const card = document.createElement("div");
+
+    card.className = "grid-card";
+
+    card.innerHTML = `
+      <strong>${item.noKS}</strong><br>
+      ${item.nama}
+    `;
+
+    // ================= CLICK DETAIL =================
+    card.onclick = () => showDetailModalInspek(item);
+
+    el.appendChild(card);
+
+  });
+
+}
+</script>
+
 
 
 
@@ -2161,6 +2346,613 @@ function setStatusFilterPA(status){
   renderGridPA(keyword);
 }
 </script>
+
+
+
+
+
+
+<!-- ======================== QC INSPEK ======================== -->
+<section id="qcInspek" class="card qc-section" style="display:none;">
+
+  <!-- ================= JUDUL ================= -->
+  <h2 style="
+    text-align:center;
+    color:#fff;
+    background: linear-gradient(to right, #2196F3, #64B5F6);
+    font-size:1.2rem;
+    padding:6px 12px;
+    border-radius:8px;
+    margin-bottom:12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    border: 1px solid #000;
+    position: relative;
+    overflow: hidden;
+  ">
+    MENU QC INSPEK
+
+    <span style="
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:50%;
+      background:linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.25),
+        rgba(255,255,255,0)
+      );
+      border-radius:8px 8px 0 0;
+      pointer-events:none;
+    "></span>
+  </h2>
+
+  <!-- ================= TAB ================= -->
+  <div class="tabs" style="display:flex; gap:8px; margin-bottom:10px;">
+
+    <button
+      class="tab-btn inspek active"
+      data-tab="inputInspek"
+      onclick="switchTab(this)"
+    >
+      Inputan
+    </button>
+
+    <button
+      class="tab-btn inspek"
+      data-tab="hasilInspek"
+      onclick="switchTab(this)"
+    >
+      Hasil
+    </button>
+
+  </div>
+
+  <!-- ================= INPUTAN ================= -->
+  <div id="inputInspek" class="tab-content active">
+
+    <div class="form-group">
+      <label>Nama Order</label>
+      <input
+        type="text"
+        id="inspekNama"
+        placeholder="ETK GIV WHITE PEPAYA 72 GR"
+      >
+    </div>
+
+    <div class="form-group">
+      <label>No KS</label>
+      <input
+        type="text"
+        id="inspekNoKS"
+        placeholder="KS-xxxx-xx"
+      >
+    </div>
+
+    <div class="form-group">
+      <label>Total Order (lembar)</label>
+      <input
+        type="number"
+        id="inspekOrder"
+        placeholder="0"
+      >
+    </div>
+
+    <div class="form-group">
+      <label>Bagus (lembar)</label>
+      <input
+        type="number"
+        id="inspekBagus"
+        placeholder="0"
+      >
+    </div>
+
+    <div class="form-group">
+      <label>Sortir (lembar)</label>
+      <input
+        type="number"
+        id="inspekSortir"
+        placeholder="0"
+      >
+    </div>
+
+    <div class="form-group">
+      <label>Problem (lembar)</label>
+      <input
+        type="number"
+        id="inspekProblem"
+        placeholder="0"
+      >
+    </div>
+
+    <div class="form-group">
+      <label>QC</label>
+
+      <select id="inspekQC">
+        <option value="">Pilih QC</option>
+        <option value="Anjar">Anjar</option>
+        <option value="Wais">Wais</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Mesin</label>
+
+      <select id="inspekMesin">
+        <option value="">Pilih Mesin Inspek</option>
+        <option value="Focusight">Focusight</option>
+        <option value="Spotcheck">Spotcheck</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Update</label>
+
+      <select id="inspekUpdate">
+        <option value="Proses">Proses</option>
+        <option value="Selesai">Selesai</option>
+        <option value="Pending">Pending</option>
+      </select>
+    </div>
+
+    <!-- ================= KETERANGAN ================= -->
+    <div class="form-group">
+
+      <label>Keterangan (opsional)</label>
+
+      <div class="rowKet">
+        <span>1.</span>
+        <input
+          type="text"
+          id="ketInspek1"
+          placeholder="Isi keterangan 1"
+        >
+      </div>
+
+      <div class="rowKet">
+        <span>2.</span>
+        <input
+          type="text"
+          id="ketInspek2"
+          placeholder="Isi keterangan 2"
+        >
+      </div>
+
+      <div class="rowKet">
+        <span>3.</span>
+        <input
+          type="text"
+          id="ketInspek3"
+          placeholder="Isi keterangan 3"
+        >
+      </div>
+
+      <div class="rowKet">
+        <span>4.</span>
+        <input
+          type="text"
+          id="ketInspek4"
+          placeholder="Isi keterangan 4"
+        >
+      </div>
+
+      <div class="rowKet">
+        <span>5.</span>
+        <input
+          type="text"
+          id="ketInspek5"
+          placeholder="Isi keterangan 5"
+        >
+      </div>
+
+    </div>
+
+    <!-- ================= BUTTON ================= -->
+    <div class="form-group">
+      <button
+        type="button"
+        class="inspek-add-btn"
+        onclick="addInspekItem()"
+      >
+        ➕ Tambah
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ================= HASIL ================= -->
+  <div id="hasilInspek" class="tab-content">
+
+    <!-- SEARCH -->
+    <input
+      type="text"
+      placeholder="🔍 Pencarian"
+      oninput="renderGridInspek(this.value)"
+      class="inspekFilter"
+    >
+
+    <!-- FILTER STATUS -->
+    <div style="display:flex; gap:6px; margin-bottom:6px;">
+
+      <button
+        onclick="setStatusFilterInspek('')"
+        class="inspekFilterBtn active"
+      >
+        Semua
+      </button>
+
+      <button
+        onclick="setStatusFilterInspek('Proses')"
+        class="inspekFilterBtn"
+      >
+        Proses
+      </button>
+
+      <button
+        onclick="setStatusFilterInspek('Selesai')"
+        class="inspekFilterBtn"
+      >
+        Selesai
+      </button>
+
+      <button
+        onclick="setStatusFilterInspek('Pending')"
+        class="inspekFilterBtn"
+      >
+        Pending
+      </button>
+
+    </div>
+
+    <!-- GRID -->
+    <div class="inspekGridScroll">
+      <div id="gridInspek" class="grid-container"></div>
+    </div>
+
+  </div>
+
+</section>
+
+
+
+
+<style>
+
+/* ======================== TAB INSPEK ======================== */
+.tab-btn.inspek{
+  flex:1;
+  padding:6px 0;
+  border-radius:6px;
+  font-weight:600;
+  cursor:pointer;
+  border:1px solid #000;
+  background:#e0e0e0 !important;
+  color:#000 !important;
+  transition:all 0.2s;
+  text-align:center;
+}
+
+/* 🔵 ACTIVE TAB INSPEK */
+.tab-btn.inspek.active{
+  background: linear-gradient(
+    to right,
+    #1976D2,
+    #64B5F6
+  ) !important;
+
+  color:#fff !important;
+  border:1px solid #000 !important;
+}
+
+/* 🔵 HOVER TAB */
+.tab-btn.inspek:not(.active):hover{
+  background:#BBDEFB !important;
+  color:#000 !important;
+  transform:translateY(-1px);
+  box-shadow:0 2px 6px rgba(25,118,210,0.3);
+}
+
+.tab-btn.inspek:focus{
+  outline:none;
+  box-shadow:none;
+}
+
+/* ================= FORM ================= */
+#inputInspek .form-group input,
+#inputInspek .form-group select,
+#inputInspek .form-group textarea{
+  width:100%;
+  padding:0.6rem;
+  border:1px solid #ccc;
+  border-radius:8px;
+  font-size:0.95rem;
+  box-sizing:border-box;
+}
+
+/* ================= BUTTON ================= */
+.inspek-add-btn{
+  width:100%;
+  padding:0.6rem;
+
+  /* 🔵 WARNA BIRU */
+  background:linear-gradient(
+    135deg,
+    #1976D2,
+    #64B5F6
+  );
+
+  color:#fff;
+  font-weight:600;
+  border:1px solid #000;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:1rem;
+  box-shadow:0 4px 8px rgba(0,0,0,0.3);
+  transition:all 0.25s;
+}
+
+.inspek-add-btn:hover{
+  background:linear-gradient(
+    135deg,
+    #64B5F6,
+    #1976D2
+  );
+
+  transform:translateY(-2px);
+
+  box-shadow:0 6px 12px rgba(25,118,210,0.4);
+}
+
+/* ================= CONTAINER ================= */
+#qcInspek{
+  display:flex;
+  flex-direction:column;
+  max-height:none;
+}
+
+#qcInspek .tabs{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:#fff;
+  padding:6px 0;
+}
+
+#inputInspek,
+#hasilInspek{
+  overflow-y:auto;
+  max-height:none;
+  padding-right:4px;
+}
+
+/* ================= ROW KETERANGAN ================= */
+.rowKet{
+  display:flex;
+  gap:6px;
+  align-items:center;
+  margin-bottom:6px;
+}
+
+.rowKet input{
+  flex:1;
+  padding:4px 8px;
+}
+
+.rowKet span{
+  width:20px;
+  text-align:right;
+  font-weight:bold;
+}
+
+/* ================= SEARCH ================= */
+#hasilInspek .inspekFilter{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:#fff;
+  padding:6px;
+  margin-bottom:6px;
+  border:1px solid #ccc;
+}
+
+/* ================= SCROLL ================= */
+#hasilInspek .inspekGridScroll{
+  max-height:calc(80vh - 60px);
+  overflow-y:auto;
+  padding:0 2px;
+}
+
+/* ================= GRID ================= */
+#hasilInspek .grid-container{
+  display:grid;
+  gap:10px;
+  width:100%;
+  box-sizing:border-box;
+
+  grid-template-columns:
+    repeat(auto-fill, minmax(180px, 1fr));
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width:768px){
+
+  #hasilInspek .inspekGridScroll{
+    padding:0;
+  }
+
+  #hasilInspek .grid-container{
+    grid-template-columns:1fr !important;
+    gap:4px;
+    width:100%;
+  }
+
+}
+
+@media (min-width:769px) and (max-width:1023px){
+
+  #hasilInspek .grid-container{
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap:8px;
+  }
+
+}
+
+@media (min-width:1024px){
+
+  #hasilInspek .grid-container{
+    grid-template-columns:
+      repeat(auto-fill, minmax(180px, 1fr));
+
+    gap:10px;
+  }
+
+}
+
+/* ================= CARD ================= */
+#hasilInspek .grid-card{
+  width:100%;
+  box-sizing:border-box;
+}
+
+/* ================= FILTER BUTTON ================= */
+.inspekFilterBtn{
+  flex:1;
+  padding:5px;
+  border-radius:6px;
+  border:1px solid #000;
+  background:#e0e0e0;
+  cursor:pointer;
+  font-weight:600;
+  transition:0.2s;
+}
+
+/* 🔵 ACTIVE FILTER */
+.inspekFilterBtn.active{
+  background: linear-gradient(
+    to right,
+    #1976D2,
+    #64B5F6
+  );
+
+  color:#fff;
+}
+
+/* 🔵 HOVER FILTER */
+.inspekFilterBtn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 2px 6px rgba(25,118,210,0.25);
+}
+
+</style>
+
+
+
+
+
+
+<script>
+
+// ================= FORMAT NO KS INSPEK =================
+const inspekNoKS = document.getElementById('inspekNoKS');
+
+if (inspekNoKS) {
+
+  let lastValueInspek = "";
+
+  inspekNoKS.addEventListener('input', function(){
+
+    let raw = inspekNoKS.value.toUpperCase();
+
+    // ================= BERSIHKAN INPUT =================
+    let clean = raw.replace(/[^A-Z0-9]/g, '');
+
+    // ================= FORMAT KS-XXXX-XX =================
+    let formatted = clean;
+
+    if(clean.length > 2){
+      formatted =
+        clean.slice(0, 2) +
+        '-' +
+        clean.slice(2);
+    }
+
+    if(clean.length > 6){
+      formatted =
+        formatted.slice(0, 7) +
+        '-' +
+        formatted.slice(7);
+    }
+
+    // ================= CEGAH RENDER ULANG =================
+    if(formatted === lastValueInspek) return;
+
+    lastValueInspek = formatted;
+
+    // ================= POSISI CURSOR =================
+    let cursorPos = inspekNoKS.selectionStart;
+
+    let diff = formatted.length - raw.length;
+
+    // ================= FIX BUG HP =================
+    setTimeout(() => {
+
+      inspekNoKS.value = formatted;
+
+      let newPos = cursorPos + diff;
+
+      if(newPos > formatted.length){
+        newPos = formatted.length;
+      }
+
+      if(newPos < 0){
+        newPos = 0;
+      }
+
+      inspekNoKS.setSelectionRange(newPos, newPos);
+
+    }, 0);
+
+  });
+
+}
+
+// ================= FILTER STATUS INSPEK =================
+let statusFilterInspek = "";
+
+// ================= SET FILTER =================
+function setStatusFilterInspek(status){
+
+  statusFilterInspek = status;
+
+  document
+    .querySelectorAll(".inspekFilterBtn")
+    .forEach(btn => {
+
+      btn.classList.remove("active");
+
+      if(
+        (status === "" && btn.innerText === "Semua") ||
+        btn.innerText === status
+      ){
+        btn.classList.add("active");
+      }
+
+    });
+
+  // ================= AMBIL KEYWORD =================
+  const keyword = document
+    .querySelector("#hasilInspek .inspekFilter")
+    .value;
+
+  // ================= RENDER =================
+  renderGridInspek(keyword);
+
+}
+
+</script>
+
 
 
 
@@ -6438,7 +7230,7 @@ document.querySelector(".spinner-accelerator").innerHTML =
 
 <script>
 // ====================== KONFIGURASI ======================
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbzw1iMveBFc3Wehlh3NgqYdLQei8vI1py4hIezum4bzrCPHk0LSAM6dRXRWuiIVlTh1/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyyrUrbhjhEhj7eqXQ-oJ-gAumb11hza3xy7IyqVVZWAONzfTSJ-IDJY7NpcX1aSk_G/exec";
 
 // ====================== SPINNER GLOBAL JS ======================
 const spinner = document.getElementById('loadingSpinner');
@@ -8652,7 +9444,7 @@ loadBaproItems();
 
 
 
-<!-- ====== JS QC PA – Bagian 1 ===== -->
+<!-- ====== JS QC PA  ===== -->
 <script>
 // ====================== GLOBAL STATE (PA) ======================
 let paItems = []; // array yang diambil dari sheet PA
@@ -9632,6 +10424,2229 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 // ====================== INISIALISASI (panggil loader) ======================
 loadPAItems();
+</script>
+
+
+
+
+<!-- ====== JS QC INSPEK  ===== -->
+<script>
+
+// ====================== GLOBAL STATE (INSPEK) ======================
+let inspekItems = []; // array yang diambil dari sheet Inspek
+
+// ====================== RENDER GRID HASIL ======================
+function renderGridInspek(query = "") {
+
+  const container = document.getElementById('gridInspek');
+
+  if (!container) return;
+
+  container.innerHTML = '';
+
+  const q = (query || '').toLowerCase();
+
+  inspekItems.forEach((item, i) => {
+
+    // ================= FILTER PENCARIAN =================
+    if (
+      q &&
+      !(
+        (item.nama || '').toLowerCase().includes(q) ||
+        (item.noKS || '').toLowerCase().includes(q) ||
+        (item.qc || '').toLowerCase().includes(q) ||
+        (item.keterangan || '').toLowerCase().includes(q)
+      )
+    ) return;
+
+    // ================= FILTER STATUS =================
+    if (
+      statusFilterInspek &&
+      (item.update || '').toLowerCase() !==
+      statusFilterInspek.toLowerCase()
+    ) return;
+
+    // ================= CARD =================
+    const card = document.createElement('div');
+
+    card.className = 'grid-card';
+
+    card.dataset.index = i;
+
+    // ================= STATUS COLOR =================
+    let statusClass = '';
+
+    const updateVal = (item.update || '').toString();
+
+    if (updateVal === "Proses") {
+      statusClass = "status-proses";
+    }
+    else if (updateVal === "Selesai") {
+      statusClass = "status-selesai";
+    }
+    else if (updateVal === "Pending") {
+      statusClass = "status-pending";
+    }
+
+    // ================= TANGGAL =================
+    const tanggal = item.tanggal
+      ? `<strong>${highlightHtmlSafe(item.tanggal, q)}</strong><br>`
+      : '';
+
+    // ================= NORMALISASI KETERANGAN =================
+    const ketMap = {
+      1: "-",
+      2: "-",
+      3: "-",
+      4: "-",
+      5: "-"
+    };
+
+    const raw = (item.keterangan || "")
+      .toString()
+      .trim();
+
+    if(raw !== ""){
+
+      raw.split("\n").forEach(line => {
+
+        const m = line.match(/^\s*(\d+)\.\s*(.*)/);
+
+        if(m){
+
+          const no = parseInt(m[1]);
+
+          if(no >= 1 && no <= 5){
+            ketMap[no] = m[2].trim() || "-";
+          }
+
+        }
+
+      });
+
+    }
+
+    // ================= HTML KETERANGAN =================
+    let ketsHtml = '';
+
+    for(let j = 1; j <= 5; j++){
+
+      ketsHtml += `
+        <div>
+          ${j}. ${highlightHtmlSafe(ketMap[j], q)}
+        </div>
+      `;
+
+    }
+
+    // ================= HTML CARD =================
+    card.innerHTML = `
+
+      <div>
+
+        ${tanggal}
+
+        <span>
+          Nama Order:
+          ${highlightHtmlSafe(item.nama || '', q)}
+        </span><br>
+
+        <span>
+          No KS:
+          ${highlightHtmlSafe(item.noKS || '', q)}
+        </span><br>
+
+        <span>
+          Order:
+          ${highlightHtmlSafe(item.order || '', q)}
+        </span><br>
+
+        <span>
+          Bagus:
+          ${highlightHtmlSafe(item.bagus || '', q)}
+        </span><br>
+
+        <span>
+          Sortir:
+          ${highlightHtmlSafe(item.sortir || '', q)}
+        </span><br>
+
+        <span>
+          Problem:
+          ${highlightHtmlSafe(item.problem || '', q)}
+        </span><br>
+
+        <span>
+          QC:
+          ${highlightHtmlSafe(item.qc || '', q)}
+        </span><br>
+
+        <span>
+          Mesin:
+          ${highlightHtmlSafe(item.mesin || '', q)}
+        </span><br>
+
+        <span><b>Keterangan:</b></span><br>
+
+        <div class="ket-list">
+          ${ketsHtml}
+        </div>
+
+        <br>
+
+        <span class="${statusClass}">
+          ${highlightHtmlSafe(item.update || '', q)}
+        </span>
+
+      </div>
+
+      <!-- ================= BUTTON ================= -->
+      <div style="
+        display:flex;
+        gap:4px;
+        flex-wrap:wrap;
+        margin-top:6px;
+      ">
+
+        <button
+          class="btn-icon btn-detail"
+          title="Detail"
+          onclick="showDetailInspek(${i})"
+        >
+          📋
+        </button>
+
+        <button
+          class="btn-icon btn-call"
+          title="Panggil"
+          onclick="callInspek(${i})"
+        >
+          📤
+        </button>
+
+        <button
+          class="btn-icon btn-edit"
+          title="Edit Inline"
+          onclick="editInspekInline(${i})"
+        >
+          ✏️
+        </button>
+
+        <button
+          class="btn-icon btn-delete"
+          title="Hapus"
+          onclick="deleteInspek(${i})"
+        >
+          🗑️
+        </button>
+
+      </div>
+
+    `;
+
+    container.appendChild(card);
+
+  });
+
+  // ================= RENDER DASHBOARD =================
+  renderDashboardInspekCompact();
+
+  // ================= AUTO SCROLL =================
+  const lastCard = container.querySelector(
+    '.grid-card:last-child'
+  );
+
+  if(lastCard){
+
+    lastCard.scrollIntoView({
+      behavior:'smooth',
+      block:'end'
+    });
+
+  }
+
+}
+
+// ====================== DETAIL GRID INSPEK ======================
+function showDetailInspek(index){
+
+  const item = inspekItems[index];
+
+  if(!item) return;
+
+  const raw = (item.keterangan || "")
+    .toString()
+    .trim();
+
+  const ketMap = {
+    1:"-",
+    2:"-",
+    3:"-",
+    4:"-",
+    5:"-"
+  };
+
+  raw.split(/\r?\n/).forEach(line => {
+
+    const m = line.match(/^\s*(\d+)\.\s*(.*)/);
+
+    if(m){
+
+      const no = parseInt(m[1]);
+
+      if(no >= 1 && no <= 5){
+        ketMap[no] = m[2] || "-";
+      }
+
+    }
+
+  });
+
+  // ================= HTML DETAIL =================
+  const html = `
+
+    <div class="modal-content">
+
+      <h3>📋 Detail QC Inspek</h3>
+
+      <p><b>Tanggal:</b> ${item.tanggal || '-'}</p>
+      <p><b>Nama Order:</b> ${item.nama || '-'}</p>
+      <p><b>No KS:</b> ${item.noKS || '-'}</p>
+      <p><b>Order:</b> ${item.order || '-'}</p>
+
+      <hr>
+
+      <p><b>Bagus:</b> ${item.bagus || '-'}</p>
+      <p><b>Sortir:</b> ${item.sortir || '-'}</p>
+      <p><b>Problem:</b> ${item.problem || '-'}</p>
+
+      <hr>
+
+      <p><b>QC:</b> ${item.qc || '-'}</p>
+      <p><b>Mesin:</b> ${item.mesin || '-'}</p>
+      <p><b>Status:</b> ${item.update || '-'}</p>
+
+      <hr>
+
+      <p><b>Keterangan:</b></p>
+
+      <ul>
+        <li>1. ${ketMap[1]}</li>
+        <li>2. ${ketMap[2]}</li>
+        <li>3. ${ketMap[3]}</li>
+        <li>4. ${ketMap[4]}</li>
+        <li>5. ${ketMap[5]}</li>
+      </ul>
+
+      <button onclick="closeModalInspek()">
+        Tutup
+      </button>
+
+    </div>
+
+  `;
+
+  // ================= MODAL =================
+  let modal = document.getElementById('modalInspek');
+
+  if(!modal){
+
+    modal = document.createElement('div');
+
+    modal.id = 'modalInspek';
+
+    modal.className = 'modal';
+
+    document.body.appendChild(modal);
+
+  }
+
+  modal.innerHTML = html;
+
+  modal.style.display = 'flex';
+
+}
+
+// ====================== CLOSE MODAL ======================
+function closeModalInspek(){
+
+  const modal = document.getElementById('modalInspek');
+
+  if(modal){
+    modal.style.display = 'none';
+  }
+
+}
+
+
+
+
+// ====================== LOAD DATA DARI SPREADSHEET (INSPEK) ======================
+async function loadInspekItems(){
+
+  try{
+
+    const res = await jsonpGet(
+      WEBAPP_URL,
+      {
+        action:'get',
+        sheet:'Inspek'
+      }
+    );
+
+    if(
+      res &&
+      res.status === 'ok' &&
+      Array.isArray(res.data)
+    ){
+
+      inspekItems = res.data.map((it, idx) => ({
+        __index: idx,
+        id:(it.id || it._row || it.row || null),
+        ...it
+      }));
+
+      renderGridInspek();
+
+    }else{
+
+      console.warn(
+        'loadInspekItems unexpected',
+        res
+      );
+
+    }
+
+  }catch(err){
+
+    console.error(
+      '⚠️ Error loadInspekItems',
+      err
+    );
+
+  }
+
+}
+
+// ====================== TAMBAH DATA (INSPEK) ======================
+function addInspekItem(){
+
+  // ================= AMBIL VALUE =================
+  const nama = document
+    .getElementById('inspekNama')
+    .value
+    .trim();
+
+  const noKS = document
+    .getElementById('inspekNoKS')
+    .value
+    .trim();
+
+  const order = document
+    .getElementById('inspekOrder')
+    ? document
+        .getElementById('inspekOrder')
+        .value
+        .trim()
+    : '';
+
+  const bagus = document
+    .getElementById('inspekBagus')
+    ? document
+        .getElementById('inspekBagus')
+        .value
+        .trim()
+    : '';
+
+  const sortir = document
+    .getElementById('inspekSortir')
+    ? document
+        .getElementById('inspekSortir')
+        .value
+        .trim()
+    : '';
+
+  const problem = document
+    .getElementById('inspekProblem')
+    ? document
+        .getElementById('inspekProblem')
+        .value
+        .trim()
+    : '';
+
+  const qc = document
+    .getElementById('inspekQC')
+    ? document
+        .getElementById('inspekQC')
+        .value
+        .trim()
+    : '';
+
+  const mesin = document
+    .getElementById('inspekMesin')
+    ? document
+        .getElementById('inspekMesin')
+        .value
+        .trim()
+    : '';
+
+  const update = document
+    .getElementById('inspekUpdate')
+    ? document
+        .getElementById('inspekUpdate')
+        .value
+        .trim()
+    : '';
+
+  // ================= GABUNG KETERANGAN =================
+  const keterangan =
+
+`1. ${document.getElementById("ketInspek1").value}
+2. ${document.getElementById("ketInspek2").value}
+3. ${document.getElementById("ketInspek3").value}
+4. ${document.getElementById("ketInspek4").value}
+5. ${document.getElementById("ketInspek5").value}`;
+
+  // ================= VALIDASI =================
+  let kosong = [];
+
+  if (!nama) kosong.push("Nama Order");
+  if (!order) kosong.push("Nama Barang / Order");
+  if (!noKS) kosong.push("No KS");
+  if (!qc) kosong.push("QC");
+  if (!mesin) kosong.push("Mesin");
+  if (!update) kosong.push("Proses");
+
+  if (kosong.length > 0) {
+
+    alert(
+      "Harap isi field berikut:\n- " +
+      kosong.join("\n- ")
+    );
+
+    return;
+
+  }
+
+  // ================= KONFIRMASI =================
+  const konfirmasi = confirm(
+
+    `Yakin ingin menambah data baru?\n\n` +
+
+    `Nama Order : ${nama}\n` +
+    `Order      : ${order}\n` +
+    `No KS      : ${noKS}\n` +
+    `QC         : ${qc}\n` +
+    `Mesin      : ${mesin}\n` +
+    `Proses     : ${update}`
+
+  );
+
+  if (!konfirmasi) return;
+
+  // ================= FORMAT TANGGAL =================
+  const tanggalFormatted = new Date()
+    .toLocaleString('id-ID', {
+
+      day:'2-digit',
+      month:'long',
+      year:'numeric',
+
+      hour:'2-digit',
+      minute:'2-digit',
+      second:'2-digit'
+
+    });
+
+  // ================= PAYLOAD =================
+  const payload = {
+
+    action:'add',
+
+    sheet:'Inspek',
+
+    tanggal: tanggalFormatted,
+
+    nama,
+    noKS,
+    order,
+    bagus,
+    sortir,
+    problem,
+    qc,
+    mesin,
+    update,
+    keterangan
+
+  };
+
+  // ================= BUTTON SPINNER =================
+  const btnTambah = document.querySelector(
+    '#inputInspek button'
+  );
+
+  if (btnTambah) {
+
+    btnTambah.disabled = true;
+
+    const originalHTML = btnTambah.innerHTML;
+
+    btnTambah.innerHTML =
+      `<div class="spinner"></div> Menyimpan...`;
+
+    // ================= POST =================
+    postPayload(payload);
+
+    // ================= RESET =================
+    setTimeout(() => {
+
+      btnTambah.disabled = false;
+
+      btnTambah.innerHTML = originalHTML;
+
+      clearInspekForm();
+
+      loadInspekItems();
+
+      alert('✅ Data QC Inspek berhasil ditambahkan!');
+
+    }, 8000);
+
+  } else {
+
+    postPayload(payload);
+
+    clearInspekForm();
+
+    setTimeout(() => {
+
+      loadInspekItems();
+
+    }, 8000);
+
+    alert('✅ Data QC Inspek berhasil ditambahkan!');
+
+  }
+
+}
+
+
+
+
+// ====================== PANGGIL (ISI FORM DARI ITEM INSPEK) ======================
+function callInspek(index){
+
+  const item = inspekItems[index];
+
+  if(!item) return;
+
+  // ================= FIELD NORMAL =================
+  document.getElementById('inspekNama').value =
+    item.nama || '';
+
+  document.getElementById('inspekNoKS').value =
+    item.noKS || '';
+
+  document.getElementById('inspekOrder').value =
+    item.order || '';
+
+  document.getElementById('inspekBagus').value =
+    item.bagus || '';
+
+  document.getElementById('inspekSortir').value =
+    item.sortir || '';
+
+  document.getElementById('inspekProblem').value =
+    item.problem || '';
+
+  document.getElementById('inspekQC').value =
+    item.qc || '';
+
+  document.getElementById('inspekMesin').value =
+    item.mesin || '';
+
+  document.getElementById('inspekUpdate').value =
+    item.update || '';
+
+  // ================= PECAH KETERANGAN 1–5 =================
+  const ketMap = {
+    1:"",
+    2:"",
+    3:"",
+    4:"",
+    5:""
+  };
+
+  if(item.keterangan){
+
+    item.keterangan
+      .split("\n")
+      .forEach(line => {
+
+        const m = line.match(
+          /^\s*(\d+)\.\s*(.*)/
+        );
+
+        if(m){
+
+          const no = parseInt(m[1]);
+
+          if(no >= 1 && no <= 5){
+
+            ketMap[no] =
+              m[2].trim() || "";
+
+          }
+
+        }
+
+      });
+
+  }
+
+  // ================= SET INPUT KETERANGAN =================
+  for(let i = 1; i <= 5; i++){
+
+    const el = document.getElementById(
+      "ketInspek" + i
+    );
+
+    if(el){
+      el.value = ketMap[i];
+    }
+
+  }
+
+  // ================= PINDAH KE TAB INPUT =================
+  showMenu('qcInspek');
+
+  const tabBtn = document.querySelector(
+    '#qcInspek .tabs button[data-tab="inputInspek"]'
+  );
+
+  if(tabBtn){
+
+    switchTab(tabBtn);
+
+  }
+
+}
+
+// ====================== HAPUS ITEM INSPEK ======================
+function deleteInspek(index){
+
+  const item = inspekItems[index];
+
+  if(!item) return;
+
+  if(!confirm('Hapus data ini?')) return;
+
+  const container = document.getElementById(
+    'gridInspek'
+  );
+
+  const card = container.querySelector(
+    `.grid-card[data-index="${index}"]`
+  );
+
+  // ================= BUTTON DELETE =================
+  const btnDelete = card?.querySelector(
+    '.btn-delete'
+  );
+
+  if(btnDelete){
+
+    btnDelete.textContent =
+      '⏳ Menghapus...';
+
+    btnDelete.disabled = true;
+
+  }
+
+  // ================= IDENTIFIER =================
+  const identifier =
+    item.id ||
+    item._row ||
+    item.row ||
+    item.__index;
+
+  // ================= PAYLOAD =================
+  const payload = {
+
+    action:'delete',
+
+    sheet:'Inspek',
+
+    id:identifier,
+
+    index:item.__index
+
+  };
+
+  // ================= POST =================
+  postPayload(payload);
+
+  // ================= REFRESH =================
+  setTimeout(() => {
+
+    inspekItems.splice(index, 1);
+
+    if(card){
+      card.remove();
+    }
+
+    loadInspekItems();
+
+  }, 8000);
+
+}
+
+// ======================= PASSWORD DELETE INSPEK =======================
+const DELETE_INSPEK_PASSWORD = "qc123"; // ganti sesuai kebutuhan
+
+const inspekContainer =
+  document.getElementById('gridInspek');
+
+let bypassInspekPassword = false;
+
+// ======================= EVENT DELETE =======================
+if (inspekContainer) {
+
+  inspekContainer.addEventListener('click', (e) => {
+
+    const btn = e.target.closest('.btn-delete');
+
+    if (!btn) return;
+
+    // ================= LEWATI PASSWORD =================
+    if (bypassInspekPassword) {
+
+      bypassInspekPassword = false;
+
+      return;
+
+    }
+
+    // ================= STOP EVENT ASLI =================
+    e.preventDefault();
+
+    e.stopImmediatePropagation();
+
+    // ================= PASSWORD =================
+    const pwd = prompt(
+      "Masukkan password untuk menghapus item ini:"
+    );
+
+    if (pwd === null) return;
+
+    // ================= PASSWORD BENAR =================
+    if (pwd === DELETE_INSPEK_PASSWORD) {
+
+      bypassInspekPassword = true;
+
+      btn.click();
+
+    } else {
+
+      alert(
+        "Password salah. Aksi dibatalkan."
+      );
+
+    }
+
+  }, true);
+
+}
+
+
+
+
+// ====================== EDIT INLINE (INSPEK) ======================
+function editInspekInline(index){
+
+  const item = inspekItems[index];
+
+  const container =
+    document.getElementById('gridInspek');
+
+  const card = container.querySelector(
+    `.grid-card[data-index="${index}"]`
+  );
+
+  if(!card) return;
+
+  // ================= CEGAH DOUBLE EDIT =================
+  if(card.querySelector('.edit-inline')) return;
+
+  const oldHtml = card.innerHTML;
+
+  // ================= FORM EDIT =================
+  card.innerHTML = `
+
+    <div class="edit-grid">
+
+      <label>Nama Order</label>
+      <input
+        type="text"
+        class="edit-inline"
+        value="${escapeHtml(item.nama || '')}"
+      >
+
+      <label>No KS</label>
+      <input
+        type="text"
+        class="edit-inline"
+        value="${escapeHtml(item.noKS || '')}"
+      >
+
+      <label>Order</label>
+      <input
+        type="number"
+        class="edit-inline"
+        value="${escapeHtml(item.order || '')}"
+      >
+
+      <label>Bagus</label>
+      <input
+        type="number"
+        class="edit-inline"
+        value="${escapeHtml(item.bagus || '')}"
+      >
+
+      <label>Sortir</label>
+      <input
+        type="text"
+        class="edit-inline"
+        value="${escapeHtml(item.sortir || '')}"
+      >
+
+      <label>Problem</label>
+      <input
+        type="text"
+        class="edit-inline"
+        value="${escapeHtml(item.problem || '')}"
+      >
+
+      <label>QC</label>
+
+      <select class="edit-inline">
+
+        <option
+          value="Anjar"
+          ${item.qc === 'Anjar' ? 'selected' : ''}
+        >
+          Anjar
+        </option>
+
+        <option
+          value="Wais"
+          ${item.qc === 'Wais' ? 'selected' : ''}
+        >
+          Wais
+        </option>
+
+      </select>
+
+      <label>Mesin Inspek</label>
+
+      <select class="edit-inline">
+
+        <option
+          value="Focussight"
+          ${item.mesin === 'Focussight' ? 'selected' : ''}
+        >
+          Focussight
+        </option>
+
+        <option
+          value="Spotcheck"
+          ${item.mesin === 'Spotcheck' ? 'selected' : ''}
+        >
+          Spotcheck
+        </option>
+
+
+      </select>
+
+      <label>Status</label>
+
+      <select
+        class="edit-inline"
+        onchange="checkStatusInspek(this)"
+      >
+
+        <option
+          value="Pending"
+          ${item.update === 'Pending' ? 'selected' : ''}
+        >
+          Pending
+        </option>
+
+        <option
+          value="Proses"
+          ${item.update === 'Proses' ? 'selected' : ''}
+        >
+          Proses
+        </option>
+
+        <option
+          value="Selesai"
+          ${item.update === 'Selesai' ? 'selected' : ''}
+        >
+          Selesai
+        </option>
+
+      </select>
+
+      <label>Keterangan</label>
+
+      <textarea
+        class="edit-inline"
+        rows="2"
+      >${escapeHtml(item.keterangan || '')}</textarea>
+
+    </div>
+
+    <!-- ================= BUTTON ================= -->
+    <div style="
+      display:flex;
+      gap:4px;
+      flex-wrap:wrap;
+      margin-top:6px;
+    ">
+
+      <button
+        class="btn-icon btn-save"
+        title="Simpan"
+        onclick="saveInspekInline(${index}, this)"
+      >
+        💾
+      </button>
+
+      <button
+        class="btn-icon btn-cancel"
+        title="Batal"
+        onclick="cancelInspekInline(
+          ${index},
+          \`${encodeURIComponent(oldHtml)}\`
+        )"
+      >
+        ❌
+      </button>
+
+    </div>
+
+  `;
+
+}
+
+// ====================== VALIDASI STATUS (INSPEK) ======================
+function checkStatusInspek(selectEl){
+
+  const card = selectEl.closest('.grid-card');
+
+  if(!card) return;
+
+  const inputs = card.querySelectorAll('.edit-inline');
+
+  // ================= INPUT BAGUS =================
+  const bagusInput = inputs[3];
+
+  const bagus = Number(
+    bagusInput.value || 0
+  );
+
+  // ================= VALIDASI =================
+  if(
+    selectEl.value === "Selesai" &&
+    bagus <= 1
+  ){
+
+    alert("Tolong isi hasil bagus");
+
+    selectEl.value = "Proses";
+
+    bagusInput.focus();
+
+  }
+
+}
+
+// ====================== BATAL EDIT INLINE (INSPEK) ======================
+function cancelInspekInline(index, oldHtmlEncoded){
+
+  const container =
+    document.getElementById('gridInspek');
+
+  const card = container.querySelector(
+    `.grid-card[data-index="${index}"]`
+  );
+
+  if(!card) return;
+
+  card.innerHTML =
+    decodeURIComponent(oldHtmlEncoded);
+
+}
+
+
+
+
+// ====================== SIMPAN HASIL EDIT INLINE (INSPEK) ======================
+async function saveInspekInline(index, btn){
+
+  const container =
+    document.getElementById('gridInspek');
+
+  const card = container.querySelector(
+    `.grid-card[data-index="${index}"]`
+  );
+
+  if(!card) return;
+
+  // ================= BUTTON STATE =================
+  const btnSave = btn;
+
+  const btnCancel = card.querySelector(
+    '.btn-cancel'
+  );
+
+  if(btnSave){
+
+    btnSave.textContent =
+      '⏳ Menyimpan...';
+
+    btnSave.disabled = true;
+
+  }
+
+  if(btnCancel){
+
+    btnCancel.style.display = 'none';
+
+  }
+
+  // ================= AMBIL INPUT =================
+  const inputs = card.querySelectorAll(
+    '.edit-inline'
+  );
+
+  const updated = {
+
+    nama: inputs[0].value.trim(),
+
+    noKS: inputs[1].value.trim(),
+
+    order: inputs[2].value.trim(),
+
+    bagus: inputs[3].value.trim(),
+
+    sortir: inputs[4].value.trim(),
+
+    problem: inputs[5].value.trim(),
+
+    qc: inputs[6].value,
+
+    mesin: inputs[7].value.trim(),
+
+    update: inputs[8].value,
+
+    keterangan: inputs[9].value.trim()
+
+  };
+
+  // ================= DATA ORIGINAL =================
+  const orig = inspekItems[index];
+
+  const identifier =
+    orig.id ||
+    orig._row ||
+    orig.row ||
+    orig.__index;
+
+  // ================= TANGGAL =================
+  const tanggalFormatted =
+    orig.tanggal ||
+    new Date().toLocaleString(
+      'id-ID',
+      {
+        day:'2-digit',
+        month:'long',
+        year:'numeric',
+
+        hour:'2-digit',
+        minute:'2-digit',
+        second:'2-digit'
+      }
+    );
+
+  // ================= PAYLOAD =================
+  const payload = {
+
+    ...updated,
+
+    action:'update',
+
+    sheet:'Inspek',
+
+    id:identifier,
+
+    index:orig.__index,
+
+    tanggal:tanggalFormatted
+
+  };
+
+  try{
+
+    // ================= POST =================
+    await postPayload(payload);
+
+    // ================= DELAY =================
+    await new Promise(res => setTimeout(res, 5000));
+
+    // ================= RELOAD =================
+    await loadInspekItems();
+
+  }catch(err){
+
+    console.error(
+      'Gagal menyimpan:',
+      err
+    );
+
+    alert(
+      'Gagal menyimpan data. Coba lagi.'
+    );
+
+  }finally{
+
+    if(btnSave){
+
+      btnSave.textContent =
+        '💾 Simpan';
+
+      btnSave.disabled = false;
+
+    }
+
+  }
+
+}
+
+// ====================== FILTER BERDASARKAN ISI GRID ======================
+function filterInspekGrid(query){
+
+  const grid =
+    document.getElementById('gridInspek');
+
+  if(!grid) return;
+
+  const keyword =
+    query.toLowerCase().trim();
+
+  const cards =
+    grid.querySelectorAll('.grid-card');
+
+  cards.forEach(card => {
+
+    const text =
+      card.textContent.toLowerCase();
+
+    card.style.display =
+      text.includes(keyword)
+      ? ''
+      : 'none';
+
+  });
+
+}
+
+// ====================== CLEAR FORM (INSPEK) ======================
+function clearInspekForm(){
+
+  // ================= RESET TEXT =================
+  [
+    'inspekNama',
+    'inspekNoKS',
+    'inspekQC',
+    'inspekUpdate'
+  ].forEach(id => {
+
+    const el =
+      document.getElementById(id);
+
+    if(el){
+      el.value = '';
+    }
+
+  });
+
+  // ================= RESET NUMBER =================
+  [
+    'inspekOrder',
+    'inspekBagus',
+    'inspekSortir',
+    'inspekProblem'
+  ].forEach(id => {
+
+    const el =
+      document.getElementById(id);
+
+    if(el){
+      el.value = 0;
+    }
+
+  });
+
+  // ================= RESET MESIN =================
+  const mesinEl =
+    document.getElementById('inspekMesin');
+
+  if(mesinEl){
+    mesinEl.value = '';
+  }
+
+  // ================= RESET KETERANGAN =================
+  for(let i = 1; i <= 5; i++){
+
+    const el = document.getElementById(
+      'ketInspek' + i
+    );
+
+    if(el){
+      el.value = '';
+    }
+
+  }
+
+}
+
+
+
+
+
+// ====================== DASHBOARD INSPEK (AKURAT 100%) ======================
+function renderDashboardInspekCompact(query = "", safeMode = false){
+
+  const q = query.toLowerCase().trim();
+
+  // ====================== CONTAINER ======================
+  const containerTO =
+    document.getElementById('dashboardInspekTO');
+
+  const containerProses =
+    document.getElementById('dashboardInspekProses');
+
+  const containerSelesai =
+    document.getElementById('dashboardInspekSelesai');
+
+  if(!containerProses || !containerSelesai) return;
+
+  // ====================== CLEAR ======================
+  if(containerTO){
+    containerTO.innerHTML = '';
+  }
+
+  containerProses.innerHTML = '';
+
+  containerSelesai.innerHTML = '';
+
+  // ====================== COUNTER ======================
+  let totalTO = 0;
+
+  let totalProses = 0;
+
+  let totalSelesai = 0;
+
+  // ====================== ANGKA AMAN ======================
+  const num = (v) => {
+
+    if(!v) return 0;
+
+    const clean = String(v)
+      .replace(/[^0-9.-]/g, "");
+
+    const n = Number(clean);
+
+    return isNaN(n) ? 0 : n;
+
+  };
+
+  // ====================== FORMAT ======================
+  const fmt = (n) =>
+    Number(n || 0).toLocaleString('id-ID');
+
+  // ====================== LOOP DATA ======================
+  inspekItems.forEach(item => {
+
+    const updateVal =
+      (item.update || "")
+      .trim()
+      .toLowerCase();
+
+    const tanggal =
+      item.tanggal || "-";
+
+    // ====================== NILAI ======================
+    const order =
+      num(item.order);
+
+    const bagus =
+      num(item.bagus);
+
+    const sortir =
+      num(item.sortir);
+
+    // ====================== TOTAL HASIL ======================
+    const totalHasil =
+      bagus + sortir;
+
+    // ====================== PERSEN ======================
+    const persen = order > 0
+      ? ((totalHasil / order) * 100).toFixed(1)
+      : "0.0";
+
+    // ====================== KURANG ======================
+    let kurangBarang =
+      order - totalHasil;
+
+    if(kurangBarang < 0){
+      kurangBarang = 0;
+    }
+
+    // ====================== LEBIH ======================
+    let lebihBarang =
+      totalHasil - order;
+
+    if(lebihBarang < 0){
+      lebihBarang = 0;
+    }
+
+    // ====================== CARD ======================
+    const card =
+      document.createElement('div');
+
+    card.className = 'grid-card';
+
+    // ====================== STATUS ======================
+    let statusClass = "";
+
+    if(updateVal === "proses"){
+
+      statusClass = "status-proses";
+
+    }else if(updateVal === "selesai"){
+
+      statusClass = "status-selesai";
+
+    }else if(updateVal === "pending"){
+
+      statusClass = "status-pending";
+
+    }
+
+    // ====================== HTML ======================
+    card.innerHTML = `
+
+      <strong>
+        Nama :
+        ${highlightHtmlSafe(item.nama || '', query)}
+      </strong><br>
+
+      <strong>
+        QC :
+        ${highlightHtmlSafe(item.qc || '', query)}
+      </strong><br>
+
+      <strong>
+        Mesin :
+        ${highlightHtmlSafe(item.mesin || '', query)}
+      </strong><br>
+
+      <span>
+        📅
+        ${highlightHtmlSafe(tanggal, query)}
+      </span><br>
+
+      <!-- ================= HASIL ================= -->
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin:4px 0 6px;
+        background:#9ac8ff;
+        padding:6px 10px;
+        border-radius:8px;
+        font-weight:700;
+        color:#003a80;
+        border:1px solid #5fa8ff;
+      ">
+
+        <span>Hasil:</span>
+
+        <span>${persen}%</span>
+
+      </div>
+
+      <!-- ================= KURANG ================= -->
+      ${kurangBarang > 0 ? `
+
+        <div style="
+          margin:4px 0 6px;
+          padding:6px 10px;
+          background:#fff4e5;
+          border:1px solid #ffb020;
+          border-radius:8px;
+          font-weight:700;
+          color:#8a4b00;
+          display:flex;
+          justify-content:space-between;
+        ">
+
+          <span>Kurang:</span>
+
+          <span>${fmt(kurangBarang)}</span>
+
+        </div>
+
+      ` : ``}
+
+      <!-- ================= LEBIH ================= -->
+      ${lebihBarang > 0 ? `
+
+        <div style="
+          margin:4px 0 6px;
+          padding:6px 10px;
+          background:#e6fff4;
+          border:1px solid #34d399;
+          border-radius:8px;
+          font-weight:700;
+          color:#065f46;
+          display:flex;
+          justify-content:space-between;
+        ">
+
+          <span>Lebih:</span>
+
+          <span>${fmt(lebihBarang)}</span>
+
+        </div>
+
+      ` : ``}
+
+      <!-- ================= STATUS ================= -->
+      <span class="${statusClass}">
+
+        ${highlightHtmlSafe(item.update || '', query)}
+
+      </span>
+
+    `;
+
+    // ====================== FILTER ======================
+    if(
+      !safeMode &&
+      q &&
+      !card.textContent
+        .toLowerCase()
+        .includes(q)
+    ) return;
+
+    // ====================== KATEGORI ======================
+    if(updateVal === 'pending'){
+
+      if(containerTO){
+
+        containerTO.appendChild(card);
+
+      }
+
+      totalTO++;
+
+    }else if(updateVal === 'proses'){
+
+      containerProses.appendChild(card);
+
+      totalProses++;
+
+    }else if(updateVal === 'selesai'){
+
+      containerSelesai.appendChild(card);
+
+      totalSelesai++;
+
+    }
+
+    // ====================== DETAIL ======================
+    card.addEventListener(
+      'click',
+      () => showDetailModalInspek(item)
+    );
+
+  });
+
+  // ====================== COUNTER ======================
+  document.getElementById(
+    'countInspek'
+  ).textContent = inspekItems.length;
+
+  document.getElementById(
+    'countTOInspek'
+  ).textContent = totalTO;
+
+  document.getElementById(
+    'countProsesInspek'
+  ).textContent = totalProses;
+
+  document.getElementById(
+    'countSelesaiInspek'
+  ).textContent = totalSelesai;
+
+}
+
+
+
+
+
+
+// ====================== FILTER INPUT REAL-TIME INSPEK ======================
+document.addEventListener('DOMContentLoaded', () => {
+
+  const filterTO =
+    document.getElementById('filterInspekTO');
+
+  const filterProses =
+    document.getElementById('filterInspekProses');
+
+  const filterSelesai =
+    document.getElementById('filterInspekSelesai');
+
+  // ====================== FILTER PENDING ======================
+  if(filterTO){
+
+    filterTO.addEventListener('input', () => {
+
+      renderDashboardInspekCompact(
+        filterTO.value
+      );
+
+    });
+
+  }
+
+  // ====================== FILTER PROSES ======================
+  if(filterProses){
+
+    filterProses.addEventListener('input', () => {
+
+      renderDashboardInspekCompact(
+        filterProses.value
+      );
+
+    });
+
+  }
+
+  // ====================== FILTER SELESAI ======================
+  if(filterSelesai){
+
+    filterSelesai.addEventListener('input', () => {
+
+      renderDashboardInspekCompact(
+        filterSelesai.value
+      );
+
+    });
+
+  }
+
+});
+
+// ====================== DETAIL INSPEK (VERSI LENGKAP) ======================
+function showDetailModalInspek(item){
+
+  const body =
+    document.getElementById(
+      'detailInspekBody'
+    );
+
+  // ====================== FORMAT ANGKA ======================
+  const formatID = (val) => {
+
+    if(
+      val === null ||
+      val === undefined ||
+      val === '' ||
+      isNaN(val)
+    ){
+
+      return val || '-';
+
+    }
+
+    return Number(val)
+      .toLocaleString('id-ID');
+
+  };
+
+  // ====================== HTML ======================
+  body.innerHTML = `
+
+    <strong>Tanggal:</strong>
+    ${item.tanggal || '-'}<br>
+
+    <strong>Nama:</strong>
+    ${item.nama || '-'}<br>
+
+    <strong>No KS:</strong>
+    ${item.noKS || '-'}<br>
+
+    <strong>Order:</strong>
+    ${formatID(item.order)}<br>
+
+    <strong>Bagus:</strong>
+    ${formatID(item.bagus)}<br>
+
+    <strong>Sortir:</strong>
+    ${formatID(item.sortir)}<br>
+
+    <strong>Problem:</strong>
+    ${formatID(item.problem)}<br>
+
+    <strong>QC:</strong>
+    ${item.qc || '-'}<br>
+
+    <strong>Mesin:</strong>
+    ${item.mesin || '-'}<br>
+
+    <strong>Update:</strong>
+
+    <span class="
+      status-${(item.update || '').toLowerCase()}
+    ">
+
+      ${item.update || '-'}
+
+    </span>
+
+    <br><br>
+
+    <strong>Keterangan:</strong><br>
+
+    ${(item.keterangan || "-")
+      .replace(/\n/g,'<br>')}
+
+  `;
+
+  // ====================== SHOW MODAL ======================
+  document.getElementById(
+    'detailInspekModal'
+  ).style.display = 'flex';
+
+}
+
+// ====================== CLOSE MODAL INSPEK ======================
+function closeDetailModalInspek(){
+
+  document.getElementById(
+    'detailInspekModal'
+  ).style.display = 'none';
+
+}
+
+
+
+
+
+
+// ====================== TOGGLE VIEW + FILTER + FULLSCREEN QC INSPEK ======================
+document.addEventListener("DOMContentLoaded", () => {
+
+  // ================= BUTTON =================
+  const btnTO =
+    document.getElementById("toggleInspekTO");
+
+  const btnProses =
+    document.getElementById("toggleInspekProses");
+
+  const btnSelesai =
+    document.getElementById("toggleInspekSelesai");
+
+  // ================= SECTION =================
+  const sectionTO =
+    document.getElementById("sectionInspekTO");
+
+  const sectionProses =
+    document.getElementById("sectionInspekProses");
+
+  const sectionSelesai =
+    document.getElementById("sectionInspekSelesai");
+
+  // ================= FILTER =================
+  const filterTO =
+    document.getElementById("filterInspekTO");
+
+  const filterProses =
+    document.getElementById("filterInspekProses");
+
+  const filterSelesai =
+    document.getElementById("filterInspekSelesai");
+
+  let activeSection = null;
+
+  let activeFilter = null;
+
+  // ================= FILTER CARD =================
+  function filterCards(container, keyword){
+
+    if(!container) return;
+
+    const term =
+      (keyword || "")
+      .toLowerCase()
+      .trim();
+
+    container
+      .querySelectorAll(".grid-card, .card")
+      .forEach(card => {
+
+        card.style.display =
+          card.textContent
+            .toLowerCase()
+            .includes(term)
+          ? ""
+          : "none";
+
+      });
+
+  }
+
+  // ================= FILTER EVENT =================
+  [
+    {
+      input: filterTO,
+      gridId: "dashboardInspekTO"
+    },
+
+    {
+      input: filterProses,
+      gridId: "dashboardInspekProses"
+    },
+
+    {
+      input: filterSelesai,
+      gridId: "dashboardInspekSelesai"
+    }
+
+  ].forEach(({ input, gridId }) => {
+
+    if(!input) return;
+
+    input.addEventListener("input", () => {
+
+      filterCards(
+        document.getElementById(gridId),
+        input.value
+      );
+
+    });
+
+  });
+
+  // ================= RESET FILTER =================
+  function resetFilter(filter){
+
+    if(!filter) return;
+
+    filter.value = "";
+
+    const section = document.getElementById(
+      filter.dataset.origin
+    );
+
+    if(!section) return;
+
+    section
+      .querySelectorAll(".grid-card, .card")
+      .forEach(card => {
+
+        card.style.display = "";
+
+      });
+
+    // ================= RESET HIGHLIGHT =================
+    if(typeof renderDashboardInspekCompact === "function"){
+
+      renderDashboardInspekCompact("");
+
+    }
+
+  }
+
+  // ================= PIN FILTER =================
+  function moveFilterToBody(filter, section){
+
+    if(!filter) return;
+
+    filter.dataset.origin = section.id;
+
+    filter.classList.add(
+      "filter-fixed-global"
+    );
+
+    document.body.appendChild(filter);
+
+    activeFilter = filter;
+
+  }
+
+  // ================= RESTORE FILTER =================
+  function restoreFilter(){
+
+    if(!activeFilter) return;
+
+    const origin = document.getElementById(
+      activeFilter.dataset.origin
+    );
+
+    if(origin){
+
+      origin.prepend(activeFilter);
+
+    }
+
+    activeFilter.classList.remove(
+      "filter-fixed-global"
+    );
+
+    activeFilter = null;
+
+  }
+
+  // ================= ENTER FULLSCREEN =================
+  function enterFullscreen(section, btn, filter){
+
+    activeSection = section;
+
+    section.style.display = "block";
+
+    section.classList.add(
+      "fullscreen-review"
+    );
+
+    document.body.style.overflow = "hidden";
+
+    [
+      sectionTO,
+      sectionProses,
+      sectionSelesai
+    ].forEach(sec => {
+
+      if(sec && sec !== section){
+
+        sec.style.display = "none";
+
+      }
+
+    });
+
+    moveFilterToBody(filter, section);
+
+    // ================= EXIT BUTTON =================
+    if(
+      !document.querySelector(
+        ".exit-fullscreen-btn"
+      )
+    ){
+
+      const exitBtn =
+        document.createElement("button");
+
+      exitBtn.className =
+        "exit-fullscreen-btn";
+
+      exitBtn.textContent = "✕";
+
+      exitBtn.onclick = forceExit;
+
+      document.body.appendChild(exitBtn);
+
+    }
+
+    if(btn){
+
+      btn.textContent = "Hide";
+
+    }
+
+  }
+
+  // ================= EXIT FULLSCREEN =================
+  function forceExit(){
+
+    if(!activeSection) return;
+
+    // ================= RESET FILTER =================
+    if(activeFilter){
+
+      resetFilter(activeFilter);
+
+    }
+
+    restoreFilter();
+
+    activeSection.classList.remove(
+      "fullscreen-review"
+    );
+
+    activeSection.style.display = "none";
+
+    document
+      .querySelector(".exit-fullscreen-btn")
+      ?.remove();
+
+    document.body.style.overflow = "";
+
+    activeSection = null;
+
+    // ================= RESET BUTTON =================
+    btnTO && (btnTO.textContent = "Show");
+
+    btnProses &&
+      (btnProses.textContent = "Show");
+
+    btnSelesai &&
+      (btnSelesai.textContent = "Show");
+
+  }
+
+  // ================= TOGGLE =================
+  function toggle(section, btn, filter){
+
+    if(activeSection){
+
+      forceExit();
+
+    }else{
+
+      enterFullscreen(
+        section,
+        btn,
+        filter
+      );
+
+    }
+
+  }
+
+  // ================= BUTTON EVENT =================
+  btnTO?.addEventListener(
+    "click",
+    () => toggle(
+      sectionTO,
+      btnTO,
+      filterTO
+    )
+  );
+
+  btnProses?.addEventListener(
+    "click",
+    () => toggle(
+      sectionProses,
+      btnProses,
+      filterProses
+    )
+  );
+
+  btnSelesai?.addEventListener(
+    "click",
+    () => toggle(
+      sectionSelesai,
+      btnSelesai,
+      filterSelesai
+    )
+  );
+
+  // ================= ESC EXIT =================
+  document.addEventListener(
+    "keydown",
+    e => {
+
+      if(e.key === "Escape"){
+
+        forceExit();
+
+      }
+
+    }
+  );
+
+  // ================= REPORT BUTTON =================
+  const reportBtn =
+
+    document.getElementById(
+      "openReportFromDetailInspekBtn"
+    ) ||
+
+    document.getElementById(
+      "openReportFromDetailBtnInspek"
+    );
+
+  // ================= REPORT EVENT =================
+  if(reportBtn){
+
+    reportBtn.addEventListener(
+      "click",
+      () => {
+
+        // ================= KELUAR FULLSCREEN =================
+        forceExit();
+
+        setTimeout(() => {
+
+          const detailBody =
+
+            document.getElementById(
+              "detailInspekBody"
+            ) ||
+
+            document.getElementById(
+              "detailCetakBody1"
+            );
+
+          const text =
+            detailBody?.innerText || "";
+
+          const match =
+            text.match(
+              /KS-\d{4}-\d+/i
+            );
+
+          // ================= VALIDASI =================
+          if(!match){
+
+            alert(
+              "Tidak Ada Data Register"
+            );
+
+            return;
+
+          }
+
+          const noKS = match[0];
+
+          // ================= OPEN REPORT =================
+          if(typeof showMenu === "function"){
+
+            showMenu("reportSection");
+
+          }
+
+          // ================= SEARCH REPORT =================
+          setTimeout(() => {
+
+            const reportInput =
+              document.getElementById(
+                "reportSearchID"
+              );
+
+            if(!reportInput) return;
+
+            reportInput.value = noKS;
+
+            if(
+              typeof searchReportByID === "function"
+            ){
+
+              searchReportByID();
+
+            }
+
+            reportInput.focus();
+
+            reportInput.select();
+
+          }, 150);
+
+          // ================= CLOSE MODAL =================
+          if(
+            typeof closeDetailModalInspek
+            === "function"
+          ){
+
+            closeDetailModalInspek();
+
+          }
+
+        }, 50);
+
+      }
+    );
+
+  }
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ===== PASSWORD UNTUK QC INSPEK =====
+const QC_INSPEK_PASSWORD = 'qc123';
+
+// ====================== PASSWORD MENU QC INSPEK ======================
+document.addEventListener('DOMContentLoaded', () => {
+
+  const btn = document.querySelector(
+    `nav button[onclick="showMenu('qcInspek')"]`
+  );
+
+  if(btn){
+
+    const originalOnClick =
+      btn.getAttribute('onclick');
+
+    btn.onclick = function(e){
+
+      e.preventDefault();
+
+      const input = prompt(
+        'Masukkan password untuk QC INSPEK:'
+      );
+
+      // ================= CANCEL =================
+      if(input === null) return;
+
+      // ================= PASSWORD BENAR =================
+      if(input === QC_INSPEK_PASSWORD){
+
+        eval(originalOnClick);
+
+      }else{
+
+        alert('Password salah!');
+
+      }
+
+    };
+
+  }
+
+});
+
+// ====================== INISIALISASI ======================
+loadInspekItems();
+
+
 </script>
 
 
