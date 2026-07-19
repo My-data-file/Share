@@ -612,7 +612,7 @@ select {
   color:#000;
 }
 
-/* ===================== QC CETAK ===================== */
+/* ===================== QC SPOTCHECK ===================== */
 h2.qc-title:not(.qc-lem):not(.qc-finishing):not(.qc-inspek){
   background:linear-gradient(to right,#FF9800,#FFB74D);
 }
@@ -1001,7 +1001,7 @@ h2.qc-title.qc-inspek + .total-wrapper .total-box:hover{
     <button onclick="showMenu('dashboard')" class="nav-btn active">DASHBOARD</button>
     <button onclick="showMenu('reportSection')" class="nav-btn">REPORT</button>
     <button onclick="showMenu('qcBapro')" class="nav-btn">QC TINTA</button>
-    <button onclick="showMenu('qcPA')" class="nav-btn">QC CETAK</button>
+    <button onclick="showMenu('qcPA')" class="nav-btn">QC SPOTCHECK</button>
     <button onclick="showMenu('qcInspek')" class="nav-btn">QC INSPEK</button>
     <button onclick="showMenu('qcLem')" class="nav-btn">QC LEM</button>
     <button onclick="showMenu('qcFinishing')" class="nav-btn">QC FINISHING</button>
@@ -1265,8 +1265,8 @@ body {
 
 
 
-<!-- ======================== QC CETAK ======================== -->
-<h2 class="qc-title">QC CETAK</h2>
+<!-- ======================== QC SPOTCHECK ======================== -->
+<h2 class="qc-title">QC SPOTCHECK</h2>
 
 <!-- ================= INFO TOTAL (CLICKABLE) ================= -->
 <div class="total-wrapper">
@@ -1327,7 +1327,7 @@ body {
 <div id="detailCetakModal" class="modal-fin">
   <div class="modal-fin-content">
     <div class="modal-fin-header">
-      <span>Detail QC Cetak</span>
+      <span>Detail QC SPOTCHECK</span>
       <button onclick="closeDetailModalCetak()">×</button>
     </div>
 
@@ -1409,6 +1409,11 @@ function renderCetakGrid(data, containerId){
   <div class="total-box">
     Total Order<br>
     <strong id="countInspek">0</strong>
+  </div>
+
+  <div class="total-box">
+    Jam SPK<br>
+    <strong id="countjamSPKInspek">0</strong>
   </div>
 
   <div class="total-box total-click"
@@ -1519,6 +1524,7 @@ function showDetailModalInspek(item){
 
   body.innerHTML = `
     <strong>No KS:</strong> ${item.noKS}<br>
+    <strong>Jam SPK:</strong> ${item.jamSPK}<br>
     <strong>Nama:</strong> ${item.nama}<br>
     <strong>Tanggal:</strong> ${item.tanggal || '-'}<br>
     <strong>Status:</strong> ${item.status}
@@ -2042,7 +2048,7 @@ function setStatusFilterBapro(status) {
 
 
 
-<!-- ======================== QC CETAK ======================== -->
+<!-- ======================== QC SPOTCHECK ======================== -->
 <section id="qcPA" class="card qc-section" style="display:none;">
 
   <!-- Judul -->
@@ -2058,7 +2064,7 @@ function setStatusFilterBapro(status) {
     border: 1px solid #000;
     position: relative;
     overflow: hidden;">
-    MENU QC CETAK
+    MENU QC SPOTCHECK
     <span style="
       position: absolute;
       top: 0;
@@ -2114,6 +2120,8 @@ function setStatusFilterBapro(status) {
         <option value="">Pilih QC</option>
         <option value="Suci">Suci</option>
         <option value="Anjani">Anjani</option>
+        <option value="Ika">Ika</option>
+        <option value="Erly">Erly</option>
       </select>
     </div>
 
@@ -2426,6 +2434,15 @@ function setStatusFilterPA(status){
         type="text"
         id="inspekNoKS"
         placeholder="KS-xxxx-xx"
+      >
+    </div>
+
+    <div class="form-group">
+      <label>Jam SPK (jam)</label>
+      <input
+        type="number"
+        id="inspekjamSPK"
+        placeholder="0"
       >
     </div>
 
@@ -4133,10 +4150,6 @@ function filterManualList(input, tabId) {
         <option value="" disabled selected>Pilih Nama QC</option>
         <option value="IKA">IKA</option>
         <option value="ERLY">ERLY</option>
-        <option value="SUSANTI">SUSANTI</option>
-        <option value="DINDA">DINDA</option>
-        <option value="YOLA">YOLA</option>
-        <option value="AMEL">AMEL</option>
         <option value="NANI">NANI</option>
         <option value="ANJANI">ANJANI</option>
         <option value="SUCI">SUCI</option>
@@ -4157,7 +4170,7 @@ function filterManualList(input, tabId) {
         <option value="" disabled selected>Pilih Proses</option>
         <option value="ASS QUALITY">ASS QUALITY</option>
         <option value="QC BAPRO">QC BAPRO</option>
-        <option value="QC CETAK">QC CETAK</option>
+        <option value="QC SPOTCHECK">QC SPOTCHECK</option>
         <option value="QC FINISHING">QC FINISHING</option>
         <option value="QC LEM">QC LEM</option>
         <option value="RETUR">RETUR</option>
@@ -5220,9 +5233,6 @@ if (spvNoKS) {
           <label><input type="checkbox" value="ISMIE"> ISMIE</label>
           <label><input type="checkbox" value="IKA"> IKA</label>
           <label><input type="checkbox" value="ERLY"> ERLY</label>
-          <label><input type="checkbox" value="SUSANTI"> SUSANTI</label>
-          <label><input type="checkbox" value="YOLA"> YOLA</label>
-          <label><input type="checkbox" value="AMEL"> AMEL</label>
         </div>
       </div>
 
@@ -6908,7 +6918,7 @@ document.addEventListener("DOMContentLoaded", () => {
     <div class="menu-btns">
       <button class="menu-ai-btn" data-ai="memory">AI MEMORY</button>
       <button class="menu-ai-btn" data-ai="bapro">AI QC BAPRO</button>
-      <button class="menu-ai-btn" data-ai="cetak">AI QC CETAK</button>
+      <button class="menu-ai-btn" data-ai="cetak">AI QC SPOTCHECK</button>
       <button class="menu-ai-btn" data-ai="finishing">AI QC FINISHING</button>
       <button class="menu-ai-btn" data-ai="lem">AI QC LEM</button>
       <button class="menu-ai-btn" data-ai="register">AI QC REGISTER</button>
@@ -7230,7 +7240,7 @@ document.querySelector(".spinner-accelerator").innerHTML =
 
 <script>
 // ====================== KONFIGURASI ======================
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbyyrUrbhjhEhj7eqXQ-oJ-gAumb11hza3xy7IyqVVZWAONzfTSJ-IDJY7NpcX1aSk_G/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwvCy7xWOebavjp1JEhPswGwXTSoznobMyfZ1Cu_9IkL0Jk_oFrO-su84GoXyG1CdXg/exec";
 
 // ====================== SPINNER GLOBAL JS ======================
 const spinner = document.getElementById('loadingSpinner');
@@ -9444,7 +9454,7 @@ loadBaproItems();
 
 
 
-<!-- ====== JS QC PA  ===== -->
+<!-- ====== JS QC SPOTCHECK  ===== -->
 <script>
 // ====================== GLOBAL STATE (PA) ======================
 let paItems = []; // array yang diambil dari sheet PA
@@ -9702,13 +9712,13 @@ if (!konfirmasi) return;
       btnTambah.innerHTML = originalHTML;
       clearPAForm();
       loadPAItems();
-      alert('✅ Data PA berhasil ditambahkan!');
+      alert('✅ Data QC SPOTCHECK berhasil ditambahkan!');
     }, 8000);
   } else {
     postPayload(payload);
     clearPAForm();
     setTimeout(() => loadPAItems(), 8000);
-    alert('✅ Data PA berhasil ditambahkan!');
+    alert('✅ Data QC SPOTCHECK ditambahkan!');
   }
 }
 
@@ -9856,6 +9866,8 @@ function editPAInline(index){
       <select class="edit-inline">
         <option value="Suci" ${item.qc==='Suci'? 'selected':''}>Suci</option>
         <option value="Anjani" ${item.qc==='Anjani'? 'selected':''}>Anjani</option>
+        <option value="Ika" ${item.qc==='Ika'? 'selected':''}>Ika</option>
+        <option value="Erly" ${item.qc==='Erly'? 'selected':''}>Erly</option>
       </select>
 
       <label>Mesin</label>
@@ -10205,7 +10217,7 @@ function closeDetailModalCetak(){
 
 
 
-// ====================== TOGGLE VIEW + FILTER + FULLSCREEN QC PA (FINAL SYNC LEM) ======================
+// ====================== TOGGLE VIEW + FILTER + FULLSCREEN QC SPOTCHECK (FINAL SYNC LEM) ======================
 document.addEventListener("DOMContentLoaded", () => {
 
   const btnTO = document.getElementById("togglePATO");
@@ -10406,7 +10418,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-// ===== Password untuk QC PA (ubah sesuai kebutuhan) =====
+// ===== Password untuk QC SPOTCHECK (ubah sesuai kebutuhan) =====
 const QC_PA_PASSWORD='qc123';
 document.addEventListener('DOMContentLoaded',()=>{
   const btn=document.querySelector(`nav button[onclick="showMenu('qcPA')"]`);
@@ -10414,7 +10426,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     const originalOnClick=btn.getAttribute('onclick');
     btn.onclick=function(e){
       e.preventDefault();
-      const input=prompt('Masukkan password untuk QC CETAK:');
+      const input=prompt('Masukkan password untuk QC SPOTCHECK:');
       if(input===null) return;
       if(input===QC_PA_PASSWORD){ eval(originalOnClick); }
       else{ alert('Password salah!'); }
@@ -10454,6 +10466,7 @@ function renderGridInspek(query = "") {
       !(
         (item.nama || '').toLowerCase().includes(q) ||
         (item.noKS || '').toLowerCase().includes(q) ||
+        (item.jamSPK || '').toLowerCase().includes(q) ||
         (item.qc || '').toLowerCase().includes(q) ||
         (item.keterangan || '').toLowerCase().includes(q)
       )
@@ -10554,6 +10567,11 @@ function renderGridInspek(query = "") {
         <span>
           No KS:
           ${highlightHtmlSafe(item.noKS || '', q)}
+        </span><br>
+
+        <span>
+          Jam SPK:
+          ${highlightHtmlSafe(item.jamSPK || '', q)}
         </span><br>
 
         <span>
@@ -10712,6 +10730,7 @@ function showDetailInspek(index){
       <p><b>Tanggal:</b> ${item.tanggal || '-'}</p>
       <p><b>Nama Order:</b> ${item.nama || '-'}</p>
       <p><b>No KS:</b> ${item.noKS || '-'}</p>
+      <p><b>Jam SPK:</b> ${item.jamSPK || '-'}</p>
       <p><b>Order:</b> ${item.order || '-'}</p>
 
       <hr>
@@ -10842,6 +10861,14 @@ function addInspekItem(){
     .value
     .trim();
 
+  const jamSPK = document
+    .getElementById('inspekjamSPK')
+    ? document
+        .getElementById('inspekjamSPK')
+        .value
+        .trim()
+    : '';
+
   const order = document
     .getElementById('inspekOrder')
     ? document
@@ -10913,6 +10940,7 @@ function addInspekItem(){
   if (!nama) kosong.push("Nama Order");
   if (!order) kosong.push("Nama Barang / Order");
   if (!noKS) kosong.push("No KS");
+  if (!jamSPK) kosong.push("Jam SPK");
   if (!qc) kosong.push("QC");
   if (!mesin) kosong.push("Mesin");
   if (!update) kosong.push("Proses");
@@ -10936,6 +10964,7 @@ function addInspekItem(){
     `Nama Order : ${nama}\n` +
     `Order      : ${order}\n` +
     `No KS      : ${noKS}\n` +
+    `Jam SPK    : ${jamSPK}\n` +
     `QC         : ${qc}\n` +
     `Mesin      : ${mesin}\n` +
     `Proses     : ${update}`
@@ -10969,6 +10998,7 @@ function addInspekItem(){
 
     nama,
     noKS,
+    jamSPK,
     order,
     bagus,
     sortir,
@@ -11046,6 +11076,9 @@ function callInspek(index){
 
   document.getElementById('inspekNoKS').value =
     item.noKS || '';
+
+  document.getElementById('inspekjamSPK').value =
+    item.jamSPK || '';
 
   document.getElementById('inspekOrder').value =
     item.order || '';
@@ -11299,6 +11332,13 @@ function editInspekInline(index){
         value="${escapeHtml(item.noKS || '')}"
       >
 
+      <label>Jam SPK</label>
+      <input
+        type="number"
+        class="edit-inline"
+        value="${escapeHtml(item.jamSPK || '')}"
+      >
+
       <label>Order</label>
       <input
         type="number"
@@ -11537,21 +11577,23 @@ async function saveInspekInline(index, btn){
 
     noKS: inputs[1].value.trim(),
 
-    order: inputs[2].value.trim(),
+    jamSPK: inputs[2].value.trim(),
 
-    bagus: inputs[3].value.trim(),
+    order: inputs[3].value.trim(),
 
-    sortir: inputs[4].value.trim(),
+    bagus: inputs[4].value.trim(),
 
-    problem: inputs[5].value.trim(),
+    sortir: inputs[5].value.trim(),
 
-    qc: inputs[6].value,
+    problem: inputs[6].value.trim(),
 
-    mesin: inputs[7].value.trim(),
+    qc: inputs[7].value,
 
-    update: inputs[8].value,
+    mesin: inputs[8].value.trim(),
 
-    keterangan: inputs[9].value.trim()
+    update: inputs[9].value,
+
+    keterangan: inputs[10].value.trim()
 
   };
 
@@ -11669,6 +11711,7 @@ function clearInspekForm(){
   [
     'inspekNama',
     'inspekNoKS',
+    'inspekjamSPK',
     'inspekQC',
     'inspekUpdate'
   ].forEach(id => {
@@ -11753,6 +11796,8 @@ function renderDashboardInspekCompact(query = "", safeMode = false){
   containerSelesai.innerHTML = '';
 
   // ====================== COUNTER ======================
+  let totalJamSPK = 0;
+
   let totalTO = 0;
 
   let totalProses = 0;
@@ -11777,6 +11822,49 @@ function renderDashboardInspekCompact(query = "", safeMode = false){
   const fmt = (n) =>
     Number(n || 0).toLocaleString('id-ID');
 
+
+// ====================== CEK MINGGU BERJALAN ======================
+const bulan = {
+  Januari:0, Februari:1, Maret:2, April:3,
+  Mei:4, Juni:5, Juli:6, Agustus:7,
+  September:8, Oktober:9, November:10, Desember:11
+};
+
+function isCurrentWeek(tanggal){
+
+  if(!tanggal) return false;
+
+  const m = tanggal.match(
+    /(\d{1,2})\s([A-Za-z]+)\s(\d{4})/
+  );
+
+  if(!m) return false;
+
+  const tgl = new Date(
+    Number(m[3]),
+    bulan[m[2]],
+    Number(m[1])
+  );
+
+  const now = new Date();
+
+  const hari = now.getDay();
+  const selisih = (hari === 0 ? 6 : hari - 1);
+
+  const awalMinggu = new Date(now);
+  awalMinggu.setHours(0,0,0,0);
+  awalMinggu.setDate(now.getDate() - selisih);
+
+  const akhirMinggu = new Date(awalMinggu);
+  akhirMinggu.setDate(awalMinggu.getDate() + 4);
+  akhirMinggu.setHours(23,59,59,999);
+
+  return tgl >= awalMinggu &&
+         tgl <= akhirMinggu;
+
+}
+
+
   // ====================== LOOP DATA ======================
   inspekItems.forEach(item => {
 
@@ -11789,6 +11877,13 @@ function renderDashboardInspekCompact(query = "", safeMode = false){
       item.tanggal || "-";
 
     // ====================== NILAI ======================
+const jamSPK =
+  num(item.jamSPK);
+
+if(isCurrentWeek(item.tanggal)){
+  totalJamSPK += jamSPK;
+}
+
     const order =
       num(item.order);
 
@@ -11852,6 +11947,11 @@ function renderDashboardInspekCompact(query = "", safeMode = false){
       <strong>
         Nama :
         ${highlightHtmlSafe(item.nama || '', query)}
+      </strong><br>
+
+      <strong>
+        Jam SPK :
+        ${highlightHtmlSafe(item.jamSPK || '', query)}
       </strong><br>
 
       <strong>
@@ -11992,6 +12092,10 @@ function renderDashboardInspekCompact(query = "", safeMode = false){
   ).textContent = inspekItems.length;
 
   document.getElementById(
+    'countjamSPKInspek'
+  ).textContent = totalJamSPK;
+
+  document.getElementById(
     'countTOInspek'
   ).textContent = totalTO;
 
@@ -12004,7 +12108,6 @@ function renderDashboardInspekCompact(query = "", safeMode = false){
   ).textContent = totalSelesai;
 
 }
-
 
 
 
@@ -12101,6 +12204,9 @@ function showDetailModalInspek(item){
 
     <strong>No KS:</strong>
     ${item.noKS || '-'}<br>
+
+    <strong>Jam SPK:</strong>
+    ${formatID(item.jamSPK)}<br>
 
     <strong>Order:</strong>
     ${formatID(item.order)}<br>
@@ -14092,8 +14198,8 @@ function enableSPVEdit() {
           select.style.fontSize = "13px";
 
           let options = [];
-          if (i === 8) options = ["IKA","ERLY","SUSANTI","DINDA","AMEL","YOLA","NANI","ANJANI","SUCI","ANOM","IRNA","MARWAN","RISA","MARTINI","KRESTIN","ISMIE"];
-          else options = ["QC BAPRO","QC CETAK","QC FINISHING","QC LEM","RETUR"];
+          if (i === 8) options = ["IKA","ERLY","NANI","ANJANI","SUCI","ANOM","IRNA","MARWAN","RISA","MARTINI","KRESTIN","ISMIE"];
+          else options = ["QC BAPRO","QC SPOTCHECK","QC FINISHING","QC LEM","RETUR"];
 
           options.forEach(opt => {
             const option = document.createElement("option");
