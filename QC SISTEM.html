@@ -1071,83 +1071,225 @@ body {
   100% { background-position: 0% 50%; }
 }
 
+
 /* ======================== Footer Nav Wrapper ======================== */
+
 .footer-nav {
   position: fixed;
-  bottom: env(safe-area-inset-bottom, 0); 
+
+  bottom: env(safe-area-inset-bottom, 0);
+
   left: 0;
+
   width: 100%;
-  background: linear-gradient(to right, #0078D7, #1A86D1);
+
   height: 64px;
+
+  background: linear-gradient(
+    to right,
+    #0078D7,
+    #1A86D1
+  );
+
   z-index: 999;
+
   display: flex;
-  justify-content: center;
+
   align-items: center;
-  padding: 0 10px;
+
+  /* cegah isi keluar */
   overflow: hidden;
+
+  padding: 0;
 }
 
-/* ======================== Kontainer tombol ======================== */
+
+
+/* ======================== Container Tombol ======================== */
+
 .nav-inner {
   display: flex;
-  gap: 12px;
-  align-items: center;
-  justify-content: center;
-  overflow-x: auto;
-  white-space: nowrap;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  width: 100%;
-  scrollbar-width: none;          
-  -ms-overflow-style: none;       
-}
-.nav-inner::-webkit-scrollbar { display: none; }
 
-/* ======================== Tombol Menu Footer HD ======================== */
+  align-items: center;
+
+  gap: 12px;
+
+  width: 100%;
+
+  overflow-x: auto;
+
+  overflow-y: hidden;
+
+  white-space: nowrap;
+
+  scroll-behavior: smooth;
+
+  -webkit-overflow-scrolling: touch;
+
+  justify-content: flex-start;
+
+  padding: 0 10px;
+
+  /* scrollbar aktif */
+  scrollbar-width: thin;
+
+  scrollbar-color: #ffffff rgba(255,255,255,.25);
+}
+
+
+
+/* ======================== Scrollbar Chrome ======================== */
+
+.nav-inner::-webkit-scrollbar {
+  height: 7px;
+}
+
+
+.nav-inner::-webkit-scrollbar-track {
+  background: rgba(255,255,255,.25);
+
+  border-radius: 10px;
+}
+
+
+.nav-inner::-webkit-scrollbar-thumb {
+  background: #ffffff;
+
+  border-radius: 10px;
+}
+
+
+.nav-inner::-webkit-scrollbar-thumb:hover {
+  background: #dbeafe;
+}
+
+
+
+
+/* ======================== Tombol Menu ======================== */
+
 .nav-btn {
   flex-shrink: 0;
+
   color: #0f172a;
+
   font-weight: 600;
+
   font-size: 15px;
+
   padding: 10px 20px;
+
   border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.7);
+
+  border: 1px solid rgba(255,255,255,.7);
+
   background: #ffffff;
+
   text-shadow: none;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.3);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); /* Transisi lebih halus */
+
+  box-shadow:
+    0 2px 6px rgba(0,0,0,.15),
+    inset 0 1px 0 rgba(255,255,255,.3);
+
+  transition:
+    all .25s cubic-bezier(.4,0,.2,1);
+
   cursor: pointer;
 }
 
-/* UPDATE: Efek Hover Baru (Membesar & Bercahaya, bukan ke atas) */
+
+
+
+/* ======================== Hover ======================== */
+
 .nav-btn:hover {
   background: #f0f7ff;
-  transform: scale(1.05); /* Sedikit membesar */
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.4), 0 4px 12px rgba(0, 0, 0, 0.2);
-  border-color: #ffffff;
+
+  transform: scale(1.05);
+
+  box-shadow:
+    0 0 15px rgba(255,255,255,.4),
+    0 4px 12px rgba(0,0,0,.2);
 }
+
+
+
+
+/* ======================== Active ======================== */
 
 .nav-btn.active {
-  color: #fff;
-  background: linear-gradient(145deg, #22c55e, #16a34a);
-  border-color: rgba(34,197,94,0.6);
-  box-shadow: 0 0 15px rgba(34,197,94,0.6), 0 0 30px rgba(34,197,94,0.4);
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      145deg,
+      #22c55e,
+      #16a34a
+    );
+
+  border-color:
+    rgba(34,197,94,.6);
+
+  box-shadow:
+    0 0 15px rgba(34,197,94,.6),
+    0 0 30px rgba(34,197,94,.4);
 }
+
+
+
+
+/* ======================== Click Effect ======================== */
 
 .nav-btn:active {
-  transform: scale(0.95); /* Efek membal saat ditekan */
-  box-shadow: 0 0 6px rgba(0,0,0,0.3);
+  transform: scale(.95);
+
+  box-shadow:
+    0 0 6px rgba(0,0,0,.3);
 }
 
-/* ======================== Responsif ======================== */
-@media (max-width: 768px) {
-  .nav-inner { justify-content: flex-start; }
-  .nav-btn { font-size: 14px; padding: 9px 16px; }
+
+
+
+/* ======================== Mobile ======================== */
+
+@media(max-width:768px){
+
+  .nav-inner {
+    justify-content: flex-start;
+  }
+
+
+  .nav-btn {
+    font-size: 14px;
+
+    padding: 9px 16px;
+  }
+
 }
-@media (min-width: 1024px) {
-  .nav-inner { justify-content: center; }
-  .nav-btn { font-size: 15px; padding: 11px 22px; }
+
+
+
+
+
+/* ======================== Desktop ======================== */
+
+@media(min-width:1024px){
+
+  .nav-inner {
+    justify-content: flex-start;
+  }
+
+
+  .nav-btn {
+    font-size: 15px;
+
+    padding: 11px 22px;
+  }
+
 }
+
+
+
 </style>
 
 
@@ -1844,8 +1986,8 @@ function closeDetailModalFinishing(){
     </div>
 
     <div class="form-group">
-      <label>Jenis Kertas</label>
-      <input type="text" id="baproJenis" placeholder="Duplex 350">
+      <label>Jenis Kertas & Kode</label>
+      <input type="text" id="baproJenis" placeholder="Duplex 350/K-AC40KS1">
     </div>
 
     <div class="form-group">
@@ -1876,7 +2018,7 @@ function closeDetailModalFinishing(){
     </div>
 
     <div class="form-group">
-      <button type="button" class="bapro-add-btn" onclick="addBaproItem()">➕ Tambah</button>
+      <button type="button" class="bapro-add-btn" onclick="addBaproItem()">➕ SAVE</button>
     </div>
   </div>
 
@@ -2321,11 +2463,11 @@ function setStatusFilterBapro(status) {
     <!-- STEP 3 -->
     <div id="step3" class="temuan-step" style="display:none;">
 
-      <h4>3. Frekuensi Temuan</h4>
+      <h4>3. Frekuensi Temuan (Jarang <3 dan Sering >3)</h4>
 
       <select id="tmFrek">
         <option value="">-- Pilih Frekuensi --</option>
-        <option>Sekali</option>
+        <option>Jarang</option>
         <option>Sering</option>
       </select>
 
@@ -2358,7 +2500,7 @@ function setStatusFilterBapro(status) {
 </div>
 
     <div class="form-group">
-      <button type="button" class="pa-add-btn" onclick="addPAItem()">➕ Tambah</button>
+      <button type="button" class="pa-add-btn" onclick="addPAItem()">➕ SAVE</button>
     </div>
   </div>
 
@@ -2864,7 +3006,7 @@ function setStatusFilterPA(status){
 let activeKetInput = "";
 
 // =======================
-// BUKA POPUP
+// BUKA POPUP (UPDATED: Auto Load Data Lama)
 // =======================
 function openTemuanModal(inputId){
 
@@ -2878,14 +3020,58 @@ function openTemuanModal(inputId){
     document.getElementById("step3").style.display = "none";
     document.getElementById("step4").style.display = "none";
 
-    // Reset pilihan text/select
-    document.getElementById("tmJenis").value = "";
-    document.getElementById("tmFrek").value = "";
-    document.getElementById("tmKet").value = "";
+    // 1. Ambil teks yang saat ini ada di kolom input utama
+    const currentText = document.getElementById(inputId).value.trim();
 
-    // PERUBAHAN: Reset semua checkbox posisi agar tidak tercentang saat dibuka kembali
+    // 2. Siapkan variabel penampung data lama
+    let existingJenis = "";
+    let existingFrek = "";
+    let existingKet = "";
+    let existingPosisiArray = [];
+
+    // 3. Jika kolom input sudah ada isinya, pecah datanya kembali
+    if (currentText !== "") {
+        const parts = currentText.split("|");
+
+        parts.forEach(part => {
+            const item = part.trim();
+            
+            // Ambil data Jenis
+            if (item.startsWith("Jenis:")) {
+                existingJenis = item.replace("Jenis:", "").trim();
+            } 
+            // Ambil data Posisi lalu ubah menjadi susunan Array angka
+            else if (item.startsWith("Posisi:")) {
+                const posisiStr = item.replace("Posisi:", "").trim();
+                if (posisiStr) {
+                    existingPosisiArray = posisiStr.split(",").map(num => num.trim());
+                }
+            } 
+            // Ambil data Frekuensi
+            else if (item.startsWith("Frekuensi:")) {
+                existingFrek = item.replace("Frekuensi:", "").trim();
+            } 
+            // Ambil data Keterangan Tambahan
+            else if (item.startsWith("Keterangan:")) {
+                existingKet = item.replace("Keterangan:", "").trim();
+            }
+        });
+    }
+
+    // 4. Masukkan kembali data lama tersebut ke dalam form modal
+    document.getElementById("tmJenis").value = existingJenis;
+    document.getElementById("tmFrek").value = existingFrek;
+    document.getElementById("tmKet").value = existingKet;
+
+    // 5. Ceklis otomatis kotak angka berdasarkan data posisi yang lama
     const checkboxes = document.querySelectorAll('input[name="tmPosisi"]');
-    checkboxes.forEach(cb => cb.checked = false);
+    checkboxes.forEach(cb => {
+        if (existingPosisiArray.includes(cb.value)) {
+            cb.checked = true;
+        } else {
+            cb.checked = false;
+        }
+    });
 
 }
 
@@ -3027,6 +3213,7 @@ window.addEventListener("click", function(e){
 });
 
 
+
 </script>
 
 
@@ -3121,7 +3308,7 @@ window.addEventListener("click", function(e){
     </div>
 
     <div class="form-group">
-      <label>Total Order (lembar)</label>
+      <label>Total Order (pcs)</label>
       <input
         type="number"
         id="inspekOrder"
@@ -3130,7 +3317,7 @@ window.addEventListener("click", function(e){
     </div>
 
     <div class="form-group">
-      <label>Bagus (lembar)</label>
+      <label>Bagus (pcs)</label>
       <input
         type="number"
         id="inspekBagus"
@@ -3139,7 +3326,7 @@ window.addEventListener("click", function(e){
     </div>
 
     <div class="form-group">
-      <label>Sortir (lembar)</label>
+      <label>Sortir (pcs)</label>
       <input
         type="number"
         id="inspekSortir"
@@ -3148,7 +3335,7 @@ window.addEventListener("click", function(e){
     </div>
 
     <div class="form-group">
-      <label>Problem (lembar)</label>
+      <label>Problem (pcs)</label>
       <input
         type="number"
         id="inspekProblem"
@@ -3186,57 +3373,199 @@ window.addEventListener("click", function(e){
       </select>
     </div>
 
-    <!-- ================= KETERANGAN ================= -->
-    <div class="form-group">
+<!-- ================= TEMUAN ================= -->
+<div class="form-group">
 
-      <label>Keterangan (opsional)</label>
+  <label>Input Temuan</label>
 
-      <div class="rowKet">
-        <span>1.</span>
-        <input
-          type="text"
-          id="ketInspek1"
-          placeholder="Isi keterangan 1"
-        >
-      </div>
+  <div class="rowKet">
+    <span>1.</span>
+    <input
+      type="text"
+      id="ketInspek1"
+      placeholder="Klik untuk memilih temuan"
+      readonly
+      onclick="openTemuanModalInspek('ketInspek1')">
+  </div>
 
-      <div class="rowKet">
-        <span>2.</span>
-        <input
-          type="text"
-          id="ketInspek2"
-          placeholder="Isi keterangan 2"
-        >
-      </div>
+  <div class="rowKet">
+    <span>2.</span>
+    <input
+      type="text"
+      id="ketInspek2"
+      placeholder="Klik untuk memilih temuan"
+      readonly
+      onclick="openTemuanModalInspek('ketInspek2')">
+  </div>
 
-      <div class="rowKet">
-        <span>3.</span>
-        <input
-          type="text"
-          id="ketInspek3"
-          placeholder="Isi keterangan 3"
-        >
-      </div>
+  <div class="rowKet">
+    <span>3.</span>
+    <input
+      type="text"
+      id="ketInspek3"
+      placeholder="Klik untuk memilih temuan"
+      readonly
+      onclick="openTemuanModalInspek('ketInspek3')">
+  </div>
 
-      <div class="rowKet">
-        <span>4.</span>
-        <input
-          type="text"
-          id="ketInspek4"
-          placeholder="Isi keterangan 4"
-        >
-      </div>
+  <div class="rowKet">
+    <span>4.</span>
+    <input
+      type="text"
+      id="ketInspek4"
+      placeholder="Klik untuk memilih temuan"
+      readonly
+      onclick="openTemuanModalInspek('ketInspek4')">
+  </div>
 
-      <div class="rowKet">
-        <span>5.</span>
-        <input
-          type="text"
-          id="ketInspek5"
-          placeholder="Isi keterangan 5"
-        >
+  <div class="rowKet">
+    <span>5.</span>
+    <input
+      type="text"
+      id="ketInspek5"
+      placeholder="Klik untuk memilih temuan"
+      readonly
+      onclick="openTemuanModalInspek('ketInspek5')">
+  </div>
+
+</div>
+
+<!-- ================= MODAL TEMUAN ================= -->
+<div id="temuanModalInspek" class="temuan-modal" style="display:none;">
+
+  <div class="temuan-content">
+
+    <h3>Input Temuan</h3>
+
+    <!-- STEP 1 -->
+    <div id="stepInspek1" class="temuan-step">
+
+      <h4>1. Jenis Temuan</h4>
+
+      <select id="tmInspekJenis">
+        <option value="">-- Pilih Jenis Temuan --</option>
+        <option>Temuan Cetak</option>
+        <option>Temuan Ponch</option>
+        <option>Temuan Varnish</option>
+        <option>Temuan Potong</option>
+      </select>
+
+      <div class="modal-btn">
+        <button type="button" onclick="nextStepInspek(2)">Next ▶</button>
       </div>
 
     </div>
+
+    <!-- STEP 2 -->
+    <div id="stepInspek2" class="temuan-step" style="display:none;">
+
+      <h4>2. Kategori & Temuan</h4>
+
+      <div class="temuan-group">
+
+        <h5>🖨️ Temuan Cetak</h5>
+
+<label><input type="checkbox" name="tmInspekTemuan" value="Warna"> Warna</label>
+<label><input type="checkbox" name="tmInspekTemuan" value="Noda"> Noda</label>
+<label><input type="checkbox" name="tmInspekTemuan" value="Ghosting"> Ghosting</label>
+<label><input type="checkbox" name="tmInspekTemuan" value="Terhapus"> Terhapus</label>
+<label><input type="checkbox" name="tmInspekTemuan" value="Galang"> Galang</label>
+
+<label><input type="checkbox" name="tmInspekTemuan" value="MisRegis"> MisRegis</label>
+<label><input type="checkbox" name="tmInspekTemuan" value="Garis"> Garis</label>
+<label><input type="checkbox" name="tmInspekTemuan" value="Botak"> Botak</label>
+<label><input type="checkbox" name="tmInspekTemuan" value="Set-Off"> Set-Off</label>
+<label><input type="checkbox" name="tmInspekTemuan" value="Scumming"> Scumming</label>
+
+<label><input type="checkbox" name="tmInspekTemuan" value="Oksidasi"> Oksidasi</label>
+<label><input type="checkbox" name="tmInspekTemuan" value="Gatra"> Gatra</label>
+<label><input type="checkbox" name="tmInspekTemuan" value="Salur"> Salur</label>
+<label><input type="checkbox" name="tmInspekTemuan" value="Barcode/QR"> Barcode/QR</label>
+
+      </div>
+
+
+      <div class="temuan-group">
+
+        <h5>✂️ Temuan Ponch</h5>
+
+        <label><input type="checkbox" name="tmInspekTemuan" value="Over Ponch"> Over Ponch</label>
+        <label><input type="checkbox" name="tmInspekTemuan" value="Kurang Ponch"> Kurang Ponch</label>
+        <label><input type="checkbox" name="tmInspekTemuan" value="Geser Ponch"> Geser Ponch</label>
+        <label><input type="checkbox" name="tmInspekTemuan" value="Sobek"> Sobek</label>
+        <label><input type="checkbox" name="tmInspekTemuan" value="Tidak Putus"> Tidak Putus</label>
+
+      </div>
+
+      <div class="temuan-group">
+
+        <h5>✨ Temuan Varnish</h5>
+
+        <label><input type="checkbox" name="tmInspekTemuan" value="Tidak Full"> Tidak Full</label>
+        <label><input type="checkbox" name="tmInspekTemuan" value="Bubble"> Bubble</label>
+        <label><input type="checkbox" name="tmInspekTemuan" value="Orange Peel"> Orange Peel</label>
+        <label><input type="checkbox" name="tmInspekTemuan" value="Mengelupas"> Mengelupas</label>
+        <label><input type="checkbox" name="tmInspekTemuan" value="Baret"> Baret</label>
+
+      </div>
+
+      <div class="temuan-group">
+
+        <h5>📏 Temuan Potong</h5>
+
+        <label><input type="checkbox" name="tmInspekTemuan" value="Over Cut"> Over Cut</label>
+        <label><input type="checkbox" name="tmInspekTemuan" value="Under Cut"> Under Cut</label>
+        <label><input type="checkbox" name="tmInspekTemuan" value="Geser Potong"> Geser Potong</label>
+        <label><input type="checkbox" name="tmInspekTemuan" value="Miring"> Miring</label>
+        <label><input type="checkbox" name="tmInspekTemuan" value="Bergerigi"> Bergerigi</label>
+
+      </div>
+
+      <div class="modal-btn" style="margin-top:20px;">
+        <button type="button" onclick="prevStepInspek(1)">◀ Back</button>
+        <button type="button" onclick="nextStepInspek(3)">Next ▶</button>
+      </div>
+
+    </div>
+
+    <!-- STEP 3 -->
+    <div id="stepInspek3" class="temuan-step" style="display:none;">
+
+      <h4>3. Frekuensi Temuan (Jarang &lt;3 dan Sering &gt;3)</h4>
+
+      <select id="tmInspekFrek">
+        <option value="">-- Pilih Frekuensi --</option>
+        <option>Jarang</option>
+        <option>Sering</option>
+      </select>
+
+      <div class="modal-btn">
+        <button type="button" onclick="prevStepInspek(2)">◀ Back</button>
+        <button type="button" onclick="nextStepInspek(4)">Next ▶</button>
+      </div>
+
+    </div>
+
+    <!-- STEP 4 -->
+    <div id="stepInspek4" class="temuan-step" style="display:none;">
+
+      <h4>4. Keterangan Tambahan (Opsional)</h4>
+
+      <textarea
+        id="tmInspekKet"
+        rows="5"
+        placeholder="Berikan Jumlah Temuan Jika Ada"></textarea>
+
+      <div class="modal-btn">
+        <button type="button" onclick="prevStepInspek(3)">◀ Back</button>
+        <button type="button" onclick="saveTemuanInspek()">✔ Selesai</button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
 
     <!-- ================= BUTTON ================= -->
     <div class="form-group">
@@ -3245,7 +3574,7 @@ window.addEventListener("click", function(e){
         class="inspek-add-btn"
         onclick="addInspekItem()"
       >
-        ➕ Tambah
+        ➕ SAVE
       </button>
     </div>
 
@@ -3536,6 +3865,278 @@ window.addEventListener("click", function(e){
   box-shadow:0 2px 6px rgba(25,118,210,0.25);
 }
 
+/* ===========================================
+   MODAL INPUT TEMUAN INSPEK
+=========================================== */
+
+.inspek-temuan-modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    z-index:99999;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    animation:fadeIn .2s ease;
+}
+
+.inspek-temuan-content{
+    width:100%;
+    max-width:480px;
+    max-height:90vh;
+    background:#fff;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+    animation:zoomIn .25s ease;
+    display:flex;
+    flex-direction:column;
+}
+
+/* Header */
+
+.inspek-temuan-content h3{
+    margin:0;
+    padding:16px;
+    background:#ca8a04;
+    color:#fff;
+    text-align:center;
+    font-size:18px;
+    font-weight:600;
+}
+
+/* Step */
+
+.inspek-temuan-step{
+    padding:20px;
+    overflow-y:auto;
+}
+
+.inspek-temuan-step h4{
+    margin:0 0 15px;
+    color:#444;
+    font-size:16px;
+}
+
+/* Select */
+
+.inspek-temuan-step select{
+    width:100%;
+    padding:12px 14px;
+    border:1px solid #dcdcdc;
+    border-radius:10px;
+    font-size:15px;
+    outline:none;
+    transition:.25s;
+    background:#fff;
+    box-sizing:border-box;
+}
+
+.inspek-temuan-step select:focus{
+    border-color:#ca8a04;
+    box-shadow:0 0 0 3px rgba(202,138,4,.15);
+}
+
+/* ===============================
+   GROUP TEMUAN
+================================ */
+
+.inspek-temuan-group{
+    margin-bottom:20px;
+    padding:14px;
+    border:1px solid #e5e5e5;
+    border-radius:12px;
+    background:#fafafa;
+}
+
+.inspek-temuan-group h5{
+    margin:0 0 12px;
+    font-size:15px;
+    color:#ca8a04;
+    font-weight:600;
+}
+
+.inspek-temuan-group label{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:8px 10px;
+    margin-bottom:6px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.inspek-temuan-group label:hover{
+    background:#fff8e1;
+}
+
+.inspek-temuan-group input[type="checkbox"]{
+    width:18px;
+    height:18px;
+    accent-color:#ca8a04;
+}
+
+/* Textarea */
+
+.inspek-temuan-step textarea{
+    width:100%;
+    min-height:120px;
+    resize:vertical;
+    padding:12px 14px;
+    border:1px solid #dcdcdc;
+    border-radius:10px;
+    font-size:15px;
+    font-family:inherit;
+    line-height:1.5;
+    outline:none;
+    transition:.25s;
+    box-sizing:border-box;
+}
+
+.inspek-temuan-step textarea:focus{
+    border-color:#ca8a04;
+    box-shadow:0 0 0 3px rgba(202,138,4,.15);
+}
+
+/* Tombol */
+
+.inspek-modal-btn{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:25px;
+}
+
+.inspek-modal-btn button{
+    flex:1;
+    border:none;
+    border-radius:10px;
+    padding:12px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.inspek-modal-btn button:hover{
+    transform:translateY(-2px);
+}
+
+.inspek-modal-btn button:first-child{
+    background:#ececec;
+    color:#444;
+}
+
+.inspek-modal-btn button:first-child:hover{
+    background:#dcdcdc;
+}
+
+.inspek-modal-btn button:last-child{
+    background:#ca8a04;
+    color:#fff;
+}
+
+.inspek-modal-btn button:last-child:hover{
+    background:#a16207;
+}
+
+/* Input */
+
+.inspek-rowKet{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+.inspek-rowKet span{
+    width:24px;
+    font-weight:bold;
+    text-align:center;
+}
+
+.inspek-rowKet input{
+    flex:1;
+    padding:10px 12px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    cursor:pointer;
+    background:#fafafa;
+    transition:.25s;
+}
+
+.inspek-rowKet input:hover{
+    border-color:#ca8a04;
+    background:#fff;
+}
+
+.inspek-rowKet input:focus{
+    outline:none;
+    border-color:#ca8a04;
+    box-shadow:0 0 0 3px rgba(202,138,4,.15);
+}
+
+/* Scroll */
+
+.inspek-temuan-step::-webkit-scrollbar{
+    width:6px;
+}
+
+.inspek-temuan-step::-webkit-scrollbar-thumb{
+    background:#c8c8c8;
+    border-radius:10px;
+}
+
+.inspek-temuan-step::-webkit-scrollbar-thumb:hover{
+    background:#a8a8a8;
+}
+
+/* Responsive */
+
+@media(max-width:600px){
+
+    .inspek-temuan-content{
+        width:100%;
+        max-width:100%;
+        max-height:95vh;
+        border-radius:14px;
+    }
+
+    .inspek-temuan-step{
+        padding:16px;
+    }
+
+    .inspek-modal-btn{
+        flex-direction:column;
+    }
+
+    .inspek-modal-btn button{
+        width:100%;
+    }
+
+}
+
+/* Animasi */
+
+@keyframes fadeIn{
+    from{opacity:0;}
+    to{opacity:1;}
+}
+
+@keyframes zoomIn{
+    from{
+        transform:scale(.9);
+        opacity:0;
+    }
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
+
 </style>
 
 
@@ -3642,6 +4243,235 @@ function setStatusFilterInspek(status){
 
 }
 
+
+/* ==========================================
+   POPUP INPUT TEMUAN QC INSPEK
+========================================== */
+
+let activeInspekKetInput = "";
+
+// =======================
+// BUKA POPUP
+// =======================
+function openTemuanModalInspek(inputId){
+
+    activeInspekKetInput = inputId;
+
+    document.getElementById("temuanModalInspek").style.display = "flex";
+
+    // Reset semua step
+    document.getElementById("stepInspek1").style.display = "block";
+    document.getElementById("stepInspek2").style.display = "none";
+    document.getElementById("stepInspek3").style.display = "none";
+    document.getElementById("stepInspek4").style.display = "none";
+
+    // Ambil isi input lama
+    const currentText = document.getElementById(inputId).value.trim();
+
+    let existingJenis = "";
+    let existingFrek = "";
+    let existingKet = "";
+    let existingTemuanArray = [];
+
+    if(currentText !== ""){
+
+        const parts = currentText.split("|");
+
+        parts.forEach(part=>{
+
+            const item = part.trim();
+
+            // Jenis
+            if(item.startsWith("Jenis:")){
+                existingJenis = item.replace("Jenis:","").trim();
+            }
+
+            // Temuan
+            else if(item.startsWith("Temuan:")){
+
+                const temuanStr = item.replace("Temuan:","").trim();
+
+                if(temuanStr){
+
+                    existingTemuanArray = temuanStr
+                        .split(",")
+                        .map(x => x.trim());
+
+                }
+
+            }
+
+            // Frekuensi
+            else if(item.startsWith("Frekuensi:")){
+                existingFrek = item.replace("Frekuensi:","").trim();
+            }
+
+            // Keterangan
+            else if(item.startsWith("Keterangan:")){
+                existingKet = item.replace("Keterangan:","").trim();
+            }
+
+        });
+
+    }
+
+    // Load kembali data lama
+    document.getElementById("tmInspekJenis").value = existingJenis;
+    document.getElementById("tmInspekFrek").value = existingFrek;
+    document.getElementById("tmInspekKet").value = existingKet;
+
+    // Centang checkbox lama
+    const checkboxes = document.querySelectorAll(
+        'input[name="tmInspekTemuan"]'
+    );
+
+    checkboxes.forEach(cb=>{
+
+        cb.checked = existingTemuanArray.includes(cb.value);
+
+    });
+
+}
+
+// =======================
+// TUTUP POPUP
+// =======================
+function closeTemuanModalInspek(){
+
+    document.getElementById("temuanModalInspek").style.display = "none";
+
+}
+
+
+// =======================
+// NEXT
+// =======================
+function nextStepInspek(step){
+
+    // STEP 1 -> STEP 2
+    if(step === 2){
+
+        if(!document.getElementById("tmInspekJenis").value){
+            alert("Silakan pilih Jenis Temuan.");
+            return;
+        }
+
+        document.getElementById("stepInspek1").style.display = "none";
+        document.getElementById("stepInspek2").style.display = "block";
+    }
+
+    // STEP 2 -> STEP 3
+    else if(step === 3){
+
+        // Validasi minimal satu temuan dipilih
+        const checkedBoxes = document.querySelectorAll(
+            'input[name="tmInspekTemuan"]:checked'
+        );
+
+        if(checkedBoxes.length === 0){
+            alert("Silakan pilih minimal satu Temuan.");
+            return;
+        }
+
+        document.getElementById("stepInspek2").style.display = "none";
+        document.getElementById("stepInspek3").style.display = "block";
+    }
+
+    // STEP 3 -> STEP 4
+    else if(step === 4){
+
+        if(!document.getElementById("tmInspekFrek").value){
+            alert("Silakan pilih Frekuensi Temuan.");
+            return;
+        }
+
+        document.getElementById("stepInspek3").style.display = "none";
+        document.getElementById("stepInspek4").style.display = "block";
+    }
+
+}
+
+
+// =======================
+// BACK
+// =======================
+function prevStepInspek(step){
+
+    if(step === 1){
+
+        document.getElementById("stepInspek1").style.display = "block";
+        document.getElementById("stepInspek2").style.display = "none";
+
+    }
+
+    else if(step === 2){
+
+        document.getElementById("stepInspek2").style.display = "block";
+        document.getElementById("stepInspek3").style.display = "none";
+
+    }
+
+    else if(step === 3){
+
+        document.getElementById("stepInspek3").style.display = "block";
+        document.getElementById("stepInspek4").style.display = "none";
+
+    }
+
+}
+
+// =======================
+// SIMPAN TEMUAN
+// =======================
+function saveTemuanInspek(){
+
+    const jenis = document.getElementById("tmInspekJenis").value.trim();
+    const frek  = document.getElementById("tmInspekFrek").value.trim();
+    const ket   = document.getElementById("tmInspekKet").value.trim();
+
+    // Ambil semua temuan yang dicentang
+    const checkedBoxes = document.querySelectorAll(
+        'input[name="tmInspekTemuan"]:checked'
+    );
+
+    const listTemuan = [];
+
+    checkedBoxes.forEach(cb => {
+        listTemuan.push(cb.value);
+    });
+
+    // Gabungkan menjadi text
+    const temuanTeks = listTemuan.join(", ");
+
+    // Format hasil
+    let hasil = `Jenis: ${jenis} | Temuan: ${temuanTeks} | Frekuensi: ${frek}`;
+
+    if (ket !== "") {
+        hasil += ` | Keterangan: ${ket}`;
+    }
+
+    // Simpan ke input aktif
+    document.getElementById(activeInspekKetInput).value = hasil;
+
+    closeTemuanModalInspek();
+
+}
+
+
+// =======================
+// TUTUP SAAT KLIK AREA GELAP
+// =======================
+window.addEventListener("click", function(e){
+
+    const modal = document.getElementById("temuanModalInspek");
+
+    if(e.target === modal){
+        closeTemuanModalInspek();
+    }
+
+});
+
+
 </script>
 
 
@@ -3697,7 +4527,7 @@ function setStatusFilterInspek(status){
     </div>
 
     <div class="form-group">
-      <label>Total Order (lembar)</label>
+      <label>Total Order (pcs)</label>
       <input type="number" id="finishingOrder" placeholder="0">
     </div>
 
@@ -3708,12 +4538,12 @@ function setStatusFilterInspek(status){
 
     <div class="form-group">
       <label>Total Bagus (pcs)</label>
-      <input type="number" id="finishingBagus" placeholder="0">
+      <input type="number" id="finishingBagus" placeholder="0" readonly>
     </div>
 
     <div class="form-group">
       <label>Total BS (pcs)</label>
-      <input type="number" id="finishingJenisBS" placeholder="0">
+      <input type="number" id="finishingJenisBS" placeholder="0" readonly>
     </div>
 
     <div class="form-group">
@@ -3755,17 +4585,212 @@ function setStatusFilterInspek(status){
       </select>
     </div>
 
-    <div class="form-group">
-      <label>Keterangan (opsional)</label>
-      <div class="rowKet"><span>1.</span><input type="text" id="finKet1" placeholder="Isi keterangan 1"></div>
-      <div class="rowKet"><span>2.</span><input type="text" id="finKet2" placeholder="Isi keterangan 2"></div>
-      <div class="rowKet"><span>3.</span><input type="text" id="finKet3" placeholder="Isi keterangan 3"></div>
-      <div class="rowKet"><span>4.</span><input type="text" id="finKet4" placeholder="Isi keterangan 4"></div>
-      <div class="rowKet"><span>5.</span><input type="text" id="finKet5" placeholder="Isi keterangan 5"></div>
+<!-- ================= TEMUAN FINISHING ================= -->
+<div class="form-group">
+  <label>Input Temuan</label>
+
+  <div class="rowKet">
+    <span>1.</span>
+    <input
+      type="text"
+      id="finKet1"
+      placeholder="Klik untuk memilih temuan"
+      readonly
+      onclick="openTemuanModalFin('finKet1')">
+  </div>
+
+  <div class="rowKet">
+    <span>2.</span>
+    <input
+      type="text"
+      id="finKet2"
+      placeholder="Klik untuk memilih temuan"
+      readonly
+      onclick="openTemuanModalFin('finKet2')">
+  </div>
+
+  <div class="rowKet">
+    <span>3.</span>
+    <input
+      type="text"
+      id="finKet3"
+      placeholder="Klik untuk memilih temuan"
+      readonly
+      onclick="openTemuanModalFin('finKet3')">
+  </div>
+
+  <div class="rowKet">
+    <span>4.</span>
+    <input
+      type="text"
+      id="finKet4"
+      placeholder="Klik untuk memilih temuan"
+      readonly
+      onclick="openTemuanModalFin('finKet4')">
+  </div>
+
+  <div class="rowKet">
+    <span>5.</span>
+    <input
+      type="text"
+      id="finKet5"
+      placeholder="Klik untuk memilih temuan"
+      readonly
+      onclick="openTemuanModalFin('finKet5')">
+  </div>
+</div>
+
+<!-- ================= MODAL TEMUAN FINISHING ================= -->
+<div id="temuanModalFin" class="temuan-modal" style="display:none;">
+
+  <div class="temuan-content">
+
+    <h3>Input Temuan</h3>
+
+    <!-- STEP 1 -->
+    <div id="stepFin1" class="temuan-step">
+
+      <h4>1. Jenis Temuan</h4>
+
+      <select id="tmFinJenis">
+        <option value="">-- Pilih Jenis Temuan --</option>
+        <option>Temuan Cetak</option>
+        <option>Temuan Lem</option>
+        <option>Temuan Ponch</option>
+        <option>Temuan Varnish</option>
+        <option>Temuan Potong</option>
+      </select>
+
+      <div class="modal-btn">
+        <button type="button" onclick="nextStepFin(2)">Next ▶</button>
+      </div>
+
     </div>
 
+<!-- STEP 2 -->
+<div id="stepFin2" class="fin-temuan-step" style="display:none;">
+
+<h4>2. Kategori & Temuan</h4>
+
+<div class="temuan-group">
+
+    <h5>🖨️ Temuan Cetak</h5>
+
+<label><input type="checkbox" name="tmFinTemuan" value="Warna"> Warna</label>
+<label><input type="checkbox" name="tmFinTemuan" value="Noda"> Noda</label>
+<label><input type="checkbox" name="tmFinTemuan" value="Ghosting"> Ghosting</label>
+<label><input type="checkbox" name="tmFinTemuan" value="Terhapus"> Terhapus</label>
+<label><input type="checkbox" name="tmFinTemuan" value="Galang"> Galang</label>
+
+<label><input type="checkbox" name="tmFinTemuan" value="MisRegis"> MisRegis</label>
+<label><input type="checkbox" name="tmFinTemuan" value="Garis"> Garis</label>
+<label><input type="checkbox" name="tmFinTemuan" value="Botak"> Botak</label>
+<label><input type="checkbox" name="tmFinTemuan" value="Set-Off"> Set-Off</label>
+<label><input type="checkbox" name="tmFinTemuan" value="Scumming"> Scumming</label>
+
+<label><input type="checkbox" name="tmFinTemuan" value="Oksidasi"> Oksidasi</label>
+<label><input type="checkbox" name="tmFinTemuan" value="Gatra"> Gatra</label>
+<label><input type="checkbox" name="tmFinTemuan" value="Salur"> Salur</label>
+<label><input type="checkbox" name="tmFinTemuan" value="Barcode/QR"> Barcode/QR</label>
+
+</div>
+
+<div class="temuan-group">
+
+    <h5>📦 Temuan Lem</h5>
+
+    <label><input type="checkbox" name="tmFinTemuan" value="Lem Kurang"> Lem Kurang</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Lem Berlebih"> Lem Berlebih</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Lem Lepas"> Lem Lepas</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Lem Geser"> Lem Geser</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Lem Meluber"> Lem Meluber</label>
+
+</div>
+
+<div class="temuan-group">
+
+    <h5>✂️ Temuan Ponch</h5>
+
+    <label><input type="checkbox" name="tmFinTemuan" value="Over Ponch"> Over Ponch</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Kurang Ponch"> Kurang Ponch</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Geser Ponch"> Geser Ponch</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Sobek"> Sobek</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Tidak Putus"> Tidak Putus</label>
+
+</div>
+
+<div class="temuan-group">
+
+    <h5>✨ Temuan Varnish</h5>
+
+    <label><input type="checkbox" name="tmFinTemuan" value="Tidak Full"> Tidak Full</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Bubble"> Bubble</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Orange Peel"> Orange Peel</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Mengelupas"> Mengelupas</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Baret"> Baret</label>
+
+</div>
+
+<div class="temuan-group">
+
+    <h5>📏 Temuan Potong</h5>
+
+    <label><input type="checkbox" name="tmFinTemuan" value="Over Cut"> Over Cut</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Under Cut"> Under Cut</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Geser Potong"> Geser Potong</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Miring"> Miring</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Bergerigi"> Bergerigi</label>
+
+</div>
+
+<div class="fin-modal-btn" style="margin-top:20px;">
+    <button type="button" onclick="prevStepFin(1)">◀ Back</button>
+    <button type="button" onclick="nextStepFin(3)">Next ▶</button>
+</div>
+
+</div>
+
+    <!-- STEP 3 -->
+    <div id="stepFin3" class="temuan-step" style="display:none;">
+
+      <h4>3. Frekuensi Temuan (Jarang &lt;3 dan Sering &gt;3)</h4>
+
+      <select id="tmFinFrek">
+        <option value="">-- Pilih Frekuensi --</option>
+        <option>Jarang</option>
+        <option>Sering</option>
+      </select>
+
+      <div class="modal-btn">
+        <button type="button" onclick="prevStepFin(2)">◀ Back</button>
+        <button type="button" onclick="nextStepFin(4)">Next ▶</button>
+      </div>
+
+    </div>
+
+    <!-- STEP 4 -->
+    <div id="stepFin4" class="temuan-step" style="display:none;">
+
+      <h4>4. Keterangan Tambahan (Opsional)</h4>
+
+      <textarea
+        id="tmFinKet"
+        rows="5"
+        placeholder="Berikan Jumlah Temuan Jika Ada"></textarea>
+
+      <div class="modal-btn">
+        <button type="button" onclick="prevStepFin(3)">◀ Back</button>
+        <button type="button" onclick="saveTemuanFin()">✔ Selesai</button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
     <div class="form-group">
-      <button type="button" class="finishing-add-btn" onclick="addFinishingItem()">➕ Tambah</button>
+      <button type="button" class="finishing-add-btn" onclick="addFinishingItem()">➕ SAVE</button>
     </div>
   </div>
 
@@ -3909,6 +4934,275 @@ function setStatusFilterInspek(status){
   box-shadow:0 2px 6px rgba(0,0,0,0.2);
 }
 
+/* ===========================================
+   MODAL INPUT TEMUAN FINISHING
+=========================================== */
+
+.fin-temuan-modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    z-index:99999;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    animation:fadeIn .2s ease;
+}
+
+.fin-temuan-content{
+    width:100%;
+    max-width:480px;
+    max-height:90vh;
+    background:#fff;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+    animation:zoomIn .25s ease;
+    display:flex;
+    flex-direction:column;
+}
+
+/* Header */
+
+.fin-temuan-content h3{
+    margin:0;
+    padding:16px;
+    background:#16a34a;
+    color:#fff;
+    text-align:center;
+    font-size:18px;
+    font-weight:600;
+}
+
+/* Step */
+
+.fin-temuan-step{
+    padding:20px;
+    overflow-y:auto;
+}
+
+.fin-temuan-step h4{
+    margin:0 0 15px;
+    color:#444;
+    font-size:16px;
+}
+
+/* Select */
+
+.fin-temuan-step select{
+    width:100%;
+    padding:12px 14px;
+    border:1px solid #dcdcdc;
+    border-radius:10px;
+    font-size:15px;
+    outline:none;
+    transition:.25s;
+    background:#fff;
+    box-sizing:border-box;
+}
+
+.fin-temuan-step select:focus{
+    border-color:#16a34a;
+    box-shadow:0 0 0 3px rgba(22,163,74,.15);
+}
+
+/* Grid Posisi */
+
+.fin-posisi-grid-container{
+    max-height:240px;
+    overflow-y:auto;
+    border:1px solid #dcdcdc;
+    border-radius:12px;
+    padding:12px;
+    background:#fafafa;
+    box-sizing:border-box;
+}
+
+.fin-posisi-grid-container div{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:8px;
+}
+
+.fin-posisi-grid-container label{
+    display:flex !important;
+    align-items:center;
+    justify-content:center;
+    height:42px;
+    background:#fff;
+    border:1px solid #dcdcdc;
+    border-radius:8px;
+    font-size:15px;
+    font-weight:600;
+    color:#444;
+    cursor:pointer;
+    user-select:none;
+    transition:.2s;
+}
+
+.fin-posisi-grid-container input[type="checkbox"]{
+    display:none;
+}
+
+.fin-posisi-grid-container label:hover{
+    border-color:#16a34a;
+    background:rgba(22,163,74,.05);
+}
+
+.fin-posisi-grid-container label:has(input:checked){
+    background:#16a34a;
+    border-color:#16a34a;
+    color:#fff;
+    box-shadow:0 4px 10px rgba(22,163,74,.25);
+}
+
+/* Textarea */
+
+.fin-temuan-step textarea{
+    width:100%;
+    min-height:120px;
+    resize:vertical;
+    padding:12px 14px;
+    border:1px solid #dcdcdc;
+    border-radius:10px;
+    font-size:15px;
+    font-family:inherit;
+    line-height:1.5;
+    outline:none;
+    transition:.25s;
+    box-sizing:border-box;
+}
+
+.fin-temuan-step textarea:focus{
+    border-color:#16a34a;
+    box-shadow:0 0 0 3px rgba(22,163,74,.15);
+}
+
+/* Tombol */
+
+.fin-modal-btn{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:25px;
+}
+
+.fin-modal-btn button{
+    flex:1;
+    border:none;
+    border-radius:10px;
+    padding:12px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.fin-modal-btn button:hover{
+    transform:translateY(-2px);
+}
+
+.fin-modal-btn button:first-child{
+    background:#ececec;
+    color:#444;
+}
+
+.fin-modal-btn button:first-child:hover{
+    background:#dcdcdc;
+}
+
+.fin-modal-btn button:last-child{
+    background:#16a34a;
+    color:#fff;
+}
+
+.fin-modal-btn button:last-child:hover{
+    background:#15803d;
+}
+
+/* Input */
+
+.fin-rowKet{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+.fin-rowKet span{
+    width:24px;
+    font-weight:bold;
+    text-align:center;
+}
+
+.fin-rowKet input{
+    flex:1;
+    padding:10px 12px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    cursor:pointer;
+    background:#fafafa;
+    transition:.25s;
+}
+
+.fin-rowKet input:hover{
+    border-color:#16a34a;
+    background:#fff;
+}
+
+.fin-rowKet input:focus{
+    outline:none;
+    border-color:#16a34a;
+    box-shadow:0 0 0 3px rgba(22,163,74,.15);
+}
+
+/* Scroll */
+
+.fin-temuan-step::-webkit-scrollbar,
+.fin-posisi-grid-container::-webkit-scrollbar{
+    width:6px;
+}
+
+.fin-temuan-step::-webkit-scrollbar-thumb,
+.fin-posisi-grid-container::-webkit-scrollbar-thumb{
+    background:#c8c8c8;
+    border-radius:10px;
+}
+
+.fin-temuan-step::-webkit-scrollbar-thumb:hover,
+.fin-posisi-grid-container::-webkit-scrollbar-thumb:hover{
+    background:#a8a8a8;
+}
+
+/* Responsive */
+
+@media(max-width:600px){
+
+    .fin-temuan-content{
+        width:100%;
+        max-width:100%;
+        max-height:95vh;
+        border-radius:14px;
+    }
+
+    .fin-temuan-step{
+        padding:16px;
+    }
+
+    .fin-modal-btn{
+        flex-direction:column;
+    }
+
+    .fin-modal-btn button{
+        width:100%;
+    }
+
+    .fin-posisi-grid-container div{
+        grid-template-columns:repeat(4,1fr);
+    }
+
+}
 
 </style>
 
@@ -3982,6 +5276,236 @@ function setStatusFilter(status){
   renderGridFinishing(keyword);
 }
 
+
+
+
+/* ==========================================
+   POPUP INPUT TEMUAN QC FINISHING
+========================================== */
+
+let activeFinKetInput = "";
+
+// =======================
+// BUKA POPUP
+// =======================
+function openTemuanModalFin(inputId){
+
+    activeFinKetInput = inputId;
+
+    document.getElementById("temuanModalFin").style.display = "flex";
+
+    // Reset semua step
+    document.getElementById("stepFin1").style.display = "block";
+    document.getElementById("stepFin2").style.display = "none";
+    document.getElementById("stepFin3").style.display = "none";
+    document.getElementById("stepFin4").style.display = "none";
+
+    // Ambil isi input lama
+    const currentText = document.getElementById(inputId).value.trim();
+
+    let existingJenis = "";
+    let existingFrek = "";
+    let existingKet = "";
+    let existingTemuanArray = [];
+
+    if(currentText !== ""){
+
+        const parts = currentText.split("|");
+
+        parts.forEach(part=>{
+
+            const item = part.trim();
+
+            // Jenis
+            if(item.startsWith("Jenis:")){
+                existingJenis = item.replace("Jenis:","").trim();
+            }
+
+            // Temuan
+            else if(item.startsWith("Temuan:")){
+
+                const temuanStr = item.replace("Temuan:","").trim();
+
+                if(temuanStr){
+
+                    existingTemuanArray = temuanStr
+                        .split(",")
+                        .map(x => x.trim());
+
+                }
+
+            }
+
+            // Frekuensi
+            else if(item.startsWith("Frekuensi:")){
+                existingFrek = item.replace("Frekuensi:","").trim();
+            }
+
+            // Keterangan
+            else if(item.startsWith("Keterangan:")){
+                existingKet = item.replace("Keterangan:","").trim();
+            }
+
+        });
+
+    }
+
+    // Load kembali data lama
+    document.getElementById("tmFinJenis").value = existingJenis;
+    document.getElementById("tmFinFrek").value = existingFrek;
+    document.getElementById("tmFinKet").value = existingKet;
+
+    // Centang checkbox lama
+    const checkboxes = document.querySelectorAll(
+        'input[name="tmFinTemuan"]'
+    );
+
+    checkboxes.forEach(cb=>{
+
+        cb.checked = existingTemuanArray.includes(cb.value);
+
+    });
+
+}
+
+// =======================
+// TUTUP POPUP
+// =======================
+function closeTemuanModalFin(){
+
+    document.getElementById("temuanModalFin").style.display = "none";
+
+}
+
+
+// =======================
+// NEXT
+// =======================
+function nextStepFin(step){
+
+    // STEP 1 -> STEP 2
+    if(step === 2){
+
+        if(!document.getElementById("tmFinJenis").value){
+            alert("Silakan pilih Jenis Temuan.");
+            return;
+        }
+
+        document.getElementById("stepFin1").style.display = "none";
+        document.getElementById("stepFin2").style.display = "block";
+    }
+
+    // STEP 2 -> STEP 3
+    else if(step === 3){
+
+        // Validasi minimal satu temuan dipilih
+        const checkedBoxes = document.querySelectorAll(
+            'input[name="tmFinTemuan"]:checked'
+        );
+
+        if(checkedBoxes.length === 0){
+            alert("Silakan pilih minimal satu Temuan.");
+            return;
+        }
+
+        document.getElementById("stepFin2").style.display = "none";
+        document.getElementById("stepFin3").style.display = "block";
+    }
+
+    // STEP 3 -> STEP 4
+    else if(step === 4){
+
+        if(!document.getElementById("tmFinFrek").value){
+            alert("Silakan pilih Frekuensi Temuan.");
+            return;
+        }
+
+        document.getElementById("stepFin3").style.display = "none";
+        document.getElementById("stepFin4").style.display = "block";
+    }
+
+}
+
+
+// =======================
+// BACK
+// =======================
+function prevStepFin(step){
+
+    if(step === 1){
+
+        document.getElementById("stepFin1").style.display = "block";
+        document.getElementById("stepFin2").style.display = "none";
+
+    }
+
+    else if(step === 2){
+
+        document.getElementById("stepFin2").style.display = "block";
+        document.getElementById("stepFin3").style.display = "none";
+
+    }
+
+    else if(step === 3){
+
+        document.getElementById("stepFin3").style.display = "block";
+        document.getElementById("stepFin4").style.display = "none";
+
+    }
+
+}
+
+// =======================
+// SIMPAN TEMUAN
+// =======================
+function saveTemuanFin(){
+
+    const jenis = document.getElementById("tmFinJenis").value.trim();
+    const frek  = document.getElementById("tmFinFrek").value.trim();
+    const ket   = document.getElementById("tmFinKet").value.trim();
+
+    // Ambil semua temuan yang dicentang
+    const checkedBoxes = document.querySelectorAll(
+        'input[name="tmFinTemuan"]:checked'
+    );
+
+    const listTemuan = [];
+
+    checkedBoxes.forEach(cb => {
+        listTemuan.push(cb.value);
+    });
+
+    // Gabungkan menjadi text
+    const temuanTeks = listTemuan.join(", ");
+
+    // Format hasil
+    let hasil = `Jenis: ${jenis} | Temuan: ${temuanTeks} | Frekuensi: ${frek}`;
+
+    if (ket !== "") {
+        hasil += ` | Keterangan: ${ket}`;
+    }
+
+    // Simpan ke input aktif
+    document.getElementById(activeFinKetInput).value = hasil;
+
+    closeTemuanModalFin();
+
+}
+
+
+// =======================
+// TUTUP SAAT KLIK AREA GELAP
+// =======================
+window.addEventListener("click", function(e){
+
+    const modal = document.getElementById("temuanModalFin");
+
+    if(e.target === modal){
+        closeTemuanModalFin();
+    }
+
+});
+
 </script>
 
 
@@ -4039,7 +5563,7 @@ function setStatusFilter(status){
     </div>
 
     <div class="form-group">
-      <label>Total Order (lembar)</label>
+      <label>Total Order (pcs)</label>
       <input type="number" id="lemOrder" placeholder="0">
     </div>
 
@@ -4050,12 +5574,12 @@ function setStatusFilter(status){
 
     <div class="form-group">
       <label>Total Bagus (pcs)</label>
-      <input type="number" id="lemBagus" placeholder="0">
+      <input type="number" id="lemBagus" placeholder="0" readonly>
     </div>
 
     <div class="form-group">
       <label>Total BS (pcs)</label>
-      <input type="number" id="lemJenisBS" placeholder="0">
+      <input type="number" id="lemJenisBS" placeholder="0" readonly>
     </div>
 
     <div class="form-group">
@@ -4098,17 +5622,212 @@ function setStatusFilter(status){
       </select>
     </div>
 
-    <div class="form-group">
-      <label>Keterangan (opsional)</label>
-      <div class="rowKet"><span>1.</span><input type="text" id="lemKet1" placeholder="Isi keterangan 1"></div>
-      <div class="rowKet"><span>2.</span><input type="text" id="lemKet2" placeholder="Isi keterangan 2"></div>
-      <div class="rowKet"><span>3.</span><input type="text" id="lemKet3" placeholder="Isi keterangan 3"></div>
-      <div class="rowKet"><span>4.</span><input type="text" id="lemKet4" placeholder="Isi keterangan 4"></div>
-      <div class="rowKet"><span>5.</span><input type="text" id="lemKet5" placeholder="Isi keterangan 5"></div>
+<!-- ================= TEMUAN LEM ================= -->
+<div class="form-group">
+  <label>Input Temuan</label>
+
+  <div class="rowKet">
+    <span>1.</span>
+    <input
+      type="text"
+      id="lemKet1"
+      placeholder="Klik untuk memilih temuan"
+      readonly
+      onclick="openTemuanModalLem('lemKet1')">
+  </div>
+
+  <div class="rowKet">
+    <span>2.</span>
+    <input
+      type="text"
+      id="lemKet2"
+      placeholder="Klik untuk memilih temuan"
+      readonly
+      onclick="openTemuanModalLem('lemKet2')">
+  </div>
+
+  <div class="rowKet">
+    <span>3.</span>
+    <input
+      type="text"
+      id="lemKet3"
+      placeholder="Klik untuk memilih temuan"
+      readonly
+      onclick="openTemuanModalLem('lemKet3')">
+  </div>
+
+  <div class="rowKet">
+    <span>4.</span>
+    <input
+      type="text"
+      id="lemKet4"
+      placeholder="Klik untuk memilih temuan"
+      readonly
+      onclick="openTemuanModalLem('lemKet4')">
+  </div>
+
+  <div class="rowKet">
+    <span>5.</span>
+    <input
+      type="text"
+      id="lemKet5"
+      placeholder="Klik untuk memilih temuan"
+      readonly
+      onclick="openTemuanModalLem('lemKet5')">
+  </div>
+</div>
+
+<!-- ================= MODAL TEMUAN LEM ================= -->
+<div id="temuanModalLem" class="temuan-modal" style="display:none;">
+
+  <div class="temuan-content">
+
+    <h3>Input Temuan</h3>
+
+    <!-- STEP 1 -->
+    <div id="stepLem1" class="temuan-step">
+
+      <h4>1. Jenis Temuan</h4>
+
+      <select id="tmLemJenis">
+        <option value="">-- Pilih Jenis Temuan --</option>
+        <option>Temuan Cetak</option>
+        <option>Temuan Lem</option>
+        <option>Temuan Ponch</option>
+        <option>Temuan Varnish</option>
+        <option>Temuan Potong</option>
+      </select>
+
+      <div class="modal-btn">
+        <button type="button" onclick="nextStepLem(2)">Next ▶</button>
+      </div>
+
     </div>
 
+<!-- STEP 2 -->
+<div id="stepLem2" class="lem-temuan-step" style="display:none;">
+
+<h4>2. Kategori & Temuan</h4>
+
+<div class="temuan-group">
+
+    <h5>🖨️ Temuan Cetak</h5>
+
+<label><input type="checkbox" name="tmLemTemuan" value="Warna"> Warna</label>
+<label><input type="checkbox" name="tmLemTemuan" value="Noda"> Noda</label>
+<label><input type="checkbox" name="tmLemTemuan" value="Ghosting"> Ghosting</label>
+<label><input type="checkbox" name="tmLemTemuan" value="Terhapus"> Terhapus</label>
+<label><input type="checkbox" name="tmLemTemuan" value="Galang"> Galang</label>
+
+<label><input type="checkbox" name="tmLemTemuan" value="MisRegis"> MisRegis</label>
+<label><input type="checkbox" name="tmLemTemuan" value="Garis"> Garis</label>
+<label><input type="checkbox" name="tmLemTemuan" value="Botak"> Botak</label>
+<label><input type="checkbox" name="tmLemTemuan" value="Set-Off"> Set-Off</label>
+<label><input type="checkbox" name="tmLemTemuan" value="Scumming"> Scumming</label>
+
+<label><input type="checkbox" name="tmLemTemuan" value="Oksidasi"> Oksidasi</label>
+<label><input type="checkbox" name="tmLemTemuan" value="Gatra"> Gatra</label>
+<label><input type="checkbox" name="tmLemTemuan" value="Salur"> Salur</label>
+<label><input type="checkbox" name="tmLemTemuan" value="Barcode/QR"> Barcode/QR</label>
+
+</div>
+
+<div class="temuan-group">
+
+    <h5>📦 Temuan Lem</h5>
+
+    <label><input type="checkbox" name="tmLemTemuan" value="No Glue"> No Glue</label>
+    <label><input type="checkbox" name="tmLemTemuan" value="Over Glue"> Over Glue</label>
+    <label><input type="checkbox" name="tmLemTemuan" value="Lem Tidak Rata"> Lem Tidak Rata</label>
+    <label><input type="checkbox" name="tmLemTemuan" value="Lengket"> Lengket</label>
+    <label><input type="checkbox" name="tmLemTemuan" value="Dus Sobek"> Dus Sobek</label>
+    <label><input type="checkbox" name="tmLemTemuan" value="Dus Baret"> Dus Baret</label>
+    <label><input type="checkbox" name="tmLemTemuan" value="Dus Galeng"> Dus Galeng</label>
+    <label><input type="checkbox" name="tmLemTemuan" value="Dus Tidak Siku"> Dus Tidak Siku</label>
+    <label><input type="checkbox" name="tmLemTemuan" value="Kupingan Ketekuk"> Kupingan Ketekuk</label>
+
+</div>
+
+<div class="temuan-group">
+
+    <h5>✂️ Temuan Ponch</h5>
+
+    <label><input type="checkbox" name="tmLemTemuan" value="Ponch Lari"> Ponch Lari</label>
+    <label><input type="checkbox" name="tmLemTemuan" value="Ponch Pecah"> Ponch Pecah</label>
+    <label><input type="checkbox" name="tmLemTemuan" value="Ponch Tidak Putus"> Ponch Tidak Putus</label>
+    <label><input type="checkbox" name="tmLemTemuan" value="Tidak Ada Embose"> Tidak Ada Embose</label>
+    <label><input type="checkbox" name="tmLemTemuan" value="Embose Lari"> Embose Lari</label>
+
+</div>
+
+<div class="temuan-group">
+
+    <h5>✨ Temuan Varnish</h5>
+
+    <label><input type="checkbox" name="tmLemTemuan" value="Varnish Tidak Rata"> Varnish Tidak Rata</label>
+    <label><input type="checkbox" name="tmLemTemuan" value="Bubble"> Bubble</label>
+    <label><input type="checkbox" name="tmLemTemuan" value="Varnish Bergaris"> Varnish Bergaris</label>
+    <label><input type="checkbox" name="tmLemTemuan" value="Tidak Ada Varnish"> Tidak Ada Varnish</label>
+    <label><input type="checkbox" name="tmLemTemuan" value="Glossy Kurang"> Glossy Kurang</label>
+
+</div>
+
+<div class="temuan-group">
+
+    <h5>📏 Temuan Potong</h5>
+
+    <label><input type="checkbox" name="tmLemTemuan" value="Potongan Lari"> Potongan Lari</label>
+
+</div>
+
+<div class="lem-modal-btn" style="margin-top:20px;">
+    <button type="button" onclick="prevStepLem(1)">◀ Back</button>
+    <button type="button" onclick="nextStepLem(3)">Next ▶</button>
+</div>
+
+</div>
+
+    <!-- STEP 3 -->
+    <div id="stepLem3" class="temuan-step" style="display:none;">
+
+      <h4>3. Frekuensi Temuan (Jarang &lt;3 dan Sering &gt;3)</h4>
+
+      <select id="tmLemFrek">
+        <option value="">-- Pilih Frekuensi --</option>
+        <option>Jarang</option>
+        <option>Sering</option>
+      </select>
+
+      <div class="modal-btn">
+        <button type="button" onclick="prevStepLem(2)">◀ Back</button>
+        <button type="button" onclick="nextStepLem(4)">Next ▶</button>
+      </div>
+
+    </div>
+
+    <!-- STEP 4 -->
+    <div id="stepLem4" class="temuan-step" style="display:none;">
+
+      <h4>4. Keterangan Tambahan (Opsional)</h4>
+
+      <textarea
+        id="tmLemKet"
+        rows="5"
+        placeholder="Berikan Jumlah Temuan Jika Ada"></textarea>
+
+      <div class="modal-btn">
+        <button type="button" onclick="prevStepLem(3)">◀ Back</button>
+        <button type="button" onclick="saveTemuanLem()">✔ Selesai</button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
     <div class="form-group">
-      <button type="button" class="lem-add-btn" onclick="addLemItem()">➕ Tambah</button>
+      <button type="button" class="lem-add-btn" onclick="addLemItem()">➕ SAVE</button>
     </div>
   </div>
 
@@ -4253,6 +5972,299 @@ function setStatusFilter(status){
   transform:translateY(-1px);
   box-shadow:0 2px 6px rgba(0,0,0,0.2);
 }
+
+/* ===========================================
+   MODAL INPUT TEMUAN LEM
+=========================================== */
+
+.lem-temuan-modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    z-index:99999;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    animation:fadeIn .2s ease;
+}
+
+.lem-temuan-content{
+    width:100%;
+    max-width:480px;
+    max-height:90vh;
+    background:#fff;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+    animation:zoomIn .25s ease;
+    display:flex;
+    flex-direction:column;
+}
+
+/* Header */
+
+.lem-temuan-content h3{
+    margin:0;
+    padding:16px;
+    background:#f57c00;
+    color:#fff;
+    text-align:center;
+    font-size:18px;
+    font-weight:600;
+}
+
+/* Step */
+
+.lem-temuan-step{
+    padding:20px;
+    overflow-y:auto;
+}
+
+.lem-temuan-step h4{
+    margin:0 0 15px;
+    color:#444;
+    font-size:16px;
+}
+
+/* Select */
+
+.lem-temuan-step select{
+    width:100%;
+    padding:12px 14px;
+    border:1px solid #dcdcdc;
+    border-radius:10px;
+    font-size:15px;
+    outline:none;
+    transition:.25s;
+    background:#fff;
+    box-sizing:border-box;
+}
+
+.lem-temuan-step select:focus{
+    border-color:#f57c00;
+    box-shadow:0 0 0 3px rgba(245,124,0,.15);
+}
+
+/* Grid Posisi */
+
+.lem-posisi-grid-container{
+    max-height:240px;
+    overflow-y:auto;
+    border:1px solid #dcdcdc;
+    border-radius:12px;
+    padding:12px;
+    background:#fafafa;
+    box-sizing:border-box;
+}
+
+.lem-posisi-grid-container div{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:8px;
+}
+
+.lem-posisi-grid-container label{
+    display:flex !important;
+    align-items:center;
+    justify-content:center;
+    height:42px;
+    background:#fff;
+    border:1px solid #dcdcdc;
+    border-radius:8px;
+    font-size:15px;
+    font-weight:600;
+    color:#444;
+    cursor:pointer;
+    user-select:none;
+    transition:.2s;
+}
+
+.lem-posisi-grid-container input[type="checkbox"]{
+    display:none;
+}
+
+.lem-posisi-grid-container label:hover{
+    border-color:#f57c00;
+    background:rgba(245,124,0,.05);
+}
+
+.lem-posisi-grid-container label:has(input:checked){
+    background:#f57c00;
+    border-color:#f57c00;
+    color:#fff;
+    box-shadow:0 4px 10px rgba(245,124,0,.25);
+}
+
+/* Textarea */
+
+.lem-temuan-step textarea{
+    width:100%;
+    min-height:120px;
+    resize:vertical;
+    padding:12px 14px;
+    border:1px solid #dcdcdc;
+    border-radius:10px;
+    font-size:15px;
+    font-family:inherit;
+    line-height:1.5;
+    outline:none;
+    transition:.25s;
+    box-sizing:border-box;
+}
+
+.lem-temuan-step textarea:focus{
+    border-color:#f57c00;
+    box-shadow:0 0 0 3px rgba(245,124,0,.15);
+}
+
+/* Tombol */
+
+.lem-modal-btn{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:25px;
+}
+
+.lem-modal-btn button{
+    flex:1;
+    border:none;
+    border-radius:10px;
+    padding:12px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.lem-modal-btn button:hover{
+    transform:translateY(-2px);
+}
+
+/* Back */
+
+.lem-modal-btn button:first-child{
+    background:#ececec;
+    color:#444;
+}
+
+.lem-modal-btn button:first-child:hover{
+    background:#dcdcdc;
+}
+
+/* Next & Finish */
+
+.lem-modal-btn button:last-child{
+    background:#f57c00;
+    color:#fff;
+}
+
+.lem-modal-btn button:last-child:hover{
+    background:#ef6c00;
+}
+
+/* Input */
+
+.lem-rowKet{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+.lem-rowKet span{
+    width:24px;
+    font-weight:bold;
+    text-align:center;
+}
+
+.lem-rowKet input{
+    flex:1;
+    padding:10px 12px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    cursor:pointer;
+    background:#fafafa;
+    transition:.25s;
+}
+
+.lem-rowKet input:hover{
+    border-color:#f57c00;
+    background:#fff;
+}
+
+.lem-rowKet input:focus{
+    outline:none;
+    border-color:#f57c00;
+    box-shadow:0 0 0 3px rgba(245,124,0,.15);
+}
+
+/* Scroll */
+
+.lem-temuan-step::-webkit-scrollbar,
+.lem-posisi-grid-container::-webkit-scrollbar{
+    width:6px;
+}
+
+.lem-temuan-step::-webkit-scrollbar-thumb,
+.lem-posisi-grid-container::-webkit-scrollbar-thumb{
+    background:#c8c8c8;
+    border-radius:10px;
+}
+
+.lem-temuan-step::-webkit-scrollbar-thumb:hover,
+.lem-posisi-grid-container::-webkit-scrollbar-thumb:hover{
+    background:#a8a8a8;
+}
+
+/* Responsive */
+
+@media(max-width:600px){
+
+    .lem-temuan-content{
+        width:100%;
+        max-width:100%;
+        max-height:95vh;
+        border-radius:14px;
+    }
+
+    .lem-temuan-step{
+        padding:16px;
+    }
+
+    .lem-modal-btn{
+        flex-direction:column;
+    }
+
+    .lem-modal-btn button{
+        width:100%;
+    }
+
+    .lem-posisi-grid-container div{
+        grid-template-columns:repeat(4,1fr);
+    }
+
+}
+
+/* Animasi */
+
+@keyframes fadeIn{
+    from{opacity:0;}
+    to{opacity:1;}
+}
+
+@keyframes zoomIn{
+    from{
+        transform:scale(.9);
+        opacity:0;
+    }
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+
 </style>
 
 
@@ -4319,7 +6331,296 @@ function setStatusFilterLem(status){
   const keyword = document.querySelector("#hasilLem .baproFilter").value;
   renderGridLem(keyword);
 }
+
+// ==========================================
+// OTOMATISASI FORM LEM
+// ==========================================
+const idLemBS = [
+  'lemJenisBS1',   // BS Cetak
+  'lemJenisBS12',  // BS Lem
+  'lemJenisBS13',  // BS Ponch
+  'lemJenisBS14',  // BS Varnish
+  'lemJenisBS15'   // BS Potong
+];
+
+const totalLemInput = document.getElementById('lemJenisBS');
+const lemOrderInput = document.getElementById('lemOrder');
+const lemBagusInput = document.getElementById('lemBagus');
+
+function hitungTotalLem() {
+
+  let totalBS = 0;
+
+  idLemBS.forEach(id => {
+    const input = document.getElementById(id);
+    if (input) {
+      totalBS += parseFloat(input.value) || 0;
+    }
+  });
+
+  // Total BS
+  if (totalLemInput) {
+    totalLemInput.value = totalBS;
+  }
+
+  // Total Bagus = Total Order - Total BS
+  if (lemOrderInput && lemBagusInput) {
+
+    const totalOrder = parseFloat(lemOrderInput.value) || 0;
+    const totalBagus = totalOrder - totalBS;
+
+    lemBagusInput.value = totalBagus < 0 ? 0 : totalBagus;
+  }
+
+}
+
+// Listener BS
+idLemBS.forEach(id => {
+
+  const input = document.getElementById(id);
+
+  if (input) {
+    input.addEventListener('input', hitungTotalLem);
+  }
+
+});
+
+// Listener Total Order
+if (lemOrderInput) {
+  lemOrderInput.addEventListener('input', hitungTotalLem);
+}
+
+
+/* ==========================================
+   POPUP INPUT TEMUAN QC LEM
+========================================== */
+
+let activeLemKetInput = "";
+
+// =======================
+// BUKA POPUP
+// =======================
+function openTemuanModalLem(inputId){
+
+    activeLemKetInput = inputId;
+
+    document.getElementById("temuanModalLem").style.display = "flex";
+
+    // Reset semua step
+    document.getElementById("stepLem1").style.display = "block";
+    document.getElementById("stepLem2").style.display = "none";
+    document.getElementById("stepLem3").style.display = "none";
+    document.getElementById("stepLem4").style.display = "none";
+
+    // Ambil isi input lama
+    const currentText = document.getElementById(inputId).value.trim();
+
+    let existingJenis = "";
+    let existingFrek = "";
+    let existingKet = "";
+    let existingTemuanArray = [];
+
+    if(currentText !== ""){
+
+        const parts = currentText.split("|");
+
+        parts.forEach(part=>{
+
+            const item = part.trim();
+
+            // Jenis
+            if(item.startsWith("Jenis:")){
+                existingJenis = item.replace("Jenis:","").trim();
+            }
+
+            // Temuan
+            else if(item.startsWith("Temuan:")){
+
+                const temuanStr = item.replace("Temuan:","").trim();
+
+                if(temuanStr){
+
+                    existingTemuanArray = temuanStr
+                        .split(",")
+                        .map(x => x.trim());
+
+                }
+
+            }
+
+            // Frekuensi
+            else if(item.startsWith("Frekuensi:")){
+                existingFrek = item.replace("Frekuensi:","").trim();
+            }
+
+            // Keterangan
+            else if(item.startsWith("Keterangan:")){
+                existingKet = item.replace("Keterangan:","").trim();
+            }
+
+        });
+
+    }
+
+    // Load kembali data lama
+    document.getElementById("tmLemJenis").value = existingJenis;
+    document.getElementById("tmLemFrek").value = existingFrek;
+    document.getElementById("tmLemKet").value = existingKet;
+
+    // Reset semua checkbox
+    const checkboxes = document.querySelectorAll(
+        'input[name="tmLemTemuan"]'
+    );
+
+    checkboxes.forEach(cb=>{
+
+        cb.checked = existingTemuanArray.includes(cb.value);
+
+    });
+
+}
+
+// =======================
+// TUTUP POPUP
+// =======================
+function closeTemuanModalLem(){
+
+    document.getElementById("temuanModalLem").style.display = "none";
+
+}
+
+
+// =======================
+// NEXT
+// =======================
+function nextStepLem(step){
+
+    // STEP 1 -> STEP 2
+    if(step === 2){
+
+        if(!document.getElementById("tmLemJenis").value){
+            alert("Silakan pilih Jenis Temuan.");
+            return;
+        }
+
+        document.getElementById("stepLem1").style.display = "none";
+        document.getElementById("stepLem2").style.display = "block";
+    }
+
+    // STEP 2 -> STEP 3
+    else if(step === 3){
+
+        // Validasi minimal satu temuan dipilih
+        const checkedBoxes = document.querySelectorAll(
+            'input[name="tmLemTemuan"]:checked'
+        );
+
+        if(checkedBoxes.length === 0){
+            alert("Silakan pilih minimal satu Temuan.");
+            return;
+        }
+
+        document.getElementById("stepLem2").style.display = "none";
+        document.getElementById("stepLem3").style.display = "block";
+    }
+
+    // STEP 3 -> STEP 4
+    else if(step === 4){
+
+        if(!document.getElementById("tmLemFrek").value){
+            alert("Silakan pilih Frekuensi Temuan.");
+            return;
+        }
+
+        document.getElementById("stepLem3").style.display = "none";
+        document.getElementById("stepLem4").style.display = "block";
+    }
+
+}
+
+
+// =======================
+// BACK
+// =======================
+function prevStepLem(step){
+
+    if(step === 1){
+
+        document.getElementById("stepLem1").style.display = "block";
+        document.getElementById("stepLem2").style.display = "none";
+
+    }
+
+    else if(step === 2){
+
+        document.getElementById("stepLem2").style.display = "block";
+        document.getElementById("stepLem3").style.display = "none";
+
+    }
+
+    else if(step === 3){
+
+        document.getElementById("stepLem3").style.display = "block";
+        document.getElementById("stepLem4").style.display = "none";
+
+    }
+
+}
+
+// =======================
+// SIMPAN TEMUAN
+// =======================
+function saveTemuanLem(){
+
+    const jenis = document.getElementById("tmLemJenis").value.trim();
+    const frek  = document.getElementById("tmLemFrek").value.trim();
+    const ket   = document.getElementById("tmLemKet").value.trim();
+
+    // Ambil semua temuan yang dicentang
+    const checkedBoxes = document.querySelectorAll(
+        'input[name="tmLemTemuan"]:checked'
+    );
+
+    const listTemuan = [];
+
+    checkedBoxes.forEach(cb => {
+        listTemuan.push(cb.value);
+    });
+
+    // Gabungkan menjadi text
+    const temuanTeks = listTemuan.join(", ");
+
+    // Format hasil
+    let hasil = `Jenis: ${jenis} | Temuan: ${temuanTeks} | Frekuensi: ${frek}`;
+
+    if (ket !== "") {
+        hasil += ` | Keterangan: ${ket}`;
+    }
+
+    // Simpan ke input aktif
+    document.getElementById(activeLemKetInput).value = hasil;
+
+    closeTemuanModalLem();
+
+}
+
+
+// =======================
+// TUTUP SAAT KLIK AREA GELAP
+// =======================
+window.addEventListener("click", function(e){
+
+    const modal = document.getElementById("temuanModalLem");
+
+    if(e.target === modal){
+        closeTemuanModalLem();
+    }
+
+});
+
+
 </script>
+
 
 
 
@@ -4842,7 +7143,7 @@ function filterManualList(input, tabId) {
       <label>Proses</label>
       <select id="spvProses" required>
         <option value="" disabled selected>Pilih Proses</option>
-        <option value="ASS QUALITY">ASS QUALITY</option>
+        <option value="QC INSPEK">QC INSPEK</option>
         <option value="QC BAPRO">QC BAPRO</option>
         <option value="QC SPOTCHECK">QC SPOTCHECK</option>
         <option value="QC FINISHING">QC FINISHING</option>
@@ -4853,7 +7154,7 @@ function filterManualList(input, tabId) {
 
     <!-- Tombol Submit -->
     <div class="form-group">
-      <button type="button" onclick="submitSPV(event)">➕ Tambah</button>
+      <button type="button" onclick="submitSPV(event)">➕ SAVE</button>
     </div>
 
   </form>
