@@ -5166,6 +5166,220 @@ function setStatusFilterBapro(status) {
     </div>
   </div>
 
+<!-- ================= MODAL EDIT TEMUAN SPOTCHECK ================= -->
+<div id="editTemuanModal" class="temuan-modal" style="display:none;">
+
+  <div class="temuan-content">
+
+    <h3>Edit Temuan</h3>
+
+    <!-- STEP 1 -->
+    <div id="editStep1" class="temuan-step">
+
+      <h4>1. Jenis Temuan</h4>
+
+      <select id="editTmJenis">
+        <option value="">-- Pilih Jenis Temuan --</option>
+        <option>Warna</option>
+        <option>Noda</option>
+        <option>Ghosting</option>
+        <option>Terhapus</option>
+        <option>Galang</option>
+        <option>MisRegis</option>
+        <option>Garis</option>
+        <option>Botak</option>
+        <option>Set-Off</option>
+        <option>Scumming</option>
+        <option>Oksidasi</option>
+        <option>Gatra</option>
+        <option>Salur</option>
+        <option>Barcode/QR</option>
+      </select>
+
+      <div class="modal-btn">
+        <button type="button" onclick="nextEditStep(2)">
+          Next ▶
+        </button>
+      </div>
+
+    </div>
+
+
+    <!-- STEP 2 -->
+    <div id="editStep2" class="temuan-step" style="display:none;">
+
+      <h4>2. Posisi Temuan</h4>
+
+      <div
+        class="posisi-grid-container"
+        style="
+          max-height:220px;
+          overflow-y:auto;
+          border:1px solid #ccc;
+          padding:10px;
+          border-radius:5px;
+          background:#fff;
+        "
+      >
+
+        <div
+          style="
+            display:grid;
+            grid-template-columns:repeat(5,1fr);
+            gap:10px;
+          "
+        >
+
+          <label><input type="checkbox" name="editTmPosisi" value="1"> 1</label>
+          <label><input type="checkbox" name="editTmPosisi" value="2"> 2</label>
+          <label><input type="checkbox" name="editTmPosisi" value="3"> 3</label>
+          <label><input type="checkbox" name="editTmPosisi" value="4"> 4</label>
+          <label><input type="checkbox" name="editTmPosisi" value="5"> 5</label>
+
+          <label><input type="checkbox" name="editTmPosisi" value="6"> 6</label>
+          <label><input type="checkbox" name="editTmPosisi" value="7"> 7</label>
+          <label><input type="checkbox" name="editTmPosisi" value="8"> 8</label>
+          <label><input type="checkbox" name="editTmPosisi" value="9"> 9</label>
+          <label><input type="checkbox" name="editTmPosisi" value="10"> 10</label>
+
+          <label><input type="checkbox" name="editTmPosisi" value="11"> 11</label>
+          <label><input type="checkbox" name="editTmPosisi" value="12"> 12</label>
+          <label><input type="checkbox" name="editTmPosisi" value="13"> 13</label>
+          <label><input type="checkbox" name="editTmPosisi" value="14"> 14</label>
+          <label><input type="checkbox" name="editTmPosisi" value="15"> 15</label>
+
+          <label><input type="checkbox" name="editTmPosisi" value="16"> 16</label>
+          <label><input type="checkbox" name="editTmPosisi" value="17"> 17</label>
+          <label><input type="checkbox" name="editTmPosisi" value="18"> 18</label>
+          <label><input type="checkbox" name="editTmPosisi" value="19"> 19</label>
+          <label><input type="checkbox" name="editTmPosisi" value="20"> 20</label>
+
+          <label><input type="checkbox" name="editTmPosisi" value="21"> 21</label>
+          <label><input type="checkbox" name="editTmPosisi" value="22"> 22</label>
+          <label><input type="checkbox" name="editTmPosisi" value="23"> 23</label>
+          <label><input type="checkbox" name="editTmPosisi" value="24"> 24</label>
+          <label><input type="checkbox" name="editTmPosisi" value="25"> 25</label>
+
+          <label><input type="checkbox" name="editTmPosisi" value="26"> 26</label>
+          <label><input type="checkbox" name="editTmPosisi" value="27"> 27</label>
+          <label><input type="checkbox" name="editTmPosisi" value="28"> 28</label>
+          <label><input type="checkbox" name="editTmPosisi" value="29"> 29</label>
+          <label><input type="checkbox" name="editTmPosisi" value="30"> 30</label>
+
+          <label><input type="checkbox" name="editTmPosisi" value="31"> 31</label>
+          <label><input type="checkbox" name="editTmPosisi" value="32"> 32</label>
+          <label><input type="checkbox" name="editTmPosisi" value="33"> 33</label>
+          <label><input type="checkbox" name="editTmPosisi" value="34"> 34</label>
+          <label><input type="checkbox" name="editTmPosisi" value="35"> 35</label>
+
+          <label><input type="checkbox" name="editTmPosisi" value="36"> 36</label>
+          <label><input type="checkbox" name="editTmPosisi" value="37"> 37</label>
+          <label><input type="checkbox" name="editTmPosisi" value="38"> 38</label>
+          <label><input type="checkbox" name="editTmPosisi" value="39"> 39</label>
+          <label><input type="checkbox" name="editTmPosisi" value="40"> 40</label>
+
+          <label><input type="checkbox" name="editTmPosisi" value="41"> 41</label>
+          <label><input type="checkbox" name="editTmPosisi" value="42"> 42</label>
+          <label><input type="checkbox" name="editTmPosisi" value="43"> 43</label>
+          <label><input type="checkbox" name="editTmPosisi" value="44"> 44</label>
+          <label><input type="checkbox" name="editTmPosisi" value="45"> 45</label>
+
+          <label><input type="checkbox" name="editTmPosisi" value="46"> 46</label>
+          <label><input type="checkbox" name="editTmPosisi" value="47"> 47</label>
+          <label><input type="checkbox" name="editTmPosisi" value="48"> 48</label>
+          <label><input type="checkbox" name="editTmPosisi" value="49"> 49</label>
+          <label><input type="checkbox" name="editTmPosisi" value="50"> 50</label>
+
+        </div>
+
+      </div>
+
+      <div class="modal-btn" style="margin-top:15px;">
+
+        <button type="button" onclick="prevEditStep(1)">
+          ◀ Back
+        </button>
+
+        <button type="button" onclick="nextEditStep(3)">
+          Next ▶
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- STEP 3 -->
+    <div id="editStep3" class="temuan-step" style="display:none;">
+
+      <h4>3. Frekuensi Temuan (Jarang &lt;3 dan Sering &gt;3)</h4>
+
+      <select id="editTmFrek">
+
+        <option value="">-- Pilih Frekuensi --</option>
+
+        <option>Jarang</option>
+
+        <option>Sering</option>
+
+      </select>
+
+      <div class="modal-btn">
+
+        <button
+          type="button"
+          onclick="prevEditStep(2)"
+        >
+          ◀ Back
+        </button>
+
+        <button
+          type="button"
+          onclick="nextEditStep(4)"
+        >
+          Next ▶
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- STEP 4 -->
+    <div id="editStep4" class="temuan-step" style="display:none;">
+
+      <h4>4. Keterangan Tambahan (Opsional)</h4>
+
+      <textarea
+        id="editTmKet"
+        rows="5"
+        placeholder="Berikan Keterangan Tambahan"
+      ></textarea>
+
+      <div class="modal-btn">
+
+        <button
+          type="button"
+          onclick="prevEditStep(3)"
+        >
+          ◀ Back
+        </button>
+
+        <button
+          type="button"
+          onclick="saveEditTemuan()"
+        >
+          ✔ Selesai
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
 </section>
 
 
@@ -5577,7 +5791,6 @@ function setStatusFilterBapro(status) {
     }
 }
 
-
 </style>
 
 
@@ -5858,7 +6071,401 @@ window.addEventListener("click", function(e){
 
 });
 
+/* ==========================================
+   EDIT TEMUAN SPOTCHECK
+========================================== */
 
+let activeEditKetInput = "";
+
+
+// =======================
+// BUKA MODAL EDIT
+// =======================
+function openEditTemuanModal(inputId){
+
+    activeEditKetInput = inputId;
+
+    const input = document.getElementById(inputId);
+
+    if(!input) return;
+
+
+    // Buka modal
+    document.getElementById("editTemuanModal").style.display = "flex";
+
+
+    // Reset step
+    document.getElementById("editStep1").style.display = "block";
+    document.getElementById("editStep2").style.display = "none";
+    document.getElementById("editStep3").style.display = "none";
+    document.getElementById("editStep4").style.display = "none";
+
+
+    // Ambil data lama
+    const currentText = input.value.trim();
+
+
+    let existingJenis = "";
+    let existingPosisiArray = [];
+    let existingFrek = "";
+    let existingKet = "";
+
+
+    // Reset checkbox posisi
+    const checkboxes = document.querySelectorAll(
+        'input[name="editTmPosisi"]'
+    );
+
+    checkboxes.forEach(cb => {
+        cb.checked = false;
+    });
+
+
+    // Parse data lama
+    if(currentText !== ""){
+
+        const parts = currentText.split("|");
+
+
+        parts.forEach(part => {
+
+            const item = part.trim();
+
+
+            // Jenis
+            if(item.startsWith("Jenis:")){
+
+                existingJenis =
+                    item.replace("Jenis:", "").trim();
+
+            }
+
+
+            // Posisi
+            else if(item.startsWith("Posisi:")){
+
+                const posisiStr =
+                    item.replace("Posisi:", "").trim();
+
+
+                if(posisiStr){
+
+                    existingPosisiArray =
+                        posisiStr
+                            .split(",")
+                            .map(x => x.trim());
+
+                }
+
+            }
+
+
+            // Frekuensi
+            else if(item.startsWith("Frekuensi:")){
+
+                existingFrek =
+                    item.replace("Frekuensi:", "").trim();
+
+            }
+
+
+            // Keterangan
+            else if(item.startsWith("Keterangan:")){
+
+                existingKet =
+                    item.replace("Keterangan:", "").trim();
+
+            }
+
+        });
+
+    }
+
+
+    // Masukkan data lama
+    document.getElementById("editTmJenis").value =
+        existingJenis;
+
+
+    document.getElementById("editTmFrek").value =
+        existingFrek;
+
+
+    document.getElementById("editTmKet").value =
+        existingKet;
+
+
+    // Centang posisi lama
+    checkboxes.forEach(cb => {
+
+        cb.checked =
+            existingPosisiArray.includes(cb.value);
+
+    });
+
+}
+
+
+// =======================
+// TUTUP MODAL EDIT
+// =======================
+function closeEditTemuanModal(){
+
+    document.getElementById(
+        "editTemuanModal"
+    ).style.display = "none";
+
+}
+
+
+// =======================
+// NEXT EDIT
+// =======================
+function nextEditStep(step){
+
+    // STEP 1 -> STEP 2
+    if(step === 2){
+
+        const jenis =
+            document.getElementById("editTmJenis").value;
+
+
+        if(!jenis){
+
+            alert(
+                "Silakan pilih Jenis Temuan."
+            );
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "editStep1"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "editStep2"
+        ).style.display = "block";
+
+    }
+
+
+    // STEP 2 -> STEP 3
+    else if(step === 3){
+
+        const checkedBoxes =
+            document.querySelectorAll(
+                'input[name="editTmPosisi"]:checked'
+            );
+
+
+        if(checkedBoxes.length === 0){
+
+            alert(
+                "Silakan pilih minimal satu Posisi Temuan."
+            );
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "editStep2"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "editStep3"
+        ).style.display = "block";
+
+    }
+
+
+    // STEP 3 -> STEP 4
+    else if(step === 4){
+
+        const frek =
+            document.getElementById("editTmFrek").value;
+
+
+        if(!frek){
+
+            alert(
+                "Silakan pilih Frekuensi Temuan."
+            );
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "editStep3"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "editStep4"
+        ).style.display = "block";
+
+    }
+
+}
+
+
+// =======================
+// BACK EDIT
+// =======================
+function prevEditStep(step){
+
+    // STEP 2 -> STEP 1
+    if(step === 1){
+
+        document.getElementById(
+            "editStep1"
+        ).style.display = "block";
+
+
+        document.getElementById(
+            "editStep2"
+        ).style.display = "none";
+
+    }
+
+
+    // STEP 3 -> STEP 2
+    else if(step === 2){
+
+        document.getElementById(
+            "editStep2"
+        ).style.display = "block";
+
+
+        document.getElementById(
+            "editStep3"
+        ).style.display = "none";
+
+    }
+
+
+    // STEP 4 -> STEP 3
+    else if(step === 3){
+
+        document.getElementById(
+            "editStep3"
+        ).style.display = "block";
+
+
+        document.getElementById(
+            "editStep4"
+        ).style.display = "none";
+
+    }
+
+}
+
+
+// =======================
+// SIMPAN HASIL EDIT TEMUAN
+// =======================
+function saveEditTemuan(){
+
+    const jenis =
+        document.getElementById(
+            "editTmJenis"
+        ).value.trim();
+
+
+    const frek =
+        document.getElementById(
+            "editTmFrek"
+        ).value.trim();
+
+
+    const ket =
+        document.getElementById(
+            "editTmKet"
+        ).value.trim();
+
+
+    // Ambil posisi yang dipilih
+    const checkedBoxes =
+        document.querySelectorAll(
+            'input[name="editTmPosisi"]:checked'
+        );
+
+
+    const listPosisi = [];
+
+
+    checkedBoxes.forEach(cb => {
+
+        listPosisi.push(cb.value);
+
+    });
+
+
+    // Gabungkan posisi
+    const posisiTeks =
+        listPosisi.join(", ");
+
+
+    // Bentuk hasil
+    let hasil =
+        `Jenis: ${jenis} | Posisi: ${posisiTeks} | Frekuensi: ${frek}`;
+
+
+    // Tambahkan keterangan jika ada
+    if(ket !== ""){
+
+        hasil +=
+            ` | Keterangan: ${ket}`;
+
+    }
+
+
+    // Masukkan kembali ke input edit
+    const input =
+        document.getElementById(
+            activeEditKetInput
+        );
+
+
+    if(input){
+
+        input.value = hasil;
+
+    }
+
+
+    // Tutup modal
+    closeEditTemuanModal();
+
+}
+
+
+// =======================
+// KLIK AREA GELAP
+// =======================
+window.addEventListener("click", function(e){
+
+    const modal =
+        document.getElementById(
+            "editTemuanModal"
+        );
+
+
+    if(e.target === modal){
+
+        closeEditTemuanModal();
+
+    }
+
+});
 
 </script>
 
@@ -6107,65 +6714,60 @@ window.addEventListener("click", function(e){
 
       <h4>2. Kategori & Temuan</h4>
 
-      <div class="temuan-group">
+<div class="temuan-group">
 
-        <h5>🖨️ Temuan Cetak</h5>
+    <h5>🖨️ Temuan Cetak</h5>
 
-<label><input type="checkbox" name="tmInspekTemuan" value="Warna"> Warna</label>
-<label><input type="checkbox" name="tmInspekTemuan" value="Noda"> Noda</label>
-<label><input type="checkbox" name="tmInspekTemuan" value="Ghosting"> Ghosting</label>
-<label><input type="checkbox" name="tmInspekTemuan" value="Terhapus"> Terhapus</label>
-<label><input type="checkbox" name="tmInspekTemuan" value="Galang"> Galang</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Warna"> Warna</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Noda"> Noda</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Ghosting"> Ghosting</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Terhapus"> Terhapus</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Galang"> Galang</label>
 
-<label><input type="checkbox" name="tmInspekTemuan" value="MisRegis"> MisRegis</label>
-<label><input type="checkbox" name="tmInspekTemuan" value="Garis"> Garis</label>
-<label><input type="checkbox" name="tmInspekTemuan" value="Botak"> Botak</label>
-<label><input type="checkbox" name="tmInspekTemuan" value="Set-Off"> Set-Off</label>
-<label><input type="checkbox" name="tmInspekTemuan" value="Scumming"> Scumming</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="MisRegis"> MisRegis</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Garis"> Garis</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Botak"> Botak</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Set-Off"> Set-Off</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Scumming"> Scumming</label>
 
-<label><input type="checkbox" name="tmInspekTemuan" value="Oksidasi"> Oksidasi</label>
-<label><input type="checkbox" name="tmInspekTemuan" value="Gatra"> Gatra</label>
-<label><input type="checkbox" name="tmInspekTemuan" value="Salur"> Salur</label>
-<label><input type="checkbox" name="tmInspekTemuan" value="Barcode/QR"> Barcode/QR</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Oksidasi"> Oksidasi</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Gatra"> Gatra</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Salur"> Salur</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Barcode/QR"> Barcode/QR</label>
 
-      </div>
+</div>
 
+<div class="temuan-group">
 
-      <div class="temuan-group">
+    <h5>✂️ Temuan Ponch</h5>
 
-        <h5>✂️ Temuan Ponch</h5>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Ponch Lari"> Ponch Lari</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Ponch Pecah"> Ponch Pecah</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Ponch Tidak Putus"> Ponch Tidak Putus</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Tidak Ada Embose"> Tidak Ada Embose</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Embose Lari"> Embose Lari</label>
 
-        <label><input type="checkbox" name="tmInspekTemuan" value="Over Ponch"> Over Ponch</label>
-        <label><input type="checkbox" name="tmInspekTemuan" value="Kurang Ponch"> Kurang Ponch</label>
-        <label><input type="checkbox" name="tmInspekTemuan" value="Geser Ponch"> Geser Ponch</label>
-        <label><input type="checkbox" name="tmInspekTemuan" value="Sobek"> Sobek</label>
-        <label><input type="checkbox" name="tmInspekTemuan" value="Tidak Putus"> Tidak Putus</label>
+</div>
 
-      </div>
+<div class="temuan-group">
 
-      <div class="temuan-group">
+    <h5>✨ Temuan Varnish</h5>
 
-        <h5>✨ Temuan Varnish</h5>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Varnish Tidak Rata"> Varnish Tidak Rata</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Bubble"> Bubble</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Varnish Bergaris"> Varnish Bergaris</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Tidak Ada Varnish"> Tidak Ada Varnish</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Glossy Kurang"> Glossy Kurang</label>
 
-        <label><input type="checkbox" name="tmInspekTemuan" value="Tidak Full"> Tidak Full</label>
-        <label><input type="checkbox" name="tmInspekTemuan" value="Bubble"> Bubble</label>
-        <label><input type="checkbox" name="tmInspekTemuan" value="Orange Peel"> Orange Peel</label>
-        <label><input type="checkbox" name="tmInspekTemuan" value="Mengelupas"> Mengelupas</label>
-        <label><input type="checkbox" name="tmInspekTemuan" value="Baret"> Baret</label>
+</div>
 
-      </div>
+<div class="temuan-group">
 
-      <div class="temuan-group">
+    <h5>📏 Temuan Potong</h5>
 
-        <h5>📏 Temuan Potong</h5>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Potongan Lari"> Potongan Lari</label>
 
-        <label><input type="checkbox" name="tmInspekTemuan" value="Over Cut"> Over Cut</label>
-        <label><input type="checkbox" name="tmInspekTemuan" value="Under Cut"> Under Cut</label>
-        <label><input type="checkbox" name="tmInspekTemuan" value="Geser Potong"> Geser Potong</label>
-        <label><input type="checkbox" name="tmInspekTemuan" value="Miring"> Miring</label>
-        <label><input type="checkbox" name="tmInspekTemuan" value="Bergerigi"> Bergerigi</label>
-
-      </div>
+</div>
 
       <div class="modal-btn" style="margin-top:20px;">
         <button type="button" onclick="prevStepInspek(1)">◀ Back</button>
@@ -6276,6 +6878,222 @@ window.addEventListener("click", function(e){
     </div>
 
   </div>
+
+<!-- ================= MODAL EDIT TEMUAN INSPEK ================= -->
+<div id="editTemuanModalInspek" class="temuan-modal" style="display:none;">
+
+  <div class="temuan-content">
+
+    <h3>Edit Temuan</h3>
+
+    <!-- ================= STEP 1 ================= -->
+    <div id="editStepInspek1" class="temuan-step">
+
+      <h4>1. Jenis Temuan</h4>
+
+      <select id="editTmInspekJenis">
+
+        <option value="">
+          -- Pilih Jenis Temuan --
+        </option>
+
+        <option>Temuan Cetak</option>
+        <option>Temuan Ponch</option>
+        <option>Temuan Varnish</option>
+        <option>Temuan Potong</option>
+
+      </select>
+
+      <div class="modal-btn">
+
+        <button
+          type="button"
+          onclick="nextEditStepInspek(2)"
+        >
+          Next ▶
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================= STEP 2 ================= -->
+    <div
+      id="editStepInspek2"
+      class="temuan-step"
+      style="display:none;"
+    >
+
+      <h4>2. Kategori & Temuan</h4>
+
+
+<div class="temuan-group">
+
+    <h5>🖨️ Temuan Cetak</h5>
+
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Warna"> Warna</label>
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Noda"> Noda</label>
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Ghosting"> Ghosting</label>
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Terhapus"> Terhapus</label>
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Galang"> Galang</label>
+
+    <label><input type="checkbox" name="editTmInspekTemuan" value="MisRegis"> MisRegis</label>
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Garis"> Garis</label>
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Botak"> Botak</label>
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Set-Off"> Set-Off</label>
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Scumming"> Scumming</label>
+
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Oksidasi"> Oksidasi</label>
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Gatra"> Gatra</label>
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Salur"> Salur</label>
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Barcode/QR"> Barcode/QR</label>
+
+</div>
+
+<div class="temuan-group">
+
+    <h5>✂️ Temuan Ponch</h5>
+
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Ponch Lari"> Ponch Lari</label>
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Ponch Pecah"> Ponch Pecah</label>
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Ponch Tidak Putus"> Ponch Tidak Putus</label>
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Tidak Ada Embose"> Tidak Ada Embose</label>
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Embose Lari"> Embose Lari</label>
+
+</div>
+
+<div class="temuan-group">
+
+    <h5>✨ Temuan Varnish</h5>
+
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Varnish Tidak Rata"> Varnish Tidak Rata</label>
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Bubble"> Bubble</label>
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Varnish Bergaris"> Varnish Bergaris</label>
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Tidak Ada Varnish"> Tidak Ada Varnish</label>
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Glossy Kurang"> Glossy Kurang</label>
+
+</div>
+
+<div class="temuan-group">
+
+    <h5>📏 Temuan Potong</h5>
+
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Potongan Lari"> Potongan Lari</label>
+
+</div>
+
+
+      <div
+        class="modal-btn"
+        style="margin-top:20px;"
+      >
+
+        <button
+          type="button"
+          onclick="prevEditStepInspek(1)"
+        >
+          ◀ Back
+        </button>
+
+        <button
+          type="button"
+          onclick="nextEditStepInspek(3)"
+        >
+          Next ▶
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================= STEP 3 ================= -->
+    <div
+      id="editStepInspek3"
+      class="temuan-step"
+      style="display:none;"
+    >
+
+      <h4>
+        3. Frekuensi Temuan
+        (Jarang &lt;3 dan Sering &gt;3)
+      </h4>
+
+      <select id="editTmInspekFrek">
+
+        <option value="">
+          -- Pilih Frekuensi --
+        </option>
+
+        <option>Jarang</option>
+        <option>Sering</option>
+
+      </select>
+
+
+      <div class="modal-btn">
+
+        <button
+          type="button"
+          onclick="prevEditStepInspek(2)"
+        >
+          ◀ Back
+        </button>
+
+        <button
+          type="button"
+          onclick="nextEditStepInspek(4)"
+        >
+          Next ▶
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================= STEP 4 ================= -->
+    <div
+      id="editStepInspek4"
+      class="temuan-step"
+      style="display:none;"
+    >
+
+      <h4>
+        4. Keterangan Tambahan (Opsional)
+      </h4>
+
+      <textarea
+        id="editTmInspekKet"
+        rows="5"
+        placeholder="Berikan Jumlah Temuan Jika Ada"
+      ></textarea>
+
+
+      <div class="modal-btn">
+
+        <button
+          type="button"
+          onclick="prevEditStepInspek(3)"
+        >
+          ◀ Back
+        </button>
+
+        <button
+          type="button"
+          onclick="saveEditTemuanInspek()"
+        >
+          ✔ Selesai
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
 
 </section>
 
@@ -6511,276 +7329,7 @@ window.addEventListener("click", function(e){
   box-shadow:0 2px 6px rgba(25,118,210,0.25);
 }
 
-/* ===========================================
-   MODAL INPUT TEMUAN INSPEK
-=========================================== */
 
-.inspek-temuan-modal{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.45);
-    z-index:99999;
-    justify-content:center;
-    align-items:center;
-    padding:20px;
-    animation:fadeIn .2s ease;
-}
-
-.inspek-temuan-content{
-    width:100%;
-    max-width:480px;
-    max-height:90vh;
-    background:#fff;
-    border-radius:16px;
-    overflow:hidden;
-    box-shadow:0 15px 40px rgba(0,0,0,.25);
-    animation:zoomIn .25s ease;
-    display:flex;
-    flex-direction:column;
-}
-
-/* Header */
-
-.inspek-temuan-content h3{
-    margin:0;
-    padding:16px;
-    background:#ca8a04;
-    color:#fff;
-    text-align:center;
-    font-size:18px;
-    font-weight:600;
-}
-
-/* Step */
-
-.inspek-temuan-step{
-    padding:20px;
-    overflow-y:auto;
-}
-
-.inspek-temuan-step h4{
-    margin:0 0 15px;
-    color:#444;
-    font-size:16px;
-}
-
-/* Select */
-
-.inspek-temuan-step select{
-    width:100%;
-    padding:12px 14px;
-    border:1px solid #dcdcdc;
-    border-radius:10px;
-    font-size:15px;
-    outline:none;
-    transition:.25s;
-    background:#fff;
-    box-sizing:border-box;
-}
-
-.inspek-temuan-step select:focus{
-    border-color:#ca8a04;
-    box-shadow:0 0 0 3px rgba(202,138,4,.15);
-}
-
-/* ===============================
-   GROUP TEMUAN
-================================ */
-
-.inspek-temuan-group{
-    margin-bottom:20px;
-    padding:14px;
-    border:1px solid #e5e5e5;
-    border-radius:12px;
-    background:#fafafa;
-}
-
-.inspek-temuan-group h5{
-    margin:0 0 12px;
-    font-size:15px;
-    color:#ca8a04;
-    font-weight:600;
-}
-
-.inspek-temuan-group label{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:8px 10px;
-    margin-bottom:6px;
-    border-radius:8px;
-    cursor:pointer;
-    transition:.2s;
-}
-
-.inspek-temuan-group label:hover{
-    background:#fff8e1;
-}
-
-.inspek-temuan-group input[type="checkbox"]{
-    width:18px;
-    height:18px;
-    accent-color:#ca8a04;
-}
-
-/* Textarea */
-
-.inspek-temuan-step textarea{
-    width:100%;
-    min-height:120px;
-    resize:vertical;
-    padding:12px 14px;
-    border:1px solid #dcdcdc;
-    border-radius:10px;
-    font-size:15px;
-    font-family:inherit;
-    line-height:1.5;
-    outline:none;
-    transition:.25s;
-    box-sizing:border-box;
-}
-
-.inspek-temuan-step textarea:focus{
-    border-color:#ca8a04;
-    box-shadow:0 0 0 3px rgba(202,138,4,.15);
-}
-
-/* Tombol */
-
-.inspek-modal-btn{
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
-    margin-top:25px;
-}
-
-.inspek-modal-btn button{
-    flex:1;
-    border:none;
-    border-radius:10px;
-    padding:12px;
-    font-size:15px;
-    font-weight:600;
-    cursor:pointer;
-    transition:.25s;
-}
-
-.inspek-modal-btn button:hover{
-    transform:translateY(-2px);
-}
-
-.inspek-modal-btn button:first-child{
-    background:#ececec;
-    color:#444;
-}
-
-.inspek-modal-btn button:first-child:hover{
-    background:#dcdcdc;
-}
-
-.inspek-modal-btn button:last-child{
-    background:#ca8a04;
-    color:#fff;
-}
-
-.inspek-modal-btn button:last-child:hover{
-    background:#a16207;
-}
-
-/* Input */
-
-.inspek-rowKet{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:10px;
-}
-
-.inspek-rowKet span{
-    width:24px;
-    font-weight:bold;
-    text-align:center;
-}
-
-.inspek-rowKet input{
-    flex:1;
-    padding:10px 12px;
-    border:1px solid #ccc;
-    border-radius:10px;
-    cursor:pointer;
-    background:#fafafa;
-    transition:.25s;
-}
-
-.inspek-rowKet input:hover{
-    border-color:#ca8a04;
-    background:#fff;
-}
-
-.inspek-rowKet input:focus{
-    outline:none;
-    border-color:#ca8a04;
-    box-shadow:0 0 0 3px rgba(202,138,4,.15);
-}
-
-/* Scroll */
-
-.inspek-temuan-step::-webkit-scrollbar{
-    width:6px;
-}
-
-.inspek-temuan-step::-webkit-scrollbar-thumb{
-    background:#c8c8c8;
-    border-radius:10px;
-}
-
-.inspek-temuan-step::-webkit-scrollbar-thumb:hover{
-    background:#a8a8a8;
-}
-
-/* Responsive */
-
-@media(max-width:600px){
-
-    .inspek-temuan-content{
-        width:100%;
-        max-width:100%;
-        max-height:95vh;
-        border-radius:14px;
-    }
-
-    .inspek-temuan-step{
-        padding:16px;
-    }
-
-    .inspek-modal-btn{
-        flex-direction:column;
-    }
-
-    .inspek-modal-btn button{
-        width:100%;
-    }
-
-}
-
-/* Animasi */
-
-@keyframes fadeIn{
-    from{opacity:0;}
-    to{opacity:1;}
-}
-
-@keyframes zoomIn{
-    from{
-        transform:scale(.9);
-        opacity:0;
-    }
-    to{
-        transform:scale(1);
-        opacity:1;
-    }
-}
 
 
 </style>
@@ -7118,6 +7667,522 @@ window.addEventListener("click", function(e){
 });
 
 
+/* =====================================================
+   EDIT TEMUAN INSPEK
+   KHUSUS KETERANGAN HASIL EDIT
+===================================================== */
+
+let activeEditInspekKetInput = "";
+
+
+// =======================
+// BUKA MODAL EDIT
+// =======================
+function openEditTemuanModalInspek(inputId){
+
+    activeEditInspekKetInput = inputId;
+
+    const input =
+        document.getElementById(inputId);
+
+    if(!input) return;
+
+
+    // =======================
+    // BUKA MODAL
+    // =======================
+
+    document.getElementById(
+        "editTemuanModalInspek"
+    ).style.display = "flex";
+
+
+    // =======================
+    // RESET STEP
+    // =======================
+
+    document.getElementById(
+        "editStepInspek1"
+    ).style.display = "block";
+
+    document.getElementById(
+        "editStepInspek2"
+    ).style.display = "none";
+
+    document.getElementById(
+        "editStepInspek3"
+    ).style.display = "none";
+
+    document.getElementById(
+        "editStepInspek4"
+    ).style.display = "none";
+
+
+    // =======================
+    // AMBIL KETERANGAN LAMA
+    // =======================
+
+    const currentText =
+        input.value.trim();
+
+
+    let existingJenis = "";
+    let existingFrek = "";
+    let existingKet = "";
+
+    let existingTemuanArray = [];
+
+
+    // =======================
+    // RESET SEMUA CHECKBOX
+    // =======================
+
+    const checkboxes =
+        document.querySelectorAll(
+            'input[name="editTmInspekTemuan"]'
+        );
+
+
+    checkboxes.forEach(cb => {
+
+        cb.checked = false;
+
+    });
+
+
+    // =======================
+    // PARSING DATA LAMA
+    // =======================
+
+    if(currentText !== ""){
+
+        const parts =
+            currentText.split("|");
+
+
+        parts.forEach(part => {
+
+            const item =
+                part.trim();
+
+
+            // =======================
+            // JENIS
+            // =======================
+
+            if(item.startsWith("Jenis:")){
+
+                existingJenis =
+                    item
+                        .replace("Jenis:","")
+                        .trim();
+
+            }
+
+
+            // =======================
+            // TEMUAN
+            // =======================
+
+            else if(item.startsWith("Temuan:")){
+
+                const temuanStr =
+                    item
+                        .replace("Temuan:","")
+                        .trim();
+
+
+                if(temuanStr){
+
+                    existingTemuanArray =
+                        temuanStr
+                            .split(",")
+                            .map(x => x.trim());
+
+                }
+
+            }
+
+
+            // =======================
+            // FREKUENSI
+            // =======================
+
+            else if(item.startsWith("Frekuensi:")){
+
+                existingFrek =
+                    item
+                        .replace("Frekuensi:","")
+                        .trim();
+
+            }
+
+
+            // =======================
+            // KETERANGAN TAMBAHAN
+            // =======================
+
+            else if(item.startsWith("Keterangan:")){
+
+                existingKet =
+                    item
+                        .replace("Keterangan:","")
+                        .trim();
+
+            }
+
+        });
+
+    }
+
+
+    // =======================
+    // MASUKKAN DATA LAMA
+    // =======================
+
+    document.getElementById(
+        "editTmInspekJenis"
+    ).value =
+        existingJenis;
+
+
+    document.getElementById(
+        "editTmInspekFrek"
+    ).value =
+        existingFrek;
+
+
+    document.getElementById(
+        "editTmInspekKet"
+    ).value =
+        existingKet;
+
+
+    // =======================
+    // CENTANG TEMUAN LAMA
+    // =======================
+
+    checkboxes.forEach(cb => {
+
+        cb.checked =
+            existingTemuanArray.includes(
+                cb.value
+            );
+
+    });
+
+}
+
+
+// =======================
+// TUTUP MODAL EDIT
+// =======================
+function closeEditTemuanModalInspek(){
+
+    document.getElementById(
+        "editTemuanModalInspek"
+    ).style.display = "none";
+
+}
+
+
+// =======================
+// NEXT EDIT
+// =======================
+function nextEditStepInspek(step){
+
+
+    // =======================
+    // STEP 1 -> STEP 2
+    // =======================
+
+    if(step === 2){
+
+        const jenis =
+            document.getElementById(
+                "editTmInspekJenis"
+            ).value;
+
+
+        if(!jenis){
+
+            alert(
+                "Silakan pilih Jenis Temuan."
+            );
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "editStepInspek1"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "editStepInspek2"
+        ).style.display = "block";
+
+    }
+
+
+    // =======================
+    // STEP 2 -> STEP 3
+    // =======================
+
+    else if(step === 3){
+
+        const checkedBoxes =
+            document.querySelectorAll(
+                'input[name="editTmInspekTemuan"]:checked'
+            );
+
+
+        if(checkedBoxes.length === 0){
+
+            alert(
+                "Silakan pilih minimal satu Temuan."
+            );
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "editStepInspek2"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "editStepInspek3"
+        ).style.display = "block";
+
+    }
+
+
+    // =======================
+    // STEP 3 -> STEP 4
+    // =======================
+
+    else if(step === 4){
+
+        const frek =
+            document.getElementById(
+                "editTmInspekFrek"
+            ).value;
+
+
+        if(!frek){
+
+            alert(
+                "Silakan pilih Frekuensi Temuan."
+            );
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "editStepInspek3"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "editStepInspek4"
+        ).style.display = "block";
+
+    }
+
+}
+
+
+// =======================
+// BACK EDIT
+// =======================
+function prevEditStepInspek(step){
+
+
+    // =======================
+    // STEP 2 -> STEP 1
+    // =======================
+
+    if(step === 1){
+
+        document.getElementById(
+            "editStepInspek1"
+        ).style.display = "block";
+
+
+        document.getElementById(
+            "editStepInspek2"
+        ).style.display = "none";
+
+    }
+
+
+    // =======================
+    // STEP 3 -> STEP 2
+    // =======================
+
+    else if(step === 2){
+
+        document.getElementById(
+            "editStepInspek2"
+        ).style.display = "block";
+
+
+        document.getElementById(
+            "editStepInspek3"
+        ).style.display = "none";
+
+    }
+
+
+    // =======================
+    // STEP 4 -> STEP 3
+    // =======================
+
+    else if(step === 3){
+
+        document.getElementById(
+            "editStepInspek3"
+        ).style.display = "block";
+
+
+        document.getElementById(
+            "editStepInspek4"
+        ).style.display = "none";
+
+    }
+
+}
+
+
+// =======================
+// SIMPAN HASIL EDIT TEMUAN
+// =======================
+function saveEditTemuanInspek(){
+
+    const jenis =
+        document.getElementById(
+            "editTmInspekJenis"
+        ).value.trim();
+
+
+    const frek =
+        document.getElementById(
+            "editTmInspekFrek"
+        ).value.trim();
+
+
+    const ket =
+        document.getElementById(
+            "editTmInspekKet"
+        ).value.trim();
+
+
+    // =======================
+    // AMBIL TEMUAN TERPILIH
+    // =======================
+
+    const checkedBoxes =
+        document.querySelectorAll(
+            'input[name="editTmInspekTemuan"]:checked'
+        );
+
+
+    const listTemuan = [];
+
+
+    checkedBoxes.forEach(cb => {
+
+        listTemuan.push(
+            cb.value
+        );
+
+    });
+
+
+    // =======================
+    // GABUNGKAN TEMUAN
+    // =======================
+
+    const temuanTeks =
+        listTemuan.join(", ");
+
+
+    // =======================
+    // BENTUK HASIL
+    // =======================
+
+    let hasil =
+        `Jenis: ${jenis} | Temuan: ${temuanTeks} | Frekuensi: ${frek}`;
+
+
+    // =======================
+    // KETERANGAN TAMBAHAN
+    // =======================
+
+    if(ket !== ""){
+
+        hasil +=
+            ` | Keterangan: ${ket}`;
+
+    }
+
+
+    // =======================
+    // MASUKKAN KE INPUT EDIT
+    // =======================
+
+    const input =
+        document.getElementById(
+            activeEditInspekKetInput
+        );
+
+
+    if(input){
+
+        input.value =
+            hasil;
+
+    }
+
+
+    // =======================
+    // TUTUP MODAL
+    // =======================
+
+    closeEditTemuanModalInspek();
+
+}
+
+
+// =======================
+// KLIK AREA GELAP
+// =======================
+window.addEventListener(
+    "click",
+    function(e){
+
+        const modal =
+            document.getElementById(
+                "editTemuanModalInspek"
+            );
+
+
+        if(e.target === modal){
+
+            closeEditTemuanModalInspek();
+
+        }
+
+    }
+);
+
 </script>
 
 
@@ -7322,22 +8387,22 @@ window.addEventListener("click", function(e){
 
     <h5>🖨️ Temuan Cetak</h5>
 
-<label><input type="checkbox" name="tmFinTemuan" value="Warna"> Warna</label>
-<label><input type="checkbox" name="tmFinTemuan" value="Noda"> Noda</label>
-<label><input type="checkbox" name="tmFinTemuan" value="Ghosting"> Ghosting</label>
-<label><input type="checkbox" name="tmFinTemuan" value="Terhapus"> Terhapus</label>
-<label><input type="checkbox" name="tmFinTemuan" value="Galang"> Galang</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Warna"> Warna</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Noda"> Noda</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Ghosting"> Ghosting</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Terhapus"> Terhapus</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Galang"> Galang</label>
 
-<label><input type="checkbox" name="tmFinTemuan" value="MisRegis"> MisRegis</label>
-<label><input type="checkbox" name="tmFinTemuan" value="Garis"> Garis</label>
-<label><input type="checkbox" name="tmFinTemuan" value="Botak"> Botak</label>
-<label><input type="checkbox" name="tmFinTemuan" value="Set-Off"> Set-Off</label>
-<label><input type="checkbox" name="tmFinTemuan" value="Scumming"> Scumming</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="MisRegis"> MisRegis</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Garis"> Garis</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Botak"> Botak</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Set-Off"> Set-Off</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Scumming"> Scumming</label>
 
-<label><input type="checkbox" name="tmFinTemuan" value="Oksidasi"> Oksidasi</label>
-<label><input type="checkbox" name="tmFinTemuan" value="Gatra"> Gatra</label>
-<label><input type="checkbox" name="tmFinTemuan" value="Salur"> Salur</label>
-<label><input type="checkbox" name="tmFinTemuan" value="Barcode/QR"> Barcode/QR</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Oksidasi"> Oksidasi</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Gatra"> Gatra</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Salur"> Salur</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Barcode/QR"> Barcode/QR</label>
 
 </div>
 
@@ -7345,11 +8410,15 @@ window.addEventListener("click", function(e){
 
     <h5>📦 Temuan Lem</h5>
 
-    <label><input type="checkbox" name="tmFinTemuan" value="Lem Kurang"> Lem Kurang</label>
-    <label><input type="checkbox" name="tmFinTemuan" value="Lem Berlebih"> Lem Berlebih</label>
-    <label><input type="checkbox" name="tmFinTemuan" value="Lem Lepas"> Lem Lepas</label>
-    <label><input type="checkbox" name="tmFinTemuan" value="Lem Geser"> Lem Geser</label>
-    <label><input type="checkbox" name="tmFinTemuan" value="Lem Meluber"> Lem Meluber</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="No Glue"> No Glue</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Over Glue"> Over Glue</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Lem Tidak Rata"> Lem Tidak Rata</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Lengket"> Lengket</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Dus Sobek"> Dus Sobek</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Dus Baret"> Dus Baret</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Dus Galeng"> Dus Galeng</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Dus Tidak Siku"> Dus Tidak Siku</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Kupingan Ketekuk"> Kupingan Ketekuk</label>
 
 </div>
 
@@ -7357,11 +8426,11 @@ window.addEventListener("click", function(e){
 
     <h5>✂️ Temuan Ponch</h5>
 
-    <label><input type="checkbox" name="tmFinTemuan" value="Over Ponch"> Over Ponch</label>
-    <label><input type="checkbox" name="tmFinTemuan" value="Kurang Ponch"> Kurang Ponch</label>
-    <label><input type="checkbox" name="tmFinTemuan" value="Geser Ponch"> Geser Ponch</label>
-    <label><input type="checkbox" name="tmFinTemuan" value="Sobek"> Sobek</label>
-    <label><input type="checkbox" name="tmFinTemuan" value="Tidak Putus"> Tidak Putus</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Ponch Lari"> Ponch Lari</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Ponch Pecah"> Ponch Pecah</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Ponch Tidak Putus"> Ponch Tidak Putus</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Tidak Ada Embose"> Tidak Ada Embose</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Embose Lari"> Embose Lari</label>
 
 </div>
 
@@ -7369,11 +8438,11 @@ window.addEventListener("click", function(e){
 
     <h5>✨ Temuan Varnish</h5>
 
-    <label><input type="checkbox" name="tmFinTemuan" value="Tidak Full"> Tidak Full</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Varnish Tidak Rata"> Varnish Tidak Rata</label>
     <label><input type="checkbox" name="tmFinTemuan" value="Bubble"> Bubble</label>
-    <label><input type="checkbox" name="tmFinTemuan" value="Orange Peel"> Orange Peel</label>
-    <label><input type="checkbox" name="tmFinTemuan" value="Mengelupas"> Mengelupas</label>
-    <label><input type="checkbox" name="tmFinTemuan" value="Baret"> Baret</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Varnish Bergaris"> Varnish Bergaris</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Tidak Ada Varnish"> Tidak Ada Varnish</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Glossy Kurang"> Glossy Kurang</label>
 
 </div>
 
@@ -7381,11 +8450,7 @@ window.addEventListener("click", function(e){
 
     <h5>📏 Temuan Potong</h5>
 
-    <label><input type="checkbox" name="tmFinTemuan" value="Over Cut"> Over Cut</label>
-    <label><input type="checkbox" name="tmFinTemuan" value="Under Cut"> Under Cut</label>
-    <label><input type="checkbox" name="tmFinTemuan" value="Geser Potong"> Geser Potong</label>
-    <label><input type="checkbox" name="tmFinTemuan" value="Miring"> Miring</label>
-    <label><input type="checkbox" name="tmFinTemuan" value="Bergerigi"> Bergerigi</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Potongan Lari"> Potongan Lari</label>
 
 </div>
 
@@ -7455,6 +8520,199 @@ window.addEventListener("click", function(e){
       <div id="gridFinishing" class="grid-container"></div>
     </div>
   </div>
+
+<!-- ================= MODAL EDIT TEMUAN FINISHING ================= -->
+<div id="editTemuanModalFin" class="temuan-modal" style="display:none;">
+
+  <div class="temuan-content">
+
+    <h3>Edit Temuan</h3>
+
+    <!-- STEP 1 -->
+    <div id="editStepFin1" class="temuan-step">
+
+      <h4>1. Jenis Temuan</h4>
+
+      <select id="editTmFinJenis">
+        <option value="">-- Pilih Jenis Temuan --</option>
+        <option>Temuan Cetak</option>
+        <option>Temuan Lem</option>
+        <option>Temuan Ponch</option>
+        <option>Temuan Varnish</option>
+        <option>Temuan Potong</option>
+      </select>
+
+      <div class="modal-btn">
+        <button type="button" onclick="nextEditStepFin(2)">Next ▶</button>
+      </div>
+
+    </div>
+
+
+    <!-- STEP 2 -->
+    <div id="editStepFin2" class="fin-temuan-step" style="display:none;">
+
+      <h4>2. Kategori & Temuan</h4>
+
+<div class="temuan-group">
+
+    <h5>🖨️ Temuan Cetak</h5>
+
+    <label><input type="checkbox" name="editTmFinTemuan" value="Warna"> Warna</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Noda"> Noda</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Ghosting"> Ghosting</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Terhapus"> Terhapus</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Galang"> Galang</label>
+
+    <label><input type="checkbox" name="editTmFinTemuan" value="MisRegis"> MisRegis</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Garis"> Garis</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Botak"> Botak</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Set-Off"> Set-Off</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Scumming"> Scumming</label>
+
+    <label><input type="checkbox" name="editTmFinTemuan" value="Oksidasi"> Oksidasi</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Gatra"> Gatra</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Salur"> Salur</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Barcode/QR"> Barcode/QR</label>
+
+</div>
+
+<div class="temuan-group">
+
+    <h5>📦 Temuan Lem</h5>
+
+    <label><input type="checkbox" name="editTmFinTemuan" value="No Glue"> No Glue</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Over Glue"> Over Glue</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Lem Tidak Rata"> Lem Tidak Rata</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Lengket"> Lengket</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Dus Sobek"> Dus Sobek</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Dus Baret"> Dus Baret</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Dus Galeng"> Dus Galeng</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Dus Tidak Siku"> Dus Tidak Siku</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Kupingan Ketekuk"> Kupingan Ketekuk</label>
+
+</div>
+
+<div class="temuan-group">
+
+    <h5>✂️ Temuan Ponch</h5>
+
+    <label><input type="checkbox" name="editTmFinTemuan" value="Ponch Lari"> Ponch Lari</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Ponch Pecah"> Ponch Pecah</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Ponch Tidak Putus"> Ponch Tidak Putus</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Tidak Ada Embose"> Tidak Ada Embose</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Embose Lari"> Embose Lari</label>
+
+</div>
+
+<div class="temuan-group">
+
+    <h5>✨ Temuan Varnish</h5>
+
+    <label><input type="checkbox" name="editTmFinTemuan" value="Varnish Tidak Rata"> Varnish Tidak Rata</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Bubble"> Bubble</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Varnish Bergaris"> Varnish Bergaris</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Tidak Ada Varnish"> Tidak Ada Varnish</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Glossy Kurang"> Glossy Kurang</label>
+
+</div>
+
+<div class="temuan-group">
+
+    <h5>📏 Temuan Potong</h5>
+
+    <label><input type="checkbox" name="editTmFinTemuan" value="Potongan Lari"> Potongan Lari</label>
+
+</div>
+
+
+      <div class="fin-modal-btn" style="margin-top:20px;">
+
+        <button
+          type="button"
+          onclick="prevEditStepFin(1)"
+        >
+          ◀ Back
+        </button>
+
+        <button
+          type="button"
+          onclick="nextEditStepFin(3)"
+        >
+          Next ▶
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- STEP 3 -->
+    <div id="editStepFin3" class="temuan-step" style="display:none;">
+
+      <h4>3. Frekuensi Temuan (Jarang &lt;3 dan Sering &gt;3)</h4>
+
+      <select id="editTmFinFrek">
+        <option value="">-- Pilih Frekuensi --</option>
+        <option>Jarang</option>
+        <option>Sering</option>
+      </select>
+
+      <div class="modal-btn">
+
+        <button
+          type="button"
+          onclick="prevEditStepFin(2)"
+        >
+          ◀ Back
+        </button>
+
+        <button
+          type="button"
+          onclick="nextEditStepFin(4)"
+        >
+          Next ▶
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- STEP 4 -->
+    <div id="editStepFin4" class="temuan-step" style="display:none;">
+
+      <h4>4. Keterangan Tambahan (Opsional)</h4>
+
+      <textarea
+        id="editTmFinKet"
+        rows="5"
+        placeholder="Berikan Jumlah Temuan Jika Ada"
+      ></textarea>
+
+      <div class="modal-btn">
+
+        <button
+          type="button"
+          onclick="prevEditStepFin(3)"
+        >
+          ◀ Back
+        </button>
+
+        <button
+          type="button"
+          onclick="saveEditTemuanFin()"
+        >
+          ✔ Selesai
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
 
 </section>
 
@@ -7579,6 +8837,7 @@ window.addEventListener("click", function(e){
   transform:translateY(-1px);
   box-shadow:0 2px 6px rgba(0,0,0,0.2);
 }
+
 
 /* ===========================================
    MODAL INPUT TEMUAN FINISHING
@@ -7922,7 +9181,63 @@ function setStatusFilter(status){
   renderGridFinishing(keyword);
 }
 
+// ==========================================
+// OTOMATISASI FORM FINISHING
+// ==========================================
+const idFinishingBS = [
+  'finishingJenisBS1', // BS Cetak
+  'finishingJenisBS2', // BS Lem
+  'finishingJenisBS3', // BS Ponch
+  'finishingJenisBS4', // BS Varnish
+  'finishingJenisBS5'  // BS Potong
+];
 
+const totalFinishingInput = document.getElementById('finishingJenisBS');
+const finishingOrderInput = document.getElementById('finishingOrder');
+const finishingBagusInput = document.getElementById('finishingBagus');
+
+function hitungTotalFinishing() {
+
+  let totalBS = 0;
+
+  idFinishingBS.forEach(id => {
+    const input = document.getElementById(id);
+    if (input) {
+      totalBS += parseFloat(input.value) || 0;
+    }
+  });
+
+  // Total BS
+  if (totalFinishingInput) {
+    totalFinishingInput.value = totalBS;
+  }
+
+  // Total Bagus = Total Order - Total BS
+  if (finishingOrderInput && finishingBagusInput) {
+
+    const totalOrder = parseFloat(finishingOrderInput.value) || 0;
+    const totalBagus = totalOrder - totalBS;
+
+    finishingBagusInput.value = totalBagus < 0 ? 0 : totalBagus;
+  }
+
+}
+
+// Listener BS
+idFinishingBS.forEach(id => {
+
+  const input = document.getElementById(id);
+
+  if (input) {
+    input.addEventListener('input', hitungTotalFinishing);
+  }
+
+});
+
+// Listener Total Order
+if (finishingOrderInput) {
+  finishingOrderInput.addEventListener('input', hitungTotalFinishing);
+}
 
 
 /* ==========================================
@@ -8148,6 +9463,414 @@ window.addEventListener("click", function(e){
 
     if(e.target === modal){
         closeTemuanModalFin();
+    }
+
+});
+
+/* =====================================================
+   EDIT TEMUAN FINISHING
+   KHUSUS KETERANGAN HASIL EDIT
+===================================================== */
+
+let activeEditFinKetInput = "";
+
+
+// =======================
+// BUKA MODAL EDIT
+// =======================
+function openEditTemuanModalFin(inputId){
+
+    activeEditFinKetInput = inputId;
+
+    const input = document.getElementById(inputId);
+
+    if(!input) return;
+
+
+    // Buka modal
+    document.getElementById("editTemuanModalFin").style.display = "flex";
+
+
+    // Reset step
+    document.getElementById("editStepFin1").style.display = "block";
+    document.getElementById("editStepFin2").style.display = "none";
+    document.getElementById("editStepFin3").style.display = "none";
+    document.getElementById("editStepFin4").style.display = "none";
+
+
+    // Ambil data Keterangan lama
+    const currentText = input.value.trim();
+
+
+    let existingJenis = "";
+    let existingFrek = "";
+    let existingKet = "";
+    let existingTemuanArray = [];
+
+
+    // Reset semua checkbox Edit
+    const checkboxes = document.querySelectorAll(
+        'input[name="editTmFinTemuan"]'
+    );
+
+    checkboxes.forEach(cb => {
+        cb.checked = false;
+    });
+
+
+    // Jika ada data lama
+    if(currentText !== ""){
+
+        const parts = currentText.split("|");
+
+
+        parts.forEach(part => {
+
+            const item = part.trim();
+
+
+            // Jenis
+            if(item.startsWith("Jenis:")){
+
+                existingJenis = item
+                    .replace("Jenis:","")
+                    .trim();
+
+            }
+
+
+            // Temuan
+            else if(item.startsWith("Temuan:")){
+
+                const temuanStr = item
+                    .replace("Temuan:","")
+                    .trim();
+
+
+                if(temuanStr){
+
+                    existingTemuanArray = temuanStr
+                        .split(",")
+                        .map(x => x.trim());
+
+                }
+
+            }
+
+
+            // Frekuensi
+            else if(item.startsWith("Frekuensi:")){
+
+                existingFrek = item
+                    .replace("Frekuensi:","")
+                    .trim();
+
+            }
+
+
+            // Keterangan Tambahan
+            else if(item.startsWith("Keterangan:")){
+
+                existingKet = item
+                    .replace("Keterangan:","")
+                    .trim();
+
+            }
+
+        });
+
+    }
+
+
+    // Masukkan data lama
+    document.getElementById("editTmFinJenis").value =
+        existingJenis;
+
+    document.getElementById("editTmFinFrek").value =
+        existingFrek;
+
+    document.getElementById("editTmFinKet").value =
+        existingKet;
+
+
+    // Centang Temuan lama
+    checkboxes.forEach(cb => {
+
+        cb.checked =
+            existingTemuanArray.includes(cb.value);
+
+    });
+
+}
+
+
+// =======================
+// TUTUP MODAL EDIT
+// =======================
+function closeEditTemuanModalFin(){
+
+    document.getElementById(
+        "editTemuanModalFin"
+    ).style.display = "none";
+
+}
+
+
+// =======================
+// NEXT EDIT
+// =======================
+function nextEditStepFin(step){
+
+    // =======================
+    // STEP 1 -> STEP 2
+    // =======================
+    if(step === 2){
+
+        const jenis =
+            document.getElementById(
+                "editTmFinJenis"
+            ).value;
+
+
+        if(!jenis){
+
+            alert(
+                "Silakan pilih Jenis Temuan."
+            );
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "editStepFin1"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "editStepFin2"
+        ).style.display = "block";
+
+    }
+
+
+    // =======================
+    // STEP 2 -> STEP 3
+    // =======================
+    else if(step === 3){
+
+        const checkedBoxes =
+            document.querySelectorAll(
+                'input[name="editTmFinTemuan"]:checked'
+            );
+
+
+        if(checkedBoxes.length === 0){
+
+            alert(
+                "Silakan pilih minimal satu Temuan."
+            );
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "editStepFin2"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "editStepFin3"
+        ).style.display = "block";
+
+    }
+
+
+    // =======================
+    // STEP 3 -> STEP 4
+    // =======================
+    else if(step === 4){
+
+        const frek =
+            document.getElementById(
+                "editTmFinFrek"
+            ).value;
+
+
+        if(!frek){
+
+            alert(
+                "Silakan pilih Frekuensi Temuan."
+            );
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "editStepFin3"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "editStepFin4"
+        ).style.display = "block";
+
+    }
+
+}
+
+
+// =======================
+// BACK EDIT
+// =======================
+function prevEditStepFin(step){
+
+    // STEP 2 -> STEP 1
+    if(step === 1){
+
+        document.getElementById(
+            "editStepFin1"
+        ).style.display = "block";
+
+
+        document.getElementById(
+            "editStepFin2"
+        ).style.display = "none";
+
+    }
+
+
+    // STEP 3 -> STEP 2
+    else if(step === 2){
+
+        document.getElementById(
+            "editStepFin2"
+        ).style.display = "block";
+
+
+        document.getElementById(
+            "editStepFin3"
+        ).style.display = "none";
+
+    }
+
+
+    // STEP 4 -> STEP 3
+    else if(step === 3){
+
+        document.getElementById(
+            "editStepFin3"
+        ).style.display = "block";
+
+
+        document.getElementById(
+            "editStepFin4"
+        ).style.display = "none";
+
+    }
+
+}
+
+
+// =======================
+// SIMPAN HASIL EDIT TEMUAN
+// =======================
+function saveEditTemuanFin(){
+
+    const jenis =
+        document.getElementById(
+            "editTmFinJenis"
+        ).value.trim();
+
+
+    const frek =
+        document.getElementById(
+            "editTmFinFrek"
+        ).value.trim();
+
+
+    const ket =
+        document.getElementById(
+            "editTmFinKet"
+        ).value.trim();
+
+
+    // Ambil semua temuan yang dipilih
+    const checkedBoxes =
+        document.querySelectorAll(
+            'input[name="editTmFinTemuan"]:checked'
+        );
+
+
+    const listTemuan = [];
+
+
+    checkedBoxes.forEach(cb => {
+
+        listTemuan.push(cb.value);
+
+    });
+
+
+    // Gabungkan temuan
+    const temuanTeks =
+        listTemuan.join(", ");
+
+
+    // Bentuk hasil
+    let hasil =
+        `Jenis: ${jenis} | Temuan: ${temuanTeks} | Frekuensi: ${frek}`;
+
+
+    // Tambahkan keterangan jika ada
+    if(ket !== ""){
+
+        hasil +=
+            ` | Keterangan: ${ket}`;
+
+    }
+
+
+    // Masukkan hasil ke field Keterangan Edit
+    const input =
+        document.getElementById(
+            activeEditFinKetInput
+        );
+
+
+    if(input){
+
+        input.value = hasil;
+
+    }
+
+
+    // Tutup modal
+    closeEditTemuanModalFin();
+
+}
+
+
+// =======================
+// KLIK AREA GELAP
+// =======================
+window.addEventListener("click", function(e){
+
+    const modal =
+        document.getElementById(
+            "editTemuanModalFin"
+        );
+
+
+    if(e.target === modal){
+
+        closeEditTemuanModalFin();
+
     }
 
 });
@@ -8493,6 +10216,457 @@ window.addEventListener("click", function(e){
     </div>
   </div>
 
+<!-- ================= MODAL EDIT TEMUAN LEM ================= -->
+<div id="editTemuanModalLem" class="temuan-modal" style="display:none;">
+
+  <div class="temuan-content">
+
+    <h3>Edit Temuan</h3>
+
+    <!-- STEP 1 -->
+    <div id="editStepLem1" class="temuan-step">
+
+      <h4>1. Jenis Temuan</h4>
+
+      <select id="editTmLemJenis">
+        <option value="">-- Pilih Jenis Temuan --</option>
+        <option>Temuan Cetak</option>
+        <option>Temuan Lem</option>
+        <option>Temuan Ponch</option>
+        <option>Temuan Varnish</option>
+        <option>Temuan Potong</option>
+      </select>
+
+      <div class="modal-btn">
+        <button type="button" onclick="nextEditStepLem(2)">
+          Next ▶
+        </button>
+      </div>
+
+    </div>
+
+
+    <!-- STEP 2 -->
+    <div id="editStepLem2"
+         class="lem-temuan-step"
+         style="display:none;">
+
+      <h4>2. Kategori & Temuan</h4>
+
+
+      <!-- ================= TEMUAN CETAK ================= -->
+      <div class="temuan-group">
+
+        <h5>🖨️ Temuan Cetak</h5>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Warna">
+          Warna
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Noda">
+          Noda
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Ghosting">
+          Ghosting
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Terhapus">
+          Terhapus
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Galang">
+          Galang
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="MisRegis">
+          MisRegis
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Garis">
+          Garis
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Botak">
+          Botak
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Set-Off">
+          Set-Off
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Scumming">
+          Scumming
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Oksidasi">
+          Oksidasi
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Gatra">
+          Gatra
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Salur">
+          Salur
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Barcode/QR">
+          Barcode/QR
+        </label>
+
+      </div>
+
+
+      <!-- ================= TEMUAN LEM ================= -->
+      <div class="temuan-group">
+
+        <h5>📦 Temuan Lem</h5>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="No Glue">
+          No Glue
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Over Glue">
+          Over Glue
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Lem Tidak Rata">
+          Lem Tidak Rata
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Lengket">
+          Lengket
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Dus Sobek">
+          Dus Sobek
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Dus Baret">
+          Dus Baret
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Dus Galeng">
+          Dus Galeng
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Dus Tidak Siku">
+          Dus Tidak Siku
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Kupingan Ketekuk">
+          Kupingan Ketekuk
+        </label>
+
+      </div>
+
+
+      <!-- ================= TEMUAN PONCH ================= -->
+      <div class="temuan-group">
+
+        <h5>✂️ Temuan Ponch</h5>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Ponch Lari">
+          Ponch Lari
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Ponch Pecah">
+          Ponch Pecah
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Ponch Tidak Putus">
+          Ponch Tidak Putus
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Tidak Ada Embose">
+          Tidak Ada Embose
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Embose Lari">
+          Embose Lari
+        </label>
+
+      </div>
+
+
+      <!-- ================= TEMUAN VARNISH ================= -->
+      <div class="temuan-group">
+
+        <h5>✨ Temuan Varnish</h5>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Varnish Tidak Rata">
+          Varnish Tidak Rata
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Bubble">
+          Bubble
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Varnish Bergaris">
+          Varnish Bergaris
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Tidak Ada Varnish">
+          Tidak Ada Varnish
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Glossy Kurang">
+          Glossy Kurang
+        </label>
+
+      </div>
+
+
+      <!-- ================= TEMUAN POTONG ================= -->
+      <div class="temuan-group">
+
+        <h5>📏 Temuan Potong</h5>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Potongan Lari">
+          Potongan Lari
+        </label>
+
+      </div>
+
+
+      <!-- BUTTON -->
+      <div
+        class="lem-modal-btn"
+        style="margin-top:20px;">
+
+        <button
+          type="button"
+          onclick="prevEditStepLem(1)">
+          ◀ Back
+        </button>
+
+        <button
+          type="button"
+          onclick="nextEditStepLem(3)">
+          Next ▶
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- STEP 3 -->
+    <div
+      id="editStepLem3"
+      class="temuan-step"
+      style="display:none;">
+
+      <h4>
+        3. Frekuensi Temuan
+        (Jarang &lt;3 dan Sering &gt;3)
+      </h4>
+
+      <select id="editTmLemFrek">
+
+        <option value="">
+          -- Pilih Frekuensi --
+        </option>
+
+        <option>Jarang</option>
+        <option>Sering</option>
+
+      </select>
+
+      <div class="modal-btn">
+
+        <button
+          type="button"
+          onclick="prevEditStepLem(2)">
+          ◀ Back
+        </button>
+
+        <button
+          type="button"
+          onclick="nextEditStepLem(4)">
+          Next ▶
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- STEP 4 -->
+    <div
+      id="editStepLem4"
+      class="temuan-step"
+      style="display:none;">
+
+      <h4>
+        4. Keterangan Tambahan (Opsional)
+      </h4>
+
+      <textarea
+        id="editTmLemKet"
+        rows="5"
+        placeholder="Berikan Jumlah Temuan Jika Ada"
+      ></textarea>
+
+      <div class="modal-btn">
+
+        <button
+          type="button"
+          onclick="prevEditStepLem(3)">
+          ◀ Back
+        </button>
+
+        <button
+          type="button"
+          onclick="saveEditTemuanLem()">
+          ✔ Selesai
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
 </section>
 
 
@@ -8557,6 +10731,68 @@ window.addEventListener("click", function(e){
 /* Spinner */
 .spinner { width:18px; height:18px; border:3px solid #ddd; border-top:3px solid #9C27B0; border-radius:50%; display:inline-block; vertical-align:middle; animation:spin 0.8s linear infinite; margin-right:6px; }
 @keyframes spin { 0%{transform:rotate(0deg);} 100%{transform:rotate(360deg);} }
+
+/* ======================== HASIL LEM FINAL ======================== */
+/* Filter sticky */
+#hasilLem .baproFilter {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #fff;
+  padding: 6px;
+  margin-bottom: 6px;
+  border: 1px solid #ccc;
+}
+/* Scrollable container */
+#hasilLem .baproGridScroll {
+  max-height: calc(80vh - 60px);
+  overflow-y: auto;
+  padding: 0 2px;
+}
+/* Grid container */
+#hasilLem .grid-container {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+/* Responsif */
+@media (max-width: 768px) {
+  /* Full-width grid di HP */
+  #hasilLem .baproGridScroll { padding: 0; }
+  #hasilLem .grid-container { grid-template-columns: 1fr !important; gap:4px; width:100%; }
+}
+@media (min-width: 769px) and (max-width: 1023px) {
+  #hasilLem .grid-container { grid-template-columns: repeat(2, minmax(0, 1fr)); gap:8px; }
+}
+@media (min-width: 1024px) {
+  #hasilLem .grid-container { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap:10px; }
+}
+/* Grid card full-width */
+#hasilLem .grid-card { width:100%; box-sizing:border-box; }
+
+.lemFilterBtn{
+  flex:1;
+  padding:5px;
+  border-radius:6px;
+  border:1px solid #000;
+  background:#e0e0e0;
+  cursor:pointer;
+  font-weight:600;
+  transition:0.2s;
+}
+
+.lemFilterBtn.active{
+  background: linear-gradient(to right,#9C27B0,#BA68C8);
+  color:#fff;
+}
+
+.lemFilterBtn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 2px 6px rgba(0,0,0,0.2);
+}
+
 
 /* ======================== HASIL LEM FINAL ======================== */
 /* Filter sticky */
@@ -9263,6 +11499,460 @@ window.addEventListener("click", function(e){
     }
 
 });
+
+/* ==========================================
+   POPUP EDIT TEMUAN QC LEM
+   KHUSUS EDIT
+========================================== */
+
+let activeEditLemKetInput = "";
+
+
+// =======================
+// BUKA POPUP EDIT
+// =======================
+function openEditTemuanModalLem(inputId){
+
+    activeEditLemKetInput = inputId;
+
+    const input = document.getElementById(inputId);
+
+    if(!input) return;
+
+
+    // Buka modal edit
+    document.getElementById(
+        "editTemuanModalLem"
+    ).style.display = "flex";
+
+
+    // Reset semua step
+    document.getElementById(
+        "editStepLem1"
+    ).style.display = "block";
+
+    document.getElementById(
+        "editStepLem2"
+    ).style.display = "none";
+
+    document.getElementById(
+        "editStepLem3"
+    ).style.display = "none";
+
+    document.getElementById(
+        "editStepLem4"
+    ).style.display = "none";
+
+
+    // Ambil isi keterangan lama
+    const currentText =
+        input.value.trim();
+
+
+    let existingJenis = "";
+    let existingFrek = "";
+    let existingKet = "";
+    let existingTemuanArray = [];
+
+
+    // Reset semua checkbox edit
+    const checkboxes =
+        document.querySelectorAll(
+            'input[name="editTmLemTemuan"]'
+        );
+
+    checkboxes.forEach(cb => {
+        cb.checked = false;
+    });
+
+
+    // =======================
+    // BACA DATA LAMA
+    // =======================
+    if(currentText !== ""){
+
+        const parts =
+            currentText.split("|");
+
+
+        parts.forEach(part => {
+
+            const item =
+                part.trim();
+
+
+            // Jenis
+            if(item.startsWith("Jenis:")){
+
+                existingJenis =
+                    item
+                        .replace("Jenis:","")
+                        .trim();
+
+            }
+
+
+            // Temuan
+            else if(item.startsWith("Temuan:")){
+
+                const temuanStr =
+                    item
+                        .replace("Temuan:","")
+                        .trim();
+
+
+                if(temuanStr){
+
+                    existingTemuanArray =
+                        temuanStr
+                            .split(",")
+                            .map(x => x.trim());
+
+                }
+
+            }
+
+
+            // Frekuensi
+            else if(item.startsWith("Frekuensi:")){
+
+                existingFrek =
+                    item
+                        .replace("Frekuensi:","")
+                        .trim();
+
+            }
+
+
+            // Keterangan tambahan
+            else if(item.startsWith("Keterangan:")){
+
+                existingKet =
+                    item
+                        .replace("Keterangan:","")
+                        .trim();
+
+            }
+
+        });
+
+    }
+
+
+    // =======================
+    // MASUKKAN DATA LAMA
+    // =======================
+    document.getElementById(
+        "editTmLemJenis"
+    ).value = existingJenis;
+
+
+    document.getElementById(
+        "editTmLemFrek"
+    ).value = existingFrek;
+
+
+    document.getElementById(
+        "editTmLemKet"
+    ).value = existingKet;
+
+
+    // =======================
+    // CENTANG TEMUAN LAMA
+    // =======================
+    checkboxes.forEach(cb => {
+
+        cb.checked =
+            existingTemuanArray.includes(
+                cb.value
+            );
+
+    });
+
+}
+
+
+// =======================
+// TUTUP POPUP EDIT
+// =======================
+function closeEditTemuanModalLem(){
+
+    document.getElementById(
+        "editTemuanModalLem"
+    ).style.display = "none";
+
+}
+
+
+// =======================
+// NEXT EDIT
+// =======================
+function nextEditStepLem(step){
+
+    // =======================
+    // STEP 1 -> STEP 2
+    // =======================
+    if(step === 2){
+
+        const jenis =
+            document.getElementById(
+                "editTmLemJenis"
+            ).value;
+
+
+        if(!jenis){
+
+            alert(
+                "Silakan pilih Jenis Temuan."
+            );
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "editStepLem1"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "editStepLem2"
+        ).style.display = "block";
+
+    }
+
+
+    // =======================
+    // STEP 2 -> STEP 3
+    // =======================
+    else if(step === 3){
+
+        const checkedBoxes =
+            document.querySelectorAll(
+                'input[name="editTmLemTemuan"]:checked'
+            );
+
+
+        if(checkedBoxes.length === 0){
+
+            alert(
+                "Silakan pilih minimal satu Temuan."
+            );
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "editStepLem2"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "editStepLem3"
+        ).style.display = "block";
+
+    }
+
+
+    // =======================
+    // STEP 3 -> STEP 4
+    // =======================
+    else if(step === 4){
+
+        const frek =
+            document.getElementById(
+                "editTmLemFrek"
+            ).value;
+
+
+        if(!frek){
+
+            alert(
+                "Silakan pilih Frekuensi Temuan."
+            );
+
+            return;
+
+        }
+
+
+        document.getElementById(
+            "editStepLem3"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "editStepLem4"
+        ).style.display = "block";
+
+    }
+
+}
+
+
+// =======================
+// BACK EDIT
+// =======================
+function prevEditStepLem(step){
+
+    // STEP 2 -> STEP 1
+    if(step === 1){
+
+        document.getElementById(
+            "editStepLem1"
+        ).style.display = "block";
+
+
+        document.getElementById(
+            "editStepLem2"
+        ).style.display = "none";
+
+    }
+
+
+    // STEP 3 -> STEP 2
+    else if(step === 2){
+
+        document.getElementById(
+            "editStepLem2"
+        ).style.display = "block";
+
+
+        document.getElementById(
+            "editStepLem3"
+        ).style.display = "none";
+
+    }
+
+
+    // STEP 4 -> STEP 3
+    else if(step === 3){
+
+        document.getElementById(
+            "editStepLem3"
+        ).style.display = "block";
+
+
+        document.getElementById(
+            "editStepLem4"
+        ).style.display = "none";
+
+    }
+
+}
+
+
+// =======================
+// SIMPAN HASIL EDIT TEMUAN
+// =======================
+function saveEditTemuanLem(){
+
+    const jenis =
+        document.getElementById(
+            "editTmLemJenis"
+        ).value.trim();
+
+
+    const frek =
+        document.getElementById(
+            "editTmLemFrek"
+        ).value.trim();
+
+
+    const ket =
+        document.getElementById(
+            "editTmLemKet"
+        ).value.trim();
+
+
+    // =======================
+    // AMBIL TEMUAN
+    // =======================
+    const checkedBoxes =
+        document.querySelectorAll(
+            'input[name="editTmLemTemuan"]:checked'
+        );
+
+
+    const listTemuan = [];
+
+
+    checkedBoxes.forEach(cb => {
+
+        listTemuan.push(
+            cb.value
+        );
+
+    });
+
+
+    // Gabungkan temuan
+    const temuanTeks =
+        listTemuan.join(", ");
+
+
+    // =======================
+    // BENTUK HASIL
+    // =======================
+    let hasil =
+        `Jenis: ${jenis} | Temuan: ${temuanTeks} | Frekuensi: ${frek}`;
+
+
+    // Tambahkan keterangan jika ada
+    if(ket !== ""){
+
+        hasil +=
+            ` | Keterangan: ${ket}`;
+
+    }
+
+
+    // =======================
+    // MASUKKAN KE INPUT AKTIF
+    // =======================
+    const input =
+        document.getElementById(
+            activeEditLemKetInput
+        );
+
+
+    if(input){
+
+        input.value = hasil;
+
+    }
+
+
+    // Tutup modal
+    closeEditTemuanModalLem();
+
+}
+
+
+// =======================
+// KLIK AREA GELAP
+// =======================
+window.addEventListener(
+    "click",
+    function(e){
+
+        const modal =
+            document.getElementById(
+                "editTemuanModalLem"
+            );
+
+
+        if(e.target === modal){
+
+            closeEditTemuanModalLem();
+
+        }
+
+    }
+);
 
 
 </script>
@@ -13568,6 +16258,44 @@ function editFinishingInline(index){
 
   const keteranganRaw = item.keterangan || '';
 
+const ketMap = {
+  1: "",
+  2: "",
+  3: "",
+  4: "",
+  5: ""
+};
+
+if (keteranganRaw.trim() !== "") {
+
+  keteranganRaw
+    .split(/\r?\n/)
+    .forEach(line => {
+
+      const m = line.match(/^\s*(\d+)\.\s*(.*)/);
+
+      if (m) {
+
+        const no = parseInt(m[1]);
+
+        if (no >= 1 && no <= 5) {
+          ketMap[no] = m[2].trim();
+        }
+
+      }
+
+    });
+
+}
+
+const kets = [
+  ketMap[1] || "",
+  ketMap[2] || "",
+  ketMap[3] || "",
+  ketMap[4] || "",
+  ketMap[5] || ""
+];
+
   card.innerHTML = `
     <div class="edit-grid">
 
@@ -13617,8 +16345,76 @@ function editFinishingInline(index){
         <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
       </select>
 
-      <label>Keterangan</label>
-      <textarea class="edit-inline" name="keterangan" rows="3">${escapeHtml(keteranganRaw)}</textarea>
+<label>Keterangan</label>
+
+<div style="display:flex;flex-direction:column;gap:8px;width:100%;">
+
+  <div class="rowKet">
+    <span>1.</span>
+    <input
+      type="text"
+      id="editFinKet1_${index}"
+      class="edit-inline"
+      name="keterangan1"
+      value="${escapeHtml(kets[0] || '')}"
+      readonly
+      placeholder="Klik untuk memilih temuan"
+      onclick="openEditTemuanModalFin('editFinKet1_${index}')">
+  </div>
+
+  <div class="rowKet">
+    <span>2.</span>
+    <input
+      type="text"
+      id="editFinKet2_${index}"
+      class="edit-inline"
+      name="keterangan2"
+      value="${escapeHtml(kets[1] || '')}"
+      readonly
+      placeholder="Klik untuk memilih temuan"
+      onclick="openEditTemuanModalFin('editFinKet2_${index}')">
+  </div>
+
+  <div class="rowKet">
+    <span>3.</span>
+    <input
+      type="text"
+      id="editFinKet3_${index}"
+      class="edit-inline"
+      name="keterangan3"
+      value="${escapeHtml(kets[2] || '')}"
+      readonly
+      placeholder="Klik untuk memilih temuan"
+      onclick="openEditTemuanModalFin('editFinKet3_${index}')">
+  </div>
+
+  <div class="rowKet">
+    <span>4.</span>
+    <input
+      type="text"
+      id="editFinKet4_${index}"
+      class="edit-inline"
+      name="keterangan4"
+      value="${escapeHtml(kets[3] || '')}"
+      readonly
+      placeholder="Klik untuk memilih temuan"
+      onclick="openEditTemuanModalFin('editFinKet4_${index}')">
+  </div>
+
+  <div class="rowKet">
+    <span>5.</span>
+    <input
+      type="text"
+      id="editFinKet5_${index}"
+      class="edit-inline"
+      name="keterangan5"
+      value="${escapeHtml(kets[4] || '')}"
+      readonly
+      placeholder="Klik untuk memilih temuan"
+      onclick="openEditTemuanModalFin('editFinKet5_${index}')">
+  </div>
+
+</div>
 
     </div>
 
@@ -13679,23 +16475,31 @@ async function saveFinishingInline(index, btn) {
   }
   if (btnCancel) btnCancel.style.display = 'none';
 
-  const inputs = card.querySelectorAll('.edit-inline');
-  const updated = {
-    nama: inputs[0].value.trim(),
-    noKS: inputs[1].value.trim(),
-    order: inputs[2].value.trim(),
-    isi: inputs[3].value.trim(),
-    bagus: inputs[4].value.trim(),
-    jenisBS: inputs[5].value.trim(),
-    jenisBS1: inputs[6].value.trim(),
-    jenisBS2: inputs[7].value.trim(),
-    jenisBS3: inputs[8].value.trim(),
-    jenisBS4: inputs[9].value.trim(),
-    jenisBS5: inputs[10].value.trim(),
-    qc: inputs[11].value,
-    update: inputs[12].value,
-    keterangan: inputs[13].value.trim()
-  };
+const inputs = card.querySelectorAll('.edit-inline');
+
+const keterangan =
+`1. ${document.getElementById(`editFinKet1_${index}`)?.value.trim() || ''}
+2. ${document.getElementById(`editFinKet2_${index}`)?.value.trim() || ''}
+3. ${document.getElementById(`editFinKet3_${index}`)?.value.trim() || ''}
+4. ${document.getElementById(`editFinKet4_${index}`)?.value.trim() || ''}
+5. ${document.getElementById(`editFinKet5_${index}`)?.value.trim() || ''}`;
+
+const updated = {
+  nama: inputs[0].value.trim(),
+  noKS: inputs[1].value.trim(),
+  order: inputs[2].value.trim(),
+  isi: inputs[3].value.trim(),
+  bagus: inputs[4].value.trim(),
+  jenisBS: inputs[5].value.trim(),
+  jenisBS1: inputs[6].value.trim(),
+  jenisBS2: inputs[7].value.trim(),
+  jenisBS3: inputs[8].value.trim(),
+  jenisBS4: inputs[9].value.trim(),
+  jenisBS5: inputs[10].value.trim(),
+  qc: inputs[11].value,
+  update: inputs[12].value,
+  keterangan: keterangan
+};
 
   const orig = finishingItems[index];
   const identifier = orig.id || orig._row || orig.row || orig.__index;
@@ -15454,71 +18258,440 @@ if (paContainer) {
   }, true); // capture phase
 }
 
-// ====================== EDIT INLINE (PA) ======================
+// ====================== EDIT INLINE (PA / SPOTCHECK) ======================
 function editPAInline(index){
+
   const item = paItems[index];
   const container = document.getElementById('gridPA');
   const card = container.querySelector(`.grid-card[data-index="${index}"]`);
+
   if(!card) return;
   if(card.querySelector('.edit-inline')) return;
 
-  const oldHtml = card.innerHTML;
+
+  // =========================
+  // SIMPAN HTML LAMA
+  // =========================
+
+  const originalHTML = card.innerHTML;
+
+  card.innerHTML = '';
+
+  card.dataset.oldHtml =
+    encodeURIComponent(originalHTML);
+
+
+  // =========================
+  // AMBIL KETERANGAN LAMA
+  // =========================
+
+  const keteranganRaw =
+    item.keterangan || '';
+
+
+  // =========================
+  // MAP KETERANGAN 1 - 5
+  // =========================
+
+  const ketMap = {
+    1: "",
+    2: "",
+    3: "",
+    4: "",
+    5: ""
+  };
+
+
+  if(keteranganRaw.trim() !== ""){
+
+    keteranganRaw
+      .split(/\r?\n/)
+      .forEach(line => {
+
+        const m =
+          line.match(/^\s*(\d+)\.\s*(.*)/);
+
+        if(m){
+
+          const no =
+            parseInt(m[1]);
+
+          if(no >= 1 && no <= 5){
+
+            ketMap[no] =
+              m[2].trim();
+
+          }
+
+        }
+
+      });
+
+  }
+
+
+  const kets = [
+
+    ketMap[1] || "",
+
+    ketMap[2] || "",
+
+    ketMap[3] || "",
+
+    ketMap[4] || "",
+
+    ketMap[5] || ""
+
+  ];
+
+
+  // =========================
+  // RENDER EDIT
+  // =========================
 
   card.innerHTML = `
+
     <div class="edit-grid">
 
+
       <label>Nama Order</label>
-      <input type="text" class="edit-inline" value="${escapeHtml(item.nama||'')}">
+
+      <input
+        type="text"
+        class="edit-inline"
+        name="nama"
+        value="${escapeHtml(item.nama || '')}"
+      >
+
 
       <label>No KS</label>
-      <input type="text" class="edit-inline" value="${escapeHtml(item.noKS||'')}">
+
+      <input
+        type="text"
+        class="edit-inline"
+        name="noKS"
+        value="${escapeHtml(item.noKS || '')}"
+      >
+
 
       <label>Order</label>
-      <input type="number" class="edit-inline" value="${escapeHtml(item.order||'')}">
+
+      <input
+        type="number"
+        class="edit-inline"
+        name="order"
+        value="${escapeHtml(item.order || '')}"
+      >
+
 
       <label>Bagus</label>
-      <input type="number" class="edit-inline" value="${escapeHtml(item.bagus||'')}">
+
+      <input
+        type="number"
+        class="edit-inline"
+        name="bagus"
+        value="${escapeHtml(item.bagus || '')}"
+      >
+
 
       <label>Sortir</label>
-      <input type="text" class="edit-inline" value="${escapeHtml(item.sortir||'')}">
+
+      <input
+        type="text"
+        class="edit-inline"
+        name="sortir"
+        value="${escapeHtml(item.sortir || '')}"
+      >
+
 
       <label>Problem</label>
-      <input type="text" class="edit-inline" value="${escapeHtml(item.problem||'')}">
+
+      <input
+        type="text"
+        class="edit-inline"
+        name="problem"
+        value="${escapeHtml(item.problem || '')}"
+      >
+
 
       <label>QC</label>
-      <select class="edit-inline">
-        <option value="Suci" ${item.qc==='Suci'? 'selected':''}>Suci</option>
-        <option value="Anjani" ${item.qc==='Anjani'? 'selected':''}>Anjani</option>
-        <option value="Ika" ${item.qc==='Ika'? 'selected':''}>Ika</option>
-        <option value="Erly" ${item.qc==='Erly'? 'selected':''}>Erly</option>
+
+      <select
+        class="edit-inline"
+        name="qc"
+      >
+
+        <option
+          value="Suci"
+          ${item.qc === 'Suci' ? 'selected' : ''}
+        >
+          Suci
+        </option>
+
+        <option
+          value="Anjani"
+          ${item.qc === 'Anjani' ? 'selected' : ''}
+        >
+          Anjani
+        </option>
+
+        <option
+          value="Ika"
+          ${item.qc === 'Ika' ? 'selected' : ''}
+        >
+          Ika
+        </option>
+
+        <option
+          value="Erly"
+          ${item.qc === 'Erly' ? 'selected' : ''}
+        >
+          Erly
+        </option>
+
       </select>
+
 
       <label>Mesin</label>
-      <select class="edit-inline">
-        <option value="KM 640" ${item.mesin==='KM 640'? 'selected':''}>KM 640</option>
-        <option value="KM 644" ${item.mesin==='KM 644'? 'selected':''}>KM 644</option>
-        <option value="KM 620" ${item.mesin==='KM 620'? 'selected':''}>KM 620</option>
-        <option value="MT 430" ${item.mesin==='MT 430'? 'selected':''}>MT 430</option>
-        <option value="KM 640 GL" ${item.mesin==='KM 640 GL'? 'selected':''}>KM 640 GL</option>
-        <option value="RL 140" ${item.mesin==='RL 140'? 'selected':''}>RL 140</option>
+
+      <select
+        class="edit-inline"
+        name="mesin"
+      >
+
+        <option
+          value="KM 640"
+          ${item.mesin === 'KM 640' ? 'selected' : ''}
+        >
+          KM 640
+        </option>
+
+        <option
+          value="KM 644"
+          ${item.mesin === 'KM 644' ? 'selected' : ''}
+        >
+          KM 644
+        </option>
+
+        <option
+          value="KM 620"
+          ${item.mesin === 'KM 620' ? 'selected' : ''}
+        >
+          KM 620
+        </option>
+
+        <option
+          value="MT 430"
+          ${item.mesin === 'MT 430' ? 'selected' : ''}
+        >
+          MT 430
+        </option>
+
+        <option
+          value="KM 640 GL"
+          ${item.mesin === 'KM 640 GL' ? 'selected' : ''}
+        >
+          KM 640 GL
+        </option>
+
+        <option
+          value="RL 140"
+          ${item.mesin === 'RL 140' ? 'selected' : ''}
+        >
+          RL 140
+        </option>
+
       </select>
+
 
       <label>Status</label>
-      <select class="edit-inline" onchange="checkStatusPA(this)">
-        <option value="Pending" ${item.update==='Pending'? 'selected':''}>Pending</option>
-        <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
-        <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
+
+      <select
+        class="edit-inline"
+        name="update"
+        onchange="checkStatusPA(this)"
+      >
+
+        <option
+          value="Pending"
+          ${item.update === 'Pending' ? 'selected' : ''}
+        >
+          Pending
+        </option>
+
+        <option
+          value="Proses"
+          ${item.update === 'Proses' ? 'selected' : ''}
+        >
+          Proses
+        </option>
+
+        <option
+          value="Selesai"
+          ${item.update === 'Selesai' ? 'selected' : ''}
+        >
+          Selesai
+        </option>
+
       </select>
 
+
+      <!-- =========================
+           KETERANGAN
+      ========================== -->
+
       <label>Keterangan</label>
-      <textarea class="edit-inline" rows="2">${escapeHtml(item.keterangan||'')}</textarea>
+
+      <div
+        style="
+          display:flex;
+          flex-direction:column;
+          gap:8px;
+          width:100%;
+        "
+      >
+
+
+        <!-- KETERANGAN 1 -->
+
+        <div class="rowKet">
+
+          <span>1.</span>
+
+          <input
+            type="text"
+            id="editPAKet1_${index}"
+            class="edit-inline"
+            name="keterangan1"
+            value="${escapeHtml(kets[0] || '')}"
+            readonly
+            placeholder="Klik untuk memilih temuan"
+            onclick="openEditTemuanModal('editPAKet1_${index}')"
+          >
+
+        </div>
+
+
+        <!-- KETERANGAN 2 -->
+
+        <div class="rowKet">
+
+          <span>2.</span>
+
+          <input
+            type="text"
+            id="editPAKet2_${index}"
+            class="edit-inline"
+            name="keterangan2"
+            value="${escapeHtml(kets[1] || '')}"
+            readonly
+            placeholder="Klik untuk memilih temuan"
+            onclick="openEditTemuanModal('editPAKet2_${index}')"
+          >
+
+        </div>
+
+
+        <!-- KETERANGAN 3 -->
+
+        <div class="rowKet">
+
+          <span>3.</span>
+
+          <input
+            type="text"
+            id="editPAKet3_${index}"
+            class="edit-inline"
+            name="keterangan3"
+            value="${escapeHtml(kets[2] || '')}"
+            readonly
+            placeholder="Klik untuk memilih temuan"
+            onclick="openEditTemuanModal('editPAKet3_${index}')"
+          >
+
+        </div>
+
+
+        <!-- KETERANGAN 4 -->
+
+        <div class="rowKet">
+
+          <span>4.</span>
+
+          <input
+            type="text"
+            id="editPAKet4_${index}"
+            class="edit-inline"
+            name="keterangan4"
+            value="${escapeHtml(kets[3] || '')}"
+            readonly
+            placeholder="Klik untuk memilih temuan"
+            onclick="openEditTemuanModal('editPAKet4_${index}')"
+          >
+
+        </div>
+
+
+        <!-- KETERANGAN 5 -->
+
+        <div class="rowKet">
+
+          <span>5.</span>
+
+          <input
+            type="text"
+            id="editPAKet5_${index}"
+            class="edit-inline"
+            name="keterangan5"
+            value="${escapeHtml(kets[4] || '')}"
+            readonly
+            placeholder="Klik untuk memilih temuan"
+            onclick="openEditTemuanModal('editPAKet5_${index}')"
+          >
+
+        </div>
+
+
+      </div>
+
 
     </div>
 
-    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
-      <button class="btn-icon btn-save" title="Simpan" onclick="savePAInline(${index}, this)">💾</button>
-      <button class="btn-icon btn-cancel" title="Batal" onclick="cancelPAInline(${index}, \`${encodeURIComponent(oldHtml)}\`)">❌</button>
+
+    <!-- =========================
+         TOMBOL
+    ========================== -->
+
+    <div
+      style="
+        display:flex;
+        gap:4px;
+        flex-wrap:wrap;
+        margin-top:6px;
+      "
+    >
+
+      <button
+        class="btn-icon btn-save"
+        title="Simpan"
+        onclick="savePAInline(${index}, this)"
+      >
+        💾
+      </button>
+
+      <button
+        class="btn-icon btn-cancel"
+        title="Batal"
+        onclick="cancelPAInline(
+          ${index},
+          '${encodeURIComponent(originalHTML)}'
+        )"
+      >
+        ✖️
+      </button>
+
     </div>
+
   `;
 }
 
@@ -15548,54 +18721,211 @@ function cancelPAInline(index, oldHtmlEncoded){
   card.innerHTML = decodeURIComponent(oldHtmlEncoded);
 }
 
-// ====================== SIMPAN HASIL EDIT INLINE (PA) ======================
+// ====================== SIMPAN HASIL EDIT INLINE (PA / SPOTCHECK) ======================
 async function savePAInline(index, btn){
+
   const container = document.getElementById('gridPA');
-  const card = container.querySelector(`.grid-card[data-index="${index}"]`);
+
+  const card = container.querySelector(
+    `.grid-card[data-index="${index}"]`
+  );
+
   if(!card) return;
 
+
+  // =========================
+  // TOMBOL
+  // =========================
+
   const btnSave = btn;
-  const btnCancel = card.querySelector('.btn-cancel');
-  if(btnSave){ btnSave.textContent='⏳ Menyimpan...'; btnSave.disabled=true;}
-  if(btnCancel) btnCancel.style.display='none';
 
-  const inputs = card.querySelectorAll('.edit-inline');
-const updated = {
-  nama: inputs[0].value.trim(),
-  noKS: inputs[1].value.trim(),
-  order: inputs[2].value.trim(),
-  bagus: inputs[3].value.trim(),
-  sortir: inputs[4].value.trim(),     // ← baru
-  problem: inputs[5].value.trim(),    // ← baru
-  qc: inputs[6].value,
-  mesin: inputs[7].value.trim(),
-  update: inputs[8].value,
-  keterangan: inputs[9].value.trim()
-};
+  const btnCancel =
+    card.querySelector('.btn-cancel');
 
 
+  if(btnSave){
 
-  const orig = paItems[index];
-  const identifier = orig.id||orig._row||orig.row||orig.__index;
-  const tanggalFormatted = orig.tanggal||new Date().toLocaleString('id-ID',{
-    day:'2-digit',month:'long',year:'numeric',
-    hour:'2-digit',minute:'2-digit',second:'2-digit'
-  });
+    btnSave.textContent =
+      '⏳ Menyimpan...';
 
-  const payload = {...updated,action:'update',sheet:'Cetak',id:identifier,index:orig.__index,tanggal:tanggalFormatted};
+    btnSave.disabled = true;
+
+  }
+
+
+  if(btnCancel){
+
+    btnCancel.style.display =
+      'none';
+
+  }
+
+
+  // =========================
+  // AMBIL INPUT
+  // =========================
+
+  const inputs =
+    card.querySelectorAll('.edit-inline');
+
+
+  // =========================
+  // GABUNG KETERANGAN 1 - 5
+  // =========================
+
+  const keterangan =
+
+`1. ${document.getElementById(`editPAKet1_${index}`)?.value.trim() || ''}
+2. ${document.getElementById(`editPAKet2_${index}`)?.value.trim() || ''}
+3. ${document.getElementById(`editPAKet3_${index}`)?.value.trim() || ''}
+4. ${document.getElementById(`editPAKet4_${index}`)?.value.trim() || ''}
+5. ${document.getElementById(`editPAKet5_${index}`)?.value.trim() || ''}`;
+
+
+  // =========================
+  // DATA YANG DIUPDATE
+  // =========================
+
+  const updated = {
+
+    nama:
+      inputs[0].value.trim(),
+
+    noKS:
+      inputs[1].value.trim(),
+
+    order:
+      inputs[2].value.trim(),
+
+    bagus:
+      inputs[3].value.trim(),
+
+    sortir:
+      inputs[4].value.trim(),
+
+    problem:
+      inputs[5].value.trim(),
+
+    qc:
+      inputs[6].value,
+
+    mesin:
+      inputs[7].value,
+
+    update:
+      inputs[8].value,
+
+    keterangan:
+      keterangan
+
+  };
+
+
+  // =========================
+  // DATA ASLI
+  // =========================
+
+  const orig =
+    paItems[index];
+
+
+  const identifier =
+    orig.id ||
+    orig._row ||
+    orig.row ||
+    orig.__index;
+
+
+  // =========================
+  // TANGGAL
+  // =========================
+
+  const tanggalFormatted =
+    orig.tanggal ||
+    new Date().toLocaleString('id-ID', {
+
+      day: '2-digit',
+
+      month: 'long',
+
+      year: 'numeric',
+
+      hour: '2-digit',
+
+      minute: '2-digit',
+
+      second: '2-digit'
+
+    });
+
+
+  // =========================
+  // PAYLOAD
+  // =========================
+
+  const payload = {
+
+    action: 'update',
+
+    sheet: 'Cetak',
+
+    id: identifier,
+
+    index: orig.__index,
+
+    tanggal: tanggalFormatted,
+
+    ...updated
+
+  };
+
+
+  // =========================
+  // SIMPAN
+  // =========================
 
   try{
-    await postPayload(payload);
-    await new Promise(res=>setTimeout(res,5000));
-    await loadPAItems();
-  }catch(err){
-    console.error('Gagal menyimpan:',err);
-    alert('Gagal menyimpan data. Coba lagi.');
-  }finally{
-    if(btnSave){ btnSave.textContent='💾 Simpan'; btnSave.disabled=false; }
-  }
-}
 
+    await postPayload(payload);
+
+
+    // Tunggu Spreadsheet memproses
+    await new Promise(
+      res => setTimeout(res, 5000)
+    );
+
+
+    // Reload data
+    await loadPAItems();
+
+
+  }catch(err){
+
+    console.error(
+      'Gagal menyimpan:',
+      err
+    );
+
+    alert(
+      'Gagal menyimpan data. Coba lagi.'
+    );
+
+
+  }finally{
+
+    if(btnSave){
+
+      btnSave.textContent =
+        '💾 Simpan';
+
+      btnSave.disabled =
+        false;
+
+    }
+
+  }
+
+}
 
 
 
@@ -16935,65 +20265,160 @@ function editInspekInline(index){
   // ================= CEGAH DOUBLE EDIT =================
   if(card.querySelector('.edit-inline')) return;
 
-  const oldHtml = card.innerHTML;
+
+  // ================= SIMPAN HTML LAMA =================
+
+  const originalHTML = card.innerHTML;
+
+  card.innerHTML = '';
+
+  card.dataset.oldHtml =
+    encodeURIComponent(originalHTML);
+
+
+  // ================= AMBIL KETERANGAN LAMA =================
+
+  const keteranganRaw =
+    item.keterangan || '';
+
+
+  // ================= MAP KETERANGAN 1 - 5 =================
+
+  const ketMap = {
+    1: "",
+    2: "",
+    3: "",
+    4: "",
+    5: ""
+  };
+
+
+  if(keteranganRaw.trim() !== ""){
+
+    keteranganRaw
+      .split(/\r?\n/)
+      .forEach(line => {
+
+        const m =
+          line.match(/^\s*(\d+)\.\s*(.*)/);
+
+        if(m){
+
+          const no =
+            parseInt(m[1]);
+
+          if(no >= 1 && no <= 5){
+
+            ketMap[no] =
+              m[2].trim();
+
+          }
+
+        }
+
+      });
+
+  }
+
+
+  const kets = [
+
+    ketMap[1] || "",
+
+    ketMap[2] || "",
+
+    ketMap[3] || "",
+
+    ketMap[4] || "",
+
+    ketMap[5] || ""
+
+  ];
+
 
   // ================= FORM EDIT =================
+
   card.innerHTML = `
 
     <div class="edit-grid">
 
+
       <label>Nama Order</label>
+
       <input
         type="text"
         class="edit-inline"
+        name="nama"
         value="${escapeHtml(item.nama || '')}"
       >
 
+
       <label>No KS</label>
+
       <input
         type="text"
         class="edit-inline"
+        name="noKS"
         value="${escapeHtml(item.noKS || '')}"
       >
 
+
       <label>Jam SPK</label>
+
       <input
         type="number"
         class="edit-inline"
+        name="jamSPK"
         value="${escapeHtml(item.jamSPK || '')}"
       >
 
+
       <label>Order</label>
+
       <input
         type="number"
         class="edit-inline"
+        name="order"
         value="${escapeHtml(item.order || '')}"
       >
 
+
       <label>Bagus</label>
+
       <input
         type="number"
         class="edit-inline"
+        name="bagus"
         value="${escapeHtml(item.bagus || '')}"
       >
 
+
       <label>Sortir</label>
+
       <input
         type="text"
         class="edit-inline"
+        name="sortir"
         value="${escapeHtml(item.sortir || '')}"
       >
 
+
       <label>Problem</label>
+
       <input
         type="text"
         class="edit-inline"
+        name="problem"
         value="${escapeHtml(item.problem || '')}"
       >
 
+
       <label>QC</label>
 
-      <select class="edit-inline">
+      <select
+        class="edit-inline"
+        name="qc"
+      >
 
         <option
           value="Anjar"
@@ -17011,9 +20436,13 @@ function editInspekInline(index){
 
       </select>
 
+
       <label>Mesin Inspek</label>
 
-      <select class="edit-inline">
+      <select
+        class="edit-inline"
+        name="mesin"
+      >
 
         <option
           value="Focussight"
@@ -17029,13 +20458,14 @@ function editInspekInline(index){
           Spotcheck
         </option>
 
-
       </select>
+
 
       <label>Status</label>
 
       <select
         class="edit-inline"
+        name="update"
         onchange="checkStatusInspek(this)"
       >
 
@@ -17062,16 +20492,131 @@ function editInspekInline(index){
 
       </select>
 
+
+      <!-- =========================
+           KETERANGAN
+      ========================== -->
+
       <label>Keterangan</label>
 
-      <textarea
-        class="edit-inline"
-        rows="2"
-      >${escapeHtml(item.keterangan || '')}</textarea>
+      <div
+        style="
+          display:flex;
+          flex-direction:column;
+          gap:8px;
+          width:100%;
+        "
+      >
+
+
+        <!-- KETERANGAN 1 -->
+
+        <div class="rowKet">
+
+          <span>1.</span>
+
+          <input
+            type="text"
+            id="editInspekKet1_${index}"
+            class="edit-inline"
+            name="keterangan1"
+            value="${escapeHtml(kets[0] || '')}"
+            readonly
+            placeholder="Klik untuk memilih temuan"
+            onclick="openEditTemuanModalInspek('editInspekKet1_${index}')"
+          >
+
+        </div>
+
+
+        <!-- KETERANGAN 2 -->
+
+        <div class="rowKet">
+
+          <span>2.</span>
+
+          <input
+            type="text"
+            id="editInspekKet2_${index}"
+            class="edit-inline"
+            name="keterangan2"
+            value="${escapeHtml(kets[1] || '')}"
+            readonly
+            placeholder="Klik untuk memilih temuan"
+            onclick="openEditTemuanModalInspek('editInspekKet2_${index}')"
+          >
+
+        </div>
+
+
+        <!-- KETERANGAN 3 -->
+
+        <div class="rowKet">
+
+          <span>3.</span>
+
+          <input
+            type="text"
+            id="editInspekKet3_${index}"
+            class="edit-inline"
+            name="keterangan3"
+            value="${escapeHtml(kets[2] || '')}"
+            readonly
+            placeholder="Klik untuk memilih temuan"
+            onclick="openEditTemuanModalInspek('editInspekKet3_${index}')"
+          >
+
+        </div>
+
+
+        <!-- KETERANGAN 4 -->
+
+        <div class="rowKet">
+
+          <span>4.</span>
+
+          <input
+            type="text"
+            id="editInspekKet4_${index}"
+            class="edit-inline"
+            name="keterangan4"
+            value="${escapeHtml(kets[3] || '')}"
+            readonly
+            placeholder="Klik untuk memilih temuan"
+            onclick="openEditTemuanModalInspek('editInspekKet4_${index}')"
+          >
+
+        </div>
+
+
+        <!-- KETERANGAN 5 -->
+
+        <div class="rowKet">
+
+          <span>5.</span>
+
+          <input
+            type="text"
+            id="editInspekKet5_${index}"
+            class="edit-inline"
+            name="keterangan5"
+            value="${escapeHtml(kets[4] || '')}"
+            readonly
+            placeholder="Klik untuk memilih temuan"
+            onclick="openEditTemuanModalInspek('editInspekKet5_${index}')"
+          >
+
+        </div>
+
+
+      </div>
+
 
     </div>
 
+
     <!-- ================= BUTTON ================= -->
+
     <div style="
       display:flex;
       gap:4px;
@@ -17092,10 +20637,10 @@ function editInspekInline(index){
         title="Batal"
         onclick="cancelInspekInline(
           ${index},
-          \`${encodeURIComponent(oldHtml)}\`
+          '${encodeURIComponent(originalHTML)}'
         )"
       >
-        ❌
+        ✖️
       </button>
 
     </div>
@@ -17168,12 +20713,13 @@ async function saveInspekInline(index, btn){
 
   if(!card) return;
 
+
   // ================= BUTTON STATE =================
+
   const btnSave = btn;
 
-  const btnCancel = card.querySelector(
-    '.btn-cancel'
-  );
+  const btnCancel =
+    card.querySelector('.btn-cancel');
 
   if(btnSave){
 
@@ -17190,39 +20736,69 @@ async function saveInspekInline(index, btn){
 
   }
 
+
   // ================= AMBIL INPUT =================
-  const inputs = card.querySelectorAll(
-    '.edit-inline'
-  );
+
+  const inputs =
+    card.querySelectorAll('.edit-inline');
+
+
+  // ================= KETERANGAN =================
+  // Ambil langsung berdasarkan ID agar
+  // tidak salah index karena ada 5 input keterangan
+
+  const keterangan =
+`1. ${document.getElementById(`editInspekKet1_${index}`)?.value.trim() || ''}
+2. ${document.getElementById(`editInspekKet2_${index}`)?.value.trim() || ''}
+3. ${document.getElementById(`editInspekKet3_${index}`)?.value.trim() || ''}
+4. ${document.getElementById(`editInspekKet4_${index}`)?.value.trim() || ''}
+5. ${document.getElementById(`editInspekKet5_${index}`)?.value.trim() || ''}`;
+
+
+  // ================= DATA UPDATE =================
 
   const updated = {
 
-    nama: inputs[0].value.trim(),
+    nama:
+      inputs[0].value.trim(),
 
-    noKS: inputs[1].value.trim(),
+    noKS:
+      inputs[1].value.trim(),
 
-    jamSPK: inputs[2].value.trim(),
+    jamSPK:
+      inputs[2].value.trim(),
 
-    order: inputs[3].value.trim(),
+    order:
+      inputs[3].value.trim(),
 
-    bagus: inputs[4].value.trim(),
+    bagus:
+      inputs[4].value.trim(),
 
-    sortir: inputs[5].value.trim(),
+    sortir:
+      inputs[5].value.trim(),
 
-    problem: inputs[6].value.trim(),
+    problem:
+      inputs[6].value.trim(),
 
-    qc: inputs[7].value,
+    qc:
+      inputs[7].value,
 
-    mesin: inputs[8].value.trim(),
+    mesin:
+      inputs[8].value.trim(),
 
-    update: inputs[9].value,
+    update:
+      inputs[9].value,
 
-    keterangan: inputs[10].value.trim()
+    keterangan:
+      keterangan
 
   };
 
+
   // ================= DATA ORIGINAL =================
-  const orig = inspekItems[index];
+
+  const orig =
+    inspekItems[index];
 
   const identifier =
     orig.id ||
@@ -17230,7 +20806,9 @@ async function saveInspekInline(index, btn){
     orig.row ||
     orig.__index;
 
+
   // ================= TANGGAL =================
+
   const tanggalFormatted =
     orig.tanggal ||
     new Date().toLocaleString(
@@ -17239,40 +20817,51 @@ async function saveInspekInline(index, btn){
         day:'2-digit',
         month:'long',
         year:'numeric',
-
         hour:'2-digit',
         minute:'2-digit',
         second:'2-digit'
       }
     );
 
+
   // ================= PAYLOAD =================
+
   const payload = {
 
-    ...updated,
+    action: 'update',
 
-    action:'update',
+    sheet: 'Inspek',
 
-    sheet:'Inspek',
+    id: identifier,
 
-    id:identifier,
+    index: orig.__index,
 
-    index:orig.__index,
+    tanggal: tanggalFormatted,
 
-    tanggal:tanggalFormatted
+    ...updated
 
   };
 
+
+  // ================= SIMPAN =================
+
   try{
 
-    // ================= POST =================
     await postPayload(payload);
 
-    // ================= DELAY =================
-    await new Promise(res => setTimeout(res, 5000));
 
-    // ================= RELOAD =================
+    // Beri waktu Apps Script
+    // memproses data
+
+    await new Promise(
+      res => setTimeout(res, 5000)
+    );
+
+
+    // Reload data
+
     await loadInspekItems();
+
 
   }catch(err){
 
@@ -17284,6 +20873,7 @@ async function saveInspekInline(index, btn){
     alert(
       'Gagal menyimpan data. Coba lagi.'
     );
+
 
   }finally{
 
@@ -18848,7 +22438,7 @@ if (lemContainer) {
   }, true); // capture phase
 }
 
-// ====================== EDIT INLINE (LEM) DENGAN BS DETAIL + LABEL ======================
+// ====================== EDIT INLINE (LEM) DENGAN BS DETAIL + MODAL KETERANGAN ======================
 function editLemInline(index){
   const item = lemItems[index];
   const container = document.getElementById('gridLem');
@@ -18857,66 +22447,346 @@ function editLemInline(index){
   if(!card) return;
   if(card.querySelector('.edit-inline')) return;
 
+  // Simpan HTML lama untuk cancel
   const oldHtml = card.innerHTML;
 
+  // ===============================
+  // NORMALISASI KETERANGAN
+  // ===============================
+  const keteranganRaw = item.keterangan || '';
+
+  const ketMap = {
+    1: "",
+    2: "",
+    3: "",
+    4: "",
+    5: ""
+  };
+
+  if(keteranganRaw.trim() !== ""){
+
+    keteranganRaw
+      .split(/\r?\n/)
+      .forEach(line => {
+
+        const m = line.match(/^\s*(\d+)\.\s*(.*)/);
+
+        if(m){
+
+          const no = parseInt(m[1]);
+
+          if(no >= 1 && no <= 5){
+            ketMap[no] = m[2].trim();
+          }
+
+        }
+
+      });
+
+  }
+
+  const kets = [
+    ketMap[1] || "",
+    ketMap[2] || "",
+    ketMap[3] || "",
+    ketMap[4] || "",
+    ketMap[5] || ""
+  ];
+
+  // ===============================
+  // HTML EDIT
+  // ===============================
   card.innerHTML = `
     <div class="edit-grid">
 
       <label>Nama Order</label>
-      <input type="text" class="edit-inline" name="nama" value="${escapeHtml(item.nama||'')}">
+      <input
+        type="text"
+        class="edit-inline"
+        name="nama"
+        value="${escapeHtml(item.nama||'')}"
+      >
 
       <label>No KS</label>
-      <input type="text" class="edit-inline" name="noKS" value="${escapeHtml(item.noKS||'')}">
+      <input
+        type="text"
+        class="edit-inline"
+        name="noKS"
+        value="${escapeHtml(item.noKS||'')}"
+      >
 
       <label>Order</label>
-      <input type="number" class="edit-inline" name="order" value="${escapeHtml(item.order||'')}">
+      <input
+        type="number"
+        class="edit-inline"
+        name="order"
+        value="${escapeHtml(item.order||'')}"
+      >
 
       <label>Isi/Dus</label>
-      <input type="number" class="edit-inline" name="isi" value="${escapeHtml(item.isi||'')}">
+      <input
+        type="number"
+        class="edit-inline"
+        name="isi"
+        value="${escapeHtml(item.isi||'')}"
+      >
 
       <label>Bagus</label>
-      <input type="number" class="edit-inline" name="bagus" value="${escapeHtml(item.bagus||'')}">
+      <input
+        type="number"
+        class="edit-inline"
+        name="bagus"
+        value="${escapeHtml(item.bagus||'')}"
+      >
 
       <label>BS Total</label>
-      <input type="number" class="edit-inline" name="jenisBS" value="${escapeHtml(item.lemJenisBS||'')}">
+      <input
+        type="number"
+        class="edit-inline"
+        name="jenisBS"
+        value="${escapeHtml(item.lemJenisBS||'')}"
+      >
 
       <label>BS Cetak</label>
-      <input type="number" class="edit-inline" name="jenisBS1" value="${escapeHtml(item.lemJenisBS1||'')}">
+      <input
+        type="number"
+        class="edit-inline"
+        name="jenisBS1"
+        value="${escapeHtml(item.lemJenisBS1||'')}"
+      >
 
       <label>BS Lem</label>
-      <input type="number" class="edit-inline" name="jenisBS12" value="${escapeHtml(item.lemJenisBS12||'')}">
+      <input
+        type="number"
+        class="edit-inline"
+        name="jenisBS12"
+        value="${escapeHtml(item.lemJenisBS12||'')}"
+      >
 
       <label>BS Ponch</label>
-      <input type="number" class="edit-inline" name="jenisBS13" value="${escapeHtml(item.lemJenisBS13||'')}">
+      <input
+        type="number"
+        class="edit-inline"
+        name="jenisBS13"
+        value="${escapeHtml(item.lemJenisBS13||'')}"
+      >
 
       <label>BS Varnish</label>
-      <input type="number" class="edit-inline" name="jenisBS14" value="${escapeHtml(item.lemJenisBS14||'')}">
+      <input
+        type="number"
+        class="edit-inline"
+        name="jenisBS14"
+        value="${escapeHtml(item.lemJenisBS14||'')}"
+      >
 
       <label>BS Potong</label>
-      <input type="number" class="edit-inline" name="jenisBS15" value="${escapeHtml(item.lemJenisBS15||'')}">
+      <input
+        type="number"
+        class="edit-inline"
+        name="jenisBS15"
+        value="${escapeHtml(item.lemJenisBS15||'')}"
+      >
 
       <label>QC</label>
       <select class="edit-inline" name="qc">
-        <option value="Martini" ${item.qc==='Martini'? 'selected':''}>Martini</option>
-        <option value="Krestin" ${item.qc==='Krestin'? 'selected':''}>Krestin</option>
-        <option value="Ismie" ${item.qc==='Ismie'? 'selected':''}>Ismie</option>
+
+        <option
+          value="Martini"
+          ${item.qc==='Martini' ? 'selected' : ''}
+        >
+          Martini
+        </option>
+
+        <option
+          value="Krestin"
+          ${item.qc==='Krestin' ? 'selected' : ''}
+        >
+          Krestin
+        </option>
+
+        <option
+          value="Ismie"
+          ${item.qc==='Ismie' ? 'selected' : ''}
+        >
+          Ismie
+        </option>
+
       </select>
 
       <label>Status</label>
-      <select class="edit-inline" name="update" onchange="checkStatusLem(this)">
-        <option value="Pending" ${item.update==='Pending'? 'selected':''}>Pending</option>
-        <option value="Proses" ${item.update==='Proses'? 'selected':''}>Proses</option>
-        <option value="Selesai" ${item.update==='Selesai'? 'selected':''}>Selesai</option>
+      <select
+        class="edit-inline"
+        name="update"
+        onchange="checkStatusLem(this)"
+      >
+
+        <option
+          value="Pending"
+          ${item.update==='Pending' ? 'selected' : ''}
+        >
+          Pending
+        </option>
+
+        <option
+          value="Proses"
+          ${item.update==='Proses' ? 'selected' : ''}
+        >
+          Proses
+        </option>
+
+        <option
+          value="Selesai"
+          ${item.update==='Selesai' ? 'selected' : ''}
+        >
+          Selesai
+        </option>
+
       </select>
 
+
+      <!-- =========================
+           KETERANGAN
+      ========================== -->
+
       <label>Keterangan</label>
-      <textarea class="edit-inline" name="keterangan" rows="2">${escapeHtml(item.keterangan||'')}</textarea>
+
+      <div
+        style="
+          display:flex;
+          flex-direction:column;
+          gap:8px;
+          width:100%;
+        "
+      >
+
+        <!-- KETERANGAN 1 -->
+        <div class="rowKet">
+
+          <span>1.</span>
+
+          <input
+            type="text"
+            id="editLemKet1_${index}"
+            class="edit-inline"
+            name="keterangan1"
+            value="${escapeHtml(kets[0] || '')}"
+            readonly
+            placeholder="Klik untuk memilih temuan"
+            onclick="openEditTemuanModalLem('editLemKet1_${index}')"
+          >
+
+        </div>
+
+
+        <!-- KETERANGAN 2 -->
+        <div class="rowKet">
+
+          <span>2.</span>
+
+          <input
+            type="text"
+            id="editLemKet2_${index}"
+            class="edit-inline"
+            name="keterangan2"
+            value="${escapeHtml(kets[1] || '')}"
+            readonly
+            placeholder="Klik untuk memilih temuan"
+            onclick="openEditTemuanModalLem('editLemKet2_${index}')"
+          >
+
+        </div>
+
+
+        <!-- KETERANGAN 3 -->
+        <div class="rowKet">
+
+          <span>3.</span>
+
+          <input
+            type="text"
+            id="editLemKet3_${index}"
+            class="edit-inline"
+            name="keterangan3"
+            value="${escapeHtml(kets[2] || '')}"
+            readonly
+            placeholder="Klik untuk memilih temuan"
+            onclick="openEditTemuanModalLem('editLemKet3_${index}')"
+          >
+
+        </div>
+
+
+        <!-- KETERANGAN 4 -->
+        <div class="rowKet">
+
+          <span>4.</span>
+
+          <input
+            type="text"
+            id="editLemKet4_${index}"
+            class="edit-inline"
+            name="keterangan4"
+            value="${escapeHtml(kets[3] || '')}"
+            readonly
+            placeholder="Klik untuk memilih temuan"
+            onclick="openEditTemuanModalLem('editLemKet4_${index}')"
+          >
+
+        </div>
+
+
+        <!-- KETERANGAN 5 -->
+        <div class="rowKet">
+
+          <span>5.</span>
+
+          <input
+            type="text"
+            id="editLemKet5_${index}"
+            class="edit-inline"
+            name="keterangan5"
+            value="${escapeHtml(kets[4] || '')}"
+            readonly
+            placeholder="Klik untuk memilih temuan"
+            onclick="openEditTemuanModalLem('editLemKet5_${index}')"
+          >
+
+        </div>
+
+      </div>
 
     </div>
 
-    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">
-      <button class="btn-icon btn-save" title="Simpan" onclick="saveLemInline(${index}, this)">💾</button>
-      <button class="btn-icon btn-cancel" title="Batal" onclick="cancelLemInline(${index}, \`${encodeURIComponent(oldHtml)}\`)">❌</button>
+
+    <!-- =========================
+         BUTTON
+    ========================== -->
+
+    <div
+      style="
+        display:flex;
+        gap:4px;
+        flex-wrap:wrap;
+        margin-top:6px;
+      "
+    >
+
+      <button
+        class="btn-icon btn-save"
+        title="Simpan"
+        onclick="saveLemInline(${index}, this)"
+      >
+        💾
+      </button>
+
+      <button
+        class="btn-icon btn-cancel"
+        title="Batal"
+        onclick="cancelLemInline(${index}, \`${encodeURIComponent(oldHtml)}\`)"
+      >
+        ❌
+      </button>
+
     </div>
   `;
 }
@@ -18949,7 +22819,7 @@ function cancelLemInline(index, oldHtmlEncoded) {
   card.innerHTML = decodeURIComponent(oldHtmlEncoded);
 }
 
-// ====================== SIMPAN HASIL EDIT INLINE (LEM) DENGAN BS DETAIL ======================
+// ====================== SIMPAN HASIL EDIT INLINE (LEM) DENGAN BS DETAIL + KETERANGAN MODAL ======================
 async function saveLemInline(index, btn) {
   const container = document.getElementById('gridLem');
   const card = container.querySelector(`.grid-card[data-index="${index}"]`);
@@ -18957,65 +22827,154 @@ async function saveLemInline(index, btn) {
 
   const btnSave = btn;
   const btnCancel = card.querySelector('.btn-cancel');
+
   if (btnSave) {
     btnSave.textContent = '⏳ Menyimpan...';
     btnSave.disabled = true;
   }
-  if (btnCancel) btnCancel.style.display = 'none';
 
+  if (btnCancel) {
+    btnCancel.style.display = 'none';
+  }
+
+
+  // =====================================================
+  // AMBIL SEMUA INPUT EDIT
+  // =====================================================
   const inputs = card.querySelectorAll('.edit-inline');
 
-  // Sesuaikan urutan dengan editLemInline (nama, noKS, order, isi, bagus, jenisBS, jenisBS1, jenisBS12–15, qc, update, keterangan)
+
+  // =====================================================
+  // GABUNGKAN KETERANGAN 1 - 5
+  // =====================================================
+  const keterangan =
+`1. ${document.getElementById(`editLemKet1_${index}`)?.value.trim() || ''}
+2. ${document.getElementById(`editLemKet2_${index}`)?.value.trim() || ''}
+3. ${document.getElementById(`editLemKet3_${index}`)?.value.trim() || ''}
+4. ${document.getElementById(`editLemKet4_${index}`)?.value.trim() || ''}
+5. ${document.getElementById(`editLemKet5_${index}`)?.value.trim() || ''}`;
+
+
+  // =====================================================
+  // DATA YANG AKAN DIUPDATE
+  // URUTAN SESUAI editLemInline()
+  // =====================================================
   const updated = {
+
     nama: inputs[0].value.trim(),
+
     noKS: inputs[1].value.trim(),
+
     order: inputs[2].value.trim(),
+
     isi: inputs[3].value.trim(),
+
     bagus: inputs[4].value.trim(),
-    lemJenisBS: inputs[5].value.trim(),       // Total BS
-    lemJenisBS1: inputs[6].value.trim(),      // BS Cetak
-    lemJenisBS12: inputs[7].value.trim(),     // BS Lem
-    lemJenisBS13: inputs[8].value.trim(),     // BS Ponch
-    lemJenisBS14: inputs[9].value.trim(),     // BS Varnish
-    lemJenisBS15: inputs[10].value.trim(),    // BS Potong
+
+    lemJenisBS: inputs[5].value.trim(),
+
+    lemJenisBS1: inputs[6].value.trim(),
+
+    lemJenisBS12: inputs[7].value.trim(),
+
+    lemJenisBS13: inputs[8].value.trim(),
+
+    lemJenisBS14: inputs[9].value.trim(),
+
+    lemJenisBS15: inputs[10].value.trim(),
+
     qc: inputs[11].value,
+
     update: inputs[12].value,
-    keterangan: inputs[13].value.trim()
+
+    // Keterangan dari 5 input modal
+    keterangan: keterangan
+
   };
 
+
+  // =====================================================
+  // DATA ASLI
+  // =====================================================
   const orig = lemItems[index];
-  const identifier = orig.id || orig._row || orig.row || orig.__index;
 
-  const tanggalFormatted = orig.tanggal || new Date().toLocaleString('id-ID', {
-    day: '2-digit', month: 'long', year: 'numeric',
-    hour: '2-digit', minute: '2-digit', second: '2-digit'
-  });
+  const identifier =
+    orig.id ||
+    orig._row ||
+    orig.row ||
+    orig.__index;
 
-  const payload = { 
-    action: 'update', 
-    sheet: 'Lem', 
-    id: identifier, 
-    index: orig.__index, 
-    tanggal: tanggalFormatted, 
-    ...updated 
+
+  // =====================================================
+  // PERTAHANKAN TANGGAL LAMA
+  // =====================================================
+  const tanggalFormatted =
+    orig.tanggal ||
+    new Date().toLocaleString('id-ID', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+
+
+  // =====================================================
+  // PAYLOAD UPDATE
+  // =====================================================
+  const payload = {
+
+    action: 'update',
+
+    sheet: 'Lem',
+
+    id: identifier,
+
+    index: orig.__index,
+
+    tanggal: tanggalFormatted,
+
+    ...updated
+
   };
 
+
+  // =====================================================
+  // SIMPAN
+  // =====================================================
   try {
+
     await postPayload(payload);
+
+
+    // Beri waktu Spreadsheet memproses data
     await new Promise(res => setTimeout(res, 5000));
+
+
+    // Reload data agar GRID mengikuti Spreadsheet
     await loadLemItems();
+
+
   } catch (err) {
+
     console.error('Gagal menyimpan:', err);
+
     alert('Gagal menyimpan data. Coba lagi.');
+
+
   } finally {
+
     if (btnSave) {
+
       btnSave.textContent = '💾 Simpan';
+
       btnSave.disabled = false;
+
     }
+
   }
 }
-
-
 
 
 
