@@ -1447,9 +1447,29 @@ body {
 
     <div class="temuan-bulanan-title">
 
-      <h3>Temuan Dalam 1 Bulan</h3>
+      <h3>DATA TEMUAN</h3>
 
-      <span id="periodeTemuanPA">-</span>
+<span id="periodeTemuanPA">-</span>
+
+
+<select
+  id="filterBulanTemuanPA"
+  onchange="renderTemuanBulananPA()">
+
+  <option value="0">Januari</option>
+  <option value="1">Februari</option>
+  <option value="2">Maret</option>
+  <option value="3">April</option>
+  <option value="4">Mei</option>
+  <option value="5">Juni</option>
+  <option value="6">Juli</option>
+  <option value="7">Agustus</option>
+  <option value="8">September</option>
+  <option value="9">Oktober</option>
+  <option value="10">November</option>
+  <option value="11">Desember</option>
+
+</select>
 
     </div>
 
@@ -1475,7 +1495,7 @@ body {
 
         <span id="iconToggleTemuanPA">▼</span>
 
-        <span id="textToggleTemuanPA">Unhide</span>
+        <span id="textToggleTemuanPA">Detail</span>
 
       </button>
 
@@ -1634,550 +1654,868 @@ body {
 
 
 <style>
+
 /* =====================================================
    TEMUAN DALAM 1 BULAN
-   MODERN UI
+   MODERN ERP DASHBOARD STYLE
 ===================================================== */
 
+
 .temuan-bulanan-wrapper {
-    width: 100%;
-    margin: 18px 0;
-    padding: 22px;
-    box-sizing: border-box;
 
-    background: linear-gradient(180deg, #ffffff, #fbfdff);
-    border: 1px solid #d9e7f5;
-    border-radius: 20px;
+    width:100%;
+
+    margin:16px 0;
+
+    padding:18px 20px;
+
+    box-sizing:border-box;
+
+
+    background:
+    linear-gradient(
+        180deg,
+        #ffffff,
+        #fafdff
+    );
+
+
+    border:1px solid #dbe7f5;
+
+    border-radius:18px;
+
 
     box-shadow:
-        0 12px 30px rgba(15, 23, 42, .06),
-        0 2px 8px rgba(15, 23, 42, .04);
 
-    transition: .25s ease;
+    0 8px 25px rgba(15,23,42,.06);
+
 }
 
-.temuan-bulanan-wrapper:hover {
-    transform: translateY(-2px);
 
-    box-shadow:
-        0 16px 36px rgba(15, 23, 42, .08),
-        0 6px 16px rgba(15, 23, 42, .05);
-}
+
 
 
 /* =====================================================
    HEADER
 ===================================================== */
 
+
 .temuan-bulanan-header {
 
-    display: grid;
 
-    grid-template-columns: 1fr auto auto;
+    display:flex;
 
-    align-items: center;
+    justify-content:space-between;
 
-    gap: 18px;
+    align-items:center;
 
-    margin-bottom: 22px;
+
+    gap:20px;
+
 
 }
 
 
+
+
+
 /* =====================================================
-   TITLE
+   TITLE AREA
 ===================================================== */
+
 
 .temuan-bulanan-title {
 
-    display: flex;
 
-    flex-direction: column;
+    display:flex;
 
-    justify-content: center;
+    flex-direction:column;
 
-    min-width: 0;
+
+    flex:1;
+
 
 }
+
+
+
+
 
 .temuan-bulanan-title h3 {
 
-    margin: 0;
 
-    font-size: 24px;
+    margin:0;
 
-    font-weight: 800;
 
-    color: #0F4FA8;
+    font-size:24px;
 
-    letter-spacing: .3px;
+
+    font-weight:800;
+
+
+    color:#0F4FA8;
+
+
+    letter-spacing:.2px;
+
 
 }
+
+
+
+
 
 .temuan-bulanan-title span {
 
-    margin-top: 6px;
 
-    color: #64748B;
+    margin-top:4px;
 
-    font-size: 13px;
+
+    font-size:13px;
+
+
+    color:#64748b;
+
 
 }
 
 
+
+
+
 /* =====================================================
-   ACTION
+   FILTER BULAN
 ===================================================== */
+
+
+#filterBulanTemuanPA,
+#filterBulanTemuanLem,
+#filterBulanTemuanFinishing,
+#filterBulanTemuanInspek {
+
+
+    margin-top:8px;
+
+
+    width:180px;
+
+
+    height:36px;
+
+
+    padding:0 12px;
+
+
+    border-radius:10px;
+
+
+    border:
+
+    1px solid #cbdcf0;
+
+
+    background:#ffffff;
+
+
+    color:#334155;
+
+
+    font-size:13px;
+
+
+    font-weight:700;
+
+
+    cursor:pointer;
+
+
+    outline:none;
+
+
+    transition:.2s;
+
+
+}
+
+
+
+
+#filterBulanTemuanPA:hover,
+#filterBulanTemuanLem:hover,
+#filterBulanTemuanFinishing:hover,
+#filterBulanTemuanInspek:hover {
+
+
+    border-color:#0078D7;
+
+
+}
+
+
+
+
+
+/* =====================================================
+   ACTION AREA
+===================================================== */
+
 
 .temuan-bulanan-actions {
 
-    display: flex;
 
-    align-items: center;
+    display:flex;
 
-    gap: 12px;
+
+    align-items:center;
+
+
+    gap:12px;
+
 
 }
 
 
+
+
+
 /* =====================================================
-   TOTAL TEMUAN
+   TOTAL BOX
 ===================================================== */
+
 
 .temuan-bulanan-total {
 
-    width: 120px;
 
-    height: 84px;
+    width:118px;
 
-    display: flex;
 
-    flex-direction: column;
+    height:78px;
 
-    justify-content: center;
 
-    align-items: center;
+    border-radius:18px;
 
-    border-radius: 18px;
 
-    background: linear-gradient(135deg, #0078D7, #2EA3FF);
+    display:flex;
 
-    color: #ffffff;
 
-    box-shadow: 0 10px 24px rgba(0, 120, 215, .25);
+    flex-direction:column;
+
+
+    justify-content:center;
+
+
+    align-items:center;
+
+
+    background:
+
+
+    linear-gradient(
+        135deg,
+        #0078D7,
+        #2EA3FF
+    );
+
+
+    color:white;
+
+
+    box-shadow:
+
+
+    0 10px 22px rgba(0,120,215,.25);
+
 
 }
+
+
+
+
 
 .temuan-bulanan-total small {
 
-    color: rgba(255,255,255,.9);
 
-    font-size: 11px;
+    font-size:11px;
+
+
+    opacity:.9;
+
 
 }
+
+
+
+
 
 .temuan-bulanan-total strong {
 
-    margin-top: 4px;
 
-    font-size: 34px;
+    margin-top:5px;
 
-    font-weight: 800;
+
+    font-size:34px;
+
+
+    line-height:1;
+
+
+    font-weight:800;
+
 
 }
 
 
+
+
+
 /* =====================================================
-   BUTTON
+   TOGGLE BUTTON
 ===================================================== */
+
 
 .temuan-toggle-btn {
 
-    height: 48px;
 
-    min-width: 110px;
+    height:46px;
 
-    display: flex;
 
-    align-items: center;
+    min-width:112px;
 
-    justify-content: center;
 
-    gap: 6px;
+    padding:0 18px;
 
-    padding: 0 22px;
 
-    border: 1px solid #D7E6F8;
+    display:flex;
 
-    border-radius: 14px;
 
-    background: #ffffff;
+    justify-content:center;
 
-    color: #0F4FA8;
 
-    font-size: 14px;
+    align-items:center;
 
-    font-weight: 700;
 
-    cursor: pointer;
+    gap:7px;
 
-    transition: .25s;
 
-    box-shadow: 0 5px 14px rgba(0,0,0,.05);
+    border-radius:14px;
+
+
+    background:white;
+
+
+    border:1px solid #d7e6f8;
+
+
+    color:#0F4FA8;
+
+
+    font-size:14px;
+
+
+    font-weight:700;
+
+
+    cursor:pointer;
+
+
+    transition:.25s;
+
 
 }
+
+
+
+
 
 .temuan-toggle-btn:hover {
 
-    background: #0078D7;
 
-    color: #ffffff;
+    background:#0078D7;
 
-    border-color: #0078D7;
 
-    transform: translateY(-2px);
+    border-color:#0078D7;
 
-    box-shadow: 0 10px 24px rgba(0,120,215,.25);
+
+    color:white;
+
 
 }
+
+
+
+
 
 .temuan-toggle-btn:active {
 
-    transform: scale(.96);
+
+    transform:scale(.96);
+
 
 }
 
-#iconToggleTemuanPA {
 
-    font-size: 12px;
+
+
+
+#iconToggleTemuanPA,
+#iconToggleTemuanLem,
+#iconToggleTemuanFinishing,
+#iconToggleTemuanInspek {
+
+
+    font-size:11px;
+
 
 }
+
+
+
 
 
 /* =====================================================
-   DETAIL
+   DETAIL AREA
 ===================================================== */
+
 
 .temuan-bulanan-detail {
 
-    width: 100%;
+
+    margin-top:18px;
+
 
 }
+
+
+
 
 
 /* =====================================================
    LIST
 ===================================================== */
 
+
 .temuan-bulanan-list {
 
-    display: flex;
 
-    flex-direction: column;
+    display:flex;
 
-    gap: 12px;
+
+    flex-direction:column;
+
+
+    gap:10px;
+
 
 }
+
+
+
 
 
 /* =====================================================
    ITEM
 ===================================================== */
 
+
 .temuan-bulanan-item {
 
-    display: flex;
 
-    align-items: center;
+    display:flex;
 
-    gap: 14px;
 
-    padding: 14px 16px;
+    align-items:center;
 
-    background: #ffffff;
 
-    border: 1px solid #E5EEF8;
+    gap:14px;
 
-    border-radius: 15px;
 
-    transition: .25s;
+    padding:12px 14px;
+
+
+    background:#ffffff;
+
+
+    border:1px solid #e5eef8;
+
+
+    border-radius:14px;
+
+
+    transition:.2s;
+
 
 }
+
+
+
+
 
 .temuan-bulanan-item:hover {
 
-    border-color: #6FB7FF;
 
-    transform: translateX(5px);
+    transform:translateX(4px);
 
-    box-shadow: 0 8px 20px rgba(0,0,0,.05);
+
+    border-color:#7bbcff;
+
+
+    box-shadow:
+
+    0 6px 15px rgba(0,120,215,.08);
+
 
 }
+
+
+
 
 
 /* =====================================================
    RANK
 ===================================================== */
 
+
 .temuan-bulanan-rank {
 
-    width: 40px;
 
-    height: 40px;
+    width:36px;
 
-    min-width: 40px;
 
-    display: flex;
+    height:36px;
 
-    align-items: center;
 
-    justify-content: center;
+    min-width:36px;
 
-    border-radius: 50%;
 
-    background: linear-gradient(135deg,#0078D7,#4CB3FF);
+    border-radius:50%;
 
-    color: #ffffff;
 
-    font-size: 15px;
+    display:flex;
 
-    font-weight: 800;
 
-    box-shadow: 0 6px 15px rgba(0,120,215,.22);
+    justify-content:center;
+
+
+    align-items:center;
+
+
+    background:
+
+
+    linear-gradient(
+        135deg,
+        #0078D7,
+        #4CB3FF
+    );
+
+
+    color:white;
+
+
+    font-size:14px;
+
+
+    font-weight:800;
+
 
 }
+
+
+
 
 
 /* =====================================================
    NAME
 ===================================================== */
 
+
 .temuan-bulanan-name {
 
-    flex: 1;
 
-    min-width: 0;
+    flex:1;
 
-    color: #1F2937;
 
-    font-size: 15px;
+    font-size:14px;
 
-    font-weight: 600;
 
-    line-height: 1.5;
+    font-weight:600;
 
-    word-break: break-word;
+
+    color:#1f2937;
+
 
 }
+
+
+
 
 
 /* =====================================================
    COUNT
 ===================================================== */
 
+
 .temuan-bulanan-count {
 
-    min-width: 58px;
 
-    padding: 8px 14px;
+    min-width:52px;
 
-    text-align: center;
 
-    border-radius: 999px;
+    padding:6px 12px;
 
-    background: linear-gradient(135deg,#0F4FA8,#0078D7);
 
-    color: #ffffff;
+    border-radius:20px;
 
-    font-size: 13px;
 
-    font-weight: 700;
+    text-align:center;
 
-    box-shadow: 0 5px 12px rgba(0,120,215,.18);
+
+    background:#0F4FA8;
+
+
+    color:white;
+
+
+    font-size:13px;
+
+
+    font-weight:800;
+
 
 }
+
+
+
 
 
 /* =====================================================
    EMPTY
 ===================================================== */
 
+
 .temuan-empty {
 
-    padding: 40px 20px;
 
-    text-align: center;
+    padding:35px 20px;
 
-    background: #F8FBFF;
 
-    border: 2px dashed #D8E4F2;
+    text-align:center;
 
-    border-radius: 15px;
 
-    color: #64748B;
+    color:#64748b;
 
-    font-size: 14px;
+
+    background:#f8fbff;
+
+
+    border:2px dashed #d8e4f2;
+
+
+    border-radius:14px;
+
 
 }
+
+
+
 
 
 /* =====================================================
    TABLET
 ===================================================== */
 
-@media (max-width:992px){
 
-    .temuan-bulanan-wrapper{
+@media(max-width:992px){
 
-        padding:18px;
 
-    }
+.temuan-bulanan-title h3 {
 
-    .temuan-bulanan-title h3{
 
-        font-size:21px;
+    font-size:21px;
 
-    }
 
 }
+
+
+}
+
+
+
 
 
 /* =====================================================
    MOBILE
 ===================================================== */
 
-@media (max-width:768px){
 
-    .temuan-bulanan-wrapper{
+@media(max-width:768px){
 
-        padding:16px;
 
-        border-radius:18px;
+.temuan-bulanan-wrapper {
 
-    }
 
-    .temuan-bulanan-header{
+    padding:16px;
 
-        grid-template-columns:1fr;
-
-        gap:16px;
-
-    }
-
-    .temuan-bulanan-actions{
-
-        width:100%;
-
-        justify-content:space-between;
-
-    }
-
-    .temuan-bulanan-total{
-
-        flex:1;
-
-        width:auto;
-
-        height:72px;
-
-    }
-
-    .temuan-toggle-btn{
-
-        flex:1;
-
-        min-width:unset;
-
-    }
-
-    .temuan-bulanan-item{
-
-        padding:12px;
-
-    }
-
-    .temuan-bulanan-rank{
-
-        width:36px;
-
-        height:36px;
-
-        min-width:36px;
-
-    }
 
 }
+
+
+
+
+.temuan-bulanan-header {
+
+
+    flex-direction:column;
+
+
+    align-items:stretch;
+
+
+}
+
+
+
+
+
+.temuan-bulanan-actions {
+
+
+    width:100%;
+
+
+}
+
+
+
+
+
+.temuan-bulanan-total {
+
+
+    flex:1;
+
+
+}
+
+
+
+
+
+.temuan-toggle-btn {
+
+
+    flex:1;
+
+
+}
+
+
+
+
+
+#filterBulanTemuanPA,
+#filterBulanTemuanLem,
+#filterBulanTemuanFinishing,
+#filterBulanTemuanInspek {
+
+
+    width:100%;
+
+
+}
+
+
+
+
+
+}
+
+
+
 
 
 /* =====================================================
    SMALL MOBILE
 ===================================================== */
 
-@media (max-width:480px){
 
-    .temuan-bulanan-wrapper{
+@media(max-width:480px){
 
-        padding:14px;
 
-        margin:12px 0;
+.temuan-bulanan-title h3 {
 
-    }
 
-    .temuan-bulanan-title h3{
+    font-size:18px;
 
-        font-size:18px;
 
-    }
+}
 
-    .temuan-bulanan-title span{
 
-        font-size:12px;
 
-    }
+.temuan-bulanan-actions {
 
-    .temuan-bulanan-actions{
 
-        flex-direction:column;
+    gap:8px;
 
-        align-items:stretch;
 
-    }
+}
 
-    .temuan-bulanan-total{
 
-        width:100%;
 
-    }
+.temuan-bulanan-total {
 
-    .temuan-toggle-btn{
 
-        width:100%;
+    height:70px;
 
-        height:44px;
 
-    }
+}
 
-    .temuan-bulanan-item{
 
-        gap:10px;
 
-    }
+.temuan-bulanan-total strong {
 
-    .temuan-bulanan-name{
 
-        font-size:14px;
+    font-size:30px;
 
-    }
 
-    .temuan-bulanan-count{
+}
 
-        min-width:48px;
 
-        padding:7px 10px;
 
-        font-size:12px;
+.temuan-bulanan-item {
 
-    }
+
+    gap:10px;
+
+
+    padding:10px;
+
+
+}
+
+
+
+.temuan-bulanan-name {
+
+
+    font-size:13px;
+
+
+}
+
+
+
+.temuan-bulanan-count {
+
+
+    min-width:45px;
+
+
+    padding:6px 9px;
+
+
+}
+
 
 }
 
@@ -2236,21 +2574,78 @@ function renderCetakGrid(data, containerId){
 // ====================== TEMUAN DALAM 1 BULAN ======================
 function renderTemuanBulananPA() {
 
-  const container = document.getElementById('temuanBulananPA');
-  const periodeEl = document.getElementById('periodeTemuanPA');
-  const totalEl = document.getElementById('totalTemuanPA');
+  const container = document.getElementById(
+    'temuanBulananPA'
+  );
+
+  const periodeEl = document.getElementById(
+    'periodeTemuanPA'
+  );
+
+  const totalEl = document.getElementById(
+    'totalTemuanPA'
+  );
+
+  const bulanSelect = document.getElementById(
+    'filterBulanTemuanPA'
+  );
+
 
   if (!container || !periodeEl || !totalEl) return;
 
+
   container.innerHTML = '';
 
+
+
   // ============================
-  // BULAN BERJALAN
+  // BULAN BERJALAN + FILTER
   // ============================
   const sekarang = new Date();
 
-  const tahunSekarang = sekarang.getFullYear();
-  const bulanSekarang = sekarang.getMonth();
+
+  const tahunSekarang =
+    sekarang.getFullYear();
+
+
+
+  // ============================
+  // DEFAULT BULAN SAAT PERTAMA LOAD
+  // ============================
+  if (bulanSelect) {
+
+
+    const sudahDipilih =
+      bulanSelect.dataset.loaded;
+
+
+
+    if (!sudahDipilih) {
+
+
+      bulanSelect.value =
+        sekarang.getMonth();
+
+
+
+      bulanSelect.dataset.loaded =
+        "true";
+
+
+    }
+
+
+  }
+
+
+
+  const bulanSekarang =
+    bulanSelect
+      ? Number(bulanSelect.value)
+      : sekarang.getMonth();
+
+
+
 
   const namaBulan = [
     'Januari',
@@ -2267,8 +2662,21 @@ function renderTemuanBulananPA() {
     'Desember'
   ];
 
+
+
   periodeEl.textContent =
     `${namaBulan[bulanSekarang]} ${tahunSekarang}`;
+
+
+
+  if (bulanSelect) {
+
+    bulanSelect.value =
+      bulanSekarang;
+
+  }
+
+
 
 
   // ============================
@@ -2276,6 +2684,7 @@ function renderTemuanBulananPA() {
   // SESUAI PILIHAN INPUT
   // ============================
   const daftarTemuan = [
+
     'Warna',
     'Noda',
     'Ghosting',
@@ -2290,7 +2699,9 @@ function renderTemuanBulananPA() {
     'Gatra',
     'Salur',
     'Barcode/QR'
+
   ];
+
 
 
   // ============================
@@ -2298,11 +2709,17 @@ function renderTemuanBulananPA() {
   // ============================
   const jumlahTemuan = {};
 
+
   daftarTemuan.forEach(temuan => {
+
     jumlahTemuan[temuan] = 0;
+
   });
 
+
   let total = 0;
+
+
 
 
   // ============================
@@ -2310,49 +2727,74 @@ function renderTemuanBulananPA() {
   // ============================
   function parseTanggal(value) {
 
+
     if (!value) return null;
 
-    // Jika sudah berupa Date
-    if (value instanceof Date && !isNaN(value.getTime())) {
+
+    if (
+      value instanceof Date &&
+      !isNaN(value.getTime())
+    ) {
+
       return value;
+
     }
 
-    const str = String(value).trim();
+
+
+    const str =
+      String(value).trim();
+
+
 
     if (!str) return null;
 
 
-    // ============================
-    // FORMAT INDONESIA
-    // Contoh:
-    // 29 Juli 2026, 15.30.20
-    // ============================
+
+
     const bulanMap = {
-      januari: 0,
-      februari: 1,
-      maret: 2,
-      april: 3,
-      mei: 4,
-      juni: 5,
-      juli: 6,
-      agustus: 7,
-      september: 8,
-      oktober: 9,
-      november: 10,
-      desember: 11
+
+      januari:0,
+      februari:1,
+      maret:2,
+      april:3,
+      mei:4,
+      juni:5,
+      juli:6,
+      agustus:7,
+      september:8,
+      oktober:9,
+      november:10,
+      desember:11
+
     };
 
-    const matchIndo = str.match(
-      /^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/
-    );
+
+
+    const matchIndo =
+      str.match(
+        /^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/
+      );
+
+
 
     if (matchIndo) {
 
-      const hari = Number(matchIndo[1]);
+
+      const hari =
+        Number(matchIndo[1]);
+
+
+
       const namaBulanTanggal =
         matchIndo[2].toLowerCase();
 
-      const tahun = Number(matchIndo[3]);
+
+
+      const tahun =
+        Number(matchIndo[3]);
+
+
 
       if (
         Object.prototype.hasOwnProperty.call(
@@ -2361,77 +2803,107 @@ function renderTemuanBulananPA() {
         )
       ) {
 
+
         return new Date(
           tahun,
           bulanMap[namaBulanTanggal],
           hari
         );
 
+
       }
 
+
     }
 
 
-    // ============================
-    // FORMAT DATE / STRING LAIN
-    // ============================
-    const parsed = new Date(str);
+
+
+    const parsed =
+      new Date(str);
+
+
 
     if (!isNaN(parsed.getTime())) {
+
       return parsed;
+
     }
 
+
+
     return null;
+
+
   }
 
+
+
+
+  // ============================
+  // CEK DATA PA
+  // ============================
+  if (!Array.isArray(paItems)) {
+
+
+    totalEl.textContent =
+      '0';
+
+
+
+    container.innerHTML = `
+
+      <div class="temuan-empty">
+        Data QC SPOTCHECK belum tersedia.
+      </div>
+
+    `;
+
+
+    return;
+
+
+  }
 
   // ============================
   // LOOP DATA PA
   // ============================
-  if (!Array.isArray(paItems)) {
-
-    totalEl.textContent = '0';
-
-    container.innerHTML = `
-      <div class="temuan-empty">
-        Data QC SPOTCHECK belum tersedia.
-      </div>
-    `;
-
-    return;
-  }
-
-
   paItems.forEach(item => {
 
-    // ============================
-    // CEK TANGGAL
-    // ============================
-    const tanggal = parseTanggal(item.tanggal);
+
+    const tanggal =
+      parseTanggal(item.tanggal);
+
+
 
     if (!tanggal) return;
 
 
+
     // ============================
-    // HANYA BULAN & TAHUN BERJALAN
+    // FILTER BULAN + TAHUN
     // ============================
     if (
       tanggal.getFullYear() !== tahunSekarang ||
       tanggal.getMonth() !== bulanSekarang
     ) {
+
       return;
+
     }
 
 
-    // ============================
-    // AMBIL KETERANGAN
-    // DARI SPREADSHEET
-    // ============================
-    const keterangan = String(
-      item.keterangan || ''
-    ).trim();
+
+    const keterangan =
+      String(
+        item.keterangan || ''
+      ).trim();
+
+
 
     if (!keterangan) return;
+
+
 
 
     // ============================
@@ -2439,46 +2911,52 @@ function renderTemuanBulananPA() {
     // ============================
     daftarTemuan.forEach(temuan => {
 
-      // Escape karakter khusus RegExp
+
       const escapedTemuan =
-        temuan.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        temuan.replace(
+          /[.*+?^${}()|[\]\\]/g,
+          '\\$&'
+        );
 
 
-// ============================
-// CARI SEMUA KEMUNCULAN
-// TANPA MEMBEDAKAN
-// HURUF BESAR / KECIL
-// ============================
-const regex = new RegExp(
-  escapedTemuan,
-  'gi'
-);
+
+      const regex =
+        new RegExp(
+          escapedTemuan,
+          'gi'
+        );
 
 
-// ============================
-// HITUNG SELURUH KEMUNCULAN
-// ============================
-const hasilMatch =
-  keterangan.match(regex);
+
+      const hasilMatch =
+        keterangan.match(regex);
 
 
-// ============================
-// JIKA TEMUAN DITEMUKAN
-// ============================
-if (hasilMatch) {
 
-  const jumlah =
-    hasilMatch.length;
+      if (hasilMatch) {
 
-  jumlahTemuan[temuan] += jumlah;
 
-  total += jumlah;
+        const jumlah =
+          hasilMatch.length;
 
-}
+
+
+        jumlahTemuan[temuan] += jumlah;
+
+
+
+        total += jumlah;
+
+
+      }
+
 
     });
 
+
   });
+
+
 
 
   // ============================
@@ -2488,58 +2966,105 @@ if (hasilMatch) {
     total.toLocaleString('id-ID');
 
 
+
+
+
   // ============================
   // URUTKAN TEMUAN
   // TERBANYAK → TERSEDIKIT
   // ============================
-  const hasil = daftarTemuan
-    .map((temuan, index) => ({
-      nama: temuan,
-      jumlah: jumlahTemuan[temuan],
-      urutanAwal: index
-    }))
-    .sort((a, b) => {
+  const hasil =
+    daftarTemuan
+      .map((temuan,index)=>({
 
-      // Jumlah terbanyak di atas
-      if (b.jumlah !== a.jumlah) {
-        return b.jumlah - a.jumlah;
-      }
 
-      // Jika jumlah sama,
-      // tetap mengikuti urutan daftar awal
-      return a.urutanAwal - b.urutanAwal;
+        nama:
+          temuan,
 
-    });
+
+        jumlah:
+          jumlahTemuan[temuan],
+
+
+        urutanAwal:
+          index
+
+
+      }))
+      .sort((a,b)=>{
+
+
+        if (
+          b.jumlah !== a.jumlah
+        ) {
+
+          return (
+            b.jumlah -
+            a.jumlah
+          );
+
+        }
+
+
+
+        return (
+          a.urutanAwal -
+          b.urutanAwal
+        );
+
+
+      });
+
+
+
 
 
   // ============================
   // TAMPILKAN HASIL
   // ============================
-  hasil.forEach((data, index) => {
+  hasil.forEach((data,index)=>{
 
-    const item = document.createElement('div');
 
-    item.className = 'temuan-bulanan-item';
+    const item =
+      document.createElement('div');
+
+
+
+    item.className =
+      'temuan-bulanan-item';
+
+
 
     item.innerHTML = `
+
       <div class="temuan-bulanan-rank">
         ${index + 1}
       </div>
+
 
       <div class="temuan-bulanan-name">
         ${escapeHtmlTemuanPA(data.nama)}
       </div>
 
+
       <div class="temuan-bulanan-count">
         ${data.jumlah}
       </div>
+
     `;
+
+
 
     container.appendChild(item);
 
+
+
   });
 
+
 }
+
+
 
 
 // ======================
@@ -2547,14 +3072,38 @@ if (hasilMatch) {
 // ======================
 function escapeHtmlTemuanPA(value) {
 
+
   return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+
+    .replace(
+      /&/g,
+      '&amp;'
+    )
+
+    .replace(
+      /</g,
+      '&lt;'
+    )
+
+    .replace(
+      />/g,
+      '&gt;'
+    )
+
+    .replace(
+      /"/g,
+      '&quot;'
+    )
+
+    .replace(
+      /'/g,
+      '&#039;'
+    );
+
 
 }
+
+
 
 
 // ======================
@@ -2562,39 +3111,80 @@ function escapeHtmlTemuanPA(value) {
 // ======================
 function refreshTemuanBulananPA() {
 
-  if (!Array.isArray(paItems)) return;
+
+  if (
+    !Array.isArray(paItems)
+  ) {
+
+    return;
+
+  }
+
+
 
   renderTemuanBulananPA();
 
+
 }
 
-// ====================== TOGGLE TEMUAN BULANAN ======================
+
+
+
+
+// ======================
+// TOGGLE TEMUAN BULANAN
+// ======================
 function toggleTemuanBulananPA() {
 
-  const detail = document.getElementById(
-    'temuanBulananDetailPA'
-  );
 
-  const button = document.getElementById(
-    'toggleTemuanBulananPA'
-  );
-
-  const text = document.getElementById(
-    'textToggleTemuanPA'
-  );
-
-  const icon = document.getElementById(
-    'iconToggleTemuanPA'
-  );
-
-  if (!detail || !button || !text || !icon) return;
+  const detail =
+    document.getElementById(
+      'temuanBulananDetailPA'
+    );
 
 
-  // ============================
-  // CEK STATUS DETAIL
-  // ============================
+
+  const button =
+    document.getElementById(
+      'toggleTemuanBulananPA'
+    );
+
+
+
+  const text =
+    document.getElementById(
+      'textToggleTemuanPA'
+    );
+
+
+
+  const icon =
+    document.getElementById(
+      'iconToggleTemuanPA'
+    );
+
+
+
+  if (
+    !detail ||
+    !button ||
+    !text ||
+    !icon
+  ) {
+
+    return;
+
+  }
+
+
+
+
+
   const sedangTampil =
     detail.style.display !== 'none';
+
+
+
 
 
   // ============================
@@ -2602,17 +3192,32 @@ function toggleTemuanBulananPA() {
   // ============================
   if (!sedangTampil) {
 
-    detail.style.display = 'block';
 
-    text.textContent = 'Hide';
-    icon.textContent = '▲';
+    detail.style.display =
+      'block';
+
+
+
+    text.textContent =
+      'Hide';
+
+
+
+    icon.textContent =
+      '▲';
+
+
 
     button.setAttribute(
       'aria-expanded',
       'true'
     );
 
+
   }
+
+
+
 
 
   // ============================
@@ -2620,17 +3225,30 @@ function toggleTemuanBulananPA() {
   // ============================
   else {
 
-    detail.style.display = 'none';
 
-    text.textContent = 'Unhide';
-    icon.textContent = '▼';
+    detail.style.display =
+      'none';
+
+
+
+    text.textContent =
+      'Detail';
+
+
+
+    icon.textContent =
+      '▼';
+
+
 
     button.setAttribute(
       'aria-expanded',
       'false'
     );
 
+
   }
+
 
 }
 
@@ -2684,9 +3302,29 @@ function toggleTemuanBulananPA() {
 
     <div class="temuan-bulanan-title">
 
-      <h3>Temuan Dalam 1 Bulan</h3>
+      <h3>DATA TEMUAN</h3>
 
-      <span id="periodeTemuanInspek">-</span>
+<span id="periodeTemuanInspek">-</span>
+
+
+<select
+  id="filterBulanTemuanInspek"
+  onchange="renderTemuanBulananInspek()">
+
+  <option value="0">Januari</option>
+  <option value="1">Februari</option>
+  <option value="2">Maret</option>
+  <option value="3">April</option>
+  <option value="4">Mei</option>
+  <option value="5">Juni</option>
+  <option value="6">Juli</option>
+  <option value="7">Agustus</option>
+  <option value="8">September</option>
+  <option value="9">Oktober</option>
+  <option value="10">November</option>
+  <option value="11">Desember</option>
+
+</select>
 
     </div>
 
@@ -2712,7 +3350,7 @@ function toggleTemuanBulananPA() {
 
         <span id="iconToggleTemuanInspek">▼</span>
 
-        <span id="textToggleTemuanInspek">Unhide</span>
+        <span id="textToggleTemuanInspek">Detail</span>
 
       </button>
 
@@ -2936,24 +3574,69 @@ function renderTemuanBulananInspek() {
     'totalTemuanInspek'
   );
 
+  const bulanSelect = document.getElementById(
+    'filterBulanTemuanInspek'
+  );
+
+
   if (!container || !periodeEl || !totalEl) return;
+
 
   container.innerHTML = '';
 
 
+
   // ============================
-  // BULAN BERJALAN
+  // BULAN BERJALAN + FILTER
   // ============================
   const sekarang = new Date();
+
 
   const tahunSekarang =
     sekarang.getFullYear();
 
+
+
+  // ============================
+  // DEFAULT BULAN SAAT PERTAMA LOAD
+  // ============================
+  if (bulanSelect) {
+
+
+    const sudahDipilih =
+      bulanSelect.dataset.loaded;
+
+
+
+    if (!sudahDipilih) {
+
+
+      bulanSelect.value =
+        sekarang.getMonth();
+
+
+
+      bulanSelect.dataset.loaded =
+        "true";
+
+
+    }
+
+
+  }
+
+
+
   const bulanSekarang =
-    sekarang.getMonth();
+    bulanSelect
+      ? Number(bulanSelect.value)
+      : sekarang.getMonth();
+
+
 
 
   const namaBulan = [
+
     'Januari',
     'Februari',
     'Maret',
@@ -2966,60 +3649,76 @@ function renderTemuanBulananInspek() {
     'Oktober',
     'November',
     'Desember'
+
   ];
+
+
 
 
   periodeEl.textContent =
     `${namaBulan[bulanSekarang]} ${tahunSekarang}`;
 
 
+
+  if (bulanSelect) {
+
+    bulanSelect.value =
+      bulanSekarang;
+
+  }
+
+
+
+
   // ============================
   // DAFTAR TEMUAN STANDAR
   // ============================
-const daftarTemuan = [
+  const daftarTemuan = [
 
-  // ============================
-  // TEMUAN CETAK
-  // ============================
-  'Warna',
-  'Noda',
-  'Ghosting',
-  'Terhapus',
-  'Galang',
-  'MisRegis',
-  'Garis',
-  'Botak',
-  'Set-Off',
-  'Scumming',
-  'Oksidasi',
-  'Gatra',
-  'Salur',
-  'Barcode/QR',
 
-  // ============================
-  // TEMUAN PONCH
-  // ============================
-  'Ponch Lari',
-  'Ponch Pecah',
-  'Ponch Tidak Putus',
-  'Tidak Ada Embose',
-  'Embose Lari',
+    // TEMUAN CETAK
+    'Warna',
+    'Noda',
+    'Ghosting',
+    'Terhapus',
+    'Galang',
+    'MisRegis',
+    'Garis',
+    'Botak',
+    'Set-Off',
+    'Scumming',
+    'Oksidasi',
+    'Gatra',
+    'Salur',
+    'Barcode/QR',
 
-  // ============================
-  // TEMUAN VARNISH
-  // ============================
-  'Varnish Tidak Rata',
-  'Bubble',
-  'Varnish Bergaris',
-  'Tidak Ada Varnish',
-  'Glossy Kurang',
 
-  // ============================
-  // TEMUAN POTONG
-  // ============================
-  'Potongan Lari'
 
-];
+    // TEMUAN PONCH
+    'Ponch Lari',
+    'Ponch Pecah',
+    'Ponch Tidak Putus',
+    'Tidak Ada Embose',
+    'Embose Lari',
+
+
+
+    // TEMUAN VARNISH
+    'Varnish Tidak Rata',
+    'Bubble',
+    'Varnish Bergaris',
+    'Tidak Ada Varnish',
+    'Glossy Kurang',
+
+
+
+    // TEMUAN POTONG
+    'Potongan Lari'
+
+
+  ];
+
+
 
 
   // ============================
@@ -3027,11 +3726,19 @@ const daftarTemuan = [
   // ============================
   const jumlahTemuan = {};
 
+
+
   daftarTemuan.forEach(temuan => {
+
     jumlahTemuan[temuan] = 0;
+
   });
 
+
+
   let total = 0;
+
+
 
 
   // ============================
@@ -3039,50 +3746,76 @@ const daftarTemuan = [
   // ============================
   function parseTanggal(value) {
 
+
     if (!value) return null;
+
+
 
     if (
       value instanceof Date &&
       !isNaN(value.getTime())
     ) {
+
       return value;
+
     }
 
-    const str = String(value).trim();
+
+
+    const str =
+      String(value).trim();
+
+
 
     if (!str) return null;
 
+
+
     const bulanMap = {
 
-      januari: 0,
-      februari: 1,
-      maret: 2,
-      april: 3,
-      mei: 4,
-      juni: 5,
-      juli: 6,
-      agustus: 7,
-      september: 8,
-      oktober: 9,
-      november: 10,
-      desember: 11
+
+      januari:0,
+      februari:1,
+      maret:2,
+      april:3,
+      mei:4,
+      juni:5,
+      juli:6,
+      agustus:7,
+      september:8,
+      oktober:9,
+      november:10,
+      desember:11
+
 
     };
 
-    const matchIndo = str.match(
-      /^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/
-    );
+
+
+    const matchIndo =
+      str.match(
+        /^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/
+      );
+
+
 
     if (matchIndo) {
+
 
       const hari =
         Number(matchIndo[1]);
 
+
+
       const namaBulanTanggal =
         matchIndo[2].toLowerCase();
 
+
+
       const tahun =
         Number(matchIndo[3]);
+
+
 
       if (
         Object.prototype.hasOwnProperty.call(
@@ -3091,26 +3824,41 @@ const daftarTemuan = [
         )
       ) {
 
+
         return new Date(
           tahun,
           bulanMap[namaBulanTanggal],
           hari
         );
 
+
       }
 
+
     }
+
+
+
 
     const parsed =
       new Date(str);
 
+
+
     if (!isNaN(parsed.getTime())) {
+
       return parsed;
+
     }
+
+
 
     return null;
 
+
   }
+
+
 
 
   // ============================
@@ -3118,42 +3866,66 @@ const daftarTemuan = [
   // ============================
   if (!Array.isArray(inspekItems)) {
 
-    totalEl.textContent = '0';
+
+    totalEl.textContent =
+      '0';
+
+
 
     container.innerHTML = `
+
       <div class="temuan-empty">
         Data QC INSPEKSI belum tersedia.
       </div>
+
     `;
+
+
 
     return;
 
-  }
 
+  }
 
   // ============================
   // LOOP DATA INSPEK
   // ============================
   inspekItems.forEach(item => {
 
+
     const tanggal =
       parseTanggal(item.tanggal);
 
+
+
     if (!tanggal) return;
 
+
+
+    // ============================
+    // FILTER BULAN + TAHUN
+    // ============================
     if (
       tanggal.getFullYear() !== tahunSekarang ||
       tanggal.getMonth() !== bulanSekarang
     ) {
+
       return;
+
     }
+
+
 
     const keterangan =
       String(
         item.keterangan || ''
       ).trim();
 
+
+
     if (!keterangan) return;
+
+
 
 
     // ============================
@@ -3161,43 +3933,53 @@ const daftarTemuan = [
     // ============================
     daftarTemuan.forEach(temuan => {
 
+
       const escapedTemuan =
         temuan.replace(
           /[.*+?^${}()|[\]\\]/g,
           '\\$&'
         );
 
-      // ============================
-      // CARI SEMUA KEMUNCULAN
-      // TANPA MEMBEDAKAN
-      // HURUF BESAR / KECIL
-      // ============================
+
+
       const regex =
         new RegExp(
           escapedTemuan,
           'gi'
         );
 
-      // ============================
-      // HITUNG SELURUH KEMUNCULAN
-      // ============================
+
+
       const hasilMatch =
         keterangan.match(regex);
 
+
+
       if (hasilMatch) {
+
 
         const jumlah =
           hasilMatch.length;
 
+
+
         jumlahTemuan[temuan] += jumlah;
+
+
 
         total += jumlah;
 
+
       }
+
 
     });
 
+
   });
+
+
+
 
   // ============================
   // TOTAL SELURUH TEMUAN
@@ -3206,27 +3988,34 @@ const daftarTemuan = [
     total.toLocaleString('id-ID');
 
 
+
+
+
   // ============================
   // URUTKAN TEMUAN
   // TERBANYAK → TERSEDIKIT
   // ============================
   const hasil =
     daftarTemuan
-      .map((temuan, index) => ({
+      .map((temuan,index)=>({
 
-        nama: temuan,
+
+        nama:
+          temuan,
+
 
         jumlah:
           jumlahTemuan[temuan],
 
+
         urutanAwal:
           index
 
+
       }))
-      .sort((a, b) => {
+      .sort((a,b)=>{
 
 
-        // Jumlah terbanyak di atas
         if (
           b.jumlah !== a.jumlah
         ) {
@@ -3239,58 +4028,75 @@ const daftarTemuan = [
         }
 
 
-        // Jika jumlah sama,
-        // tetap mengikuti urutan awal
+
         return (
           a.urutanAwal -
           b.urutanAwal
         );
 
+
       });
+
+
+
 
 
   // ============================
   // TAMPILKAN HASIL
   // ============================
   hasil.forEach(
-    (data, index) => {
+    (data,index)=>{
+
 
       const item =
         document.createElement('div');
+
+
 
       item.className =
         'temuan-bulanan-item';
 
 
+
       item.innerHTML = `
+
 
         <div class="temuan-bulanan-rank">
           ${index + 1}
         </div>
 
+
         <div class="temuan-bulanan-name">
           ${escapeHtmlTemuanInspek(data.nama)}
         </div>
+
 
         <div class="temuan-bulanan-count">
           ${data.jumlah}
         </div>
 
+
       `;
+
 
 
       container.appendChild(item);
 
+
     }
   );
 
+
 }
+
+
 
 
 // ======================
 // ESCAPE HTML
 // ======================
 function escapeHtmlTemuanInspek(value) {
+
 
   return String(value)
 
@@ -3319,7 +4125,10 @@ function escapeHtmlTemuanInspek(value) {
       '&#039;'
     );
 
+
 }
+
+
 
 
 // ======================
@@ -3327,15 +4136,23 @@ function escapeHtmlTemuanInspek(value) {
 // ======================
 function refreshTemuanBulananInspek() {
 
+
   if (
     !Array.isArray(inspekItems)
   ) {
+
     return;
+
   }
+
+
 
   renderTemuanBulananInspek();
 
+
 }
+
+
 
 
 // ======================
@@ -3343,10 +4160,12 @@ function refreshTemuanBulananInspek() {
 // ======================
 function toggleTemuanBulananInspek() {
 
+
   const detail =
     document.getElementById(
       'temuanBulananDetailInspek'
     );
+
 
 
   const button =
@@ -3355,10 +4174,12 @@ function toggleTemuanBulananInspek() {
     );
 
 
+
   const text =
     document.getElementById(
       'textToggleTemuanInspek'
     );
+
 
 
   const icon =
@@ -3367,739 +4188,6 @@ function toggleTemuanBulananInspek() {
     );
 
 
-  if (
-    !detail ||
-    !button ||
-    !text ||
-    !icon
-  ) {
-    return;
-  }
-
-
-  // ============================
-  // CEK STATUS DETAIL
-  // ============================
-  const sedangTampil =
-    detail.style.display !== 'none';
-
-
-  // ============================
-  // UNHIDE
-  // ============================
-  if (!sedangTampil) {
-
-    detail.style.display =
-      'block';
-
-    text.textContent =
-      'Hide';
-
-    icon.textContent =
-      '▲';
-
-    button.setAttribute(
-      'aria-expanded',
-      'true'
-    );
-
-  }
-
-
-  // ============================
-  // HIDE
-  // ============================
-  else {
-
-    detail.style.display =
-      'none';
-
-    text.textContent =
-      'Unhide';
-
-    icon.textContent =
-      '▼';
-
-    button.setAttribute(
-      'aria-expanded',
-      'false'
-    );
-
-  }
-
-}
-
-</script>
-
-
-
-
-
-
-
-<!-- ======================== QC LEM ======================== -->
-<h2 class="qc-title qc-lem">QC LEM</h2>
-
-<!-- ================= INFO TOTAL ================= -->
-<div class="total-wrapper">
-
-  <div class="total-box lem">
-    Total Order<br>
-    <strong id="countLem">0</strong>
-  </div>
-
-  <div class="total-box lem total-click"
-       onclick="document.getElementById('toggleLemTO').click()">
-    Total Pending<br>
-    <strong id="countTOLem">0</strong>
-  </div>
-
-  <div class="total-box lem total-click"
-       onclick="document.getElementById('toggleLemProses').click()">
-    Total Proses<br>
-    <strong id="countProsesLem">0</strong>
-  </div>
-
-  <div class="total-box lem total-click"
-       onclick="document.getElementById('toggleLemSelesai').click()">
-    Total Selesai<br>
-    <strong id="countSelesaiLem">0</strong>
-  </div>
-
-</div>
-
-<!-- ================= PENDING ================= -->
-<button id="toggleLemTO" class="toggle-btn hidden-toggle">Show</button>
-<div id="sectionLemTO" style="display:none;">
-  <input id="filterTOLem" class="filter-input" placeholder="🔍 Pencarian">
-  <div class="grid-wrapper">
-    <div id="dashboardLemTO" class="grid-container"></div>
-  </div>
-</div>
-
-<!-- ================= PROSES ================= -->
-<button id="toggleLemProses" class="toggle-btn hidden-toggle">Show</button>
-<div id="sectionLemProses" style="display:none;">
-  <input id="filterProsesLem" class="filter-input" placeholder="🔍 Pencarian">
-  <div class="grid-wrapper">
-    <div id="dashboardLemProses" class="grid-container"></div>
-  </div>
-</div>
-
-<!-- ================= SELESAI ================= -->
-<button id="toggleLemSelesai" class="toggle-btn hidden-toggle">Show</button>
-<div id="sectionLemSelesai" style="display:none;">
-  <input id="filterSelesaiLem" class="filter-input" placeholder="🔍 Pencarian">
-  <div class="grid-wrapper">
-    <div id="dashboardLemSelesai" class="grid-container"></div>
-  </div>
-</div>
-
-<!-- ================= MODAL DETAIL ================= -->
-<div id="detailLemModal" class="modal-fin">
-  <div class="modal-fin-content">
-    <div class="modal-fin-header">
-      <span>Detail QC Lem</span>
-      <button onclick="closeDetailModalLem()">×</button>
-    </div>
-
-    <div class="modal-fin-body" id="detailLemBody"></div>
-
-    <div class="modal-fin-footer">
-      <button id="openReportFromDetailLemBtn" class="btn-report">📄 Report</button>
-      <button onclick="closeDetailModalLem()">Tutup</button>
-    </div>
-  </div>
-</div>
-
-<!-- ================= TEMUAN DALAM 1 BULAN - LEM ================= -->
-<div class="temuan-bulanan-wrapper">
-
-  <!-- ================= HEADER ================= -->
-  <div class="temuan-bulanan-header">
-
-    <div class="temuan-bulanan-title">
-
-      <h3>Temuan Dalam 1 Bulan</h3>
-
-      <span id="periodeTemuanLem">-</span>
-
-    </div>
-
-
-    <!-- ================= TOTAL + TOGGLE ================= -->
-    <div class="temuan-bulanan-actions">
-
-      <div class="temuan-bulanan-total">
-
-        <small>Total Temuan</small>
-
-        <strong id="totalTemuanLem">0</strong>
-
-      </div>
-
-
-      <button
-        type="button"
-        id="toggleTemuanBulananLem"
-        class="temuan-toggle-btn"
-        onclick="toggleTemuanBulananLem()"
-        aria-expanded="false">
-
-        <span id="iconToggleTemuanLem">▼</span>
-
-        <span id="textToggleTemuanLem">Unhide</span>
-
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <!-- ================= DETAIL TEMUAN ================= -->
-  <div
-    id="temuanBulananDetailLem"
-    class="temuan-bulanan-detail"
-    style="display:none;">
-
-    <div
-      id="temuanBulananLem"
-      class="temuan-bulanan-list">
-
-      <div class="temuan-empty">
-        Belum ada temuan pada bulan ini.
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-
-
-<script>
-// ================== BUKA DETAIL ==================
-function showDetailModalLem(item){
-  const body = document.getElementById("detailLemBody");
-
-  body.innerHTML = `
-    <strong>No KS:</strong> ${item.noKS}<br>
-    <strong>Nama:</strong> ${item.nama}<br>
-    <strong>Status:</strong> ${item.status || '-'}
-  `;
-
-  document.getElementById("detailLemModal").classList.add("show");
-}
-
-// ================== TUTUP DETAIL ==================
-function closeDetailModalLem(){
-  document.getElementById("detailLemModal").classList.remove("show");
-}
-
-// ====================== TEMUAN DALAM 1 BULAN - LEM ======================
-function renderTemuanBulananLem() {
-
-  const container = document.getElementById(
-    'temuanBulananLem'
-  );
-
-  const periodeEl = document.getElementById(
-    'periodeTemuanLem'
-  );
-
-  const totalEl = document.getElementById(
-    'totalTemuanLem'
-  );
-
-  if (!container || !periodeEl || !totalEl) return;
-
-  container.innerHTML = '';
-
-
-  // ============================
-  // BULAN BERJALAN
-  // ============================
-  const sekarang = new Date();
-
-  const tahunSekarang =
-    sekarang.getFullYear();
-
-  const bulanSekarang =
-    sekarang.getMonth();
-
-
-  const namaBulan = [
-    'Januari',
-    'Februari',
-    'Maret',
-    'April',
-    'Mei',
-    'Juni',
-    'Juli',
-    'Agustus',
-    'September',
-    'Oktober',
-    'November',
-    'Desember'
-  ];
-
-
-  periodeEl.textContent =
-    `${namaBulan[bulanSekarang]} ${tahunSekarang}`;
-
-
-// ============================
-// DAFTAR TEMUAN STANDAR
-// ============================
-const daftarTemuan = [
-
-  // ============================
-  // TEMUAN CETAK
-  // ============================
-  'Warna',
-  'Noda',
-  'Ghosting',
-  'Terhapus',
-  'Galang',
-  'MisRegis',
-  'Garis',
-  'Botak',
-  'Set-Off',
-  'Scumming',
-  'Oksidasi',
-  'Gatra',
-  'Salur',
-  'Barcode/QR',
-
-  // ============================
-  // TEMUAN LEM
-  // ============================
-  'No Glue',
-  'Over Glue',
-  'Lem Tidak Rata',
-  'Lengket',
-  'Dus Sobek',
-  'Dus Baret',
-  'Dus Galeng',
-  'Dus Tidak Siku',
-  'Kupingan Ketekuk',
-
-  // ============================
-  // TEMUAN PONCH
-  // ============================
-  'Ponch Lari',
-  'Ponch Pecah',
-  'Ponch Tidak Putus',
-  'Tidak Ada Embose',
-  'Embose Lari',
-
-  // ============================
-  // TEMUAN VARNISH
-  // ============================
-  'Varnish Tidak Rata',
-  'Bubble',
-  'Varnish Bergaris',
-  'Tidak Ada Varnish',
-  'Glossy Kurang',
-
-  // ============================
-  // TEMUAN POTONG
-  // ============================
-  'Potongan Lari'
-
-];
-
-
-  // ============================
-  // PENYIMPAN JUMLAH TEMUAN
-  // ============================
-  const jumlahTemuan = {};
-
-  daftarTemuan.forEach(temuan => {
-    jumlahTemuan[temuan] = 0;
-  });
-
-  let total = 0;
-
-
-  // ============================
-  // PARSER TANGGAL
-  // ============================
-  function parseTanggal(value) {
-
-    if (!value) return null;
-
-
-    // Jika sudah berupa Date
-    if (
-      value instanceof Date &&
-      !isNaN(value.getTime())
-    ) {
-      return value;
-    }
-
-
-    const str = String(value).trim();
-
-    if (!str) return null;
-
-
-    // ============================
-    // FORMAT INDONESIA
-    // Contoh:
-    // 29 Juli 2026, 15.30.20
-    // ============================
-    const bulanMap = {
-
-      januari: 0,
-      februari: 1,
-      maret: 2,
-      april: 3,
-      mei: 4,
-      juni: 5,
-      juli: 6,
-      agustus: 7,
-      september: 8,
-      oktober: 9,
-      november: 10,
-      desember: 11
-
-    };
-
-
-    const matchIndo = str.match(
-      /^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/
-    );
-
-
-    if (matchIndo) {
-
-      const hari =
-        Number(matchIndo[1]);
-
-      const namaBulanTanggal =
-        matchIndo[2].toLowerCase();
-
-      const tahun =
-        Number(matchIndo[3]);
-
-
-      if (
-        Object.prototype.hasOwnProperty.call(
-          bulanMap,
-          namaBulanTanggal
-        )
-      ) {
-
-        return new Date(
-          tahun,
-          bulanMap[namaBulanTanggal],
-          hari
-        );
-
-      }
-
-    }
-
-
-    // ============================
-    // FORMAT DATE / STRING LAIN
-    // ============================
-    const parsed =
-      new Date(str);
-
-
-    if (!isNaN(parsed.getTime())) {
-      return parsed;
-    }
-
-
-    return null;
-
-  }
-
-
-  // ============================
-  // CEK DATA LEM
-  // ============================
-  if (!Array.isArray(lemItems)) {
-
-    totalEl.textContent = '0';
-
-    container.innerHTML = `
-      <div class="temuan-empty">
-        Data QC LEM belum tersedia.
-      </div>
-    `;
-
-    return;
-
-  }
-
-
-  // ============================
-  // LOOP DATA LEM
-  // ============================
-  lemItems.forEach(item => {
-
-
-    // ============================
-    // CEK TANGGAL
-    // ============================
-    const tanggal =
-      parseTanggal(item.tanggal);
-
-
-    if (!tanggal) return;
-
-
-    // ============================
-    // HANYA BULAN & TAHUN BERJALAN
-    // ============================
-    if (
-      tanggal.getFullYear() !== tahunSekarang ||
-      tanggal.getMonth() !== bulanSekarang
-    ) {
-      return;
-    }
-
-
-    // ============================
-    // AMBIL KETERANGAN
-    // DARI SPREADSHEET
-    // ============================
-    const keterangan =
-      String(
-        item.keterangan || ''
-      ).trim();
-
-
-    if (!keterangan) return;
-
-
-    // ============================
-    // CEK SETIAP TEMUAN STANDAR
-    // ============================
-    daftarTemuan.forEach(temuan => {
-
-
-      // Escape karakter khusus RegExp
-      const escapedTemuan =
-        temuan.replace(
-          /[.*+?^${}()|[\]\\]/g,
-          '\\$&'
-        );
-
-
-// ============================
-// CARI SEMUA KEMUNCULAN
-// TANPA MEMBEDAKAN
-// HURUF BESAR / KECIL
-// ============================
-const regex =
-  new RegExp(
-    escapedTemuan,
-    'gi'
-  );
-
-
-// ============================
-// HITUNG SELURUH KEMUNCULAN
-// ============================
-const hasilMatch =
-  keterangan.match(regex);
-
-
-// ============================
-// JIKA TEMUAN DITEMUKAN
-// ============================
-if (hasilMatch) {
-
-  const jumlah =
-    hasilMatch.length;
-
-  jumlahTemuan[temuan] += jumlah;
-
-  total += jumlah;
-
-}
-
-    });
-
-  });
-
-
-  // ============================
-  // TOTAL SELURUH TEMUAN
-  // ============================
-  totalEl.textContent =
-    total.toLocaleString('id-ID');
-
-
-  // ============================
-  // URUTKAN TEMUAN
-  // TERBANYAK → TERSEDIKIT
-  // ============================
-  const hasil =
-    daftarTemuan
-      .map((temuan, index) => ({
-
-        nama: temuan,
-
-        jumlah:
-          jumlahTemuan[temuan],
-
-        urutanAwal:
-          index
-
-      }))
-      .sort((a, b) => {
-
-
-        // Jumlah terbanyak di atas
-        if (
-          b.jumlah !== a.jumlah
-        ) {
-
-          return (
-            b.jumlah -
-            a.jumlah
-          );
-
-        }
-
-
-        // Jika jumlah sama,
-        // tetap mengikuti urutan awal
-        return (
-          a.urutanAwal -
-          b.urutanAwal
-        );
-
-      });
-
-
-  // ============================
-  // TAMPILKAN HASIL
-  // ============================
-  hasil.forEach(
-    (data, index) => {
-
-      const item =
-        document.createElement('div');
-
-      item.className =
-        'temuan-bulanan-item';
-
-
-      item.innerHTML = `
-
-        <div class="temuan-bulanan-rank">
-          ${index + 1}
-        </div>
-
-        <div class="temuan-bulanan-name">
-          ${escapeHtmlTemuanLem(data.nama)}
-        </div>
-
-        <div class="temuan-bulanan-count">
-          ${data.jumlah}
-        </div>
-
-      `;
-
-
-      container.appendChild(item);
-
-    }
-  );
-
-}
-
-
-// ======================
-// ESCAPE HTML
-// ======================
-function escapeHtmlTemuanLem(value) {
-
-  return String(value)
-
-    .replace(
-      /&/g,
-      '&amp;'
-    )
-
-    .replace(
-      /</g,
-      '&lt;'
-    )
-
-    .replace(
-      />/g,
-      '&gt;'
-    )
-
-    .replace(
-      /"/g,
-      '&quot;'
-    )
-
-    .replace(
-      /'/g,
-      '&#039;'
-    );
-
-}
-
-
-// ======================
-// REFRESH TEMUAN BULANAN
-// ======================
-function refreshTemuanBulananLem() {
-
-  if (
-    !Array.isArray(lemItems)
-  ) {
-    return;
-  }
-
-
-  renderTemuanBulananLem();
-
-}
-
-
-// ======================
-// TOGGLE TEMUAN BULANAN
-// ======================
-function toggleTemuanBulananLem() {
-
-  const detail =
-    document.getElementById(
-      'temuanBulananDetailLem'
-    );
-
-
-  const button =
-    document.getElementById(
-      'toggleTemuanBulananLem'
-    );
-
-
-  const text =
-    document.getElementById(
-      'textToggleTemuanLem'
-    );
-
-
-  const icon =
-    document.getElementById(
-      'iconToggleTemuanLem'
-    );
-
 
   if (
     !detail ||
@@ -4107,15 +4195,19 @@ function toggleTemuanBulananLem() {
     !text ||
     !icon
   ) {
+
     return;
+
   }
 
 
-  // ============================
-  // CEK STATUS DETAIL
-  // ============================
+
+
   const sedangTampil =
     detail.style.display !== 'none';
+
+
+
 
 
   // ============================
@@ -4123,21 +4215,31 @@ function toggleTemuanBulananLem() {
   // ============================
   if (!sedangTampil) {
 
+
     detail.style.display =
       'block';
+
+
 
     text.textContent =
       'Hide';
 
+
+
     icon.textContent =
       '▲';
+
+
 
     button.setAttribute(
       'aria-expanded',
       'true'
     );
 
+
   }
+
+
 
 
   // ============================
@@ -4145,21 +4247,30 @@ function toggleTemuanBulananLem() {
   // ============================
   else {
 
+
     detail.style.display =
       'none';
 
+
+
     text.textContent =
-      'Unhide';
+      'Detail';
+
+
 
     icon.textContent =
       '▼';
+
+
 
     button.setAttribute(
       'aria-expanded',
       'false'
     );
 
+
   }
+
 
 }
 
@@ -4252,9 +4363,28 @@ function toggleTemuanBulananLem() {
 
     <div class="temuan-bulanan-title">
 
-      <h3>Temuan Dalam 1 Bulan</h3>
+      <h3>DATA TEMUAN</h3>
 
-      <span id="periodeTemuanFinishing">-</span>
+<span id="periodeTemuanFinishing">-</span>
+
+<select
+  id="filterBulanTemuanFinishing"
+  onchange="renderTemuanBulananFinishing()">
+
+  <option value="0">Januari</option>
+  <option value="1">Februari</option>
+  <option value="2">Maret</option>
+  <option value="3">April</option>
+  <option value="4">Mei</option>
+  <option value="5">Juni</option>
+  <option value="6">Juli</option>
+  <option value="7">Agustus</option>
+  <option value="8">September</option>
+  <option value="9">Oktober</option>
+  <option value="10">November</option>
+  <option value="11">Desember</option>
+
+</select>
 
     </div>
 
@@ -4280,7 +4410,7 @@ function toggleTemuanBulananLem() {
 
         <span id="iconToggleTemuanFinishing">▼</span>
 
-        <span id="textToggleTemuanFinishing">Unhide</span>
+        <span id="textToggleTemuanFinishing">Detail</span>
 
       </button>
 
@@ -4348,24 +4478,58 @@ function renderTemuanBulananFinishing() {
     'totalTemuanFinishing'
   );
 
+  const bulanSelect = document.getElementById(
+    'filterBulanTemuanFinishing'
+  );
+
+
   if (!container || !periodeEl || !totalEl) return;
+
 
   container.innerHTML = '';
 
 
   // ============================
-  // BULAN BERJALAN
+  // BULAN BERJALAN + FILTER
   // ============================
   const sekarang = new Date();
 
   const tahunSekarang =
     sekarang.getFullYear();
 
+
+  // ============================
+  // DEFAULT BULAN SAAT PERTAMA LOAD
+  // ============================
+  if (bulanSelect) {
+
+    const sudahDipilih =
+      bulanSelect.dataset.loaded;
+
+
+    if (!sudahDipilih) {
+
+      bulanSelect.value =
+        sekarang.getMonth();
+
+
+      bulanSelect.dataset.loaded =
+        "true";
+
+    }
+
+  }
+
+
   const bulanSekarang =
-    sekarang.getMonth();
+    bulanSelect
+      ? Number(bulanSelect.value)
+      : sekarang.getMonth();
+
 
 
   const namaBulan = [
+
     'Januari',
     'Februari',
     'Maret',
@@ -4378,6 +4542,7 @@ function renderTemuanBulananFinishing() {
     'Oktober',
     'November',
     'Desember'
+
   ];
 
 
@@ -4385,14 +4550,22 @@ function renderTemuanBulananFinishing() {
     `${namaBulan[bulanSekarang]} ${tahunSekarang}`;
 
 
+  if (bulanSelect) {
+
+    bulanSelect.value =
+      bulanSekarang;
+
+  }
+
+
+
 // ============================
 // DAFTAR TEMUAN STANDAR
 // ============================
 const daftarTemuan = [
 
-  // ============================
+
   // TEMUAN CETAK
-  // ============================
   'Warna',
   'Noda',
   'Ghosting',
@@ -4408,9 +4581,8 @@ const daftarTemuan = [
   'Salur',
   'Barcode/QR',
 
-  // ============================
+
   // TEMUAN LEM
-  // ============================
   'No Glue',
   'Over Glue',
   'Lem Tidak Rata',
@@ -4421,30 +4593,28 @@ const daftarTemuan = [
   'Dus Tidak Siku',
   'Kupingan Ketekuk',
 
-  // ============================
+
   // TEMUAN PONCH
-  // ============================
   'Ponch Lari',
   'Ponch Pecah',
   'Ponch Tidak Putus',
   'Tidak Ada Embose',
   'Embose Lari',
 
-  // ============================
+
   // TEMUAN VARNISH
-  // ============================
   'Varnish Tidak Rata',
   'Bubble',
   'Varnish Bergaris',
   'Tidak Ada Varnish',
   'Glossy Kurang',
 
-  // ============================
+
   // TEMUAN POTONG
-  // ============================
   'Potongan Lari'
 
 ];
+
 
 
   // ============================
@@ -4452,11 +4622,16 @@ const daftarTemuan = [
   // ============================
   const jumlahTemuan = {};
 
+
   daftarTemuan.forEach(temuan => {
+
     jumlahTemuan[temuan] = 0;
+
   });
 
+
   let total = 0;
+
 
 
   // ============================
@@ -4464,61 +4639,73 @@ const daftarTemuan = [
   // ============================
   function parseTanggal(value) {
 
+
     if (!value) return null;
 
 
-    // Jika sudah berupa Date
+
     if (
       value instanceof Date &&
       !isNaN(value.getTime())
     ) {
+
       return value;
+
     }
 
 
-    const str = String(value).trim();
+
+    const str =
+      String(value).trim();
+
+
 
     if (!str) return null;
 
 
-    // ============================
-    // FORMAT INDONESIA
-    // Contoh:
-    // 29 Juli 2026, 15.30.20
-    // ============================
+
     const bulanMap = {
 
-      januari: 0,
-      februari: 1,
-      maret: 2,
-      april: 3,
-      mei: 4,
-      juni: 5,
-      juli: 6,
-      agustus: 7,
-      september: 8,
-      oktober: 9,
-      november: 10,
-      desember: 11
+
+      januari:0,
+      februari:1,
+      maret:2,
+      april:3,
+      mei:4,
+      juni:5,
+      juli:6,
+      agustus:7,
+      september:8,
+      oktober:9,
+      november:10,
+      desember:11
+
 
     };
 
 
-    const matchIndo = str.match(
-      /^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/
-    );
+
+    const matchIndo =
+      str.match(
+        /^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/
+      );
+
 
 
     if (matchIndo) {
 
+
       const hari =
         Number(matchIndo[1]);
+
 
       const namaBulanTanggal =
         matchIndo[2].toLowerCase();
 
+
       const tahun =
         Number(matchIndo[3]);
+
 
 
       if (
@@ -4528,32 +4715,39 @@ const daftarTemuan = [
         )
       ) {
 
+
         return new Date(
           tahun,
           bulanMap[namaBulanTanggal],
           hari
         );
 
+
       }
+
 
     }
 
 
-    // ============================
-    // FORMAT DATE / STRING LAIN
-    // ============================
+
     const parsed =
       new Date(str);
 
 
+
     if (!isNaN(parsed.getTime())) {
+
       return parsed;
+
     }
+
 
 
     return null;
 
+
   }
+
 
 
   // ============================
@@ -4561,18 +4755,23 @@ const daftarTemuan = [
   // ============================
   if (!Array.isArray(finishingItems)) {
 
-    totalEl.textContent = '0';
+
+    totalEl.textContent =
+      '0';
+
 
     container.innerHTML = `
+
       <div class="temuan-empty">
         Data QC FINISHING belum tersedia.
       </div>
+
     `;
+
 
     return;
 
   }
-
 
   // ============================
   // LOOP DATA FINISHING
@@ -4580,47 +4779,46 @@ const daftarTemuan = [
   finishingItems.forEach(item => {
 
 
-    // ============================
-    // CEK TANGGAL
-    // ============================
     const tanggal =
       parseTanggal(item.tanggal);
+
 
 
     if (!tanggal) return;
 
 
+
     // ============================
-    // HANYA BULAN & TAHUN BERJALAN
+    // FILTER BULAN + TAHUN
     // ============================
     if (
       tanggal.getFullYear() !== tahunSekarang ||
       tanggal.getMonth() !== bulanSekarang
     ) {
+
       return;
+
     }
 
 
-    // ============================
-    // AMBIL KETERANGAN
-    // DARI SPREADSHEET
-    // ============================
+
     const keterangan =
       String(
         item.keterangan || ''
       ).trim();
 
 
+
     if (!keterangan) return;
 
 
+
     // ============================
-    // CEK SETIAP TEMUAN STANDAR
+    // CEK SETIAP TEMUAN
     // ============================
     daftarTemuan.forEach(temuan => {
 
 
-      // Escape karakter khusus RegExp
       const escapedTemuan =
         temuan.replace(
           /[.*+?^${}()|[\]\\]/g,
@@ -4628,72 +4826,75 @@ const daftarTemuan = [
         );
 
 
-// ============================
-// CARI SEMUA KEMUNCULAN
-// TANPA MEMBEDAKAN
-// HURUF BESAR / KECIL
-// ============================
-const regex =
-  new RegExp(
-    escapedTemuan,
-    'gi'
-  );
+
+      const regex =
+        new RegExp(
+          escapedTemuan,
+          'gi'
+        );
 
 
-// ============================
-// HITUNG SELURUH KEMUNCULAN
-// ============================
-const hasilMatch =
-  keterangan.match(regex);
+
+      const hasilMatch =
+        keterangan.match(regex);
 
 
-// ============================
-// JIKA TEMUAN DITEMUKAN
-// ============================
-if (hasilMatch) {
 
-  const jumlah =
-    hasilMatch.length;
+      if (hasilMatch) {
 
-  jumlahTemuan[temuan] += jumlah;
 
-  total += jumlah;
+        const jumlah =
+          hasilMatch.length;
 
-}
+
+        jumlahTemuan[temuan] += jumlah;
+
+
+        total += jumlah;
+
+
+      }
+
 
     });
+
 
   });
 
 
+
   // ============================
-  // TOTAL SELURUH TEMUAN
+  // TOTAL TEMUAN
   // ============================
   totalEl.textContent =
     total.toLocaleString('id-ID');
 
 
+
   // ============================
-  // URUTKAN TEMUAN
-  // TERBANYAK → TERSEDIKIT
+  // URUTKAN HASIL
   // ============================
   const hasil =
     daftarTemuan
       .map((temuan, index) => ({
 
-        nama: temuan,
+
+        nama:
+          temuan,
+
 
         jumlah:
           jumlahTemuan[temuan],
 
+
         urutanAwal:
           index
 
+
       }))
-      .sort((a, b) => {
+      .sort((a,b)=>{
 
 
-        // Jumlah terbanyak di atas
         if (
           b.jumlah !== a.jumlah
         ) {
@@ -4706,58 +4907,73 @@ if (hasilMatch) {
         }
 
 
-        // Jika jumlah sama,
-        // tetap mengikuti urutan awal
         return (
           a.urutanAwal -
           b.urutanAwal
         );
 
+
       });
+
 
 
   // ============================
   // TAMPILKAN HASIL
   // ============================
   hasil.forEach(
-    (data, index) => {
+    (data,index)=>{
+
 
       const item =
         document.createElement('div');
+
+
 
       item.className =
         'temuan-bulanan-item';
 
 
+
       item.innerHTML = `
+
 
         <div class="temuan-bulanan-rank">
           ${index + 1}
         </div>
 
+
         <div class="temuan-bulanan-name">
           ${escapeHtmlTemuanFinishing(data.nama)}
         </div>
+
 
         <div class="temuan-bulanan-count">
           ${data.jumlah}
         </div>
 
+
       `;
+
 
 
       container.appendChild(item);
 
+
+
     }
   );
 
+
 }
+
+
 
 
 // ======================
 // ESCAPE HTML
 // ======================
 function escapeHtmlTemuanFinishing(value) {
+
 
   return String(value)
 
@@ -4786,7 +5002,10 @@ function escapeHtmlTemuanFinishing(value) {
       '&#039;'
     );
 
+
 }
+
+
 
 
 // ======================
@@ -4794,22 +5013,29 @@ function escapeHtmlTemuanFinishing(value) {
 // ======================
 function refreshTemuanBulananFinishing() {
 
+
   if (
     !Array.isArray(finishingItems)
   ) {
+
     return;
+
   }
 
 
   renderTemuanBulananFinishing();
 
+
 }
+
+
 
 
 // ======================
 // TOGGLE TEMUAN BULANAN
 // ======================
 function toggleTemuanBulananFinishing() {
+
 
   const detail =
     document.getElementById(
@@ -4835,65 +5061,74 @@ function toggleTemuanBulananFinishing() {
     );
 
 
+
   if (
     !detail ||
     !button ||
     !text ||
     !icon
   ) {
+
     return;
+
   }
 
 
-  // ============================
-  // CEK STATUS DETAIL
-  // ============================
+
   const sedangTampil =
     detail.style.display !== 'none';
 
 
-  // ============================
-  // UNHIDE
-  // ============================
+
   if (!sedangTampil) {
+
 
     detail.style.display =
       'block';
 
+
     text.textContent =
       'Hide';
 
+
     icon.textContent =
       '▲';
+
+
 
     button.setAttribute(
       'aria-expanded',
       'true'
     );
 
+
   }
 
 
-  // ============================
-  // HIDE
-  // ============================
   else {
+
 
     detail.style.display =
       'none';
 
+
     text.textContent =
-      'Unhide';
+      'Detail';
+
 
     icon.textContent =
       '▼';
+
+
 
     button.setAttribute(
       'aria-expanded',
       'false'
     );
 
+
   }
+
 
 }
 
