@@ -1634,360 +1634,550 @@ body {
 
 
 <style>
-/* ================= TEMUAN DALAM 1 BULAN ================= */
+/* =====================================================
+   TEMUAN DALAM 1 BULAN
+   MODERN UI
+===================================================== */
 
 .temuan-bulanan-wrapper {
-  width: 100%;
-  box-sizing: border-box;
-  margin: 16px 0;
-  padding: 16px;
-  background: #ffffff;
-  border: 1px solid #dbe5f0;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    margin: 18px 0;
+    padding: 22px;
+    box-sizing: border-box;
+
+    background: linear-gradient(180deg, #ffffff, #fbfdff);
+    border: 1px solid #d9e7f5;
+    border-radius: 20px;
+
+    box-shadow:
+        0 12px 30px rgba(15, 23, 42, .06),
+        0 2px 8px rgba(15, 23, 42, .04);
+
+    transition: .25s ease;
+}
+
+.temuan-bulanan-wrapper:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 16px 36px rgba(15, 23, 42, .08),
+        0 6px 16px rgba(15, 23, 42, .05);
 }
 
 
-/* ================= HEADER ================= */
+/* =====================================================
+   HEADER
+===================================================== */
 
 .temuan-bulanan-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
+
+    display: grid;
+
+    grid-template-columns: 1fr auto auto;
+
+    align-items: center;
+
+    gap: 18px;
+
+    margin-bottom: 22px;
+
 }
 
+
+/* =====================================================
+   TITLE
+===================================================== */
 
 .temuan-bulanan-title {
-  min-width: 0;
-}
 
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    min-width: 0;
+
+}
 
 .temuan-bulanan-title h3 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 700;
-  color: #003a80;
-}
 
+    margin: 0;
+
+    font-size: 24px;
+
+    font-weight: 800;
+
+    color: #0F4FA8;
+
+    letter-spacing: .3px;
+
+}
 
 .temuan-bulanan-title span {
-  display: block;
-  margin-top: 4px;
-  font-size: 13px;
-  color: #6b7280;
+
+    margin-top: 6px;
+
+    color: #64748B;
+
+    font-size: 13px;
+
 }
 
 
-/* ================= ACTION ================= */
+/* =====================================================
+   ACTION
+===================================================== */
 
 .temuan-bulanan-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
 }
 
 
-/* ================= TOTAL TEMUAN ================= */
+/* =====================================================
+   TOTAL TEMUAN
+===================================================== */
 
 .temuan-bulanan-total {
-  min-width: 90px;
-  padding: 8px 12px;
-  text-align: center;
-  background: #eaf4ff;
-  border: 1px solid #9ac8ff;
-  border-radius: 10px;
-  box-sizing: border-box;
-}
 
+    width: 120px;
+
+    height: 84px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border-radius: 18px;
+
+    background: linear-gradient(135deg, #0078D7, #2EA3FF);
+
+    color: #ffffff;
+
+    box-shadow: 0 10px 24px rgba(0, 120, 215, .25);
+
+}
 
 .temuan-bulanan-total small {
-  display: block;
-  font-size: 11px;
-  color: #4b5563;
-}
 
+    color: rgba(255,255,255,.9);
+
+    font-size: 11px;
+
+}
 
 .temuan-bulanan-total strong {
-  display: block;
-  margin-top: 2px;
-  font-size: 20px;
-  color: #003a80;
+
+    margin-top: 4px;
+
+    font-size: 34px;
+
+    font-weight: 800;
+
 }
 
 
-/* ================= TOMBOL HIDE / UNHIDE ================= */
+/* =====================================================
+   BUTTON
+===================================================== */
 
 .temuan-toggle-btn {
-  min-width: 78px;
-  height: 38px;
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
+    height: 48px;
 
-  padding: 0 10px;
+    min-width: 110px;
 
-  background: #f8fbff;
-  color: #003a80;
+    display: flex;
 
-  border: 1px solid #9ac8ff;
-  border-radius: 9px;
+    align-items: center;
 
-  font-size: 12px;
-  font-weight: 700;
+    justify-content: center;
 
-  cursor: pointer;
+    gap: 6px;
 
-  box-sizing: border-box;
+    padding: 0 22px;
 
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.15s ease;
+    border: 1px solid #D7E6F8;
+
+    border-radius: 14px;
+
+    background: #ffffff;
+
+    color: #0F4FA8;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+    box-shadow: 0 5px 14px rgba(0,0,0,.05);
+
 }
-
 
 .temuan-toggle-btn:hover {
-  background: #eaf4ff;
-  border-color: #0078D7;
-}
 
+    background: #0078D7;
+
+    color: #ffffff;
+
+    border-color: #0078D7;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 10px 24px rgba(0,120,215,.25);
+
+}
 
 .temuan-toggle-btn:active {
-  transform: scale(0.96);
-}
 
+    transform: scale(.96);
+
+}
 
 #iconToggleTemuanPA {
-  font-size: 11px;
-  line-height: 1;
+
+    font-size: 12px;
+
 }
 
 
-/* ================= DETAIL TEMUAN ================= */
+/* =====================================================
+   DETAIL
+===================================================== */
 
 .temuan-bulanan-detail {
-  width: 100%;
-  box-sizing: border-box;
+
+    width: 100%;
+
 }
 
 
-/* ================= LIST TEMUAN ================= */
+/* =====================================================
+   LIST
+===================================================== */
 
 .temuan-bulanan-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
 }
 
 
-/* ================= ITEM TEMUAN ================= */
+/* =====================================================
+   ITEM
+===================================================== */
 
 .temuan-bulanan-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
 
-  padding: 10px 12px;
+    display: flex;
 
-  background: #f8fbff;
-  border: 1px solid #dbeafe;
-  border-radius: 9px;
+    align-items: center;
 
-  box-sizing: border-box;
+    gap: 14px;
+
+    padding: 14px 16px;
+
+    background: #ffffff;
+
+    border: 1px solid #E5EEF8;
+
+    border-radius: 15px;
+
+    transition: .25s;
+
+}
+
+.temuan-bulanan-item:hover {
+
+    border-color: #6FB7FF;
+
+    transform: translateX(5px);
+
+    box-shadow: 0 8px 20px rgba(0,0,0,.05);
+
 }
 
 
-/* ================= NOMOR ================= */
+/* =====================================================
+   RANK
+===================================================== */
 
 .temuan-bulanan-rank {
-  width: 28px;
-  height: 28px;
-  min-width: 28px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    width: 40px;
 
-  background: #e5efff;
-  color: #003a80;
+    height: 40px;
 
-  border-radius: 50%;
+    min-width: 40px;
 
-  font-size: 12px;
-  font-weight: 700;
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: linear-gradient(135deg,#0078D7,#4CB3FF);
+
+    color: #ffffff;
+
+    font-size: 15px;
+
+    font-weight: 800;
+
+    box-shadow: 0 6px 15px rgba(0,120,215,.22);
+
 }
 
 
-/* ================= NAMA TEMUAN ================= */
+/* =====================================================
+   NAME
+===================================================== */
 
 .temuan-bulanan-name {
-  flex: 1;
-  min-width: 0;
 
-  font-size: 14px;
-  font-weight: 600;
-  color: #1f2937;
+    flex: 1;
 
-  word-break: break-word;
+    min-width: 0;
+
+    color: #1F2937;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    line-height: 1.5;
+
+    word-break: break-word;
+
 }
 
 
-/* ================= JUMLAH ================= */
+/* =====================================================
+   COUNT
+===================================================== */
 
 .temuan-bulanan-count {
-  min-width: 42px;
 
-  padding: 5px 9px;
+    min-width: 58px;
 
-  text-align: center;
+    padding: 8px 14px;
 
-  background: #0078D7;
-  color: #ffffff;
+    text-align: center;
 
-  border-radius: 7px;
+    border-radius: 999px;
 
-  font-size: 13px;
-  font-weight: 700;
+    background: linear-gradient(135deg,#0F4FA8,#0078D7);
 
-  box-sizing: border-box;
+    color: #ffffff;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    box-shadow: 0 5px 12px rgba(0,120,215,.18);
+
 }
 
 
-/* ================= TIDAK ADA DATA ================= */
+/* =====================================================
+   EMPTY
+===================================================== */
 
 .temuan-empty {
-  width: 100%;
-  padding: 20px;
 
-  text-align: center;
+    padding: 40px 20px;
 
-  color: #6b7280;
-  font-size: 13px;
+    text-align: center;
 
-  background: #f9fafb;
+    background: #F8FBFF;
 
-  border-radius: 9px;
-  border: 1px dashed #d1d5db;
+    border: 2px dashed #D8E4F2;
 
-  box-sizing: border-box;
-}
+    border-radius: 15px;
 
+    color: #64748B;
 
-/* ================= RESPONSIVE MOBILE ================= */
-
-@media (max-width: 600px) {
-
-  .temuan-bulanan-wrapper {
-    margin: 12px 0;
-    padding: 12px;
-  }
-
-
-  .temuan-bulanan-header {
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-
-
-  .temuan-bulanan-title h3 {
-    font-size: 16px;
-  }
-
-
-  .temuan-bulanan-title span {
-    font-size: 12px;
-  }
-
-
-  .temuan-bulanan-actions {
-    gap: 5px;
-  }
-
-
-  .temuan-bulanan-total {
-    min-width: 75px;
-    padding: 7px 9px;
-  }
-
-
-  .temuan-bulanan-total strong {
-    font-size: 18px;
-  }
-
-
-  .temuan-toggle-btn {
-    min-width: 68px;
-    height: 34px;
-    padding: 0 7px;
-    font-size: 11px;
-  }
-
-
-  .temuan-bulanan-item {
-    padding: 9px 10px;
-  }
-
-
-  .temuan-bulanan-rank {
-    width: 26px;
-    height: 26px;
-    min-width: 26px;
-  }
-
-
-  .temuan-bulanan-name {
-    font-size: 13px;
-  }
-
-
-  .temuan-bulanan-count {
-    min-width: 38px;
-    padding: 5px 7px;
-    font-size: 12px;
-  }
+    font-size: 14px;
 
 }
 
 
-/* ================= MOBILE SANGAT KECIL ================= */
+/* =====================================================
+   TABLET
+===================================================== */
 
-@media (max-width: 400px) {
+@media (max-width:992px){
 
-  .temuan-bulanan-header {
-    align-items: flex-start;
-  }
+    .temuan-bulanan-wrapper{
 
+        padding:18px;
 
-  .temuan-bulanan-actions {
-    align-items: flex-start;
-  }
+    }
 
+    .temuan-bulanan-title h3{
 
-  .temuan-bulanan-total {
-    min-width: 65px;
-  }
+        font-size:21px;
 
+    }
 
-  .temuan-bulanan-total small {
-    font-size: 10px;
-  }
+}
 
 
-  .temuan-bulanan-total strong {
-    font-size: 16px;
-  }
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width:768px){
+
+    .temuan-bulanan-wrapper{
+
+        padding:16px;
+
+        border-radius:18px;
+
+    }
+
+    .temuan-bulanan-header{
+
+        grid-template-columns:1fr;
+
+        gap:16px;
+
+    }
+
+    .temuan-bulanan-actions{
+
+        width:100%;
+
+        justify-content:space-between;
+
+    }
+
+    .temuan-bulanan-total{
+
+        flex:1;
+
+        width:auto;
+
+        height:72px;
+
+    }
+
+    .temuan-toggle-btn{
+
+        flex:1;
+
+        min-width:unset;
+
+    }
+
+    .temuan-bulanan-item{
+
+        padding:12px;
+
+    }
+
+    .temuan-bulanan-rank{
+
+        width:36px;
+
+        height:36px;
+
+        min-width:36px;
+
+    }
+
+}
 
 
-  .temuan-toggle-btn {
-    min-width: 62px;
-    font-size: 10px;
-  }
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width:480px){
+
+    .temuan-bulanan-wrapper{
+
+        padding:14px;
+
+        margin:12px 0;
+
+    }
+
+    .temuan-bulanan-title h3{
+
+        font-size:18px;
+
+    }
+
+    .temuan-bulanan-title span{
+
+        font-size:12px;
+
+    }
+
+    .temuan-bulanan-actions{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+    }
+
+    .temuan-bulanan-total{
+
+        width:100%;
+
+    }
+
+    .temuan-toggle-btn{
+
+        width:100%;
+
+        height:44px;
+
+    }
+
+    .temuan-bulanan-item{
+
+        gap:10px;
+
+    }
+
+    .temuan-bulanan-name{
+
+        font-size:14px;
+
+    }
+
+    .temuan-bulanan-count{
+
+        min-width:48px;
+
+        padding:7px 10px;
+
+        font-size:12px;
+
+    }
 
 }
 
@@ -2254,24 +2444,37 @@ function renderTemuanBulananPA() {
         temuan.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 
-      // Cari nama kategori sebagai teks
-      // tanpa membedakan huruf besar kecil
-      const regex = new RegExp(
-        escapedTemuan,
-        'i'
-      );
+// ============================
+// CARI SEMUA KEMUNCULAN
+// TANPA MEMBEDAKAN
+// HURUF BESAR / KECIL
+// ============================
+const regex = new RegExp(
+  escapedTemuan,
+  'gi'
+);
 
 
-      // ============================
-      // JIKA TEMUAN DITEMUKAN
-      // ============================
-      if (regex.test(keterangan)) {
+// ============================
+// HITUNG SELURUH KEMUNCULAN
+// ============================
+const hasilMatch =
+  keterangan.match(regex);
 
-        jumlahTemuan[temuan]++;
 
-        total++;
+// ============================
+// JIKA TEMUAN DITEMUKAN
+// ============================
+if (hasilMatch) {
 
-      }
+  const jumlah =
+    hasilMatch.length;
+
+  jumlahTemuan[temuan] += jumlah;
+
+  total += jumlah;
+
+}
 
     });
 
@@ -2772,7 +2975,6 @@ function renderTemuanBulananInspek() {
 
   // ============================
   // DAFTAR TEMUAN STANDAR
-  // SESUAI PILIHAN INPUT INSPEK
   // ============================
   const daftarTemuan = [
     'Temuan Cetak',
@@ -2801,8 +3003,6 @@ function renderTemuanBulananInspek() {
 
     if (!value) return null;
 
-
-    // Jika sudah berupa Date
     if (
       value instanceof Date &&
       !isNaN(value.getTime())
@@ -2810,17 +3010,10 @@ function renderTemuanBulananInspek() {
       return value;
     }
 
-
     const str = String(value).trim();
 
     if (!str) return null;
 
-
-    // ============================
-    // FORMAT INDONESIA
-    // Contoh:
-    // 29 Juli 2026, 15.30.20
-    // ============================
     const bulanMap = {
 
       januari: 0,
@@ -2838,11 +3031,9 @@ function renderTemuanBulananInspek() {
 
     };
 
-
     const matchIndo = str.match(
       /^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/
     );
-
 
     if (matchIndo) {
 
@@ -2854,7 +3045,6 @@ function renderTemuanBulananInspek() {
 
       const tahun =
         Number(matchIndo[3]);
-
 
       if (
         Object.prototype.hasOwnProperty.call(
@@ -2873,18 +3063,12 @@ function renderTemuanBulananInspek() {
 
     }
 
-
-    // ============================
-    // FORMAT DATE / STRING LAIN
-    // ============================
     const parsed =
       new Date(str);
-
 
     if (!isNaN(parsed.getTime())) {
       return parsed;
     }
-
 
     return null;
 
@@ -2914,20 +3098,11 @@ function renderTemuanBulananInspek() {
   // ============================
   inspekItems.forEach(item => {
 
-
-    // ============================
-    // CEK TANGGAL
-    // ============================
     const tanggal =
       parseTanggal(item.tanggal);
 
-
     if (!tanggal) return;
 
-
-    // ============================
-    // HANYA BULAN & TAHUN BERJALAN
-    // ============================
     if (
       tanggal.getFullYear() !== tahunSekarang ||
       tanggal.getMonth() !== bulanSekarang
@@ -2935,16 +3110,10 @@ function renderTemuanBulananInspek() {
       return;
     }
 
-
-    // ============================
-    // AMBIL KETERANGAN
-    // DARI SPREADSHEET
-    // ============================
     const keterangan =
       String(
         item.keterangan || ''
       ).trim();
-
 
     if (!keterangan) return;
 
@@ -2954,42 +3123,43 @@ function renderTemuanBulananInspek() {
     // ============================
     daftarTemuan.forEach(temuan => {
 
-
-      // Escape karakter khusus RegExp
       const escapedTemuan =
         temuan.replace(
           /[.*+?^${}()|[\]\\]/g,
           '\\$&'
         );
 
-
       // ============================
-      // CARI KATEGORI
+      // CARI SEMUA KEMUNCULAN
       // TANPA MEMBEDAKAN
       // HURUF BESAR / KECIL
       // ============================
       const regex =
         new RegExp(
           escapedTemuan,
-          'i'
+          'gi'
         );
 
-
       // ============================
-      // JIKA TEMUAN DITEMUKAN
+      // HITUNG SELURUH KEMUNCULAN
       // ============================
-      if (regex.test(keterangan)) {
+      const hasilMatch =
+        keterangan.match(regex);
 
-        jumlahTemuan[temuan]++;
+      if (hasilMatch) {
 
-        total++;
+        const jumlah =
+          hasilMatch.length;
+
+        jumlahTemuan[temuan] += jumlah;
+
+        total += jumlah;
 
       }
 
     });
 
   });
-
 
   // ============================
   // TOTAL SELURUH TEMUAN
@@ -3124,7 +3294,6 @@ function refreshTemuanBulananInspek() {
   ) {
     return;
   }
-
 
   renderTemuanBulananInspek();
 
@@ -3638,27 +3807,38 @@ function renderTemuanBulananLem() {
         );
 
 
-      // ============================
-      // CARI KATEGORI
-      // TANPA MEMBEDAKAN HURUF BESAR/KECIL
-      // ============================
-      const regex =
-        new RegExp(
-          escapedTemuan,
-          'i'
-        );
+// ============================
+// CARI SEMUA KEMUNCULAN
+// TANPA MEMBEDAKAN
+// HURUF BESAR / KECIL
+// ============================
+const regex =
+  new RegExp(
+    escapedTemuan,
+    'gi'
+  );
 
 
-      // ============================
-      // JIKA TEMUAN DITEMUKAN
-      // ============================
-      if (regex.test(keterangan)) {
+// ============================
+// HITUNG SELURUH KEMUNCULAN
+// ============================
+const hasilMatch =
+  keterangan.match(regex);
 
-        jumlahTemuan[temuan]++;
 
-        total++;
+// ============================
+// JIKA TEMUAN DITEMUKAN
+// ============================
+if (hasilMatch) {
 
-      }
+  const jumlah =
+    hasilMatch.length;
+
+  jumlahTemuan[temuan] += jumlah;
+
+  total += jumlah;
+
+}
 
     });
 
@@ -4312,27 +4492,38 @@ function renderTemuanBulananFinishing() {
         );
 
 
-      // ============================
-      // CARI KATEGORI
-      // TANPA MEMBEDAKAN HURUF BESAR/KECIL
-      // ============================
-      const regex =
-        new RegExp(
-          escapedTemuan,
-          'i'
-        );
+// ============================
+// CARI SEMUA KEMUNCULAN
+// TANPA MEMBEDAKAN
+// HURUF BESAR / KECIL
+// ============================
+const regex =
+  new RegExp(
+    escapedTemuan,
+    'gi'
+  );
 
 
-      // ============================
-      // JIKA TEMUAN DITEMUKAN
-      // ============================
-      if (regex.test(keterangan)) {
+// ============================
+// HITUNG SELURUH KEMUNCULAN
+// ============================
+const hasilMatch =
+  keterangan.match(regex);
 
-        jumlahTemuan[temuan]++;
 
-        total++;
+// ============================
+// JIKA TEMUAN DITEMUKAN
+// ============================
+if (hasilMatch) {
 
-      }
+  const jumlah =
+    hasilMatch.length;
+
+  jumlahTemuan[temuan] += jumlah;
+
+  total += jumlah;
+
+}
 
     });
 
