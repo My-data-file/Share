@@ -1002,7 +1002,7 @@ h2.qc-title.qc-inspek + .total-wrapper .total-box:hover{
     <button onclick="showMenu('reportSection')" class="nav-btn">REPORT</button>
     <button onclick="showMenu('qcSPV')" class="nav-btn">KOMPLAIN</button>
     <button onclick="showMenu('qcBapro')" class="nav-btn">QC TINTA</button>
-    <button onclick="showMenu('qcPA')" class="nav-btn">QC SPOTCHECK</button>
+    <button onclick="showMenu('qcPA')" class="nav-btn">QA CETAK</button>
     <button onclick="showMenu('qcInspek')" class="nav-btn">QC INSPEK</button>
     <button onclick="showMenu('qcLem')" class="nav-btn">QC LEM</button>
     <button onclick="showMenu('qcFinishing')" class="nav-btn">QC FINISHING</button>
@@ -1408,7 +1408,7 @@ body {
 
 
 <!-- ======================== QC SPOTCHECK ======================== -->
-<h2 class="qc-title">QC SPOTCHECK</h2>
+<h2 class="qc-title">QA CETAK</h2>
 
 <!-- ================= INFO TOTAL (CLICKABLE) ================= -->
 <div class="total-wrapper">
@@ -1447,7 +1447,7 @@ body {
 
     <div class="temuan-bulanan-title">
 
-      <h3>TEMUAN SPOTCHECK</h3>
+      <h3>TEMUAN CETAK</h3>
 
 <span id="periodeTemuanPA">-</span>
 
@@ -1621,7 +1621,7 @@ body {
 
     <div class="modal-fin-header">
 
-      <span>Detail QC SPOTCHECK</span>
+      <span>Detail QA CETAK</span>
 
       <button onclick="closeDetailModalCetak()">×</button>
 
@@ -2854,7 +2854,7 @@ function renderTemuanBulananPA() {
     container.innerHTML = `
 
       <div class="temuan-empty">
-        Data QC SPOTCHECK belum tersedia.
+        Data QA CETAK belum tersedia.
       </div>
 
     `;
@@ -6412,7 +6412,7 @@ function setStatusFilterBapro(status) {
     border: 1px solid #000;
     position: relative;
     overflow: hidden;">
-    MENU QC SPOTCHECK
+    MENU QA CETAK
     <span style="
       position: absolute;
       top: 0;
@@ -16779,7 +16779,7 @@ document.addEventListener("DOMContentLoaded", () => {
     <div class="menu-btns">
       <button class="menu-ai-btn" data-ai="memory">AI MEMORY</button>
       <button class="menu-ai-btn" data-ai="bapro">AI QC BAPRO</button>
-      <button class="menu-ai-btn" data-ai="cetak">AI QC SPOTCHECK</button>
+      <button class="menu-ai-btn" data-ai="cetak">AI QA CETAK</button>
       <button class="menu-ai-btn" data-ai="finishing">AI QC FINISHING</button>
       <button class="menu-ai-btn" data-ai="lem">AI QC LEM</button>
       <button class="menu-ai-btn" data-ai="register">AI QC REGISTER</button>
@@ -19689,13 +19689,13 @@ if (!konfirmasi) return;
       btnTambah.innerHTML = originalHTML;
       clearPAForm();
       loadPAItems();
-      alert('✅ Data QC SPOTCHECK berhasil ditambahkan!');
+      alert('✅ Data QA CETAK berhasil ditambahkan!');
     }, 8000);
   } else {
     postPayload(payload);
     clearPAForm();
     setTimeout(() => loadPAItems(), 8000);
-    alert('✅ Data QC SPOTCHECK ditambahkan!');
+    alert('✅ Data QA CETAK ditambahkan!');
   }
 }
 
@@ -20929,7 +20929,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     const originalOnClick=btn.getAttribute('onclick');
     btn.onclick=function(e){
       e.preventDefault();
-      const input=prompt('Masukkan password untuk QC SPOTCHECK:');
+      const input=prompt('Masukkan password untuk QA CETAK:');
       if(input===null) return;
       if(input===QC_PA_PASSWORD){ eval(originalOnClick); }
       else{ alert('Password salah!'); }
@@ -25333,7 +25333,7 @@ function enableSPVEdit() {
 
           let options = [];
           if (i === 8) options = ["IKA","ERLY","NANI","ANJANI","SUCI","ANOM","IRNA","MARWAN","RISA","MARTINI","KRESTIN","ISMIE"];
-          else options = ["QC BAPRO","QC SPOTCHECK","QC FINISHING","QC LEM","RETUR"];
+          else options = ["QC BAPRO","QA CETAK","QC FINISHING","QC LEM","RETUR"];
 
           options.forEach(opt => {
             const option = document.createElement("option");
