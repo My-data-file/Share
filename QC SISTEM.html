@@ -1000,12 +1000,12 @@ h2.qc-title.qc-inspek + .total-wrapper .total-box:hover{
   <div class="nav-inner">
     <button onclick="showMenu('dashboard')" class="nav-btn active">DASHBOARD</button>
     <button onclick="showMenu('reportSection')" class="nav-btn">REPORT</button>
+    <button onclick="showMenu('qcSPV')" class="nav-btn">KOMPLAIN</button>
     <button onclick="showMenu('qcBapro')" class="nav-btn">QC TINTA</button>
     <button onclick="showMenu('qcPA')" class="nav-btn">QC SPOTCHECK</button>
     <button onclick="showMenu('qcInspek')" class="nav-btn">QC INSPEK</button>
     <button onclick="showMenu('qcLem')" class="nav-btn">QC LEM</button>
     <button onclick="showMenu('qcFinishing')" class="nav-btn">QC FINISHING</button>
-    <button onclick="showMenu('qcSPV')" class="nav-btn">REGISTER</button>
     <button onclick="showMenu('qcMeeting')" class="nav-btn">MEETING</button>
     <button onclick="showMenu('manualSection')" class="nav-btn">DOKUMEN</button>
   </div>
@@ -13742,7 +13742,7 @@ function filterManualList(input, tabId) {
     position: relative;
     overflow: hidden;
   ">
-    MENU QC REGISTER
+    MENU KOMPLAIN
     <span style="
       position: absolute;
       top: 0;
@@ -13993,11 +13993,16 @@ function filterManualList(input, tabId) {
       </div>
     </div>
 
-    <!-- Keterangan Acuan -->
-    <div class="form-group">
-      <label>Keterangan Acuan (opsional)</label>
-      <textarea id="spvKet" placeholder="Isi Keterangan" rows="3"></textarea>
-    </div>
+<!-- Keterangan Acuan -->
+<div class="form-group">
+  <label>Keterangan Acuan (opsional)</label>
+  <select id="spvKet">
+    <option value="">-- Pilih Keterangan Acuan --</option>
+    <option value="STC">STC</option>
+    <option value="LPC">LPC</option>
+    <option value="DUMMY">DUMMY</option>
+  </select>
+</div>
 
     <!-- Foto Temuan -->
     <div class="form-group">
@@ -14018,19 +14023,8 @@ function filterManualList(input, tabId) {
     <div class="form-group">
       <label>Nama QC</label>
       <select id="spvNama" required>
-        <option value="" disabled selected>Pilih Nama QC</option>
-        <option value="IKA">IKA</option>
-        <option value="ERLY">ERLY</option>
+        <option value="" disabled selected>Pilih QC</option>
         <option value="NANI">NANI</option>
-        <option value="ANJANI">ANJANI</option>
-        <option value="SUCI">SUCI</option>
-        <option value="ANOM">ANOM</option>
-        <option value="IRNA">IRNA</option>
-        <option value="MARWAN">MARWAN</option>
-        <option value="RISA">RISA</option>
-        <option value="MARTINI">MARTINI</option>
-        <option value="KRESTIN">KRESTIN</option>
-        <option value="ISMIE">ISMIE</option>
       </select>
     </div>
 
@@ -14039,12 +14033,8 @@ function filterManualList(input, tabId) {
       <label>Proses</label>
       <select id="spvProses" required>
         <option value="" disabled selected>Pilih Proses</option>
-        <option value="QC INSPEK">QC INSPEK</option>
-        <option value="QC BAPRO">QC BAPRO</option>
-        <option value="QC SPOTCHECK">QC SPOTCHECK</option>
-        <option value="QC FINISHING">QC FINISHING</option>
-        <option value="QC LEM">QC LEM</option>
         <option value="RETUR">RETUR</option>
+        <option value="KOMPAIN">KOMPLAIN</option>
       </select>
     </div>
 
@@ -16467,7 +16457,7 @@ document.addEventListener("DOMContentLoaded", () => {
       : renderCardReport("", { update: "Proses" });
 
     // ================= REGISTER (SPV) =================
-    html += `<div class="section-title spv-title">REGISTER</div>`;
+    html += `<div class="section-title spv-title">KOMPLAIN</div>`;
     const spvMatch = spvItems.filter(x =>
       normalize(x.noKS) === key && orderFilter(x)
     );
@@ -16716,7 +16706,7 @@ searchReportByID = function(){
   const spvMatch = spvItems.filter(x => matchKS(x.noKS));
 
   let html = box.innerHTML;
-  html += `<div class="section-title spv-title">REGISTER</div>`;
+  html += `<div class="section-title spv-title">KOMPLAIN</div>`;
 
   // ✅ PERBAIKAN UTAMA DI SINI
   if (spvMatch.length) {
@@ -25122,7 +25112,7 @@ async function submitSPV(e) {
       method: "POST",
       body: new URLSearchParams({ payload: JSON.stringify(payload) })
     });
-    alert("✅ Data SPV berhasil dikirim!");
+    alert("✅ Data KOMPLAIN berhasil dikirim!");
     loadSPV();
   } catch (err) {
     alert("❌ Gagal mengirim data SPV!");
@@ -25522,7 +25512,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const originalOnClick = menuBtn.getAttribute('onclick');
     menuBtn.onclick = function(e) {
       e.preventDefault();
-      const input = prompt('Masukkan password untuk QC REGISTER:');
+      const input = prompt('Masukkan password untuk KOMPLAIN:');
       if (input === null) return;
       if (input === QC_SPV_PASSWORD) eval(originalOnClick);
       else alert('Password salah!');
