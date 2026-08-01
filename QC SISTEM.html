@@ -948,6 +948,173 @@ h2.qc-title.qc-inspek + .total-wrapper .total-box:hover{
 }
 
 
+/* =====================================================
+   DROPDOWN SEARCH (GENERIC)
+   Berlaku untuk Semua Menu
+===================================================== */
+
+.dropdown-search-wrapper{
+    position:relative;
+    width:100%;
+}
+
+.dropdown-search-wrapper input{
+    width:100%;
+    cursor:pointer;
+    background:#fff;
+    user-select:none;
+}
+
+.dropdown-search-wrapper input:focus{
+    outline:none;
+}
+
+/* ================= LIST ================= */
+
+.dropdown-search-list{
+
+    position:absolute;
+    top:100%;
+    left:0;
+    right:0;
+
+    margin-top:5px;
+
+    background:#fff;
+
+    border:1px solid #d8dee8;
+    border-radius:12px;
+
+    box-shadow:
+        0 12px 30px rgba(0,0,0,.12);
+
+    max-height:320px;
+
+    overflow-y:auto;
+
+    overflow-x:hidden;
+
+    z-index:99999;
+
+    display:none;
+
+    animation:dropdownFade .18s ease;
+
+}
+
+/* ================= ITEM ================= */
+
+.dropdown-search-item{
+
+    padding:12px 15px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    border-bottom:1px solid #edf2f7;
+
+}
+
+.dropdown-search-item:last-child{
+
+    border-bottom:none;
+
+}
+
+.dropdown-search-item:hover{
+
+    background:#eef6ff;
+
+}
+
+.dropdown-search-item:active{
+
+    background:#dbeafe;
+
+}
+
+/* ================= NAMA ================= */
+
+.dropdown-search-item strong{
+
+    display:block;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    color:#0F4FA8;
+
+    line-height:1.3;
+
+}
+
+/* ================= NO KS ================= */
+
+.dropdown-search-item small{
+
+    display:block;
+
+    margin-top:3px;
+
+    font-size:12px;
+
+    color:#64748b;
+
+    line-height:1.3;
+
+}
+
+/* ================= SCROLL ================= */
+
+.dropdown-search-list::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+.dropdown-search-list::-webkit-scrollbar-track{
+
+    background:#f3f5f8;
+
+    border-radius:10px;
+
+}
+
+.dropdown-search-list::-webkit-scrollbar-thumb{
+
+    background:#c8d4e3;
+
+    border-radius:10px;
+
+}
+
+.dropdown-search-list::-webkit-scrollbar-thumb:hover{
+
+    background:#9fb6d6;
+
+}
+
+/* ================= ANIMASI ================= */
+
+@keyframes dropdownFade{
+
+    from{
+
+        opacity:0;
+        transform:translateY(-5px);
+
+    }
+
+    to{
+
+        opacity:1;
+        transform:translateY(0);
+
+    }
+
+}
 
 
 </style>
@@ -8824,26 +8991,43 @@ window.addEventListener("click", function(e){
 
   </div>
 
-  <!-- ================= INPUTAN ================= -->
-  <div id="inputInspek" class="tab-content active">
+<!-- ================= INPUTAN ================= -->
+<div id="inputInspek" class="tab-content active">
 
-    <div class="form-group">
-      <label>Nama Order</label>
+  <!-- Nama Order -->
+  <div class="form-group">
+    <label>Nama Order</label>
+
+    <div class="dropdown-search-wrapper">
+
       <input
         type="text"
         id="inspekNama"
-        placeholder="ETK GIV WHITE PEPAYA 72 GR"
-      >
-    </div>
+        placeholder="Klik untuk memilih Nama Order..."
+        autocomplete="off"
+        readonly
+        onclick="toggleNamaInspekDropdown()">
 
-    <div class="form-group">
-      <label>No KS</label>
-      <input
-        type="text"
-        id="inspekNoKS"
-        placeholder="KS-xxxx-xx"
-      >
+      <div
+        id="inspekNamaList"
+        class="dropdown-search-list"
+        style="display:none;">
+      </div>
+
     </div>
+  </div>
+
+  <!-- No KS -->
+  <div class="form-group">
+    <label>No KS</label>
+
+    <input
+      type="text"
+      id="inspekNoKS"
+      placeholder="No KS akan terisi otomatis"
+      readonly>
+
+  </div>
 
     <div class="form-group">
       <label>Jam SPK (jam)</label>
@@ -9635,69 +9819,6 @@ window.addEventListener("click", function(e){
 
 <script>
 
-// ================= FORMAT NO KS INSPEK =================
-const inspekNoKS = document.getElementById('inspekNoKS');
-
-if (inspekNoKS) {
-
-  let lastValueInspek = "";
-
-  inspekNoKS.addEventListener('input', function(){
-
-    let raw = inspekNoKS.value.toUpperCase();
-
-    // ================= BERSIHKAN INPUT =================
-    let clean = raw.replace(/[^A-Z0-9]/g, '');
-
-    // ================= FORMAT KS-XXXX-XX =================
-    let formatted = clean;
-
-    if(clean.length > 2){
-      formatted =
-        clean.slice(0, 2) +
-        '-' +
-        clean.slice(2);
-    }
-
-    if(clean.length > 6){
-      formatted =
-        formatted.slice(0, 7) +
-        '-' +
-        formatted.slice(7);
-    }
-
-    // ================= CEGAH RENDER ULANG =================
-    if(formatted === lastValueInspek) return;
-
-    lastValueInspek = formatted;
-
-    // ================= POSISI CURSOR =================
-    let cursorPos = inspekNoKS.selectionStart;
-
-    let diff = formatted.length - raw.length;
-
-    // ================= FIX BUG HP =================
-    setTimeout(() => {
-
-      inspekNoKS.value = formatted;
-
-      let newPos = cursorPos + diff;
-
-      if(newPos > formatted.length){
-        newPos = formatted.length;
-      }
-
-      if(newPos < 0){
-        newPos = 0;
-      }
-
-      inspekNoKS.setSelectionRange(newPos, newPos);
-
-    }, 0);
-
-  });
-
-}
 
 // ================= FILTER STATUS INSPEK =================
 let statusFilterInspek = "";
@@ -10519,17 +10640,43 @@ window.addEventListener(
     <button class="tab-btn finishing" data-tab="hasilFinishing" onclick="switchTab(this)">Hasil</button>
   </div>
 
-  <!-- Inputan -->
-  <div id="inputFinishing" class="tab-content active">
-    <div class="form-group">
-      <label>Nama Order</label>
-      <input type="text" id="finishingNama" placeholder="ETK GIV WHITE PEPAYA 72 GR">
-    </div>
+<!-- ================= INPUTAN ================= -->
+<div id="inputFinishing" class="tab-content active">
 
-    <div class="form-group">
-      <label>No KS</label>
-      <input type="text" id="finishingNoKS" placeholder="KS-xxxx-xx">
+  <!-- Nama Order -->
+  <div class="form-group">
+    <label>Nama Order</label>
+
+    <div class="dropdown-search-wrapper">
+
+      <input
+        type="text"
+        id="finishingNama"
+        placeholder="Klik untuk memilih Nama Order..."
+        autocomplete="off"
+        readonly
+        onclick="toggleNamaFinishingDropdown()">
+
+      <div
+        id="finishingNamaList"
+        class="dropdown-search-list"
+        style="display:none;">
+      </div>
+
     </div>
+  </div>
+
+  <!-- No KS -->
+  <div class="form-group">
+    <label>No KS</label>
+
+    <input
+      type="text"
+      id="finishingNoKS"
+      placeholder="No KS akan terisi otomatis"
+      readonly>
+
+  </div>
 
     <div class="form-group">
       <label>Total Order (pcs)</label>
@@ -11409,47 +11556,6 @@ window.addEventListener(
 
 
 <script>
-const finishingNoKS = document.getElementById('finishingNoKS');
-
-if (finishingNoKS) {
-  let lastValue = "";
-
-  finishingNoKS.addEventListener('input', function() {
-    let raw = finishingNoKS.value.toUpperCase();
-
-    // Bersihkan input (A–Z & 0–9)
-    let clean = raw.replace(/[^A-Z0-9]/g, '');
-
-    // Format KS-XXXX-XX
-    let formatted = clean;
-    if (clean.length > 2) formatted = clean.slice(0, 2) + '-' + clean.slice(2);
-    if (clean.length > 6) formatted = formatted.slice(0, 7) + '-' + formatted.slice(7);
-
-    // Cegah render ulang jika sama
-    if (formatted === lastValue) return;
-    lastValue = formatted;
-
-    // Simpan posisi cursor asli
-    let cursorPos = finishingNoKS.selectionStart;
-
-    // Hitung perbedaan panjang
-    let diff = formatted.length - raw.length;
-
-    // Delay update value agar keyboard Vivo tidak reset
-    setTimeout(() => {
-      finishingNoKS.value = formatted;
-
-      // Koreksi cursor: tetap dekat posisi user mengetik
-      let newPos = cursorPos + diff;
-
-      // Jangan biarkan cursor melebihi panjang input
-      if (newPos > formatted.length) newPos = formatted.length;
-      if (newPos < 0) newPos = 0;
-
-      finishingNoKS.setSelectionRange(newPos, newPos);
-    }, 0);
-  });
-}
 
 // ================= FILTER STATUS FINISHING =================
 let statusFilterFinishing = "";
@@ -12184,12 +12290,12 @@ window.addEventListener("click", function(e){
 
   <!-- Judul -->
   <h2 style="
-    text-align:center; 
-    color:#fff; 
-    background: linear-gradient(to right, #9C27B0, #BA68C8); 
-    font-size:1.2rem; 
-    padding:6px 12px; 
-    border-radius:8px; 
+    text-align:center;
+    color:#fff;
+    background: linear-gradient(to right, #9C27B0, #BA68C8);
+    font-size:1.2rem;
+    padding:6px 12px;
+    border-radius:8px;
     margin-bottom:12px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     border: 1px solid #000;
@@ -12197,14 +12303,15 @@ window.addEventListener("click", function(e){
     overflow: hidden;">
     MENU QC LEM
     <span style="
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 50%;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
-      border-radius: 8px 8px 0 0;
-      pointer-events: none;"></span>
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:50%;
+      background:linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+      border-radius:8px 8px 0 0;
+      pointer-events:none;">
+    </span>
   </h2>
 
   <!-- Tabs -->
@@ -12213,17 +12320,44 @@ window.addEventListener("click", function(e){
     <button class="tab-btn lem" data-tab="hasilLem" onclick="switchTab(this)">Hasil</button>
   </div>
 
-  <!-- Inputan -->
-  <div id="inputLem" class="tab-content active">
-    <div class="form-group">
-      <label>Nama Order</label>
-      <input type="text" id="lemNama" placeholder="ETK GIV WHITE PEPAYA 72 GR">
-    </div>
+<!-- ================= INPUTAN ================= -->
+<div id="inputLem" class="tab-content active">
 
-    <div class="form-group">
-      <label>No KS</label>
-      <input type="text" id="lemNoKS" placeholder="KS-xxxx-xx">
+  <!-- Nama Order -->
+  <div class="form-group">
+    <label>Nama Order</label>
+
+    <div class="dropdown-search-wrapper">
+
+      <input
+        type="text"
+        id="lemNama"
+        placeholder="Klik untuk memilih Nama Order..."
+        autocomplete="off"
+        readonly
+        onclick="toggleNamaLemDropdown()">
+
+      <div
+        id="lemNamaList"
+        class="dropdown-search-list"
+        style="display:none;">
+      </div>
+
     </div>
+  </div>
+
+  <!-- No KS -->
+  <div class="form-group">
+    <label>No KS</label>
+
+    <input
+      type="text"
+      id="lemNoKS"
+      placeholder="No KS akan terisi otomatis"
+      readonly>
+
+  </div>
+
 
     <div class="form-group">
       <label>Total Order (pcs)</label>
@@ -12966,6 +13100,7 @@ window.addEventListener("click", function(e){
 
 
 <style>
+
 /* ======================== TAB LEM ======================== */
 .tab-btn.lem {
   flex:1; padding:6px 0; border-radius:6px; font-weight:600; cursor:pointer;
@@ -13447,45 +13582,6 @@ window.addEventListener("click", function(e){
 
 
 <script>
-const lemNoKS = document.getElementById('lemNoKS');
-
-if (lemNoKS) {
-  let lastValue = "";
-
-  lemNoKS.addEventListener('input', function() {
-    let raw = lemNoKS.value.toUpperCase();
-
-    // Bersihkan input (A–Z & 0–9)
-    let clean = raw.replace(/[^A-Z0-9]/g, '');
-
-    // Format KS-XXXX-XX
-    let formatted = clean;
-    if (clean.length > 2) formatted = clean.slice(0, 2) + '-' + clean.slice(2);
-    if (clean.length > 6) formatted = formatted.slice(0, 7) + '-' + formatted.slice(7);
-
-    // Cegah render ulang jika sama
-    if (formatted === lastValue) return;
-    lastValue = formatted;
-
-    // Simpan posisi cursor asli
-    let cursorPos = lemNoKS.selectionStart;
-
-    // Hitung perbedaan panjang
-    let diff = formatted.length - raw.length;
-
-    // Delay update agar tidak bug di HP Vivo/OPPO
-    setTimeout(() => {
-      lemNoKS.value = formatted;
-
-      // Koreksi posisi cursor
-      let newPos = cursorPos + diff;
-      if (newPos > formatted.length) newPos = formatted.length;
-      if (newPos < 0) newPos = 0;
-
-      lemNoKS.setSelectionRange(newPos, newPos);
-    }, 0);
-  });
-}
 
 // ================= FILTER STATUS LEM =================
 let statusFilterLem = "";
@@ -14249,6 +14345,7 @@ window.addEventListener(
 );
 
 
+
 </script>
 
 
@@ -14509,17 +14606,40 @@ function filterManualList(input, tabId) {
     <!-- SPINNER OVERLAY -->
     <div id="spvSpinner"><div></div></div>
 
-    <!-- Input Nama Order -->
-    <div class="form-group">
-      <label>Nama Order</label>
-      <input type="text" id="spvOrder" placeholder="ETK GIV WHITE PEPAYA 72 GR" required>
+<!-- Input Nama Order -->
+<div class="form-group">
+  <label>Nama Order</label>
+
+  <div class="dropdown-search-wrapper">
+
+    <input
+      type="text"
+      id="spvOrder"
+      placeholder="Klik untuk memilih Nama Order..."
+      autocomplete="off"
+      readonly
+      onclick="toggleNamaSPVDropdown()">
+
+    <div
+      id="spvOrderList"
+      class="dropdown-search-list"
+      style="display:none;">
     </div>
 
-    <!-- Input No KS -->
-    <div class="form-group">
-      <label>No KS</label>
-      <input type="text" id="spvNoKS" placeholder="KS-xxxx-xx" required>
-    </div>
+  </div>
+</div>
+
+<!-- Input No KS -->
+<div class="form-group">
+  <label>No KS</label>
+
+  <input
+    type="text"
+    id="spvNoKS"
+    placeholder="No KS akan terisi otomatis"
+    readonly>
+
+</div>
 
     <!-- Tanggal & Jam -->
     <div class="form-group" style="display:flex; gap:10px;">
@@ -16363,47 +16483,6 @@ body {
 
 </style>
 
-<script>
-const spvNoKS = document.getElementById('spvNoKS');
-
-if (spvNoKS) {
-  let lastValue = "";
-
-  spvNoKS.addEventListener('input', function() {
-    let raw = spvNoKS.value.toUpperCase();
-
-    // Bersihkan input (A–Z & 0–9)
-    let clean = raw.replace(/[^A-Z0-9]/g, '');
-
-    // Format KS-XXXX-XX
-    let formatted = clean;
-    if (clean.length > 2) formatted = clean.slice(0, 2) + '-' + clean.slice(2);
-    if (clean.length > 6) formatted = formatted.slice(0, 7) + '-' + formatted.slice(7);
-
-    // Cegah render ulang jika sama
-    if (formatted === lastValue) return;
-    lastValue = formatted;
-
-    // Simpan posisi cursor asli
-    let cursorPos = spvNoKS.selectionStart;
-
-    // Hitung perubahan panjang
-    let diff = formatted.length - raw.length;
-
-    // Delay update untuk fix bug keyboard Vivo
-    setTimeout(() => {
-      spvNoKS.value = formatted;
-
-      // Koreksi posisi cursor
-      let newPos = cursorPos + diff;
-      if (newPos > formatted.length) newPos = formatted.length;
-      if (newPos < 0) newPos = 0;
-
-      spvNoKS.setSelectionRange(newPos, newPos);
-    }, 0);
-  });
-}
-</script>
 
 
 
@@ -27726,6 +27805,211 @@ function goHome() {
     alert("Password salah!");
   }
 }
+
+
+// ============================================
+// DROPDOWN NAMA ORDER + NO KS (GENERIC)
+// Berlaku untuk Lem, Finishing, Inspek, SPV
+// ============================================
+
+let dataCetakDropdown = [];
+
+// ============================================
+// LOAD DATA CETAK
+// ============================================
+
+async function loadDataCetakDropdown(){
+
+    try{
+
+        const res = await jsonpGet(WEBAPP_URL,{
+            action:"get",
+            sheet:"Cetak"
+        });
+
+        if(
+            res &&
+            res.status==="ok" &&
+            Array.isArray(res.data)
+        ){
+
+            dataCetakDropdown = [...res.data].reverse();
+
+        }
+
+    }catch(err){
+
+        console.error(err);
+
+    }
+
+}
+
+
+// ============================================
+// ISI DROPDOWN
+// ============================================
+
+function isiDropdownNama(inputNama,inputNoKS,listId){
+
+    const list = document.getElementById(listId);
+
+    if(!list) return;
+
+    list.innerHTML = "";
+
+    const sudahAda = new Set();
+
+    dataCetakDropdown.forEach(item=>{
+
+        const nama = item.nama || "";
+
+        if(!nama) return;
+
+        if(sudahAda.has(nama)) return;
+
+        sudahAda.add(nama);
+
+        const div = document.createElement("div");
+
+        div.className = "dropdown-search-item";
+
+        div.innerHTML = `
+            <strong>${nama}</strong><br>
+            <small>${item.noKS || ""}</small>
+        `;
+
+        div.onclick = function(){
+
+            document.getElementById(inputNama).value = nama;
+
+            document.getElementById(inputNoKS).value =
+                item.noKS || "";
+
+            list.style.display="none";
+
+        };
+
+        list.appendChild(div);
+
+    });
+
+}
+
+
+// ============================================
+// TOGGLE GENERIC
+// ============================================
+
+async function toggleDropdownNama(inputNama,inputNoKS,listId){
+
+    const list = document.getElementById(listId);
+
+    if(!list) return;
+
+    if(list.style.display==="block"){
+
+        list.style.display="none";
+        return;
+
+    }
+
+    if(dataCetakDropdown.length===0){
+
+        await loadDataCetakDropdown();
+
+    }
+
+    isiDropdownNama(inputNama,inputNoKS,listId);
+
+    list.style.display="block";
+
+}
+
+
+// ============================================
+// TUTUP SEMUA DROPDOWN
+// ============================================
+
+document.addEventListener("click",function(e){
+
+    document.querySelectorAll(".dropdown-search-wrapper")
+    .forEach(wrapper=>{
+
+        if(!wrapper.contains(e.target)){
+
+            const list =
+                wrapper.querySelector(".dropdown-search-list");
+
+            if(list){
+
+                list.style.display="none";
+
+            }
+
+        }
+
+    });
+
+});
+
+
+// ============================================
+// WRAPPER PER MENU
+// ============================================
+
+// LEM
+function toggleNamaLemDropdown(){
+
+    toggleDropdownNama(
+        "lemNama",
+        "lemNoKS",
+        "lemNamaList"
+    );
+
+}
+
+// FINISHING
+function toggleNamaFinishingDropdown(){
+
+    toggleDropdownNama(
+        "finishingNama",
+        "finishingNoKS",
+        "finishingNamaList"
+    );
+
+}
+
+// INSPEK
+function toggleNamaInspekDropdown(){
+
+    toggleDropdownNama(
+        "inspekNama",
+        "inspekNoKS",
+        "inspekNamaList"
+    );
+
+}
+
+// SPV / KOMPLAIN
+function toggleNamaSPVDropdown(){
+
+    toggleDropdownNama(
+        "spvOrder",
+        "spvNoKS",
+        "spvOrderList"
+    );
+
+}
+
+
+// ============================================
+// LOAD SEKALI SAJA
+// ============================================
+
+loadDataCetakDropdown();
+
+
 </script>
 
 
