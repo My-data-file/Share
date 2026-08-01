@@ -1791,7 +1791,8 @@ body {
 #filterBulanTemuanPA,
 #filterBulanTemuanLem,
 #filterBulanTemuanFinishing,
-#filterBulanTemuanInspek {
+#filterBulanTemuanInspek,
+#filterBulanTemuanSPV {
 
 
     margin-top:8px;
@@ -1843,7 +1844,8 @@ body {
 #filterBulanTemuanPA:hover,
 #filterBulanTemuanLem:hover,
 #filterBulanTemuanFinishing:hover,
-#filterBulanTemuanInspek:hover {
+#filterBulanTemuanInspek:hover,
+#filterBulanTemuanSPV:hover {
 
 
     border-color:#0078D7;
@@ -2060,8 +2062,8 @@ body {
 #iconToggleTemuanPA,
 #iconToggleTemuanLem,
 #iconToggleTemuanFinishing,
-#iconToggleTemuanInspek {
-
+#iconToggleTemuanInspek,
+#iconToggleTemuanSPV {
 
     font-size:11px;
 
@@ -2416,10 +2418,10 @@ body {
 #filterBulanTemuanPA,
 #filterBulanTemuanLem,
 #filterBulanTemuanFinishing,
-#filterBulanTemuanInspek {
-
-
+#filterBulanTemuanInspek,
+#filterBulanTemuanSPV {
     width:100%;
+}
 
 
 }
@@ -6133,6 +6135,719 @@ function toggleTemuanBulananFinishing() {
 </script>
 
 
+<!-- ======================== QC SPV KOMPLAIN ======================== -->
+
+<h2 style="
+  text-align:center; 
+  color:#000; 
+  background: linear-gradient(to right, #00BCD4, #4DD0E1); 
+  font-size:1.2rem; 
+  padding:6px 12px; 
+  border-radius:8px; 
+  margin-bottom:12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
+">
+  KOMPLAIN
+  <span style="
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(255,255,255,0));
+    border-radius: 8px 8px 0 0;
+    pointer-events: none;
+  "></span>
+</h2>
+
+
+
+
+<!-- ================= TEMUAN KOMPLAIN DALAM 1 BULAN ================= -->
+
+<div class="temuan-bulanan-wrapper">
+
+
+  <!-- ================= HEADER ================= -->
+
+  <div class="temuan-bulanan-header">
+
+
+    <div class="temuan-bulanan-title">
+
+
+      <h3>
+        TEMUAN KOMPLAIN
+      </h3>
+
+
+      <span id="periodeTemuanSPV">
+        -
+      </span>
+
+
+
+      <select
+        id="filterBulanTemuanSPV"
+        onchange="renderTemuanBulananSPV()">
+
+
+        <option value="0">Januari</option>
+
+        <option value="1">Februari</option>
+
+        <option value="2">Maret</option>
+
+        <option value="3">April</option>
+
+        <option value="4">Mei</option>
+
+        <option value="5">Juni</option>
+
+        <option value="6">Juli</option>
+
+        <option value="7">Agustus</option>
+
+        <option value="8">September</option>
+
+        <option value="9">Oktober</option>
+
+        <option value="10">November</option>
+
+        <option value="11">Desember</option>
+
+
+      </select>
+
+
+    </div>
+
+
+
+
+
+    <!-- ================= TOTAL + TOGGLE ================= -->
+
+    <div class="temuan-bulanan-actions">
+
+
+      <div class="temuan-bulanan-total">
+
+
+        <small>
+          Total Komplain
+        </small>
+
+
+        <strong id="totalTemuanSPV">
+          0
+        </strong>
+
+
+      </div>
+
+
+
+
+
+      <button
+        type="button"
+        id="toggleTemuanBulananSPV"
+        class="temuan-toggle-btn"
+        onclick="toggleTemuanBulananSPV()"
+        aria-expanded="false">
+
+
+        <span id="iconToggleTemuanSPV">
+          ▼
+        </span>
+
+
+        <span id="textToggleTemuanSPV">
+          Detail
+        </span>
+
+
+      </button>
+
+
+    </div>
+
+
+  </div>
+
+
+
+
+
+  <!-- ================= DETAIL TEMUAN ================= -->
+
+
+  <div
+    id="temuanBulananDetailSPV"
+    class="temuan-bulanan-detail"
+    style="display:none;">
+
+
+
+    <div
+      id="temuanBulananSPV"
+      class="temuan-bulanan-list">
+
+
+
+      <div class="temuan-empty">
+
+        Belum ada komplain pada bulan ini.
+
+      </div>
+
+
+
+    </div>
+
+
+  </div>
+
+
+
+</div>
+
+
+<script>
+// ====================== TEMUAN KOMPLAIN SPV DALAM 1 BULAN ======================
+
+function renderTemuanBulananSPV() {
+
+
+  const container =
+    document.getElementById('temuanBulananSPV');
+
+
+  const periodeEl =
+    document.getElementById('periodeTemuanSPV');
+
+
+  const totalEl =
+    document.getElementById('totalTemuanSPV');
+
+
+  const bulanSelect =
+    document.getElementById('filterBulanTemuanSPV');
+
+
+
+  if(!container || !periodeEl || !totalEl) return;
+
+
+
+  container.innerHTML = "";
+
+
+
+  const sekarang = new Date();
+
+
+  const tahunSekarang =
+    sekarang.getFullYear();
+
+
+
+
+
+
+
+const bulanSekarang =
+  bulanSelect
+  ? Number(bulanSelect.value)
+  : sekarang.getMonth();
+
+
+
+if (bulanSelect) {
+
+  bulanSelect.value =
+    bulanSekarang;
+
+}
+
+
+
+
+  const namaBulan = [
+
+    'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember'
+
+  ];
+
+
+
+  periodeEl.textContent =
+    `${namaBulan[bulanSekarang]} ${tahunSekarang}`;
+
+
+
+
+  // ================= DAFTAR TEMUAN =================
+
+  const daftarTemuan = [
+
+
+    'Warna',
+    'Noda',
+    'Ghosting',
+    'Terhapus',
+    'Galang',
+    'MisRegis',
+    'Garis',
+    'Botak',
+    'Set-Off',
+    'Scumming',
+    'Oksidasi',
+    'Gatra',
+    'Salur',
+    'Barcode/QR',
+
+
+    'No Glue',
+    'Over Glue',
+    'Lem Tidak Rata',
+    'Lengket',
+    'Dus Sobek',
+    'Dus Baret',
+    'Dus Galeng',
+    'Dus Tidak Siku',
+    'Kupingan Ketekuk',
+
+
+    'Ponch Lari',
+    'Ponch Pecah',
+    'Ponch Tidak Putus',
+    'Tidak Ada Embose',
+    'Embose Lari',
+
+
+    'Varnish Tidak Rata',
+    'Bubble',
+    'Varnish Bergaris',
+    'Tidak Ada Varnish',
+    'Glossy Kurang',
+
+
+    'Potongan Lari'
+
+
+  ];
+
+
+
+
+  const jumlahTemuan = {};
+
+  daftarTemuan.forEach(t=>{
+    jumlahTemuan[t]=0;
+  });
+
+
+
+  let total = 0;
+
+
+
+
+  // ================= PARSE TANGGAL =================
+
+function parseTanggal(value){
+
+  if(!value) return null;
+
+
+  if(value instanceof Date && !isNaN(value)){
+    return value;
+  }
+
+
+  const str = String(value).trim();
+
+
+  // format dari GAS: 1 Agustus 2026
+  const bulan = {
+    Januari:0,
+    Februari:1,
+    Maret:2,
+    April:3,
+    Mei:4,
+    Juni:5,
+    Juli:6,
+    Agustus:7,
+    September:8,
+    Oktober:9,
+    November:10,
+    Desember:11
+  };
+
+
+  const indo = str.match(/^(\d{1,2})\s([A-Za-z]+)\s(\d{4})$/);
+
+
+  if(indo){
+
+    return new Date(
+      Number(indo[3]),
+      bulan[indo[2]],
+      Number(indo[1])
+    );
+
+  }
+
+
+  // fallback yyyy-mm-dd
+  const normal = new Date(str);
+
+  if(!isNaN(normal)){
+    return normal;
+  }
+
+
+  return null;
+
+}
+
+
+
+
+
+  // ================= CEK DATA =================
+
+  if(!Array.isArray(spvItems)){
+
+
+    totalEl.textContent="0";
+
+
+    container.innerHTML = `
+
+      <div class="temuan-empty">
+        Data QC KOMPLAIN belum tersedia.
+      </div>
+
+    `;
+
+
+    return;
+
+  }
+
+
+
+
+
+  // ================= LOOP DATA SPV =================
+
+  spvItems.forEach(item=>{
+
+
+    const tanggal =
+      parseTanggal(item.tanggal);
+
+
+
+    if(!tanggal) return;
+
+
+
+
+    if(
+      tanggal.getFullYear() !== tahunSekarang ||
+      tanggal.getMonth() !== bulanSekarang
+    ){
+
+      return;
+
+    }
+
+
+
+
+
+    const keterangan =
+
+      String(
+        item.ket1 || ''
+      ).trim();
+
+
+
+
+    if(!keterangan) return;
+
+
+
+
+
+    daftarTemuan.forEach(temuan=>{
+
+
+      const escaped =
+        temuan.replace(
+          /[.*+?^${}()|[\]\\]/g,
+          '\\$&'
+        );
+
+
+
+      const regex =
+        new RegExp(
+          escaped,
+          'gi'
+        );
+
+
+
+      const hasil =
+        keterangan.match(regex);
+
+
+
+      if(hasil){
+
+
+        jumlahTemuan[temuan] += hasil.length;
+
+
+        total += hasil.length;
+
+
+      }
+
+
+
+    });
+
+
+
+  });
+
+
+
+
+
+  // ================= TOTAL =================
+
+  totalEl.textContent =
+    total.toLocaleString('id-ID');
+
+
+
+
+
+  // ================= SORT =================
+
+  const hasil =
+
+    daftarTemuan
+    .map((nama,index)=>({
+
+      nama,
+      jumlah:
+        jumlahTemuan[nama],
+
+      urutanAwal:index
+
+    }))
+
+    .sort((a,b)=>{
+
+
+      if(b.jumlah !== a.jumlah){
+
+        return b.jumlah-a.jumlah;
+
+      }
+
+
+      return a.urutanAwal-b.urutanAwal;
+
+
+    });
+
+
+
+
+
+
+  // ================= TAMPILKAN =================
+
+  hasil.forEach((data,index)=>{
+
+
+    const item =
+      document.createElement('div');
+
+
+    item.className =
+      'temuan-bulanan-item';
+
+
+
+    item.innerHTML = `
+
+
+      <div class="temuan-bulanan-rank">
+
+        ${index+1}
+
+      </div>
+
+
+
+      <div class="temuan-bulanan-name">
+
+        ${escapeHtmlTemuanSPV(data.nama)}
+
+      </div>
+
+
+
+      <div class="temuan-bulanan-count">
+
+        ${data.jumlah}
+
+      </div>
+
+
+    `;
+
+
+
+    container.appendChild(item);
+
+
+  });
+
+
+
+}
+
+
+
+
+
+// ================= ESCAPE =================
+
+function escapeHtmlTemuanSPV(value){
+
+  return String(value)
+
+  .replace(/&/g,'&amp;')
+
+  .replace(/</g,'&lt;')
+
+  .replace(/>/g,'&gt;')
+
+  .replace(/"/g,'&quot;')
+
+  .replace(/'/g,'&#039;');
+
+}
+
+
+
+
+
+
+// ================= TOGGLE DETAIL =================
+
+function toggleTemuanBulananSPV(){
+
+
+  const detail =
+    document.getElementById(
+      'temuanBulananDetailSPV'
+    );
+
+
+  const text =
+    document.getElementById(
+      'textToggleTemuanSPV'
+    );
+
+
+  const icon =
+    document.getElementById(
+      'iconToggleTemuanSPV'
+    );
+
+
+  const button =
+    document.getElementById(
+      'toggleTemuanBulananSPV'
+    );
+
+
+
+  if(!detail || !text || !icon) return;
+
+
+
+
+  const tampil =
+    detail.style.display !== 'none';
+
+
+
+
+  if(!tampil){
+
+
+    detail.style.display='block';
+
+    text.textContent='Hide';
+
+    icon.textContent='▲';
+
+    button.setAttribute(
+      'aria-expanded',
+      'true'
+    );
+
+
+  }else{
+
+
+    detail.style.display='none';
+
+    text.textContent='Detail';
+
+    icon.textContent='▼';
+
+    button.setAttribute(
+      'aria-expanded',
+      'false'
+    );
+
+
+  }
+
+
+}
+
+</script>
+
+
 
 
 
@@ -6595,6 +7310,23 @@ function setStatusFilterBapro(status) {
       <div class="posisi-grid-container" style="max-height: 220px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; border-radius: 5px; background: #fff;">
         <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;">
           
+
+<!-- Bagian -->
+<label style="display:flex; justify-content:center; align-items:center; gap:5px; cursor:pointer; text-align:center;">
+  <input type="checkbox" name="tmPosisi" value="Bagian Kiri">
+  Bagian Kiri
+</label>
+
+<label style="display:flex; justify-content:center; align-items:center; gap:5px; cursor:pointer; text-align:center;">
+  <input type="checkbox" name="tmPosisi" value="Bagian Tengah">
+  Bagian Tengah
+</label>
+
+<label style="display:flex; justify-content:center; align-items:center; gap:5px; cursor:pointer; text-align:center;">
+  <input type="checkbox" name="tmPosisi" value="Bagian Kanan">
+  Bagian Kanan
+</label>
+
           <!-- Angka 1 - 10 -->
           <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;"><input type="checkbox" name="tmPosisi" value="1"> 1</label>
           <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;"><input type="checkbox" name="tmPosisi" value="2"> 2</label>
@@ -6654,6 +7386,8 @@ function setStatusFilterBapro(status) {
           <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;"><input type="checkbox" name="tmPosisi" value="48"> 48</label>
           <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;"><input type="checkbox" name="tmPosisi" value="49"> 49</label>
           <label style="display: flex; align-items: center; gap: 5px; cursor: pointer;"><input type="checkbox" name="tmPosisi" value="50"> 50</label>
+
+
 
         </div>
       </div>
@@ -13762,6 +14496,338 @@ function filterManualList(input, tabId) {
 
 
 
+
+
+
+<!-- ========== INPUTAN ========== -->
+<div id="spvInputSection" style="margin-top:10px;">
+  <form id="spvForm">
+
+
+
+
+    <!-- SPINNER OVERLAY -->
+    <div id="spvSpinner"><div></div></div>
+
+    <!-- Input Nama Order -->
+    <div class="form-group">
+      <label>Nama Order</label>
+      <input type="text" id="spvOrder" placeholder="ETK GIV WHITE PEPAYA 72 GR" required>
+    </div>
+
+    <!-- Input No KS -->
+    <div class="form-group">
+      <label>No KS</label>
+      <input type="text" id="spvNoKS" placeholder="KS-xxxx-xx" required>
+    </div>
+
+    <!-- Tanggal & Jam -->
+    <div class="form-group" style="display:flex; gap:10px;">
+      <div style="flex:1;">
+        <label>Tanggal</label>
+        <input type="date" id="spvTanggal" required style="width:100%;">
+      </div>
+      <div style="flex:1;">
+        <label>Jam</label>
+        <input type="time" id="spvJam" required style="width:100%;">
+      </div>
+    </div>
+
+    <!-- Foto Acuan -->
+    <div class="form-group">
+      <label>Foto Acuan</label>
+      <div class="file-edit-wrapper">
+        <input type="file" id="spvFoto" accept="image/*">
+        <button type="button" id="editFotoBtn" onclick="openFotoEditor('spvFoto')">✏️ Edit Foto</button>
+      </div>
+    </div>
+
+<!-- Keterangan Acuan -->
+<div class="form-group">
+  <label>Keterangan Acuan (opsional)</label>
+  <select id="spvKet">
+    <option value="">-- Pilih Keterangan Acuan --</option>
+    <option value="STC">STC</option>
+    <option value="LPC">LPC</option>
+    <option value="DUMMY">DUMMY</option>
+  </select>
+</div>
+
+    <!-- Foto Temuan -->
+    <div class="form-group">
+      <label>Foto Temuan</label>
+      <div class="file-edit-wrapper">
+        <input type="file" id="spvFoto1" accept="image/*">
+        <button type="button" id="editFoto1Btn" onclick="openFotoEditor('spvFoto1')">✏️ Edit Foto</button>
+      </div>
+    </div>
+
+<!-- Keterangan Temuan -->
+<div class="form-group">
+  <label>Keterangan Temuan</label>
+
+  <textarea 
+    id="spvKet1" 
+    rows="3"
+    placeholder="Klik untuk memilih temuan"
+    readonly
+    onclick="openTemuanSPV()"
+    style="cursor:pointer; background:#f8fafc;">
+  </textarea>
+
+</div>
+
+
+<!-- ================= MODAL TEMUAN SPV ================= -->
+<div id="temuanModalSPV" class="temuan-modal" style="display:none;">
+
+  <div class="temuan-content">
+
+    <h3>Input Temuan</h3>
+
+
+    <!-- STEP 1 -->
+    <div id="stepSPV1" class="temuan-step">
+
+      <h4>1. Jenis Temuan</h4>
+
+      <select id="tmSPVJenis">
+        <option value="">-- Pilih Jenis Temuan --</option>
+        <option>Temuan Cetak</option>
+        <option>Temuan Lem</option>
+        <option>Temuan Ponch</option>
+        <option>Temuan Varnish</option>
+        <option>Temuan Potong</option>
+      </select>
+
+
+      <div class="modal-btn">
+        <button type="button" onclick="nextStepSPV(2)">
+          Next ▶
+        </button>
+      </div>
+
+    </div>
+
+
+
+<!-- STEP 2 -->
+<div id="stepSPV2" class="temuan-step" style="display:none;">
+
+<h4>2. Kategori & Temuan</h4>
+
+
+<div class="temuan-group">
+
+    <h5>🖨️ Temuan Cetak</h5>
+
+    <label><input type="checkbox" name="tmSPVTemuan" value="Warna"> Warna</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Noda"> Noda</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Ghosting"> Ghosting</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Terhapus"> Terhapus</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Galang"> Galang</label>
+
+    <label><input type="checkbox" name="tmSPVTemuan" value="MisRegis"> MisRegis</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Garis"> Garis</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Botak"> Botak</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Set-Off"> Set-Off</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Scumming"> Scumming</label>
+
+    <label><input type="checkbox" name="tmSPVTemuan" value="Oksidasi"> Oksidasi</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Gatra"> Gatra</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Salur"> Salur</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Barcode/QR"> Barcode/QR</label>
+
+</div>
+
+
+
+<div class="temuan-group">
+
+    <h5>📦 Temuan Lem</h5>
+
+    <label><input type="checkbox" name="tmSPVTemuan" value="No Glue"> No Glue</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Over Glue"> Over Glue</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Lem Tidak Rata"> Lem Tidak Rata</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Lengket"> Lengket</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Dus Sobek"> Dus Sobek</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Dus Baret"> Dus Baret</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Dus Galeng"> Dus Galeng</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Dus Tidak Siku"> Dus Tidak Siku</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Kupingan Ketekuk"> Kupingan Ketekuk</label>
+
+</div>
+
+
+
+<div class="temuan-group">
+
+    <h5>✂️ Temuan Ponch</h5>
+
+    <label><input type="checkbox" name="tmSPVTemuan" value="Ponch Lari"> Ponch Lari</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Ponch Pecah"> Ponch Pecah</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Ponch Tidak Putus"> Ponch Tidak Putus</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Tidak Ada Embose"> Tidak Ada Embose</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Embose Lari"> Embose Lari</label>
+
+</div>
+
+
+
+<div class="temuan-group">
+
+    <h5>✨ Temuan Varnish</h5>
+
+    <label><input type="checkbox" name="tmSPVTemuan" value="Varnish Tidak Rata"> Varnish Tidak Rata</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Bubble"> Bubble</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Varnish Bergaris"> Varnish Bergaris</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Tidak Ada Varnish"> Tidak Ada Varnish</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Glossy Kurang"> Glossy Kurang</label>
+
+</div>
+
+
+
+<div class="temuan-group">
+
+    <h5>📏 Temuan Potong</h5>
+
+    <label>
+      <input type="checkbox" name="tmSPVTemuan" value="Potongan Lari">
+      Potongan Lari
+    </label>
+
+</div>
+
+
+
+<div class="modal-btn" style="margin-top:20px;">
+
+    <button type="button" onclick="prevStepSPV(1)">
+      ◀ Back
+    </button>
+
+    <button type="button" onclick="nextStepSPV(3)">
+      Next ▶
+    </button>
+
+</div>
+
+
+</div>
+
+
+
+
+    <!-- STEP 3 -->
+    <div id="stepSPV3" class="temuan-step" style="display:none;">
+
+      <h4>3. Total Komplain</h4>
+
+
+      <textarea
+        id="tmSPVDetail"
+        rows="4"
+        placeholder="Isi Total Komplain">
+      </textarea>
+
+
+      <div class="modal-btn">
+
+        <button type="button" onclick="prevStepSPV(2)">
+          ◀ Back
+        </button>
+
+        <button type="button" onclick="nextStepSPV(4)">
+          Next ▶
+        </button>
+
+      </div>
+
+    </div>
+
+
+
+
+    <!-- STEP 4 -->
+    <div id="stepSPV4" class="temuan-step" style="display:none;">
+
+      <h4>4. Hasil Sortir</h4>
+
+
+      <textarea
+        id="tmSPVKet"
+        rows="4"
+        placeholder="Isi Total Sortir">
+      </textarea>
+
+
+      <div class="modal-btn">
+
+        <button type="button" onclick="prevStepSPV(3)">
+          ◀ Back
+        </button>
+
+        <button type="button" onclick="saveTemuanSPV()">
+          ✔ Selesai
+        </button>
+
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+</div>
+
+    <!-- Nama QC -->
+    <div class="form-group">
+      <label>Nama QC</label>
+      <select id="spvNama" required>
+        <option value="" disabled selected>Pilih QC</option>
+        <option value="NANI">NANI</option>
+      </select>
+    </div>
+
+    <!-- Proses -->
+    <div class="form-group">
+      <label>Proses</label>
+      <select id="spvProses" required>
+        <option value="" disabled selected>Pilih Proses</option>
+        <option value="RETUR">RETUR</option>
+        <option value="KOMPAIN">KOMPLAIN</option>
+      </select>
+    </div>
+
+    <!-- Tombol Submit -->
+    <div class="form-group">
+      <button type="button" onclick="submitSPV(event)">➕ SAVE</button>
+    </div>
+
+  </form>
+</div>
+
+<!-- ======================== Modal Editor Gambar ======================== -->
+<div id="fotoModal" class="foto-modal" style="display:none;">
+  <div class="foto-modal-content">
+    <span class="close-btn" onclick="confirmCloseFotoModal()">&times;</span>
+
+    <canvas id="editorCanvas" class="canvas-area"></canvas>
+
+    <!-- TOOL BUTTONS -->
+    <div id="toolButtons" class="tool-buttons">
+      <button onclick="setTool('move', this)">🖐 Move</button>
+      <button onclick="setTool('arrow', this)">➡️ Panah</button>
+      <button onclick="setTool('rect', this)">⬛ Kotak</button>
+      <button onclick="clearCanvas()">🧹 Clear</button>
+      <button class="full" onclick="confirmSaveCanvas()">💾 Simpan</button>
+    </div>
+  </div>
+</div>
+
+
 <style>
 /* ========== Tab Button QC SPV (Cyan) ========== */
 .tab-btn {
@@ -13794,14 +14860,7 @@ function filterManualList(input, tabId) {
   outline: none;
   box-shadow: none;
 }
-</style>
 
-
-<!-- ========== INPUTAN ========== -->
-<div id="spvInputSection" style="margin-top:10px;">
-  <form id="spvForm">
-
-    <style>
       /* ===== Style Form QC SPV ===== */
       #spvForm .form-group { margin-bottom: 10px; }
 
@@ -13955,116 +15014,9 @@ function filterManualList(input, tabId) {
         background:#00bcd4;
         color:#fff;
       }
-    </style>
 
-    <!-- SPINNER OVERLAY -->
-    <div id="spvSpinner"><div></div></div>
 
-    <!-- Input Nama Order -->
-    <div class="form-group">
-      <label>Nama Order</label>
-      <input type="text" id="spvOrder" placeholder="ETK GIV WHITE PEPAYA 72 GR" required>
-    </div>
 
-    <!-- Input No KS -->
-    <div class="form-group">
-      <label>No KS</label>
-      <input type="text" id="spvNoKS" placeholder="KS-xxxx-xx" required>
-    </div>
-
-    <!-- Tanggal & Jam -->
-    <div class="form-group" style="display:flex; gap:10px;">
-      <div style="flex:1;">
-        <label>Tanggal</label>
-        <input type="date" id="spvTanggal" required style="width:100%;">
-      </div>
-      <div style="flex:1;">
-        <label>Jam</label>
-        <input type="time" id="spvJam" required style="width:100%;">
-      </div>
-    </div>
-
-    <!-- Foto Acuan -->
-    <div class="form-group">
-      <label>Foto Acuan</label>
-      <div class="file-edit-wrapper">
-        <input type="file" id="spvFoto" accept="image/*">
-        <button type="button" id="editFotoBtn" onclick="openFotoEditor('spvFoto')">✏️ Edit Foto</button>
-      </div>
-    </div>
-
-<!-- Keterangan Acuan -->
-<div class="form-group">
-  <label>Keterangan Acuan (opsional)</label>
-  <select id="spvKet">
-    <option value="">-- Pilih Keterangan Acuan --</option>
-    <option value="STC">STC</option>
-    <option value="LPC">LPC</option>
-    <option value="DUMMY">DUMMY</option>
-  </select>
-</div>
-
-    <!-- Foto Temuan -->
-    <div class="form-group">
-      <label>Foto Temuan</label>
-      <div class="file-edit-wrapper">
-        <input type="file" id="spvFoto1" accept="image/*">
-        <button type="button" id="editFoto1Btn" onclick="openFotoEditor('spvFoto1')">✏️ Edit Foto</button>
-      </div>
-    </div>
-
-    <!-- Keterangan Temuan -->
-    <div class="form-group">
-      <label>Keterangan Temuan (opsional)</label>
-      <textarea id="spvKet1" placeholder="Isi Keterangan" rows="3"></textarea>
-    </div>
-
-    <!-- Nama QC -->
-    <div class="form-group">
-      <label>Nama QC</label>
-      <select id="spvNama" required>
-        <option value="" disabled selected>Pilih QC</option>
-        <option value="NANI">NANI</option>
-      </select>
-    </div>
-
-    <!-- Proses -->
-    <div class="form-group">
-      <label>Proses</label>
-      <select id="spvProses" required>
-        <option value="" disabled selected>Pilih Proses</option>
-        <option value="RETUR">RETUR</option>
-        <option value="KOMPAIN">KOMPLAIN</option>
-      </select>
-    </div>
-
-    <!-- Tombol Submit -->
-    <div class="form-group">
-      <button type="button" onclick="submitSPV(event)">➕ SAVE</button>
-    </div>
-
-  </form>
-</div>
-
-<!-- ======================== Modal Editor Gambar ======================== -->
-<div id="fotoModal" class="foto-modal" style="display:none;">
-  <div class="foto-modal-content">
-    <span class="close-btn" onclick="confirmCloseFotoModal()">&times;</span>
-
-    <canvas id="editorCanvas" class="canvas-area"></canvas>
-
-    <!-- TOOL BUTTONS -->
-    <div id="toolButtons" class="tool-buttons">
-      <button onclick="setTool('move', this)">🖐 Move</button>
-      <button onclick="setTool('arrow', this)">➡️ Panah</button>
-      <button onclick="setTool('rect', this)">⬛ Kotak</button>
-      <button onclick="clearCanvas()">🧹 Clear</button>
-      <button class="full" onclick="confirmSaveCanvas()">💾 Simpan</button>
-    </div>
-  </div>
-</div>
-
-<style>
 /* ===================== Modal ===================== */
 .foto-modal {
   position: fixed;
@@ -14165,6 +15117,345 @@ function filterManualList(input, tabId) {
     padding:8px;
   }
 }
+
+/* =====================================================
+   MODAL TEMUAN SPV - MODERN UI
+===================================================== */
+
+.temuan-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 15px;
+}
+
+
+/* ================= CONTENT ================= */
+
+.temuan-content {
+
+    width: 100%;
+    max-width: 600px;
+
+    max-height: 90vh;
+    overflow-y: auto;
+
+    background: #ffffff;
+
+    border-radius: 14px;
+
+    padding: 20px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.35);
+
+    animation: modalSPVShow .25s ease;
+
+}
+
+
+
+@keyframes modalSPVShow {
+
+    from {
+        opacity:0;
+        transform:translateY(-20px);
+    }
+
+    to {
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+
+
+/* ================= HEADER ================= */
+
+.temuan-content h3 {
+
+    text-align:center;
+
+    margin:0 0 18px 0;
+
+    padding:10px;
+
+    font-size:1.2rem;
+
+    color:#000;
+
+    background:
+    linear-gradient(
+        to right,
+        #00BCD4,
+        #4DD0E1
+    );
+
+    border-radius:10px;
+
+    border:1px solid #000;
+
+}
+
+
+
+/* ================= STEP ================= */
+
+.temuan-step h4 {
+
+    margin-bottom:12px;
+
+    font-size:1rem;
+
+    color:#0369a1;
+
+}
+
+
+
+/* ================= SELECT ================= */
+
+.temuan-step select {
+
+    width:100%;
+
+    padding:10px;
+
+    border-radius:8px;
+
+    border:1px solid #ccc;
+
+    font-size:14px;
+
+    background:#fff;
+
+}
+
+
+
+/* ================= GROUP TEMUAN ================= */
+
+.temuan-group {
+
+    margin-bottom:15px;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    background:#f8fafc;
+
+    border:1px solid #e5e7eb;
+
+}
+
+
+
+.temuan-group h5 {
+
+    margin:
+    0 0 10px 0;
+
+    font-size:14px;
+
+    color:#0369a1;
+
+}
+
+
+
+/* ================= CHECKBOX ================= */
+
+.temuan-group label {
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:6px;
+
+    margin-bottom:5px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+    transition:.2s;
+
+}
+
+
+
+.temuan-group label:hover {
+
+    background:#e0f7fa;
+
+}
+
+
+
+.temuan-group input[type="checkbox"] {
+
+    width:16px;
+
+    height:16px;
+
+}
+
+
+
+/* ================= TEXTAREA ================= */
+
+.temuan-step textarea {
+
+    width:100%;
+
+    resize:none;
+
+    padding:10px;
+
+    border-radius:8px;
+
+    border:1px solid #ccc;
+
+    font-size:14px;
+
+    box-sizing:border-box;
+
+}
+
+
+
+.temuan-step textarea:focus,
+.temuan-step select:focus {
+
+    outline:none;
+
+    border-color:#00BCD4;
+
+    box-shadow:
+    0 0 5px rgba(0,188,212,.35);
+
+}
+
+
+
+/* ================= BUTTON ================= */
+
+.modal-btn {
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:10px;
+
+    margin-top:20px;
+
+}
+
+
+
+.modal-btn button {
+
+    padding:9px 18px;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+    background:#00BCD4;
+
+    color:#000;
+
+    transition:.2s;
+
+}
+
+
+
+.modal-btn button:hover {
+
+    transform:translateY(-1px);
+
+    box-shadow:
+    0 4px 8px rgba(0,0,0,.2);
+
+}
+
+
+
+/* ================= INPUT PEMANGGIL MODAL ================= */
+
+#spvKet1 {
+
+    cursor:pointer;
+
+    background:#f8fafc;
+
+}
+
+
+
+#spvKet1:hover {
+
+    background:#e0f7fa;
+
+}
+
+
+
+/* ================= MOBILE ================= */
+
+@media(max-width:600px){
+
+    .temuan-content {
+
+        padding:15px;
+
+        max-height:85vh;
+
+    }
+
+
+    .temuan-group label {
+
+        font-size:13px;
+
+    }
+
+
+    .modal-btn {
+
+        justify-content:center;
+
+    }
+
+
+    .modal-btn button {
+
+        flex:1;
+
+    }
+
+}
+
+
 </style>
 
 
@@ -14471,6 +15762,213 @@ canvas.addEventListener("mouseup", endDraw);
 canvas.addEventListener("touchstart", startDraw, {passive:false});
 canvas.addEventListener("touchmove", moveDraw, {passive:false});
 canvas.addEventListener("touchend", endDraw, {passive:false});
+
+
+/* ====================== MODAL TEMUAN SPV ====================== */
+
+function openTemuanSPV(){
+
+  const modal = document.getElementById("temuanModalSPV");
+
+  if(!modal) return;
+
+  modal.style.display = "flex";
+
+  resetTemuanSPV();
+
+}
+
+
+/* ================= RESET MODAL ================= */
+
+function resetTemuanSPV(){
+
+  // kembali step 1
+  showStepSPV(1);
+
+  // reset jenis
+  const jenis = document.getElementById("tmSPVJenis");
+  if(jenis) jenis.value = "";
+
+
+  // reset checkbox
+  document.querySelectorAll('input[name="tmSPVTemuan"]')
+  .forEach(cb=>{
+    cb.checked = false;
+  });
+
+
+  // reset detail
+  const detail = document.getElementById("tmSPVDetail");
+  if(detail) detail.value="";
+
+
+  // reset keterangan tambahan
+  const ket = document.getElementById("tmSPVKet");
+  if(ket) ket.value="";
+
+}
+
+
+
+/* ================= STEP CONTROL ================= */
+
+function showStepSPV(step){
+
+  document.querySelectorAll(
+    "#temuanModalSPV .temuan-step"
+  )
+  .forEach(el=>{
+    el.style.display="none";
+  });
+
+
+  const target =
+    document.getElementById(
+      "stepSPV"+step
+    );
+
+
+  if(target){
+    target.style.display="block";
+  }
+
+}
+
+
+
+function nextStepSPV(step){
+
+  if(step===2){
+
+    const jenis =
+      document.getElementById("tmSPVJenis").value;
+
+
+    if(!jenis){
+      alert("Pilih Jenis Temuan terlebih dahulu!");
+      return;
+    }
+
+  }
+
+
+
+  if(step===3){
+
+    const checked =
+      document.querySelectorAll(
+        'input[name="tmSPVTemuan"]:checked'
+      );
+
+
+    if(checked.length===0){
+
+      alert("Pilih minimal 1 temuan!");
+      return;
+
+    }
+
+  }
+
+
+  showStepSPV(step);
+
+}
+
+
+
+function prevStepSPV(step){
+
+  showStepSPV(step);
+
+}
+
+
+
+/* ================= SIMPAN HASIL TEMUAN ================= */
+
+function saveTemuanSPV(){
+
+
+  const jenis =
+    document.getElementById("tmSPVJenis").value;
+
+
+
+  const temuan = 
+    Array.from(
+      document.querySelectorAll(
+        'input[name="tmSPVTemuan"]:checked'
+      )
+    )
+    .map(el=>el.value);
+
+
+
+  const detail =
+    document.getElementById("tmSPVDetail").value
+    .trim();
+
+
+
+  const ket =
+    document.getElementById("tmSPVKet").value
+    .trim();
+
+
+
+  let hasil = 
+    "Jenis: " + jenis +
+    " | Temuan: " + temuan.join(", ");
+
+
+
+  if(detail){
+
+    hasil +=
+    " | Detail: " + detail.toUpperCase();
+
+  }
+
+
+  if(ket){
+
+    hasil +=
+    " | Keterangan: " + ket.toUpperCase();
+
+  }
+
+
+
+  document.getElementById("spvKet1").value =
+    hasil;
+
+
+
+  closeTemuanSPV();
+
+}
+
+
+
+/* ================= CLOSE MODAL ================= */
+
+function closeTemuanSPV(){
+
+  const modal =
+    document.getElementById("temuanModalSPV");
+
+
+  if(modal){
+
+    modal.style.display="none";
+
+  }
+
+}
+
+
 </script>
 
 
@@ -25008,8 +26506,10 @@ loadLemItems();
 
 
 
-
 <script>
+
+
+
 /* ====================== TAB QC Register ====================== */
 function showSPVTab(tab, btn) {
   document.getElementById('spvInputSection').style.display = (tab === 'input') ? 'block' : 'none';
@@ -25143,8 +26643,20 @@ function loadSPV() {
       catch { const match = text.match(/\((.*)\)/); if (match) data = JSON.parse(match[1]); }
       if (!data) { spinner.style.display = "none"; return; }
 
-      const list = data.data || data || [];
-      tbody.innerHTML = "";
+const list = data.data || data || [];
+
+// SIMPAN DATA REGISTER UNTUK DASHBOARD QC SPV
+spvItems = list;
+
+// ================= DEFAULT BULAN BERJALAN =================
+const bulanSelect = document.getElementById("filterBulanTemuanSPV");
+
+if (bulanSelect && !bulanSelect.dataset.loaded) {
+  bulanSelect.value = new Date().getMonth();
+  bulanSelect.dataset.loaded = "true";
+}
+
+tbody.innerHTML = "";
 
       list.forEach((item, index) => {
         const tr = document.createElement('tr');
@@ -25168,7 +26680,16 @@ function loadSPV() {
         tbody.appendChild(tr);
       });
 
+
       enableSPVEdit();
+
+
+      // REFRESH DASHBOARD QC KOMPLAIN
+      if(typeof renderTemuanBulananSPV === "function"){
+        renderTemuanBulananSPV();
+      }
+
+
     })
     .catch(err => console.error("Gagal memuat data SPV:", err))
     .finally(() => spinner.style.display = "none");
