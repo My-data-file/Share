@@ -2034,21 +2034,25 @@ body {
 <style>
 
 /* =====================================================
-   TEMUAN DALAM 1 BULAN
-   MODERN ERP DASHBOARD STYLE
+   TEMUAN BULANAN ERP QC
+   RESPONSIVE DESKTOP + MOBILE
 ===================================================== */
 
 
-.temuan-bulanan-wrapper {
+/* =====================================================
+   WRAPPER UTAMA
+===================================================== */
+
+.temuan-bulanan-wrapper{
 
     width:100%;
+    max-width:100%;
 
     margin:16px 0;
 
     padding:18px 20px;
 
     box-sizing:border-box;
-
 
     background:
     linear-gradient(
@@ -2057,18 +2061,16 @@ body {
         #fafdff
     );
 
-
     border:1px solid #dbe7f5;
 
     border-radius:18px;
 
-
     box-shadow:
-
     0 8px 25px rgba(15,23,42,.06);
 
-}
+    overflow:hidden;
 
+}
 
 
 
@@ -2077,92 +2079,71 @@ body {
    HEADER
 ===================================================== */
 
+.temuan-bulanan-header{
 
-.temuan-bulanan-header {
-
+    width:100%;
 
     display:flex;
 
     justify-content:space-between;
 
-    align-items:center;
-
+    align-items:flex-start;
 
     gap:20px;
-
 
 }
 
 
 
-
-
 /* =====================================================
-   TITLE AREA
+   TITLE
 ===================================================== */
 
 
-.temuan-bulanan-title {
+.temuan-bulanan-title{
 
+    flex:1;
+
+    min-width:0;
 
     display:flex;
 
     flex-direction:column;
 
-
-    flex:1;
-
-
 }
 
 
-
-
-
-.temuan-bulanan-title h3 {
-
+.temuan-bulanan-title h3{
 
     margin:0;
 
-
     font-size:24px;
 
+    line-height:1.25;
 
     font-weight:800;
 
-
     color:#0F4FA8;
 
-
-    letter-spacing:.2px;
-
+    overflow-wrap:anywhere;
 
 }
 
 
+.temuan-bulanan-title span{
 
-
-
-.temuan-bulanan-title span {
-
-
-    margin-top:4px;
-
+    margin-top:5px;
 
     font-size:13px;
 
-
     color:#64748b;
 
-
 }
-
-
 
 
 
 /* =====================================================
-   FILTER BULAN
+   FILTER
 ===================================================== */
 
 
@@ -2170,16 +2151,18 @@ body {
 #filterBulanTemuanLem,
 #filterBulanTemuanFinishing,
 #filterBulanTemuanInspek,
-#filterBulanTemuanSPV {
-
-
-    margin-top:8px;
+#filterBulanTemuanSPV{
 
 
     width:180px;
 
+    max-width:100%;
 
-    height:36px;
+
+    height:38px;
+
+
+    margin-top:10px;
 
 
     padding:0 12px;
@@ -2188,12 +2171,10 @@ body {
     border-radius:10px;
 
 
-    border:
-
-    1px solid #cbdcf0;
+    border:1px solid #cbdcf0;
 
 
-    background:#ffffff;
+    background:white;
 
 
     color:#334155;
@@ -2208,30 +2189,7 @@ body {
     cursor:pointer;
 
 
-    outline:none;
-
-
-    transition:.2s;
-
-
 }
-
-
-
-
-#filterBulanTemuanPA:hover,
-#filterBulanTemuanLem:hover,
-#filterBulanTemuanFinishing:hover,
-#filterBulanTemuanInspek:hover,
-#filterBulanTemuanSPV:hover {
-
-
-    border-color:#0078D7;
-
-
-}
-
-
 
 
 
@@ -2240,21 +2198,23 @@ body {
 ===================================================== */
 
 
-.temuan-bulanan-actions {
+.temuan-bulanan-actions{
 
 
     display:flex;
 
-
     align-items:center;
+
+    justify-content:flex-end;
 
 
     gap:12px;
 
 
+    flex-wrap:nowrap;
+
+
 }
-
-
 
 
 
@@ -2263,10 +2223,12 @@ body {
 ===================================================== */
 
 
-.temuan-bulanan-total {
+.temuan-bulanan-total{
 
 
     width:118px;
+
+    min-width:118px;
 
 
     height:78px;
@@ -2277,19 +2239,15 @@ body {
 
     display:flex;
 
-
     flex-direction:column;
 
 
     justify-content:center;
 
-
     align-items:center;
 
 
     background:
-
-
     linear-gradient(
         135deg,
         #0078D7,
@@ -2302,7 +2260,6 @@ body {
 
     box-shadow:
 
-
     0 10px 22px rgba(0,120,215,.25);
 
 
@@ -2310,50 +2267,34 @@ body {
 
 
 
-
-
-.temuan-bulanan-total small {
-
+.temuan-bulanan-total small{
 
     font-size:11px;
 
-
-    opacity:.9;
-
-
 }
 
 
 
-
-
-.temuan-bulanan-total strong {
-
+.temuan-bulanan-total strong{
 
     margin-top:5px;
 
-
     font-size:34px;
-
 
     line-height:1;
 
-
     font-weight:800;
 
-
 }
-
-
 
 
 
 /* =====================================================
-   TOGGLE BUTTON
+   BUTTON TOGGLE
 ===================================================== */
 
 
-.temuan-toggle-btn {
+.temuan-toggle-btn{
 
 
     height:46px;
@@ -2367,9 +2308,7 @@ body {
 
     display:flex;
 
-
     justify-content:center;
-
 
     align-items:center;
 
@@ -2380,7 +2319,7 @@ body {
     border-radius:14px;
 
 
-    background:white;
+    background:#fff;
 
 
     border:1px solid #d7e6f8;
@@ -2398,74 +2337,37 @@ body {
     cursor:pointer;
 
 
-    transition:.25s;
+    white-space:nowrap;
 
 
 }
 
 
 
-
-
-.temuan-toggle-btn:hover {
+.temuan-toggle-btn:hover{
 
 
     background:#0078D7;
 
-
-    border-color:#0078D7;
-
-
-    color:white;
-
+    color:#fff;
 
 }
-
-
-
-
-
-.temuan-toggle-btn:active {
-
-
-    transform:scale(.96);
-
-
-}
-
-
-
-
-
-#iconToggleTemuanPA,
-#iconToggleTemuanLem,
-#iconToggleTemuanFinishing,
-#iconToggleTemuanInspek,
-#iconToggleTemuanSPV {
-
-    font-size:11px;
-
-
-}
-
-
 
 
 
 /* =====================================================
-   DETAIL AREA
+   DETAIL
 ===================================================== */
 
 
-.temuan-bulanan-detail {
+.temuan-bulanan-detail{
 
 
     margin-top:18px;
 
+    width:100%;
 
 }
-
-
 
 
 
@@ -2474,7 +2376,10 @@ body {
 ===================================================== */
 
 
-.temuan-bulanan-list {
+.temuan-bulanan-list{
+
+
+    width:100%;
 
 
     display:flex;
@@ -2490,14 +2395,18 @@ body {
 
 
 
-
-
 /* =====================================================
    ITEM
 ===================================================== */
 
 
-.temuan-bulanan-item {
+.temuan-bulanan-item{
+
+
+    width:100%;
+
+
+    box-sizing:border-box;
 
 
     display:flex;
@@ -2512,7 +2421,7 @@ body {
     padding:12px 14px;
 
 
-    background:#ffffff;
+    background:#fff;
 
 
     border:1px solid #e5eef8;
@@ -2521,31 +2430,7 @@ body {
     border-radius:14px;
 
 
-    transition:.2s;
-
-
 }
-
-
-
-
-
-.temuan-bulanan-item:hover {
-
-
-    transform:translateX(4px);
-
-
-    border-color:#7bbcff;
-
-
-    box-shadow:
-
-    0 6px 15px rgba(0,120,215,.08);
-
-
-}
-
 
 
 
@@ -2555,11 +2440,10 @@ body {
 ===================================================== */
 
 
-.temuan-bulanan-rank {
+.temuan-bulanan-rank{
 
 
     width:36px;
-
 
     height:36px;
 
@@ -2581,7 +2465,6 @@ body {
 
     background:
 
-
     linear-gradient(
         135deg,
         #0078D7,
@@ -2589,7 +2472,7 @@ body {
     );
 
 
-    color:white;
+    color:#fff;
 
 
     font-size:14px;
@@ -2602,17 +2485,18 @@ body {
 
 
 
-
-
 /* =====================================================
    NAME
 ===================================================== */
 
 
-.temuan-bulanan-name {
+.temuan-bulanan-name{
 
 
     flex:1;
+
+
+    min-width:0;
 
 
     font-size:14px;
@@ -2624,9 +2508,10 @@ body {
     color:#1f2937;
 
 
+    overflow-wrap:anywhere;
+
+
 }
-
-
 
 
 
@@ -2635,7 +2520,7 @@ body {
 ===================================================== */
 
 
-.temuan-bulanan-count {
+.temuan-bulanan-count{
 
 
     min-width:52px;
@@ -2647,13 +2532,13 @@ body {
     border-radius:20px;
 
 
-    text-align:center;
-
-
     background:#0F4FA8;
 
 
-    color:white;
+    color:#fff;
+
+
+    text-align:center;
 
 
     font-size:13px;
@@ -2664,31 +2549,614 @@ body {
 
 }
 
+/* =====================================================
+   RESPONSIVE TABLET
+===================================================== */
+
+
+@media(max-width:992px){
+
+
+.temuan-bulanan-title h3{
+
+    font-size:21px;
+
+}
+
+
+.temuan-bulanan-wrapper{
+
+    padding:16px;
+
+}
+
+
+}
+
 
 
 
 
 /* =====================================================
-   EMPTY
+   MOBILE TABLET
 ===================================================== */
 
 
-.temuan-empty {
+@media(max-width:768px){
 
 
-    padding:35px 20px;
+.temuan-bulanan-wrapper{
+
+    padding:14px;
+
+}
 
 
-    text-align:center;
+
+/* HEADER TURUN AGAR TIDAK DESAKAN */
+
+.temuan-bulanan-header{
+
+    flex-direction:column;
+
+    align-items:stretch;
+
+    gap:14px;
+
+}
 
 
-    color:#64748b;
+
+/* ACTION FULL WIDTH */
+
+.temuan-bulanan-actions{
+
+    width:100%;
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(2,minmax(0,1fr));
+
+    gap:10px;
+
+}
 
 
-    background:#f8fbff;
+
+.temuan-bulanan-total{
+
+    width:100%;
+
+    min-width:0;
+
+}
 
 
-    border:2px dashed #d8e4f2;
+
+.temuan-toggle-btn{
+
+    width:100%;
+
+    min-width:0;
+
+    font-size:13px;
+
+}
+
+
+
+#filterBulanTemuanPA,
+#filterBulanTemuanLem,
+#filterBulanTemuanFinishing,
+#filterBulanTemuanInspek,
+#filterBulanTemuanSPV{
+
+    width:100%;
+
+}
+
+
+
+
+
+/* LIST */
+
+.temuan-bulanan-item{
+
+    padding:12px;
+
+    gap:10px;
+
+}
+
+
+
+.temuan-bulanan-name{
+
+    font-size:13px;
+
+}
+
+
+
+.temuan-bulanan-count{
+
+    min-width:46px;
+
+    padding:5px 8px;
+
+    font-size:12px;
+
+}
+
+
+
+}
+
+
+
+
+
+/* =====================================================
+   HP KECIL
+===================================================== */
+
+
+@media(max-width:480px){
+
+
+.temuan-bulanan-wrapper{
+
+    padding:12px;
+
+    border-radius:14px;
+
+}
+
+
+
+.temuan-bulanan-title h3{
+
+    font-size:18px;
+
+}
+
+
+
+.temuan-bulanan-title span{
+
+    font-size:12px;
+
+}
+
+
+
+/* TOTAL DAN BUTTON SATU KOLOM */
+
+.temuan-bulanan-actions{
+
+    grid-template-columns:1fr;
+
+}
+
+
+
+.temuan-bulanan-total{
+
+    height:70px;
+
+}
+
+
+
+.temuan-bulanan-total strong{
+
+    font-size:28px;
+
+}
+
+
+
+
+/* ITEM MOBILE */
+
+.temuan-bulanan-item{
+
+    display:grid;
+
+    grid-template-columns:
+
+    32px minmax(0,1fr) auto;
+
+
+    gap:10px;
+
+    padding:10px;
+
+}
+
+
+
+.temuan-bulanan-rank{
+
+    width:32px;
+
+    height:32px;
+
+    min-width:32px;
+
+    font-size:12px;
+
+}
+
+
+
+.temuan-bulanan-name{
+
+    font-size:12px;
+
+    line-height:1.35;
+
+}
+
+
+
+.temuan-bulanan-count{
+
+    min-width:40px;
+
+    padding:5px 7px;
+
+    font-size:11px;
+
+}
+
+
+
+
+
+}
+
+
+
+
+
+/* =====================================================
+   GRAFIK TEMUAN
+   FIX CHART.JS TIDAK KELUAR LAYAR
+===================================================== */
+
+
+.temuan-grafik-box{
+
+
+    width:100%;
+
+    max-width:100%;
+
+
+    box-sizing:border-box;
+
+
+    margin-top:18px;
+
+
+    padding:20px;
+
+
+    background:#fff;
+
+
+    border:1px solid #dbe7f5;
+
+
+    border-radius:18px;
+
+
+    box-shadow:
+
+    0 8px 25px rgba(15,23,42,.06);
+
+
+    overflow:hidden;
+
+
+}
+
+
+
+.temuan-grafik-box h4{
+
+
+    margin:0 0 18px;
+
+
+    font-size:18px;
+
+
+    font-weight:800;
+
+
+    color:#0F4FA8;
+
+
+}
+
+
+
+
+
+/* CONTAINER CANVAS */
+
+.temuan-grafik-box canvas{
+
+
+    width:100% !important;
+
+
+    max-width:100% !important;
+
+
+}
+
+
+
+
+#chartTemuanPA,
+#chartTemuanInspek,
+#chartTemuanLem,
+#chartTemuanFinishing,
+#chartTemuanSPV{
+
+
+    width:100% !important;
+
+
+    max-width:100% !important;
+
+
+    height:350px !important;
+
+
+    display:block;
+
+
+}
+
+
+
+
+
+@media(max-width:768px){
+
+
+.temuan-grafik-box{
+
+    padding:14px;
+
+}
+
+
+
+.temuan-grafik-box h4{
+
+    font-size:16px;
+
+}
+
+
+
+#chartTemuanPA,
+#chartTemuanInspek,
+#chartTemuanLem,
+#chartTemuanFinishing,
+#chartTemuanSPV{
+
+
+    height:260px !important;
+
+
+}
+
+
+}
+
+
+
+
+
+
+@media(max-width:480px){
+
+
+.temuan-grafik-box{
+
+
+    padding:10px;
+
+    border-radius:14px;
+
+
+}
+
+
+
+.temuan-grafik-box h4{
+
+
+    font-size:15px;
+
+
+}
+
+
+
+#chartTemuanPA,
+#chartTemuanInspek,
+#chartTemuanLem,
+#chartTemuanFinishing,
+#chartTemuanSPV{
+
+
+    height:220px !important;
+
+
+}
+
+
+}
+
+
+
+
+
+
+/* =====================================================
+   FIX GLOBAL QC CARD
+   AGAR SEMUA MENU SAMA RAPI
+===================================================== */
+
+
+.qc-section,
+.grid-wrapper,
+.grid-container{
+
+
+    width:100%;
+
+    max-width:100%;
+
+    box-sizing:border-box;
+
+
+}
+
+
+
+/* CARD QC */
+
+.grid-container{
+
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(auto-fit,minmax(220px,1fr));
+
+
+    gap:12px;
+
+
+}
+
+
+
+
+
+@media(max-width:768px){
+
+
+.grid-container{
+
+
+    grid-template-columns:
+
+    repeat(1,minmax(0,1fr));
+
+
+}
+
+
+
+.grid-card{
+
+
+    width:100%;
+
+    max-width:100%;
+
+
+    overflow:hidden;
+
+
+}
+
+
+
+}
+
+
+
+
+
+/* =====================================================
+   ANTI HORIZONTAL SCROLL GLOBAL
+===================================================== */
+
+
+html,
+body{
+
+
+    max-width:100%;
+
+
+    overflow-x:hidden;
+
+
+}
+
+
+
+*{
+
+
+    max-width:100%;
+
+
+    box-sizing:border-box;
+
+
+}
+
+
+
+
+
+/* =====================================================
+   MODAL HP FIX
+===================================================== */
+
+
+.modal-content,
+.modal-fin-content,
+.popup-order-box{
+
+
+    width:95vw !important;
+
+
+    max-width:420px;
+
+
+}
+
+
+
+
+
+@media(max-width:480px){
+
+
+.modal-content,
+.modal-fin-content,
+.popup-order-box{
+
+
+    width:94vw !important;
 
 
     border-radius:14px;
@@ -2698,323 +3166,12 @@ body {
 
 
 
-
-
-/* =====================================================
-   TABLET
-===================================================== */
-
-
-@media(max-width:992px){
-
-
-.temuan-bulanan-title h3 {
-
-
-    font-size:21px;
-
-
 }
 
 
-}
-
-
-
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-
-@media(max-width:768px){
-
-
-.temuan-bulanan-wrapper {
-
-
-    padding:16px;
-
-
-}
-
-
-
-
-.temuan-bulanan-header {
-
-
-    flex-direction:column;
-
-
-    align-items:stretch;
-
-
-}
-
-
-
-
-
-.temuan-bulanan-actions {
-
-
-    width:100%;
-
-
-}
-
-
-
-
-
-.temuan-bulanan-total {
-
-
-    flex:1;
-
-
-}
-
-
-
-
-
-.temuan-toggle-btn {
-
-
-    flex:1;
-
-
-}
-
-
-
-
-
-#filterBulanTemuanPA,
-#filterBulanTemuanLem,
-#filterBulanTemuanFinishing,
-#filterBulanTemuanInspek,
-#filterBulanTemuanSPV {
-    width:100%;
-}
-
-
-}
-
-
-
-
-
-}
-
-
-
-
-
-/* =====================================================
-   SMALL MOBILE
-===================================================== */
-
-
-@media(max-width:480px){
-
-
-.temuan-bulanan-title h3 {
-
-
-    font-size:18px;
-
-
-}
-
-
-
-.temuan-bulanan-actions {
-
-
-    gap:8px;
-
-
-}
-
-
-
-.temuan-bulanan-total {
-
-
-    height:70px;
-
-
-}
-
-
-
-.temuan-bulanan-total strong {
-
-
-    font-size:30px;
-
-
-}
-
-
-
-.temuan-bulanan-item {
-
-
-    gap:10px;
-
-
-    padding:10px;
-
-
-}
-
-
-
-.temuan-bulanan-name {
-
-
-    font-size:13px;
-
-
-}
-
-
-
-.temuan-bulanan-count {
-
-
-    min-width:45px;
-
-
-    padding:6px 9px;
-
-
-}
-
-
-}
-
-
-/* =====================================================
-   GRAFIK TEMUAN TAHUNAN
-===================================================== */
-
-.temuan-grafik-box{
-
-    width:100%;
-    max-width:100%;
-    box-sizing:border-box;
-
-    margin-top:18px;
-    padding:20px;
-
-    background:#ffffff;
-    border:1px solid #dbe7f5;
-    border-radius:18px;
-
-    box-shadow:0 8px 25px rgba(15,23,42,.06);
-
-    overflow:hidden;
-
-}
-
-.temuan-grafik-box h4{
-
-    margin:0 0 18px;
-
-    font-size:18px;
-    font-weight:800;
-
-    color:#0F4FA8;
-
-}
-
-/* ================= CANVAS ================= */
-
-#chartTemuanPA,
-#chartTemuanInspek,
-#chartTemuanLem,
-#chartTemuanFinishing,
-#chartTemuanSPV{
-
-    display:block;
-
-    width:100% !important;
-    max-width:100% !important;
-
-    height:350px !important;
-
-}
-
-/* ================= TABLET ================= */
-
-@media (max-width:768px){
-
-    .temuan-grafik-box{
-
-        padding:16px;
-
-    }
-
-    .temuan-grafik-box h4{
-
-        font-size:16px;
-
-    }
-
-    #chartTemuanPA,
-    #chartTemuanInspek,
-    #chartTemuanLem,
-    #chartTemuanFinishing,
-    #chartTemuanSPV{
-
-        height:260px !important;
-
-    }
-
-}
-
-/* ================= MOBILE ================= */
-
-@media (max-width:480px){
-
-    .temuan-grafik-box{
-
-        margin-top:12px;
-
-        padding:12px;
-
-    }
-
-    .temuan-grafik-box h4{
-
-        font-size:15px;
-
-    }
-
-    #chartTemuanPA,
-    #chartTemuanInspek,
-    #chartTemuanLem,
-    #chartTemuanFinishing,
-    #chartTemuanSPV{
-
-        height:220px !important;
-
-    }
-
-}
 
 
 </style>
-
-
-
-
 
 
 
