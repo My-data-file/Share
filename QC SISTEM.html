@@ -2828,40 +2828,31 @@ body {
    FIX CHART.JS TIDAK KELUAR LAYAR
 ===================================================== */
 
-
 .temuan-grafik-box{
-
 
     width:100%;
 
     max-width:100%;
 
-
     box-sizing:border-box;
-
 
     margin-top:18px;
 
-
     padding:20px;
-
 
     background:#fff;
 
-
     border:1px solid #dbe7f5;
-
 
     border-radius:18px;
 
-
     box-shadow:
-
     0 8px 25px rgba(15,23,42,.06);
 
+    overflow-x:auto;
+    overflow-y:hidden;
 
-    overflow:hidden;
-
+    position:relative;
 
 }
 
@@ -2869,40 +2860,37 @@ body {
 
 .temuan-grafik-box h4{
 
-
     margin:0 0 18px;
-
 
     font-size:18px;
 
-
     font-weight:800;
-
 
     color:#0F4FA8;
 
-
 }
 
 
 
-
-
-/* CONTAINER CANVAS */
+/* ==========================
+   CONTAINER CANVAS
+========================== */
 
 .temuan-grafik-box canvas{
 
+    display:block;
 
     width:100% !important;
 
-
     max-width:100% !important;
-
 
 }
 
 
 
+/* ==========================
+   CHART
+========================== */
 
 #chartTemuanPA,
 #chartTemuanInspek,
@@ -2910,27 +2898,23 @@ body {
 #chartTemuanFinishing,
 #chartTemuanSPV{
 
-
     width:100% !important;
-
 
     max-width:100% !important;
 
-
-    height:350px !important;
-
+    height:380px !important;
 
     display:block;
-
 
 }
 
 
 
-
+/* =====================================================
+   TABLET
+===================================================== */
 
 @media(max-width:768px){
-
 
 .temuan-grafik-box{
 
@@ -2938,60 +2922,45 @@ body {
 
 }
 
-
-
 .temuan-grafik-box h4{
 
     font-size:16px;
 
 }
 
-
-
 #chartTemuanPA,
 #chartTemuanInspek,
 #chartTemuanLem,
 #chartTemuanFinishing,
 #chartTemuanSPV{
 
+    height:320px !important;
 
-    height:260px !important;
-
+}
 
 }
 
 
-}
 
-
-
-
-
+/* =====================================================
+   HP
+===================================================== */
 
 @media(max-width:480px){
 
-
 .temuan-grafik-box{
-
 
     padding:10px;
 
     border-radius:14px;
 
-
 }
-
-
 
 .temuan-grafik-box h4{
 
-
     font-size:15px;
 
-
 }
-
-
 
 #chartTemuanPA,
 #chartTemuanInspek,
@@ -2999,17 +2968,11 @@ body {
 #chartTemuanFinishing,
 #chartTemuanSPV{
 
-
-    height:220px !important;
-
+    height:300px !important;
 
 }
 
-
 }
-
-
-
 
 
 
@@ -3018,18 +2981,15 @@ body {
    AGAR SEMUA MENU SAMA RAPI
 ===================================================== */
 
-
 .qc-section,
 .grid-wrapper,
 .grid-container{
-
 
     width:100%;
 
     max-width:100%;
 
     box-sizing:border-box;
-
 
 }
 
@@ -3039,56 +2999,37 @@ body {
 
 .grid-container{
 
-
     display:grid;
 
     grid-template-columns:
-
     repeat(auto-fit,minmax(220px,1fr));
-
 
     gap:12px;
 
-
 }
-
-
 
 
 
 @media(max-width:768px){
 
-
 .grid-container{
 
-
     grid-template-columns:
-
     repeat(1,minmax(0,1fr));
-
 
 }
 
-
-
 .grid-card{
-
 
     width:100%;
 
     max-width:100%;
 
-
     overflow:hidden;
 
-
 }
 
-
-
 }
-
-
 
 
 
@@ -3096,33 +3037,22 @@ body {
    ANTI HORIZONTAL SCROLL GLOBAL
 ===================================================== */
 
-
 html,
 body{
 
-
     max-width:100%;
-
 
     overflow-x:hidden;
 
-
 }
-
-
 
 *{
 
-
     max-width:100%;
-
 
     box-sizing:border-box;
 
-
 }
-
-
 
 
 
@@ -3130,44 +3060,31 @@ body{
    MODAL HP FIX
 ===================================================== */
 
-
 .modal-content,
 .modal-fin-content,
 .popup-order-box{
 
-
     width:95vw !important;
-
 
     max-width:420px;
 
-
 }
-
-
 
 
 
 @media(max-width:480px){
 
-
 .modal-content,
 .modal-fin-content,
 .popup-order-box{
 
-
     width:94vw !important;
-
 
     border-radius:14px;
 
-
 }
 
-
-
 }
-
 
 
 
@@ -4116,28 +4033,18 @@ function parseTanggalTemuanPA(value){
 
 let chartTemuanPAInstance = null;
 
-
-
 function renderGrafikTemuanPA() {
-
 
   const canvas =
     document.getElementById(
       "chartTemuanPA"
     );
 
+  if (!canvas) return;
 
-  if(!canvas) return;
-
-
-
-  if(!Array.isArray(paItems)){
-
+  if (!Array.isArray(paItems)) {
     return;
-
   }
-
-
 
   const bulanNama = [
 
@@ -4156,12 +4063,8 @@ function renderGrafikTemuanPA() {
 
   ];
 
-
-
   const totalBulan =
     Array(12).fill(0);
-
-
 
   // ======================
   // FILTER TAHUN BERJALAN
@@ -4170,17 +4073,11 @@ function renderGrafikTemuanPA() {
   const sekarang =
     new Date();
 
-
   const tahunSekarang =
     sekarang.getFullYear();
 
-
   const bulanSekarang =
     sekarang.getMonth();
-
-
-
-
 
   const daftarTemuan = [
 
@@ -4201,69 +4098,37 @@ function renderGrafikTemuanPA() {
 
   ];
 
-
-
-  paItems.forEach(item=>{
-
+  paItems.forEach(item => {
 
     const tanggal =
       parseTanggalTemuanPA(item.tanggal);
 
-
-
-    if(!tanggal){
-
+    if (!tanggal) {
       return;
-
     }
 
-
-
-    // ======================
-    // FILTER DATA FUTURE
-    // ======================
-
-    if(
+    if (
       tanggal.getFullYear() !== tahunSekarang
-    ){
-
+    ) {
       return;
-
     }
 
-
-
-    if(
+    if (
       tanggal.getMonth() > bulanSekarang
-    ){
-
+    ) {
       return;
-
     }
-
-
 
     const keterangan =
-      String(
-        item.keterangan || ""
-      );
+      String(item.keterangan || "");
 
-
-
-    if(!keterangan){
-
+    if (!keterangan) {
       return;
-
     }
-
-
 
     let jumlah = 0;
 
-
-
-    daftarTemuan.forEach(temuan=>{
-
+    daftarTemuan.forEach(temuan => {
 
       const regex =
         new RegExp(
@@ -4271,163 +4136,188 @@ function renderGrafikTemuanPA() {
           "gi"
         );
 
-
       const hasil =
         keterangan.match(regex);
 
-
-
-      if(hasil){
-
+      if (hasil) {
         jumlah += hasil.length;
-
       }
 
-
     });
-
-
 
     totalBulan[
       tanggal.getMonth()
     ] += jumlah;
 
-
-
   });
 
-
-
-
-  if(chartTemuanPAInstance){
-
+  if (chartTemuanPAInstance) {
     chartTemuanPAInstance.destroy();
-
   }
-
-
 
   chartTemuanPAInstance =
     new Chart(
       canvas,
       {
 
-
-        // ======================
-        // REGISTER LABEL ANGKA
-        // ======================
-        plugins:[
-
+        plugins: [
           ChartDataLabels
-
         ],
 
+        type: "bar",
 
+        data: {
 
-        type:"bar",
+          labels: bulanNama,
 
+          datasets: [{
 
+            label: "Total Temuan",
 
-        data:{
+            data: totalBulan,
 
+            borderWidth: 1,
 
-          labels:bulanNama,
+            backgroundColor: "#90caf9",
 
+            borderColor: "#42a5f5",
 
-          datasets:[{
+            borderRadius: 4,
 
+            barPercentage: 0.75,
 
-            label:"Total Temuan",
-
-
-            data:totalBulan,
-
-
-            borderWidth:1
-
+            categoryPercentage: 0.8
 
           }]
 
-
         },
 
+        options: {
 
+          responsive: true,
 
-options:{
+          maintainAspectRatio: false,
 
-  responsive:true,
+          layout: {
 
-  maintainAspectRatio:false,
+            padding: {
 
-  layout:{
-    padding:{
-      top:30
-    }
-  },
-
-  plugins:{
-
-
-// ======================
-// ANGKA DI DALAM GRAFIK
-// ======================
-datalabels:{
-
-  anchor:"center",
-
-  align:"center",
-
-  color:"#ffffff",
-
-  clip:true,
-
-  formatter:function(value){
-
-    return value > 0 ? value : "";
-
-  },
-
-  font:{
-
-    weight:"bold",
-
-    size:13
-
-  }
-
-}
-
-
-
-          },
-
-
-
-          scales:{
-
-
-            y:{
-
-
-              beginAtZero:true
-
+              top: 25,
+              right: 10,
+              left: 10,
+              bottom: 10
 
             }
 
+          },
 
+          plugins: {
+
+            legend: {
+
+              display: true,
+
+              position: "top",
+
+              labels: {
+
+                boxWidth: 40,
+
+                padding: 12,
+
+                font: {
+
+                  size: 12
+
+                }
+
+              }
+
+            },
+
+            datalabels: {
+
+              anchor: "end",
+
+              align: "top",
+
+              offset: 4,
+
+              clamp: true,
+
+              clip: false,
+
+              color: "#1f2937",
+
+              formatter: function (value) {
+
+                return value > 0 ? value : "";
+
+              },
+
+              font: {
+
+                weight: "bold",
+
+                size: 11
+
+              }
+
+            }
+
+          },
+
+          scales: {
+
+            x: {
+
+              offset: true,
+
+              grid: {
+
+                display: false
+
+              },
+
+              ticks: {
+
+                autoSkip: false,
+
+                maxRotation: 45,
+
+                minRotation: 45,
+
+                font: {
+
+                  size: 10
+
+                }
+
+              }
+
+            },
+
+            y: {
+
+              beginAtZero: true,
+
+              grace: "10%",
+
+              ticks: {
+
+                precision: 0
+
+              }
+
+            }
 
           }
 
-
-
         }
-
-
 
       }
 
     );
-
 
 }
 
