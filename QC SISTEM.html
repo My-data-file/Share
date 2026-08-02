@@ -1882,16 +1882,13 @@ body {
     style="display:none;">
 
 
-    <div class="temuan-grafik-box">
+<div class="temuan-grafik-box">
 
+    <h4>Grafik Temuan</h4>
 
-      <h4>
-        Compare Temuan Dalam 1 Tahun
-      </h4>
+    <div class="chart-wrapper">
 
-
-      <canvas id="chartTemuanPA"></canvas>
-
+        <canvas id="chartTemuanPA"></canvas>
 
     </div>
 
@@ -1901,6 +1898,8 @@ body {
 
 
 </div>
+
+
 
 
 <!-- ================= PENDING ================= -->
@@ -2910,25 +2909,18 @@ body {
     max-width:100%;
     box-sizing:border-box;
 
-    margin:18px 0;
+    margin-top:18px;
     padding:20px;
 
     background:#ffffff;
     border:1px solid #dbe7f5;
     border-radius:18px;
 
-    box-shadow:
-        0 8px 25px rgba(15,23,42,.06);
+    box-shadow:0 8px 25px rgba(15,23,42,.06);
 
-    position:relative;
     overflow:hidden;
-    overflow-x:auto;
-
-    -webkit-overflow-scrolling:touch;
 
 }
-
-/* ================= JUDUL ================= */
 
 .temuan-grafik-box h4{
 
@@ -2939,13 +2931,9 @@ body {
 
     color:#0F4FA8;
 
-    line-height:1.3;
-
 }
 
-/* =====================================================
-   CANVAS GRAFIK
-===================================================== */
+/* ================= CANVAS ================= */
 
 #chartTemuanPA,
 #chartTemuanInspek,
@@ -2958,23 +2946,17 @@ body {
     width:100% !important;
     max-width:100% !important;
 
-    height:320px !important;
+    height:350px !important;
 
 }
 
-/* =====================================================
-   TABLET
-===================================================== */
+/* ================= TABLET ================= */
 
 @media (max-width:768px){
 
     .temuan-grafik-box{
 
-        margin:15px 0;
-
-        padding:15px;
-
-        border-radius:15px;
+        padding:16px;
 
     }
 
@@ -2982,10 +2964,6 @@ body {
 
         font-size:16px;
 
-        margin-bottom:14px;
-
-        text-align:center;
-
     }
 
     #chartTemuanPA,
@@ -2994,25 +2972,21 @@ body {
     #chartTemuanFinishing,
     #chartTemuanSPV{
 
-        height:250px !important;
+        height:260px !important;
 
     }
 
 }
 
-/* =====================================================
-   MOBILE
-===================================================== */
+/* ================= MOBILE ================= */
 
 @media (max-width:480px){
 
     .temuan-grafik-box{
 
-        margin:12px 0;
+        margin-top:12px;
 
         padding:12px;
-
-        border-radius:12px;
 
     }
 
@@ -3020,8 +2994,6 @@ body {
 
         font-size:15px;
 
-        margin-bottom:10px;
-
     }
 
     #chartTemuanPA,
@@ -3030,39 +3002,7 @@ body {
     #chartTemuanFinishing,
     #chartTemuanSPV{
 
-        width:100% !important;
-
-        height:200px !important;
-
-    }
-
-}
-
-/* =====================================================
-   HP SANGAT KECIL
-===================================================== */
-
-@media (max-width:360px){
-
-    .temuan-grafik-box{
-
-        padding:10px;
-
-    }
-
-    .temuan-grafik-box h4{
-
-        font-size:14px;
-
-    }
-
-    #chartTemuanPA,
-    #chartTemuanInspek,
-    #chartTemuanLem,
-    #chartTemuanFinishing,
-    #chartTemuanSPV{
-
-        height:180px !important;
+        height:220px !important;
 
     }
 
@@ -4525,26 +4465,26 @@ datalabels:{
 
 
 
-  <!-- ================= GRAFIK TEMUAN TAHUNAN ================= -->
-  <div
+<!-- ================= GRAFIK TEMUAN TAHUNAN ================= -->
+<div
     id="grafikTemuanDetailInspek"
     class="temuan-bulanan-detail"
     style="display:none;">
 
-
-
     <div class="temuan-grafik-box">
 
+        <h4>
+            Compare Temuan Dalam 1 Tahun
+        </h4>
 
+        <canvas
+            id="chartTemuanInspek"
+            aria-label="Grafik Temuan Tahunan Inspek">
+        </canvas>
 
-      <h4>
-        Compare Temuan Dalam 1 Tahun
-      </h4>
+    </div>
 
-
-
-
-      <canvas id="chartTemuanInspek"></canvas>
+</div>
 
 
 
@@ -6387,36 +6327,26 @@ datalabels:{
 
 
 
-  <!-- ================= GRAFIK TEMUAN TAHUNAN ================= -->
-  <div
+<!-- ================= GRAFIK TEMUAN TAHUNAN ================= -->
+<div
     id="grafikTemuanDetailLem"
     class="temuan-bulanan-detail"
     style="display:none;">
 
-
-
     <div class="temuan-grafik-box">
 
+        <h4>
+            Compare Temuan Dalam 1 Tahun
+        </h4>
 
-
-      <h4>
-        Compare Temuan Dalam 1 Tahun
-      </h4>
-
-
-
-
-
-      <canvas id="chartTemuanLem"></canvas>
-
-
-
+        <canvas
+            id="chartTemuanLem"
+            aria-label="Grafik Temuan Tahunan Lem">
+        </canvas>
 
     </div>
 
-
-
-  </div>
+</div>
 
 
 
@@ -8146,39 +8076,24 @@ datalabels:{
 
 
 
-  <!-- ================= GRAFIK TEMUAN TAHUNAN ================= -->
-  <div
+<!-- ================= GRAFIK TEMUAN TAHUNAN ================= -->
+<div
     id="grafikTemuanDetailFinishing"
     class="temuan-bulanan-detail"
     style="display:none;">
 
-
-
     <div class="temuan-grafik-box">
 
+        <h4>
+            Compare Temuan Dalam 1 Tahun
+        </h4>
 
-
-      <h4>
-        Compare Temuan Dalam 1 Tahun
-      </h4>
-
-
-
-
-      <canvas id="chartTemuanFinishing"></canvas>
-
-
-
+        <canvas
+            id="chartTemuanFinishing"
+            aria-label="Grafik Temuan Tahunan Finishing">
+        </canvas>
 
     </div>
-
-
-
-  </div>
-
-
-
-
 
 </div>
 
@@ -9805,50 +9720,24 @@ datalabels:{
 
 
 
-  <!-- ================= GRAFIK KOMPLAIN 1 TAHUN ================= -->
-
-
-  <div
+<!-- ================= GRAFIK KOMPLAIN 1 TAHUN ================= -->
+<div
     id="grafikTemuanDetailSPV"
     class="temuan-bulanan-detail"
     style="display:none;">
 
-
-
-
-
     <div class="temuan-grafik-box">
 
+        <h4>
+            Compare Komplain Dalam 1 Tahun
+        </h4>
 
-
-
-
-      <h4>
-        Compare Komplain Dalam 1 Tahun
-      </h4>
-
-
-
-
-
-
-      <canvas id="chartTemuanSPV"></canvas>
-
-
-
-
+        <canvas
+            id="chartTemuanSPV"
+            aria-label="Grafik Komplain Tahunan SPV">
+        </canvas>
 
     </div>
-
-
-
-
-
-  </div>
-
-
-
-
 
 </div>
 
