@@ -2904,96 +2904,167 @@ body {
    GRAFIK TEMUAN TAHUNAN
 ===================================================== */
 
-.temuan-grafik-box {
+.temuan-grafik-box{
 
-    margin-top:18px;
+    width:100%;
+    max-width:100%;
+    box-sizing:border-box;
 
+    margin:18px 0;
     padding:20px;
 
     background:#ffffff;
-
     border:1px solid #dbe7f5;
-
     border-radius:18px;
 
     box-shadow:
-    0 8px 25px rgba(15,23,42,.06);
+        0 8px 25px rgba(15,23,42,.06);
+
+    position:relative;
+    overflow:hidden;
+    overflow-x:auto;
+
+    -webkit-overflow-scrolling:touch;
 
 }
 
+/* ================= JUDUL ================= */
 
-.temuan-grafik-box h4 {
+.temuan-grafik-box h4{
 
-    margin:0 0 18px 0;
+    margin:0 0 18px;
 
     font-size:18px;
-
     font-weight:800;
 
     color:#0F4FA8;
 
-}
-
-
-/* ================= CANVAS ================= */
-
-#chartTemuanPA {
-
-    width:100% !important;
-
-    max-height:350px;
+    line-height:1.3;
 
 }
 
 /* =====================================================
-   GRAFIK TEMUAN TAHUNAN - INSPEK
+   CANVAS GRAFIK
 ===================================================== */
 
+#chartTemuanPA,
+#chartTemuanInspek,
+#chartTemuanLem,
+#chartTemuanFinishing,
+#chartTemuanSPV{
 
-#chartTemuanInspek {
+    display:block;
 
     width:100% !important;
+    max-width:100% !important;
 
-    max-height:350px;
+    height:320px !important;
 
 }
 
 /* =====================================================
-   GRAFIK TEMUAN TAHUNAN - LEM
+   TABLET
 ===================================================== */
 
+@media (max-width:768px){
 
-#chartTemuanLem {
+    .temuan-grafik-box{
 
-    width:100% !important;
+        margin:15px 0;
 
-    max-height:350px;
+        padding:15px;
+
+        border-radius:15px;
+
+    }
+
+    .temuan-grafik-box h4{
+
+        font-size:16px;
+
+        margin-bottom:14px;
+
+        text-align:center;
+
+    }
+
+    #chartTemuanPA,
+    #chartTemuanInspek,
+    #chartTemuanLem,
+    #chartTemuanFinishing,
+    #chartTemuanSPV{
+
+        height:250px !important;
+
+    }
 
 }
 
 /* =====================================================
-   GRAFIK TEMUAN TAHUNAN - FINISHING
+   MOBILE
 ===================================================== */
 
+@media (max-width:480px){
 
-#chartTemuanFinishing {
+    .temuan-grafik-box{
 
-    width:100% !important;
+        margin:12px 0;
 
-    max-height:350px;
+        padding:12px;
+
+        border-radius:12px;
+
+    }
+
+    .temuan-grafik-box h4{
+
+        font-size:15px;
+
+        margin-bottom:10px;
+
+    }
+
+    #chartTemuanPA,
+    #chartTemuanInspek,
+    #chartTemuanLem,
+    #chartTemuanFinishing,
+    #chartTemuanSPV{
+
+        width:100% !important;
+
+        height:200px !important;
+
+    }
 
 }
 
 /* =====================================================
-   GRAFIK KOMPLAIN TAHUNAN - SPV
+   HP SANGAT KECIL
 ===================================================== */
 
+@media (max-width:360px){
 
-#chartTemuanSPV {
+    .temuan-grafik-box{
 
-    width:100% !important;
+        padding:10px;
 
-    max-height:350px;
+    }
+
+    .temuan-grafik-box h4{
+
+        font-size:14px;
+
+    }
+
+    #chartTemuanPA,
+    #chartTemuanInspek,
+    #chartTemuanLem,
+    #chartTemuanFinishing,
+    #chartTemuanSPV{
+
+        height:180px !important;
+
+    }
 
 }
 
