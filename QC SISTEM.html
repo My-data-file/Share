@@ -949,173 +949,341 @@ h2.qc-title.qc-inspek + .total-wrapper .total-box:hover{
 
 
 /* =====================================================
-   DROPDOWN SEARCH (GENERIC)
-   Berlaku untuk Semua Menu
+   POPUP ORDER (GENERIC)
+   Berlaku untuk:
+   - LEM
+   - FINISHING
+   - INSPEK
+   - SPV
 ===================================================== */
 
-.dropdown-search-wrapper{
-    position:relative;
-    width:100%;
-}
+.popup-order{
 
-.dropdown-search-wrapper input{
-    width:100%;
-    cursor:pointer;
-    background:#fff;
-    user-select:none;
-}
+    position:fixed;
 
-.dropdown-search-wrapper input:focus{
-    outline:none;
-}
+    inset:0;
 
-/* ================= LIST ================= */
-
-.dropdown-search-list{
-
-    position:absolute;
-    top:100%;
-    left:0;
-    right:0;
-
-    margin-top:5px;
-
-    background:#fff;
-
-    border:1px solid #d8dee8;
-    border-radius:12px;
-
-    box-shadow:
-        0 12px 30px rgba(0,0,0,.12);
-
-    max-height:320px;
-
-    overflow-y:auto;
-
-    overflow-x:hidden;
-
-    z-index:99999;
+    background:rgba(15,23,42,.45);
 
     display:none;
 
-    animation:dropdownFade .18s ease;
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:999999;
+
+    backdrop-filter:blur(2px);
 
 }
 
-/* ================= ITEM ================= */
+/* ================= BOX ================= */
 
-.dropdown-search-item{
+.popup-order-box{
 
-    padding:12px 15px;
+    width:min(900px,95vw);
+
+    max-height:88vh;
+
+    background:#fff;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    display:flex;
+
+    flex-direction:column;
+
+    box-shadow:0 25px 70px rgba(0,0,0,.25);
+
+    animation:popupScale .2s ease;
+
+}
+
+/* ================= HEADER ================= */
+
+.popup-order-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:16px 22px;
+
+    background:#0F4FA8;
+
+    color:#fff;
+
+}
+
+.popup-order-header h3{
+
+    margin:0;
+
+    font-size:18px;
+
+    font-weight:700;
+
+}
+
+.popup-close{
+
+    width:34px;
+
+    height:34px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.15);
+
+    color:#fff;
+
+    font-size:24px;
 
     cursor:pointer;
 
     transition:.2s;
 
-    border-bottom:1px solid #edf2f7;
+}
+
+.popup-close:hover{
+
+    background:rgba(255,255,255,.28);
 
 }
 
-.dropdown-search-item:last-child{
+/* ================= SEARCH ================= */
 
-    border-bottom:none;
+.popup-order-search{
 
-}
+    padding:16px 20px;
 
-.dropdown-search-item:hover{
+    background:#fafafa;
 
-    background:#eef6ff;
-
-}
-
-.dropdown-search-item:active{
-
-    background:#dbeafe;
+    border-bottom:1px solid #e5e7eb;
 
 }
 
-/* ================= NAMA ================= */
+.popup-order-search input{
 
-.dropdown-search-item strong{
+    width:100%;
 
-    display:block;
+    padding:12px 16px;
+
+    border:1px solid #d1d5db;
+
+    border-radius:10px;
 
     font-size:14px;
+
+    transition:.2s;
+
+}
+
+.popup-order-search input:focus{
+
+    outline:none;
+
+    border-color:#0F4FA8;
+
+    box-shadow:0 0 0 3px rgba(15,79,168,.12);
+
+}
+
+/* ================= HEADER KOLOM ================= */
+
+.popup-order-list{
+
+    flex:1;
+
+    overflow-y:auto;
+
+}
+
+.popup-order-table-header{
+
+    display:grid;
+
+    grid-template-columns:1fr 170px;
+
+    gap:20px;
+
+    padding:13px 20px;
+
+    background:#edf4ff;
+
+    border-bottom:1px solid #d7e5fb;
+
+    font-size:13px;
 
     font-weight:700;
 
     color:#0F4FA8;
 
-    line-height:1.3;
+    position:sticky;
+
+    top:0;
+
+    z-index:5;
 
 }
 
-/* ================= NO KS ================= */
+/* ================= ITEM ================= */
 
-.dropdown-search-item small{
+.popup-order-list .dropdown-search-item{
+
+    display:grid;
+
+    grid-template-columns:1fr 170px;
+
+    gap:20px;
+
+    align-items:center;
+
+    padding:13px 20px;
+
+    cursor:pointer;
+
+    border-bottom:1px solid #edf2f7;
+
+    transition:.18s;
+
+}
+
+.popup-order-list .dropdown-search-item:hover{
+
+    background:#eef6ff;
+
+}
+
+.popup-order-list .dropdown-search-item:active{
+
+    background:#dbeafe;
+
+}
+
+.popup-order-list .dropdown-search-item strong{
 
     display:block;
 
-    margin-top:3px;
+    color:#111827;
 
-    font-size:12px;
+    font-size:14px;
 
-    color:#64748b;
+    font-weight:600;
 
-    line-height:1.3;
+    line-height:1.4;
+
+}
+
+.popup-order-list .dropdown-search-item small{
+
+    display:block;
+
+    font-size:13px;
+
+    color:#0F4FA8;
+
+    font-weight:600;
+
+    text-align:left;
+
+}
+
+/* ================= TIDAK ADA DATA ================= */
+
+.popup-empty{
+
+    padding:40px 20px;
+
+    text-align:center;
+
+    color:#94a3b8;
+
+    font-size:14px;
 
 }
 
 /* ================= SCROLL ================= */
 
-.dropdown-search-list::-webkit-scrollbar{
+.popup-order-list::-webkit-scrollbar{
 
-    width:8px;
-
-}
-
-.dropdown-search-list::-webkit-scrollbar-track{
-
-    background:#f3f5f8;
-
-    border-radius:10px;
+    width:9px;
 
 }
 
-.dropdown-search-list::-webkit-scrollbar-thumb{
+.popup-order-list::-webkit-scrollbar-track{
 
-    background:#c8d4e3;
-
-    border-radius:10px;
+    background:#f5f5f5;
 
 }
 
-.dropdown-search-list::-webkit-scrollbar-thumb:hover{
+.popup-order-list::-webkit-scrollbar-thumb{
 
-    background:#9fb6d6;
+    background:#cbd5e1;
+
+    border-radius:20px;
+
+}
+
+.popup-order-list::-webkit-scrollbar-thumb:hover{
+
+    background:#94a3b8;
 
 }
 
 /* ================= ANIMASI ================= */
 
-@keyframes dropdownFade{
+@keyframes popupScale{
 
     from{
 
         opacity:0;
-        transform:translateY(-5px);
+
+        transform:translateY(8px) scale(.98);
 
     }
 
     to{
 
         opacity:1;
-        transform:translateY(0);
+
+        transform:translateY(0) scale(1);
 
     }
 
 }
 
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:768px){
+
+    .popup-order-box{
+
+        width:96vw;
+
+        max-height:92vh;
+
+    }
+
+    .popup-order-table-header{
+
+        grid-template-columns:1fr 110px;
+
+    }
+
+    .popup-order-list .dropdown-search-item{
+
+        grid-template-columns:1fr 110px;
+
+    }
+
+}
 
 </style>
 
@@ -7278,7 +7446,7 @@ function setStatusFilterBapro(status) {
 
 
 
-<!-- ======================== QC SPOTCHECK ======================== -->
+<!-- ======================== QA CETAK ======================== -->
 <section id="qcPA" class="card qc-section" style="display:none;">
 
   <!-- Judul -->
@@ -8994,28 +9162,62 @@ window.addEventListener("click", function(e){
 <!-- ================= INPUTAN ================= -->
 <div id="inputInspek" class="tab-content active">
 
-  <!-- Nama Order -->
-  <div class="form-group">
-    <label>Nama Order</label>
+<!-- Nama Order -->
+<div class="form-group">
+  <label>Nama Order</label>
 
-    <div class="dropdown-search-wrapper">
+  <div class="dropdown-search-wrapper">
+
+    <input
+      type="text"
+      id="inspekNama"
+      placeholder="Klik untuk memilih Nama Order..."
+      autocomplete="off"
+      readonly
+      onclick="toggleNamaInspekDropdown()">
+
+  </div>
+</div>
+
+<!-- =========================================
+     POPUP PILIH NAMA ORDER - INSPEK
+========================================= -->
+
+<div id="inspekPopup" class="popup-order">
+
+  <div class="popup-order-box">
+
+    <div class="popup-order-header">
+
+      <h3>Pilih Nama Order</h3>
+
+<button
+    type="button"
+    class="popup-close"
+    onclick="closeOrderPopup()">
+    ×
+</button>
+
+    </div>
+
+    <div class="popup-order-search">
 
       <input
         type="text"
-        id="inspekNama"
-        placeholder="Klik untuk memilih Nama Order..."
-        autocomplete="off"
-        readonly
-        onclick="toggleNamaInspekDropdown()">
-
-      <div
-        id="inspekNamaList"
-        class="dropdown-search-list"
-        style="display:none;">
-      </div>
+        id="inspekSearch"
+        placeholder="Cari Nama Order atau No KS..."
+        autocomplete="off">
 
     </div>
+
+    <div
+      id="inspekNamaList"
+      class="popup-order-list">
+    </div>
+
   </div>
+
+</div>
 
   <!-- No KS -->
   <div class="form-group">
@@ -10643,28 +10845,62 @@ window.addEventListener(
 <!-- ================= INPUTAN ================= -->
 <div id="inputFinishing" class="tab-content active">
 
-  <!-- Nama Order -->
-  <div class="form-group">
-    <label>Nama Order</label>
+<!-- Nama Order -->
+<div class="form-group">
+  <label>Nama Order</label>
 
-    <div class="dropdown-search-wrapper">
+  <div class="dropdown-search-wrapper">
+
+    <input
+      type="text"
+      id="finishingNama"
+      placeholder="Klik untuk memilih Nama Order..."
+      autocomplete="off"
+      readonly
+      onclick="toggleNamaFinishingDropdown()">
+
+  </div>
+</div>
+
+<!-- =========================================
+     POPUP PILIH NAMA ORDER - FINISHING
+========================================= -->
+
+<div id="finishingPopup" class="popup-order">
+
+  <div class="popup-order-box">
+
+    <div class="popup-order-header">
+
+      <h3>Pilih Nama Order</h3>
+
+<button
+    type="button"
+    class="popup-close"
+    onclick="closeOrderPopup()">
+    ×
+</button>
+
+    </div>
+
+    <div class="popup-order-search">
 
       <input
         type="text"
-        id="finishingNama"
-        placeholder="Klik untuk memilih Nama Order..."
-        autocomplete="off"
-        readonly
-        onclick="toggleNamaFinishingDropdown()">
-
-      <div
-        id="finishingNamaList"
-        class="dropdown-search-list"
-        style="display:none;">
-      </div>
+        id="finishingSearch"
+        placeholder="Cari Nama Order atau No KS..."
+        autocomplete="off">
 
     </div>
+
+    <div
+      id="finishingNamaList"
+      class="popup-order-list">
+    </div>
+
   </div>
+
+</div>
 
   <!-- No KS -->
   <div class="form-group">
@@ -12323,28 +12559,61 @@ window.addEventListener("click", function(e){
 <!-- ================= INPUTAN ================= -->
 <div id="inputLem" class="tab-content active">
 
-  <!-- Nama Order -->
-  <div class="form-group">
-    <label>Nama Order</label>
+<!-- Nama Order -->
+<div class="form-group">
+  <label>Nama Order</label>
 
-    <div class="dropdown-search-wrapper">
+  <div class="dropdown-search-wrapper">
+
+    <input
+      type="text"
+      id="lemNama"
+      placeholder="Klik untuk memilih Nama Order..."
+      autocomplete="off"
+      readonly
+      onclick="toggleNamaLemDropdown()">
+
+  </div>
+</div>
+
+<!-- =========================================
+     POPUP PILIH NAMA ORDER
+========================================= -->
+
+<div id="lemPopup" class="popup-order">
+
+  <div class="popup-order-box">
+
+    <div class="popup-order-header">
+      <h3>Pilih Nama Order</h3>
+
+<button
+    type="button"
+    class="popup-close"
+    onclick="closeOrderPopup()">
+    ×
+</button>
+    </div>
+
+    <div class="popup-order-search">
 
       <input
         type="text"
-        id="lemNama"
-        placeholder="Klik untuk memilih Nama Order..."
-        autocomplete="off"
-        readonly
-        onclick="toggleNamaLemDropdown()">
-
-      <div
-        id="lemNamaList"
-        class="dropdown-search-list"
-        style="display:none;">
-      </div>
+        id="lemSearch"
+        placeholder="Cari Nama Order atau No KS..."
+        autocomplete="off">
 
     </div>
+
+    <div
+      id="lemNamaList"
+      class="popup-order-list">
+
+    </div>
+
   </div>
+
+</div>
 
   <!-- No KS -->
   <div class="form-group">
@@ -14620,13 +14889,47 @@ function filterManualList(input, tabId) {
       readonly
       onclick="toggleNamaSPVDropdown()">
 
+  </div>
+</div>
+
+<!-- =========================================
+     POPUP PILIH NAMA ORDER - SPV
+========================================= -->
+
+<div id="spvPopup" class="popup-order">
+
+  <div class="popup-order-box">
+
+    <div class="popup-order-header">
+
+      <h3>Pilih Nama Order</h3>
+
+<button
+    type="button"
+    class="popup-close"
+    onclick="closeOrderPopup()">
+    ×
+</button>
+
+    </div>
+
+    <div class="popup-order-search">
+
+      <input
+        type="text"
+        id="spvSearch"
+        placeholder="Cari Nama Order atau No KS..."
+        autocomplete="off">
+
+    </div>
+
     <div
       id="spvOrderList"
-      class="dropdown-search-list"
-      style="display:none;">
+      class="popup-order-list">
     </div>
 
   </div>
+
 </div>
 
 <!-- Input No KS -->
@@ -15135,7 +15438,53 @@ function filterManualList(input, tabId) {
         color:#fff;
       }
 
+/* =====================================================
+   FIX POPUP CLOSE SPV
+   Tidak mengganggu popup lain
+===================================================== */
 
+#spvForm .popup-close{
+
+    width:36px;
+
+    height:36px;
+
+    min-width:36px;
+
+    padding:0;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:rgba(255,255,255,.15);
+
+    color:#fff;
+
+    border:none;
+
+    border-radius:50%;
+
+    font-size:26px;
+
+    font-weight:700;
+
+    line-height:1;
+
+    cursor:pointer;
+
+    flex-shrink:0;
+
+}
+
+
+#spvForm .popup-close:hover{
+
+    background:rgba(255,255,255,.28);
+
+}
 
 /* ===================== Modal ===================== */
 .foto-modal {
@@ -16087,6 +16436,25 @@ function closeTemuanSPV(){
   }
 
 }
+
+/* ================= CLOSE SAAT KLIK LUAR MODAL ================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const modal = document.getElementById("temuanModalSPV");
+
+  if (!modal) return;
+
+  modal.addEventListener("click", function (e) {
+
+    // Jika yang diklik adalah background modal
+    if (e.target === modal) {
+      closeTemuanSPV();
+    }
+
+  });
+
+});
 
 
 </script>
@@ -27808,11 +28176,17 @@ function goHome() {
 
 
 // ============================================
-// DROPDOWN NAMA ORDER + NO KS (GENERIC)
-// Berlaku untuk Lem, Finishing, Inspek, SPV
+// ORDER POPUP GENERIC
+// Berlaku untuk:
+// - LEM
+// - FINISHING
+// - INSPEK
+// - SPV
 // ============================================
 
 let dataCetakDropdown = [];
+
+let popupConfigAktif = null;
 
 // ============================================
 // LOAD DATA CETAK
@@ -27833,7 +28207,7 @@ async function loadDataCetakDropdown(){
             Array.isArray(res.data)
         ){
 
-            dataCetakDropdown = [...res.data].reverse();
+            dataCetakDropdown=[...res.data].reverse();
 
         }
 
@@ -27847,46 +28221,157 @@ async function loadDataCetakDropdown(){
 
 
 // ============================================
-// ISI DROPDOWN
+// BUKA POPUP GENERIC
 // ============================================
 
-function isiDropdownNama(inputNama,inputNoKS,listId){
+async function openOrderPopup(config){
 
-    const list = document.getElementById(listId);
+    popupConfigAktif=config;
+
+    if(dataCetakDropdown.length===0){
+
+        await loadDataCetakDropdown();
+
+    }
+
+    const popup=document.getElementById(config.popup);
+
+    if(!popup) return;
+
+    popup.style.display="flex";
+
+    const search=document.getElementById(config.search);
+
+    if(search){
+
+        search.value="";
+
+    }
+
+    renderOrderPopup("");
+
+    setTimeout(()=>{
+
+        if(search){
+
+            search.focus();
+
+        }
+
+    },100);
+
+}
+
+
+// ============================================
+// TUTUP POPUP GENERIC
+// ============================================
+
+function closeOrderPopup(){
+
+    if(!popupConfigAktif) return;
+
+    const popup=document.getElementById(
+        popupConfigAktif.popup
+    );
+
+    if(popup){
+
+        popup.style.display="none";
+
+    }
+
+}
+
+
+// ============================================
+// PILIH ORDER
+// ============================================
+
+function pilihOrder(item){
+
+    if(!popupConfigAktif) return;
+
+    const namaInput=document.getElementById(
+        popupConfigAktif.inputNama
+    );
+
+    const noKSInput=document.getElementById(
+        popupConfigAktif.inputNoKS
+    );
+
+    if(namaInput){
+
+        namaInput.value=item.nama || "";
+
+    }
+
+    if(noKSInput){
+
+        noKSInput.value=item.noKS || "";
+
+    }
+
+    closeOrderPopup();
+
+}
+
+
+// ============================================
+// RENDER LIST
+// (Bagian 2 akan melanjutkan fungsi ini)
+// ============================================
+
+function renderOrderPopup(keyword=""){
+
+    if(!popupConfigAktif) return;
+
+    const list=document.getElementById(
+        popupConfigAktif.list
+    );
 
     if(!list) return;
 
-    list.innerHTML = "";
+    list.innerHTML="";
 
-    const sudahAda = new Set();
+    keyword=keyword.toLowerCase();
+
+    const sudahAda=new Set();
 
     dataCetakDropdown.forEach(item=>{
 
-        const nama = item.nama || "";
+        const nama=item.nama || "";
+
+        const noKS=item.noKS || "";
 
         if(!nama) return;
 
         if(sudahAda.has(nama)) return;
 
+        if(
+            keyword &&
+            !nama.toLowerCase().includes(keyword) &&
+            !noKS.toLowerCase().includes(keyword)
+        ){
+
+            return;
+
+        }
+
         sudahAda.add(nama);
 
-        const div = document.createElement("div");
+        const div=document.createElement("div");
 
-        div.className = "dropdown-search-item";
+        div.className="dropdown-search-item";
 
-        div.innerHTML = `
-            <strong>${nama}</strong><br>
-            <small>${item.noKS || ""}</small>
+        div.innerHTML=`
+            <strong>${nama}</strong>
+            <small>${noKS}</small>
         `;
 
-        div.onclick = function(){
+        div.onclick=function(){
 
-            document.getElementById(inputNama).value = nama;
-
-            document.getElementById(inputNoKS).value =
-                item.noKS || "";
-
-            list.style.display="none";
+            pilihOrder(item);
 
         };
 
@@ -27896,58 +28381,98 @@ function isiDropdownNama(inputNama,inputNoKS,listId){
 
 }
 
-
 // ============================================
-// TOGGLE GENERIC
+// FILTER SEARCH GENERIC
 // ============================================
 
-async function toggleDropdownNama(inputNama,inputNoKS,listId){
+document.addEventListener("input",function(e){
 
-    const list = document.getElementById(listId);
+    if(!popupConfigAktif) return;
 
-    if(!list) return;
+    if(
+        e.target.id===popupConfigAktif.search
+    ){
 
-    if(list.style.display==="block"){
-
-        list.style.display="none";
-        return;
+        renderOrderPopup(e.target.value);
 
     }
 
-    if(dataCetakDropdown.length===0){
-
-        await loadDataCetakDropdown();
-
-    }
-
-    isiDropdownNama(inputNama,inputNoKS,listId);
-
-    list.style.display="block";
-
-}
+});
 
 
 // ============================================
-// TUTUP SEMUA DROPDOWN
+// TUTUP POPUP SAAT KLIK BACKGROUND
 // ============================================
 
 document.addEventListener("click",function(e){
 
-    document.querySelectorAll(".dropdown-search-wrapper")
-    .forEach(wrapper=>{
+    if(!popupConfigAktif) return;
 
-        if(!wrapper.contains(e.target)){
+    const popup=document.getElementById(
+        popupConfigAktif.popup
+    );
 
-            const list =
-                wrapper.querySelector(".dropdown-search-list");
+    if(!popup) return;
 
-            if(list){
+    if(
+        e.target===popup
+    ){
 
-                list.style.display="none";
+        closeOrderPopup();
 
-            }
+    }
 
-        }
+});
+
+
+// ============================================
+// TOMBOL ESC UNTUK MENUTUP POPUP
+// ============================================
+
+document.addEventListener("keydown",function(e){
+
+    if(e.key!=="Escape") return;
+
+    if(!popupConfigAktif) return;
+
+    closeOrderPopup();
+
+});
+
+
+// ============================================
+// TOMBOL CLOSE (X)
+// Berlaku untuk semua popup
+// ============================================
+
+document.addEventListener("click",function(e){
+
+    if(
+        e.target.classList.contains("popup-close")
+    ){
+
+        closeOrderPopup();
+
+    }
+
+});
+
+
+// ============================================
+// CEGAH KLIK BOX MENUTUP POPUP
+// ============================================
+
+document.addEventListener("DOMContentLoaded",function(){
+
+    document
+    .querySelectorAll(".popup-order-box")
+    .forEach(box=>{
+
+        box.addEventListener("click",function(e){
+
+            e.stopPropagation();
+
+        });
 
     });
 
@@ -27955,56 +28480,119 @@ document.addEventListener("click",function(e){
 
 
 // ============================================
+// AUTO REFRESH LIST
+// jika popup masih terbuka
+// ============================================
+
+function refreshPopupOrder(){
+
+    if(!popupConfigAktif) return;
+
+    const popup=document.getElementById(
+        popupConfigAktif.popup
+    );
+
+    if(!popup) return;
+
+    if(
+        popup.style.display==="flex"
+    ){
+
+        const search=document.getElementById(
+            popupConfigAktif.search
+        );
+
+        renderOrderPopup(
+            search ? search.value : ""
+        );
+
+    }
+
+}
+
+// ============================================
 // WRAPPER PER MENU
 // ============================================
 
-// LEM
+// ---------- LEM ----------
 function toggleNamaLemDropdown(){
 
-    toggleDropdownNama(
-        "lemNama",
-        "lemNoKS",
-        "lemNamaList"
-    );
+    openOrderPopup({
+
+        popup:"lemPopup",
+
+        search:"lemSearch",
+
+        list:"lemNamaList",
+
+        inputNama:"lemNama",
+
+        inputNoKS:"lemNoKS"
+
+    });
 
 }
 
-// FINISHING
+// ---------- FINISHING ----------
 function toggleNamaFinishingDropdown(){
 
-    toggleDropdownNama(
-        "finishingNama",
-        "finishingNoKS",
-        "finishingNamaList"
-    );
+    openOrderPopup({
+
+        popup:"finishingPopup",
+
+        search:"finishingSearch",
+
+        list:"finishingNamaList",
+
+        inputNama:"finishingNama",
+
+        inputNoKS:"finishingNoKS"
+
+    });
 
 }
 
-// INSPEK
+// ---------- INSPEK ----------
 function toggleNamaInspekDropdown(){
 
-    toggleDropdownNama(
-        "inspekNama",
-        "inspekNoKS",
-        "inspekNamaList"
-    );
+    openOrderPopup({
+
+        popup:"inspekPopup",
+
+        search:"inspekSearch",
+
+        list:"inspekNamaList",
+
+        inputNama:"inspekNama",
+
+        inputNoKS:"inspekNoKS"
+
+    });
 
 }
 
-// SPV / KOMPLAIN
+// ---------- SPV ----------
 function toggleNamaSPVDropdown(){
 
-    toggleDropdownNama(
-        "spvOrder",
-        "spvNoKS",
-        "spvOrderList"
-    );
+    openOrderPopup({
+
+        popup:"spvPopup",
+
+        search:"spvSearch",
+
+        list:"spvOrderList",
+
+        inputNama:"spvOrder",
+
+        inputNoKS:"spvNoKS"
+
+    });
 
 }
 
 
 // ============================================
-// LOAD SEKALI SAJA
+// LOAD DATA SEKALI SAJA
 // ============================================
 
 loadDataCetakDropdown();
