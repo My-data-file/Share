@@ -5654,33 +5654,20 @@ let chartTemuanInspekInstance = null;
 
 function renderGrafikTemuanInspek() {
 
-
   const canvas =
     document.getElementById(
       "chartTemuanInspek"
     );
 
-
-
   if(!canvas) return;
-
-
 
   if(!Array.isArray(inspekItems)){
 
-
     return;
-
 
   }
 
-
-
-
-
-
   const bulanNama = [
-
 
     "Januari",
     "Februari",
@@ -5695,20 +5682,10 @@ function renderGrafikTemuanInspek() {
     "November",
     "Desember"
 
-
   ];
-
-
-
-
 
   const totalBulan =
     Array(12).fill(0);
-
-
-
-
-
 
   // ======================
   // FILTER TAHUN BERJALAN
@@ -5717,403 +5694,299 @@ function renderGrafikTemuanInspek() {
   const sekarang =
     new Date();
 
-
-
   const tahunSekarang =
     sekarang.getFullYear();
-
-
 
   const bulanSekarang =
     sekarang.getMonth();
 
-
-
-
-
-
-
-
   // ======================
   // DAFTAR TEMUAN INSPEK
-  // SAMA DENGAN DETAIL BULANAN
   // ======================
 
   const daftarTemuan = [
 
-
     // TEMUAN CETAK
 
-    'Warna',
-    'Noda',
-    'Ghosting',
-    'Terhapus',
-    'Galang',
-    'MisRegis',
-    'Garis',
-    'Botak',
-    'Set-Off',
-    'Scumming',
-    'Oksidasi',
-    'Gatra',
-    'Salur',
-    'Barcode/QR',
-
-
+    "Warna",
+    "Noda",
+    "Ghosting",
+    "Terhapus",
+    "Galang",
+    "MisRegis",
+    "Garis",
+    "Botak",
+    "Set-Off",
+    "Scumming",
+    "Oksidasi",
+    "Gatra",
+    "Salur",
+    "Barcode/QR",
 
     // TEMUAN PONCH
 
-    'Ponch Lari',
-    'Ponch Pecah',
-    'Ponch Tidak Putus',
-    'Tidak Ada Embose',
-    'Embose Lari',
-
-
+    "Ponch Lari",
+    "Ponch Pecah",
+    "Ponch Tidak Putus",
+    "Tidak Ada Embose",
+    "Embose Lari",
 
     // TEMUAN VARNISH
 
-    'Varnish Tidak Rata',
-    'Bubble',
-    'Varnish Bergaris',
-    'Tidak Ada Varnish',
-    'Glossy Kurang',
-
-
+    "Varnish Tidak Rata",
+    "Bubble",
+    "Varnish Bergaris",
+    "Tidak Ada Varnish",
+    "Glossy Kurang",
 
     // TEMUAN POTONG
 
-    'Potongan Lari'
-
+    "Potongan Lari"
 
   ];
 
-
-
-
-
-
-
-
   inspekItems.forEach(item=>{
-
 
     const tanggal =
       parseTanggalTemuanInspek(
         item.tanggal
       );
 
-
-
     if(!tanggal){
-
 
       return;
 
-
     }
 
-
-
-
-
-
-
-    // FILTER TAHUN
     if(
       tanggal.getFullYear() !== tahunSekarang
     ){
 
-
       return;
-
 
     }
 
-
-
-
-
-
-    // FILTER BULAN MASA DEPAN
     if(
       tanggal.getMonth() > bulanSekarang
     ){
 
-
       return;
 
-
     }
-
-
-
-
-
-
 
     const keterangan =
       String(
-        item.keterangan || ''
+        item.keterangan || ""
       ).trim();
-
-
-
 
     if(!keterangan){
 
-
       return;
-
 
     }
 
-
-
-
-
-
-
     let jumlah = 0;
 
-
-
-
-
-
-
-
     daftarTemuan.forEach(temuan=>{
-
 
       const escapedTemuan =
         temuan.replace(
           /[.*+?^${}()|[\]\\]/g,
-          '\\$&'
+          "\\$&"
         );
-
-
 
       const regex =
         new RegExp(
           escapedTemuan,
-          'gi'
+          "gi"
         );
-
-
 
       const hasil =
         keterangan.match(regex);
 
-
-
-
-
       if(hasil){
-
 
         jumlah += hasil.length;
 
-
       }
 
-
     });
-
-
-
-
-
-
-
 
     totalBulan[
       tanggal.getMonth()
     ] += jumlah;
 
-
-
-
-
-
-
   });
-
-
-
-
-
-
-
-
-
 
   if(chartTemuanInspekInstance){
 
-
     chartTemuanInspekInstance.destroy();
-
 
   }
 
-
-
-
-
-
-
-
-
   chartTemuanInspekInstance =
-
     new Chart(
-
       canvas,
-
       {
 
-
         plugins:[
-
           ChartDataLabels
-
         ],
-
-
-
 
         type:"bar",
 
-
-
-
-
         data:{
-
-
 
           labels:bulanNama,
 
-
-
           datasets:[{
-
 
             label:"Total Temuan",
 
-
-
             data:totalBulan,
 
+            borderWidth:1,
 
+            backgroundColor:"#90caf9",
 
-            borderWidth:1
+            borderColor:"#42a5f5",
 
+            borderRadius:4,
 
+            barPercentage:0.75,
+
+            categoryPercentage:0.8
 
           }]
 
-
-
         },
-
-
-
-
-
-
-
-
 
         options:{
 
-
-
           responsive:true,
-
-
 
           maintainAspectRatio:false,
 
+          layout:{
 
+            padding:{
 
-
-
-
-
-          plugins:{
-
-
-
-datalabels:{
-
-  anchor:"center",
-
-  align:"center",
-
-  color:"#ffffff",
-
-  clip:true,
-
-  formatter:function(value){
-
-    return value > 0 ? value : "";
-
-  },
-
-  font:{
-
-    weight:"bold",
-
-    size:13
-
-  }
-
-}
-
-
-
-          },
-
-
-
-
-
-
-
-          scales:{
-
-
-
-            y:{
-
-
-
-              beginAtZero:true
-
-
+              top:25,
+              right:10,
+              left:10,
+              bottom:10
 
             }
 
+          },
 
+          plugins:{
+
+            legend:{
+
+              display:true,
+
+              position:"top",
+
+              labels:{
+
+                boxWidth:40,
+
+                padding:12,
+
+                font:{
+
+                  size:12
+
+                }
+
+              }
+
+            },
+
+            datalabels:{
+
+              anchor:"end",
+
+              align:"top",
+
+              offset:4,
+
+              clamp:true,
+
+              clip:false,
+
+              color:"#1f2937",
+
+              formatter:function(value){
+
+                return value > 0 ? value : "";
+
+              },
+
+              font:{
+
+                weight:"bold",
+
+                size:11
+
+              }
+
+            }
+
+          },
+
+          scales:{
+
+            x:{
+
+              offset:true,
+
+              grid:{
+
+                display:false
+
+              },
+
+              ticks:{
+
+                autoSkip:false,
+
+                maxRotation:45,
+
+                minRotation:45,
+
+                font:{
+
+                  size:10
+
+                }
+
+              }
+
+            },
+
+            y:{
+
+              beginAtZero:true,
+
+              grace:"10%",
+
+              ticks:{
+
+                precision:0
+
+              }
+
+            }
 
           }
 
-
-
-
-
         }
-
-
-
-
 
       }
 
     );
-
-
 
 }
 
@@ -7442,33 +7315,20 @@ let chartTemuanLemInstance = null;
 
 function renderGrafikTemuanLem() {
 
-
   const canvas =
     document.getElementById(
       "chartTemuanLem"
     );
 
-
-
   if(!canvas) return;
-
-
 
   if(!Array.isArray(lemItems)){
 
-
     return;
-
 
   }
 
-
-
-
-
-
   const bulanNama = [
-
 
     "Januari",
     "Februari",
@@ -7483,139 +7343,89 @@ function renderGrafikTemuanLem() {
     "November",
     "Desember"
 
-
   ];
-
-
-
-
 
   const totalBulan =
     Array(12).fill(0);
 
-
-
-
-
-
-
   const sekarang =
     new Date();
-
-
 
   const tahunSekarang =
     sekarang.getFullYear();
 
-
-
   const bulanSekarang =
     sekarang.getMonth();
 
-
-
-
-
-
-
-
-
   // ======================
   // DAFTAR TEMUAN LEM
-  // SAMA DENGAN DETAIL BULANAN
   // ======================
 
   const daftarTemuan = [
 
-
     // TEMUAN CETAK
 
-    'Warna',
-    'Noda',
-    'Ghosting',
-    'Terhapus',
-    'Galang',
-    'MisRegis',
-    'Garis',
-    'Botak',
-    'Set-Off',
-    'Scumming',
-    'Oksidasi',
-    'Gatra',
-    'Salur',
-    'Barcode/QR',
-
-
+    "Warna",
+    "Noda",
+    "Ghosting",
+    "Terhapus",
+    "Galang",
+    "MisRegis",
+    "Garis",
+    "Botak",
+    "Set-Off",
+    "Scumming",
+    "Oksidasi",
+    "Gatra",
+    "Salur",
+    "Barcode/QR",
 
     // TEMUAN LEM
 
-    'No Glue',
-    'Over Glue',
-    'Lem Tidak Rata',
-    'Lengket',
-    'Dus Sobek',
-    'Dus Baret',
-    'Dus Galeng',
-    'Dus Tidak Siku',
-    'Kupingan Ketekuk',
-
-
+    "No Glue",
+    "Over Glue",
+    "Lem Tidak Rata",
+    "Lengket",
+    "Dus Sobek",
+    "Dus Baret",
+    "Dus Galeng",
+    "Dus Tidak Siku",
+    "Kupingan Ketekuk",
 
     // TEMUAN PONCH
 
-    'Ponch Lari',
-    'Ponch Pecah',
-    'Ponch Tidak Putus',
-    'Tidak Ada Embose',
-    'Embose Lari',
-
-
+    "Ponch Lari",
+    "Ponch Pecah",
+    "Ponch Tidak Putus",
+    "Tidak Ada Embose",
+    "Embose Lari",
 
     // TEMUAN VARNISH
 
-    'Varnish Tidak Rata',
-    'Bubble',
-    'Varnish Bergaris',
-    'Tidak Ada Varnish',
-    'Glossy Kurang',
-
-
+    "Varnish Tidak Rata",
+    "Bubble",
+    "Varnish Bergaris",
+    "Tidak Ada Varnish",
+    "Glossy Kurang",
 
     // TEMUAN POTONG
 
-    'Potongan Lari'
-
+    "Potongan Lari"
 
   ];
 
-
-
-
-
-
-
-
-
   lemItems.forEach(item=>{
-
 
     const tanggal =
       parseTanggalTemuanLem(
         item.tanggal
       );
 
-
-
     if(!tanggal){
 
       return;
 
     }
-
-
-
-
-
 
     if(
       tanggal.getFullYear() !== tahunSekarang
@@ -7625,11 +7435,6 @@ function renderGrafikTemuanLem() {
 
     }
 
-
-
-
-
-
     if(
       tanggal.getMonth() > bulanSekarang
     ){
@@ -7638,19 +7443,10 @@ function renderGrafikTemuanLem() {
 
     }
 
-
-
-
-
-
     const keterangan =
       String(
-        item.keterangan || ''
+        item.keterangan || ""
       ).trim();
-
-
-
-
 
     if(!keterangan){
 
@@ -7658,241 +7454,208 @@ function renderGrafikTemuanLem() {
 
     }
 
-
-
-
-
-
     let jumlah = 0;
 
-
-
-
-
-
     daftarTemuan.forEach(temuan=>{
-
 
       const escapedTemuan =
         temuan.replace(
           /[.*+?^${}()|[\]\\]/g,
-          '\\$&'
+          "\\$&"
         );
-
-
 
       const regex =
         new RegExp(
           escapedTemuan,
-          'gi'
+          "gi"
         );
-
-
 
       const hasil =
         keterangan.match(regex);
 
-
-
-
       if(hasil){
-
 
         jumlah += hasil.length;
 
-
       }
 
-
     });
-
-
-
-
-
-
 
     totalBulan[
       tanggal.getMonth()
     ] += jumlah;
 
-
-
-
-
   });
-
-
-
-
-
-
-
 
   if(chartTemuanLemInstance){
 
-
     chartTemuanLemInstance.destroy();
-
 
   }
 
-
-
-
-
-
-
-
-
   chartTemuanLemInstance =
-
     new Chart(
-
       canvas,
-
       {
 
-
         plugins:[
-
           ChartDataLabels
-
         ],
-
-
-
 
         type:"bar",
 
-
-
-
-
         data:{
-
-
 
           labels:bulanNama,
 
-
-
           datasets:[{
-
 
             label:"Total Temuan",
 
-
-
             data:totalBulan,
 
+            borderWidth:1,
 
+            backgroundColor:"#90caf9",
 
-            borderWidth:1
+            borderColor:"#42a5f5",
 
+            borderRadius:4,
 
+            barPercentage:0.75,
+
+            categoryPercentage:0.8
 
           }]
 
-
-
         },
-
-
-
-
-
-
 
         options:{
 
-
-
           responsive:true,
-
-
 
           maintainAspectRatio:false,
 
+          layout:{
 
+            padding:{
 
-
-
-
-
-          plugins:{
-
-
-
-datalabels:{
-
-  anchor:"center",
-
-  align:"center",
-
-  color:"#ffffff",
-
-  clip:true,
-
-  formatter:function(value){
-
-    return value > 0 ? value : "";
-
-  },
-
-  font:{
-
-    weight:"bold",
-
-    size:13
-
-  }
-
-}
-
-
-
-          },
-
-
-
-
-
-
-
-          scales:{
-
-
-
-            y:{
-
-
-
-              beginAtZero:true
-
-
+              top:25,
+              right:10,
+              left:10,
+              bottom:10
 
             }
 
+          },
 
+          plugins:{
+
+            legend:{
+
+              display:true,
+
+              position:"top",
+
+              labels:{
+
+                boxWidth:40,
+
+                padding:12,
+
+                font:{
+
+                  size:12
+
+                }
+
+              }
+
+            },
+
+            datalabels:{
+
+              anchor:"end",
+
+              align:"top",
+
+              offset:4,
+
+              clamp:true,
+
+              clip:false,
+
+              color:"#1f2937",
+
+              formatter:function(value){
+
+                return value > 0 ? value : "";
+
+              },
+
+              font:{
+
+                weight:"bold",
+
+                size:11
+
+              }
+
+            }
+
+          },
+
+          scales:{
+
+            x:{
+
+              offset:true,
+
+              grid:{
+
+                display:false
+
+              },
+
+              ticks:{
+
+                autoSkip:false,
+
+                maxRotation:45,
+
+                minRotation:45,
+
+                font:{
+
+                  size:10
+
+                }
+
+              }
+
+            },
+
+            y:{
+
+              beginAtZero:true,
+
+              grace:"10%",
+
+              ticks:{
+
+                precision:0
+
+              }
+
+            }
 
           }
 
-
-
-
-
         }
-
-
-
-
 
       }
 
     );
-
-
 
 }
 
@@ -9074,34 +8837,20 @@ let chartTemuanFinishingInstance = null;
 
 function renderGrafikTemuanFinishing() {
 
-
   const canvas =
     document.getElementById(
       "chartTemuanFinishing"
     );
 
-
-
   if(!canvas) return;
-
-
 
   if(!Array.isArray(finishingItems)){
 
-
     return;
-
 
   }
 
-
-
-
-
-
-
   const bulanNama = [
-
 
     "Januari",
     "Februari",
@@ -9116,140 +8865,89 @@ function renderGrafikTemuanFinishing() {
     "November",
     "Desember"
 
-
   ];
-
-
-
-
 
   const totalBulan =
     Array(12).fill(0);
 
-
-
-
-
-
   const sekarang =
     new Date();
-
-
 
   const tahunSekarang =
     sekarang.getFullYear();
 
-
-
   const bulanSekarang =
     sekarang.getMonth();
 
-
-
-
-
-
-
-
-
   // ======================
   // DAFTAR TEMUAN FINISHING
-  // SAMA DENGAN DETAIL
   // ======================
 
   const daftarTemuan = [
 
-
     // CETAK
 
-    'Warna',
-    'Noda',
-    'Ghosting',
-    'Terhapus',
-    'Galang',
-    'MisRegis',
-    'Garis',
-    'Botak',
-    'Set-Off',
-    'Scumming',
-    'Oksidasi',
-    'Gatra',
-    'Salur',
-    'Barcode/QR',
-
-
+    "Warna",
+    "Noda",
+    "Ghosting",
+    "Terhapus",
+    "Galang",
+    "MisRegis",
+    "Garis",
+    "Botak",
+    "Set-Off",
+    "Scumming",
+    "Oksidasi",
+    "Gatra",
+    "Salur",
+    "Barcode/QR",
 
     // LEM
 
-    'No Glue',
-    'Over Glue',
-    'Lem Tidak Rata',
-    'Lengket',
-    'Dus Sobek',
-    'Dus Baret',
-    'Dus Galeng',
-    'Dus Tidak Siku',
-    'Kupingan Ketekuk',
-
-
+    "No Glue",
+    "Over Glue",
+    "Lem Tidak Rata",
+    "Lengket",
+    "Dus Sobek",
+    "Dus Baret",
+    "Dus Galeng",
+    "Dus Tidak Siku",
+    "Kupingan Ketekuk",
 
     // PONCH
 
-    'Ponch Lari',
-    'Ponch Pecah',
-    'Ponch Tidak Putus',
-    'Tidak Ada Embose',
-    'Embose Lari',
-
-
+    "Ponch Lari",
+    "Ponch Pecah",
+    "Ponch Tidak Putus",
+    "Tidak Ada Embose",
+    "Embose Lari",
 
     // VARNISH
 
-    'Varnish Tidak Rata',
-    'Bubble',
-    'Varnish Bergaris',
-    'Tidak Ada Varnish',
-    'Glossy Kurang',
-
-
+    "Varnish Tidak Rata",
+    "Bubble",
+    "Varnish Bergaris",
+    "Tidak Ada Varnish",
+    "Glossy Kurang",
 
     // POTONG
 
-    'Potongan Lari'
-
+    "Potongan Lari"
 
   ];
 
-
-
-
-
-
-
-
-
   finishingItems.forEach(item=>{
-
 
     const tanggal =
       parseTanggalTemuanFinishing(
         item.tanggal
       );
 
-
-
     if(!tanggal){
 
       return;
 
     }
-
-
-
-
-
-
-    // FILTER TAHUN BERJALAN
 
     if(
       tanggal.getFullYear() !== tahunSekarang
@@ -9259,13 +8957,6 @@ function renderGrafikTemuanFinishing() {
 
     }
 
-
-
-
-
-
-    // HILANGKAN DATA MASA DEPAN
-
     if(
       tanggal.getMonth() > bulanSekarang
     ){
@@ -9274,17 +8965,10 @@ function renderGrafikTemuanFinishing() {
 
     }
 
-
-
-
-
-
     const keterangan =
       String(
         item.keterangan || ""
       );
-
-
 
     if(!keterangan){
 
@@ -9292,29 +8976,15 @@ function renderGrafikTemuanFinishing() {
 
     }
 
-
-
-
-
-
-
     let jumlah = 0;
 
-
-
-
-
-
     daftarTemuan.forEach(temuan=>{
-
 
       const escapedTemuan =
         temuan.replace(
           /[.*+?^${}()|[\]\\]/g,
-          '\\$&'
+          "\\$&"
         );
-
-
 
       const regex =
         new RegExp(
@@ -9322,209 +8992,192 @@ function renderGrafikTemuanFinishing() {
           "gi"
         );
 
-
-
       const hasil =
         keterangan.match(regex);
 
-
-
       if(hasil){
-
 
         jumlah += hasil.length;
 
-
       }
 
-
     });
-
-
-
-
-
 
     totalBulan[
       tanggal.getMonth()
     ] += jumlah;
 
-
-
-
-
   });
-
-
-
-
-
-
-
 
   if(chartTemuanFinishingInstance){
 
-
     chartTemuanFinishingInstance.destroy();
-
 
   }
 
-
-
-
-
-
-
-
   chartTemuanFinishingInstance =
-
     new Chart(
-
       canvas,
-
       {
 
-
         plugins:[
-
           ChartDataLabels
-
         ],
-
-
-
 
         type:"bar",
 
-
-
-
-
         data:{
-
-
 
           labels:bulanNama,
 
-
-
           datasets:[{
-
 
             label:"Total Temuan",
 
-
-
             data:totalBulan,
 
+            borderWidth:1,
 
+            backgroundColor:"#90caf9",
 
-            borderWidth:1
+            borderColor:"#42a5f5",
 
+            borderRadius:4,
 
+            barPercentage:0.75,
+
+            categoryPercentage:0.8
 
           }]
 
-
-
         },
-
-
-
-
-
-
 
         options:{
 
-
-
           responsive:true,
-
-
 
           maintainAspectRatio:false,
 
+          layout:{
 
+            padding:{
 
-
-
-
-
-          plugins:{
-
-
-
-datalabels:{
-
-  anchor:"center",
-
-  align:"center",
-
-  color:"#ffffff",
-
-  clip:true,
-
-  formatter:function(value){
-
-    return value > 0 ? value : "";
-
-  },
-
-  font:{
-
-    weight:"bold",
-
-    size:13
-
-  }
-
-}
-
-
-
-          },
-
-
-
-
-
-
-
-          scales:{
-
-
-
-            y:{
-
-
-
-              beginAtZero:true
-
-
+              top:25,
+              right:10,
+              left:10,
+              bottom:10
 
             }
 
+          },
 
+          plugins:{
+
+            legend:{
+
+              display:true,
+
+              position:"top",
+
+              labels:{
+
+                boxWidth:40,
+
+                padding:12,
+
+                font:{
+
+                  size:12
+
+                }
+
+              }
+
+            },
+
+            datalabels:{
+
+              anchor:"end",
+
+              align:"top",
+
+              offset:4,
+
+              clamp:true,
+
+              clip:false,
+
+              color:"#1f2937",
+
+              formatter:function(value){
+
+                return value > 0 ? value : "";
+
+              },
+
+              font:{
+
+                weight:"bold",
+
+                size:11
+
+              }
+
+            }
+
+          },
+
+          scales:{
+
+            x:{
+
+              offset:true,
+
+              grid:{
+
+                display:false
+
+              },
+
+              ticks:{
+
+                autoSkip:false,
+
+                maxRotation:45,
+
+                minRotation:45,
+
+                font:{
+
+                  size:10
+
+                }
+
+              }
+
+            },
+
+            y:{
+
+              beginAtZero:true,
+
+              grace:"10%",
+
+              ticks:{
+
+                precision:0
+
+              }
+
+            }
 
           }
 
-
-
-
-
         }
-
-
-
-
 
       }
 
     );
-
-
 
 }
 
@@ -10569,35 +10222,20 @@ let chartTemuanSPVInstance = null;
 
 function renderGrafikTemuanSPV() {
 
-
   const canvas =
     document.getElementById(
       "chartTemuanSPV"
     );
 
-
-
   if(!canvas) return;
-
-
 
   if(!Array.isArray(spvItems)){
 
-
     return;
-
 
   }
 
-
-
-
-
-
-
-
   const bulanNama = [
-
 
     "Januari",
     "Februari",
@@ -10612,143 +10250,89 @@ function renderGrafikTemuanSPV() {
     "November",
     "Desember"
 
-
   ];
-
-
-
-
 
   const totalBulan =
     Array(12).fill(0);
 
-
-
-
-
-
-
   const sekarang =
     new Date();
-
-
 
   const tahunSekarang =
     sekarang.getFullYear();
 
-
-
   const bulanSekarang =
     sekarang.getMonth();
 
-
-
-
-
-
-
-
-
   // ======================
   // DAFTAR KOMPLAIN SPV
-  // SAMA DENGAN DETAIL
   // ======================
 
   const daftarTemuan = [
 
-
-
     // CETAK
 
-    'Warna',
-    'Noda',
-    'Ghosting',
-    'Terhapus',
-    'Galang',
-    'MisRegis',
-    'Garis',
-    'Botak',
-    'Set-Off',
-    'Scumming',
-    'Oksidasi',
-    'Gatra',
-    'Salur',
-    'Barcode/QR',
-
-
+    "Warna",
+    "Noda",
+    "Ghosting",
+    "Terhapus",
+    "Galang",
+    "MisRegis",
+    "Garis",
+    "Botak",
+    "Set-Off",
+    "Scumming",
+    "Oksidasi",
+    "Gatra",
+    "Salur",
+    "Barcode/QR",
 
     // LEM
 
-    'No Glue',
-    'Over Glue',
-    'Lem Tidak Rata',
-    'Lengket',
-    'Dus Sobek',
-    'Dus Baret',
-    'Dus Galeng',
-    'Dus Tidak Siku',
-    'Kupingan Ketekuk',
-
-
+    "No Glue",
+    "Over Glue",
+    "Lem Tidak Rata",
+    "Lengket",
+    "Dus Sobek",
+    "Dus Baret",
+    "Dus Galeng",
+    "Dus Tidak Siku",
+    "Kupingan Ketekuk",
 
     // PONCH
 
-    'Ponch Lari',
-    'Ponch Pecah',
-    'Ponch Tidak Putus',
-    'Tidak Ada Embose',
-    'Embose Lari',
-
-
+    "Ponch Lari",
+    "Ponch Pecah",
+    "Ponch Tidak Putus",
+    "Tidak Ada Embose",
+    "Embose Lari",
 
     // VARNISH
 
-    'Varnish Tidak Rata',
-    'Bubble',
-    'Varnish Bergaris',
-    'Tidak Ada Varnish',
-    'Glossy Kurang',
-
-
+    "Varnish Tidak Rata",
+    "Bubble",
+    "Varnish Bergaris",
+    "Tidak Ada Varnish",
+    "Glossy Kurang",
 
     // POTONG
 
-    'Potongan Lari'
-
+    "Potongan Lari"
 
   ];
 
-
-
-
-
-
-
-
-
   spvItems.forEach(item=>{
-
 
     const tanggal =
       parseTanggalTemuanSPV(
         item.tanggal
       );
 
-
-
     if(!tanggal){
 
       return;
 
     }
-
-
-
-
-
-
-
-    // FILTER TAHUN BERJALAN
 
     if(
       tanggal.getFullYear() !== tahunSekarang
@@ -10758,15 +10342,6 @@ function renderGrafikTemuanSPV() {
 
     }
 
-
-
-
-
-
-
-
-    // HILANGKAN DATA MASA DEPAN
-
     if(
       tanggal.getMonth() > bulanSekarang
     ){
@@ -10775,56 +10350,28 @@ function renderGrafikTemuanSPV() {
 
     }
 
-
-
-
-
-
-
-
-    // SPV MENGGUNAKAN ket1
+    // SPV menggunakan ket1
 
     const keterangan =
       String(
         item.ket1 || ""
       );
 
-
-
     if(!keterangan){
-
 
       return;
 
-
     }
-
-
-
-
-
-
-
 
     let jumlah = 0;
 
-
-
-
-
-
-
-
     daftarTemuan.forEach(temuan=>{
-
 
       const escapedTemuan =
         temuan.replace(
           /[.*+?^${}()|[\]\\]/g,
-          '\\$&'
+          "\\$&"
         );
-
-
 
       const regex =
         new RegExp(
@@ -10832,219 +10379,192 @@ function renderGrafikTemuanSPV() {
           "gi"
         );
 
-
-
       const hasil =
         keterangan.match(regex);
 
-
-
       if(hasil){
-
 
         jumlah += hasil.length;
 
-
       }
 
-
     });
-
-
-
-
-
-
 
     totalBulan[
       tanggal.getMonth()
     ] += jumlah;
 
-
-
-
-
   });
-
-
-
-
-
-
-
-
-
 
   if(chartTemuanSPVInstance){
 
-
     chartTemuanSPVInstance.destroy();
-
 
   }
 
-
-
-
-
-
-
-
-
   chartTemuanSPVInstance =
-
     new Chart(
-
       canvas,
-
       {
 
-
         plugins:[
-
           ChartDataLabels
-
         ],
-
-
-
-
 
         type:"bar",
 
-
-
-
-
-
         data:{
-
-
 
           labels:bulanNama,
 
-
-
           datasets:[{
-
 
             label:"Total Komplain",
 
-
-
             data:totalBulan,
 
+            borderWidth:1,
 
+            backgroundColor:"#90caf9",
 
-            borderWidth:1
+            borderColor:"#42a5f5",
 
+            borderRadius:4,
 
+            barPercentage:0.75,
+
+            categoryPercentage:0.8
 
           }]
 
-
-
         },
-
-
-
-
-
-
-
-
 
         options:{
 
-
-
           responsive:true,
-
-
 
           maintainAspectRatio:false,
 
+          layout:{
 
+            padding:{
 
-
-
-
-
-
-
-          plugins:{
-
-
-
-datalabels:{
-
-  anchor:"center",
-
-  align:"center",
-
-  color:"#ffffff",
-
-  formatter:function(value){
-
-    return value > 0 ? value : "";
-
-  },
-
-  font:{
-
-    weight:"bold",
-
-    size:13
-
-  }
-
-}
-
-
-
-          },
-
-
-
-
-
-
-
-
-
-          scales:{
-
-
-
-            y:{
-
-
-
-              beginAtZero:true
-
-
+              top:25,
+              right:10,
+              left:10,
+              bottom:10
 
             }
 
+          },
 
+          plugins:{
+
+            legend:{
+
+              display:true,
+
+              position:"top",
+
+              labels:{
+
+                boxWidth:40,
+
+                padding:12,
+
+                font:{
+
+                  size:12
+
+                }
+
+              }
+
+            },
+
+            datalabels:{
+
+              anchor:"end",
+
+              align:"top",
+
+              offset:4,
+
+              clamp:true,
+
+              clip:false,
+
+              color:"#1f2937",
+
+              formatter:function(value){
+
+                return value > 0 ? value : "";
+
+              },
+
+              font:{
+
+                weight:"bold",
+
+                size:11
+
+              }
+
+            }
+
+          },
+
+          scales:{
+
+            x:{
+
+              offset:true,
+
+              grid:{
+
+                display:false
+
+              },
+
+              ticks:{
+
+                autoSkip:false,
+
+                maxRotation:45,
+
+                minRotation:45,
+
+                font:{
+
+                  size:10
+
+                }
+
+              }
+
+            },
+
+            y:{
+
+              beginAtZero:true,
+
+              grace:"10%",
+
+              ticks:{
+
+                precision:0
+
+              }
+
+            }
 
           }
 
-
-
-
-
         }
-
-
-
-
 
       }
 
     );
-
-
 
 }
 
