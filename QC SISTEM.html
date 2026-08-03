@@ -3258,13 +3258,13 @@ function renderTemuanBulananPA() {
     'MisRegis',
     'Garis',
     'Botak',
-    'Set-Off',
+    'Set-Off/Smet',
     'Scumming',
     'Oksidasi',
     'Gatra',
     'Salur',
-    'Barcode/QR'
-
+    'Barcode/QR',
+    'Powder',
   ];
 
 
@@ -4089,12 +4089,13 @@ function renderGrafikTemuanPA() {
     "MisRegis",
     "Garis",
     "Botak",
-    "Set-Off",
+    "Set-Off/Smet",
     "Scumming",
     "Oksidasi",
     "Gatra",
     "Salur",
-    "Barcode/QR"
+    "Barcode/QR",
+    'Powder',
 
   ];
 
@@ -4849,13 +4850,13 @@ function renderTemuanBulananInspek() {
     'MisRegis',
     'Garis',
     'Botak',
-    'Set-Off',
+    'Set-Off/Smet',
     'Scumming',
     'Oksidasi',
     'Gatra',
     'Salur',
     'Barcode/QR',
-
+    'Powder',
 
 
     // TEMUAN PONCH
@@ -5716,12 +5717,13 @@ function renderGrafikTemuanInspek() {
     "MisRegis",
     "Garis",
     "Botak",
-    "Set-Off",
+    "Set-Off/Smet",
     "Scumming",
     "Oksidasi",
     "Gatra",
     "Salur",
     "Barcode/QR",
+    'Powder',
 
     // TEMUAN PONCH
 
@@ -6433,13 +6435,13 @@ const daftarTemuan = [
   'MisRegis',
   'Garis',
   'Botak',
-  'Set-Off',
+  'Set-Off/Smet',
   'Scumming',
   'Oksidasi',
   'Gatra',
   'Salur',
   'Barcode/QR',
-
+    'Powder',
 
   // TEMUAN LEM
   'No Glue',
@@ -7373,12 +7375,13 @@ function renderGrafikTemuanLem() {
     "MisRegis",
     "Garis",
     "Botak",
-    "Set-Off",
+    "Set-Off/Smet",
     "Scumming",
     "Oksidasi",
     "Gatra",
     "Salur",
     "Barcode/QR",
+    'Powder',
 
     // TEMUAN LEM
 
@@ -8037,13 +8040,13 @@ const daftarTemuan = [
   'MisRegis',
   'Garis',
   'Botak',
-  'Set-Off',
+  'Set-Off/Smet',
   'Scumming',
   'Oksidasi',
   'Gatra',
   'Salur',
   'Barcode/QR',
-
+    'Powder',
 
   // TEMUAN LEM
   'No Glue',
@@ -8895,12 +8898,13 @@ function renderGrafikTemuanFinishing() {
     "MisRegis",
     "Garis",
     "Botak",
-    "Set-Off",
+    "Set-Off/Smet",
     "Scumming",
     "Oksidasi",
     "Gatra",
     "Salur",
     "Barcode/QR",
+    'Powder',
 
     // LEM
 
@@ -9539,13 +9543,13 @@ if (bulanSelect) {
     'MisRegis',
     'Garis',
     'Botak',
-    'Set-Off',
+    'Set-Off/Smet',
     'Scumming',
     'Oksidasi',
     'Gatra',
     'Salur',
     'Barcode/QR',
-
+    'Powder',
 
     'No Glue',
     'Over Glue',
@@ -10280,12 +10284,13 @@ function renderGrafikTemuanSPV() {
     "MisRegis",
     "Garis",
     "Botak",
-    "Set-Off",
+    "Set-Off/Smet",
     "Scumming",
     "Oksidasi",
     "Gatra",
     "Salur",
     "Barcode/QR",
+    'Powder',
 
     // LEM
 
@@ -11011,12 +11016,13 @@ function setStatusFilterBapro(status) {
         <option>MisRegis</option>
         <option>Garis</option>
         <option>Botak</option>
-        <option>Set-Off</option>
+        <option>Set-Off/Smet</option>
         <option>Scumming</option>
         <option>Oksidasi</option>
         <option>Gatra</option>
         <option>Salur</option>
         <option>Barcode/QR</option>
+        <option>Powder</option>
       </select>
 
       <div class="modal-btn">
@@ -11206,12 +11212,13 @@ function setStatusFilterBapro(status) {
         <option>MisRegis</option>
         <option>Garis</option>
         <option>Botak</option>
-        <option>Set-Off</option>
+        <option>Set-Off/Smet</option>
         <option>Scumming</option>
         <option>Oksidasi</option>
         <option>Gatra</option>
         <option>Salur</option>
         <option>Barcode/QR</option>
+        <option>Powder</option>
       </select>
 
       <div class="modal-btn">
@@ -12796,13 +12803,14 @@ window.addEventListener("click", function(e){
     <label><input type="checkbox" name="tmInspekTemuan" value="MisRegis"> MisRegis</label>
     <label><input type="checkbox" name="tmInspekTemuan" value="Garis"> Garis</label>
     <label><input type="checkbox" name="tmInspekTemuan" value="Botak"> Botak</label>
-    <label><input type="checkbox" name="tmInspekTemuan" value="Set-Off"> Set-Off</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Set-Off/Smet"> Set-Off/Smet</label>
     <label><input type="checkbox" name="tmInspekTemuan" value="Scumming"> Scumming</label>
 
     <label><input type="checkbox" name="tmInspekTemuan" value="Oksidasi"> Oksidasi</label>
     <label><input type="checkbox" name="tmInspekTemuan" value="Gatra"> Gatra</label>
     <label><input type="checkbox" name="tmInspekTemuan" value="Salur"> Salur</label>
     <label><input type="checkbox" name="tmInspekTemuan" value="Barcode/QR"> Barcode/QR</label>
+    <label><input type="checkbox" name="tmInspekTemuan" value="Powder"> Powder</label>
 
 </div>
 
@@ -13010,13 +13018,14 @@ window.addEventListener("click", function(e){
     <label><input type="checkbox" name="editTmInspekTemuan" value="MisRegis"> MisRegis</label>
     <label><input type="checkbox" name="editTmInspekTemuan" value="Garis"> Garis</label>
     <label><input type="checkbox" name="editTmInspekTemuan" value="Botak"> Botak</label>
-    <label><input type="checkbox" name="editTmInspekTemuan" value="Set-Off"> Set-Off</label>
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Set-Off/Smet"> Set-Off/Smet</label>
     <label><input type="checkbox" name="editTmInspekTemuan" value="Scumming"> Scumming</label>
 
     <label><input type="checkbox" name="editTmInspekTemuan" value="Oksidasi"> Oksidasi</label>
     <label><input type="checkbox" name="editTmInspekTemuan" value="Gatra"> Gatra</label>
     <label><input type="checkbox" name="editTmInspekTemuan" value="Salur"> Salur</label>
     <label><input type="checkbox" name="editTmInspekTemuan" value="Barcode/QR"> Barcode/QR</label>
+    <label><input type="checkbox" name="editTmInspekTemuan" value="Powder"> Powder</label>
 
 </div>
 
@@ -14462,13 +14471,14 @@ window.addEventListener(
     <label><input type="checkbox" name="tmFinTemuan" value="MisRegis"> MisRegis</label>
     <label><input type="checkbox" name="tmFinTemuan" value="Garis"> Garis</label>
     <label><input type="checkbox" name="tmFinTemuan" value="Botak"> Botak</label>
-    <label><input type="checkbox" name="tmFinTemuan" value="Set-Off"> Set-Off</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Set-Off/Smet"> Set-Off/Smet</label>
     <label><input type="checkbox" name="tmFinTemuan" value="Scumming"> Scumming</label>
 
     <label><input type="checkbox" name="tmFinTemuan" value="Oksidasi"> Oksidasi</label>
     <label><input type="checkbox" name="tmFinTemuan" value="Gatra"> Gatra</label>
     <label><input type="checkbox" name="tmFinTemuan" value="Salur"> Salur</label>
     <label><input type="checkbox" name="tmFinTemuan" value="Barcode/QR"> Barcode/QR</label>
+    <label><input type="checkbox" name="tmFinTemuan" value="Powder"> Powder</label>
 
 </div>
 
@@ -14633,13 +14643,14 @@ window.addEventListener(
     <label><input type="checkbox" name="editTmFinTemuan" value="MisRegis"> MisRegis</label>
     <label><input type="checkbox" name="editTmFinTemuan" value="Garis"> Garis</label>
     <label><input type="checkbox" name="editTmFinTemuan" value="Botak"> Botak</label>
-    <label><input type="checkbox" name="editTmFinTemuan" value="Set-Off"> Set-Off</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Set-Off/Smet"> Set-Off/Smet</label>
     <label><input type="checkbox" name="editTmFinTemuan" value="Scumming"> Scumming</label>
 
     <label><input type="checkbox" name="editTmFinTemuan" value="Oksidasi"> Oksidasi</label>
     <label><input type="checkbox" name="editTmFinTemuan" value="Gatra"> Gatra</label>
     <label><input type="checkbox" name="editTmFinTemuan" value="Salur"> Salur</label>
     <label><input type="checkbox" name="editTmFinTemuan" value="Barcode/QR"> Barcode/QR</label>
+    <label><input type="checkbox" name="editTmFinTemuan" value="Powder"> Powder</label>
 
 </div>
 
@@ -16177,13 +16188,14 @@ window.addEventListener("click", function(e){
 <label><input type="checkbox" name="tmLemTemuan" value="MisRegis"> MisRegis</label>
 <label><input type="checkbox" name="tmLemTemuan" value="Garis"> Garis</label>
 <label><input type="checkbox" name="tmLemTemuan" value="Botak"> Botak</label>
-<label><input type="checkbox" name="tmLemTemuan" value="Set-Off"> Set-Off</label>
+<label><input type="checkbox" name="tmLemTemuan" value="Set-Off/Smet"> Set-Off/Smet</label>
 <label><input type="checkbox" name="tmLemTemuan" value="Scumming"> Scumming</label>
 
 <label><input type="checkbox" name="tmLemTemuan" value="Oksidasi"> Oksidasi</label>
 <label><input type="checkbox" name="tmLemTemuan" value="Gatra"> Gatra</label>
 <label><input type="checkbox" name="tmLemTemuan" value="Salur"> Salur</label>
 <label><input type="checkbox" name="tmLemTemuan" value="Barcode/QR"> Barcode/QR</label>
+<label><input type="checkbox" name="tmLemTemuan" value="Powder"> Powder</label>
 
 </div>
 
@@ -16413,8 +16425,8 @@ window.addEventListener("click", function(e){
           <input
             type="checkbox"
             name="editTmLemTemuan"
-            value="Set-Off">
-          Set-Off
+            value="Set-Off/Smet">
+          Set-Off/Smet
         </label>
 
         <label>
@@ -16455,6 +16467,14 @@ window.addEventListener("click", function(e){
             name="editTmLemTemuan"
             value="Barcode/QR">
           Barcode/QR
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            name="editTmLemTemuan"
+            value="Powder">
+          Powder
         </label>
 
       </div>
@@ -18442,13 +18462,14 @@ function filterManualList(input, tabId) {
     <label><input type="checkbox" name="tmSPVTemuan" value="MisRegis"> MisRegis</label>
     <label><input type="checkbox" name="tmSPVTemuan" value="Garis"> Garis</label>
     <label><input type="checkbox" name="tmSPVTemuan" value="Botak"> Botak</label>
-    <label><input type="checkbox" name="tmSPVTemuan" value="Set-Off"> Set-Off</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Set-Off/Smet"> Set-Off/Smet</label>
     <label><input type="checkbox" name="tmSPVTemuan" value="Scumming"> Scumming</label>
 
     <label><input type="checkbox" name="tmSPVTemuan" value="Oksidasi"> Oksidasi</label>
     <label><input type="checkbox" name="tmSPVTemuan" value="Gatra"> Gatra</label>
     <label><input type="checkbox" name="tmSPVTemuan" value="Salur"> Salur</label>
     <label><input type="checkbox" name="tmSPVTemuan" value="Barcode/QR"> Barcode/QR</label>
+    <label><input type="checkbox" name="tmSPVTemuan" value="Powder"> Powder</label>
 
 </div>
 
