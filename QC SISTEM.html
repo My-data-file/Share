@@ -21605,7 +21605,9 @@ function renderCard(title, item, extraFields="", processType="cetak"){
       <p><b>Nama Order:</b> ${item?.nama||"-"}</p>
       <p><b>Order:</b> ${formatNumber(order)}</p>
       ${extraFields||""}
-      <p><b>Mesin:</b> ${mesin}</p>
+${processType === "cetak"
+  ? `<p><b>Mesin:</b> ${mesin}</p>`
+  : ""}
       <p><b>QC:</b> ${item?.qc||"-"}</p>
       <p><b>Keterangan:</b></p>
       <div class="ket-list">
@@ -21650,7 +21652,9 @@ function renderCardReport(title,item,extraFields="",processType="cetak"){
     <div class="report-field"><b>Nama Order:</b> ${item?.nama||"-"}</div>
     <div class="report-field"><b>Order:</b> ${formatNumber(order)}</div>
     ${extraFields||""}
-    <div class="report-field"><b>Mesin:</b> ${mesin}</div>
+${processType === "cetak"
+  ? `<div class="report-field"><b>Mesin:</b> ${mesin}</div>`
+  : ""}
     <div class="report-field"><b>QC:</b> ${item?.qc||"-"}</div>
     <div class="report-field"><b>Keterangan:</b></div>
     <div class="ket-list">
