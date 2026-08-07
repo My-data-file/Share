@@ -22149,11 +22149,30 @@ ${processType === "cetak"
       <p><b>QC:</b> ${item?.qc||"-"}</p>
       <p><b>Keterangan:</b></p>
       <div class="ket-list">
-        <div>1. ${k[1]}</div>
-        <div>2. ${k[2]}</div>
-        <div>3. ${k[3]}</div>
-        <div>4. ${k[4]}</div>
-        <div>5. ${k[5]}</div>
+<div style="display:flex;align-items:flex-start;">
+  <strong style="margin-right:4px;">1.</strong>
+  <span>${k[1]}</span>
+</div>
+
+<div style="display:flex;align-items:flex-start;">
+  <strong style="margin-right:4px;">2.</strong>
+  <span>${k[2]}</span>
+</div>
+
+<div style="display:flex;align-items:flex-start;">
+  <strong style="margin-right:4px;">3.</strong>
+  <span>${k[3]}</span>
+</div>
+
+<div style="display:flex;align-items:flex-start;">
+  <strong style="margin-right:4px;">4.</strong>
+  <span>${k[4]}</span>
+</div>
+
+<div style="display:flex;align-items:flex-start;">
+  <strong style="margin-right:4px;">5.</strong>
+  <span>${k[5]}</span>
+</div>
       </div>
       <div style="display:inline-block;margin-top:10px;padding:6px 12px;border-radius:6px;color:#000;font-weight:700;background:${color};">
         STATUS: ${item?.update||"-"}
@@ -22196,11 +22215,30 @@ ${processType === "cetak"
     <div class="report-field"><b>QC:</b> ${item?.qc||"-"}</div>
     <div class="report-field"><b>Keterangan:</b></div>
     <div class="ket-list">
-      <div>1. ${k[1]}</div>
-      <div>2. ${k[2]}</div>
-      <div>3. ${k[3]}</div>
-      <div>4. ${k[4]}</div>
-      <div>5. ${k[5]}</div>
+<div style="display:flex;align-items:flex-start;">
+  <strong style="margin-right:4px;">1.</strong>
+  <span>${k[1]}</span>
+</div>
+
+<div style="display:flex;align-items:flex-start;">
+  <strong style="margin-right:4px;">2.</strong>
+  <span>${k[2]}</span>
+</div>
+
+<div style="display:flex;align-items:flex-start;">
+  <strong style="margin-right:4px;">3.</strong>
+  <span>${k[3]}</span>
+</div>
+
+<div style="display:flex;align-items:flex-start;">
+  <strong style="margin-right:4px;">4.</strong>
+  <span>${k[4]}</span>
+</div>
+
+<div style="display:flex;align-items:flex-start;">
+  <strong style="margin-right:4px;">5.</strong>
+  <span>${k[5]}</span>
+</div>
     </div>
     <div class="report-status" style="background:${color}">STATUS: ${item?.update||"-"}</div>
     <div class="report-percentage">
@@ -23365,13 +23403,32 @@ finishingItems.forEach((item, i) => {
         <span>QC: ${highlightHtmlSafe(item.qc || '', q)}</span><br>
 
         <span><b>Keterangan:</b></span><br>
-        <div class="ket-list">
-          <div>1. ${highlightHtmlSafe(kets[0] || '-', q)}</div>
-          <div>2. ${highlightHtmlSafe(kets[1] || '-', q)}</div>
-          <div>3. ${highlightHtmlSafe(kets[2] || '-', q)}</div>
-          <div>4. ${highlightHtmlSafe(kets[3] || '-', q)}</div>
-          <div>5. ${highlightHtmlSafe(kets[4] || '-', q)}</div>
-        </div>
+<div class="ket-list">
+  <div style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">1.</strong>
+    <span>${highlightHtmlSafe(kets[0] || '-', q)}</span>
+  </div>
+
+  <div style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">2.</strong>
+    <span>${highlightHtmlSafe(kets[1] || '-', q)}</span>
+  </div>
+
+  <div style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">3.</strong>
+    <span>${highlightHtmlSafe(kets[2] || '-', q)}</span>
+  </div>
+
+  <div style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">4.</strong>
+    <span>${highlightHtmlSafe(kets[3] || '-', q)}</span>
+  </div>
+
+  <div style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">5.</strong>
+    <span>${highlightHtmlSafe(kets[4] || '-', q)}</span>
+  </div>
+</div>
 
         <br>
 
@@ -23444,14 +23501,29 @@ function showDetailFinishing(index){
 
       <hr>
 
-      <p><b>Keterangan:</b></p>
-      <ul>
-        <li>1. ${ketMap[1]}</li>
-        <li>2. ${ketMap[2]}</li>
-        <li>3. ${ketMap[3]}</li>
-        <li>4. ${ketMap[4]}</li>
-        <li>5. ${ketMap[5]}</li>
-      </ul>
+<p><b>Keterangan:</b></p>
+<ul style="list-style:none;padding-left:0;margin:0;">
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">1.</strong>
+    <span>${ketMap[1]}</span>
+  </li>
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">2.</strong>
+    <span>${ketMap[2]}</span>
+  </li>
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">3.</strong>
+    <span>${ketMap[3]}</span>
+  </li>
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">4.</strong>
+    <span>${ketMap[4]}</span>
+  </li>
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">5.</strong>
+    <span>${ketMap[5]}</span>
+  </li>
+</ul>
 
       <button onclick="closeModalFinishing()">Tutup</button>
     </div>
@@ -24237,7 +24309,10 @@ function showDetailModal(item) {
       </span><br><br>
 
     <strong>Keterangan:</strong><br>
-    ${(item.keterangan || "-").replace(/\n/g, "<br>")}
+${(item.keterangan || "-")
+  .replace(/^(\d+\.)/gm, "<strong>$1</strong>")
+  .replace(/\n/g, "<br>")
+}
   `;
 
   const modal = document.getElementById("detailFinishingModal");
@@ -24553,11 +24628,16 @@ function renderGridBapro(query = "") {
       });
     }
 
-    // Render selalu 1–5
-    let ketsHtml = '';
-    for(let j=1; j<=5; j++){
-      ketsHtml += `<div>${j}. ${highlightHtmlSafe(ketMap[j], q)}</div>`;
-    }
+// Render selalu 1–5
+let ketsHtml = '';
+for(let j=1; j<=5; j++){
+  ketsHtml += `
+    <div style="display:flex;align-items:flex-start;">
+      <strong style="margin-right:4px;">${j}.</strong>
+      <span>${highlightHtmlSafe(ketMap[j], q)}</span>
+    </div>
+  `;
+}
 
     // ============================ HTML ============================
     card.innerHTML = `
@@ -24637,14 +24717,29 @@ function showDetailBapro(index){
 
       <hr>
 
-      <p><b>Resep Tinta:</b></p>
-      <ul>
-        <li>1. ${ketMap[1]}</li>
-        <li>2. ${ketMap[2]}</li>
-        <li>3. ${ketMap[3]}</li>
-        <li>4. ${ketMap[4]}</li>
-        <li>5. ${ketMap[5]}</li>
-      </ul>
+<p><b>Resep Tinta:</b></p>
+<ul style="list-style:none;padding-left:0;margin:0;">
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">1.</strong>
+    <span>${ketMap[1]}</span>
+  </li>
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">2.</strong>
+    <span>${ketMap[2]}</span>
+  </li>
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">3.</strong>
+    <span>${ketMap[3]}</span>
+  </li>
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">4.</strong>
+    <span>${ketMap[4]}</span>
+  </li>
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">5.</strong>
+    <span>${ketMap[5]}</span>
+  </li>
+</ul>
 
       <button onclick="closeModalBapro()">Tutup</button>
     </div>
@@ -25126,7 +25221,10 @@ function showDetailModalBapro(item) {
         ${item.update || '-'}
       </span><br><br>
     <strong>Keterangan:</strong><br>
-    ${(item.keterangan || "-").replace(/\n/g, "<br>")}
+${(item.keterangan || "-")
+  .replace(/^(\d+\.)/gm, "<strong>$1</strong>")
+  .replace(/\n/g, "<br>")
+}
   `;
 
   document.getElementById("detailBaproModal").style.display = "flex";
@@ -25384,10 +25482,15 @@ paItems.forEach((item, i) => {
         }
       });
     }
-    let ketsHtml = '';
-    for(let j=1;j<=5;j++){
-      ketsHtml += `<div>${j}. ${highlightHtmlSafe(ketMap[j], q)}</div>`;
-    }
+let ketsHtml = '';
+for(let j=1;j<=5;j++){
+  ketsHtml += `
+    <div style="display:flex;align-items:flex-start;">
+      <strong style="margin-right:4px;">${j}.</strong>
+      <span>${highlightHtmlSafe(ketMap[j], q)}</span>
+    </div>
+  `;
+}
 
     // ============================ HTML ============================
     card.innerHTML = `
@@ -25467,14 +25570,29 @@ function showDetailPA(index){
 
       <hr>
 
-      <p><b>Keterangan:</b></p>
-      <ul>
-        <li>1. ${ketMap[1]}</li>
-        <li>2. ${ketMap[2]}</li>
-        <li>3. ${ketMap[3]}</li>
-        <li>4. ${ketMap[4]}</li>
-        <li>5. ${ketMap[5]}</li>
-      </ul>
+<p><b>Keterangan:</b></p>
+<ul style="list-style:none;padding-left:0;margin:0;">
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">1.</strong>
+    <span>${ketMap[1]}</span>
+  </li>
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">2.</strong>
+    <span>${ketMap[2]}</span>
+  </li>
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">3.</strong>
+    <span>${ketMap[3]}</span>
+  </li>
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">4.</strong>
+    <span>${ketMap[4]}</span>
+  </li>
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">5.</strong>
+    <span>${ketMap[5]}</span>
+  </li>
+</ul>
 
       <button onclick="closeModalPA()">Tutup</button>
     </div>
@@ -26605,7 +26723,10 @@ function showDetailModalPA(item){
       </span><br><br>
 
     <strong>Keterangan:</strong><br>
-    ${(item.keterangan || "-").replace(/\n/g,'<br>')}
+    ${(item.keterangan || "-")
+  .replace(/^(\d+\.)/gm, '<strong>$1</strong>')
+  .replace(/\n/g,'<br>')
+}
   `;
 
   document.getElementById('detailCetakModal').style.display = 'flex';
@@ -26939,18 +27060,19 @@ function renderGridInspek(query = "") {
 
     }
 
-    // ================= HTML KETERANGAN =================
-    let ketsHtml = '';
+// ================= HTML KETERANGAN =================
+let ketsHtml = '';
 
-    for(let j = 1; j <= 5; j++){
+for(let j = 1; j <= 5; j++){
 
-      ketsHtml += `
-        <div>
-          ${j}. ${highlightHtmlSafe(ketMap[j], q)}
-        </div>
-      `;
+  ketsHtml += `
+    <div style="display:flex;align-items:flex-start;">
+      <strong style="margin-right:4px;">${j}.</strong>
+      <span>${highlightHtmlSafe(ketMap[j], q)}</span>
+    </div>
+  `;
 
-    }
+}
 
     // ================= HTML CARD =================
     card.innerHTML = `
@@ -27147,15 +27269,30 @@ function showDetailInspek(index){
 
       <hr>
 
-      <p><b>Keterangan:</b></p>
+<p><b>Keterangan:</b></p>
 
-      <ul>
-        <li>1. ${ketMap[1]}</li>
-        <li>2. ${ketMap[2]}</li>
-        <li>3. ${ketMap[3]}</li>
-        <li>4. ${ketMap[4]}</li>
-        <li>5. ${ketMap[5]}</li>
-      </ul>
+<ul style="list-style:none;padding-left:0;margin:0;">
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">1.</strong>
+    <span>${ketMap[1]}</span>
+  </li>
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">2.</strong>
+    <span>${ketMap[2]}</span>
+  </li>
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">3.</strong>
+    <span>${ketMap[3]}</span>
+  </li>
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">4.</strong>
+    <span>${ketMap[4]}</span>
+  </li>
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">5.</strong>
+    <span>${ketMap[5]}</span>
+  </li>
+</ul>
 
       <button onclick="closeModalInspek()">
         Tutup
@@ -28901,8 +29038,10 @@ function showDetailModalInspek(item){
 
     <strong>Keterangan:</strong><br>
 
-    ${(item.keterangan || "-")
-      .replace(/\n/g,'<br>')}
+${(item.keterangan || "-")
+  .replace(/^(\d+\.)/gm, "<strong>$1</strong>")
+  .replace(/\n/g, "<br>")
+}
 
   `;
 
@@ -29482,10 +29621,15 @@ lemItems.forEach((item, i) => {
         }
       });
     }
-    let ketsHtml = '';
-    for(let j=1; j<=5; j++){
-      ketsHtml += `<div>${j}. ${highlightHtmlSafe(ketMap[j], q)}</div>`;
-    }
+let ketsHtml = '';
+for(let j=1; j<=5; j++){
+  ketsHtml += `
+    <div style="display:flex;align-items:flex-start;">
+      <strong style="margin-right:4px;">${j}.</strong>
+      <span>${highlightHtmlSafe(ketMap[j], q)}</span>
+    </div>
+  `;
+}
 
     // ============================ HTML ============================
     card.innerHTML = `
@@ -29580,14 +29724,29 @@ function showDetailLem(index){
 
       <hr>
 
-      <p><b>Keterangan:</b></p>
-      <ul>
-        <li>1. ${ketMap[1]}</li>
-        <li>2. ${ketMap[2]}</li>
-        <li>3. ${ketMap[3]}</li>
-        <li>4. ${ketMap[4]}</li>
-        <li>5. ${ketMap[5]}</li>
-      </ul>
+<p><b>Keterangan:</b></p>
+<ul style="list-style:none;padding-left:0;margin:0;">
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">1.</strong>
+    <span>${ketMap[1]}</span>
+  </li>
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">2.</strong>
+    <span>${ketMap[2]}</span>
+  </li>
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">3.</strong>
+    <span>${ketMap[3]}</span>
+  </li>
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">4.</strong>
+    <span>${ketMap[4]}</span>
+  </li>
+  <li style="display:flex;align-items:flex-start;">
+    <strong style="margin-right:4px;">5.</strong>
+    <span>${ketMap[5]}</span>
+  </li>
+</ul>
 
       <button onclick="closeModalLem()">Tutup</button>
     </div>
@@ -30672,7 +30831,10 @@ function showDetailModalLem(item) {
       </span><br><br>
 
     <strong>Keterangan:</strong><br>
-    ${(item.keterangan || "-").replace(/\n/g, "<br>")}
+${(item.keterangan || "-")
+  .replace(/^(\d+\.)/gm, "<strong>$1</strong>")
+  .replace(/\n/g, "<br>")
+}
   `;
 
   document.getElementById("detailLemModal").style.display = "flex";
