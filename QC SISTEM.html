@@ -1285,6 +1285,205 @@ h2.qc-title.qc-inspek + .total-wrapper .total-box:hover{
 
 }
 
+
+/* =====================================================
+   UNIVERSAL EDIT POPUP
+===================================================== */
+
+#editPopupOverlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:999999;
+    animation:fadePopup .18s;
+}
+
+#editPopup{
+
+    width:min(900px,92vw);
+
+    max-height:90vh;
+
+    background:#fff;
+
+    border-radius:14px;
+
+    overflow:hidden;
+
+    box-shadow:0 15px 45px rgba(0,0,0,.25);
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+#editPopupHeader{
+
+    background:#2563eb;
+
+    color:#fff;
+
+    padding:14px 18px;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+#editPopupClose{
+
+    cursor:pointer;
+
+    font-size:26px;
+
+    line-height:1;
+
+    user-select:none;
+
+}
+
+#editPopupBody{
+
+    padding:20px;
+
+    overflow:auto;
+
+}
+
+#editPopupBody input,
+
+#editPopupBody textarea,
+
+#editPopupBody select{
+
+    width:100%;
+
+    font-size:16px;
+
+    border:1px solid #ccc;
+
+    border-radius:8px;
+
+    padding:12px;
+
+    outline:none;
+
+    box-sizing:border-box;
+
+}
+
+#editPopupBody textarea{
+
+    min-height:320px;
+
+    resize:vertical;
+
+}
+
+#editPopupBody input[type=file]{
+
+    padding:0;
+
+    border:none;
+
+}
+
+#editPopupPreview{
+
+    margin-bottom:15px;
+
+    text-align:center;
+
+}
+
+#editPopupPreview img{
+
+    max-width:100%;
+
+    max-height:300px;
+
+    border-radius:10px;
+
+    border:1px solid #ddd;
+
+}
+
+#editPopupFooter{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:10px;
+
+    padding:16px 20px;
+
+    border-top:1px solid #eee;
+
+}
+
+#editPopupFooter button{
+
+    padding:10px 18px;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+}
+
+#editPopupSave{
+
+    background:#16a34a;
+
+    color:#fff;
+
+}
+
+#editPopupCancel{
+
+    background:#ef4444;
+
+    color:#fff;
+
+}
+
+@keyframes fadePopup{
+
+    from{
+
+        opacity:0;
+
+        transform:scale(.96);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
+
+}
+
+
 </style>
 
 
@@ -18631,6 +18830,7 @@ function filterManualList(input, tabId) {
         <option value="" disabled selected>Pilih Proses</option>
         <option value="RETUR">RETUR</option>
         <option value="KOMPAIN">KOMPLAIN</option>
+        <option value="CETAK ULANG">CETAK ULANG</option>
       </select>
     </div>
 
@@ -30636,6 +30836,246 @@ function closeModalSPV(){
 }
 
 
+
+/* =====================================================
+   UNIVERSAL EDIT POPUP
+===================================================== */
+
+let popupTarget = null;
+
+(function () {
+
+    if (document.getElementById("editPopupOverlay")) return;
+
+    const overlay = document.createElement("div");
+
+    overlay.id = "editPopupOverlay";
+
+    overlay.innerHTML = `
+        <div id="editPopup">
+
+            <div id="editPopupHeader">
+                <span id="editPopupTitle">Edit</span>
+                <span id="editPopupClose">&times;</span>
+            </div>
+
+            <div id="editPopupBody"></div>
+
+            <div id="editPopupFooter">
+                <button id="editPopupCancel">Batal</button>
+                <button id="editPopupSave">Simpan</button>
+            </div>
+
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    document.getElementById("editPopupClose").onclick = closeEditPopup;
+
+    document.getElementById("editPopupCancel").onclick = closeEditPopup;
+
+    document.getElementById("editPopupSave").onclick = saveEditPopup;
+
+    overlay.addEventListener("click", e => {
+
+        if (e.target === overlay) {
+
+            closeEditPopup();
+
+        }
+
+    });
+
+})();
+
+function openEditPopup(el, title = "Edit Data") {
+
+    popupTarget = el;
+
+    document.getElementById("editPopupTitle").textContent = title;
+
+    const body = document.getElementById("editPopupBody");
+
+    body.innerHTML = "";
+
+    let editor = null;
+
+    // ==================== TEXTAREA ====================
+
+    if (el.tagName === "TEXTAREA") {
+
+        editor = document.createElement("textarea");
+
+        editor.value = el.value;
+
+        editor.style.width = "100%";
+
+        editor.style.minHeight = "220px";
+
+        editor.style.resize = "vertical";
+
+    }
+
+    // ==================== INPUT ====================
+
+    else if (el.tagName === "INPUT") {
+
+        if (el.type === "file") {
+
+            const preview = document.createElement("div");
+
+            preview.id = "editPopupPreview";
+
+            preview.style.marginBottom = "15px";
+
+            if (el.files && el.files.length) {
+
+                const img = document.createElement("img");
+
+                img.src = URL.createObjectURL(el.files[0]);
+
+                img.style.maxWidth = "100%";
+
+                img.style.borderRadius = "8px";
+
+                preview.appendChild(img);
+
+            }
+
+            body.appendChild(preview);
+
+            editor = document.createElement("input");
+
+            editor.type = "file";
+
+            editor.accept = el.accept;
+
+        }
+
+        else {
+
+            editor = document.createElement("input");
+
+            editor.type = el.type;
+
+            editor.value = el.value;
+
+            editor.style.width = "100%";
+
+        }
+
+    }
+
+// ==================== SELECT ====================
+
+else if (el.tagName === "SELECT") {
+
+    editor = document.createElement("select");
+
+    editor.id = "popupEditor";
+
+    editor.style.width = "100%";
+    editor.style.padding = "10px";
+    editor.style.fontSize = "15px";
+
+    // Kosongkan option bawaan
+    editor.innerHTML = "";
+
+    Array.from(el.options).forEach(opt => {
+
+        const option = document.createElement("option");
+
+        option.value = opt.value;
+        option.textContent = opt.textContent;
+
+        editor.appendChild(option);
+
+    });
+
+    // Pilih value yang sama dengan select asli
+    editor.value = el.value;
+
+}
+
+    if (!editor) return;
+
+    editor.id = "popupEditor";
+
+    body.appendChild(editor);
+
+    document.getElementById("editPopupOverlay").style.display = "flex";
+
+    setTimeout(() => {
+
+        editor.focus();
+
+        if (typeof editor.select === "function") {
+
+            editor.select();
+
+        }
+
+    }, 50);
+
+}
+
+function closeEditPopup() {
+
+    document.getElementById("editPopupOverlay").style.display = "none";
+
+    document.getElementById("editPopupBody").innerHTML = "";
+
+    popupTarget = null;
+
+}
+
+function saveEditPopup() {
+
+    if (!popupTarget) return;
+
+    const editor = document.getElementById("popupEditor");
+
+    if (!editor) return;
+
+    // ==================== INPUT ====================
+
+    if (popupTarget.tagName === "INPUT") {
+
+        if (popupTarget.type !== "file") {
+
+            popupTarget.value = editor.value;
+
+        }
+
+    }
+
+    // ==================== TEXTAREA ====================
+
+    else if (popupTarget.tagName === "TEXTAREA") {
+
+        popupTarget.value = editor.value;
+
+    }
+
+    // ==================== SELECT ====================
+
+    else if (popupTarget.tagName === "SELECT") {
+
+        popupTarget.value = editor.value;
+
+    }
+
+    popupTarget.dispatchEvent(new Event("input", { bubbles: true }));
+
+    popupTarget.dispatchEvent(new Event("change", { bubbles: true }));
+
+    closeEditPopup();
+
+}
+
+
+
 /* ====================== ENABLE EDIT ====================== */
 function enableSPVEdit() {
   document.querySelectorAll("#spvTable tbody tr").forEach((row, rowIndex) => {
@@ -30650,6 +31090,7 @@ function enableSPVEdit() {
       for (let i = 0; i < 10; i++) {
         const cell = row.cells[i];
         const value = cell.textContent.trim();
+
 
         // ===== Foto Acuan & Foto Temuan =====
         if (i === 5 || i === 7) {
@@ -30686,6 +31127,11 @@ function enableSPVEdit() {
             fileName.textContent = file ? file.name : "";
           });
 
+label.addEventListener("dblclick", () => {
+
+    openEditPopup(fileInput, "Upload Foto");
+
+});
           label.onclick = () => fileInput.click();
 
           wrapper.appendChild(label);
@@ -30695,50 +31141,168 @@ function enableSPVEdit() {
           cell.innerHTML = "";
           cell.appendChild(wrapper);
         } 
-        // ===== Keterangan =====
-        else if (i === 4 || i === 6) {
-          const textarea = document.createElement("textarea");
-          textarea.value = value;
-          textarea.rows = 2;
-          textarea.style.width = "100%";
-          cell.innerHTML = "";
-          cell.appendChild(textarea);
-        } 
-        // ===== Nama QC / Proses (Dropdown) =====
-        else if (i === 8 || i === 9) {
-          const select = document.createElement("select");
-          select.style.width = "100%";
-          select.style.padding = "6px";
-          select.style.borderRadius = "6px";
-          select.style.border = "1px solid #ccc";
-          select.style.fontSize = "13px";
 
-          let options = [];
-          if (i === 8) options = ["IKA","ERLY","NANI","ANJANI","SUCI","ANOM","IRNA","MARWAN","RISA","MARTINI","KRESTIN","ISMIE"];
-          else options = ["QC BAPRO","QA CETAK","QC FINISHING","QC LEM","RETUR"];
+// ===== Keterangan Acuan =====
+else if (i === 4) {
 
-          options.forEach(opt => {
-            const option = document.createElement("option");
-            option.value = opt;
-            option.textContent = opt;
-            if (opt === value) option.selected = true;
-            select.appendChild(option);
-          });
+    const select = document.createElement("select");
 
-          cell.innerHTML = "";
-          cell.appendChild(select);
-        } 
+    select.style.width = "100%";
+    select.style.padding = "6px";
+    select.style.borderRadius = "6px";
+    select.style.border = "1px solid #ccc";
+    select.style.fontSize = "13px";
+    select.style.cursor = "pointer";
+
+    const options = [
+        "",
+        "STC",
+        "LPC",
+        "DUMMY"
+    ];
+
+    options.forEach(opt => {
+
+        const option = document.createElement("option");
+
+        option.value = opt;
+        option.textContent = opt;
+
+        if (opt === value) {
+
+            option.selected = true;
+
+        }
+
+        select.appendChild(option);
+
+    });
+
+    // ================= Popup =================
+
+    select.addEventListener("click", (e) => {
+
+        e.preventDefault();
+
+        e.stopPropagation();
+
+        openEditPopup(select, "Keterangan Acuan");
+
+    });
+
+    cell.innerHTML = "";
+
+    cell.appendChild(select);
+
+}
+
+// ===== Keterangan Temuan =====
+else if (i === 6) {
+
+    const textarea = document.createElement("textarea");
+
+    textarea.value = value;
+
+    textarea.rows = 2;
+
+    textarea.style.width = "100%";
+
+    textarea.style.cursor = "pointer";
+
+    textarea.addEventListener("click", () => {
+
+        openEditPopup(textarea, "Keterangan Temuan");
+
+    });
+
+    cell.innerHTML = "";
+    cell.appendChild(textarea);
+
+}
+
+// ===== Nama QC / Proses (Dropdown) =====
+else if (i === 8 || i === 9) {
+
+  const select = document.createElement("select");
+
+  select.style.width = "100%";
+  select.style.padding = "6px";
+  select.style.borderRadius = "6px";
+  select.style.border = "1px solid #ccc";
+  select.style.fontSize = "13px";
+
+  let options = [];
+
+  if (i === 8)
+    options = ["NANI"];
+  else
+    options = ["RETUR","KOMPLAIN","CETAK ULANG"];
+
+  options.forEach(opt => {
+
+    const option = document.createElement("option");
+
+    option.value = opt;
+    option.textContent = opt;
+
+    if (opt === value)
+      option.selected = true;
+
+    select.appendChild(option);
+
+  });
+
+  // ===== Popup saat klik dropdown =====
+  select.style.cursor = "pointer";
+
+  select.addEventListener("click", (e) => {
+
+    e.preventDefault();
+
+    const title =
+      (i === 8)
+        ? "Nama QC"
+        : "Proses";
+
+    openEditPopup(select, title);
+
+  });
+
+  cell.innerHTML = "";
+  cell.appendChild(select);
+
+}
         // ===== Input teks biasa =====
         else {
-          const input = document.createElement("input");
-          input.type = "text";
-          input.value = value;
-          input.style.width = "100%";
+const input = document.createElement("input");
 
-          if (i === 0 || i === 3) input.setAttribute('readonly', true);
+input.type = "text";
 
-          cell.innerHTML = "";
-          cell.appendChild(input);
+input.value = value;
+
+input.style.width = "100%";
+
+if (i === 0 || i === 3) {
+
+    input.setAttribute("readonly", true);
+
+}
+
+else {
+
+    input.style.cursor = "pointer";
+
+    input.addEventListener("click", () => {
+
+        openEditPopup(input, row.cells[i - 1]?.textContent || "Edit");
+
+    });
+
+}
+
+cell.innerHTML = "";
+
+cell.appendChild(input);
         }
       }
 
@@ -30766,7 +31330,10 @@ function enableSPVEdit() {
           namaOrder: (row.cells[1].querySelector("input")?.value || row.cells[1].textContent).toUpperCase(),
           noKS: (row.cells[2].querySelector("input")?.value || row.cells[2].textContent).toUpperCase(),
           jam: row.cells[3].querySelector("input")?.value || row.cells[3].textContent,
-          ket: (row.cells[4].querySelector("textarea")?.value || row.cells[4].textContent).toUpperCase(),
+ket: (
+  row.cells[4].querySelector("select")?.value ||
+  row.cells[4].textContent
+).toUpperCase(),
           ket1: (row.cells[6].querySelector("textarea")?.value || row.cells[6].textContent).toUpperCase(),
           namaQC: row.cells[8].querySelector("select")?.value || row.cells[8].textContent,
           proses: row.cells[9].querySelector("select")?.value || row.cells[9].textContent,
