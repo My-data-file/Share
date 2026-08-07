@@ -11329,23 +11329,66 @@ function setStatusFilterBapro(status) {
     </div>
 
 
-    <!-- STEP 3 -->
-    <div id="step3" class="temuan-step" style="display:none;">
+<!-- STEP 3 -->
+<div id="step3" class="temuan-step" style="display:none;">
 
-      <h4>3. Frekuensi Temuan (Jarang <3 dan Sering >3)</h4>
+  <h4>3. Tingkat Temuan</h4>
 
-      <select id="tmFrek">
-        <option value="">-- Pilih Frekuensi --</option>
-        <option>Jarang</option>
-        <option>Sering</option>
-      </select>
+  <div style="
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:8px;
+      margin:10px 0 15px;
+      font-size:12px;
+      line-height:1.4;
+  ">
 
-      <div class="modal-btn">
-        <button type="button" onclick="prevStep(2)">◀ Back</button>
-        <button type="button" onclick="nextStep(4)">Next ▶</button>
-      </div>
+    <span style="
+        background:#22c55e;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🟢 Minor : Temuan langsung diperbaiki & hilang
+    </span>
 
-    </div>
+    <span style="
+        background:#f59e0b;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🟡 Major : Temuan diperbaiki tetapi muncul lagi
+    </span>
+
+    <span style="
+        background:#ef4444;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🔴 Critical : Temuan tidak bisa diperbaiki
+    </span>
+
+  </div>
+
+  <select id="tmFrek">
+    <option value="">-- Pilih Tingkat Temuan --</option>
+    <option value="Minor">Minor</option>
+    <option value="Major">Major</option>
+    <option value="Critical">Critical</option>
+  </select>
+
+  <div class="modal-btn">
+    <button type="button" onclick="prevStep(2)">◀ Back</button>
+    <button type="button" onclick="nextStep(4)">Next ▶</button>
+  </div>
+
+</div>
 
     <!-- STEP 4 -->
     <div id="step4" class="temuan-step" style="display:none;">
@@ -11533,40 +11576,84 @@ function setStatusFilterBapro(status) {
     </div>
 
 
-    <!-- STEP 3 -->
-    <div id="editStep3" class="temuan-step" style="display:none;">
+<!-- STEP 3 -->
+<div id="editStep3" class="temuan-step" style="display:none;">
 
-      <h4>3. Frekuensi Temuan (Jarang &lt;3 dan Sering &gt;3)</h4>
+  <h4>3. Tingkat Temuan</h4>
 
-      <select id="editTmFrek">
+  <div style="
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:8px;
+      margin:10px 0 15px;
+      font-size:12px;
+      line-height:1.4;
+  ">
 
-        <option value="">-- Pilih Frekuensi --</option>
+    <span style="
+        background:#22c55e;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🟢 Minor : Temuan langsung diperbaiki & hilang
+    </span>
 
-        <option>Jarang</option>
+    <span style="
+        background:#f59e0b;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🟡 Major : Temuan diperbaiki tetapi muncul lagi
+    </span>
 
-        <option>Sering</option>
+    <span style="
+        background:#ef4444;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🔴 Critical : Temuan tidak bisa diperbaiki
+    </span>
 
-      </select>
+  </div>
 
-      <div class="modal-btn">
+  <select id="editTmFrek">
 
-        <button
-          type="button"
-          onclick="prevEditStep(2)"
-        >
-          ◀ Back
-        </button>
+    <option value="">-- Pilih Tingkat Temuan --</option>
 
-        <button
-          type="button"
-          onclick="nextEditStep(4)"
-        >
-          Next ▶
-        </button>
+    <option value="Minor">Minor</option>
 
-      </div>
+    <option value="Major">Major</option>
 
-    </div>
+    <option value="Critical">Critical</option>
+
+  </select>
+
+  <div class="modal-btn">
+
+    <button
+      type="button"
+      onclick="prevEditStep(2)"
+    >
+      ◀ Back
+    </button>
+
+    <button
+      type="button"
+      onclick="nextEditStep(4)"
+    >
+      Next ▶
+    </button>
+
+  </div>
+
+</div>
 
 
     <!-- STEP 4 -->
@@ -13052,23 +13139,66 @@ window.addEventListener("click", function(e){
 
     </div>
 
-    <!-- STEP 3 -->
-    <div id="stepInspek3" class="temuan-step" style="display:none;">
+<!-- STEP 3 -->
+<div id="stepInspek3" class="temuan-step" style="display:none;">
 
-      <h4>3. Frekuensi Temuan (Jarang &lt;3 dan Sering &gt;3)</h4>
+  <h4>3. Tingkat Temuan</h4>
 
-      <select id="tmInspekFrek">
-        <option value="">-- Pilih Frekuensi --</option>
-        <option>Jarang</option>
-        <option>Sering</option>
-      </select>
+  <div style="
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:8px;
+      margin:10px 0 15px;
+      font-size:12px;
+      line-height:1.4;
+  ">
 
-      <div class="modal-btn">
-        <button type="button" onclick="prevStepInspek(2)">◀ Back</button>
-        <button type="button" onclick="nextStepInspek(4)">Next ▶</button>
-      </div>
+    <span style="
+        background:#22c55e;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🟢 Minor : Temuan langsung diperbaiki & hilang
+    </span>
 
-    </div>
+    <span style="
+        background:#f59e0b;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🟡 Major : Temuan diperbaiki tetapi muncul lagi
+    </span>
+
+    <span style="
+        background:#ef4444;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🔴 Critical : Temuan tidak bisa diperbaiki
+    </span>
+
+  </div>
+
+  <select id="tmInspekFrek">
+    <option value="">-- Pilih Tingkat Temuan --</option>
+    <option value="Minor">Minor</option>
+    <option value="Major">Major</option>
+    <option value="Critical">Critical</option>
+  </select>
+
+  <div class="modal-btn">
+    <button type="button" onclick="prevStepInspek(2)">◀ Back</button>
+    <button type="button" onclick="nextStepInspek(4)">Next ▶</button>
+  </div>
+
+</div>
 
     <!-- STEP 4 -->
     <div id="stepInspek4" class="temuan-step" style="display:none;">
@@ -13285,49 +13415,88 @@ window.addEventListener("click", function(e){
     </div>
 
 
-    <!-- ================= STEP 3 ================= -->
-    <div
-      id="editStepInspek3"
-      class="temuan-step"
-      style="display:none;"
+<!-- ================= STEP 3 ================= -->
+<div
+  id="editStepInspek3"
+  class="temuan-step"
+  style="display:none;"
+>
+
+  <h4>3. Tingkat Temuan</h4>
+
+  <div style="
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:8px;
+      margin:10px 0 15px;
+      font-size:12px;
+      line-height:1.4;
+  ">
+
+    <span style="
+        background:#22c55e;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🟢 Minor : Temuan langsung diperbaiki &amp; hilang
+    </span>
+
+    <span style="
+        background:#f59e0b;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🟡 Major : Temuan diperbaiki tetapi muncul lagi
+    </span>
+
+    <span style="
+        background:#ef4444;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🔴 Critical : Temuan tidak bisa diperbaiki
+    </span>
+
+  </div>
+
+  <select id="editTmInspekFrek">
+
+    <option value="">
+      -- Pilih Tingkat Temuan --
+    </option>
+
+    <option value="Minor">Minor</option>
+    <option value="Major">Major</option>
+    <option value="Critical">Critical</option>
+
+  </select>
+
+  <div class="modal-btn">
+
+    <button
+      type="button"
+      onclick="prevEditStepInspek(2)"
     >
+      ◀ Back
+    </button>
 
-      <h4>
-        3. Frekuensi Temuan
-        (Jarang &lt;3 dan Sering &gt;3)
-      </h4>
+    <button
+      type="button"
+      onclick="nextEditStepInspek(4)"
+    >
+      Next ▶
+    </button>
 
-      <select id="editTmInspekFrek">
+  </div>
 
-        <option value="">
-          -- Pilih Frekuensi --
-        </option>
-
-        <option>Jarang</option>
-        <option>Sering</option>
-
-      </select>
-
-
-      <div class="modal-btn">
-
-        <button
-          type="button"
-          onclick="prevEditStepInspek(2)"
-        >
-          ◀ Back
-        </button>
-
-        <button
-          type="button"
-          onclick="nextEditStepInspek(4)"
-        >
-          Next ▶
-        </button>
-
-      </div>
-
-    </div>
+</div>
 
 
     <!-- ================= STEP 4 ================= -->
@@ -14736,23 +14905,66 @@ window.addEventListener(
 
 </div>
 
-    <!-- STEP 3 -->
-    <div id="stepFin3" class="temuan-step" style="display:none;">
+<!-- STEP 3 -->
+<div id="stepFin3" class="temuan-step" style="display:none;">
 
-      <h4>3. Frekuensi Temuan (Jarang &lt;3 dan Sering &gt;3)</h4>
+  <h4>3. Tingkat Temuan</h4>
 
-      <select id="tmFinFrek">
-        <option value="">-- Pilih Frekuensi --</option>
-        <option>Jarang</option>
-        <option>Sering</option>
-      </select>
+  <div style="
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:8px;
+      margin:10px 0 15px;
+      font-size:12px;
+      line-height:1.4;
+  ">
 
-      <div class="modal-btn">
-        <button type="button" onclick="prevStepFin(2)">◀ Back</button>
-        <button type="button" onclick="nextStepFin(4)">Next ▶</button>
-      </div>
+    <span style="
+        background:#22c55e;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🟢 Minor : Temuan langsung diperbaiki &amp; hilang
+    </span>
 
-    </div>
+    <span style="
+        background:#f59e0b;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🟡 Major : Temuan diperbaiki tetapi muncul lagi
+    </span>
+
+    <span style="
+        background:#ef4444;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🔴 Critical : Temuan tidak bisa diperbaiki
+    </span>
+
+  </div>
+
+  <select id="tmFinFrek">
+    <option value="">-- Pilih Tingkat Temuan --</option>
+    <option value="Minor">Minor</option>
+    <option value="Major">Major</option>
+    <option value="Critical">Critical</option>
+  </select>
+
+  <div class="modal-btn">
+    <button type="button" onclick="prevStepFin(2)">◀ Back</button>
+    <button type="button" onclick="nextStepFin(4)">Next ▶</button>
+  </div>
+
+</div>
 
     <!-- STEP 4 -->
     <div id="stepFin4" class="temuan-step" style="display:none;">
@@ -14923,36 +15135,79 @@ window.addEventListener(
     </div>
 
 
-    <!-- STEP 3 -->
-    <div id="editStepFin3" class="temuan-step" style="display:none;">
+<!-- STEP 3 -->
+<div id="editStepFin3" class="temuan-step" style="display:none;">
 
-      <h4>3. Frekuensi Temuan (Jarang &lt;3 dan Sering &gt;3)</h4>
+  <h4>3. Tingkat Temuan</h4>
 
-      <select id="editTmFinFrek">
-        <option value="">-- Pilih Frekuensi --</option>
-        <option>Jarang</option>
-        <option>Sering</option>
-      </select>
+  <div style="
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:8px;
+      margin:10px 0 15px;
+      font-size:12px;
+      line-height:1.4;
+  ">
 
-      <div class="modal-btn">
+    <span style="
+        background:#22c55e;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🟢 Minor : Temuan langsung diperbaiki &amp; hilang
+    </span>
 
-        <button
-          type="button"
-          onclick="prevEditStepFin(2)"
-        >
-          ◀ Back
-        </button>
+    <span style="
+        background:#f59e0b;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🟡 Major : Temuan diperbaiki tetapi muncul lagi
+    </span>
 
-        <button
-          type="button"
-          onclick="nextEditStepFin(4)"
-        >
-          Next ▶
-        </button>
+    <span style="
+        background:#ef4444;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🔴 Critical : Temuan tidak bisa diperbaiki
+    </span>
 
-      </div>
+  </div>
 
-    </div>
+  <select id="editTmFinFrek">
+    <option value="">-- Pilih Tingkat Temuan --</option>
+    <option value="Minor">Minor</option>
+    <option value="Major">Major</option>
+    <option value="Critical">Critical</option>
+  </select>
+
+  <div class="modal-btn">
+
+    <button
+      type="button"
+      onclick="prevEditStepFin(2)"
+    >
+      ◀ Back
+    </button>
+
+    <button
+      type="button"
+      onclick="nextEditStepFin(4)"
+    >
+      Next ▶
+    </button>
+
+  </div>
+
+</div>
 
 
     <!-- STEP 4 -->
@@ -16453,23 +16708,66 @@ window.addEventListener("click", function(e){
 
 </div>
 
-    <!-- STEP 3 -->
-    <div id="stepLem3" class="temuan-step" style="display:none;">
+<!-- STEP 3 -->
+<div id="stepLem3" class="temuan-step" style="display:none;">
 
-      <h4>3. Frekuensi Temuan (Jarang &lt;3 dan Sering &gt;3)</h4>
+  <h4>3. Tingkat Temuan</h4>
 
-      <select id="tmLemFrek">
-        <option value="">-- Pilih Frekuensi --</option>
-        <option>Jarang</option>
-        <option>Sering</option>
-      </select>
+  <div style="
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:8px;
+      margin:10px 0 15px;
+      font-size:12px;
+      line-height:1.4;
+  ">
 
-      <div class="modal-btn">
-        <button type="button" onclick="prevStepLem(2)">◀ Back</button>
-        <button type="button" onclick="nextStepLem(4)">Next ▶</button>
-      </div>
+    <span style="
+        background:#22c55e;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🟢 Minor : Temuan langsung diperbaiki &amp; hilang
+    </span>
 
-    </div>
+    <span style="
+        background:#f59e0b;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🟡 Major : Temuan diperbaiki tetapi muncul lagi
+    </span>
+
+    <span style="
+        background:#ef4444;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🔴 Critical : Temuan tidak bisa diperbaiki
+    </span>
+
+  </div>
+
+  <select id="tmLemFrek">
+    <option value="">-- Pilih Tingkat Temuan --</option>
+    <option value="Minor">Minor</option>
+    <option value="Major">Major</option>
+    <option value="Critical">Critical</option>
+  </select>
+
+  <div class="modal-btn">
+    <button type="button" onclick="prevStepLem(2)">◀ Back</button>
+    <button type="button" onclick="nextStepLem(4)">Next ▶</button>
+  </div>
+
+</div>
 
     <!-- STEP 4 -->
     <div id="stepLem4" class="temuan-step" style="display:none;">
@@ -16893,45 +17191,85 @@ window.addEventListener("click", function(e){
     </div>
 
 
-    <!-- STEP 3 -->
-    <div
-      id="editStepLem3"
-      class="temuan-step"
-      style="display:none;">
+<!-- STEP 3 -->
+<div
+  id="editStepLem3"
+  class="temuan-step"
+  style="display:none;">
 
-      <h4>
-        3. Frekuensi Temuan
-        (Jarang &lt;3 dan Sering &gt;3)
-      </h4>
+  <h4>3. Tingkat Temuan</h4>
 
-      <select id="editTmLemFrek">
+  <div style="
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:8px;
+      margin:10px 0 15px;
+      font-size:12px;
+      line-height:1.4;
+  ">
 
-        <option value="">
-          -- Pilih Frekuensi --
-        </option>
+    <span style="
+        background:#22c55e;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🟢 Minor : Temuan langsung diperbaiki &amp; hilang
+    </span>
 
-        <option>Jarang</option>
-        <option>Sering</option>
+    <span style="
+        background:#f59e0b;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🟡 Major : Temuan diperbaiki tetapi muncul lagi
+    </span>
 
-      </select>
+    <span style="
+        background:#ef4444;
+        color:#fff;
+        padding:6px 12px;
+        border-radius:18px;
+        font-weight:600;
+    ">
+      🔴 Critical : Temuan tidak bisa diperbaiki
+    </span>
 
-      <div class="modal-btn">
+  </div>
 
-        <button
-          type="button"
-          onclick="prevEditStepLem(2)">
-          ◀ Back
-        </button>
+  <select id="editTmLemFrek">
 
-        <button
-          type="button"
-          onclick="nextEditStepLem(4)">
-          Next ▶
-        </button>
+    <option value="">
+      -- Pilih Tingkat Temuan --
+    </option>
 
-      </div>
+    <option value="Minor">Minor</option>
+    <option value="Major">Major</option>
+    <option value="Critical">Critical</option>
 
-    </div>
+  </select>
+
+  <div class="modal-btn">
+
+    <button
+      type="button"
+      onclick="prevEditStepLem(2)">
+      ◀ Back
+    </button>
+
+    <button
+      type="button"
+      onclick="nextEditStepLem(4)">
+      Next ▶
+    </button>
+
+  </div>
+
+</div>
 
 
     <!-- STEP 4 -->
